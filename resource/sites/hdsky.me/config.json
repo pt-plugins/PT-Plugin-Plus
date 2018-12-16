@@ -1,0 +1,9 @@
+{
+  "name": "HDSky",
+  "description": "高清发烧友后花园PT",
+  "url": "https://hdsky.me/",
+  "icon": "https://hdsky.me/favicon.ico",
+  "tags": ["影视", "纪录片", "综合"],
+  "schema": "NexusPHP",
+  "host": "hdsky.me"
+}

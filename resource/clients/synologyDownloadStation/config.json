@@ -1,0 +1,9 @@
+{
+  "name": "Synology Download Station",
+  "type": "synologyDownloadStation",
+  "ver": "0.0.1",
+  "icon": "https://www.synology.com/img/icon/favicon.png",
+  "scripts": [
+    "init.js"
+  ]
+}

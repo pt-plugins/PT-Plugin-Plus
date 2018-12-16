@@ -1,0 +1,9 @@
+{
+  "name": "港知堂",
+  "description": "港片爱好者之家",
+  "url": "https://pt.gztown.net/",
+  "icon": "https://pt.gztown.net/favicon.ico",
+  "tags": ["影视", "港片"],
+  "schema": "NexusPHP",
+  "host": "pt.gztown.net"
+}

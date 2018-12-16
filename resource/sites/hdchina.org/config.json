@@ -1,0 +1,9 @@
+{
+  "name": "HDChina",
+  "description": "高清影音人士分享乐园",
+  "url": "https://hdchina.org/",
+  "icon": "https://hdchina.org/favicon.ico",
+  "tags": ["影视", "音乐", "纪录片", "综合"],
+  "schema": "NexusPHP",
+  "host": "hdchina.org"
+}

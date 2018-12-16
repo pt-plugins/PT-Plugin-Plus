@@ -1,0 +1,21 @@
+{
+  "name": "TTG",
+  "description": "ToTheGlory",
+  "url": "https://totheglory.im/",
+  "icon": "https://totheglory.im/favicon.ico",
+  "tags": ["影视", "音乐", "游戏", "综合"],
+  "schema": {
+    "name": "TTG",
+    "ver": "0.0.1",
+    "plugins": [{
+      "name": "种子详情页面",
+      "pages": ["/t/{\\d}/"],
+      "script": "details.js"
+    }, {
+      "name": "种子列表",
+      "pages": ["/browse.php"],
+      "script": "browse.js"
+    }]
+  },
+  "host": "totheglory.im"
+}

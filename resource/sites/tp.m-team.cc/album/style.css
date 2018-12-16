@@ -1,0 +1,311 @@
+.album {
+	width: 100%;
+	height: 100%;
+	z-index: 30000;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+	overflow: hidden;
+}
+
+.album .background {
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+	background-color: #ccc;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+}
+
+.album .background-black {
+	background-color: #333;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+}
+
+.album .shower {
+	position: absolute;
+	top: 1px;
+	bottom: 190px;
+	width: 100%;
+	text-align: center;
+}
+
+.album .topbar {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	opacity: 0.3;
+	filter: alpha(opacity=30);
+	background-color: #000;
+	/*height: 40px;*/
+	padding: 8px 0 5px 5px;
+	width: auto;
+	overflow-y: hidden;
+}
+
+.album .topbar.over {
+	opacity: 0.8;
+	filter: alpha(opacity=80);
+}
+
+.album .topbar a.item {
+	width: 32px;
+	height: 32px;
+	display: inline-block;
+	margin: 3px 10px;
+	cursor: pointer;
+	filter: alpha(opacity=60);
+	opacity: 0.6;
+	background-image: url("icons-32.png");
+	background-repeat: no-repeat;
+	overflow: hidden;
+}
+
+.album .topbar a.item:hover {
+	filter: alpha(opacity=100);
+	opacity: 1;
+}
+
+.album .topbar .spliter {
+	width: 2px;
+	height: 28px;
+	line-height: 32px;
+	border-width: 2px;
+	border-style: solid;
+}
+
+.album .topbar .rotate-left {
+	background-position: 0px 0px;
+}
+
+.album .topbar .rotate-right {
+	background-position: 0px -32px;
+}
+
+.album .topbar .close {
+	background-position: 0px -64px;
+}
+
+.album .topbar .close:hover {
+	background-color: #ff3300;
+}
+
+.album .topbar .download {
+	background-position: 0px -96px;
+}
+
+.album .controlbar {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+}
+
+.album .listbar {
+	position: absolute;
+	bottom: 30px;
+	height: 160px;
+	width: 100%;
+	text-align: center;
+	background-color: #000;
+	filter: alpha(opacity=30);
+	opacity: 0.3;
+	overflow: hidden;
+}
+
+.album .listbar-black {
+	position: absolute;
+	bottom: 30px;
+	height: 160px;
+	width: 100%;
+	text-align: center;
+	background-color: #fff;
+	opacity: 0.9;
+	overflow: hidden;
+}
+
+.album .thumbimages {
+	height: 100%;
+	position: absolute;
+	display: inline-table;
+}
+
+.album .labelbar {
+	position: absolute;
+	top: -30px;
+	bottom: 0px;
+	padding: 8px;
+	text-align: center;
+	width: 100%;
+	color: #fff;
+	background-color: #000;
+	/* background-color: rgba(0, 0, 0, 0.8);
+	*/
+	opacity: 0.8;
+	filter: alpha(opacity=80);
+	height: 30px;
+}
+
+.album .label {
+	color: #fff;
+}
+
+.album .closebutton {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 50px;
+	height: 50px;
+	cursor: pointer;
+	text-align: center;
+	border-radius: 0 0 0 50px;
+	filter: alpha(opacity=70);
+	opacity: 0.7;
+	background: #ccc url("close.png") no-repeat 15px 3px;
+	/* background-position: right;
+	*/
+}
+
+.album .album-item {
+	margin: 2px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #aabbcc;
+	cursor: pointer;
+}
+
+.album .active {
+	border-width: 3px;
+	border-color: #ff6600;
+}
+
+.album .loading {
+	position: absolute;
+	z-index: 30001;
+	left: 50%;
+	top: 50%;
+	background-color: rgba(0, 0, 0, 0.4);
+	filter: alpha(opacity=40);
+	padding: 15px;
+	border-radius: 8px;
+}
+
+.album .zoomBar {
+	position: absolute;
+	display: inline;
+	width: 40px;
+	text-align: center;
+	right: 40px;
+}
+
+.album .status-count {
+	position: absolute;
+	left: 10px;
+}
+
+.album .button-left {
+	position: absolute;
+	width: 48px;
+	height: 48px;
+	top: 42%;
+	cursor: pointer;
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+	background: url('icons.png') no-repeat scroll 0px 0px transparent;
+}
+
+.album .button-right {
+	position: absolute;
+	width: 48px;
+	height: 48px;
+	cursor: pointer;
+	right: 0px;
+	top: 42%;
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+	background: url('icons.png') no-repeat scroll 0px -48px transparent;
+}
+
+.album .button-zoom-in {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+	right: 80px;
+	margin-top: -1px;
+	background: url('icons.png?v=2') no-repeat scroll 0px -112px transparent;
+}
+
+.album .button-zoom-out {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+	right: 25px;
+	margin-top: -1px;
+	background: url('icons.png?v=2') no-repeat scroll -16px -112px transparent;
+}
+
+.album .custom-botton-bar {
+	position: absolute;
+	height: 26px;
+	text-align: center;
+	width: 100%;
+}
+
+.album button {
+	background-color: #ffb94b;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fddb6f), to(#ffb94b));
+	background-image: -webkit-linear-gradient(top, #fddb6f, #ffb94b);
+	background-image: -moz-linear-gradient(top, #fddb6f, #ffb94b);
+	background-image: -ms-linear-gradient(top, #fddb6f, #ffb94b);
+	background-image: -o-linear-gradient(top, #fddb6f, #ffb94b);
+	background-image: linear-gradient(top, #fddb6f, #ffb94b);
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	-moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+	-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #d69e31 #e3a037 #d5982d #e3a037;
+	float: left;
+	height: 24px;
+	padding: 3px;
+	cursor: pointer;
+	color: #8f5a0a;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#fddb6f, endColorstr=#ffb94b, GradientType=0);
+}
+
+.album .album-tags {
+	position: absolute;
+	left: 0px;
+	bottom: 30px;
+}
+
+.album .album-tags a.album-tag {
+	display: table;
+	padding: 5px;
+	background-color: #777;
+	color: #fff;
+	margin: 1px;
+	text-decoration: none;
+}
+
+.album .album-tags a.album-active {
+	background-color: #369;
+	border-right: 4px #09C solid;
+}

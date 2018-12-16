@@ -1,0 +1,9 @@
+{
+  "name": "CMCT",
+  "description": "Classic Movie Compression Team",
+  "url": "https://hdcmct.org/",
+  "icon": "https://hdcmct.org/favicon.ico",
+  "tags": ["影视", "音乐", "综合"],
+  "schema": "NexusPHP",
+  "host": "hdcmct.org"
+}

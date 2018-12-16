@@ -1,0 +1,9 @@
+{
+  "name": "OurBits",
+  "description": "综合性网站，有分享率要求",
+  "url": "https://ourbits.club/",
+  "icon": "https://ourbits.club/favicon.ico",
+  "tags": ["影视", "动漫", "纪录片", "综艺"],
+  "schema": "NexusPHP",
+  "host": "ourbits.club"
+}

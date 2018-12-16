@@ -1,0 +1,13 @@
+{
+  "name": "NexusPHP",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details.php", "/plugin_details.php"],
+    "scripts": ["details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents.php", "/music.php", "/movie.php", "/adult.php"],
+    "scripts": ["torrents.js"]
+  }]
+}

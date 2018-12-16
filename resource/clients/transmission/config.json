@@ -1,0 +1,9 @@
+{
+  "name": "Transmission",
+  "type": "transmission",
+  "ver": "0.0.1",
+  "icon": "https://transmissionbt.com/favicon.ico",
+  "scripts": [
+    "init.js"
+  ]
+}

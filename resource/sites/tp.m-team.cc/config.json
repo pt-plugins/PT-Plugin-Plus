@@ -1,0 +1,15 @@
+{
+  "name": "M-Team",
+  "description": "M-Team",
+  "url": "https://tp.m-team.cc/",
+  "icon": "https://tp.m-team.cc/favicon.ico",
+  "tags": ["影视", "综合"],
+  "schema": "NexusPHP",
+  "host": "tp.m-team.cc",
+  "plugins": [{
+    "name": "种子列表封面模式",
+    "pages": ["/torrents.php", "/movie.php", "/music.php", "/adult.php"],
+    "scripts": ["album/album.js", "torrents.js"],
+    "styles": ["album/style.css"]
+  }]
+}

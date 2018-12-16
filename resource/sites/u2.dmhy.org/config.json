@@ -1,0 +1,9 @@
+{
+  "name": "U2",
+  "description": "动漫花园分享园",
+  "url": "https://u2.dmhy.org/",
+  "icon": "https://u2.dmhy.org/favicon.ico",
+  "tags": ["影视", "动漫"],
+  "schema": "NexusPHP",
+  "host": "u2.dmhy.org"
+}

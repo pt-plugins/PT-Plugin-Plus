@@ -1,0 +1,9 @@
+{
+  "name": "OpenCD",
+  "description": "皇后，专一的音乐类PT站，是目前国内最大的无损音乐PT",
+  "url": "https://open.cd/",
+  "icon": "https://open.cd/favicon.ico",
+  "tags": ["音乐"],
+  "schema": "NexusPHP",
+  "host": "open.cd"
+}
