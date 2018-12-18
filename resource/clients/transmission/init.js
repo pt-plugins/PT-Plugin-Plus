@@ -11,12 +11,17 @@
      * url: 服务器地址
      */
     init(options) {
-      console.log("transmission.init", options);
       this.options = options;
       this.headers = [];
       if (options.loginName && options.loginPwd) {
         this.headers["Authorization"] = "Basic " + (new Base64()).encode(options.loginName + ":" + options.loginPwd);
       }
+
+      if (this.options.address.indexOf("rpc") == -1) {
+        let url = PTService.filters.parseURL(this.options.address);
+        this.options.address = `${url.protocol}://${url.host}:${url.port}/transmission/rpc`;
+      }
+      console.log("transmission.init", this.options.address);
     }
 
     /**

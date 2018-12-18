@@ -1,0 +1,70 @@
+import Vue from "vue";
+import Router from "vue-router";
+import Home from "./views/Home.vue";
+
+Vue.use(Router);
+
+export default new Router({
+  routes: [
+    {
+      path: "/",
+      name: "home",
+      component: Home,
+      alias: "/home"
+    },
+    // {
+    //   path: "/about",
+    //   name: "about",
+    //   // route level code-splitting
+    //   // this generates a separate chunk (about.[hash].js) for this route
+    //   // which is lazy-loaded when the route is visited.
+    //   component: () =>
+    //     import(/* webpackChunkName: "about" */ "./views/About.vue")
+    // },
+    {
+      path: "/set-sites",
+      name: "set-sites",
+      component: () => import("./views/settings/Sites/Index.vue")
+    },
+    {
+      path: "/set-support-schema",
+      name: "set-support-schema",
+      component: () => import("./views/settings/SupportSchema.vue")
+    },
+    {
+      path: "/set-download-clients",
+      name: "set-download-clients",
+      component: () => import("./views/settings/DownloadClients/Index.vue")
+    },
+    {
+      path: "/set-base",
+      name: "set-base",
+      component: () => import("./views/settings/Base/Index.vue")
+    },
+    {
+      path: "/set-download-paths",
+      name: "set-download-paths",
+      component: () => import("./views/settings/DownloadPaths/Index.vue")
+    },
+    {
+      path: "/set-backup",
+      name: "set-backup",
+      component: () => import("./views/settings/Backup/Index.vue")
+    },
+    {
+      path: "/technology-stack",
+      name: "technology-stack",
+      component: () => import("./views/TechnologyStack.vue")
+    },
+    {
+      path: "/set-language",
+      name: "set-language",
+      component: () => import("./views/settings/Language/Index.vue")
+    },
+    {
+      path: "/set-search",
+      name: "set-search",
+      component: () => import("./views/settings/Search/Index.vue")
+    }
+  ]
+});

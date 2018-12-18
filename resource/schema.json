@@ -1,0 +1,34 @@
+[{
+    "name": "chdbits.co.json",
+    "path": "resource/config/sites/chdbits.co.json",
+    "sha": "a9355d283b9fedfed8c45aef3cc74e3501cc7e75",
+    "size": 131,
+    "url": "https://api.github.com/repos/ronggang/PT-Plugin/contents/resource/config/sites/chdbits.co.json?ref=master",
+    "html_url": "https://github.com/ronggang/PT-Plugin/blob/master/resource/config/sites/chdbits.co.json",
+    "git_url": "https://api.github.com/repos/ronggang/PT-Plugin/git/blobs/a9355d283b9fedfed8c45aef3cc74e3501cc7e75",
+    "download_url": "https://raw.githubusercontent.com/ronggang/PT-Plugin/master/resource/config/sites/chdbits.co.json",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/ronggang/PT-Plugin/contents/resource/config/sites/chdbits.co.json?ref=master",
+      "git": "https://api.github.com/repos/ronggang/PT-Plugin/git/blobs/a9355d283b9fedfed8c45aef3cc74e3501cc7e75",
+      "html": "https://github.com/ronggang/PT-Plugin/blob/master/resource/config/sites/chdbits.co.json"
+    }
+  },
+  {
+    "name": "NexusPHP",
+    "path": "schema/NexusPHP",
+    "sha": "c0704d14de9f37be9dde0040b3920d085762dee3",
+    "size": 0,
+    "url": "https://api.github.com/repos/ronggang/PT-Plugin/contents/resource/config/siteTypes?ref=master",
+    "html_url": "http://localhost:8001/schema/NexusPHP",
+    "git_url": "https://api.github.com/repos/ronggang/PT-Plugin/git/trees/c0704d14de9f37be9dde0040b3920d085762dee3",
+    "local_test_path": "http://localhost:8001/schema/NexusPHP",
+    "download_url": null,
+    "type": "dir",
+    "_links": {
+      "self": "https://api.github.com/repos/ronggang/PT-Plugin/contents/resource/config/siteTypes?ref=master",
+      "git": "https://api.github.com/repos/ronggang/PT-Plugin/git/trees/c0704d14de9f37be9dde0040b3920d085762dee3",
+      "html": "https://github.com/ronggang/PT-Plugin/tree/master/resource/config/siteTypes"
+    }
+  }
+]

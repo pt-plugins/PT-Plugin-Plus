@@ -1,0 +1,160 @@
+.pt-plugin-body {
+  background-color: aliceblue;
+  border-radius: 8px;
+  padding-bottom: 5px;
+  width: 80px;
+  position: fixed;
+  right: 5px;
+  margin: auto;
+  top: 50%;
+  bottom: 50%;
+  opacity: .3;
+}
+
+.pt-plugin-body:hover {
+  opacity: 0.9
+}
+
+.pt-plugin-body hr {
+  height: 2px;
+  border: 0;
+  border-bottom: 1px dotted #ccc;
+  margin: 4px 5px 5px 5px;
+}
+
+.pt-plugin-body .logo {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/assets/icon-64.png');
+  background-size: cover;
+  height: 32px;
+  width: 32px;
+  margin: 5px auto;
+  opacity: 0.7;
+}
+
+.pt-plugin-body .button {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1976d2;
+  text-decoration: none;
+}
+
+.pt-plugin-body a.button {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.pt-plugin-body a.button:hover {
+  background-color: rgba(77, 154, 231, 0.226)
+}
+
+.pt-plugin-body .button .inner {
+  text-align: center;
+}
+
+/* 正在执行动画 */
+.pt-plugin-body .loading {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #1976d2;
+  border-left-style: dashed;
+  border-left-color: rgba(77, 154, 231, 0.226);
+  animation: onLoading 1.9s linear infinite running;
+  display: none;
+}
+
+@keyframes onLoading {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.action-success {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  /* background: #4caf50; */
+  background-color: transparent;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+
+.action-success-ani {
+  width: 100%;
+  height: 50%;
+  margin: 10% auto;
+  transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  overflow: hidden;
+}
+
+.action-success-ani:before,
+.action-success-ani:after {
+  content: "";
+  position: absolute;
+  background: #4caf50;
+  border-radius: 2px
+}
+
+.action-success-ani:before {
+  width: 4px;
+  height: 100%;
+  left: 0;
+  animation: onActionSuccessLeft 0.2s linear 0.2s 1 both;
+  animation: onActionSuccessLeft 0.2s linear 0.2s 1 both
+}
+
+.action-success-ani:after {
+  width: 100%;
+  height: 4px;
+  bottom: 0;
+  animation: onActionSuccessRight 0.2s linear 0.4s 1 both;
+  animation: onActionSuccessRight 0.2s linear 0.4s 1 both
+}
+
+@keyframes onActionSuccessLeft {
+  0% {
+    top: -100%
+  }
+
+  100% {
+    top: 0%
+  }
+}
+
+@keyframes onActionSuccessLeft {
+  0% {
+    top: -100%
+  }
+
+  100% {
+    top: 0%
+  }
+}
+
+@keyframes onActionSuccessRight {
+  0% {
+    left: -100%
+  }
+
+  100% {
+    left: 0%
+  }
+}
+
+@keyframes onActionSuccessRight {
+  0% {
+    left: -100%
+  }
+
+  100% {
+    left: 0%
+  }
+}

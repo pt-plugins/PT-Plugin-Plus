@@ -1,0 +1,17 @@
+[{
+    "name": "transmission",
+    "type": "dir"
+  },
+  {
+    "name": "utorrent",
+    "type": "dir"
+  },
+  {
+    "name": "deluge",
+    "type": "dir"
+  },
+  {
+    "name": "synologyDownloadStation",
+    "type": "dir"
+  }
+]

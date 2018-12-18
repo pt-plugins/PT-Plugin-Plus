@@ -1,0 +1,56 @@
+{
+	"name": "__MSG_manifest_appName__",
+	"short_name": "__MSG_manifest_shortName__",
+	"version": "1.0.0",
+	"description": "__MSG_manifest_appDescription__",
+	"manifest_version": 2,
+	"default_locale": "zh_CN",
+	"browser_action": {
+		"default_icon": "assets/icon-19.png",
+		"default_title": "__MSG_manifest_appName__",
+		"default_popup": "popup.html"
+	},
+	"permissions": [
+		"tabs",
+		"*://*/*",
+		"clipboardRead",
+		"clipboardWrite",
+		"storage",
+		"contextMenus"
+	],
+	"icons": {
+		"16": "assets/icon.png",
+		"19": "assets/icon-19.png",
+		"64": "assets/icon-64.png",
+		"128": "assets/icon-128.png"
+	},
+	"options_page": "index.html",
+	"background": {
+		"scripts": [
+			"libs/jquery/jquery-1.9.1.min.js",
+			"libs/Base64.js",
+			"js/background.js"
+		]
+	},
+	"content_scripts": [{
+		"matches": [
+			"*://*/*"
+		],
+		"css": [
+			"assets/base.css",
+			"libs/materialIcons/content_style.css",
+			"libs/notice/noticejs.css"
+		],
+		"js": [
+			"libs/jquery/jquery-1.9.1.min.js",
+			"libs/Base64.js",
+			"libs/notice/notice.js",
+			"js/content.js"
+		]
+	}],
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+	"web_accessible_resources": [
+		"libs/materialIcons/*.woff2",
+		"assets/*"
+	]
+}

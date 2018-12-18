@@ -1,0 +1,109 @@
+<template>
+  <!-- 导航栏 -->
+  <v-navigation-drawer clipped fixed v-model="drawer" app>
+    <v-list v-for="(group,index) in navs" :key="index">
+      <v-subheader v-if="group.title" class="grey--text text--darken-1">{{group.title}}</v-subheader>
+      <v-list-tile :to="item.key" v-for="(item) in group.items" :key="item.key">
+        <v-list-tile-action class="ml-3">
+          <v-icon>{{item.icon}}</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>{{item.title}}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+    </v-list>
+  </v-navigation-drawer>
+</template>
+<script lang="ts">
+import Vue from "vue";
+export default Vue.extend({
+  props: {
+    value: Boolean
+  },
+  model: {
+    prop: "value",
+    event: "change"
+  },
+  watch: {
+    drawer() {
+      this.$emit("change", this.drawer);
+    },
+    value() {
+      this.drawer = this.value;
+    }
+  },
+  data() {
+    return {
+      drawer: true,
+      navs: [
+        {
+          title: "概览",
+          key: "group-",
+          items: [
+            {
+              title: "概览",
+              icon: "dashboard",
+              key: "home"
+            }
+          ]
+        },
+        {
+          title: "参数设置",
+          items: [
+            {
+              title: "基本设置",
+              icon: "settings",
+              key: "set-base"
+            },
+            {
+              title: "已支持的站点架构",
+              icon: "ballot",
+              key: "set-support-schema"
+            },
+            {
+              title: "站点设置",
+              icon: "public",
+              key: "set-sites"
+            },
+            {
+              title: "下载服务器",
+              icon: "cloud_download",
+              key: "set-download-clients"
+            },
+            {
+              title: "下载目录设置",
+              icon: "folder_open",
+              key: "set-download-paths"
+            },
+            {
+              title: "搜索设置",
+              icon: "search",
+              key: "set-search"
+            },
+            {
+              title: "参数备份与恢复",
+              icon: "restore",
+              key: "set-backup"
+            },
+            {
+              title: "语言",
+              icon: "language",
+              key: "set-language"
+            }
+          ]
+        },
+        {
+          title: "鸣谢",
+          items: [
+            {
+              title: "技术栈",
+              icon: "developer_board",
+              key: "technology-stack"
+            }
+          ]
+        }
+      ]
+    };
+  }
+});
+</script>
