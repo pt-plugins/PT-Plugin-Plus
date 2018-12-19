@@ -4,7 +4,7 @@
 import PTPlugin from "../background/service";
 
 export default class Extension {
-  private isExtensionMode: boolean = false;
+  public isExtensionMode: boolean = false;
   constructor() {
     if (window["chrome"] && window.chrome.extension) {
       this.isExtensionMode = true;

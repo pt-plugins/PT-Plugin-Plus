@@ -55,7 +55,7 @@ export interface SystemOptions {
  */
 export interface Options {
   autoUpdate?: boolean;
-  droptosend?: boolean;
+  allowDropToSend?: boolean;
   defaultClient?: any;
   defaultClientId?: string;
   exceedSizeToConfirm?: boolean;

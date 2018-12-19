@@ -1,5 +1,5 @@
 import { Options, EAction } from "../interface/common";
-import { API } from "../service/api";
+import { APP } from "../service/api";
 import { filters as Filters } from "../service/filters";
 export default class Controler {
   public options: Options = {
@@ -64,7 +64,7 @@ export default class Controler {
     return new Promise<any>((resolve?: any, reject?: any) => {
       if ((<any>window)[clientOptions.type] === undefined) {
         // 加载初始化脚本
-        API.execScript(`clients/${clientOptions.type}/init.js`).then(() => {
+        APP.execScript(`clients/${clientOptions.type}/init.js`).then(() => {
           let client: any;
           eval(`client = new ${clientOptions.type}()`);
           client.init({

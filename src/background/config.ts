@@ -1,5 +1,5 @@
 import { Options, ESizeUnit } from "../interface/common";
-import { API } from "../service/api";
+import { API, APP } from "../service/api";
 import localStorage from "../service/localStorage";
 
 /**
@@ -137,13 +137,13 @@ class Config {
 
   public getContentFromApi(api: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      let content = API.cache.get(api);
+      let content = APP.cache.get(api);
       if (content) {
         resolve(content);
         return;
       }
       $.getJSON(api).then(result => {
-        API.cache.set(api, result);
+        APP.cache.set(api, result);
         resolve(result);
       });
     });

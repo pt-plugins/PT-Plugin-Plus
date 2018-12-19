@@ -9,7 +9,7 @@ import {
   NoticeOptions,
   EDownloadClientType
 } from "../interface/common";
-import { API } from "../service/api";
+import { APP } from "../service/api";
 import { filters } from "../service/filters";
 
 /**
@@ -36,12 +36,15 @@ class PTPContent {
   private styles: any[] = [];
 
   public buttonBar: JQuery = <any>null;
+  public droper: JQuery = $("<div style='display:none;' class='droper'/>");
   private buttons: any[] = [];
   private buttonBarHeight: number = 0;
 
   constructor() {
     this.extension = new Extension();
-    this.readConfig();
+    if (this.extension.isExtensionMode) {
+      this.readConfig();
+    }
   }
 
   private readConfig() {
@@ -84,6 +87,7 @@ class PTPContent {
 
     // 初始化插件按钮列表
     this.initButtonBar();
+    this.initDroper();
 
     // 获取符合当前网站所需要的附加脚本
     this.schema.plugins.forEach((plugin: Plugin) => {
@@ -121,14 +125,14 @@ class PTPContent {
 
     if (this.styles && this.styles.length > 0) {
       this.styles.forEach((path: string) => {
-        API.applyStyle(path);
+        APP.applyStyle(path);
       });
     }
 
     // 加入脚本并执行
     if (this.scripts && this.scripts.length > 0) {
       this.scripts.forEach((path: string) => {
-        API.execScript(path);
+        APP.execScript(path);
       });
     }
   }
@@ -164,13 +168,6 @@ class PTPContent {
     this.buttonBarHeight = this.buttonBar.get(0).scrollHeight - 3;
     // console.log(this.buttonBarHeight);
     this.buttonBar.hide();
-    // this.addButton({
-    //   title: "测试按钮",
-    //   icon: "get_app",
-    //   click: () => {
-    //     console.log("test");
-    //   }
-    // });
   }
 
   /**
@@ -306,6 +303,106 @@ class PTPContent {
     });
 
     return client;
+  }
+
+  /**
+   * 初始化拖放对象
+   */
+  public initDroper() {
+    if (!this.options.allowDropToSend) return;
+
+    // 拖入时
+    this.buttonBar.on("dragover", (e: any) => {
+      e.stopPropagation();
+      e.preventDefault();
+      this.droper.show();
+    });
+
+    this.droper.appendTo(this.buttonBar);
+    // 拖入接收对象时
+    this.droper[0].addEventListener(
+      "dragover",
+      (e: any) => {
+        //console.log(e);
+        e.stopPropagation();
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "copy";
+        if (e.target.tagName == "A") {
+          e.dataTransfer.setData("text/plain", e.target.getAttribute("href"));
+        }
+      },
+      false
+    );
+
+    this.droper[0].addEventListener(
+      "drop",
+      (e: any) => {
+        //console.log(e);
+        e.stopPropagation();
+        e.preventDefault();
+        this.droper.hide();
+
+        var url = e.dataTransfer.getData("text/plain");
+        console.log(url);
+
+        if (!this.site.passkey) {
+          this.showNotice({
+            msg: "请先设置站点密钥（Passkey）。"
+          });
+          return;
+        }
+
+        if (url) {
+          // if (this.site.dropScript)
+          // {
+          // 	var _script = system.site.dropScript.replace("\$input-url\$",url);
+          // 	_script = _script.replace("\$input-host\$",system.site.host);
+          // 	_script = _script.replace("\$input-passkey\$",system.site.passkey);
+          // 	url = eval(_script);
+          // 	//url = url.replace("\$site\$",system.site.host);
+          // 	url = url.replace("\$host\$",system.site.host);
+          // 	url = url.replace("\$passkey\$",system.site.passkey);
+          // }
+          // else
+          // {
+          // 	id = url.getQueryString("id");
+          // 	if (id) {
+          // 		if (system.site && system.config.droptosend) {
+          // 			// 如果站点没有配置禁用https，则默认添加https链接
+          // 			url = system.site.host + "download.php?id=" + id + "&passkey=" + system.site.passkey + (system.site.disableHttps?"":"&https=1");
+          // 		}
+          // 	}
+          // }
+          // console.log(url);
+          // var folder = null;
+          // if (system.site.defaultFolder) {
+          // 	folder = system.site.defaultFolder;
+          // } else if (system.site.folders.length > 0) {
+          // 	folder = system.site.folders[0];
+          // }
+          // system.showStatusMessage("正在发送链接地址 " + (url.replace(system.site.passkey, "***")) + " 到下载服务器", 0);
+          // chrome.extension.sendMessage({
+          // 	action: "send-url-to-client",
+          // 	url: url,
+          // 	folder: folder
+          // }, function(result) {
+          // 	system.showStatusMessage(result.msg, 5);
+          // });
+        }
+        //console.log(e.dataTransfer.getData('text/plain'));
+        //system.debug("drop.e.dataTransfer:",e.dataTransfer);
+        //system.checkDropFiles(e.dataTransfer.files);
+      },
+      false
+    );
+
+    // 离开拖放时
+    this.droper.on("dragleave", (e: any) => {
+      e.stopPropagation();
+      e.preventDefault();
+      this.droper.hide();
+      //system.debug("dragleave");
+    });
   }
 }
 

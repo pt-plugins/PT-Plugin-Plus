@@ -98,7 +98,9 @@ export default class PTPlugin {
       this.config.read().then((result: any) => {
         this.options = result;
         resolve(result);
-        this.controler = new Controler(this.options);
+        if (!this.localMode) {
+          this.controler = new Controler(this.options);
+        }
       });
     });
   }

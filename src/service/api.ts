@@ -6,30 +6,36 @@ const API_RAW_URL =
 const API_URL =
   "https://api.github.com/repos/ronggang/PT-Plugin-Plus/contents/resource";
 
-export const API = {
+const TEST_API_URL = "http://localhost:8001";
+
+// 调试信息
+let developmentAPI = {
+  host: TEST_API_URL,
+  schemas: `${TEST_API_URL}/schema.json`,
+  schemaConfig: `${TEST_API_URL}/schemas/{$schema}/config.json`,
+  sites: `${TEST_API_URL}/sites.json`,
+  siteConfig: `${TEST_API_URL}/sites/{$site}/config.json`,
+  clients: `${TEST_API_URL}/clients.json`,
+  clientConfig: `${TEST_API_URL}/clients/{$client}/config.json`
+};
+
+let productAPI = {
   host: API_RAW_URL,
   schemas: `${API_URL}/schemas`,
   schemaConfig: `${API_RAW_URL}/schemas/{$schema}/config.json`,
   sites: `${API_URL}/sites`,
   siteConfig: `${API_RAW_URL}/sites/{$site}/config.json`,
   clients: `${API_URL}/clients`,
-  clientConfig: `${API_RAW_URL}/clients/{$client}/config.json`,
+  clientConfig: `${API_RAW_URL}/clients/{$client}/config.json`
+};
 
-  // 调试信息
-  debugAPI: {
-    // https://api.github.com/repos/ronggang/PT-Plugin/contents
-    host: "http://localhost:8001",
-    // https://api.github.com/repos/ronggang/PT-Plugin/contents/resource/schemas
-    schemas: "/schema.json",
-    schemaConfig: "http://localhost:8001/schemas/{$schema}/config.json",
-    schema: "",
-    // https://api.github.com/repos/ronggang/PT-Plugin/contents/resource/sites
-    sites: "/sites.json",
-    // https://raw.githubusercontent.com/ronggang/PT-Plugin/master/resource/sites/{$site}/config.json
-    siteConfig: "http://localhost:8001/sites/{$site}/config.json",
-    clients: "/clients.json",
-    clientConfig: "http://localhost:8001/clients/{$client}/config.json"
-  },
+if (process.env.NODE_ENV === "development") {
+  productAPI = developmentAPI;
+}
+
+console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+
+export const APP = {
   cache: {
     localStorage: new localStorage(),
     cacheKey: "PT-Plugin-Plus-Cache-Contents",
@@ -79,10 +85,13 @@ export const API = {
       this.localStorage.set(this.cacheKey, this.contents);
     }
   },
-  getAPI() {},
+  /**
+   * 执行脚本
+   * @param scriptPath
+   */
   execScript(scriptPath: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      let url = `${this.host}/${scriptPath}`;
+      let url = `${API.host}/${scriptPath}`;
       let content = this.cache.get(url);
       if (content) {
         eval(content);
@@ -100,9 +109,13 @@ export const API = {
       }
     });
   },
+  /**
+   * 追加样式信息
+   * @param stylePath
+   */
   applyStyle(stylePath: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      let url = `${this.host}/${stylePath}`;
+      let url = `${API.host}/${stylePath}`;
       let content = this.cache.get(url);
       let style = $("<style/>").appendTo(document.body);
       if (content) {
@@ -132,4 +145,6 @@ export const API = {
   }
 };
 
-API.cache.init();
+APP.cache.init();
+
+export const API = productAPI;

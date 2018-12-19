@@ -36,6 +36,12 @@
             v-model="options.allowSelectionTextSearch"
             :label="words.allowSelectionTextSearch"
           ></v-switch>
+
+          <v-switch
+            color="success"
+            v-model="options.allowDropToSend"
+            :label="words.allowDropToSend"
+          ></v-switch>
         </v-form>
       </v-card-text>
 
@@ -58,7 +64,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { API } from "../../../../service/api";
+import { APP } from "../../../../service/api";
 export default Vue.extend({
   data() {
     return {
@@ -68,6 +74,7 @@ export default Vue.extend({
         autoUpdate: "自动更新官方数据（默认10天更新）",
         save: "保存",
         allowSelectionTextSearch: "启用页面内容选择搜索",
+        allowDropToSend: "启用拖放链接到插件图标时，直接发送链接到下载服务器",
         clearCache: "清除缓存",
         clearCacheConfirm:
           "确认要清除缓存吗？清除完成后，下次将会从官网中重新下载系统配置信息。"
@@ -88,7 +95,7 @@ export default Vue.extend({
     },
     clearCache() {
       if (confirm(this.words.clearCacheConfirm)) {
-        API.cache.clear();
+        APP.cache.clear();
       }
     }
   },
