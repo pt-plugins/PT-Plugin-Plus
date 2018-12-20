@@ -1,13 +1,10 @@
-(function ($) {
+(function ($, window) {
   console.log("this is details.js");
-  const app = {
-    defaultPath: PTSevrice.getSiteDefaultPath(),
-    downloadClientType: PTSevrice.downloadClientType,
-    defaultClientOptions: PTSevrice.getClientOptions(),
+  class App extends window.NexusPHPCommon {
     init() {
       this.initButtons()
       this.initFreeSpaceButton()
-    },
+    }
     /**
      * 初始化按钮列表
      */
@@ -32,37 +29,42 @@
           // }, 1000);
 
           if (url) {
-            PTSevrice.call(
-              PTSevrice.action.sendTorrentToDefaultClient, {
-                url: url,
-                savePath: this.defaultPath,
-                autoStart: this.defaultClientOptions.autoStart
-              }
-            ).then(result => {
-              console.log("命令执行完成", result);
-              switch (this.defaultClientOptions.type) {
-                // Transmisson
-                case this.downloadClientType.transmisson:
-                  if (result && result.status && result.status === "duplicate") {
-                    error(`${result.torrent.name} 已存在`);
-                  } else {
-                    if (!this.defaultPath) {
-                      success({
-                        msg: "种子已添加，但站点默认目录未配置，建议配置。"
-                      });
-                    } else {
-                      success()
-                    }
-                  }
-                  break;
-
-                default:
-                  success();
-                  break;
-              }
-            }).catch((result) => {
-              error(result)
+            this.sendTorrentToDefaultClient(url).then(() => {
+              success();
+            }).catch(() => {
+              success();
             });
+            // PTSevrice.call(
+            //   PTSevrice.action.sendTorrentToDefaultClient, {
+            //     url: url,
+            //     savePath: this.defaultPath,
+            //     autoStart: this.defaultClientOptions.autoStart
+            //   }
+            // ).then(result => {
+            //   console.log("命令执行完成", result);
+            //   switch (this.defaultClientOptions.type) {
+            //     // transmission
+            //     case this.downloadClientType.transmission:
+            //       if (result && result.status && result.status === "duplicate") {
+            //         error(`${result.torrent.name} 已存在`);
+            //       } else {
+            //         if (!this.defaultPath) {
+            //           success({
+            //             msg: "种子已添加，但站点默认目录未配置，建议配置。"
+            //           });
+            //         } else {
+            //           success()
+            //         }
+            //       }
+            //       break;
+
+            //     default:
+            //       success();
+            //       break;
+            //   }
+            // }).catch((result) => {
+            //   error(result)
+            // });
           }
         }
       });
@@ -88,35 +90,8 @@
           // }, 1000);
         }
       });
-    },
-    /**
-     * 初始化当前默认服务器可用空间
-     */
-    initFreeSpaceButton() {
-      if (!this.defaultPath) {
-        return;
-      }
-      PTSevrice.call(
-        PTSevrice.action.getFreeSpace, {
-          path: this.defaultPath
-        }
-      ).then((result) => {
-        console.log("命令执行完成", result);
-        if (result && result.arguments) {
-          // console.log(PTSevrice.filters.formatSize(result.arguments["size-bytes"]));
+    }
 
-          PTSevrice.addButton({
-            title: "默认服务器剩余空间\n" + this.defaultPath,
-            icon: "filter_drama",
-            label: PTSevrice.filters.formatSize(result.arguments["size-bytes"])
-          })
-
-        }
-        // success();
-      }).catch(() => {
-        // error()
-      });
-    },
     /**
      * 获取下载链接
      */
@@ -141,5 +116,5 @@
       return url;
     }
   };
-  app.init();
-})(jQuery);
+  (new App()).init();
+})(jQuery, window);

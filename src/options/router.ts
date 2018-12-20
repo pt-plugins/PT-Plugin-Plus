@@ -65,6 +65,11 @@ export default new Router({
       path: "/set-search",
       name: "set-search",
       component: () => import("./views/settings/Search/Index.vue")
+    },
+    {
+      path: "/donate",
+      name: "donate",
+      component: () => import("./views/Donate.vue")
     }
   ]
 });

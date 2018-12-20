@@ -11,7 +11,8 @@
   opacity: .3;
 }
 
-.pt-plugin-body:hover {
+.pt-plugin-body:hover,
+.pt-plugin-body-over {
   opacity: 0.9
 }
 
@@ -61,6 +62,10 @@
 
 .pt-plugin-body .button .inner {
   text-align: center;
+}
+
+.pt-plugin-body .onLoading {
+  animation: onLoading 1.9s linear infinite running;
 }
 
 /* 正在执行动画 */

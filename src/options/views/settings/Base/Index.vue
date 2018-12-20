@@ -42,6 +42,28 @@
             v-model="options.allowDropToSend"
             :label="words.allowDropToSend"
           ></v-switch>
+
+          <v-switch
+            color="success"
+            v-model="options.needConfirmWhenExceedSize"
+            :label="words.needConfirmWhenExceedSize"
+          ></v-switch>
+          <div style="margin: -40px 0 0 40px;">
+            <v-text-field
+              v-model="options.exceedSize"
+              :placeholder="words.exceedSize"
+              class="ml-2 d-inline-flex"
+              style="max-width: 100px;max-height: 30px;"
+              :disabled="!options.needConfirmWhenExceedSize"
+            ></v-text-field>
+            <v-select
+              v-model="options.exceedSizeUnit"
+              :items="units"
+              class="mx-2 d-inline-flex"
+              style="max-width: 50px;max-height: 30px;"
+              :disabled="!options.needConfirmWhenExceedSize"
+            ></v-select>
+          </div>
         </v-form>
       </v-card-text>
 
@@ -65,6 +87,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { APP } from "../../../../service/api";
+import { ESizeUnit } from "../../../../interface/common";
 export default Vue.extend({
   data() {
     return {
@@ -77,7 +100,9 @@ export default Vue.extend({
         allowDropToSend: "启用拖放链接到插件图标时，直接发送链接到下载服务器",
         clearCache: "清除缓存",
         clearCacheConfirm:
-          "确认要清除缓存吗？清除完成后，下次将会从官网中重新下载系统配置信息。"
+          "确认要清除缓存吗？清除完成后，下次将会从官网中重新下载系统配置信息。",
+        needConfirmWhenExceedSize: "当要下载的种子总体积超过以下大小时需要确认。",
+        exceedSize: "大小"
       },
       valid: false,
       rules: {
@@ -85,7 +110,8 @@ export default Vue.extend({
       },
       options: {
         defaultClientId: ""
-      }
+      },
+      units: [] as any
     };
   },
   methods: {
@@ -101,6 +127,10 @@ export default Vue.extend({
   },
   created() {
     this.options = Object.assign({}, this.$store.state.options);
+    this.units.push(ESizeUnit.MiB);
+    this.units.push(ESizeUnit.GiB);
+    this.units.push(ESizeUnit.TiB);
+    this.units.push(ESizeUnit.PiB);
   },
   computed: {
     getClientAddress(): any {

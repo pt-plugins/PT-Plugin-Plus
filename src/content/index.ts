@@ -7,7 +7,8 @@ import {
   Plugin,
   ButtonOption,
   NoticeOptions,
-  EDownloadClientType
+  EDownloadClientType,
+  ESizeUnit
 } from "../interface/common";
 import { APP } from "../service/api";
 import { filters } from "../service/filters";
@@ -29,6 +30,7 @@ class PTPContent {
   public filters = filters;
   public defaultClient: any;
   public downloadClientType = EDownloadClientType;
+  public sizeUnit = ESizeUnit;
 
   public schema: SiteSchema = {};
 
@@ -39,6 +41,10 @@ class PTPContent {
   public droper: JQuery = $("<div style='display:none;' class='droper'/>");
   private buttons: any[] = [];
   private buttonBarHeight: number = 0;
+  private logo: JQuery = <any>null;
+
+  // 用于接收页面程序
+  public pageApp: any;
 
   constructor() {
     this.extension = new Extension();
@@ -164,7 +170,7 @@ class PTPContent {
    */
   private initButtonBar() {
     this.buttonBar = $("<div class='pt-plugin-body'/>").appendTo(document.body);
-    $("<div class='logo'/>").appendTo(this.buttonBar);
+    this.logo = $("<div class='logo'/>").appendTo(this.buttonBar);
     this.buttonBarHeight = this.buttonBar.get(0).scrollHeight - 3;
     // console.log(this.buttonBarHeight);
     this.buttonBar.hide();
@@ -206,10 +212,10 @@ class PTPContent {
             loading.hide();
             success.show();
             if (result && result.msg) {
-              this.showNotice({
-                type: "success",
-                msg: result.msg
-              });
+              if (!result.type) {
+                result.type = "success";
+              }
+              this.showNotice(result);
             }
             setTimeout(() => {
               success.hide();
@@ -247,22 +253,27 @@ class PTPContent {
   /**
    * 显示消息提示
    * @param options 需要显示的消息选项
+   * @return DOM
    */
-  public showNotice(options: NoticeOptions) {
+  public showNotice(options: NoticeOptions | string) {
     options = Object.assign(
       {
         type: "error",
         timeout: 5,
-        position: "bottomRight"
+        position: "bottomRight",
+        progressBar: true,
+        width: 320
       },
-      options
+      typeof options === "string" ? { msg: options } : options
     );
-    new (<any>window)["NoticeJs"]({
-      type: options.type,
-      text: options.msg,
-      position: options.position,
-      timeout: <number>options.timeout * 10
-    }).show();
+
+    options.text = options.text || options.msg;
+    if (options.timeout) {
+      options.timeout = options.timeout * 10;
+    }
+    delete options.msg;
+
+    return new (<any>window)["NoticeJs"](options).show();
   }
 
   /**
@@ -292,6 +303,10 @@ class PTPContent {
     return path;
   }
 
+  /**
+   * 获取指定客户端配置
+   * @param clientId
+   */
   public getClientOptions(clientId: string = "") {
     if (!clientId) {
       clientId =
@@ -318,6 +333,10 @@ class PTPContent {
       this.droper.show();
     });
 
+    this.buttonBar.on("dragleave mouseleave", (e: any) => {
+      this.buttonBar.removeClass("pt-plugin-body-over");
+    });
+
     this.droper.appendTo(this.buttonBar);
     // 拖入接收对象时
     this.droper[0].addEventListener(
@@ -330,10 +349,13 @@ class PTPContent {
         if (e.target.tagName == "A") {
           e.dataTransfer.setData("text/plain", e.target.getAttribute("href"));
         }
+        this.logo.addClass("onLoading");
+        this.buttonBar.addClass("pt-plugin-body-over");
       },
       false
     );
 
+    // 拖放事件
     this.droper[0].addEventListener(
       "drop",
       (e: any) => {
@@ -342,56 +364,16 @@ class PTPContent {
         e.preventDefault();
         this.droper.hide();
 
-        var url = e.dataTransfer.getData("text/plain");
-        console.log(url);
+        // 获取未处理的地址
+        let url = e.dataTransfer.getData("text/plain");
 
-        if (!this.site.passkey) {
-          this.showNotice({
-            msg: "请先设置站点密钥（Passkey）。"
+        if (url && this.pageApp) {
+          this.pageApp.call(EAction.downloadFromDroper, url).then(() => {
+            this.logo.removeClass("onLoading");
           });
-          return;
+        } else {
+          this.logo.removeClass("onLoading");
         }
-
-        if (url) {
-          // if (this.site.dropScript)
-          // {
-          // 	var _script = system.site.dropScript.replace("\$input-url\$",url);
-          // 	_script = _script.replace("\$input-host\$",system.site.host);
-          // 	_script = _script.replace("\$input-passkey\$",system.site.passkey);
-          // 	url = eval(_script);
-          // 	//url = url.replace("\$site\$",system.site.host);
-          // 	url = url.replace("\$host\$",system.site.host);
-          // 	url = url.replace("\$passkey\$",system.site.passkey);
-          // }
-          // else
-          // {
-          // 	id = url.getQueryString("id");
-          // 	if (id) {
-          // 		if (system.site && system.config.droptosend) {
-          // 			// 如果站点没有配置禁用https，则默认添加https链接
-          // 			url = system.site.host + "download.php?id=" + id + "&passkey=" + system.site.passkey + (system.site.disableHttps?"":"&https=1");
-          // 		}
-          // 	}
-          // }
-          // console.log(url);
-          // var folder = null;
-          // if (system.site.defaultFolder) {
-          // 	folder = system.site.defaultFolder;
-          // } else if (system.site.folders.length > 0) {
-          // 	folder = system.site.folders[0];
-          // }
-          // system.showStatusMessage("正在发送链接地址 " + (url.replace(system.site.passkey, "***")) + " 到下载服务器", 0);
-          // chrome.extension.sendMessage({
-          // 	action: "send-url-to-client",
-          // 	url: url,
-          // 	folder: folder
-          // }, function(result) {
-          // 	system.showStatusMessage(result.msg, 5);
-          // });
-        }
-        //console.log(e.dataTransfer.getData('text/plain'));
-        //system.debug("drop.e.dataTransfer:",e.dataTransfer);
-        //system.checkDropFiles(e.dataTransfer.files);
       },
       false
     );
@@ -401,7 +383,8 @@ class PTPContent {
       e.stopPropagation();
       e.preventDefault();
       this.droper.hide();
-      //system.debug("dragleave");
+      this.logo.removeClass("onLoading");
+      this.buttonBar.removeClass("pt-plugin-body-over");
     });
   }
 }

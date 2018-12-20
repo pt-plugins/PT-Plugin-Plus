@@ -4,10 +4,10 @@
   "plugins": [{
     "name": "种子详情页面",
     "pages": ["/details.php", "/plugin_details.php"],
-    "scripts": ["details.js"]
+    "scripts": ["common.js", "details.js"]
   }, {
     "name": "种子列表",
     "pages": ["/torrents.php", "/music.php", "/movie.php", "/adult.php"],
-    "scripts": ["torrents.js"]
+    "scripts": ["common.js", "torrents.js"]
   }]
 }

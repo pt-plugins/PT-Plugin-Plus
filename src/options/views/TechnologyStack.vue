@@ -27,7 +27,7 @@ export default Vue.extend({
   data() {
     return {
       words: {
-        title: "主要技术栈"
+        title: "本项目使用或参考了以下项目"
       },
       headers: [
         { text: "名称", align: "left", value: "name" },
@@ -92,6 +92,11 @@ export default Vue.extend({
           name: "Material design icons",
           ver: "3.0.0",
           url: "https://github.com/google/material-design-icons"
+        },
+        {
+          name: "PT-Plugin Rhilip修改版",
+          ver: "0.0.9",
+          url: "https://github.com/Rhilip/PT-Plugin"
         }
       ]
     };

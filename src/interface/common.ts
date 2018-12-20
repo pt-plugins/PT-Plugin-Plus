@@ -2,11 +2,11 @@
  * 体积单位
  */
 export enum ESizeUnit {
-  TiB,
-  PiB,
-  GiB,
-  MiB,
-  KiB
+  TiB = "TiB",
+  PiB = "PiB",
+  GiB = "GiB",
+  MiB = "MiB",
+  KiB = "KiB"
 }
 
 /**
@@ -58,7 +58,7 @@ export interface Options {
   allowDropToSend?: boolean;
   defaultClient?: any;
   defaultClientId?: string;
-  exceedSizeToConfirm?: boolean;
+  needConfirmWhenExceedSize?: boolean;
   exceedSize?: number;
   exceedSizeUnit?: ESizeUnit;
   sites: any[];
@@ -116,7 +116,9 @@ export enum EAction {
   searchTorrent = "searchTorrent",
   copyTextToClipboard = "copyTextToClipboard",
   addTorrentFromURL = "addTorrentFromURL",
-  getFreeSpace = "getFreeSpace"
+  getFreeSpace = "getFreeSpace",
+  // 下载当前拖放DOM中的地址
+  downloadFromDroper = "downloadFromDroper"
 }
 
 export interface Request {
@@ -129,6 +131,7 @@ export interface NoticeOptions {
   type?: string;
   timeout?: number;
   position?: string;
+  text?: string;
 }
 
 export interface CacheType {

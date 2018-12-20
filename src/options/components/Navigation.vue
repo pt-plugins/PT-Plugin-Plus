@@ -3,7 +3,7 @@
   <v-navigation-drawer clipped fixed v-model="drawer" app>
     <v-list v-for="(group,index) in navs" :key="index">
       <v-subheader v-if="group.title" class="grey--text text--darken-1">{{group.title}}</v-subheader>
-      <v-list-tile :to="item.key" v-for="(item) in group.items" :key="item.key">
+      <v-list-tile :to="item.key" v-for="(item, index) in group.items" :key="index" :href="item.url" :target="item.url?'_blank':''">
         <v-list-tile-action class="ml-3">
           <v-icon>{{item.icon}}</v-icon>
         </v-list-tile-action>
@@ -55,11 +55,11 @@ export default Vue.extend({
               icon: "settings",
               key: "set-base"
             },
-            {
-              title: "已支持的站点架构",
-              icon: "ballot",
-              key: "set-support-schema"
-            },
+            // {
+            //   title: "已支持的站点架构",
+            //   icon: "ballot",
+            //   key: "set-support-schema"
+            // },
             {
               title: "站点设置",
               icon: "public",
@@ -96,9 +96,29 @@ export default Vue.extend({
           title: "鸣谢",
           items: [
             {
-              title: "技术栈",
+              title: "特别感谢",
               icon: "developer_board",
               key: "technology-stack"
+            },
+            {
+              title: "项目参与人员",
+              icon: "people",
+              key: "dev-team"
+            }
+          ]
+        },
+        {
+          title: "支持本项目",
+          items: [{
+              title: "Bug反馈",
+              icon: "bug_report",
+              key: "",
+              url: "https://github.com/ronggang/PT-Plugin-Plus/issues"
+            },
+            {
+              title: "捐助",
+              icon: "favorite",
+              key: "donate"
             }
           ]
         }

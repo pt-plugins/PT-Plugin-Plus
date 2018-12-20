@@ -29,13 +29,8 @@ let productAPI = {
   clientConfig: `${API_RAW_URL}/clients/{$client}/config.json`
 };
 
-if (process.env.NODE_ENV === "development") {
-  productAPI = developmentAPI;
-}
-
-console.log("process.env.NODE_ENV", process.env.NODE_ENV);
-
 export const APP = {
+  debugMode: process.env.NODE_ENV === "development",
   cache: {
     localStorage: new localStorage(),
     cacheKey: "PT-Plugin-Plus-Cache-Contents",
@@ -48,7 +43,7 @@ export const APP = {
         if (result) {
           let expires = result["expires"];
           // 判断是否过期
-          if (expires && new Date() > new Date(expires)) {
+          if ((expires && new Date() > new Date(expires)) || APP.debugMode) {
             this.contents = {};
           } else {
             this.contents = result;
@@ -144,6 +139,10 @@ export const APP = {
     });
   }
 };
+
+if (APP.debugMode) {
+  productAPI = developmentAPI;
+}
 
 APP.cache.init();
 
