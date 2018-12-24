@@ -77,52 +77,134 @@ class PTPContent {
 
     // 如果当前站点未定义，则不再继续操作
     if (this.site && this.site.name) {
-      this.schema = this.options.system.schemas.find((item: SiteSchema) => {
-        return item.name == this.site.schema;
-      });
+      if (typeof this.site.schema === "string") {
+        this.schema = this.options.system.schemas.find((item: SiteSchema) => {
+          return item.name == this.site.schema;
+        });
+      } else {
+        let site = this.options.system.sites.find((item: Site) => {
+          return item.host == this.site.host;
+        });
+        if (site && site.schema) {
+          this.schema = site.schema;
+          this.schema.siteOnly = true;
+        }
+      }
     } else {
       return;
     }
-
-    let site = this.options.system.sites.find((item: Site) => {
-      return item.name == this.site.name;
-    });
-
-    this.site.plugins = site.plugins;
-    // Object.assign(this.site.plugins, site.plugins);
 
     // 初始化插件按钮列表
     this.initButtonBar();
     this.initDroper();
 
-    // 获取符合当前网站所需要的附加脚本
-    this.schema.plugins.forEach((plugin: Plugin) => {
-      let index = plugin.pages.findIndex((page: string) => {
-        return window.location.pathname.indexOf(page) !== -1;
-      });
-
-      if (index !== -1) {
-        plugin.scripts.forEach((script: string) => {
-          this.scripts.push(`schemas/${this.schema.name}/${script}`);
+    if (this.schema && this.schema.plugins) {
+      // 获取符合当前网站所需要的附加脚本
+      this.schema.plugins.forEach((plugin: Plugin) => {
+        let index = plugin.pages.findIndex((page: string) => {
+          let path = window.location.pathname;
+          let indexOf = path.indexOf(page);
+          // 如果页面不包含，则使用正则尝试
+          if (indexOf === -1) {
+            return new RegExp(page, "").test(path);
+          }
+          return true;
+          // return window.location.pathname.indexOf(page) !== -1;
         });
-      }
+
+        if (index !== -1) {
+          plugin.scripts.forEach((script: string) => {
+            let path = script;
+            // 判断是否为相对路径
+            if (path.substr(0, 1) !== "/") {
+              path = this.schema.siteOnly
+                ? `sites/${this.site.host}/${script}`
+                : `schemas/${this.schema.name}/${script}`;
+            }
+            this.scripts.push({
+              type: "file",
+              content: path
+            });
+          });
+        }
+      });
+    }
+
+    // 获取系统定义的网站信息
+    let site = this.options.system.sites.find((item: Site) => {
+      return item.name == this.site.name;
     });
+
+    if (!this.site.plugins) {
+      this.site.plugins = [];
+    } else {
+      for (let index = this.site.plugins.length - 1; index >= 0; index--) {
+        const item = this.site.plugins[index];
+        // 删除非自定义的插件，从系统定义中重新获取
+        if (!item.isCustom) {
+          this.site.plugins.splice(index, 1);
+        }
+      }
+    }
+
+    if (site && site.plugins) {
+      this.site.plugins.push(...site.plugins);
+    }
 
     // 网站指定的脚本
     if (this.site.plugins) {
       this.site.plugins.forEach((plugin: Plugin) => {
         let index = plugin.pages.findIndex((page: string) => {
-          return window.location.pathname.indexOf(page) !== -1;
+          let path = window.location.pathname;
+          let indexOf = path.indexOf(page);
+          // 如果页面不包含，则使用正则尝试
+          if (indexOf === -1) {
+            return new RegExp(page, "").test(path);
+          }
+          return true;
         });
 
         if (index !== -1) {
-          plugin.scripts.forEach((script: string) => {
-            this.scripts.push(`sites/${this.site.host}/${script}`);
-          });
+          plugin.scripts &&
+            plugin.scripts.forEach((script: any) => {
+              let path = script;
+              // 判断是否为相对路径
+              if (path.substr(0, 1) !== "/") {
+                path = `sites/${this.site.host}/${script}`;
+              }
+              // 文件
+              this.scripts.push({
+                type: "file",
+                content: path
+              });
+            });
+
+          if (plugin.script) {
+            // 代码
+            this.scripts.push({
+              type: "code",
+              content: plugin.script
+            });
+          }
 
           if (plugin.styles) {
             plugin.styles.forEach((style: string) => {
-              this.styles.push(`sites/${this.site.host}/${style}`);
+              let path = style;
+              if (path.substr(0, 1) !== "/") {
+                path = `sites/${this.site.host}/${style}`;
+              }
+              this.styles.push({
+                type: "file",
+                content: path
+              });
+            });
+          }
+
+          if (plugin.style) {
+            // 代码
+            this.styles.push({
+              type: "code",
+              content: plugin.style
             });
           }
         }
@@ -137,9 +219,11 @@ class PTPContent {
 
     // 加入脚本并执行
     if (this.scripts && this.scripts.length > 0) {
-      this.scripts.forEach((path: string) => {
-        APP.execScript(path);
+      this.scripts.forEach((script: any) => {
+        APP.addScript(script);
       });
+      // 按顺序执行所有脚本
+      APP.applyScripts();
     }
   }
 
@@ -155,9 +239,9 @@ class PTPContent {
         action,
         (result: any) => {
           if (result) {
-            resolve(result);
+            resolve && resolve(result);
           } else {
-            reject();
+            reject && reject();
           }
         },
         data
@@ -170,7 +254,12 @@ class PTPContent {
    */
   private initButtonBar() {
     this.buttonBar = $("<div class='pt-plugin-body'/>").appendTo(document.body);
-    this.logo = $("<div class='logo'/>").appendTo(this.buttonBar);
+    this.logo = $(
+      "<div class='logo' title='PT助手 - 点击打开配置页'/>"
+    ).appendTo(this.buttonBar);
+    this.logo.on("click", () => {
+      this.call(EAction.openOptions);
+    });
     this.buttonBarHeight = this.buttonBar.get(0).scrollHeight - 3;
     // console.log(this.buttonBarHeight);
     this.buttonBar.hide();

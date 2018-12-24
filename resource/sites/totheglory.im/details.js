@@ -2,6 +2,7 @@
   console.log("this is details.js");
   class App extends window.NexusPHPCommon {
     init() {
+      this.showTorrentSize()
       this.initButtons()
       this.initFreeSpaceButton()
     }
@@ -24,47 +25,12 @@
         click: (success, error) => {
           let url = this.getDownloadURL();
 
-          // setTimeout(() => {
-          //   success()
-          // }, 1000);
-
           if (url) {
             this.sendTorrentToDefaultClient(url).then(() => {
               success();
             }).catch(() => {
               success();
             });
-            // PTSevrice.call(
-            //   PTSevrice.action.sendTorrentToDefaultClient, {
-            //     url: url,
-            //     savePath: this.defaultPath,
-            //     autoStart: this.defaultClientOptions.autoStart
-            //   }
-            // ).then(result => {
-            //   console.log("命令执行完成", result);
-            //   switch (this.defaultClientOptions.type) {
-            //     // transmission
-            //     case this.downloadClientType.transmission:
-            //       if (result && result.status && result.status === "duplicate") {
-            //         error(`${result.torrent.name} 已存在`);
-            //       } else {
-            //         if (!this.defaultPath) {
-            //           success({
-            //             msg: "种子已添加，但站点默认目录未配置，建议配置。"
-            //           });
-            //         } else {
-            //           success()
-            //         }
-            //       }
-            //       break;
-
-            //     default:
-            //       success();
-            //       break;
-            //   }
-            // }).catch((result) => {
-            //   error(result)
-            // });
           }
         }
       });
@@ -85,9 +51,6 @@
           }).catch(() => {
             error()
           });
-          // setTimeout(() => {
-          //   error()
-          // }, 1000);
         }
       });
     }
@@ -96,24 +59,37 @@
      * 获取下载链接
      */
     getDownloadURL() {
-      let query = $("a[href*='passkey'][href*='https']");
+      let query = $("a[href*='/dl/']:not([class])");
       let url = "";
       if (query.length > 0) {
         url = query.attr("href");
-      } else {
-        query = $("a[href*='passkey']");
-        if (query.length > 0) {
-          url = query.attr("href");
-        } else {
-          url = $(":contains('passkey'):last").text();
+        // 直接获取的链接下载成功率很低
+        // 如果设置了 passkey 则使用 rss 订阅的方式下载
+        if (PTSevrice.site.passkey) {
+          let values = url.split("/");
+          let id = values[values.length - 2];
+
+          // 格式：vvvid|||passkey|||sslzz
+          let key = (new Base64).encode("vvv" + id + "|||" + PTSevrice.site.passkey + "|||sslzz");
+          url = `https://${PTSevrice.site.host}/rssdd.php?par=${key}`;
         }
       }
 
-      if (url && url.substr(0, 1) === "/") {
-        url = `${location.origin}${url}`;
-      }
-
       return url;
+    }
+
+    showTorrentSize() {
+      let query = $("td[valign='top'][align='left']:contains('字节')");
+      let size = "";
+      if (query.length > 0) {
+        size = query.text().split(" (")[0];
+        // attachment
+        PTSevrice.addButton({
+          title: "当前种子大小",
+          icon: "attachment",
+          label: size
+        });
+      }
     }
   };
   (new App()).init();

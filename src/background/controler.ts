@@ -9,6 +9,7 @@ export default class Controler {
 
   public defaultClient: any;
   public siteDefaultClients: any = {};
+  public optionsTabId: number | undefined = 0;
 
   constructor(options: Options) {
     this.options = options;
@@ -64,7 +65,10 @@ export default class Controler {
     return new Promise<any>((resolve?: any, reject?: any) => {
       if ((<any>window)[clientOptions.type] === undefined) {
         // 加载初始化脚本
-        APP.execScript(`clients/${clientOptions.type}/init.js`).then(() => {
+        APP.execScript({
+          type: "file",
+          content: `clients/${clientOptions.type}/init.js`
+        }).then(() => {
           let client: any;
           eval(`client = new ${clientOptions.type}()`);
           client.init({
@@ -87,6 +91,9 @@ export default class Controler {
     });
   }
 
+  /**
+   * 初始化默认客户端
+   */
   private initDefaultClient() {
     let clientOptions: any = this.options.clients.find((item: any) => {
       return item.id === this.options.defaultClientId;
@@ -99,6 +106,10 @@ export default class Controler {
     }
   }
 
+  /**
+   * 初始化指定站点默认客户端
+   * @param hostname 站点host名称
+   */
   private initSiteDefaultClient(hostname: string): Promise<any> {
     let site: any = this.options.sites.find((item: any) => {
       return item.host == hostname;
@@ -117,6 +128,10 @@ export default class Controler {
     });
   }
 
+  /**
+   * 复制指定的内容到剪切板
+   * @param text
+   */
   public copyTextToClipboard(text: string = "") {
     if (!text) {
       return false;
@@ -130,6 +145,10 @@ export default class Controler {
     return true;
   }
 
+  /**
+   * 获取指定客户端的可用空间
+   * @param data
+   */
   public getFreeSpace(data: any): Promise<any> {
     if (!data.clientId) {
       return this.getDefaultClientFreeSpace(data);
@@ -150,6 +169,10 @@ export default class Controler {
     });
   }
 
+  /**
+   * 获取默认客户端的可用空间
+   * @param data
+   */
   public getDefaultClientFreeSpace(data: any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.defaultClient
@@ -158,5 +181,34 @@ export default class Controler {
           resolve(result);
         });
     });
+  }
+
+  public updateOptionsTabId(id: number) {
+    this.optionsTabId = id;
+  }
+
+  public openOptions() {
+    if (this.optionsTabId == 0) {
+      this.createOptionTab();
+    } else {
+      chrome.tabs.get(this.optionsTabId as number, tab => {
+        if (tab) {
+          chrome.tabs.update(tab.id as number, { selected: true });
+        } else {
+          this.createOptionTab();
+        }
+      });
+    }
+  }
+
+  private createOptionTab() {
+    chrome.tabs.create(
+      {
+        url: "index.html"
+      },
+      tab => {
+        this.optionsTabId = tab.id;
+      }
+    );
   }
 }

@@ -9,12 +9,12 @@
     "ver": "0.0.1",
     "plugins": [{
       "name": "种子详情页面",
-      "pages": ["/t/{\\d}/"],
-      "script": "details.js"
+      "pages": ["^/t/(\\d+)/$"],
+      "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
     }, {
       "name": "种子列表",
       "pages": ["/browse.php"],
-      "script": "browse.js"
+      "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
     }]
   },
   "host": "totheglory.im"

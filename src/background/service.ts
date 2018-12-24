@@ -58,6 +58,7 @@ export default class PTPlugin {
           }
           break;
 
+        // 发送种子到默认下载客户端
         case EAction.sendTorrentToDefaultClient:
           this.controler
             .sendTorrentToDefaultClient(request.data, sender)
@@ -79,6 +80,7 @@ export default class PTPlugin {
           }
           break;
 
+        // 获取可用空间
         case EAction.getFreeSpace:
           this.controler
             .getFreeSpace(request.data)
@@ -88,6 +90,16 @@ export default class PTPlugin {
             .catch((result: any) => {
               reject(result);
             });
+          break;
+
+        case EAction.openOptions:
+          this.controler.openOptions();
+          resolve(true);
+          break;
+
+        case EAction.updateOptionsTabId:
+          this.controler.updateOptionsTabId(result.data);
+          resolve(true);
           break;
       }
     });

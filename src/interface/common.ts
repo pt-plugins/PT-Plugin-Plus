@@ -75,12 +75,15 @@ export interface Plugin {
   pages?: string[] | any;
   scripts?: string[] | any;
   styles?: string[] | any;
+  script?: string;
+  style?: string;
 }
 
 export interface SiteSchema {
   name?: string;
   ver?: string;
   plugins?: Plugin[] | any;
+  siteOnly?: boolean;
 }
 
 /**
@@ -113,12 +116,20 @@ export enum EAction {
   sendTorrentToDefaultClient = "sendTorrentToDefaultClient",
   // 发送种子到指定的客户端
   sendTorrentToClient = "sendTorrentToClient",
+  // 搜索种子
   searchTorrent = "searchTorrent",
+  // 复制文本到剪切板
   copyTextToClipboard = "copyTextToClipboard",
+  // 从指定的URL添加种子
   addTorrentFromURL = "addTorrentFromURL",
+  // 获取可用空间
   getFreeSpace = "getFreeSpace",
   // 下载当前拖放DOM中的地址
-  downloadFromDroper = "downloadFromDroper"
+  downloadFromDroper = "downloadFromDroper",
+  // 打开配置页面
+  openOptions = "openOptions",
+  // 更新配置页面TabId
+  updateOptionsTabId = "updateOptionsTabId"
 }
 
 export interface Request {

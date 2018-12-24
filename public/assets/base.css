@@ -30,6 +30,7 @@
   width: 32px;
   margin: 5px auto;
   opacity: 0.7;
+  cursor: pointer;
 }
 
 .pt-plugin-body .droper {

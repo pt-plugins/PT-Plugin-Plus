@@ -1,6 +1,8 @@
 <template>
   <div class="set-sites">
-    <v-alert :value="true" type="info">站点设置</v-alert>
+    <v-alert :value="true" type="info">
+      <div>{{ words.title }}</div>
+    </v-alert>
     <v-card>
       <v-card-title>
         <v-btn color="success" @click="add">
@@ -41,9 +43,17 @@
             </a>
           </td>
           <td>{{ props.item.tags && props.item.tags.join(", ") }}</td>
-          <td>{{ props.item.url }}</td>
+          <td>
+            <a :href="props.item.url" target="_blank">{{ props.item.url }}</a>
+          </td>
           <td>
             <v-icon small class="mr-2" @click="edit(props.item)">edit</v-icon>
+            <v-icon
+              small
+              class="mr-2"
+              @click="editPlugins(props.item)"
+              :title="words.plugins"
+            >assistant</v-icon>
             <v-icon small color="error" @click="removeConfirm(props.item)">delete</v-icon>
           </td>
         </template>
@@ -77,6 +87,8 @@
       </v-card>
     </v-dialog>
 
+    <v-alert :value="true" color="grey">{{ words.subTitle }}</v-alert>
+
     <v-snackbar v-model="siteDuplicate" top :timeout="3000" color="error">{{ siteDuplicateText }}</v-snackbar>
   </div>
 </template>
@@ -99,7 +111,10 @@ export default Vue.extend({
         add: "新增",
         remove: "删除",
         importAll: "导入所有",
-        removeSelectedConfirm: "确认要删除已选中的站点吗？"
+        removeSelectedConfirm: "确认要删除已选中的站点吗？",
+        plugins: "插件",
+        title: "站点设置",
+        subTitle: "只有配置过的站点才会显示插件图标及相应的功能。"
       },
       selected: [],
       pagination: {
@@ -197,6 +212,14 @@ export default Vue.extend({
         });
         if (index === -1) {
           this.$store.commit("addSite", site);
+        }
+      });
+    },
+    editPlugins(item: any) {
+      this.$router.push({
+        name: "set-site-plugins",
+        params: {
+          host: item.host
         }
       });
     }

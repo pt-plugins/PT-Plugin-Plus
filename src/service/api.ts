@@ -31,6 +31,7 @@ let productAPI = {
 
 export const APP = {
   debugMode: process.env.NODE_ENV === "development",
+  scriptQueues: [] as any,
   cache: {
     localStorage: new localStorage(),
     cacheKey: "PT-Plugin-Plus-Cache-Contents",
@@ -80,53 +81,88 @@ export const APP = {
       this.localStorage.set(this.cacheKey, this.contents);
     }
   },
+  addScript(script: any) {
+    this.scriptQueues.push(script);
+  },
+  applyScripts() {
+    let script = this.scriptQueues.shift();
+    if (script) {
+      this.execScript(script).then(() => {
+        this.applyScripts();
+      });
+    }
+  },
   /**
    * 执行脚本
-   * @param scriptPath
+   * @param script
    */
-  execScript(scriptPath: string): Promise<any> {
+  execScript(script: any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      let url = `${API.host}/${scriptPath}`;
-      let content = this.cache.get(url);
-      if (content) {
-        eval(content);
-        resolve();
-      } else {
-        $.get(
-          url,
-          result => {
-            eval(result);
-            this.cache.set(url, result);
-            resolve();
-          },
-          "text"
-        );
+      switch (script.type) {
+        case "code":
+          eval(script.content);
+          resolve();
+          break;
+
+        default:
+          {
+            let url = `${API.host}/${script.content || script}`;
+            let content = this.cache.get(url);
+            if (content) {
+              eval(content);
+              resolve();
+            } else {
+              $.get(
+                url,
+                result => {
+                  eval(result);
+                  this.cache.set(url, result);
+                  resolve();
+                },
+                "text"
+              );
+            }
+          }
+
+          break;
       }
     });
   },
   /**
    * 追加样式信息
-   * @param stylePath
+   * @param options
    */
-  applyStyle(stylePath: string): Promise<any> {
+  applyStyle(options: any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      let url = `${API.host}/${stylePath}`;
-      let content = this.cache.get(url);
       let style = $("<style/>").appendTo(document.body);
-      if (content) {
-        style.html(content);
-        resolve();
-      } else {
-        $.get(
-          url,
-          result => {
-            style.html(result);
-            this.cache.set(url, result);
+      switch (options.type) {
+        case "file": {
+          let url = `${API.host}/${options.content}`;
+          let content = this.cache.get(url);
+
+          if (content) {
+            style.html(content);
             resolve();
-          },
-          "text"
-        );
+          } else {
+            $.get(
+              url,
+              result => {
+                style.html(result);
+                this.cache.set(url, result);
+                resolve();
+              },
+              "text"
+            );
+          }
+          break;
+        }
+
+        default:
+          style.html(options.content);
+          resolve();
+          break;
       }
+
       // var link = $("<link/>")
       //   .attr({
       //     rel: "stylesheet",

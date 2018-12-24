@@ -70,6 +70,12 @@ export default new Router({
       path: "/donate",
       name: "donate",
       component: () => import("./views/Donate.vue")
+    },
+    {
+      path: "/set-site-plugins/:host",
+      name: "set-site-plugins",
+      component: () => import("./views/settings/SitePlugins/Index.vue"),
+      props: true
     }
   ]
 });

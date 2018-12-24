@@ -182,6 +182,67 @@ export default new Vuex.Store({
           extension.sendRequest(EAction.saveConfig, () => {}, state.options);
         }
       }
+    },
+
+    /**
+     * 添加插件
+     * @param state
+     * @param options
+     */
+    addPlugin(state, options) {
+      let site: any = state.options.sites.find((item: any) => {
+        return item.host === options.host;
+      });
+
+      if (site) {
+        if (!site.plugins) {
+          site.plugins = [];
+        }
+        options.plugin.id = md5(new Date().toString());
+        site.plugins.push(options.plugin);
+        extension.sendRequest(EAction.saveConfig, () => {}, state.options);
+      }
+    },
+
+    /**
+     * 更新插件
+     * @param state
+     * @param options
+     */
+    updatePlugin(state, options) {
+      let site: any = state.options.sites.find((item: any) => {
+        return item.host === options.host;
+      });
+      if (site) {
+        let index: any = site.plugins.findIndex((item: any) => {
+          return item.id === options.plugin.id;
+        });
+        if (index !== -1) {
+          site.plugins[index] = options.plugin;
+
+          extension.sendRequest(EAction.saveConfig, () => {}, state.options);
+        }
+      }
+    },
+
+    /**
+     * 删除插件
+     * @param state
+     * @param options
+     */
+    removePlugin(state, options) {
+      let site: any = state.options.sites.find((item: any) => {
+        return item.host === options.host;
+      });
+      if (site) {
+        let index: any = site.plugins.findIndex((item: any) => {
+          return item.id === options.plugin.id;
+        });
+        if (index !== -1) {
+          site.plugins.splice(index, 1);
+          extension.sendRequest(EAction.saveConfig, () => {}, state.options);
+        }
+      }
     }
   },
   actions: {},
@@ -218,3 +279,10 @@ export default new Vuex.Store({
     }
   }
 });
+
+// 更新当前TabId
+if (chrome && chrome.tabs) {
+  chrome.tabs.getCurrent((tab: any) => {
+    extension.sendRequest(EAction.updateOptionsTabId, () => {}, tab.id);
+  });
+}

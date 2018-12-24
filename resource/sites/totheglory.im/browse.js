@@ -1,8 +1,7 @@
 (function ($) {
-  console.log("this is torrent.js");
+  console.log("this is browse.js");
   class App extends window.NexusPHPCommon {
       init() {
-        // super();
         this.initButtons();
         this.initFreeSpaceButton();
         // 设置当前页面
@@ -97,12 +96,19 @@
        * 获取下载链接
        */
       getDownloadURLs() {
-        let links = $("a[href*='download']").toArray();
+        let links = $("a.bookmark").toArray();
         let urls = $.map(links, (item) => {
-          return PTSevrice.site.url + $(item).attr("href") + "&passkey=" + PTSevrice.site.passkey + (PTSevrice.site.disableHttps ? "" : "&https=1");
+          let id = $(item).attr("tid");
+          return this.getDownloadURL(id);
         });
 
         return urls;
+      }
+
+      getDownloadURL(id) {
+        // 格式：vvvid|||passkey|||sslzz
+        let key = (new Base64).encode("vvv" + id + "|||" + PTSevrice.site.passkey + "|||sslzz");
+        return `https://${PTSevrice.site.host}/rssdd.php?par=${key}`;
       }
 
       /**
@@ -138,12 +144,9 @@
           return;
         }
 
-        let id = url.getQueryString("id");
-        let result = "";
-        if (id) {
-          // 如果站点没有配置禁用https，则默认添加https链接
-          result = PTSevrice.site.url + "download.php?id=" + id + "&passkey=" + PTSevrice.site.passkey + (PTSevrice.site.disableHttps ? "" : "&https=1");
-        }
+        let values = url.split("/");
+        let id = values[values.length - 2];
+        let result = this.getDownloadURL(id);
 
         if (!result) {
           callback();
@@ -162,7 +165,7 @@
           return true;
         }
         // 获取所有种子的大小信息
-        let doms = $(".torrents").find("td:contains('MB'),td:contains('GB'),td:contains('TB')");
+        let doms = $("#torrent_table").find("td[align='center']:contains('MB'),td[align='center']:contains('GB'),td[align='center']:contains('TB')");
         let size = this.getSize(doms);
 
         let exceedSize = 0;

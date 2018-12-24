@@ -9,7 +9,7 @@
   "plugins": [{
     "name": "种子列表封面模式",
     "pages": ["/torrents.php", "/movie.php", "/music.php", "/adult.php"],
-    "scripts": ["album/album.js", "torrents.js"],
-    "styles": ["album/style.css"]
+    "scripts": ["/libs/album/album.js", "torrents.js"],
+    "styles": ["/libs/album/style.css"]
   }]
 }

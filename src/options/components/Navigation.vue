@@ -3,7 +3,13 @@
   <v-navigation-drawer clipped fixed v-model="drawer" app>
     <v-list v-for="(group,index) in navs" :key="index">
       <v-subheader v-if="group.title" class="grey--text text--darken-1">{{group.title}}</v-subheader>
-      <v-list-tile :to="item.key" v-for="(item, index) in group.items" :key="index" :href="item.url" :target="item.url?'_blank':''">
+      <v-list-tile
+        :to="item.key"
+        v-for="(item, index) in group.items"
+        :key="index"
+        :href="item.url"
+        :target="item.url?'_blank':''"
+      >
         <v-list-tile-action class="ml-3">
           <v-icon>{{item.icon}}</v-icon>
         </v-list-tile-action>
@@ -43,7 +49,7 @@ export default Vue.extend({
             {
               title: "概览",
               icon: "dashboard",
-              key: "home"
+              key: "/home"
             }
           ]
         },
@@ -53,7 +59,7 @@ export default Vue.extend({
             {
               title: "基本设置",
               icon: "settings",
-              key: "set-base"
+              key: "/set-base"
             },
             // {
             //   title: "已支持的站点架构",
@@ -63,32 +69,32 @@ export default Vue.extend({
             {
               title: "站点设置",
               icon: "public",
-              key: "set-sites"
+              key: "/set-sites"
             },
             {
               title: "下载服务器",
               icon: "cloud_download",
-              key: "set-download-clients"
+              key: "/set-download-clients"
             },
             {
               title: "下载目录设置",
               icon: "folder_open",
-              key: "set-download-paths"
+              key: "/set-download-paths"
             },
             {
               title: "搜索设置",
               icon: "search",
-              key: "set-search"
+              key: "/set-search"
             },
             {
               title: "参数备份与恢复",
               icon: "restore",
-              key: "set-backup"
+              key: "/set-backup"
             },
             {
               title: "语言",
               icon: "language",
-              key: "set-language"
+              key: "/set-language"
             }
           ]
         },
@@ -98,18 +104,19 @@ export default Vue.extend({
             {
               title: "特别感谢",
               icon: "developer_board",
-              key: "technology-stack"
+              key: "/technology-stack"
             },
             {
               title: "项目参与人员",
               icon: "people",
-              key: "dev-team"
+              key: "/dev-team"
             }
           ]
         },
         {
           title: "支持本项目",
-          items: [{
+          items: [
+            {
               title: "Bug反馈",
               icon: "bug_report",
               key: "",
@@ -118,7 +125,7 @@ export default Vue.extend({
             {
               title: "捐助",
               icon: "favorite",
-              key: "donate"
+              key: "/donate"
             }
           ]
         }
