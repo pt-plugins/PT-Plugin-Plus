@@ -45,6 +45,8 @@
         <v-text-field :value="option.type" :label="words.type" disabled></v-text-field>
         <v-text-field :label="words.id" disabled :value="option.id" :placeholder="words.autoCreate"></v-text-field>
       </v-form>
+
+      <v-alert :value="true" color="info" v-if="option.description">{{option.description}}</v-alert>
     </v-card-text>
   </v-card>
 </template>

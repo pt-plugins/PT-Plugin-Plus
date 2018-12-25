@@ -1,0 +1,10 @@
+{
+  "name": "qBittorrent",
+  "type": "qbittorrent",
+  "ver": "0.0.1",
+  "icon": "https://www.qbittorrent.org/favicon.ico",
+  "scripts": [
+    "init.js"
+  ],
+  "description": "当前支持 qBittorrent v4.1+，由于浏览器限制，需要禁用 qBittorrent 的『启用跨站请求伪造(CSRF)保护』功能才能正常使用"
+}
