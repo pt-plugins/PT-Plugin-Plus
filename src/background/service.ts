@@ -101,6 +101,32 @@ export default class PTPlugin {
           this.controler.updateOptionsTabId(result.data);
           resolve(true);
           break;
+
+        // 搜索种子
+        case EAction.searchTorrent:
+          console.log(request.data);
+          this.controler &&
+            this.controler
+              .searchTorrent(request.data)
+              .then((result: any) => {
+                resolve(result);
+              })
+              .catch((result: any) => {
+                reject(result);
+              });
+          break;
+
+        case EAction.getSearchResult:
+          this.controler &&
+            this.controler
+              .getSearchResult(request.data)
+              .then((result: any) => {
+                resolve(result);
+              })
+              .catch((result: any) => {
+                reject(result);
+              });
+          break;
       }
     });
   }

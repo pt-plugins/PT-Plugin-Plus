@@ -2,6 +2,7 @@
  * 导入这个是为了本地测试，对于 Chrome 插件实际运行时不起作用
  */
 import PTPlugin from "../background/service";
+import { EAction } from "../interface/common";
 
 export default class Extension {
   public isExtensionMode: boolean = false;
@@ -17,9 +18,9 @@ export default class Extension {
    * @param callback 回调函数
    * @param data 附加数据
    */
-  public sendRequest(action: any, callback?: any, data?: any) {
+  public sendRequest(action: EAction, callback?: any, data?: any) {
     if (this.isExtensionMode) {
-      chrome.extension.sendRequest(
+      chrome.runtime.sendMessage(
         {
           action,
           data

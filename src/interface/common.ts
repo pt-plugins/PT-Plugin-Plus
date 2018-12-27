@@ -9,6 +9,10 @@ export enum ESizeUnit {
   KiB = "KiB"
 }
 
+export enum ESearchResultType {
+  JSON = "json",
+  XML = "xml"
+}
 /**
  * 需要在上下文菜单显示配置
  */
@@ -50,6 +54,12 @@ export interface SystemOptions {
   clients?: any[];
 }
 
+export type Dictionary<T> = { [key: string]: T };
+export interface SearchOptions {
+  rows?: number;
+  key?: string;
+  tags?: string[];
+}
 /**
  * 参数
  */
@@ -68,6 +78,7 @@ export interface Options {
   allowSelectionTextSearch?: boolean;
   schemas?: any[];
   system?: any;
+  search?: SearchOptions | void;
 }
 
 export interface Plugin {
@@ -84,6 +95,9 @@ export interface SiteSchema {
   ver?: string;
   plugins?: Plugin[] | any;
   siteOnly?: boolean;
+  searchPage?: string;
+  searchResultType?: ESearchResultType;
+  getSearchResultScript?: string;
 }
 
 /**
@@ -102,6 +116,7 @@ export interface Site {
   host?: string;
   defaultClientId?: string;
   plugins?: any[];
+  allowSearch?: boolean;
 }
 
 /**
@@ -129,7 +144,9 @@ export enum EAction {
   // 打开配置页面
   openOptions = "openOptions",
   // 更新配置页面TabId
-  updateOptionsTabId = "updateOptionsTabId"
+  updateOptionsTabId = "updateOptionsTabId",
+  // 获取搜索结果
+  getSearchResult = "getSearchResult"
 }
 
 export interface Request {

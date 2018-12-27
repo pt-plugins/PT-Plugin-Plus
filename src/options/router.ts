@@ -76,6 +76,12 @@ export default new Router({
       name: "set-site-plugins",
       component: () => import("./views/settings/SitePlugins/Index.vue"),
       props: true
+    },
+    {
+      path: "/search-torrent/:key",
+      name: "search-torrent",
+      component: () => import("./views/SearchTorrent.vue"),
+      props: true
     }
   ]
 });

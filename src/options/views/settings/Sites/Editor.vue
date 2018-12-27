@@ -91,6 +91,9 @@
             </v-list-tile-action>
           </template>
         </v-autocomplete>
+
+        <!-- 允许搜索 -->
+        <v-switch :label="words.allowSearch" v-model="site.allowSearch"></v-switch>
       </v-form>
     </v-card-text>
   </v-card>
@@ -112,7 +115,8 @@ export default Vue.extend({
         url: "网站地址",
         urlTip: "网站完整地址，如：https://open.cd/",
         passkey: "密钥",
-        passkeyTip: "密钥用于聚合搜索、生成下载链接等操作"
+        passkeyTip: "密钥用于聚合搜索、生成下载链接等操作",
+        allowSearch: "允许搜索"
       },
       showPasskey: false,
       rules: {
