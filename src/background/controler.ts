@@ -22,6 +22,10 @@ export default class Controler {
     this.initDefaultClient();
   }
 
+  /**
+   * 获取搜索结果
+   * @param options
+   */
   public getSearchResult(options: any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let settings = {
@@ -153,23 +157,40 @@ export default class Controler {
    */
   public sendTorrentToDefaultClient(data: any, sender?: any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      if (sender) {
-        let URL = Filters.parseURL(sender.url);
-        let hostname = URL.host;
-        let client = this.siteDefaultClients[hostname];
-        if (!client) {
-          this.initSiteDefaultClient(hostname).then((client: any) => {
-            client
-              .call(EAction.addTorrentFromURL, {
-                url: data.url,
-                savePath: data.savePath,
-                autoStart: data.autoStart
-              })
-              .then((result: any) => {
-                resolve(result);
-              });
-          });
-        }
+      // if (sender) {
+      //   let URL = Filters.parseURL(sender.url);
+      //   let hostname = URL.host;
+      //   let client = this.siteDefaultClients[hostname];
+      //   if (!client) {
+      //     this.initSiteDefaultClient(hostname).then((client: any) => {
+      //       client
+      //         .call(EAction.addTorrentFromURL, {
+      //           url: data.url,
+      //           savePath: data.savePath,
+      //           autoStart: data.autoStart
+      //         })
+      //         .then((result: any) => {
+      //           resolve(result);
+      //         });
+      //     });
+      //   }
+      //   return;
+      // }
+      let URL = Filters.parseURL(data.url);
+      let hostname = URL.host;
+      let client = this.siteDefaultClients[hostname];
+      if (!client) {
+        this.initSiteDefaultClient(hostname).then((client: any) => {
+          client
+            .call(EAction.addTorrentFromURL, {
+              url: data.url,
+              savePath: data.savePath,
+              autoStart: data.autoStart
+            })
+            .then((result: any) => {
+              resolve(result);
+            });
+        });
         return;
       }
       this.defaultClient
