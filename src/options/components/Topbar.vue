@@ -4,13 +4,15 @@
     <v-toolbar-title style="width: 220px;">
       <span>PT 助手</span>
     </v-toolbar-title>
-    
+
     <v-text-field
       flat
       solo-inverted
       prepend-icon="search"
       label="搜索种子"
       class="hidden-sm-and-down mt-2"
+      v-model="searchKey"
+      @change="searchTorrent"
     ></v-text-field>
 
     <v-spacer></v-spacer>
@@ -57,9 +59,22 @@ export default Vue.extend({
   data() {
     return {
       drawer: true,
-      baseColor: "amber"
+      baseColor: "amber",
+      searchKey: ""
     };
   },
-  methods: {}
+  methods: {
+    searchTorrent() {
+      if (!this.searchKey) {
+        return;
+      }
+      this.$router.push({
+        name: "search-torrent",
+        params: {
+          key: this.searchKey
+        }
+      });
+    }
+  }
 });
 </script>

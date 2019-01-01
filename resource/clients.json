@@ -13,5 +13,9 @@
   {
     "name": "synologyDownloadStation",
     "type": "dir"
+  },
+  {
+    "name": "qbittorrent",
+    "type": "dir"
   }
 ]

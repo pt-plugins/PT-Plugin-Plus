@@ -44,6 +44,15 @@
           </td>
           <td>{{ props.item.tags && props.item.tags.join(", ") }}</td>
           <td>
+            <v-switch
+              true-value="true"
+              false-value="false"
+              :input-value="props.item.allowSearch?'true':'false'"
+              hide-details
+              @click.stop="updateSearchStatus(props.item)"
+            ></v-switch>
+          </td>
+          <td>
             <a :href="props.item.url" target="_blank">{{ props.item.url }}</a>
           </td>
           <td>
@@ -127,6 +136,7 @@ export default Vue.extend({
       headers: [
         { text: "名称", align: "left", value: "name" },
         { text: "标签", align: "left", value: "tags" },
+        { text: "允许搜索", align: "left", value: "allowSearch" },
         { text: "URL", align: "left", value: "url" },
         { text: "操作", value: "name", sortable: false }
       ],
@@ -179,6 +189,12 @@ export default Vue.extend({
         this.selected = [];
       }
     },
+    updateSearchStatus(item: any) {
+      item.allowSearch = !(<boolean>item.allowSearch);
+      this.$store.commit("updateSite", item);
+      this.pagination.rowsPerPage = 0;
+      this.pagination.rowsPerPage = -1;
+    },
     updateSite(item: any) {
       // this.selectedSite = item;
       this.$store.commit("updateSite", item);
@@ -207,11 +223,13 @@ export default Vue.extend({
     },
     importAll() {
       this.$store.state.options.system.sites.forEach((site: any) => {
-        let index = this.$store.state.options.sites.findIndex((item: any) => {
-          return item.host === site.host;
-        });
+        let index = this.$store.state.options.sites
+          ? this.$store.state.options.sites.findIndex((item: any) => {
+              return item.host === site.host;
+            })
+          : -1;
         if (index === -1) {
-          this.$store.commit("addSite", site);
+          this.$store.commit("addSite", Object.assign({ valid: true }, site));
         }
       });
     },

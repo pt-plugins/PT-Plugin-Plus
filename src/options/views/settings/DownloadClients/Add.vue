@@ -23,7 +23,7 @@
                   :items="$store.state.options.system.clients"
                   :label="words.validMsg"
                   :menu-props="{maxHeight:'auto'}"
-                  :hint="selectedItemDescription"
+                  :hint="selectedItem.description"
                   persistent-hint
                   return-object
                   single-line
@@ -153,16 +153,6 @@ export default Vue.extend({
       } else {
         this.valid = true;
       }
-    }
-  },
-  computed: {
-    selectedItemDescription(): string {
-      let site = this.selectedItem;
-      let description = "";
-      if (site.description !== undefined) {
-        description = "; " + site.description;
-      }
-      return (site.url ? site.url : "") + description;
     }
   },
   created() {}

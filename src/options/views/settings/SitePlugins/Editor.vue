@@ -91,6 +91,15 @@ export default Vue.extend({
         valid: false
       })
     }
+  },
+  watch: {
+    "data.script"() {
+      console.log(
+        JSON.stringify({
+          script: this.data.script
+        })
+      );
+    }
   }
 });
 </script>

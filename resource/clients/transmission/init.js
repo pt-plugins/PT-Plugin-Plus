@@ -18,7 +18,7 @@
       }
 
       if (this.options.address.indexOf("rpc") == -1) {
-        let url = PTService.filters.parseURL(this.options.address);
+        let url = PTSevriceFilters.parseURL(this.options.address);
         this.options.address = `${url.protocol}://${url.host}:${url.port}/transmission/rpc`;
       }
       console.log("transmission.init", this.options.address);

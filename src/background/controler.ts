@@ -1,4 +1,10 @@
-import { Options, EAction } from "../interface/common";
+import {
+  Options,
+  EAction,
+  Site,
+  SiteSchema,
+  Dictionary
+} from "../interface/common";
 import { APP } from "../service/api";
 import { filters as Filters } from "../service/filters";
 export default class Controler {
@@ -16,8 +22,133 @@ export default class Controler {
     this.initDefaultClient();
   }
 
-  public searchTorrent(key: string = "") {
-    console.log(key);
+  /**
+   * 获取搜索结果
+   * @param options
+   */
+  public getSearchResult(options: any): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let settings = {
+        url: options.url,
+        success: (result: any) => {
+          if (
+            (result && (typeof result == "string" && result.length > 100)) ||
+            typeof result == "object"
+          ) {
+            console.log(result);
+
+            // let script = options.scripts[index];
+            const results: any[] = [];
+            if (options.script) {
+              eval(options.script);
+            }
+
+            resolve(results);
+          } else {
+            reject();
+          }
+        },
+        error: (result: any) => {
+          reject(result);
+        }
+      };
+
+      $.ajax(settings);
+    });
+  }
+
+  /**
+   * 搜索种子
+   * @param data
+   */
+  public searchTorrent(options: any): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      console.log(options.key);
+
+      let rows: number =
+        this.options.search && this.options.search.rows
+          ? this.options.search.rows
+          : 10;
+
+      let urls: string[] = [];
+      let scripts: string[] = [];
+      let sites: Site[] = [];
+      let errors: string[] = [];
+
+      this.options.sites.forEach((item: Site) => {
+        if (item.allowSearch) {
+          let siteSchema: SiteSchema = this.getSiteSchema(item);
+          let url: string = <string>item.url + siteSchema.searchPage;
+          let script: string = <string>siteSchema.getSearchResultScript;
+
+          url = this.replaceKeys(url, {
+            key: options.key,
+            rows: rows,
+            passkey: item.passkey
+          });
+
+          urls.push(url);
+          scripts.push(script);
+          sites.push(item);
+        }
+      });
+
+      this.doSearchTorrent({
+        count: urls.length,
+        callback: resolve,
+        sites,
+        urls,
+        scripts,
+        errors,
+        onProgress: options.onProgress || function() {}
+      });
+    });
+  }
+
+  private doSearchTorrent(options: any) {
+    let index = options.count - options.urls.length;
+    let url = options.urls.shift();
+
+    if (!url) {
+      options.onProgress("搜索完成。");
+      options.callback(options.errors);
+      return;
+    }
+    let site = options.sites[index];
+    options.onProgress(
+      "正在搜索 [" +
+        site.name +
+        "]..." +
+        (index + 1) +
+        "/" +
+        options.count +
+        "."
+    );
+    let settings = {
+      url: url,
+      success: (result: any) => {
+        this.doSearchTorrent(options);
+        if (
+          (result && (typeof result == "string" && result.length > 100)) ||
+          typeof result == "object"
+        ) {
+          options.onProgress(result, "result");
+          // let script = options.scripts[index];
+
+          // if (script) {
+          //   eval(script);
+          // }
+        } else {
+          options.errors.push(site.name + " 搜索异常。[" + result + "]");
+        }
+      },
+      error: () => {
+        options.errors.push(site.name + " 搜索失败。");
+        this.doSearchTorrent(options);
+      }
+    };
+
+    $.ajax(settings);
   }
 
   /**
@@ -26,23 +157,40 @@ export default class Controler {
    */
   public sendTorrentToDefaultClient(data: any, sender?: any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      if (sender) {
-        let URL = Filters.parseURL(sender.url);
-        let hostname = URL.host;
-        let client = this.siteDefaultClients[hostname];
-        if (!client) {
-          this.initSiteDefaultClient(hostname).then((client: any) => {
-            client
-              .call(EAction.addTorrentFromURL, {
-                url: data.url,
-                savePath: data.savePath,
-                autoStart: data.autoStart
-              })
-              .then((result: any) => {
-                resolve(result);
-              });
-          });
-        }
+      // if (sender) {
+      //   let URL = Filters.parseURL(sender.url);
+      //   let hostname = URL.host;
+      //   let client = this.siteDefaultClients[hostname];
+      //   if (!client) {
+      //     this.initSiteDefaultClient(hostname).then((client: any) => {
+      //       client
+      //         .call(EAction.addTorrentFromURL, {
+      //           url: data.url,
+      //           savePath: data.savePath,
+      //           autoStart: data.autoStart
+      //         })
+      //         .then((result: any) => {
+      //           resolve(result);
+      //         });
+      //     });
+      //   }
+      //   return;
+      // }
+      let URL = Filters.parseURL(data.url);
+      let hostname = URL.host;
+      let client = this.siteDefaultClients[hostname];
+      if (!client) {
+        this.initSiteDefaultClient(hostname).then((client: any) => {
+          client
+            .call(EAction.addTorrentFromURL, {
+              url: data.url,
+              savePath: data.savePath,
+              autoStart: data.autoStart
+            })
+            .then((result: any) => {
+              resolve(result);
+            });
+        });
         return;
       }
       this.defaultClient
@@ -95,6 +243,9 @@ export default class Controler {
    * 初始化默认客户端
    */
   private initDefaultClient() {
+    if (!this.options.clients) {
+      return;
+    }
     let clientOptions: any = this.options.clients.find((item: any) => {
       return item.id === this.options.defaultClientId;
     });
@@ -210,5 +361,40 @@ export default class Controler {
         this.optionsTabId = tab.id;
       }
     );
+  }
+
+  /**
+   * 根据指定的站点获取站点的架构信息
+   * @param site 站点信息
+   */
+  private getSiteSchema(site: Site): SiteSchema {
+    let schema: SiteSchema = {};
+    if (typeof site.schema === "string") {
+      schema = this.options.system.schemas.find((item: SiteSchema) => {
+        return item.name == site.schema;
+      });
+    } else {
+      let site = this.options.system.sites.find((item: Site) => {
+        return item.host == site.host;
+      });
+      if (site && site.schema) {
+        schema = site.schema;
+        schema.siteOnly = true;
+      }
+    }
+
+    return schema;
+  }
+
+  private replaceKeys(source: string, keys: Dictionary<any>): string {
+    let result: string = source;
+
+    for (const key in keys) {
+      if (keys.hasOwnProperty(key)) {
+        const value = keys[key];
+        result = result.replace("$" + key + "$", value);
+      }
+    }
+    return result;
   }
 }
