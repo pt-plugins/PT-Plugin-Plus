@@ -22,8 +22,9 @@
           <td style="width:20px;">
             <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
           </td>
-          <td style="max-width:300px;">
-            <a :href="props.item.link" target="_blank">{{ props.item.title }}</a>
+          <td class="title">
+            <a :href="props.item.link" target="_blank" v-html="getTitle(props.item.title)"></a>
+            <div class="sub-title" v-html="getSubTitle(props.item.title)"></div>
           </td>
           <td style="text-align:right;">{{ props.item.size | formatSize }}</td>
           <td>{{ props.item.author }}</td>
@@ -34,6 +35,8 @@
         </template>
       </v-data-table>
     </v-card>
+
+    <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
   </div>
 </template>
 <script lang="ts">
@@ -65,7 +68,9 @@ export default Vue.extend({
         { text: "发布者", align: "left", value: "author" },
         { text: "发布时间", align: "left", value: "date" },
         { text: "操作", sortable: false }
-      ]
+      ],
+      errorMsg: "",
+      haveError: false
     };
   },
   created() {
@@ -88,6 +93,11 @@ export default Vue.extend({
   methods: {
     search() {
       this.datas = [];
+      if (!this.options.sites) {
+        this.errorMsg = "请先设置站点";
+        this.haveError = true;
+        return;
+      }
       let rows: number =
         this.options.search && this.options.search.rows
           ? this.options.search.rows
@@ -107,7 +117,7 @@ export default Vue.extend({
           url = this.replaceKeys(url, {
             key: this.key,
             rows: rows,
-            passkey: item.passkey
+            passkey: item.passkey ? item.passkey : ""
           });
 
           urls.push(url);
@@ -191,6 +201,24 @@ export default Vue.extend({
         }
       }
       return result;
+    },
+    formatTitle(title: string): string {
+      if (title.indexOf("[") !== -1) {
+        return title.split("[").join("<br/>");
+      }
+      return title;
+    },
+    getTitle(title: string): string {
+      if (title.indexOf("[") !== -1) {
+        return title.split("[")[0].replace(/]/g, "");
+      }
+      return title;
+    },
+    getSubTitle(title: string): string {
+      if (title.indexOf("[") !== -1) {
+        return title.split("[")[1].replace(/]/g, "");
+      }
+      return title;
     }
   }
 });
@@ -198,13 +226,27 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .search-torrent {
-  a {
+  .title {
+    max-width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 10px 0 5px 15px;
+  }
+  .title a {
     color: #111;
     text-decoration: none;
-    padding: 5px;
+    font-size: 16px;
   }
-  a:hover {
+  .title a:hover {
     color: #008c00;
+  }
+
+  .sub-title {
+    font-size: 12px;
+    word-break: break-all;
+    margin: 5px 0;
+    color: #aaaaaa;
   }
 }
 </style>

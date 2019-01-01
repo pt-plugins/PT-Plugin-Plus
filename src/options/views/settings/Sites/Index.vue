@@ -223,11 +223,13 @@ export default Vue.extend({
     },
     importAll() {
       this.$store.state.options.system.sites.forEach((site: any) => {
-        let index = this.$store.state.options.sites.findIndex((item: any) => {
-          return item.host === site.host;
-        });
+        let index = this.$store.state.options.sites
+          ? this.$store.state.options.sites.findIndex((item: any) => {
+              return item.host === site.host;
+            })
+          : -1;
         if (index === -1) {
-          this.$store.commit("addSite", site);
+          this.$store.commit("addSite", Object.assign({ valid: true }, site));
         }
       });
     },

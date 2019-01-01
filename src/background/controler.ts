@@ -222,6 +222,9 @@ export default class Controler {
    * 初始化默认客户端
    */
   private initDefaultClient() {
+    if (!this.options.clients) {
+      return;
+    }
     let clientOptions: any = this.options.clients.find((item: any) => {
       return item.id === this.options.defaultClientId;
     });

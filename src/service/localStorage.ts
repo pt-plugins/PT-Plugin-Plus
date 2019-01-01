@@ -32,7 +32,7 @@ export default class localStorage {
         if (result && result[key]) {
           callback(result[key]);
         } else {
-          callback(result);
+          callback(null);
         }
       });
     } else {

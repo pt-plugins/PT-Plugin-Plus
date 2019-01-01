@@ -68,6 +68,10 @@ class PTPContent {
    * 初始化符合条件的附加页面
    */
   private initPages() {
+    // 站点未定义时
+    if (!this.options.sites) {
+      return;
+    }
     // 判断当前页面的所属站点是否已经被定义
     if (this.options.sites.length) {
       this.site = this.options.sites.find((item: any) => {
