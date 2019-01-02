@@ -65,7 +65,7 @@
           <v-btn
             flat
             color="grey darken-1"
-            href="https://github.com/ronggang/PT-Plugin"
+            href="https://github.com/ronggang/PT-Plugin-Plus/tree/master/resource/sites"
             target="_blank"
             v-show="step==1"
           >

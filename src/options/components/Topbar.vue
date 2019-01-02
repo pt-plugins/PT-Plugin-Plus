@@ -19,7 +19,7 @@
     <v-toolbar-items>
       <v-btn
         flat
-        href="https://github.com/ronggang/PT-Plugin"
+        href="https://github.com/ronggang/PT-Plugin-Plus"
         target="_blank"
         class="grey--text text--darken-2"
       >
@@ -28,7 +28,7 @@
       </v-btn>
       <v-btn
         flat
-        href="https://github.com/ronggang/PT-Plugin/wiki"
+        href="https://github.com/ronggang/PT-Plugin-Plus/wiki"
         target="_blank"
         class="grey--text text--darken-2"
       >
