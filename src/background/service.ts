@@ -142,6 +142,32 @@ export default class PTPlugin {
                 reject(result);
               });
           break;
+
+        // 删除下载记录
+        case EAction.removeDownloadHistory:
+          this.controler &&
+            this.controler
+              .removeDownloadHistory(request.data)
+              .then((result: any) => {
+                resolve(result);
+              })
+              .catch((result: any) => {
+                reject(result);
+              });
+          break;
+
+        // 清除下载记录
+        case EAction.clearDownloadHistory:
+          this.controler &&
+            this.controler
+              .clearDownloadHistory()
+              .then((result: any) => {
+                resolve(result);
+              })
+              .catch((result: any) => {
+                reject(result);
+              });
+          break;
       }
     });
   }

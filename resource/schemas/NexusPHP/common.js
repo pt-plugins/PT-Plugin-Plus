@@ -49,11 +49,18 @@ String.prototype.getQueryString = function (name, split) {
      * 发送种子到默认下载服务器
      * @param {string} url 
      */
-    sendTorrentToDefaultClient(url, showNotice = true) {
+    sendTorrentToDefaultClient(option, showNotice = true) {
       return new Promise((resolve, reject) => {
+        if (typeof option === "string") {
+          option = {
+            url: option,
+            title: ""
+          }
+        }
         PTSevrice.call(
           PTSevrice.action.sendTorrentToDefaultClient, {
-            url: url,
+            url: option.url,
+            title: option.title,
             savePath: this.defaultPath,
             autoStart: this.defaultClientOptions.autoStart
           }

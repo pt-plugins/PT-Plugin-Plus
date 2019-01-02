@@ -82,6 +82,11 @@ export default new Router({
       name: "search-torrent",
       component: () => import("./views/SearchTorrent.vue"),
       props: true
+    },
+    {
+      path: "/history",
+      name: "history",
+      component: () => import("./views/History.vue")
     }
   ]
 });

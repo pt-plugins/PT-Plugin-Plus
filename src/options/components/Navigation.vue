@@ -50,6 +50,11 @@ export default Vue.extend({
               title: "概览",
               icon: "dashboard",
               key: "/home"
+            },
+            {
+              title: "下载历史",
+              icon: "history",
+              key: "/history"
             }
           ]
         },
@@ -90,7 +95,7 @@ export default Vue.extend({
               title: "参数备份与恢复",
               icon: "restore",
               key: "/set-backup"
-            },
+            }
             // {
             //   title: "语言",
             //   icon: "language",

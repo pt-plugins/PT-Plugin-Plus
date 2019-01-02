@@ -79,7 +79,7 @@ export interface Options {
   schemas?: any[];
   system?: any;
   search?: SearchOptions | void;
-  saveDownloadHistory?: boolean
+  saveDownloadHistory?: boolean;
 }
 
 export interface Plugin {
@@ -149,7 +149,11 @@ export enum EAction {
   // 获取搜索结果
   getSearchResult = "getSearchResult",
   // 获取下载记录
-  getDownloadHistory = "getDownloadHistory"
+  getDownloadHistory = "getDownloadHistory",
+  // 删除下载记录
+  removeDownloadHistory = "removeDownloadHistory",
+  // 清除下载记录
+  clearDownloadHistory = "clearDownloadHistory"
 }
 
 export interface Request {

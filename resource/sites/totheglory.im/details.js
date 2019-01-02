@@ -24,9 +24,13 @@
          */
         click: (success, error) => {
           let url = this.getDownloadURL();
+          let title = this.getTitle();
 
           if (url) {
-            this.sendTorrentToDefaultClient(url).then(() => {
+            this.sendTorrentToDefaultClient({
+              url,
+              title
+            }).then(() => {
               success();
             }).catch(() => {
               success();
@@ -90,6 +94,10 @@
           label: size
         });
       }
+    }
+
+    getTitle() {
+      return /\"(.*?)\"/.exec($("title").text())[1];
     }
   };
   (new App()).init();

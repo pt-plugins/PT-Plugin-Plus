@@ -23,13 +23,17 @@
          */
         click: (success, error) => {
           let url = this.getDownloadURL();
+          let title = this.getTitle();
 
           // setTimeout(() => {
           //   success()
           // }, 1000);
 
           if (url) {
-            this.sendTorrentToDefaultClient(url).then(() => {
+            this.sendTorrentToDefaultClient({
+              url,
+              title
+            }).then(() => {
               success();
             }).catch(() => {
               success();
@@ -114,6 +118,10 @@
       }
 
       return url;
+    }
+
+    getTitle() {
+      return /\"(.*?)\"/.exec($("title").text())[1];
     }
   };
   (new App()).init();

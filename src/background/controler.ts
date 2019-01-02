@@ -18,7 +18,7 @@ export default class Controler {
   public defaultClient: any;
   public siteDefaultClients: any = {};
   public optionsTabId: number | undefined = 0;
-  public downloadHistory: any;
+  public downloadHistory: any[] = [];
 
   constructor(options: Options) {
     this.options = options;
@@ -172,6 +172,42 @@ export default class Controler {
   }
 
   /**
+   * 删除下载历史记录
+   * @param indexs 需要删除的索引列表
+   */
+  public removeDownloadHistory(items: any[]): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let storage: localStorage = new localStorage();
+      storage.get(EConfigKey.downloadHistory, (result: any) => {
+        this.downloadHistory = result;
+        for (let index = this.downloadHistory.length - 1; index >= 0; index--) {
+          let item = this.downloadHistory[index];
+          let findIndex = items.findIndex((_data: any) => {
+            return _data.data.url === item.data.url;
+          });
+          if (findIndex >= 0) {
+            this.downloadHistory.splice(index, 1);
+          }
+        }
+        storage.set(EConfigKey.downloadHistory, this.downloadHistory);
+        resolve(this.downloadHistory);
+      });
+    });
+  }
+
+  /**
+   * 清除下载记录
+   */
+  public clearDownloadHistory(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let storage: localStorage = new localStorage();
+      this.downloadHistory = [];
+      storage.set(EConfigKey.downloadHistory, this.downloadHistory);
+      resolve(this.downloadHistory);
+    });
+  }
+
+  /**
    * 发送下载链接地址到默认服务器（客户端）
    * @param data 链接地址
    */
@@ -200,15 +236,24 @@ export default class Controler {
       // 是否保存历史记录
       if (this.options.saveDownloadHistory) {
         let storage: localStorage = new localStorage();
+        let saveData = {
+          data,
+          time: new Date().getTime()
+        };
         if (!this.downloadHistory) {
           this.getDownloadHistory().then((result: any) => {
             this.downloadHistory = result;
-            this.downloadHistory.push(data);
+            this.downloadHistory.push(saveData);
             storage.set(EConfigKey.downloadHistory, this.downloadHistory);
           });
         } else {
-          this.downloadHistory.push(data);
-          storage.set(EConfigKey.downloadHistory, this.downloadHistory);
+          let index = this.downloadHistory.findIndex((item: any) => {
+            return item.data.url === data.url;
+          });
+          if (index === -1) {
+            this.downloadHistory.push(saveData);
+            storage.set(EConfigKey.downloadHistory, this.downloadHistory);
+          }
         }
       }
       let URL = Filters.parseURL(data.url);

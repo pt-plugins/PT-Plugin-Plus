@@ -13,6 +13,7 @@
   "dependencies": {
     "blueimp-md5": "^2.10.0",
     "file-saver": "^2.0.0",
+    "moment": "^2.23.0",
     "vue": "^2.5.17",
     "vue-class-component": "^6.3.2",
     "vue-property-decorator": "^7.0.0",

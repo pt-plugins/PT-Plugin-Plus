@@ -128,7 +128,8 @@ export default Vue.extend({
         require: [(v: any) => !!v || "!"]
       },
       options: {
-        defaultClientId: ""
+        defaultClientId: "",
+        search: {}
       },
       units: [] as any,
       downloadHistory: [] as any
@@ -152,6 +153,7 @@ export default Vue.extend({
     this.units.push(ESizeUnit.TiB);
     this.units.push(ESizeUnit.PiB);
     extension.sendRequest(EAction.getDownloadHistory).then((result: any) => {
+      console.log("downloadHistory", result);
       this.downloadHistory = result;
     });
   },

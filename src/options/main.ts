@@ -4,6 +4,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import { filters } from "@/service/filters";
+import moment from "moment";
 
 Vue.config.productionTip = false;
 
@@ -14,6 +15,11 @@ for (const key in filters) {
     });
   }
 }
+
+// 时间格式化
+Vue.filter("formatDate", (val: any, format: string = "YYYY-MM-DD HH:mm") => {
+  return moment(val).format(format);
+});
 
 new Vue({
   router,
