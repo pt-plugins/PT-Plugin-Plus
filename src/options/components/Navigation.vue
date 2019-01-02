@@ -81,21 +81,21 @@ export default Vue.extend({
               icon: "folder_open",
               key: "/set-download-paths"
             },
-            {
-              title: "搜索设置",
-              icon: "search",
-              key: "/set-search"
-            },
+            // {
+            //   title: "搜索设置",
+            //   icon: "search",
+            //   key: "/set-search"
+            // },
             {
               title: "参数备份与恢复",
               icon: "restore",
               key: "/set-backup"
             },
-            {
-              title: "语言",
-              icon: "language",
-              key: "/set-language"
-            }
+            // {
+            //   title: "语言",
+            //   icon: "language",
+            //   key: "/set-language"
+            // }
           ]
         },
         {

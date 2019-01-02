@@ -105,9 +105,23 @@ export default class PTPlugin {
         // 搜索种子
         case EAction.searchTorrent:
           console.log(request.data);
+          this.controler.openOptions(request.data);
+          resolve(true);
+          // this.controler &&
+          //   this.controler
+          //     .searchTorrent(request.data)
+          //     .then((result: any) => {
+          //       resolve(result);
+          //     })
+          //     .catch((result: any) => {
+          //       reject(result);
+          //     });
+          break;
+
+        case EAction.getSearchResult:
           this.controler &&
             this.controler
-              .searchTorrent(request.data)
+              .getSearchResult(request.data)
               .then((result: any) => {
                 resolve(result);
               })
@@ -116,10 +130,11 @@ export default class PTPlugin {
               });
           break;
 
-        case EAction.getSearchResult:
+        // 获取下载记录
+        case EAction.getDownloadHistory:
           this.controler &&
             this.controler
-              .getSearchResult(request.data)
+              .getDownloadHistory()
               .then((result: any) => {
                 resolve(result);
               })
@@ -162,7 +177,7 @@ export default class PTPlugin {
         title: '搜索 "%s" 相关的种子',
         contexts: ["selection"],
         onclick: (data, tab) => {
-          this.controler.searchTorrent(data.selectionText);
+          this.controler.openOptions(data.selectionText);
         }
       });
     }

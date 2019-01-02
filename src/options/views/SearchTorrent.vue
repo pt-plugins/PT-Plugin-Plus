@@ -22,6 +22,12 @@
           <td style="width:20px;">
             <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
           </td>
+          <td>
+            <v-avatar size="18">
+              <img :src="props.item.site.icon">
+            </v-avatar>
+            <span class="ml-2">{{ props.item.site.name }}</span>
+          </td>
           <td class="title">
             <a :href="props.item.link" target="_blank" v-html="getTitle(props.item.title)"></a>
             <div class="sub-title" v-html="getSubTitle(props.item.title)"></div>
@@ -69,104 +75,14 @@ export default Vue.extend({
       key: "",
       options: this.$store.state.options,
       searchMsg: "",
-      datas: [
-        {
-          title:
-            "The.Opening.of.Misty.Beethoven.1976.1080p.BluRay.x264.DTS-HDChina[贝多芬小姐的启蒙 *18禁 亮点自寻 感谢原发布者]",
-          link: "https://hdcmct.org/details.php?id=61753",
-          url: "https://hdcmct.org/download.php?id=61753",
-          size: "12686571893",
-          date: "2018/3/1 上午9:51:51",
-          author: "anonymous@hdcmct.org (anonymous)"
-        },
-        {
-          title:
-            "Beethoven.9.Symphonies.2010.Blu-ray.1080i.AVC.DTS-HDMA5.0[贝多芬九大交响曲全集 维也纳爱乐乐团和德国指挥家克里斯蒂安·蒂勒曼在维也纳金色大厅的完美演绎]",
-          link: "https://hdcmct.org/details.php?id=57244",
-          url: "https://hdcmct.org/download.php?id=57244",
-          size: "131263632891",
-          date: "2017/11/6 下午2:05:26",
-          author: "confessor@hdcmct.org (confessor)"
-        },
-        {
-          title:
-            "Ludwig.van.Beethoven.Symphonies.1-9..2015.2-Disc.Edition.Blu-ray.1080i.AVC.DTS-HD.5.0-HDclub[柏林爱乐管弦乐团首席指挥 西蒙拉特 维也纳爱乐 贝多芬9大交响曲]",
-          link: "https://hdcmct.org/details.php?id=46239",
-          url: "https://hdcmct.org/download.php?id=46239",
-          size: "94060751758",
-          date: "2016/12/30 下午11:46:14",
-          author: "anonymous@hdcmct.org (anonymous)"
-        },
-        {
-          title:
-            "The.Opening.of.Misty.Beethoven.1976.1080p.Blu-ray.AVC.DTS-HD.MA.5.1[[贝多芬小姐的启蒙]18禁 | 第一届色情片影展(Erotic Film Festival)的最佳影片]",
-          link: "https://hdcmct.org/details.php?id=45178",
-          url: "https://hdcmct.org/download.php?id=45178",
-          size: "48911243244",
-          date: "2016/11/26 上午10:42:21",
-          author: "ansonguan@hdcmct.org (ansonguan)"
-        },
-        {
-          title:
-            "Beethoven.Symphonies.Nos. 1-9.1080i.Blu-ray.H.264.DTS-HD[贝多芬交响曲1~9[爱乐者不可或缺的经典名盘]]",
-          link: "https://hdcmct.org/details.php?id=31913",
-          url: "https://hdcmct.org/download.php?id=31913",
-          size: "108996089926",
-          date: "2015/7/4 上午12:17:42",
-          author: "eversf@hdcmct.org (eversf)"
-        },
-        {
-          title:
-            "Beethoven.Missa.Solemnis.2010.BluRay.1080p.FLAC.x264-lizhe[贝多芬：D大调庄严弥撒 自压资源]",
-          link: "https://hdcmct.org/details.php?id=31460",
-          url: "https://hdcmct.org/download.php?id=31460",
-          size: "7527413016",
-          date: "2015/6/10 下午7:20:11",
-          author: "lizhe@hdcmct.org (lizhe)"
-        },
-        {
-          title:
-            "Beethoven.Symphonies.Nos.4-6.BluRay.720p.x264.DTS-HDChina[提勒曼 维也纳爱乐 贝多芬9大交响曲4-6]",
-          link: "https://hdcmct.org/details.php?id=27972",
-          url: "https://hdcmct.org/download.php?id=27972",
-          size: "10788295123",
-          date: "2014/12/1 下午2:32:46",
-          author: "anonymous@hdcmct.org (anonymous)"
-        },
-        {
-          title:
-            "Beethoven.-.Missa.Solemnis.in.D.Major.2010.1080i.Blu-ray.AVC.DTS-HD.MA.5.1-why1812[贝多芬：D大调庄严弥撒[原盘DIY官方图形中文字幕]]",
-          link: "https://hdcmct.org/details.php?id=26238",
-          url: "https://hdcmct.org/download.php?id=26238",
-          size: "19582527236",
-          date: "2014/9/10 下午6:41:40",
-          author: "anonymous@hdcmct.org (anonymous)"
-        },
-        {
-          title:
-            "Beethoven.-.Missa.Solemnis.in.D.Major.2010.1080i.Blu-ray.AVC.DTS-HDMA.5.1-why1812[贝多芬：D大调庄严弥撒曲 [原盘DIY繁体中文字幕]]",
-          link: "https://hdcmct.org/details.php?id=25465",
-          url: "https://hdcmct.org/download.php?id=25465",
-          size: "19584488896",
-          date: "2014/7/28 下午6:42:23",
-          author: "anonymous@hdcmct.org (anonymous)"
-        },
-        {
-          title:
-            "Chesky.Records.1988.flac[勒内·莱波维茨 [贝多芬第二、第五交响曲]]",
-          link: "https://hdcmct.org/details.php?id=24592",
-          url: "https://hdcmct.org/download.php?id=24592",
-          size: "401557995",
-          date: "2014/5/28 下午1:11:31",
-          author: "@hdcmct.org ()"
-        }
-      ] as any,
+      datas: [] as any,
       selected: [],
       pagination: {
         rowsPerPage: 10
       },
       loading: false,
       headers: [
+        { text: "站点", align: "left", value: "site.host" },
         { text: "标题", align: "left", value: "title" },
         { text: "大小", align: "right", value: "size" },
         { text: "发布者", align: "left", value: "author" },
@@ -233,6 +149,13 @@ export default Vue.extend({
           sites.push(item);
         }
       });
+
+      if (urls.length === 0) {
+        this.errorMsg =
+          "您还没有配置允许搜索的站点，请先前往【站点设置】进行配置";
+        this.haveError = true;
+        return;
+      }
 
       this.doSearchTorrent({
         count: urls.length,

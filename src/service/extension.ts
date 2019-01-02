@@ -18,26 +18,34 @@ export default class Extension {
    * @param callback 回调函数
    * @param data 附加数据
    */
-  public sendRequest(action: EAction, callback?: any, data?: any) {
-    if (this.isExtensionMode) {
-      chrome.runtime.sendMessage(
-        {
-          action,
-          data
-        },
-        (result: any) => {
-          callback(result);
-        }
-      );
-      return;
-    }
+  public sendRequest(
+    action: EAction,
+    callback?: any,
+    data?: any
+  ): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (this.isExtensionMode) {
+        chrome.runtime.sendMessage(
+          {
+            action,
+            data
+          },
+          (result: any) => {
+            callback && callback(result);
+            resolve(result);
+          }
+        );
+        return;
+      }
 
-    const PTService = new PTPlugin(true);
-    PTService.requestMessage({
-      action,
-      data
-    }).then((result: any) => {
-      callback && callback.call(this, result);
+      const PTService = new PTPlugin(true);
+      PTService.requestMessage({
+        action,
+        data
+      }).then((result: any) => {
+        callback && callback.call(this, result);
+        resolve(result);
+      });
     });
   }
 }

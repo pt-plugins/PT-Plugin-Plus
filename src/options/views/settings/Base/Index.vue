@@ -30,6 +30,12 @@
             </template>
           </v-autocomplete>
 
+          <v-text-field
+            v-model="options.search.rows"
+            :label="words.searchResultRows"
+            :placeholder="words.searchResultRows"
+          ></v-text-field>
+
           <v-switch color="success" v-model="options.autoUpdate" :label="words.autoUpdate"></v-switch>
           <v-switch
             color="success"
@@ -41,6 +47,12 @@
             color="success"
             v-model="options.allowDropToSend"
             :label="words.allowDropToSend"
+          ></v-switch>
+
+          <v-switch
+            color="success"
+            v-model="options.saveDownloadHistory"
+            :label="words.saveDownloadHistory"
           ></v-switch>
 
           <v-switch
@@ -86,8 +98,12 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { APP } from "../../../../service/api";
-import { ESizeUnit } from "../../../../interface/common";
+import { APP } from "@/service/api";
+import { ESizeUnit, EAction } from "@/interface/common";
+import Extension from "@/service/extension";
+
+const extension = new Extension();
+
 export default Vue.extend({
   data() {
     return {
@@ -101,8 +117,11 @@ export default Vue.extend({
         clearCache: "清除缓存",
         clearCacheConfirm:
           "确认要清除缓存吗？清除完成后，下次将会从官网中重新下载系统配置信息。",
-        needConfirmWhenExceedSize: "当要下载的种子总体积超过以下大小时需要确认。",
-        exceedSize: "大小"
+        needConfirmWhenExceedSize:
+          "当要下载的种子总体积超过以下大小时需要确认。",
+        exceedSize: "大小",
+        searchResultRows: "搜索时每站点返回结果数量",
+        saveDownloadHistory: "记录每次一键发送的种子信息，以供导出备份"
       },
       valid: false,
       rules: {
@@ -111,7 +130,8 @@ export default Vue.extend({
       options: {
         defaultClientId: ""
       },
-      units: [] as any
+      units: [] as any,
+      downloadHistory: [] as any
     };
   },
   methods: {
@@ -131,6 +151,9 @@ export default Vue.extend({
     this.units.push(ESizeUnit.GiB);
     this.units.push(ESizeUnit.TiB);
     this.units.push(ESizeUnit.PiB);
+    extension.sendRequest(EAction.getDownloadHistory).then((result: any) => {
+      this.downloadHistory = result;
+    });
   },
   computed: {
     getClientAddress(): any {

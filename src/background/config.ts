@@ -1,4 +1,4 @@
-import { Options, ESizeUnit } from "../interface/common";
+import { Options, ESizeUnit, EConfigKey } from "../interface/common";
 import { API, APP } from "../service/api";
 import localStorage from "../service/localStorage";
 
@@ -6,7 +6,7 @@ import localStorage from "../service/localStorage";
  * 配置信息类
  */
 class Config {
-  private name: string = "PT-Plugin-Plus-Config";
+  private name: string = EConfigKey.default;
   private localStorage: localStorage = new localStorage();
 
   public schemas: any[] = [];
@@ -33,7 +33,14 @@ class Config {
     exceedSizeUnit: ESizeUnit.GiB,
     sites: [],
     clients: [],
-    system: {}
+    system: {},
+    allowDropToSend: true,
+    allowSelectionTextSearch: true,
+    needConfirmWhenExceedSize: true,
+    exceedSize: 10,
+    search: {
+      rows: 10
+    }
   };
 
   /**
@@ -53,7 +60,8 @@ class Config {
       this.localStorage.get(this.name, (result: any) => {
         if (result) {
           delete result.system;
-          this.options = result;
+          let defaultOptions = Object.assign({}, this.options);
+          this.options = Object.assign(defaultOptions, result);
         }
         // 覆盖站点架构
         this.options.system = {

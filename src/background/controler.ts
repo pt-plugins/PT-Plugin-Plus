@@ -3,10 +3,12 @@ import {
   EAction,
   Site,
   SiteSchema,
-  Dictionary
+  Dictionary,
+  EConfigKey
 } from "../interface/common";
 import { APP } from "../service/api";
 import { filters as Filters } from "../service/filters";
+import localStorage from "../service/localStorage";
 export default class Controler {
   public options: Options = {
     sites: [],
@@ -16,6 +18,7 @@ export default class Controler {
   public defaultClient: any;
   public siteDefaultClients: any = {};
   public optionsTabId: number | undefined = 0;
+  public downloadHistory: any;
 
   constructor(options: Options) {
     this.options = options;
@@ -152,6 +155,23 @@ export default class Controler {
   }
 
   /**
+   * 获取下载历史记录
+   */
+  public getDownloadHistory(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let storage: localStorage = new localStorage();
+      storage.get(EConfigKey.downloadHistory, (result: any) => {
+        this.downloadHistory = result;
+        if (!this.downloadHistory) {
+          this.downloadHistory = [];
+        }
+
+        resolve(this.downloadHistory);
+      });
+    });
+  }
+
+  /**
    * 发送下载链接地址到默认服务器（客户端）
    * @param data 链接地址
    */
@@ -176,6 +196,21 @@ export default class Controler {
       //   }
       //   return;
       // }
+
+      // 是否保存历史记录
+      if (this.options.saveDownloadHistory) {
+        let storage: localStorage = new localStorage();
+        if (!this.downloadHistory) {
+          this.getDownloadHistory().then((result: any) => {
+            this.downloadHistory = result;
+            this.downloadHistory.push(data);
+            storage.set(EConfigKey.downloadHistory, this.downloadHistory);
+          });
+        } else {
+          this.downloadHistory.push(data);
+          storage.set(EConfigKey.downloadHistory, this.downloadHistory);
+        }
+      }
       let URL = Filters.parseURL(data.url);
       let hostname = URL.host;
       let client = this.siteDefaultClients[hostname];
@@ -338,24 +373,32 @@ export default class Controler {
     this.optionsTabId = id;
   }
 
-  public openOptions() {
+  public openOptions(searchKey: string = "") {
     if (this.optionsTabId == 0) {
-      this.createOptionTab();
+      this.createOptionTab(searchKey);
     } else {
       chrome.tabs.get(this.optionsTabId as number, tab => {
         if (tab) {
-          chrome.tabs.update(tab.id as number, { selected: true });
+          let url = "index.html";
+          if (searchKey) {
+            url = `index.html#/search-torrent/${searchKey}`;
+          }
+          chrome.tabs.update(tab.id as number, { selected: true, url: url });
         } else {
-          this.createOptionTab();
+          this.createOptionTab(searchKey);
         }
       });
     }
   }
 
-  private createOptionTab() {
+  private createOptionTab(searchKey: string = "") {
+    let url = "index.html";
+    if (searchKey) {
+      url = `index.html#/search-torrent/${searchKey}`;
+    }
     chrome.tabs.create(
       {
-        url: "index.html"
+        url: url
       },
       tab => {
         this.optionsTabId = tab.id;

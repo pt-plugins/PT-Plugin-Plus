@@ -79,6 +79,7 @@ export interface Options {
   schemas?: any[];
   system?: any;
   search?: SearchOptions | void;
+  saveDownloadHistory?: boolean
 }
 
 export interface Plugin {
@@ -146,7 +147,9 @@ export enum EAction {
   // 更新配置页面TabId
   updateOptionsTabId = "updateOptionsTabId",
   // 获取搜索结果
-  getSearchResult = "getSearchResult"
+  getSearchResult = "getSearchResult",
+  // 获取下载记录
+  getDownloadHistory = "getDownloadHistory"
 }
 
 export interface Request {
@@ -169,4 +172,9 @@ export interface CacheType {
 export enum EStorageType {
   text = "TEXT",
   json = "JSON"
+}
+
+export enum EConfigKey {
+  default = "PT-Plugin-Plus-Config",
+  downloadHistory = "PT-Plugin-Plus-downloadHistory"
 }
