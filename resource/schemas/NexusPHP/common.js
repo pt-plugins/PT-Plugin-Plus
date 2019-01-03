@@ -25,7 +25,8 @@ String.prototype.getQueryString = function (name, split) {
       }
       PTSevrice.call(
         PTSevrice.action.getFreeSpace, {
-          path: this.defaultPath
+          path: this.defaultPath,
+          clientId: PTSevrice.site.defaultClientId
         }
       ).then((result) => {
         console.log("命令执行完成", result);

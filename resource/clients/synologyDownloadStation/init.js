@@ -6,19 +6,21 @@
       this.options = options;
       this.sessionId = "";
       this.version = 2;
-      this.getSessionId();
     }
 
     /**
      * 获取 SID
      */
     getSessionId() {
-      let url = `${this.options.address}/webapi/auth.cgi?api=SYNO.API.Auth&version=${this.version}&method=login&account=${this.options.loginName}&passwd=${this.options.loginPwd}&session=DownloadStation&format=sid`;
-      $.getJSON(url).then((result) => {
-        console.log(result)
-        if (result && result.success) {
-          this.sessionId = result.data.sid;
-        }
+      return new Promise((resolve, reject) => {
+        let url = `${this.options.address}/webapi/auth.cgi?api=SYNO.API.Auth&version=${this.version}&method=login&account=${this.options.loginName}&passwd=${this.options.loginPwd}&session=DownloadStation&format=sid`;
+        $.getJSON(url).then((result) => {
+          console.log(result)
+          if (result && result.success) {
+            this.sessionId = result.data.sid;
+          }
+          resolve()
+        })
       })
     }
 
@@ -33,7 +35,7 @@
       return new Promise((resolve, reject) => {
         switch (action) {
           case "addTorrentFromURL":
-            this.addTorrentFromUrl(data.url, (result) => {
+            this.addTorrentFromUrl(data, (result) => {
               if (result && result.success) {
                 resolve(result);
               } else {
@@ -51,12 +53,24 @@
 
     /**
      * 添加种子链接
-     * @param {*} url 
+     * @param {*} options 
      * @param {*} callback 
      */
-    addTorrentFromUrl(url, callback) {
-      let path = `${this.options.address}/webapi/DownloadStation/task.cgi?api=SYNO.DownloadStation.Task&version=${this.version}&method=create&_sid=${this.sessionId}&uri=` + encodeURIComponent(url);
-      $.getJSON(path).then((result) => {
+    addTorrentFromUrl(options, callback) {
+      if (!this.sessionId) {
+        this.getSessionId().then(() => {
+          this.addTorrentFromUrl(options, callback)
+        })
+        return;
+      }
+      let path = [`${this.options.address}/webapi/DownloadStation/task.cgi?api=SYNO.DownloadStation.Task`,
+        `version=${this.version}`,
+        `method=create`,
+        `_sid=${this.sessionId}`,
+        `uri=` + encodeURIComponent(options.url),
+        `destination=` + encodeURIComponent(options.savePath)
+      ];
+      $.getJSON(path.join("&")).then((result) => {
         console.log(result)
         callback(result)
       })

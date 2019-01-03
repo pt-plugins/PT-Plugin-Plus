@@ -24,10 +24,12 @@ export default class Controler {
   public siteDefaultClients: any = {};
   public optionsTabId: number | undefined = 0;
   public downloadHistory: any[] = [];
+  public clients: any = {};
 
   constructor(options: Options) {
     this.options = options;
     this.initDefaultClient();
+    this.getDownloadHistory();
   }
 
   /**
@@ -166,11 +168,7 @@ export default class Controler {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let storage: localStorage = new localStorage();
       storage.get(EConfigKey.downloadHistory, (result: any) => {
-        this.downloadHistory = result;
-        if (!this.downloadHistory) {
-          this.downloadHistory = [];
-        }
-
+        this.downloadHistory = result || [];
         resolve(this.downloadHistory);
       });
     });
@@ -178,7 +176,7 @@ export default class Controler {
 
   /**
    * 删除下载历史记录
-   * @param indexs 需要删除的索引列表
+   * @param items 需要删除的列表
    */
   public removeDownloadHistory(items: any[]): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
@@ -213,13 +211,37 @@ export default class Controler {
   }
 
   /**
+   * 发送下载信息到指定的客户端
+   * @param data
+   */
+  public sendTorrentToClient(data: DownloadOptions): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let URL = Filters.parseURL(data.url);
+      let host = URL.host;
+      let clientConfig = this.options.clients.find((item: DownloadClient) => {
+        return item.id === data.clientId;
+      });
+      if (!clientConfig) {
+        reject({
+          msg: "无效的下载服务器"
+        });
+        return;
+      }
+
+      this.getClient(clientConfig).then((result: any) => {
+        this.doDownload(result, data, data.savePath).then((result: any) => {
+          this.saveDownloadHistory(data, host, clientConfig.id);
+          resolve(result);
+        });
+      });
+    });
+  }
+
+  /**
    * 发送下载链接地址到默认服务器（客户端）
    * @param data 链接地址
    */
-  public sendTorrentToDefaultClient(
-    data: DownloadOptions,
-    sender?: any
-  ): Promise<any> {
+  public sendTorrentToDefaultClient(data: DownloadOptions): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let URL = Filters.parseURL(data.url);
       let host = URL.host;
@@ -296,17 +318,17 @@ export default class Controler {
 
   /**
    * 执行下载操作
-   * @param siteClientConfig
+   * @param clientConfig
    * @param data
    * @param siteDefaultPath
    */
   private doDownload(
-    siteClientConfig: any,
+    clientConfig: any,
     data: DownloadOptions,
     siteDefaultPath: string = ""
   ): Promise<any> {
     return new Promise((resolve?: any, reject?: any) => {
-      siteClientConfig.client
+      clientConfig.client
         .call(EAction.addTorrentFromURL, {
           url: data.url,
           savePath: data.savePath,
@@ -315,11 +337,14 @@ export default class Controler {
         .then((result: any) => {
           this.formatSendResult(
             result,
-            siteClientConfig.options,
+            clientConfig.options,
             siteDefaultPath
           ).then((result: any) => {
             resolve(result);
           });
+        })
+        .catch((result: any) => {
+          reject(result);
         });
     });
   }
@@ -425,8 +450,19 @@ export default class Controler {
    * 根据指定客户端配置初始化客户端
    * @param clientOptions 客户端配置
    */
-  private initClient(clientOptions: any): Promise<any> {
+  private getClient(clientOptions: any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      if (typeof clientOptions === "string") {
+        let clientId = clientOptions;
+        clientOptions = this.options.clients.find((item: DownloadClient) => {
+          return item.id === clientId;
+        });
+        let client = this.clients[clientId];
+        if (client) {
+          resolve({ client, options: clientOptions });
+          return;
+        }
+      }
       if ((<any>window)[clientOptions.type] === undefined) {
         // 加载初始化脚本
         APP.execScript({
@@ -440,6 +476,7 @@ export default class Controler {
             loginPwd: clientOptions.loginPwd,
             address: clientOptions.address
           });
+          this.clients[clientOptions.id] = client;
           resolve({ client, options: clientOptions });
         });
       } else {
@@ -450,6 +487,7 @@ export default class Controler {
           loginPwd: clientOptions.loginPwd,
           address: clientOptions.address
         });
+        this.clients[clientOptions.id] = client;
         resolve({ client, options: clientOptions });
       }
     });
@@ -467,7 +505,7 @@ export default class Controler {
     });
 
     if (clientOptions) {
-      this.initClient(clientOptions).then((result: any) => {
+      this.getClient(clientOptions).then((result: any) => {
         this.defaultClient = result.client;
         this.defaultClientOptions = result.options;
       });
@@ -488,7 +526,7 @@ export default class Controler {
     });
 
     if (clientOptions) {
-      return this.initClient(clientOptions);
+      return this.getClient(clientOptions);
     }
 
     return new Promise<any>((resolve?: any, reject?: any) => {
@@ -531,8 +569,8 @@ export default class Controler {
       });
 
       if (clientOptions) {
-        this.initClient(clientOptions).then((client: any) => {
-          client.call(EAction.getFreeSpace, data).then((result: any) => {
+        this.getClient(clientOptions).then((result: any) => {
+          result.client.call(EAction.getFreeSpace, data).then((result: any) => {
             resolve(result);
           });
         });
@@ -563,7 +601,7 @@ export default class Controler {
       this.createOptionTab(searchKey);
     } else {
       chrome.tabs.get(this.optionsTabId as number, tab => {
-        if (tab) {
+        if (!chrome.runtime.lastError && tab) {
           let url = "index.html";
           if (searchKey) {
             url = `index.html#/search-torrent/${searchKey}`;

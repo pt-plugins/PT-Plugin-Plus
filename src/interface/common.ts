@@ -192,6 +192,7 @@ export interface DownloadOptions {
   title?: string;
   savePath?: string;
   autoStart?: boolean;
+  clientId?: string;
 }
 
 /**

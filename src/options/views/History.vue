@@ -35,10 +35,16 @@
             <br>
             <span
               class="sub-title"
-            >[ {{ getClientName(props.item.clientId) }} ] -> {{ props.item.data.savePath }}</span>
+            >[ {{ getClientName(props.item.clientId) }} ] -> {{ props.item.data.savePath || '默认目录' }}</span>
           </td>
           <td>{{ props.item.time | formatDate }}</td>
           <td>
+            <v-icon
+              small
+              class="mr-2"
+              @click="download(props.item)"
+              :title="words.download"
+            >cloud_download</v-icon>
             <v-icon small color="error" @click="removeConfirm(props.item)">delete</v-icon>
           </td>
         </template>
@@ -67,11 +73,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
+    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{ successMsg }}</v-snackbar>
   </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { EAction } from "@/interface/common";
+import { EAction, DownloadOptions } from "@/interface/common";
 import Extension from "@/service/extension";
 
 const extension = new Extension();
@@ -86,7 +95,8 @@ export default Vue.extend({
         removeConfirmTitle: "删除确认",
         clearConfirm: "确认要删除所有下载记录吗？",
         ok: "确认",
-        cancel: "取消"
+        cancel: "取消",
+        download: "下载"
       },
       selected: [],
       selectedItem: {} as any,
@@ -100,7 +110,11 @@ export default Vue.extend({
       ],
       items: [],
       dialogRemoveConfirm: false,
-      options: this.$store.state.options
+      options: this.$store.state.options,
+      errorMsg: "",
+      haveError: false,
+      haveSuccess: false,
+      successMsg: ""
     };
   },
 
@@ -144,6 +158,31 @@ export default Vue.extend({
         return client.name;
       }
       return "";
+    },
+    download(options: any) {
+      console.log(options);
+
+      this.haveSuccess = true;
+      this.successMsg = "正在发送种子到下载服务器……";
+
+      extension
+        .sendRequest(EAction.sendTorrentToClient, null, {
+          clientId: options.clientId,
+          url: options.data.url,
+          savePath: options.data.savePath,
+          autoStart: options.data.autoStart
+        })
+        .then((result: any) => {
+          console.log("命令执行完成", result);
+
+          if (result.success) {
+            this.haveSuccess = true;
+            this.successMsg = result.msg;
+          } else {
+            this.haveError = true;
+            this.errorMsg = result.msg;
+          }
+        });
     }
   },
 

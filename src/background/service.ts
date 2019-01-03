@@ -7,14 +7,14 @@ import Controler from "./controler";
  */
 export default class PTPlugin {
   // 当前配置对象
-  config: Config = new Config();
-  options: Options = {
+  public config: Config = new Config();
+  public options: Options = {
     sites: [],
     clients: []
   };
   // 本地模式，用于本地快速调试
-  localMode: boolean = false;
-  controler: any;
+  public localMode: boolean = false;
+  public controler: any;
 
   constructor(localMode: boolean = false) {
     this.localMode = localMode;
@@ -61,7 +61,19 @@ export default class PTPlugin {
         // 发送种子到默认下载客户端
         case EAction.sendTorrentToDefaultClient:
           this.controler
-            .sendTorrentToDefaultClient(request.data, sender)
+            .sendTorrentToDefaultClient(request.data)
+            .then((result: any) => {
+              resolve(result);
+            })
+            .catch((result: any) => {
+              reject(result);
+            });
+          break;
+
+        // 发送种子到指定的客户端
+        case EAction.sendTorrentToClient:
+          this.controler
+            .sendTorrentToClient(request.data)
             .then((result: any) => {
               resolve(result);
             })
