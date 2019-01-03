@@ -38,6 +38,7 @@ export interface DownloadClient {
   loginPwd?: string;
   paths?: any;
   autoStart?: boolean;
+  type?: string;
 }
 
 export interface ButtonOption {
@@ -79,6 +80,7 @@ export interface Options {
   schemas?: any[];
   system?: any;
   search?: SearchOptions | void;
+  saveDownloadHistory?: boolean;
 }
 
 export interface Plugin {
@@ -146,7 +148,13 @@ export enum EAction {
   // 更新配置页面TabId
   updateOptionsTabId = "updateOptionsTabId",
   // 获取搜索结果
-  getSearchResult = "getSearchResult"
+  getSearchResult = "getSearchResult",
+  // 获取下载记录
+  getDownloadHistory = "getDownloadHistory",
+  // 删除下载记录
+  removeDownloadHistory = "removeDownloadHistory",
+  // 清除下载记录
+  clearDownloadHistory = "clearDownloadHistory"
 }
 
 export interface Request {
@@ -169,4 +177,30 @@ export interface CacheType {
 export enum EStorageType {
   text = "TEXT",
   json = "JSON"
+}
+
+export enum EConfigKey {
+  default = "PT-Plugin-Plus-Config",
+  downloadHistory = "PT-Plugin-Plus-downloadHistory"
+}
+
+/**
+ * 下载参数
+ */
+export interface DownloadOptions {
+  url: string;
+  title?: string;
+  savePath?: string;
+  autoStart?: boolean;
+  clientId?: string;
+}
+
+/**
+ * 下载返回的结果
+ */
+export interface DownloadResult {
+  success: boolean;
+  msg?: string;
+  type?: string;
+  data?: any;
 }

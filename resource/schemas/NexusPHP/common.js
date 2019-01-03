@@ -25,7 +25,8 @@ String.prototype.getQueryString = function (name, split) {
       }
       PTSevrice.call(
         PTSevrice.action.getFreeSpace, {
-          path: this.defaultPath
+          path: this.defaultPath,
+          clientId: PTSevrice.site.defaultClientId
         }
       ).then((result) => {
         console.log("命令执行完成", result);
@@ -49,61 +50,25 @@ String.prototype.getQueryString = function (name, split) {
      * 发送种子到默认下载服务器
      * @param {string} url 
      */
-    sendTorrentToDefaultClient(url, showNotice = true) {
+    sendTorrentToDefaultClient(option, showNotice = true) {
       return new Promise((resolve, reject) => {
+        if (typeof option === "string") {
+          option = {
+            url: option,
+            title: ""
+          }
+        }
         PTSevrice.call(
           PTSevrice.action.sendTorrentToDefaultClient, {
-            url: url,
+            url: option.url,
+            title: option.title,
             savePath: this.defaultPath,
             autoStart: this.defaultClientOptions.autoStart
           }
         ).then(result => {
           console.log("命令执行完成", result);
-          let notice = {
-            type: "error",
-            msg: ""
-          };
-
-          switch (this.defaultClientOptions.type) {
-            // transmission
-            case this.downloadClientType.transmission:
-              if (result.id != undefined) {
-                notice.msg = result.name + " 已发送至 Transmission，编号：" + result.id;
-                notice.type = "success";
-                if (!this.defaultPath) {
-                  notice.type = "info";
-                  notice.msg += "；但站点默认目录未配置，建议配置。";
-                }
-              } else if (result.status) {
-                switch (result.status) {
-                  // 重复的种子
-                  case "duplicate":
-                    notice.msg = result.torrent.name + " 种子已存在！编号：" + result.torrent.id;
-                    break;
-
-                  case "error":
-                    notice.msg = "链接发送失败，请检查下载服务器是否可用。";
-                    break;
-                  default:
-                    notice.msg = result.msg;
-                    break;
-                }
-              } else {
-                notice.msg = result;
-              }
-
-              break;
-
-            default:
-              notice = {
-                type: "success",
-                msg: '种子已添加'
-              };
-              break;
-          }
-
           if (showNotice) {
-            PTSevrice.showNotice(notice);
+            PTSevrice.showNotice(result);
           }
           resolve(result);
         }).catch((result) => {

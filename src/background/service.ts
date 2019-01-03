@@ -7,14 +7,14 @@ import Controler from "./controler";
  */
 export default class PTPlugin {
   // 当前配置对象
-  config: Config = new Config();
-  options: Options = {
+  public config: Config = new Config();
+  public options: Options = {
     sites: [],
     clients: []
   };
   // 本地模式，用于本地快速调试
-  localMode: boolean = false;
-  controler: any;
+  public localMode: boolean = false;
+  public controler: any;
 
   constructor(localMode: boolean = false) {
     this.localMode = localMode;
@@ -61,7 +61,19 @@ export default class PTPlugin {
         // 发送种子到默认下载客户端
         case EAction.sendTorrentToDefaultClient:
           this.controler
-            .sendTorrentToDefaultClient(request.data, sender)
+            .sendTorrentToDefaultClient(request.data)
+            .then((result: any) => {
+              resolve(result);
+            })
+            .catch((result: any) => {
+              reject(result);
+            });
+          break;
+
+        // 发送种子到指定的客户端
+        case EAction.sendTorrentToClient:
+          this.controler
+            .sendTorrentToClient(request.data)
             .then((result: any) => {
               resolve(result);
             })
@@ -105,9 +117,23 @@ export default class PTPlugin {
         // 搜索种子
         case EAction.searchTorrent:
           console.log(request.data);
+          this.controler.openOptions(request.data);
+          resolve(true);
+          // this.controler &&
+          //   this.controler
+          //     .searchTorrent(request.data)
+          //     .then((result: any) => {
+          //       resolve(result);
+          //     })
+          //     .catch((result: any) => {
+          //       reject(result);
+          //     });
+          break;
+
+        case EAction.getSearchResult:
           this.controler &&
             this.controler
-              .searchTorrent(request.data)
+              .getSearchResult(request.data)
               .then((result: any) => {
                 resolve(result);
               })
@@ -116,10 +142,37 @@ export default class PTPlugin {
               });
           break;
 
-        case EAction.getSearchResult:
+        // 获取下载记录
+        case EAction.getDownloadHistory:
           this.controler &&
             this.controler
-              .getSearchResult(request.data)
+              .getDownloadHistory()
+              .then((result: any) => {
+                resolve(result);
+              })
+              .catch((result: any) => {
+                reject(result);
+              });
+          break;
+
+        // 删除下载记录
+        case EAction.removeDownloadHistory:
+          this.controler &&
+            this.controler
+              .removeDownloadHistory(request.data)
+              .then((result: any) => {
+                resolve(result);
+              })
+              .catch((result: any) => {
+                reject(result);
+              });
+          break;
+
+        // 清除下载记录
+        case EAction.clearDownloadHistory:
+          this.controler &&
+            this.controler
+              .clearDownloadHistory()
               .then((result: any) => {
                 resolve(result);
               })
@@ -162,7 +215,7 @@ export default class PTPlugin {
         title: '搜索 "%s" 相关的种子',
         contexts: ["selection"],
         onclick: (data, tab) => {
-          this.controler.searchTorrent(data.selectionText);
+          this.controler.openOptions(data.selectionText);
         }
       });
     }

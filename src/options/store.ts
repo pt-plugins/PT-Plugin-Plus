@@ -280,6 +280,49 @@ export default new Vuex.Store({
       return state.options.clients.find(data => {
         return state.options.defaultClientId === data.id;
       });
+    },
+    /**
+     * 获取指定客户端配置
+     * @param clientId
+     */
+    clientOptions: state => (site: Site, clientId: string = "") => {
+      if (!clientId) {
+        clientId =
+          site.defaultClientId || <string>state.options.defaultClientId;
+      }
+
+      let client = state.options.clients.find((item: any) => {
+        return item.id === clientId;
+      });
+
+      return client;
+    },
+
+    /**
+     * 获取当前站点的默认下载目录
+     * @param string clientId 指定客户端ID，不指定表示使用默认下载客户端
+     * @return string 目录信息，如果没有定义，则返回空字符串
+     */
+    siteDefaultPath: state => (site: Site, clientId: string = ""): string => {
+      if (!clientId) {
+        clientId =
+          site.defaultClientId || <string>state.options.defaultClientId;
+      }
+
+      let client = state.options.clients.find((item: any) => {
+        return item.id === clientId;
+      });
+      let path = "";
+      if (client && client.paths) {
+        for (const host in client.paths) {
+          if (site.host === host) {
+            path = client.paths[host][0];
+            break;
+          }
+        }
+      }
+
+      return path;
     }
   }
 });

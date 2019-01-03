@@ -89,7 +89,7 @@ class PTPContent {
         let site = this.options.system.sites.find((item: Site) => {
           return item.host == this.site.host;
         });
-        if (site && site.schema) {
+        if (site && site.schema && typeof site.schema !== "string") {
           this.schema = site.schema;
           this.schema.siteOnly = true;
         }
@@ -419,6 +419,17 @@ class PTPContent {
   public initDroper() {
     if (!this.options.allowDropToSend) return;
 
+    // 添加文档拖放事件
+    document.addEventListener("dragstart", (e: any) => {
+      if (e.target.tagName == "A") {
+        let data = {
+          url: e.target.getAttribute("href"),
+          title: e.target.getAttribute("title")
+        };
+        e.dataTransfer.setData("text/plain", JSON.stringify(data));
+      }
+    });
+
     // 拖入时
     this.buttonBar.on("dragover", (e: any) => {
       e.stopPropagation();
@@ -438,10 +449,14 @@ class PTPContent {
         //console.log(e);
         e.stopPropagation();
         e.preventDefault();
-        e.dataTransfer.dropEffect = "copy";
-        if (e.target.tagName == "A") {
-          e.dataTransfer.setData("text/plain", e.target.getAttribute("href"));
-        }
+        // e.dataTransfer.dropEffect = "copy";
+        // if (e.target.tagName == "A") {
+        //   let data = {
+        //     url: e.target.getAttribute("href"),
+        //     title: e.target.getAttribute("title")
+        //   };
+        //   e.dataTransfer.setData("text/plain", JSON.stringify(data));
+        // }
         this.logo.addClass("onLoading");
         this.buttonBar.addClass("pt-plugin-body-over");
       },
@@ -458,13 +473,18 @@ class PTPContent {
         this.droper.hide();
 
         // 获取未处理的地址
-        let url = e.dataTransfer.getData("text/plain");
-
-        if (url && this.pageApp) {
-          this.pageApp.call(EAction.downloadFromDroper, url).then(() => {
-            this.logo.removeClass("onLoading");
-          });
-        } else {
+        try {
+          let data = JSON.parse(e.dataTransfer.getData("text/plain"));
+          if (data) {
+            if (data.url && this.pageApp) {
+              this.pageApp.call(EAction.downloadFromDroper, data).then(() => {
+                this.logo.removeClass("onLoading");
+              });
+            } else {
+              this.logo.removeClass("onLoading");
+            }
+          }
+        } catch (error) {
           this.logo.removeClass("onLoading");
         }
       },

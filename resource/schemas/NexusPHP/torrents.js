@@ -129,7 +129,7 @@
        * @param {*} url 
        * @param {*} callback 
        */
-      downloadFromDroper(url, callback) {
+      downloadFromDroper(data, callback) {
         if (!PTSevrice.site.passkey) {
           PTSevrice.showNotice({
             msg: "请先设置站点密钥（Passkey）。"
@@ -138,19 +138,28 @@
           return;
         }
 
-        let id = url.getQueryString("id");
+        if (typeof data === "string") {
+          data = {
+            url: data,
+            title: ""
+          };
+        }
+
+        let id = data.url.getQueryString("id");
         let result = "";
         if (id) {
           // 如果站点没有配置禁用https，则默认添加https链接
-          result = PTSevrice.site.url + "download.php?id=" + id + "&passkey=" + PTSevrice.site.passkey + (PTSevrice.site.disableHttps ? "" : "&https=1");
+          data.url = PTSevrice.site.url + "download.php?id=" + id + "&passkey=" + PTSevrice.site.passkey + (PTSevrice.site.disableHttps ? "" : "&https=1");
+        } else {
+          data.url = "";
         }
 
-        if (!result) {
+        if (!data.url) {
           callback();
           return;
         }
 
-        this.sendTorrentToDefaultClient(result).then((result) => {
+        this.sendTorrentToDefaultClient(data).then((result) => {
           callback(result);
         }).catch((result) => {
           callback(result);
