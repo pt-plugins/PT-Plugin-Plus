@@ -33,12 +33,12 @@ export default new Vuex.Store({
       let system = state.options.system;
       state.options = Object.assign({}, options);
       state.options.system = system;
-      extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+      extension.sendRequest(EAction.saveConfig, () => {}, state.options);
     },
 
     updateConfig(state, options) {
       Object.assign(state.options, options);
-      extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+      extension.sendRequest(EAction.saveConfig, () => {}, state.options);
     },
 
     initConfig(state, options: Options) {
@@ -53,7 +53,7 @@ export default new Vuex.Store({
     addSite(state, site) {
       state.options.sites.push(site);
 
-      extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+      extension.sendRequest(EAction.saveConfig, () => {}, state.options);
     },
 
     /**
@@ -68,7 +68,7 @@ export default new Vuex.Store({
 
       if (index !== -1) {
         state.options.sites[index] = site;
-        extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+        extension.sendRequest(EAction.saveConfig, () => {}, state.options);
       }
     },
 
@@ -84,7 +84,7 @@ export default new Vuex.Store({
 
       if (index !== -1) {
         state.options.sites.splice(index, 1);
-        extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+        extension.sendRequest(EAction.saveConfig, () => {}, state.options);
       }
     },
 
@@ -97,7 +97,7 @@ export default new Vuex.Store({
       item.id = md5(new Date().toString());
       state.options.clients.push(item);
 
-      extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+      extension.sendRequest(EAction.saveConfig, () => {}, state.options);
     },
 
     /**
@@ -112,7 +112,7 @@ export default new Vuex.Store({
 
       if (index !== -1) {
         state.options.clients[index] = item;
-        extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+        extension.sendRequest(EAction.saveConfig, () => {}, state.options);
       }
     },
 
@@ -132,14 +132,14 @@ export default new Vuex.Store({
           state.options.defaultClientId = "";
         }
         state.options.clients.splice(index, 1);
-        extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+        extension.sendRequest(EAction.saveConfig, () => {}, state.options);
       }
     },
 
     clearClients(state) {
       state.options.clients = [];
       state.options.defaultClientId = "";
-      extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+      extension.sendRequest(EAction.saveConfig, () => {}, state.options);
     },
 
     addPathToClient(state, options) {
@@ -168,7 +168,7 @@ export default new Vuex.Store({
         }
 
         client.paths[options.site.host] = options.paths;
-        extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+        extension.sendRequest(EAction.saveConfig, () => {}, state.options);
       }
     },
 
@@ -179,7 +179,7 @@ export default new Vuex.Store({
       if (client && options.site) {
         if (client.paths) {
           delete client.paths[options.site.host];
-          extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+          extension.sendRequest(EAction.saveConfig, () => {}, state.options);
         }
       }
     },
@@ -200,7 +200,7 @@ export default new Vuex.Store({
         }
         options.plugin.id = md5(new Date().toString());
         site.plugins.push(options.plugin);
-        extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+        extension.sendRequest(EAction.saveConfig, () => {}, state.options);
       }
     },
 
@@ -220,7 +220,7 @@ export default new Vuex.Store({
         if (index !== -1) {
           site.plugins[index] = options.plugin;
 
-          extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+          extension.sendRequest(EAction.saveConfig, () => {}, state.options);
         }
       }
     },
@@ -240,7 +240,7 @@ export default new Vuex.Store({
         });
         if (index !== -1) {
           site.plugins.splice(index, 1);
-          extension.sendRequest(EAction.saveConfig, () => { }, state.options);
+          extension.sendRequest(EAction.saveConfig, () => {}, state.options);
         }
       }
     }
@@ -280,6 +280,49 @@ export default new Vuex.Store({
       return state.options.clients.find(data => {
         return state.options.defaultClientId === data.id;
       });
+    },
+    /**
+     * 获取指定客户端配置
+     * @param clientId
+     */
+    clientOptions: state => (site: Site, clientId: string = "") => {
+      if (!clientId) {
+        clientId =
+          site.defaultClientId || <string>state.options.defaultClientId;
+      }
+
+      let client = state.options.clients.find((item: any) => {
+        return item.id === clientId;
+      });
+
+      return client;
+    },
+
+    /**
+     * 获取当前站点的默认下载目录
+     * @param string clientId 指定客户端ID，不指定表示使用默认下载客户端
+     * @return string 目录信息，如果没有定义，则返回空字符串
+     */
+    siteDefaultPath: state => (site: Site, clientId: string = ""): string => {
+      if (!clientId) {
+        clientId =
+          site.defaultClientId || <string>state.options.defaultClientId;
+      }
+
+      let client = state.options.clients.find((item: any) => {
+        return item.id === clientId;
+      });
+      let path = "";
+      if (client && client.paths) {
+        for (const host in client.paths) {
+          if (site.host === host) {
+            path = client.paths[host][0];
+            break;
+          }
+        }
+      }
+
+      return path;
     }
   }
 });
@@ -287,6 +330,6 @@ export default new Vuex.Store({
 // 更新当前TabId
 if (chrome && chrome.tabs) {
   chrome.tabs.getCurrent((tab: any) => {
-    extension.sendRequest(EAction.updateOptionsTabId, () => { }, tab.id);
+    extension.sendRequest(EAction.updateOptionsTabId, () => {}, tab.id);
   });
 }

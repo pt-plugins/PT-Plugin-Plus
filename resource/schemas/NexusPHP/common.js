@@ -66,51 +66,8 @@ String.prototype.getQueryString = function (name, split) {
           }
         ).then(result => {
           console.log("命令执行完成", result);
-          let notice = {
-            type: "error",
-            msg: ""
-          };
-
-          switch (this.defaultClientOptions.type) {
-            // transmission
-            case this.downloadClientType.transmission:
-              if (result.id != undefined) {
-                notice.msg = result.name + " 已发送至 Transmission，编号：" + result.id;
-                notice.type = "success";
-                if (!this.defaultPath) {
-                  notice.type = "info";
-                  notice.msg += "；但站点默认目录未配置，建议配置。";
-                }
-              } else if (result.status) {
-                switch (result.status) {
-                  // 重复的种子
-                  case "duplicate":
-                    notice.msg = result.torrent.name + " 种子已存在！编号：" + result.torrent.id;
-                    break;
-
-                  case "error":
-                    notice.msg = "链接发送失败，请检查下载服务器是否可用。";
-                    break;
-                  default:
-                    notice.msg = result.msg;
-                    break;
-                }
-              } else {
-                notice.msg = result;
-              }
-
-              break;
-
-            default:
-              notice = {
-                type: "success",
-                msg: '种子已添加'
-              };
-              break;
-          }
-
           if (showNotice) {
-            PTSevrice.showNotice(notice);
+            PTSevrice.showNotice(result);
           }
           resolve(result);
         }).catch((result) => {

@@ -25,10 +25,6 @@
           let url = this.getDownloadURL();
           let title = this.getTitle();
 
-          // setTimeout(() => {
-          //   success()
-          // }, 1000);
-
           if (url) {
             this.sendTorrentToDefaultClient({
               url,
@@ -38,44 +34,13 @@
             }).catch(() => {
               success();
             });
-            // PTSevrice.call(
-            //   PTSevrice.action.sendTorrentToDefaultClient, {
-            //     url: url,
-            //     savePath: this.defaultPath,
-            //     autoStart: this.defaultClientOptions.autoStart
-            //   }
-            // ).then(result => {
-            //   console.log("命令执行完成", result);
-            //   switch (this.defaultClientOptions.type) {
-            //     // transmission
-            //     case this.downloadClientType.transmission:
-            //       if (result && result.status && result.status === "duplicate") {
-            //         error(`${result.torrent.name} 已存在`);
-            //       } else {
-            //         if (!this.defaultPath) {
-            //           success({
-            //             msg: "种子已添加，但站点默认目录未配置，建议配置。"
-            //           });
-            //         } else {
-            //           success()
-            //         }
-            //       }
-            //       break;
-
-            //     default:
-            //       success();
-            //       break;
-            //   }
-            // }).catch((result) => {
-            //   error(result)
-            // });
           }
         }
       });
 
       // 复制下载链接
       PTSevrice.addButton({
-        title: "复制下载链接到剪切板",
+        title: "复制下载链接到剪切板",
         icon: "file_copy",
         label: "复制链接",
         click: (success, error) => {
@@ -89,9 +54,6 @@
           }).catch(() => {
             error()
           });
-          // setTimeout(() => {
-          //   error()
-          // }, 1000);
         }
       });
     }

@@ -1,5 +1,5 @@
 <template>
-  <div class="set-download-clients">
+  <div class="history">
     <v-alert :value="true" type="info">{{ words.title }}</v-alert>
     <v-card>
       <v-card-title>
@@ -30,7 +30,13 @@
           <td style="width:20px;">
             <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
           </td>
-          <td>{{ props.item.data.title }}</td>
+          <td>
+            {{ props.item.data.title }}
+            <br>
+            <span
+              class="sub-title"
+            >[ {{ getClientName(props.item.clientId) }} ] -> {{ props.item.data.savePath }}</span>
+          </td>
           <td>{{ props.item.time | formatDate }}</td>
           <td>
             <v-icon small color="error" @click="removeConfirm(props.item)">delete</v-icon>
@@ -93,7 +99,8 @@ export default Vue.extend({
         { text: "操作", value: "name", sortable: false }
       ],
       items: [],
-      dialogRemoveConfirm: false
+      dialogRemoveConfirm: false,
+      options: this.$store.state.options
     };
   },
 
@@ -127,6 +134,16 @@ export default Vue.extend({
         console.log("downloadHistory", result);
         this.items = result;
       });
+    },
+
+    getClientName(clientId: string): string {
+      let client = this.options.clients.find((item: any) => {
+        return item.id === clientId;
+      });
+      if (client) {
+        return client.name;
+      }
+      return "";
     }
   },
 
@@ -135,3 +152,11 @@ export default Vue.extend({
   }
 });
 </script>
+<style lang="scss" scoped>
+.history {
+  .sub-title {
+    color: #aaaaaa;
+    font-size: 12px;
+  }
+}
+</style>

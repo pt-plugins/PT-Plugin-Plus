@@ -4,7 +4,11 @@ import {
   Site,
   SiteSchema,
   Dictionary,
-  EConfigKey
+  EConfigKey,
+  DownloadClient,
+  EDownloadClientType,
+  DownloadOptions,
+  DownloadResult
 } from "../interface/common";
 import { APP } from "../service/api";
 import { filters as Filters } from "../service/filters";
@@ -16,6 +20,7 @@ export default class Controler {
   };
 
   public defaultClient: any;
+  public defaultClientOptions: DownloadClient = {};
   public siteDefaultClients: any = {};
   public optionsTabId: number | undefined = 0;
   public downloadHistory: any[] = [];
@@ -211,77 +216,208 @@ export default class Controler {
    * 发送下载链接地址到默认服务器（客户端）
    * @param data 链接地址
    */
-  public sendTorrentToDefaultClient(data: any, sender?: any): Promise<any> {
+  public sendTorrentToDefaultClient(
+    data: DownloadOptions,
+    sender?: any
+  ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      // if (sender) {
-      //   let URL = Filters.parseURL(sender.url);
-      //   let hostname = URL.host;
-      //   let client = this.siteDefaultClients[hostname];
-      //   if (!client) {
-      //     this.initSiteDefaultClient(hostname).then((client: any) => {
-      //       client
-      //         .call(EAction.addTorrentFromURL, {
-      //           url: data.url,
-      //           savePath: data.savePath,
-      //           autoStart: data.autoStart
-      //         })
-      //         .then((result: any) => {
-      //           resolve(result);
-      //         });
-      //     });
-      //   }
-      //   return;
-      // }
+      let URL = Filters.parseURL(data.url);
+      let host = URL.host;
+      let site = this.getSiteFromHost(host);
+      let siteDefaultPath = this.getSiteDefaultPath(site);
+      let siteClientConfig = this.siteDefaultClients[host];
+      if (!siteClientConfig) {
+        this.initSiteDefaultClient(host).then((siteClientConfig: any) => {
+          this.siteDefaultClients[host] = siteClientConfig;
 
-      // 是否保存历史记录
-      if (this.options.saveDownloadHistory) {
-        let storage: localStorage = new localStorage();
-        let saveData = {
-          data,
-          time: new Date().getTime()
-        };
-        if (!this.downloadHistory) {
-          this.getDownloadHistory().then((result: any) => {
-            this.downloadHistory = result;
-            this.downloadHistory.push(saveData);
-            storage.set(EConfigKey.downloadHistory, this.downloadHistory);
-          });
-        } else {
-          let index = this.downloadHistory.findIndex((item: any) => {
-            return item.data.url === data.url;
-          });
-          if (index === -1) {
-            this.downloadHistory.push(saveData);
-            storage.set(EConfigKey.downloadHistory, this.downloadHistory);
+          this.doDownload(siteClientConfig, data, siteDefaultPath).then(
+            (result: any) => {
+              this.saveDownloadHistory(
+                data,
+                site.host,
+                siteClientConfig.options.id
+              );
+              resolve(result);
+            }
+          );
+        });
+      } else {
+        this.doDownload(siteClientConfig, data, siteDefaultPath).then(
+          (result: any) => {
+            this.saveDownloadHistory(
+              data,
+              site.host,
+              siteClientConfig.options.id
+            );
+            resolve(result);
           }
+        );
+      }
+    });
+  }
+
+  /**
+   * 保存下载记录
+   * @param data 下载链接信息
+   * @param host 站点域名
+   * @param clientId 下载客户端ID
+   */
+  private saveDownloadHistory(
+    data: any,
+    host: string = "",
+    clientId: string = ""
+  ) {
+    // 是否保存历史记录
+    if (this.options.saveDownloadHistory) {
+      let storage: localStorage = new localStorage();
+      let saveData = {
+        data,
+        clientId,
+        host,
+        time: new Date().getTime()
+      };
+      if (!this.downloadHistory) {
+        this.getDownloadHistory().then((result: any) => {
+          this.downloadHistory = result;
+          this.downloadHistory.push(saveData);
+          storage.set(EConfigKey.downloadHistory, this.downloadHistory);
+        });
+      } else {
+        let index = this.downloadHistory.findIndex((item: any) => {
+          return item.data.url === data.url;
+        });
+        if (index === -1) {
+          this.downloadHistory.push(saveData);
+          storage.set(EConfigKey.downloadHistory, this.downloadHistory);
         }
       }
-      let URL = Filters.parseURL(data.url);
-      let hostname = URL.host;
-      let client = this.siteDefaultClients[hostname];
-      if (!client) {
-        this.initSiteDefaultClient(hostname).then((client: any) => {
-          client
-            .call(EAction.addTorrentFromURL, {
-              url: data.url,
-              savePath: data.savePath,
-              autoStart: data.autoStart
-            })
-            .then((result: any) => {
-              resolve(result);
-            });
-        });
-        return;
-      }
-      this.defaultClient
+    }
+  }
+
+  /**
+   * 执行下载操作
+   * @param siteClientConfig
+   * @param data
+   * @param siteDefaultPath
+   */
+  private doDownload(
+    siteClientConfig: any,
+    data: DownloadOptions,
+    siteDefaultPath: string = ""
+  ): Promise<any> {
+    return new Promise((resolve?: any, reject?: any) => {
+      siteClientConfig.client
         .call(EAction.addTorrentFromURL, {
           url: data.url,
           savePath: data.savePath,
           autoStart: data.autoStart
         })
         .then((result: any) => {
-          resolve(result);
+          this.formatSendResult(
+            result,
+            siteClientConfig.options,
+            siteDefaultPath
+          ).then((result: any) => {
+            resolve(result);
+          });
         });
+    });
+  }
+
+  /**
+   * 根据指定的域名获取站点配置信息
+   * @param host 域名
+   */
+  public getSiteFromHost(host: string): Site {
+    return this.options.sites.find((item: Site) => {
+      return item.host === host;
+    });
+  }
+
+  /**
+   * 获取当前站点的默认下载目录
+   * @param string clientId 指定客户端ID，不指定表示使用默认下载客户端
+   * @return string 目录信息，如果没有定义，则返回空字符串
+   */
+  public getSiteDefaultPath(site: Site, clientId: string = ""): string {
+    if (!clientId) {
+      clientId = site.defaultClientId || <string>this.options.defaultClientId;
+    }
+
+    let client = this.options.clients.find((item: any) => {
+      return item.id === clientId;
+    });
+    let path = "";
+    if (client && client.paths) {
+      for (const host in client.paths) {
+        if (site.host === host) {
+          path = client.paths[host][0];
+          break;
+        }
+      }
+    }
+
+    return path;
+  }
+
+  /**
+   * 格式化发送结果
+   * @param data
+   * @param clientOptions
+   * @param siteDefaultPath
+   */
+  private formatSendResult(
+    data: any,
+    clientOptions: any,
+    siteDefaultPath: string
+  ): Promise<any> {
+    return new Promise((resolve?: any, reject?: any) => {
+      let result: DownloadResult = {
+        type: "success",
+        msg: "种子已添加",
+        success: true,
+        data: data
+      };
+
+      switch (clientOptions.type) {
+        // transmission
+        case EDownloadClientType.transmission:
+          if (data.id != undefined) {
+            result.msg = data.name + " 已发送至 Transmission，编号：" + data.id;
+            if (!siteDefaultPath) {
+              result.type = "info";
+              result.msg += "；但站点默认目录未配置，建议配置。";
+            }
+          } else if (data.status) {
+            switch (data.status) {
+              // 重复的种子
+              case "duplicate":
+                result.type = "error";
+                result.success = false;
+                result.msg =
+                  data.torrent.name + " 种子已存在！编号：" + data.torrent.id;
+                break;
+
+              case "error":
+                result.type = "error";
+                result.success = false;
+                result.msg = "链接发送失败，请检查下载服务器是否可用。";
+                break;
+              default:
+                result.msg = data.msg;
+                break;
+            }
+          } else {
+            result.msg = data;
+          }
+
+          break;
+
+        default:
+          break;
+      }
+
+      resolve(result);
     });
   }
 
@@ -304,7 +440,7 @@ export default class Controler {
             loginPwd: clientOptions.loginPwd,
             address: clientOptions.address
           });
-          resolve(client);
+          resolve({ client, options: clientOptions });
         });
       } else {
         let client: any;
@@ -314,7 +450,7 @@ export default class Controler {
           loginPwd: clientOptions.loginPwd,
           address: clientOptions.address
         });
-        resolve(client);
+        resolve({ client, options: clientOptions });
       }
     });
   }
@@ -331,8 +467,9 @@ export default class Controler {
     });
 
     if (clientOptions) {
-      this.initClient(clientOptions).then((client: any) => {
-        this.defaultClient = client;
+      this.initClient(clientOptions).then((result: any) => {
+        this.defaultClient = result.client;
+        this.defaultClientOptions = result.options;
       });
     }
   }
@@ -355,7 +492,10 @@ export default class Controler {
     }
 
     return new Promise<any>((resolve?: any, reject?: any) => {
-      resolve(this.defaultClient);
+      resolve({
+        client: this.defaultClient,
+        options: this.defaultClientOptions
+      });
     });
   }
 

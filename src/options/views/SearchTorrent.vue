@@ -39,7 +39,7 @@
             <v-icon
               small
               class="mr-2"
-              @click="download(props.item.url)"
+              @click="download(props.item.url, getTitle(props.item.title))"
               :title="words.download"
             >cloud_download</v-icon>
           </td>
@@ -74,6 +74,7 @@ export default Vue.extend({
       },
       key: "",
       options: this.$store.state.options,
+      getters: this.$store.getters,
       searchMsg: "",
       datas: [] as any,
       selected: [],
@@ -258,125 +259,36 @@ export default Vue.extend({
       }
       return author;
     },
-    download(url: string) {
+    download(url: string, title: string) {
       console.log(url);
       let host = filters.parseURL(url).host;
       let site = this.options.sites.find((site: Site) => {
         return site.host === host;
       });
-      let defaultClientOptions = this.getClientOptions(site);
-      let defaultPath = this.getSiteDefaultPath(site);
+      let defaultClientOptions = this.getters.clientOptions(site);
+      let defaultPath = this.getters.siteDefaultPath(site);
 
       this.haveSuccess = true;
       this.successMsg = "正在发送种子到下载服务器……";
 
-      extension.sendRequest(
-        EAction.sendTorrentToDefaultClient,
-        (result: any) => {
-          console.log("命令执行完成", result);
-          let notice = {
-            type: "error",
-            msg: ""
-          };
-
-          switch (defaultClientOptions.type) {
-            // transmission
-            case EDownloadClientType.transmission:
-              if (result.id != undefined) {
-                notice.msg =
-                  result.name + " 已发送至 Transmission，编号：" + result.id;
-                notice.type = "success";
-                if (!defaultPath) {
-                  notice.type = "info";
-                  notice.msg += "；但站点默认目录未配置，建议配置。";
-                }
-              } else if (result.status) {
-                switch (result.status) {
-                  // 重复的种子
-                  case "duplicate":
-                    notice.msg =
-                      result.torrent.name +
-                      " 种子已存在！编号：" +
-                      result.torrent.id;
-                    break;
-
-                  case "error":
-                    notice.msg = "链接发送失败，请检查下载服务器是否可用。";
-                    break;
-                  default:
-                    notice.msg = result.msg;
-                    break;
-                }
-              } else {
-                notice.msg = result;
-              }
-
-              break;
-
-            default:
-              notice = {
-                type: "success",
-                msg: "种子已添加"
-              };
-              break;
-          }
-
-          if (notice.type == "success") {
-            this.haveSuccess = true;
-            this.successMsg = notice.msg;
-          } else {
-            this.haveError = true;
-            this.errorMsg = notice.msg;
-          }
-        },
-        {
-          url: url,
+      extension
+        .sendRequest(EAction.sendTorrentToDefaultClient, null, {
+          url,
+          title,
           savePath: defaultPath,
           autoStart: defaultClientOptions.autoStart
-        }
-      );
-    },
+        })
+        .then((result: any) => {
+          console.log("命令执行完成", result);
 
-    /**
-     * 获取指定客户端配置
-     * @param clientId
-     */
-    getClientOptions(site: Site, clientId: string = "") {
-      if (!clientId) {
-        clientId = site.defaultClientId || <string>this.options.defaultClientId;
-      }
-
-      let client = this.options.clients.find((item: any) => {
-        return item.id === clientId;
-      });
-
-      return client;
-    },
-
-    /**
-     * 获取当前站点的默认下载目录
-     * @param string clientId 指定客户端ID，不指定表示使用默认下载客户端
-     * @return string 目录信息，如果没有定义，则返回空字符串
-     */
-    getSiteDefaultPath(site: Site, clientId: string = ""): string {
-      if (!clientId) {
-        clientId = site.defaultClientId || <string>this.options.defaultClientId;
-      }
-
-      let client = this.options.clients.find((item: any) => {
-        return item.id === clientId;
-      });
-      let path = "";
-      if (client && client.paths) {
-        for (const host in client.paths) {
-          if (site.host === host) {
-            path = client.paths[host][0];
-            break;
+          if (result.type == "success") {
+            this.haveSuccess = true;
+            this.successMsg = result.msg;
+          } else {
+            this.haveError = true;
+            this.errorMsg = result.msg;
           }
-        }
-      }
-
-      return path;
+        });
     }
   }
 });

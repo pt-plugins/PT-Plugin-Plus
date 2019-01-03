@@ -38,6 +38,7 @@ export interface DownloadClient {
   loginPwd?: string;
   paths?: any;
   autoStart?: boolean;
+  type?: string;
 }
 
 export interface ButtonOption {
@@ -181,4 +182,24 @@ export enum EStorageType {
 export enum EConfigKey {
   default = "PT-Plugin-Plus-Config",
   downloadHistory = "PT-Plugin-Plus-downloadHistory"
+}
+
+/**
+ * 下载参数
+ */
+export interface DownloadOptions {
+  url: string;
+  title?: string;
+  savePath?: string;
+  autoStart?: boolean;
+}
+
+/**
+ * 下载返回的结果
+ */
+export interface DownloadResult {
+  success: boolean;
+  msg?: string;
+  type?: string;
+  data?: any;
 }
