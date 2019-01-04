@@ -1,6 +1,6 @@
 import { EAction, Request, Options } from "../interface/common";
 import Config from "./config";
-import Controler from "./controler";
+import Controller from "./controller";
 
 /**
  * PT 助手后台服务类
@@ -14,7 +14,7 @@ export default class PTPlugin {
   };
   // 本地模式，用于本地快速调试
   public localMode: boolean = false;
-  public controler: any;
+  public controller: any;
 
   constructor(localMode: boolean = false) {
     this.localMode = localMode;
@@ -53,14 +53,14 @@ export default class PTPlugin {
         case EAction.saveConfig:
           this.config.save(request.data);
           this.options = request.data;
-          if (this.controler) {
-            this.controler.options = this.options;
+          if (this.controller) {
+            this.controller.options = this.options;
           }
           break;
 
         // 发送种子到默认下载客户端
         case EAction.sendTorrentToDefaultClient:
-          this.controler
+          this.controller
             .sendTorrentToDefaultClient(request.data)
             .then((result: any) => {
               resolve(result);
@@ -72,7 +72,7 @@ export default class PTPlugin {
 
         // 发送种子到指定的客户端
         case EAction.sendTorrentToClient:
-          this.controler
+          this.controller
             .sendTorrentToClient(request.data)
             .then((result: any) => {
               resolve(result);
@@ -84,7 +84,7 @@ export default class PTPlugin {
 
         // 复制指定的内容到剪切板
         case EAction.copyTextToClipboard:
-          result = this.controler.copyTextToClipboard(request.data);
+          result = this.controller.copyTextToClipboard(request.data);
           if (result) {
             resolve(result);
           } else {
@@ -94,7 +94,7 @@ export default class PTPlugin {
 
         // 获取可用空间
         case EAction.getFreeSpace:
-          this.controler
+          this.controller
             .getFreeSpace(request.data)
             .then((result: any) => {
               resolve(result);
@@ -105,22 +105,22 @@ export default class PTPlugin {
           break;
 
         case EAction.openOptions:
-          this.controler.openOptions();
+          this.controller.openOptions();
           resolve(true);
           break;
 
         case EAction.updateOptionsTabId:
-          this.controler.updateOptionsTabId(result.data);
+          this.controller.updateOptionsTabId(result.data);
           resolve(true);
           break;
 
         // 搜索种子
         case EAction.searchTorrent:
           console.log(request.data);
-          this.controler.openOptions(request.data);
+          this.controller.openOptions(request.data);
           resolve(true);
-          // this.controler &&
-          //   this.controler
+          // this.controller &&
+          //   this.controller
           //     .searchTorrent(request.data)
           //     .then((result: any) => {
           //       resolve(result);
@@ -131,8 +131,8 @@ export default class PTPlugin {
           break;
 
         case EAction.getSearchResult:
-          this.controler &&
-            this.controler
+          this.controller &&
+            this.controller
               .getSearchResult(request.data)
               .then((result: any) => {
                 resolve(result);
@@ -144,8 +144,8 @@ export default class PTPlugin {
 
         // 获取下载记录
         case EAction.getDownloadHistory:
-          this.controler &&
-            this.controler
+          this.controller &&
+            this.controller
               .getDownloadHistory()
               .then((result: any) => {
                 resolve(result);
@@ -157,8 +157,8 @@ export default class PTPlugin {
 
         // 删除下载记录
         case EAction.removeDownloadHistory:
-          this.controler &&
-            this.controler
+          this.controller &&
+            this.controller
               .removeDownloadHistory(request.data)
               .then((result: any) => {
                 resolve(result);
@@ -170,8 +170,8 @@ export default class PTPlugin {
 
         // 清除下载记录
         case EAction.clearDownloadHistory:
-          this.controler &&
-            this.controler
+          this.controller &&
+            this.controller
               .clearDownloadHistory()
               .then((result: any) => {
                 resolve(result);
@@ -190,7 +190,7 @@ export default class PTPlugin {
         this.options = result;
         resolve(result);
         if (!this.localMode) {
-          this.controler = new Controler(this.options);
+          this.controller = new Controller(this.options);
         }
       });
     });
@@ -215,7 +215,7 @@ export default class PTPlugin {
         title: '搜索 "%s" 相关的种子',
         contexts: ["selection"],
         onclick: (data, tab) => {
-          this.controler.openOptions(data.selectionText);
+          this.controller.openOptions(data.selectionText);
         }
       });
     }

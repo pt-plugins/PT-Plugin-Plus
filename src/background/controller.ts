@@ -13,7 +13,7 @@ import {
 import { APP } from "../service/api";
 import { filters as Filters } from "../service/filters";
 import localStorage from "../service/localStorage";
-export default class Controler {
+export default class Controller {
   public options: Options = {
     sites: [],
     clients: []
