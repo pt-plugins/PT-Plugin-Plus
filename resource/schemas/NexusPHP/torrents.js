@@ -46,7 +46,7 @@
 
         // 复制下载链接
         PTSevrice.addButton({
-          title: "复制下载链接到剪切板",
+          title: "复制下载链接到剪切板",
           icon: "file_copy",
           label: "复制链接",
           click: (success, error) => {
