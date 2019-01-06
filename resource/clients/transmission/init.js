@@ -88,6 +88,7 @@
           url: this.options.address,
           dataType: 'json',
           data: JSON.stringify(data),
+          timeout: PTBackgroundService.options.connectClientTimeout,
           success: (resultData, textStatus) => {
             if (callback) {
               callback(resultData, tags);

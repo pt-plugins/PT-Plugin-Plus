@@ -83,6 +83,7 @@
           type: "POST",
           url: this.options.address + this.api.login,
           data: data,
+          timeout: PTBackgroundService.options.connectClientTimeout,
           success: (resultData, textStatus, request) => {
             this.isInitialized = true;
             if (callback) {
@@ -111,6 +112,7 @@
         type: "POST",
         url: this.options.address + options.method,
         data: options.params,
+        timeout: PTBackgroundService.options.connectClientTimeout,
         success: (resultData, textStatus) => {
           if (callback) {
             callback(resultData, tags);

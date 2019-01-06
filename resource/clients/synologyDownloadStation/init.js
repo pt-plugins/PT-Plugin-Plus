@@ -16,7 +16,10 @@
     getSessionId() {
       return new Promise((resolve, reject) => {
         let url = `${this.options.address}/webapi/auth.cgi?api=SYNO.API.Auth&version=${this.version}&method=login&account=${this.options.loginName}&passwd=${this.options.loginPwd}&session=DownloadStation&format=sid`;
-        $.getJSON(url).done((result) => {
+        $.ajax({
+          url,
+          timeout: PTBackgroundService.options.connectClientTimeout
+        }).done((result) => {
           console.log(result)
           if (result && result.success) {
             this.sessionId = result.data.sid;
@@ -74,10 +77,6 @@
       });
     }
 
-    exec() {
-
-    }
-
     /**
      * 添加种子链接
      * @param {*} options 
@@ -106,9 +105,17 @@
         `uri=` + encodeURIComponent(options.url),
         `destination=` + encodeURIComponent(options.savePath)
       ];
-      $.getJSON(path.join("&")).then((result) => {
+      $.ajax({
+        url: path.join("&"),
+        timeout: PTBackgroundService.options.connectClientTimeout
+      }).done((result) => {
         console.log(result)
         callback(result)
+      }).fail(() => {
+        callback({
+          status: "error",
+          msg: "服务器连接失败"
+        })
       })
     }
   }

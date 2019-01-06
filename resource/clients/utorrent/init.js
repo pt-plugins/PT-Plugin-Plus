@@ -63,7 +63,8 @@
         $.ajax({
             type: "GET",
             url: this.options.address + "token.html?t=",
-            headers: this.headers
+            headers: this.headers,
+            timeout: PTBackgroundService.options.connectClientTimeout
           })
           .done(resultData => {
             console.log(resultData);
@@ -114,6 +115,7 @@
         url: this.options.address + "?token=" + this.token,
         dataType: "json",
         data: data,
+        timeout: PTBackgroundService.options.connectClientTimeout,
         success: (resultData, textStatus) => {
           if (callback) {
             callback(resultData, tags);

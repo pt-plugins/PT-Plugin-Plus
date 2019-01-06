@@ -4,78 +4,116 @@
     <v-card color>
       <v-card-text>
         <v-form v-model="valid">
-          <v-autocomplete
-            v-model="options.defaultClientId"
-            :items="this.$store.state.options.clients"
-            :label="words.defaultClient"
-            :menu-props="{maxHeight:'auto'}"
-            :hint="getClientAddress"
-            persistent-hint
-            item-text="name"
-            item-value="id"
-            required
-            :rules="rules.require"
-          >
-            <template slot="selection" slot-scope="{ item }">
-              <span v-text="item.name"></span>
-            </template>
-            <template slot="item" slot-scope="data" style>
-              <v-list-tile-content>
-                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                <v-list-tile-sub-title v-html="data.item.address"></v-list-tile-sub-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-list-tile-action-text>{{ data.item.type }}</v-list-tile-action-text>
-              </v-list-tile-action>
-            </template>
-          </v-autocomplete>
+          <v-container fluid grid-list-xs>
+            <v-layout row wrap>
+              <v-flex xs12>
+                <v-autocomplete
+                  v-model="options.defaultClientId"
+                  :items="this.$store.state.options.clients"
+                  :label="words.defaultClient"
+                  :menu-props="{maxHeight:'auto'}"
+                  :hint="getClientAddress"
+                  persistent-hint
+                  item-text="name"
+                  item-value="id"
+                  required
+                  :rules="rules.require"
+                >
+                  <template slot="selection" slot-scope="{ item }">
+                    <span v-text="item.name"></span>
+                  </template>
+                  <template slot="item" slot-scope="data" style>
+                    <v-list-tile-content>
+                      <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                      <v-list-tile-sub-title v-html="data.item.address"></v-list-tile-sub-title>
+                    </v-list-tile-content>
+                    <v-list-tile-action>
+                      <v-list-tile-action-text>{{ data.item.type }}</v-list-tile-action-text>
+                    </v-list-tile-action>
+                  </template>
+                  <template slot="no-data">
+                    <span class="ma-2">{{ words.noClient }}</span>
+                  </template>
+                </v-autocomplete>
+              </v-flex>
 
-          <v-text-field
-            v-model="options.search.rows"
-            :label="words.searchResultRows"
-            :placeholder="words.searchResultRows"
-          ></v-text-field>
+              <v-flex xs4>
+                <v-text-field
+                  v-model="options.search.rows"
+                  type="number"
+                  :label="words.searchResultRows"
+                  :placeholder="words.searchResultRows"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs1>
+                <v-slider v-model="options.search.rows" :max="50" :min="1"></v-slider>
+              </v-flex>
+              <v-flex xs7></v-flex>
 
-          <v-switch color="success" v-model="options.autoUpdate" :label="words.autoUpdate"></v-switch>
-          <v-switch
-            color="success"
-            v-model="options.allowSelectionTextSearch"
-            :label="words.allowSelectionTextSearch"
-          ></v-switch>
+              <v-flex xs4>
+                <v-text-field
+                  v-model="options.connectClientTimeout"
+                  :label="words.connectClientTimeout"
+                  :placeholder="words.connectClientTimeout"
+                  type="number"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs1>
+                <v-slider v-model="options.connectClientTimeout" :max="5000" :min="500" :step="500"></v-slider>
+              </v-flex>
 
-          <v-switch
-            color="success"
-            v-model="options.allowDropToSend"
-            :label="words.allowDropToSend"
-          ></v-switch>
+              <v-flex xs12>
+                <v-switch color="success" v-model="options.autoUpdate" :label="words.autoUpdate"></v-switch>
+              </v-flex>
+              <v-flex xs12>
+                <v-switch
+                  color="success"
+                  v-model="options.allowSelectionTextSearch"
+                  :label="words.allowSelectionTextSearch"
+                ></v-switch>
+              </v-flex>
 
-          <v-switch
-            color="success"
-            v-model="options.saveDownloadHistory"
-            :label="words.saveDownloadHistory"
-          ></v-switch>
-
-          <v-switch
-            color="success"
-            v-model="options.needConfirmWhenExceedSize"
-            :label="words.needConfirmWhenExceedSize"
-          ></v-switch>
-          <div style="margin: -40px 0 0 40px;">
-            <v-text-field
-              v-model="options.exceedSize"
-              :placeholder="words.exceedSize"
-              class="ml-2 d-inline-flex"
-              style="max-width: 100px;max-height: 30px;"
-              :disabled="!options.needConfirmWhenExceedSize"
-            ></v-text-field>
-            <v-select
-              v-model="options.exceedSizeUnit"
-              :items="units"
-              class="mx-2 d-inline-flex"
-              style="max-width: 50px;max-height: 30px;"
-              :disabled="!options.needConfirmWhenExceedSize"
-            ></v-select>
-          </div>
+              <v-flex xs12>
+                <v-switch
+                  color="success"
+                  v-model="options.allowDropToSend"
+                  :label="words.allowDropToSend"
+                ></v-switch>
+              </v-flex>
+              <v-flex xs12>
+                <v-switch
+                  color="success"
+                  v-model="options.saveDownloadHistory"
+                  :label="words.saveDownloadHistory"
+                ></v-switch>
+              </v-flex>
+              <v-flex xs12>
+                <v-switch
+                  color="success"
+                  v-model="options.needConfirmWhenExceedSize"
+                  :label="words.needConfirmWhenExceedSize"
+                ></v-switch>
+              </v-flex>
+              <v-flex xs12>
+                <div style="margin: -40px 0 0 40px;">
+                  <v-text-field
+                    v-model="options.exceedSize"
+                    :placeholder="words.exceedSize"
+                    class="ml-2 d-inline-flex"
+                    style="max-width: 100px;max-height: 30px;"
+                    :disabled="!options.needConfirmWhenExceedSize"
+                  ></v-text-field>
+                  <v-select
+                    v-model="options.exceedSizeUnit"
+                    :items="units"
+                    class="mx-2 d-inline-flex"
+                    style="max-width: 50px;max-height: 30px;"
+                    :disabled="!options.needConfirmWhenExceedSize"
+                  ></v-select>
+                </div>
+              </v-flex>
+            </v-layout>
+          </v-container>
         </v-form>
       </v-card-text>
 
@@ -121,7 +159,10 @@ export default Vue.extend({
           "当要下载的种子总体积超过以下大小时需要确认。",
         exceedSize: "大小",
         searchResultRows: "搜索时每站点返回结果数量",
-        saveDownloadHistory: "记录每次一键发送的种子信息，以供导出备份"
+        saveDownloadHistory: "记录每次一键发送的种子信息，以供导出备份",
+        connectClientTimeout:
+          "连接下载服务器超时时间（毫秒），超出后将中断连接",
+        noClient: "尚未配置下载服务器，请配置下载服务后再选择"
       },
       valid: false,
       rules: {
