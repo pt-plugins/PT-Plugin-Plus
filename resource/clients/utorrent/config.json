@@ -5,5 +5,6 @@
   "icon": "https://www.utorrent.com/faviconUT.ico",
   "scripts": [
     "init.js"
-  ]
+  ],
+  "description": "由于 µTorrent Web API 接口不统一，当前仅支持 µTorrent Windows 版本，Mac 版本测试不可用，其他系统未知。"
 }

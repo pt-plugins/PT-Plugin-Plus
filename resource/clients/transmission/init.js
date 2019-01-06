@@ -1,4 +1,8 @@
+/**
+ * @see https://github.com/transmission/transmission/blob/master/extras/rpc-spec.txt
+ */
 (function ($, window) {
+  const XHEADER = "X-Transmission-Session-Id";
   class Transmission {
     // headers = [];
     // options = {};
@@ -34,18 +38,30 @@
       console.log("transmission.call", action, data);
       return new Promise((resolve, reject) => {
         switch (action) {
+          // 从指定的URL添加种子
           case "addTorrentFromURL":
             this.addTorrentFromUrl(data.url, data.savePath, data.autoStart, (result) => {
               resolve(result);
             });
             break;
 
+            // 获取可用空间
           case "getFreeSpace":
             this.getFreeSpace(data.path, (result) => {
               resolve(result);
             });
 
             break;
+
+            // 测试是否可连接
+          case "testClientConnectivity":
+            this.sessionStats().then(result => {
+              resolve(result.result == "success");
+            }).catch(result => {
+              reject(result);
+            })
+            break;
+
         }
       });
     }
@@ -57,40 +73,72 @@
      * @param {*} tags 
      */
     exec(options, callback, tags) {
-      var data = {
-        method: "",
-        arguments: {},
-        tag: ""
-      };
+      return new Promise((resolve, reject) => {
+        var data = {
+          method: "",
+          arguments: {},
+          tag: ""
+        };
+        let result = {};
 
-      $.extend(data, options);
+        $.extend(data, options);
 
-      var settings = {
-        type: "POST",
-        url: this.options.address,
-        dataType: 'json',
-        data: JSON.stringify(data),
-        success: (resultData, textStatus) => {
-          if (callback) {
-            callback(resultData, tags);
-          }
-        },
-        error: (request, event, page) => {
-          var SessionId = "";
-          if (request.status === 409 && (SessionId = request.getResponseHeader('X-Transmission-Session-Id'))) {
-            this.SessionId = SessionId;
-            this.headers["X-Transmission-Session-Id"] = SessionId;
-            settings.headers = this.headers;
-            $.ajax(settings);
-          } else {
-            if (this.on.postError) {
-              this.on.postError(request);
+        var settings = {
+          type: "POST",
+          url: this.options.address,
+          dataType: 'json',
+          data: JSON.stringify(data),
+          success: (resultData, textStatus) => {
+            if (callback) {
+              callback(resultData, tags);
             }
-          }
-        },
-        headers: this.headers
-      };
-      $.ajax(settings);
+            resolve(resultData);
+          },
+          error: (request, event, page) => {
+            switch (request.status) {
+              case 409:
+                this.sessionId = request.getResponseHeader(XHEADER);
+                this.headers[XHEADER] = this.sessionId;
+                settings.headers = this.headers;
+                $.ajax(settings);
+                break;
+
+              case 401:
+                result = {
+                  status: "error",
+                  code: request.status,
+                  msg: "身份验证失败"
+                };
+                if (callback) {
+                  callback(result);
+                }
+                reject(result)
+                break;
+
+              default:
+                result = {
+                  status: "error",
+                  code: request.status,
+                  msg: "未知错误"
+                };
+                if (callback) {
+                  callback(result);
+                }
+                reject(result)
+                break;
+
+            }
+          },
+          headers: this.headers
+        };
+        $.ajax(settings);
+      });
+    }
+
+    sessionStats() {
+      return this.exec({
+        method: "session-stats"
+      });
     }
 
     /**
@@ -138,7 +186,7 @@
           case "duplicate torrent":
           default:
             if (callback) {
-              callback(data.result);
+              callback(data.result || data);
             }
             break;
 

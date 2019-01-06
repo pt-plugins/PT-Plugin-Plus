@@ -1,4 +1,6 @@
-// https://global.download.synology.com/download/Document/DeveloperGuide/Synology_Download_Station_Web_API.pdf
+/**
+ * @see https://global.download.synology.com/download/Document/DeveloperGuide/Synology_Download_Station_Web_API.pdf
+ */
 (function ($, window) {
   class Client {
 
@@ -14,12 +16,28 @@
     getSessionId() {
       return new Promise((resolve, reject) => {
         let url = `${this.options.address}/webapi/auth.cgi?api=SYNO.API.Auth&version=${this.version}&method=login&account=${this.options.loginName}&passwd=${this.options.loginPwd}&session=DownloadStation&format=sid`;
-        $.getJSON(url).then((result) => {
+        $.getJSON(url).done((result) => {
           console.log(result)
           if (result && result.success) {
             this.sessionId = result.data.sid;
+            resolve(this.sessionId)
+          } else {
+            reject({
+              status: "error",
+              code: result.error.code,
+              msg: "身份验证失败"
+            })
           }
-          resolve()
+          /**
+            400 No such account or incorrect password
+            401 Account disabled
+            402 Permission denied
+            403 2-step verification code required
+            404 Failed to authenticate 2-step verification code
+           */
+
+        }).fail(() => {
+          reject()
         })
       })
     }
@@ -43,6 +61,15 @@
               }
             });
             break;
+
+            // 测试是否可连接
+          case "testClientConnectivity":
+            this.getSessionId().then(result => {
+              resolve(result != "");
+            }).catch(result => {
+              reject(result);
+            })
+            break;
         }
       });
     }
@@ -58,8 +85,17 @@
      */
     addTorrentFromUrl(options, callback) {
       if (!this.sessionId) {
-        this.getSessionId().then(() => {
-          this.addTorrentFromUrl(options, callback)
+        this.getSessionId().then((result) => {
+          if (result) {
+            this.addTorrentFromUrl(options, callback)
+          } else {
+            callback({
+              status: "error",
+              msg: "服务器连接失败"
+            })
+          }
+        }).catch((result) => {
+          callback(result)
         })
         return;
       }

@@ -1,3 +1,6 @@
+/**
+ * @see https://github.com/qbittorrent/qBittorrent/wiki/Web-API-Documentation
+ */
 (function ($) {
   //qBittorrent
   class Client {
@@ -47,6 +50,19 @@
               resolve(result);
             });
             break;
+
+            // 测试是否可连接
+          case "testClientConnectivity":
+            this.getSessionId().then(result => {
+              resolve(true);
+            }).catch((code, msg) => {
+              reject({
+                status: "error",
+                code,
+                msg
+              });
+            })
+            break;
         }
       });
     }
@@ -56,25 +72,32 @@
      * @param {*} callback 
      */
     getSessionId(callback) {
-      var data = {
-        username: this.options.loginName,
-        password: this.options.loginPwd
-      };
+      return new Promise((resolve, reject) => {
+        var data = {
+          username: this.options.loginName,
+          password: this.options.loginPwd
+        };
 
-      // qb 需要禁用『启用跨站请求伪造保护』
-      var settings = {
-        type: "POST",
-        url: this.options.address + this.api.login,
-        data: data,
-        success: (resultData, textStatus, request) => {
-          this.isInitialized = true;
-          if (callback) {
-            callback(resultData);
+        // qb 需要禁用『启用跨站请求伪造保护』
+        var settings = {
+          type: "POST",
+          url: this.options.address + this.api.login,
+          data: data,
+          success: (resultData, textStatus, request) => {
+            this.isInitialized = true;
+            if (callback) {
+              callback(resultData);
+            }
+            resolve()
+            console.log(this.sessionId);
+          },
+          error: (jqXHR, textStatus, errorThrown) => {
+            reject(jqXHR.status, textStatus)
           }
-          console.log(this.sessionId);
-        }
-      };
-      $.ajax(settings);
+        };
+        $.ajax(settings);
+      });
+
     }
 
     /**
@@ -93,10 +116,16 @@
             callback(resultData, tags);
           }
         },
-        error: (request, event, page) => {
-          console.log(request);
-          this.getSessionId(() => {
+        error: (jqXHR, textStatus, errorThrown) => {
+          console.log(jqXHR);
+          this.getSessionId.then(() => {
             this.exec(options, callback, tags);
+          }).catch((code, msg) => {
+            callback({
+              status: "error",
+              code,
+              msg
+            })
           });
         }
       };
