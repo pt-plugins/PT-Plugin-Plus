@@ -1,0 +1,9 @@
+{
+  "name": "JPopsuki",
+  "description": "日韩音乐",
+  "url": "https://jpopsuki.eu/",
+  "icon": "https://jpopsuki.eu/favicon.ico",
+  "tags": ["音乐", "日韩"],
+  "schema": "Gazelle",
+  "host": "jpopsuki.eu"
+}

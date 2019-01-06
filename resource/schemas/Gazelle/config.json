@@ -1,0 +1,10 @@
+{
+  "name": "Gazelle",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "种子列表",
+    "pages": ["/torrents.php"],
+    "scripts": ["common.js", "torrents.js"]
+  }],
+  "securityKeyFields": ["authkey", "torrent_pass"]
+}

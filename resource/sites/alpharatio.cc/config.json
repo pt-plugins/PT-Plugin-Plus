@@ -1,0 +1,9 @@
+{
+  "name": "AlphaRatio",
+  "description": "0day",
+  "url": "https://alpharatio.cc/",
+  "icon": "https://alpharatio.cc/favicon.ico",
+  "tags": ["音乐", "0day"],
+  "schema": "Gazelle",
+  "host": "alpharatio.cc"
+}
