@@ -136,18 +136,20 @@ export default Vue.extend({
       this.options.sites.forEach((item: Site) => {
         if (item.allowSearch) {
           let siteSchema: SiteSchema = this.getSiteSchema(item);
-          let url: string = <string>item.url + siteSchema.searchPage;
-          let script: string = <string>siteSchema.getSearchResultScript;
+          if (siteSchema && siteSchema.searchPage) {
+            let url: string = <string>item.url + siteSchema.searchPage;
+            let script: string = <string>siteSchema.getSearchResultScript;
 
-          url = this.replaceKeys(url, {
-            key: this.key,
-            rows: rows,
-            passkey: item.passkey ? item.passkey : ""
-          });
+            url = this.replaceKeys(url, {
+              key: this.key,
+              rows: rows,
+              passkey: item.passkey ? item.passkey : ""
+            });
 
-          urls.push(url);
-          scripts.push(script);
-          sites.push(item);
+            urls.push(url);
+            scripts.push(script);
+            sites.push(item);
+          }
         }
       });
 
