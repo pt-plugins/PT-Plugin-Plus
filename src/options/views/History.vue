@@ -22,7 +22,7 @@
         :headers="headers"
         :items="items"
         :pagination.sync="pagination"
-        item-key="data.title"
+        item-key="data.url"
         select-all
         class="elevation-1"
       >
