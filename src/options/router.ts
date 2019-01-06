@@ -87,6 +87,11 @@ export default new Router({
       path: "/history",
       name: "history",
       component: () => import("./views/History.vue")
+    },
+    {
+      path: "/system-logs",
+      name: "system-logs",
+      component: () => import("./views/SystemLogs.vue")
     }
   ]
 });
