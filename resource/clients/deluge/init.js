@@ -16,7 +16,7 @@
       this.requestCount = -1;
 
       if (this.options.address.indexOf("/json") == -1) {
-        let url = PTService.filters.parseURL(this.options.address);
+        let url = PTSevriceFilters.parseURL(this.options.address);
         this.options.address = `${url.protocol}://${url.host}:${url.port}/json`;
       }
       console.log("Deluge.init", this.options.address);
@@ -37,6 +37,17 @@
               resolve(result);
             });
             break;
+
+            // 测试是否可连接
+          case "testClientConnectivity":
+            this.getSessionId()
+              .then(result => {
+                resolve(result != "");
+              })
+              .catch(result => {
+                reject(result);
+              });
+            break;
         }
       });
     }
@@ -46,27 +57,40 @@
      * @param {*} callback 
      */
     getSessionId(callback) {
+      return new Promise((resolve, reject) => {
+        var data = {
+          id: (++this.requestCount),
+          method: "auth.login",
+          params: [this.options.loginPwd]
+        };
 
-      var data = {
-        id: (++this.requestCount),
-        method: "auth.login",
-        params: [this.options.loginPwd]
-      };
-
-      var settings = {
-        type: "POST",
-        url: this.options.address,
-        dataType: 'json',
-        data: JSON.stringify(data),
-        processData: false,
-        success: (resultData, textStatus) => {
+        $.ajax({
+          type: "POST",
+          url: this.options.address,
+          dataType: 'json',
+          contentType: "application/json",
+          data: JSON.stringify(data),
+          timeout: PTBackgroundService.options.connectClientTimeout
+        }).done((resultData, textStatus) => {
           this.isInitialized = true;
           if (callback) {
             callback(resultData);
           }
-        }
-      };
-      $.ajax(settings);
+          resolve(this.token);
+        }).fail((jqXHR, textStatus) => {
+          let result = {
+            status: "error",
+            code: jqXHR.status,
+            msg: "未知错误"
+          };
+          switch (jqXHR.status) {
+            case 401:
+              result.msg = "身份验证失败";
+              break;
+          }
+          reject(result);
+        });
+      })
     }
 
     /**
@@ -86,7 +110,8 @@
         type: "POST",
         url: this.options.address,
         data: JSON.stringify(data),
-        processData: false,
+        contentType: "application/json",
+        timeout: PTBackgroundService.options.connectClientTimeout,
         success: (resultData, textStatus) => {
           if (callback) {
             callback(resultData, tags);
@@ -94,8 +119,10 @@
         },
         error: (request, event, page) => {
           console.log(request);
-          this.getSessionId(() => {
+          this.getSessionId().then(() => {
             this.exec(options, callback, tags);
+          }).catch((result) => {
+            callback && callback(result)
           });
         }
       };
