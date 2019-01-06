@@ -1,6 +1,6 @@
 <template>
   <div class="search-torrent">
-    <v-alert :value="true" type="info">{{ words.title }} [{{ key }}], {{searchMsg}}</v-alert>
+    <v-alert :value="true" type="info">{{ words.title }} [{{ key }}], {{searchMsg}} {{skipSites}}</v-alert>
     <v-card>
       <v-card-title>
         <v-btn :disabled="selected.length==0" color="success">
@@ -40,8 +40,12 @@
               small
               class="mr-2"
               @click="download(props.item.url, getTitle(props.item.title))"
-              :title="words.download"
+              :title="words.sendToClient"
             >cloud_download</v-icon>
+
+            <a :href="props.item.url">
+              <v-icon small class="mr-2" :title="words.save">get_app</v-icon>
+            </a>
           </td>
         </template>
       </v-data-table>
@@ -70,7 +74,9 @@ export default Vue.extend({
     return {
       words: {
         title: "搜索结果",
-        download: "下载"
+        download: "下载",
+        sendToClient: "发送到下载服务器",
+        save: "下载种子文件到本地"
       },
       key: "",
       options: this.$store.state.options,
@@ -94,7 +100,8 @@ export default Vue.extend({
       haveError: false,
       haveSuccess: false,
       successMsg: "",
-      currentSite: {} as Site
+      currentSite: {} as Site,
+      skipSites: ""
     };
   },
   created() {
@@ -132,6 +139,8 @@ export default Vue.extend({
       let scripts: string[] = [];
       let sites: Site[] = [];
       let errors: string[] = [];
+      let skipSites: string[] = [];
+      this.skipSites = "";
 
       this.options.sites.forEach((item: Site) => {
         if (item.allowSearch) {
@@ -149,9 +158,15 @@ export default Vue.extend({
             urls.push(url);
             scripts.push(script);
             sites.push(item);
+          } else {
+            skipSites.push(item.name);
           }
         }
       });
+
+      if (skipSites.length > 0) {
+        this.skipSites = "，暂不支持搜索的站点：" + skipSites.join(",");
+      }
 
       if (urls.length === 0) {
         this.errorMsg =
@@ -305,12 +320,12 @@ export default Vue.extend({
     white-space: nowrap;
     padding: 10px 0 5px 15px;
   }
-  .title a {
+  a {
     color: #111;
     text-decoration: none;
     font-size: 16px;
   }
-  .title a:hover {
+  a:hover {
     color: #008c00;
   }
 
