@@ -4,15 +4,15 @@ import {
   Site,
   SiteSchema,
   Dictionary,
-  EConfigKey,
   DownloadClient,
   EDownloadClientType,
   DownloadOptions,
-  DownloadResult
-} from "../interface/common";
-import { APP } from "../service/api";
-import { filters as Filters } from "../service/filters";
-import localStorage from "../service/localStorage";
+  DataResult,
+  EDataResultType
+} from "@/interface/common";
+import { filters as Filters } from "@/service/filters";
+import { ClientController } from "@/service/clientController";
+import { DownloadHistory } from "./downloadHistory";
 export default class Controller {
   public options: Options = {
     sites: [],
@@ -23,13 +23,25 @@ export default class Controller {
   public defaultClientOptions: DownloadClient = {};
   public siteDefaultClients: any = {};
   public optionsTabId: number | undefined = 0;
-  public downloadHistory: any[] = [];
+  public downloadHistory: DownloadHistory = new DownloadHistory();
   public clients: any = {};
 
-  constructor(options: Options) {
+  public clientController: ClientController = new ClientController();
+  public isInitialized: boolean = false;
+
+  public init(options: Options) {
+    this.reset(options);
+    this.isInitialized = true;
+  }
+
+  /**
+   * 重置并刷新配置
+   * @param options
+   */
+  public reset(options: Options) {
     this.options = options;
+    this.clientController.init(options);
     this.initDefaultClient();
-    this.getDownloadHistory();
   }
 
   /**
@@ -165,13 +177,24 @@ export default class Controller {
    * 获取下载历史记录
    */
   public getDownloadHistory(): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      let storage: localStorage = new localStorage();
-      storage.get(EConfigKey.downloadHistory, (result: any) => {
-        this.downloadHistory = result || [];
-        resolve(this.downloadHistory);
-      });
-    });
+    return this.downloadHistory.load();
+  }
+
+  /**
+   * 保存下载记录
+   * @param data 下载链接信息
+   * @param host 站点域名
+   * @param clientId 下载客户端ID
+   */
+  private saveDownloadHistory(
+    data: any,
+    host: string = "",
+    clientId: string = ""
+  ) {
+    // 是否保存历史记录
+    if (this.options.saveDownloadHistory) {
+      this.downloadHistory.add(data, host, clientId);
+    }
   }
 
   /**
@@ -179,35 +202,14 @@ export default class Controller {
    * @param items 需要删除的列表
    */
   public removeDownloadHistory(items: any[]): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      let storage: localStorage = new localStorage();
-      storage.get(EConfigKey.downloadHistory, (result: any) => {
-        this.downloadHistory = result;
-        for (let index = this.downloadHistory.length - 1; index >= 0; index--) {
-          let item = this.downloadHistory[index];
-          let findIndex = items.findIndex((_data: any) => {
-            return _data.data.url === item.data.url;
-          });
-          if (findIndex >= 0) {
-            this.downloadHistory.splice(index, 1);
-          }
-        }
-        storage.set(EConfigKey.downloadHistory, this.downloadHistory);
-        resolve(this.downloadHistory);
-      });
-    });
+    return this.downloadHistory.remove(items);
   }
 
   /**
    * 清除下载记录
    */
   public clearDownloadHistory(): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      let storage: localStorage = new localStorage();
-      this.downloadHistory = [];
-      storage.set(EConfigKey.downloadHistory, this.downloadHistory);
-      resolve(this.downloadHistory);
-    });
+    return this.downloadHistory.clear();
   }
 
   /**
@@ -276,44 +278,6 @@ export default class Controller {
         );
       }
     });
-  }
-
-  /**
-   * 保存下载记录
-   * @param data 下载链接信息
-   * @param host 站点域名
-   * @param clientId 下载客户端ID
-   */
-  private saveDownloadHistory(
-    data: any,
-    host: string = "",
-    clientId: string = ""
-  ) {
-    // 是否保存历史记录
-    if (this.options.saveDownloadHistory) {
-      let storage: localStorage = new localStorage();
-      let saveData = {
-        data,
-        clientId,
-        host,
-        time: new Date().getTime()
-      };
-      if (!this.downloadHistory) {
-        this.getDownloadHistory().then((result: any) => {
-          this.downloadHistory = result;
-          this.downloadHistory.push(saveData);
-          storage.set(EConfigKey.downloadHistory, this.downloadHistory);
-        });
-      } else {
-        let index = this.downloadHistory.findIndex((item: any) => {
-          return item.data.url === data.url;
-        });
-        if (index === -1) {
-          this.downloadHistory.push(saveData);
-          storage.set(EConfigKey.downloadHistory, this.downloadHistory);
-        }
-      }
-    }
   }
 
   /**
@@ -397,8 +361,8 @@ export default class Controller {
     siteDefaultPath: string
   ): Promise<any> {
     return new Promise((resolve?: any, reject?: any) => {
-      let result: DownloadResult = {
-        type: "success",
+      let result: DataResult = {
+        type: EDataResultType.success,
         msg: "种子已添加",
         success: true,
         data: data
@@ -410,21 +374,21 @@ export default class Controller {
           if (data.id != undefined) {
             result.msg = data.name + " 已发送至 Transmission，编号：" + data.id;
             if (!siteDefaultPath) {
-              result.type = "info";
+              result.type = EDataResultType.info;
               result.msg += "；但站点默认目录未配置，建议配置。";
             }
           } else if (data.status) {
             switch (data.status) {
               // 重复的种子
               case "duplicate":
-                result.type = "error";
+                result.type = EDataResultType.error;
                 result.success = false;
                 result.msg =
                   data.torrent.name + " 种子已存在！编号：" + data.torrent.id;
                 break;
 
               case "error":
-                result.type = "error";
+                result.type = EDataResultType.error;
                 result.success = false;
                 result.msg = "链接发送失败，请检查下载服务器是否可用。";
                 break;
@@ -451,46 +415,7 @@ export default class Controller {
    * @param clientOptions 客户端配置
    */
   private getClient(clientOptions: any): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      if (typeof clientOptions === "string") {
-        let clientId = clientOptions;
-        clientOptions = this.options.clients.find((item: DownloadClient) => {
-          return item.id === clientId;
-        });
-        let client = this.clients[clientId];
-        if (client) {
-          resolve({ client, options: clientOptions });
-          return;
-        }
-      }
-      if ((<any>window)[clientOptions.type] === undefined) {
-        // 加载初始化脚本
-        APP.execScript({
-          type: "file",
-          content: `clients/${clientOptions.type}/init.js`
-        }).then(() => {
-          let client: any;
-          eval(`client = new ${clientOptions.type}()`);
-          client.init({
-            loginName: clientOptions.loginName,
-            loginPwd: clientOptions.loginPwd,
-            address: clientOptions.address
-          });
-          this.clients[clientOptions.id] = client;
-          resolve({ client, options: clientOptions });
-        });
-      } else {
-        let client: any;
-        eval(`client = new ${clientOptions.type}()`);
-        client.init({
-          loginName: clientOptions.loginName,
-          loginPwd: clientOptions.loginPwd,
-          address: clientOptions.address
-        });
-        this.clients[clientOptions.id] = client;
-        resolve({ client, options: clientOptions });
-      }
-    });
+    return this.clientController.getClient(clientOptions);
   }
 
   /**

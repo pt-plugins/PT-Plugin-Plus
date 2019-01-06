@@ -58,7 +58,20 @@
           :type="showPasskey ? 'text' : 'password'"
           :append-icon="showPasskey ? 'visibility_off' : 'visibility'"
           @click:append="showPasskey = !showPasskey"
+          v-if="!site.securityKeys"
         ></v-text-field>
+
+        <v-text-field
+          v-else
+          v-for="(value, key, index) in site.securityKeys"
+          :key="index"
+          :label="key"
+          :type="showPasskey ? 'text' : 'password'"
+          v-model="site.securityKeys[key]"
+          :append-icon="showPasskey ? 'visibility_off' : 'visibility'"
+          @click:append="showPasskey = !showPasskey"
+        ></v-text-field>
+
         <v-text-field
           v-model="site.url"
           :label="words.url"

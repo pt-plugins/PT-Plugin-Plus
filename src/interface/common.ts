@@ -81,6 +81,7 @@ export interface Options {
   system?: any;
   search?: SearchOptions | void;
   saveDownloadHistory?: boolean;
+  connectClientTimeout?: number;
 }
 
 export interface Plugin {
@@ -100,6 +101,7 @@ export interface SiteSchema {
   searchPage?: string;
   searchResultType?: ESearchResultType;
   getSearchResultScript?: string;
+  securityKeyFields?: string[];
 }
 
 /**
@@ -119,6 +121,7 @@ export interface Site {
   defaultClientId?: string;
   plugins?: any[];
   allowSearch?: boolean;
+  securityKeys?: object;
 }
 
 /**
@@ -151,10 +154,18 @@ export enum EAction {
   getSearchResult = "getSearchResult",
   // 获取下载记录
   getDownloadHistory = "getDownloadHistory",
-  // 删除下载记录
+  // 删除指定的下载记录
   removeDownloadHistory = "removeDownloadHistory",
   // 清除下载记录
-  clearDownloadHistory = "clearDownloadHistory"
+  clearDownloadHistory = "clearDownloadHistory",
+  // 测试下载服务器是否可连接
+  testClientConnectivity = "testClientConnectivity",
+  // 获取系统日志
+  getSystemLogs = "getSystemLogs",
+  // 删除指定的系统日志
+  removeSystemLogs = "removeSystemLogs",
+  // 清除系统日志
+  clearSystemLogs = "clearSystemLogs"
 }
 
 export interface Request {
@@ -181,7 +192,8 @@ export enum EStorageType {
 
 export enum EConfigKey {
   default = "PT-Plugin-Plus-Config",
-  downloadHistory = "PT-Plugin-Plus-downloadHistory"
+  downloadHistory = "PT-Plugin-Plus-downloadHistory",
+  systemLogs = "PT-Plugin-Plus-systemLogs"
 }
 
 /**
@@ -195,12 +207,41 @@ export interface DownloadOptions {
   clientId?: string;
 }
 
+export enum EDataResultType {
+  success = "success",
+  error = "error",
+  info = "info",
+  warning = "warning",
+  unknown = "unknown"
+}
 /**
- * 下载返回的结果
+ * 调用数据返回的结果格式
  */
-export interface DownloadResult {
+export interface DataResult {
+  // 是否成功
   success: boolean;
+  // 成功或失败消息
   msg?: string;
-  type?: string;
+  // 类型
+  type?: EDataResultType;
+  // 附加数据
   data?: any;
+}
+
+export enum EModule {
+  background = "background",
+  content = "content"
+}
+
+export enum ELogEvent {
+  init = "init",
+  requestMessage = "requestMessage"
+}
+
+export interface LogItem {
+  module: string;
+  event?: string;
+  data?: any;
+  id?: number | string;
+  time?: number;
 }

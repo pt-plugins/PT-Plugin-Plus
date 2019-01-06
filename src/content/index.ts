@@ -8,7 +8,8 @@ import {
   ButtonOption,
   NoticeOptions,
   EDownloadClientType,
-  ESizeUnit
+  ESizeUnit,
+  EDataResultType
 } from "../interface/common";
 import { APP } from "../service/api";
 import { filters } from "../service/filters";
@@ -366,7 +367,7 @@ class PTPContent {
     }
     delete options.msg;
 
-    return new (<any>window)["NoticeJs"](options).show();
+    return $(new (<any>window)["NoticeJs"](options).show());
   }
 
   /**
@@ -477,10 +478,20 @@ class PTPContent {
           let data = JSON.parse(e.dataTransfer.getData("text/plain"));
           if (data) {
             if (data.url && this.pageApp) {
-              this.pageApp.call(EAction.downloadFromDroper, data).then(() => {
-                this.logo.removeClass("onLoading");
-              });
+              this.pageApp
+                .call(EAction.downloadFromDroper, data)
+                .then(() => {
+                  this.logo.removeClass("onLoading");
+                })
+                .catch(() => {
+                  this.logo.removeClass("onLoading");
+                });
             } else {
+              this.showNotice({
+                type: EDataResultType.info,
+                msg: "当前页面不支持此操作",
+                timeout: 3
+              });
               this.logo.removeClass("onLoading");
             }
           }

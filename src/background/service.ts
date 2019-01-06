@@ -1,7 +1,14 @@
-import { EAction, Request, Options } from "../interface/common";
+import {
+  EAction,
+  Request,
+  Options,
+  EModule,
+  ELogEvent
+} from "../interface/common";
 import Config from "./config";
 import Controller from "./controller";
 
+import { Logger } from "@/service/logger";
 /**
  * PT 助手后台服务类
  */
@@ -14,9 +21,14 @@ export default class PTPlugin {
   };
   // 本地模式，用于本地快速调试
   public localMode: boolean = false;
-  public controller: any;
+  public controller: Controller = new Controller();
+  public logger: Logger = new Logger();
 
   constructor(localMode: boolean = false) {
+    this.logger.add({
+      module: EModule.background,
+      event: ELogEvent.init
+    });
     this.localMode = localMode;
     this.readConfig().then(() => {
       this.init();
@@ -31,6 +43,14 @@ export default class PTPlugin {
   public requestMessage(request: Request, sender?: any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let result: any;
+      if (request.action !== EAction.getSystemLogs) {
+        this.logger.add({
+          module: EModule.background,
+          event: `${ELogEvent.requestMessage}.${request.action}`,
+          data: request.data
+        });
+      }
+
       switch (request.action) {
         // 读取参数
         case EAction.readConfig:
@@ -53,8 +73,8 @@ export default class PTPlugin {
         case EAction.saveConfig:
           this.config.save(request.data);
           this.options = request.data;
-          if (this.controller) {
-            this.controller.options = this.options;
+          if (this.controller.isInitialized) {
+            this.controller.reset(this.options);
           }
           break;
 
@@ -131,7 +151,7 @@ export default class PTPlugin {
           break;
 
         case EAction.getSearchResult:
-          this.controller &&
+          this.controller.isInitialized &&
             this.controller
               .getSearchResult(request.data)
               .then((result: any) => {
@@ -144,7 +164,7 @@ export default class PTPlugin {
 
         // 获取下载记录
         case EAction.getDownloadHistory:
-          this.controller &&
+          this.controller.isInitialized &&
             this.controller
               .getDownloadHistory()
               .then((result: any) => {
@@ -157,7 +177,7 @@ export default class PTPlugin {
 
         // 删除下载记录
         case EAction.removeDownloadHistory:
-          this.controller &&
+          this.controller.isInitialized &&
             this.controller
               .removeDownloadHistory(request.data)
               .then((result: any) => {
@@ -170,7 +190,7 @@ export default class PTPlugin {
 
         // 清除下载记录
         case EAction.clearDownloadHistory:
-          this.controller &&
+          this.controller.isInitialized &&
             this.controller
               .clearDownloadHistory()
               .then((result: any) => {
@@ -179,6 +199,50 @@ export default class PTPlugin {
               .catch((result: any) => {
                 reject(result);
               });
+          break;
+
+        case EAction.testClientConnectivity:
+          this.controller.clientController
+            .testClientConnectivity(request.data)
+            .then((result: any) => {
+              resolve(result);
+            })
+            .catch((result: any) => {
+              reject(result);
+            });
+          break;
+
+        case EAction.getSystemLogs:
+          this.logger
+            .load()
+            .then((result: any) => {
+              resolve(result);
+            })
+            .catch((result: any) => {
+              reject(result);
+            });
+          break;
+
+        case EAction.removeSystemLogs:
+          this.logger
+            .remove(request.data)
+            .then((result: any) => {
+              resolve(result);
+            })
+            .catch((result: any) => {
+              reject(result);
+            });
+          break;
+
+        case EAction.clearSystemLogs:
+          this.logger
+            .clear()
+            .then((result: any) => {
+              resolve(result);
+            })
+            .catch((result: any) => {
+              reject(result);
+            });
           break;
       }
     });
@@ -190,7 +254,7 @@ export default class PTPlugin {
         this.options = result;
         resolve(result);
         if (!this.localMode) {
-          this.controller = new Controller(this.options);
+          this.controller.init(this.options);
         }
       });
     });

@@ -40,7 +40,9 @@ class Config {
     exceedSize: 10,
     search: {
       rows: 10
-    }
+    },
+    // 连接下载服务器超时时间（毫秒）
+    connectClientTimeout: 5000
   };
 
   /**
