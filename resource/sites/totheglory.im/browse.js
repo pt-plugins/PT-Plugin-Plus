@@ -132,10 +132,10 @@
 
       /**
        * 下载拖放的种子
-       * @param {*} url 
+       * @param {*} data 
        * @param {*} callback 
        */
-      downloadFromDroper(url, callback) {
+      downloadFromDroper(data, callback) {
         if (!PTSevrice.site.passkey) {
           PTSevrice.showNotice({
             msg: "请先设置站点密钥（Passkey）。"
@@ -144,7 +144,14 @@
           return;
         }
 
-        let values = url.split("/");
+        if (typeof data === "string") {
+          data = {
+            url: data,
+            title: ""
+          };
+        }
+
+        let values = data.url.split("/");
         let id = values[values.length - 2];
         let result = this.getDownloadURL(id);
 
