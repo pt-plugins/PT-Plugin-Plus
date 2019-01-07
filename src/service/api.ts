@@ -173,6 +173,16 @@ export const APP = {
 
       // resolve();
     });
+  },
+  /**
+   * 同步获取脚本内容
+   * @param path 路径
+   */
+  getScriptContent(path: string): JQueryXHR {
+    return $.ajax({
+      url: `${API.host}/${path}`,
+      dataType: "text"
+    });
   }
 };
 

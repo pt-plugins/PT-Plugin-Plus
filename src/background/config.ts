@@ -1,4 +1,10 @@
-import { Options, ESizeUnit, EConfigKey } from "../interface/common";
+import {
+  Options,
+  ESizeUnit,
+  EConfigKey,
+  Site,
+  DownloadClient
+} from "../interface/common";
 import { API, APP } from "../service/api";
 import localStorage from "../service/localStorage";
 
@@ -39,7 +45,9 @@ class Config {
     needConfirmWhenExceedSize: true,
     exceedSize: 10,
     search: {
-      rows: 10
+      rows: 10,
+      // 搜索超时
+      timeout: 30000
     },
     // 连接下载服务器超时时间（毫秒）
     connectClientTimeout: 5000
@@ -71,6 +79,39 @@ class Config {
           sites: this.sites,
           clients: this.clients
         };
+
+        // 升级不存在的配置项
+        this.sites.forEach(item => {
+          let index = this.options.sites.findIndex((site: Site) => {
+            return site.host === item.host;
+          });
+
+          if (index > -1) {
+            this.options.sites[index] = Object.assign(
+              Object.assign({}, item),
+              this.options.sites[index]
+            );
+          }
+        });
+
+        // 升级不存在的配置项
+        this.clients.forEach(item => {
+          let index = this.options.clients.findIndex(
+            (client: DownloadClient) => {
+              return client.type === item.type;
+            }
+          );
+
+          if (index > -1) {
+            this.options.clients[index] = Object.assign(
+              Object.assign({}, item),
+              this.options.clients[index]
+            );
+          }
+        });
+
+        console.log(this.options);
+
         resolve(this.options);
       });
     });

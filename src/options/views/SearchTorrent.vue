@@ -22,24 +22,29 @@
           <td style="width:20px;">
             <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
           </td>
-          <td>
+          <td class="center">
             <v-avatar size="18">
               <img :src="props.item.site.icon">
             </v-avatar>
-            <span class="ml-2">{{ props.item.site.name }}</span>
+            <br>
+            <span>{{ props.item.site.name }}</span>
           </td>
           <td class="title">
-            <a :href="props.item.link" target="_blank" v-html="getTitle(props.item.title)"></a>
-            <div class="sub-title" v-html="getSubTitle(props.item.title)"></div>
+            <a :href="props.item.link" target="_blank" v-html="props.item.title"></a>
+            <div class="sub-title">{{props.item.subTitle}}</div>
           </td>
-          <td style="text-align:right;">{{ props.item.size | formatSize }}</td>
-          <td>{{ getAuthor(props.item.author) }}</td>
-          <td>{{ props.item.date }}</td>
+          <td class="center" v-html="props.item.size"></td>
+          <td class="center">{{ props.item.comments }}</td>
+          <td class="center">{{ props.item.seeders }}</td>
+          <td class="center">{{ props.item.leechers }}</td>
+          <td class="center">{{ props.item.completed }}</td>
+          <td>{{ props.item.author }}</td>
+          <td>{{ props.item.time }}</td>
           <td>
             <v-icon
               small
               class="mr-2"
-              @click="download(props.item.url, getTitle(props.item.title))"
+              @click="download(props.item.url, props.item.title)"
               :title="words.sendToClient"
             >cloud_download</v-icon>
 
@@ -85,15 +90,19 @@ export default Vue.extend({
       datas: [] as any,
       selected: [],
       pagination: {
-        rowsPerPage: 10
+        rowsPerPage: 100
       },
       loading: false,
       headers: [
-        { text: "站点", align: "left", value: "site.host" },
+        { text: "站点", align: "center", value: "site.host" },
         { text: "标题", align: "left", value: "title" },
-        { text: "大小", align: "right", value: "size" },
+        { text: "大小", align: "center", value: "size" },
+        { text: "评论", align: "center", value: "comments" },
+        { text: "上传数", align: "center", value: "seeders" },
+        { text: "下载数", align: "center", value: "leechers" },
+        { text: "完成数", align: "center", value: "completed" },
         { text: "发布者", align: "left", value: "author" },
-        { text: "发布时间", align: "left", value: "date" },
+        { text: "发布时间", align: "left", value: "time" },
         { text: "操作", sortable: false }
       ],
       errorMsg: "",
@@ -135,28 +144,14 @@ export default Vue.extend({
           ? this.options.search.rows
           : 10;
 
-      let urls: string[] = [];
-      let scripts: string[] = [];
       let sites: Site[] = [];
-      let errors: string[] = [];
       let skipSites: string[] = [];
       this.skipSites = "";
 
       this.options.sites.forEach((item: Site) => {
         if (item.allowSearch) {
           let siteSchema: SiteSchema = this.getSiteSchema(item);
-          if (siteSchema && siteSchema.searchPage) {
-            let url: string = <string>item.url + siteSchema.searchPage;
-            let script: string = <string>siteSchema.getSearchResultScript;
-
-            url = this.replaceKeys(url, {
-              key: this.key,
-              rows: rows,
-              passkey: item.passkey ? item.passkey : ""
-            });
-
-            urls.push(url);
-            scripts.push(script);
+          if (siteSchema && siteSchema.search && siteSchema.search.entry) {
             sites.push(item);
           } else {
             skipSites.push(item.name);
@@ -165,10 +160,10 @@ export default Vue.extend({
       });
 
       if (skipSites.length > 0) {
-        this.skipSites = "，暂不支持搜索的站点：" + skipSites.join(",");
+        this.skipSites = " 暂不支持搜索的站点：" + skipSites.join(",");
       }
 
-      if (urls.length === 0) {
+      if (sites.length === 0) {
         this.errorMsg =
           "您还没有配置允许搜索的站点，请先前往【站点设置】进行配置";
         this.haveError = true;
@@ -176,24 +171,21 @@ export default Vue.extend({
       }
 
       this.doSearchTorrent({
-        count: urls.length,
-        sites,
-        urls,
-        scripts,
-        errors
+        count: sites.length,
+        sites
       });
     },
 
     doSearchTorrent(options: any) {
-      let index = options.count - options.urls.length;
-      let url = options.urls.shift();
+      let index = options.count - options.sites.length;
+      let site = options.sites.shift();
 
-      if (!url) {
+      if (!site) {
         this.searchMsg = "搜索完成。";
         this.loading = false;
         return;
       }
-      let site = options.sites[index];
+
       this.searchMsg =
         "正在搜索 [" +
         site.name +
@@ -212,8 +204,6 @@ export default Vue.extend({
         },
         {
           key: this.key,
-          url: url,
-          script: options.scripts[index],
           site: site
         }
       );
@@ -334,6 +324,10 @@ export default Vue.extend({
     word-break: break-all;
     margin: 5px 0;
     color: #aaaaaa;
+  }
+
+  .center {
+    text-align: center;
   }
 }
 </style>

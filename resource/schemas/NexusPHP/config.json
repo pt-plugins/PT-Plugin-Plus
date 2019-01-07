@@ -11,7 +11,10 @@
     "scripts": ["common.js", "torrents.js"]
   }],
   "securityKeyFields": ["passkey"],
-  "searchPage": "/torrentrss.php?rows=$rows$&ismalldescr=1&search=$key$&search_mode=1&nd=1&passkey=$passkey$",
-  "searchResultType": "xml",
-  "getSearchResultScript": "(function (results, result, site) {\n  var items = $(result).find('item');\n  $.each(items, function (index, item) {\n    item = $(item);\n    var data = {\n      title: item.find(\"title\").text(),\n      link: item.find(\"link\").text(),\n      url: item.find(\"enclosure\").attr(\"url\") + (site && site.passkey?\"&passkey=\"+site.passkey:\"\"),\n      size: item.find(\"enclosure\").attr(\"length\"),\n      date: (new Date(item.find(\"pubDate\").text())).toLocaleString(),\n      author: item.find(\"author\").text(),\n      site: site\n    };\n    results.push(data);\n  });\n  console.log(results);\n})(results, result, options.site)"
+  "search": {
+    "entry": "/torrents.php?search=$key$",
+    "resultType": "html",
+    "resultScript": "getSearchResult.js",
+    "resultSelector": "table.torrents:last > tbody > tr"
+  }
 }

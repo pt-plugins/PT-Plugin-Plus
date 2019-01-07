@@ -5,5 +5,8 @@
   "icon": "https://hdchina.org/favicon.ico",
   "tags": ["影视", "音乐", "纪录片", "综合"],
   "schema": "NexusPHP",
-  "host": "hdchina.org"
+  "host": "hdchina.org",
+  "search": {
+    "resultSelector": "table.torrent_list:last > tbody > tr"
+  }
 }

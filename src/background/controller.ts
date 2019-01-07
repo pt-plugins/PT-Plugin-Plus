@@ -13,6 +13,7 @@ import {
 import { filters as Filters } from "@/service/filters";
 import { ClientController } from "@/service/clientController";
 import { DownloadHistory } from "./downloadHistory";
+import { Searcher } from "./searcher";
 export default class Controller {
   public options: Options = {
     sites: [],
@@ -25,12 +26,14 @@ export default class Controller {
   public optionsTabId: number | undefined = 0;
   public downloadHistory: DownloadHistory = new DownloadHistory();
   public clients: any = {};
+  public searcher: Searcher = new Searcher();
 
   public clientController: ClientController = new ClientController();
   public isInitialized: boolean = false;
 
   public init(options: Options) {
     this.reset(options);
+    this.searcher.options = options;
     this.isInitialized = true;
   }
 
@@ -49,128 +52,35 @@ export default class Controller {
    * @param options
    */
   public getSearchResult(options: any): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      let settings = {
-        url: options.url,
-        success: (result: any) => {
-          if (
-            (result && (typeof result == "string" && result.length > 100)) ||
-            typeof result == "object"
-          ) {
-            console.log(result);
+    return this.searcher.searchTorrent(options.site, options.key);
+    // return new Promise<any>((resolve?: any, reject?: any) => {
+    //   let settings = {
+    //     url: options.url,
+    //     success: (result: any) => {
+    //       if (
+    //         (result && (typeof result == "string" && result.length > 100)) ||
+    //         typeof result == "object"
+    //       ) {
+    //         console.log(result);
 
-            // let script = options.scripts[index];
-            const results: any[] = [];
-            if (options.script) {
-              eval(options.script);
-            }
+    //         // let script = options.scripts[index];
+    //         const results: any[] = [];
+    //         if (options.script) {
+    //           eval(options.script);
+    //         }
 
-            resolve(results);
-          } else {
-            reject();
-          }
-        },
-        error: (result: any) => {
-          reject(result);
-        }
-      };
+    //         resolve(results);
+    //       } else {
+    //         reject();
+    //       }
+    //     },
+    //     error: (result: any) => {
+    //       reject(result);
+    //     }
+    //   };
 
-      $.ajax(settings);
-    });
-  }
-
-  /**
-   * 搜索种子
-   * @param data
-   */
-  public searchTorrent(options: any): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      console.log(options.key);
-
-      let rows: number =
-        this.options.search && this.options.search.rows
-          ? this.options.search.rows
-          : 10;
-
-      let urls: string[] = [];
-      let scripts: string[] = [];
-      let sites: Site[] = [];
-      let errors: string[] = [];
-
-      this.options.sites.forEach((item: Site) => {
-        if (item.allowSearch) {
-          let siteSchema: SiteSchema = this.getSiteSchema(item);
-          let url: string = <string>item.url + siteSchema.searchPage;
-          let script: string = <string>siteSchema.getSearchResultScript;
-
-          url = this.replaceKeys(url, {
-            key: options.key,
-            rows: rows,
-            passkey: item.passkey
-          });
-
-          urls.push(url);
-          scripts.push(script);
-          sites.push(item);
-        }
-      });
-
-      this.doSearchTorrent({
-        count: urls.length,
-        callback: resolve,
-        sites,
-        urls,
-        scripts,
-        errors,
-        onProgress: options.onProgress || function() {}
-      });
-    });
-  }
-
-  private doSearchTorrent(options: any) {
-    let index = options.count - options.urls.length;
-    let url = options.urls.shift();
-
-    if (!url) {
-      options.onProgress("搜索完成。");
-      options.callback(options.errors);
-      return;
-    }
-    let site = options.sites[index];
-    options.onProgress(
-      "正在搜索 [" +
-        site.name +
-        "]..." +
-        (index + 1) +
-        "/" +
-        options.count +
-        "."
-    );
-    let settings = {
-      url: url,
-      success: (result: any) => {
-        this.doSearchTorrent(options);
-        if (
-          (result && (typeof result == "string" && result.length > 100)) ||
-          typeof result == "object"
-        ) {
-          options.onProgress(result, "result");
-          // let script = options.scripts[index];
-
-          // if (script) {
-          //   eval(script);
-          // }
-        } else {
-          options.errors.push(site.name + " 搜索异常。[" + result + "]");
-        }
-      },
-      error: () => {
-        options.errors.push(site.name + " 搜索失败。");
-        this.doSearchTorrent(options);
-      }
-    };
-
-    $.ajax(settings);
+    //   $.ajax(settings);
+    // });
   }
 
   /**

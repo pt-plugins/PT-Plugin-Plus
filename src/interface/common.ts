@@ -11,7 +11,8 @@ export enum ESizeUnit {
 
 export enum ESearchResultType {
   JSON = "json",
-  XML = "xml"
+  XML = "xml",
+  HTML = "html"
 }
 /**
  * 需要在上下文菜单显示配置
@@ -60,6 +61,7 @@ export interface SearchOptions {
   rows?: number;
   key?: string;
   tags?: string[];
+  timeout?: number;
 }
 /**
  * 参数
@@ -98,10 +100,8 @@ export interface SiteSchema {
   ver?: string;
   plugins?: Plugin[] | any;
   siteOnly?: boolean;
-  searchPage?: string;
-  searchResultType?: ESearchResultType;
-  getSearchResultScript?: string;
   securityKeyFields?: string[];
+  search?: Search;
 }
 
 /**
@@ -122,6 +122,7 @@ export interface Site {
   plugins?: any[];
   allowSearch?: boolean;
   securityKeys?: object;
+  search?: Search;
 }
 
 /**
@@ -244,4 +245,29 @@ export interface LogItem {
   data?: any;
   id?: number | string;
   time?: number;
+}
+
+/**
+ * 搜索返回结果
+ */
+export interface SearchResultItem {
+  site: Site;
+  title: string;
+  subTitle?: string;
+  time?: number;
+  author?: string;
+  url?: string;
+  link?: string;
+  size?: number;
+  seeders?: number;
+  leechers?: number;
+  completed?: number;
+  comments?: number;
+}
+
+export interface Search {
+  entry?: string;
+  resultType?: ESearchResultType;
+  resultScript?: string;
+  resultSelector?: string;
 }

@@ -24,15 +24,15 @@ export default class PTPlugin {
   public controller: Controller = new Controller();
   public logger: Logger = new Logger();
 
+  private reloadCount: number = 0;
+
   constructor(localMode: boolean = false) {
     this.logger.add({
       module: EModule.background,
       event: ELogEvent.init
     });
     this.localMode = localMode;
-    this.readConfig().then(() => {
-      this.init();
-    });
+    this.initConfig();
   }
 
   /**
@@ -245,6 +245,23 @@ export default class PTPlugin {
             });
           break;
       }
+    });
+  }
+
+  private initConfig() {
+    if (
+      this.reloadCount < 10 &&
+      (this.config.sites.length === 0 || this.config.clients.length === 0)
+    ) {
+      setTimeout(() => {
+        this.initConfig();
+      }, 500);
+      this.reloadCount++;
+      return;
+    }
+
+    this.readConfig().then(() => {
+      this.init();
     });
   }
 
