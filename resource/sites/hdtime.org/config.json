@@ -1,0 +1,9 @@
+{
+  "name": "HDTime",
+  "description": "HDTime, time to forever!",
+  "url": "https://hdtime.org/",
+  "icon": "https://hdtime.org/favicon.ico",
+  "tags": ["影视", "综合"],
+  "schema": "NexusPHP",
+  "host": "hdtime.org"
+}
