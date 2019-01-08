@@ -84,6 +84,7 @@ export interface Options {
   search?: SearchOptions | void;
   saveDownloadHistory?: boolean;
   connectClientTimeout?: number;
+  rowsPerPageItems?: any[];
 }
 
 export interface Plugin {
@@ -166,7 +167,9 @@ export enum EAction {
   // 删除指定的系统日志
   removeSystemLogs = "removeSystemLogs",
   // 清除系统日志
-  clearSystemLogs = "clearSystemLogs"
+  clearSystemLogs = "clearSystemLogs",
+  readUIOptions = "readUIOptions",
+  saveUIOptions = "saveUIOptions"
 }
 
 export interface Request {
@@ -194,7 +197,8 @@ export enum EStorageType {
 export enum EConfigKey {
   default = "PT-Plugin-Plus-Config",
   downloadHistory = "PT-Plugin-Plus-downloadHistory",
-  systemLogs = "PT-Plugin-Plus-systemLogs"
+  systemLogs = "PT-Plugin-Plus-systemLogs",
+  uiOptions = "PT-Plugin-Plus-uiOptions"
 }
 
 /**
@@ -272,4 +276,13 @@ export interface SearchEntry {
   parseScript?: string;
   resultSelector?: string;
   enabled?: boolean;
+}
+
+export interface UIOptions {
+  paginations?: Dictionary<any>;
+}
+
+export enum EPaginationKey {
+  systemLogs = "systemLogs",
+  searchTorrent = "searchTorrent"
 }

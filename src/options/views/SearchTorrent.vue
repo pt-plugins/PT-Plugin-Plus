@@ -17,6 +17,8 @@
         item-key="name"
         select-all
         class="elevation-1"
+        :rows-per-page-items="options.rowsPerPageItems"
+        @update:pagination="updatePagination"
       >
         <template slot="items" slot-scope="props">
           <td style="width:20px;">
@@ -75,7 +77,8 @@ import {
   SiteSchema,
   Dictionary,
   EDownloadClientType,
-  DataResult
+  DataResult,
+  EPaginationKey
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 
@@ -121,6 +124,12 @@ export default Vue.extend({
   },
   created() {
     this.key = this.$route.params["key"];
+    this.pagination = this.$store.getters.pagination(
+      EPaginationKey.searchTorrent,
+      {
+        rowsPerPage: 100
+      }
+    );
   },
   beforeRouteUpdate(to: Route, from: Route, next: any) {
     if (!to.params.key) {
@@ -319,6 +328,13 @@ export default Vue.extend({
             this.errorMsg = result.msg;
           }
         });
+    },
+    updatePagination(value: any) {
+      console.log(value);
+      this.$store.dispatch("updatePagination", {
+        key: EPaginationKey.searchTorrent,
+        options: value
+      });
     }
   }
 });

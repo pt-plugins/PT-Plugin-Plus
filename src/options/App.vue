@@ -32,11 +32,8 @@ export default {
     };
   },
   created() {
-    // chrome.extension.sendMessage(EAction.readConfig, result => {
-    //   console.log("回调", result);
-    //   this.$store.commit("initConfig", result);
-    // });
-    this.$store.commit("readConfig");
+    this.$store.dispatch("readConfig");
+    this.$store.dispatch("readUIOptions");
   }
 };
 </script>

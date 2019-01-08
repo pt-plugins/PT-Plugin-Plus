@@ -33,7 +33,6 @@ export default class Controller {
 
   public init(options: Options) {
     this.reset(options);
-    this.searcher.options = options;
     this.isInitialized = true;
   }
 
@@ -44,6 +43,7 @@ export default class Controller {
   public reset(options: Options) {
     this.options = options;
     this.clientController.init(options);
+    this.searcher.options = options;
     this.initDefaultClient();
   }
 

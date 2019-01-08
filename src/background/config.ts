@@ -3,7 +3,8 @@ import {
   ESizeUnit,
   EConfigKey,
   Site,
-  DownloadClient
+  DownloadClient,
+  UIOptions
 } from "../interface/common";
 import { API, APP } from "../service/api";
 import localStorage from "../service/localStorage";
@@ -25,17 +26,10 @@ class Config {
     this.getClients();
   }
 
+  /**
+   * 系统参数
+   */
   public options: Options = {
-    pluginIconShowPages: ["torrents.php"],
-    contextMenuRules: {
-      torrentDetailPages: ["*://*/details.php*", "*://*/plugin_details.php*"],
-      torrentListPages: ["*://*/torrents.php*"],
-      torrentLinks: [
-        "*://*/details.php*",
-        "*://*/download.php*",
-        "*://*/plugin_details.php*"
-      ]
-    },
     exceedSizeUnit: ESizeUnit.GiB,
     sites: [],
     clients: [],
@@ -50,8 +44,18 @@ class Config {
       timeout: 30000
     },
     // 连接下载服务器超时时间（毫秒）
-    connectClientTimeout: 5000
+    connectClientTimeout: 5000,
+    rowsPerPageItems: [
+      10,
+      20,
+      50,
+      100,
+      200,
+      { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }
+    ]
   };
+
+  public uiOptions: UIOptions = {};
 
   /**
    * 保存配置
@@ -67,6 +71,14 @@ class Config {
    */
   public read(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      // 加载用户界面设置
+      this.localStorage.get(EConfigKey.uiOptions, (result: any) => {
+        if (result) {
+          let defaultOptions = Object.assign({}, this.uiOptions);
+          this.uiOptions = Object.assign(defaultOptions, result);
+        }
+      });
+
       this.localStorage.get(this.name, (result: any) => {
         if (result) {
           delete result.system;
@@ -114,6 +126,27 @@ class Config {
 
         resolve(this.options);
       });
+    });
+  }
+
+  public readUIOptions(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      // 加载用户界面设置
+      this.localStorage.get(EConfigKey.uiOptions, (result: any) => {
+        if (result) {
+          let defaultOptions = Object.assign({}, this.uiOptions);
+          this.uiOptions = Object.assign(defaultOptions, result);
+        }
+
+        resolve(this.uiOptions);
+      });
+    });
+  }
+
+  public saveUIOptions(options: UIOptions): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.localStorage.set(EConfigKey.uiOptions, options || this.uiOptions);
+      resolve();
     });
   }
 

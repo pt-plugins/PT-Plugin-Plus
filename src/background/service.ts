@@ -244,6 +244,28 @@ export default class PTPlugin {
               reject(result);
             });
           break;
+
+        case EAction.readUIOptions:
+          this.config
+            .readUIOptions()
+            .then((result: any) => {
+              resolve(result);
+            })
+            .catch((result: any) => {
+              reject(result);
+            });
+          break;
+
+        case EAction.saveUIOptions:
+          this.config
+            .saveUIOptions(request.data)
+            .then((result: any) => {
+              resolve(result);
+            })
+            .catch((result: any) => {
+              reject(result);
+            });
+          break;
       }
     });
   }

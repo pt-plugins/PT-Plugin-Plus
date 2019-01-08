@@ -27,9 +27,11 @@
         :headers="headers"
         :items="items"
         :pagination.sync="pagination"
-        item-key="time"
+        item-key="index"
         select-all
         class="elevation-1"
+        :rows-per-page-items="options.rowsPerPageItems"
+        @update:pagination="updatePagination"
       >
         <template slot="items" slot-scope="props">
           <td style="width:20px;">
@@ -74,7 +76,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { EAction, DownloadOptions } from "@/interface/common";
+import { EAction, DownloadOptions, EPaginationKey } from "@/interface/common";
 import Extension from "@/service/extension";
 import FileSaver from "file-saver";
 
@@ -149,11 +151,26 @@ export default Vue.extend({
         type: "text/plain"
       });
       FileSaver.saveAs(data, "PT-Plugin-Plus-System-Logs.json");
+    },
+    updatePagination(value: any) {
+      console.log(value);
+      this.$store.dispatch("updatePagination", {
+        key: EPaginationKey.systemLogs,
+        options: value
+      });
     }
   },
 
   created() {
     this.getSystemLogs();
+    this.pagination = this.$store.getters.pagination(
+      EPaginationKey.systemLogs,
+      {
+        rowsPerPage: 10,
+        sortBy: "time",
+        descending: true
+      }
+    );
   }
 });
 </script>

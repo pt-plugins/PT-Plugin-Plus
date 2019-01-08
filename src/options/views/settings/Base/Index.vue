@@ -179,7 +179,7 @@ export default Vue.extend({
   methods: {
     save() {
       console.log(this.options);
-      this.$store.commit("updateConfig", this.options);
+      this.$store.dispatch("saveConfig", this.options);
     },
     clearCache() {
       if (confirm(this.words.clearCacheConfirm)) {
