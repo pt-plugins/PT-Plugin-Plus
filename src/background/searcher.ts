@@ -74,7 +74,7 @@ export class Searcher {
 
       if (searchConfig.entry) {
         let results: any[] = [];
-        let entryCount = searchConfig.entry.length;
+        let entryCount = 0;
         let doneCount = 0;
 
         searchConfig.entry.forEach((entry: SearchEntry) => {
@@ -91,6 +91,8 @@ export class Searcher {
               rows: rows,
               passkey: site.passkey ? site.passkey : ""
             });
+
+            entryCount++;
 
             if (!entry.parseScript) {
               let scriptPath = entry.parseScriptFile;
