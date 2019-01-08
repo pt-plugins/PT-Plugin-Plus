@@ -5,5 +5,20 @@
   "icon": "https://open.cd/favicon.ico",
   "tags": ["音乐"],
   "schema": "NexusPHP",
-  "host": "open.cd"
+  "host": "open.cd",
+  "searchEntry": [{
+    "entry": "/torrents.php?search=$key$&boardid=2",
+    "name": "原抓区",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+    "resultSelector": "table.torrents:last > tbody > tr",
+    "enabled": true
+  }, {
+    "entry": "/torrents.php?search=$key$&boardid=1",
+    "name": "普通区",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+    "resultSelector": "table.torrents:last > tbody > tr",
+    "enabled": true
+  }]
 }

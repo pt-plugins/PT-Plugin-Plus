@@ -83,7 +83,7 @@ if (!"".getQueryString) {
     const row = rows.eq(index);
     let cells = row.find(">td");
 
-    let title = row.find("a[href*='hit']").first();
+    let title = row.find("a[href*='hit'][title]").last();
     let link = title.attr("href");
     if (link.substr(0, 4) !== "http") {
       link = `${site.url}${link}`;
@@ -111,12 +111,12 @@ if (!"".getQueryString) {
       link,
       url: url + (site && site.passkey ? "&passkey=" + site.passkey : ""),
       size: cells.eq(fieldIndex.size).html() || 0,
-      time: cells.eq(fieldIndex.time).find("span[title]").attr("title") || cells.eq(fieldIndex.time).text() || "",
-      author: cells.eq(fieldIndex.author).text() || "",
-      seeders: cells.eq(fieldIndex.seeders).text() || 0,
-      leechers: cells.eq(fieldIndex.leechers).text() || 0,
-      completed: cells.eq(fieldIndex.completed).text() || 0,
-      comments: cells.eq(fieldIndex.comments).text() || 0,
+      time: fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).find("span[title]").attr("title") || cells.eq(fieldIndex.time).text() || "",
+      author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",
+      seeders: fieldIndex.seeders == -1 ? "" : cells.eq(fieldIndex.seeders).text() || 0,
+      leechers: fieldIndex.leechers == -1 ? "" : cells.eq(fieldIndex.leechers).text() || 0,
+      completed: fieldIndex.completed == -1 ? "" : cells.eq(fieldIndex.completed).text() || 0,
+      comments: fieldIndex.comments == -1 ? "" : cells.eq(fieldIndex.comments).text() || 0,
       site: site
     };
     options.results.push(data);

@@ -6,7 +6,12 @@
   "tags": ["影视", "音乐", "纪录片", "综合"],
   "schema": "NexusPHP",
   "host": "hdchina.org",
-  "search": {
-    "resultSelector": "table.torrent_list:last > tbody > tr"
-  }
+  "searchEntry": [{
+    "entry": "/torrents.php?search=$key$",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+    "resultSelector": "table.torrent_list:last > tbody > tr",
+    "enabled": true
+  }]
 }

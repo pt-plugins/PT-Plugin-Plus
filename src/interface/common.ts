@@ -101,7 +101,7 @@ export interface SiteSchema {
   plugins?: Plugin[] | any;
   siteOnly?: boolean;
   securityKeyFields?: string[];
-  search?: Search;
+  searchEntry?: SearchEntry[];
 }
 
 /**
@@ -122,7 +122,7 @@ export interface Site {
   plugins?: any[];
   allowSearch?: boolean;
   securityKeys?: object;
-  search?: Search;
+  searchEntry?: SearchEntry[];
 }
 
 /**
@@ -265,9 +265,11 @@ export interface SearchResultItem {
   comments?: number;
 }
 
-export interface Search {
+export interface SearchEntry {
   entry?: string;
   resultType?: ESearchResultType;
-  resultScript?: string;
+  parseScriptFile?: string;
+  parseScript?: string;
   resultSelector?: string;
+  enabled?: boolean;
 }

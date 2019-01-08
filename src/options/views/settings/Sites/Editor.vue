@@ -107,6 +107,27 @@
 
         <!-- 允许搜索 -->
         <v-switch :label="words.allowSearch" v-model="site.allowSearch"></v-switch>
+
+        <!-- 搜索入口设置 v-if="site.allowSearch"  -->
+        <template>
+          <v-container fluid class="ma-0 pa-0 ml-4">
+            <v-layout row wrap class="ma-0 pa-0">
+              <v-flex
+                class="ma-0 pa-0"
+                xs3
+                v-for="(item, key, index) in site.searchEntry"
+                :key="index"
+              >
+                <v-checkbox
+                  :disabled="!site.allowSearch"
+                  class="ma-0 pa-0"
+                  :label="item.name"
+                  v-model="item.enabled"
+                ></v-checkbox>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </template>
       </v-form>
     </v-card-text>
   </v-card>

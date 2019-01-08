@@ -30,7 +30,12 @@
             <span>{{ props.item.site.name }}</span>
           </td>
           <td class="title">
-            <a :href="props.item.link" target="_blank" v-html="props.item.title"></a>
+            <a
+              :href="props.item.link"
+              target="_blank"
+              v-html="props.item.title"
+              rel="noopener noreferrer nofollow"
+            ></a>
             <div class="sub-title">{{props.item.subTitle}}</div>
           </td>
           <td class="center" v-html="props.item.size"></td>
@@ -48,7 +53,7 @@
               :title="words.sendToClient"
             >cloud_download</v-icon>
 
-            <a :href="props.item.url">
+            <a :href="props.item.url" target="_blank" rel="noopener noreferrer nofollow">
               <v-icon small class="mr-2" :title="words.save">get_app</v-icon>
             </a>
           </td>
@@ -69,7 +74,8 @@ import {
   Site,
   SiteSchema,
   Dictionary,
-  EDownloadClientType
+  EDownloadClientType,
+  DataResult
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 
@@ -98,9 +104,9 @@ export default Vue.extend({
         { text: "标题", align: "left", value: "title" },
         { text: "大小", align: "center", value: "size" },
         { text: "评论", align: "center", value: "comments" },
-        { text: "上传数", align: "center", value: "seeders" },
-        { text: "下载数", align: "center", value: "leechers" },
-        { text: "完成数", align: "center", value: "completed" },
+        { text: "上传", align: "center", value: "seeders" },
+        { text: "下载", align: "center", value: "leechers" },
+        { text: "完成", align: "center", value: "completed" },
         { text: "发布者", align: "left", value: "author" },
         { text: "发布时间", align: "left", value: "time" },
         { text: "操作", sortable: false }
@@ -128,15 +134,22 @@ export default Vue.extend({
   watch: {
     key() {
       this.search();
+    },
+    successMsg() {
+      this.haveSuccess = this.successMsg != "";
+    },
+    errorMsg() {
+      this.haveError = this.errorMsg != "";
     }
   },
   methods: {
     search() {
       if (window.location.hostname == "localhost") return;
+      this.haveError = false;
+      this.haveSuccess = false;
       this.datas = [];
       if (!this.options.sites) {
         this.errorMsg = "请先设置站点";
-        this.haveError = true;
         return;
       }
       let rows: number =
@@ -151,7 +164,11 @@ export default Vue.extend({
       this.options.sites.forEach((item: Site) => {
         if (item.allowSearch) {
           let siteSchema: SiteSchema = this.getSiteSchema(item);
-          if (siteSchema && siteSchema.search && siteSchema.search.entry) {
+          if (
+            siteSchema &&
+            siteSchema.searchEntry &&
+            siteSchema.searchEntry.length > 0
+          ) {
             sites.push(item);
           } else {
             skipSites.push(item.name);
@@ -166,7 +183,6 @@ export default Vue.extend({
       if (sites.length === 0) {
         this.errorMsg =
           "您还没有配置允许搜索的站点，请先前往【站点设置】进行配置";
-        this.haveError = true;
         return;
       }
 
@@ -195,18 +211,25 @@ export default Vue.extend({
         options.count +
         ".";
       this.loading = true;
-      extension.sendRequest(
-        EAction.getSearchResult,
-        (result: any) => {
-          console.log(result);
-          result && this.datas.push(...result);
-          this.doSearchTorrent(options);
-        },
-        {
+      extension
+        .sendRequest(EAction.getSearchResult, null, {
           key: this.key,
           site: site
-        }
-      );
+        })
+        .then((result: any) => {
+          if (result && result.length) {
+            this.datas.push(...result);
+          } else if (result && result.msg) {
+            this.errorMsg = result.msg;
+          }
+
+          this.doSearchTorrent(options);
+        })
+        .catch((result: DataResult) => {
+          if (result.msg) {
+            this.errorMsg = result.msg;
+          }
+        });
     },
 
     /**

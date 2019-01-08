@@ -11,10 +11,12 @@
     "scripts": ["common.js", "torrents.js"]
   }],
   "securityKeyFields": ["passkey"],
-  "search": {
+  "searchEntry": [{
     "entry": "/torrents.php?search=$key$",
+    "name": "全部",
     "resultType": "html",
-    "resultScript": "getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr"
-  }
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table.torrents:last > tbody > tr",
+    "enabled": true
+  }]
 }

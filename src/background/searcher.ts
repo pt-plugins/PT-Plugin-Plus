@@ -4,22 +4,23 @@ import {
   Dictionary,
   Options,
   DataResult,
-  EDataResultType
+  EDataResultType,
+  SearchEntry
 } from "@/interface/common";
 import { APP } from "@/service/api";
 
 export type SearchConfig = {
-  searchPage: string;
-  searchResultScript: string;
-  script?: string;
-  resultSelector?: string;
+  site?: Site;
+  entry?: SearchEntry[];
+  rootPath?: string;
 };
 
 /**
  * 搜索类
  */
 export class Searcher {
-  private searchConfig: any = {};
+  // 搜索入口定义缓存
+  private searchConfigs: any = {};
   public options: Options = {
     sites: [],
     clients: []
@@ -37,115 +38,127 @@ export class Searcher {
       };
 
       let host = site.host + "";
-      let config: SearchConfig = this.searchConfig[host];
+      let searchConfig: SearchConfig = this.searchConfigs[host];
+      let schema = this.getSiteSchema(site);
 
-      if (!config) {
-        let schema = this.getSiteSchema(site);
-        let resultSelector = "";
-
-        config = {
-          searchPage: "",
-          searchResultScript: ""
+      if (!searchConfig) {
+        searchConfig = {
+          site,
+          rootPath: ""
         };
 
-        if (schema && schema.search && schema.search.entry) {
-          config.searchPage = schema.search.entry;
-        } else if (site.search && site.search.entry) {
-          config.searchPage = site.search.entry;
+        if (site.searchEntry) {
+          searchConfig.rootPath = `sites/${site.host}/`;
+          searchConfig.entry = site.searchEntry;
+        } else if (schema && schema.searchEntry) {
+          searchConfig.rootPath = `schemas/${schema.name}/`;
+          searchConfig.entry = schema.searchEntry;
         }
 
-        if (!config.searchPage) {
+        if (!searchConfig.entry) {
           result.msg = "该站点未配置搜索页面，请先配置";
           result.type = EDataResultType.error;
           reject(result);
           return;
         }
 
-        let path = "";
-
-        if (site.search && site.search.resultSelector) {
-          resultSelector = site.search.resultSelector;
-        } else {
-          let _site = this.options.sites.find((item: Site) => {
-            return item.host === site.host;
-          });
-          if (_site && _site.search && _site.search.resultSelector) {
-            resultSelector = _site.search.resultSelector;
-          }
-        }
-
-        if (!resultSelector && schema.search && schema.search.resultSelector) {
-          resultSelector = schema.search.resultSelector;
-        }
-
-        if (schema && schema.search && schema.search.resultScript) {
-          path = schema.search.resultScript;
-          // 判断是否为相对路径
-          if (path.substr(0, 1) !== "/") {
-            path = `schemas/${schema.name}/${path}`;
-          }
-        } else if (site.search && site.search.resultScript) {
-          path = site.search.resultScript;
-          // 判断是否为相对路径
-          if (path.substr(0, 1) !== "/") {
-            path = `sites/${site.host}/${path}`;
-          }
-        }
-
-        config.searchResultScript = path;
-        config.resultSelector = resultSelector;
-
-        if (!config.searchResultScript) {
-          result.msg = "该站点未配置搜索结果获取脚本，请先配置";
-          result.type = EDataResultType.error;
-          reject(result);
-          return;
-        }
-
-        this.searchConfig[host] = config;
+        this.searchConfigs[host] = searchConfig;
       }
 
-      // 判断是否指定了搜索页和用于获取搜索结果的脚本
-      if (config.searchPage && config.searchResultScript) {
-        let rows: number =
-          this.options.search && this.options.search.rows
-            ? this.options.search.rows
-            : 10;
-        let url: string = site.url + config.searchPage;
+      if (!searchConfig) {
+        result.msg = "该站点搜索入口未配置，请先配置";
+        result.type = EDataResultType.error;
+        reject(result);
+        return;
+      }
 
-        url = this.replaceKeys(url, {
-          key: key,
-          rows: rows,
-          passkey: site.passkey ? site.passkey : ""
-        });
+      if (searchConfig.entry) {
+        let results: any[] = [];
+        let entryCount = searchConfig.entry.length;
+        let doneCount = 0;
 
-        if (!config.script) {
-          APP.getScriptContent(config.searchResultScript).done(
-            (script: string) => {
-              config.script = script;
+        searchConfig.entry.forEach((entry: SearchEntry) => {
+          // 判断是否指定了搜索页和用于获取搜索结果的脚本
+          if (entry.entry && entry.parseScriptFile && entry.enabled !== false) {
+            let rows: number =
+              this.options.search && this.options.search.rows
+                ? this.options.search.rows
+                : 10;
+            let url: string = site.url + entry.entry;
+
+            url = this.replaceKeys(url, {
+              key: key,
+              rows: rows,
+              passkey: site.passkey ? site.passkey : ""
+            });
+
+            if (!entry.parseScript) {
+              let scriptPath = entry.parseScriptFile;
+              // 判断是否为相对路径
+              if (scriptPath.substr(0, 1) !== "/") {
+                scriptPath = `${searchConfig.rootPath}${scriptPath}`;
+              }
+              APP.getScriptContent(scriptPath).done((script: string) => {
+                entry.parseScript = script;
+                this.getSearchResult(
+                  url,
+                  entry.parseScript,
+                  site,
+                  entry.resultSelector
+                )
+                  .then((result: any) => {
+                    if (result && result.length) {
+                      results.push(...result);
+                    }
+                    doneCount++;
+
+                    if (doneCount === entryCount || results.length >= rows) {
+                      resolve(results.slice(0, rows));
+                    }
+                  })
+                  .catch((result: any) => {
+                    doneCount++;
+
+                    if (doneCount === entryCount) {
+                      if (results.length > 0) {
+                        resolve(results.slice(0, rows));
+                      } else {
+                        reject(result);
+                      }
+                    }
+                  });
+              });
+            } else {
               this.getSearchResult(
                 url,
-                config.script,
+                entry.parseScript,
                 site,
-                config.resultSelector
+                entry.resultSelector
               )
                 .then((result: any) => {
-                  resolve(result);
+                  if (result && result.length) {
+                    results.push(...result);
+                  }
+                  doneCount++;
+
+                  if (doneCount === entryCount || results.length >= rows) {
+                    resolve(results.slice(0, rows));
+                  }
                 })
                 .catch((result: any) => {
-                  reject(result);
+                  doneCount++;
+
+                  if (doneCount === entryCount) {
+                    if (results.length > 0) {
+                      resolve(results.slice(0, rows));
+                    } else {
+                      reject(result);
+                    }
+                  }
                 });
             }
-          );
-        } else {
-          this.getSearchResult(url, config.script, site, config.resultSelector)
-            .then((result: any) => {
-              resolve(result);
-            })
-            .catch((result: any) => {
-              reject(result);
-            });
-        }
+          }
+        });
       }
     });
   }
