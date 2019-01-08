@@ -179,6 +179,8 @@ export default Vue.extend({
             siteSchema.searchEntry.length > 0
           ) {
             sites.push(item);
+          } else if (item.searchEntry && item.searchEntry.length > 0) {
+            sites.push(item);
           } else {
             skipSites.push(item.name);
           }
@@ -251,14 +253,6 @@ export default Vue.extend({
         schema = this.options.system.schemas.find((item: SiteSchema) => {
           return item.name == site.schema;
         });
-      } else if (site) {
-        let _site = this.options.system.sites.find((item: Site) => {
-          return item.host == site.host;
-        });
-        if (_site && _site.schema) {
-          schema = _site.schema;
-          schema.siteOnly = true;
-        }
       }
 
       return schema;

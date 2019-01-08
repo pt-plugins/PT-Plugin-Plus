@@ -14,5 +14,20 @@
     "pages": ["/browse.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
   }],
-  "host": "totheglory.im"
+  "host": "totheglory.im",
+  "searchEntry": [{
+    "entry": "/browse.php?c=M&search_field=$key$",
+    "name": "影视&音乐",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table#torrent_table:last > tbody > tr",
+    "enabled": true
+  }, {
+    "entry": "/browse.php?c=G&search_field=$key$",
+    "name": "游戏&软件",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table#torrent_table:last > tbody > tr",
+    "enabled": true
+  }]
 }

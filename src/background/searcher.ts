@@ -190,19 +190,29 @@ export class Searcher {
               responseText: result,
               site,
               resultSelector,
-              page
+              page,
+              errorMsg: ""
             };
-            // console.log(page);
 
-            // resolve(results);
+            // 执行获取结果的脚本
             try {
               if (getResultScript) {
                 eval(getResultScript);
               }
-              resolve(options.results);
+              if (options.errorMsg) {
+                reject({
+                  success: false,
+                  msg: options.errorMsg
+                });
+              } else {
+                resolve(options.results);
+              }
             } catch (error) {
               console.error(error);
-              reject(error);
+              reject({
+                success: false,
+                msg: `[${site.name}]脚本执行出错！`
+              });
             }
           } else {
             reject();
@@ -224,14 +234,6 @@ export class Searcher {
       schema = this.options.system.schemas.find((item: SiteSchema) => {
         return item.name == site.schema;
       });
-    } else if (site) {
-      let _site = this.options.system.sites.find((item: Site) => {
-        return item.host == site.host;
-      });
-      if (_site && _site.schema) {
-        schema = _site.schema;
-        schema.siteOnly = true;
-      }
     }
 
     return schema;

@@ -11,13 +11,22 @@ if (!"".getQueryString) {
 }
 
 (function (options) {
+  if (/takelogin\.php/.test(options.responseText)) {
+    options.errorMsg = `[${options.site.name}]需要登录后再搜索`;
+    return;
+  }
   if (/没有种子|No [Tt]orrents?|Your search did not match anything|用准确的关键字重试/.test(options.responseText)) {
+    options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
     return;
   }
 
   let site = options.site;
   // 获取种子列表行
   let rows = options.page.find(options.resultSelector || "table.torrents:last > tbody > tr");
+  if (rows.length == 0) {
+    options.errorMsg = `[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
+    return;
+  }
   // 获取表头
   let header = rows.eq(0).find("th,td");
 
@@ -44,36 +53,42 @@ if (!"".getQueryString) {
     // 评论数
     if (cell.find("img.comments").length) {
       fieldIndex.comments = index;
+      fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
       continue;
     }
 
     // 发布时间
     if (cell.find("img.time").length) {
       fieldIndex.time = index;
+      fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
       continue;
     }
 
     // 大小
     if (cell.find("img.size").length) {
       fieldIndex.size = index;
+      fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
       continue;
     }
 
     // 种子数
     if (cell.find("img.seeders").length) {
       fieldIndex.seeders = index;
+      fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
       continue;
     }
 
     // 下载数
     if (cell.find("img.leechers").length) {
       fieldIndex.leechers = index;
+      fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
       continue;
     }
 
     // 完成数
     if (cell.find("img.snatched").length) {
       fieldIndex.completed = index;
+      fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
       continue;
     }
   }
@@ -83,7 +98,10 @@ if (!"".getQueryString) {
     const row = rows.eq(index);
     let cells = row.find(">td");
 
-    let title = row.find("a[href*='hit'][title]").last();
+    let title = row.find("a[href*='hit'][title]").first();
+    if (title.length == 0) {
+      title = row.find("a[href*='hit']").first();
+    }
     let link = title.attr("href");
     if (link.substr(0, 4) !== "http") {
       link = `${site.url}${link}`;
@@ -111,7 +129,7 @@ if (!"".getQueryString) {
       link,
       url: url + (site && site.passkey ? "&passkey=" + site.passkey : ""),
       size: cells.eq(fieldIndex.size).html() || 0,
-      time: fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).find("span[title]").attr("title") || cells.eq(fieldIndex.time).text() || "",
+      time: fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).find("span[title],time[title]").attr("title") || cells.eq(fieldIndex.time).text() || "",
       author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",
       seeders: fieldIndex.seeders == -1 ? "" : cells.eq(fieldIndex.seeders).text() || 0,
       leechers: fieldIndex.leechers == -1 ? "" : cells.eq(fieldIndex.leechers).text() || 0,
