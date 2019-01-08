@@ -46,7 +46,7 @@
                 ></v-text-field>
               </v-flex>
               <v-flex xs1>
-                <v-slider v-model="options.search.rows" :max="50" :min="1"></v-slider>
+                <v-slider v-model="options.search.rows" :max="200" :min="1"></v-slider>
               </v-flex>
               <v-flex xs7></v-flex>
 
