@@ -13,7 +13,11 @@
           <td>{{ props.item.name }}</td>
           <td>{{ props.item.ver }}</td>
           <td>
-            <a :href="props.item.url" target="_blank">{{ props.item.url }}</a>
+            <a
+              :href="props.item.url"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+            >{{ props.item.url }}</a>
           </td>
         </template>
       </v-data-table>

@@ -53,7 +53,11 @@
             ></v-switch>
           </td>
           <td>
-            <a :href="props.item.url" target="_blank">{{ props.item.url }}</a>
+            <a
+              :href="props.item.url"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+            >{{ props.item.url }}</a>
           </td>
           <td>
             <v-icon small class="mr-2" @click="edit(props.item)">edit</v-icon>

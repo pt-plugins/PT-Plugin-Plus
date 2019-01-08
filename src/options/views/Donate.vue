@@ -13,7 +13,13 @@
         </div>
       </v-card-title>
       <v-card-actions>
-        <v-btn flat color="orange" href="https://www.paypal.me/ronggang" target="_blank">
+        <v-btn
+          flat
+          color="orange"
+          href="https://www.paypal.me/ronggang"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
           <v-icon>attach_money</v-icon>Paypal
         </v-btn>
       </v-card-actions>

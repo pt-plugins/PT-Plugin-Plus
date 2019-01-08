@@ -67,6 +67,7 @@
             href="https://github.com/ronggang/PT-Plugin-Plus/tree/master/resource/clients"
             target="_blank"
             v-show="step==1"
+            rel="noopener noreferrer nofollow"
           >
             <v-icon>help</v-icon>
             <span class="ml-1">{{ words.helpMsg }}</span>

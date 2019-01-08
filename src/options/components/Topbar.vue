@@ -22,6 +22,7 @@
         href="https://github.com/ronggang/PT-Plugin-Plus"
         target="_blank"
         class="grey--text text--darken-2"
+        rel="noopener noreferrer nofollow"
       >
         <v-icon>home</v-icon>
         <span class="ml-2">访问 Github</span>
@@ -31,6 +32,7 @@
         href="https://github.com/ronggang/PT-Plugin-Plus/wiki"
         target="_blank"
         class="grey--text text--darken-2"
+        rel="noopener noreferrer nofollow"
       >
         <v-icon>help</v-icon>
         <span class="ml-2">使用帮助</span>

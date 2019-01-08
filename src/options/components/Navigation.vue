@@ -9,6 +9,7 @@
         :key="index"
         :href="item.url"
         :target="item.url?'_blank':''"
+        rel="noopener noreferrer nofollow"
       >
         <v-list-tile-action class="ml-3">
           <v-icon>{{item.icon}}</v-icon>
