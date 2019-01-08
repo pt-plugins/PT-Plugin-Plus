@@ -11,5 +11,27 @@
     "pages": ["/torrents.php", "/movie.php", "/music.php", "/adult.php"],
     "scripts": ["/libs/album/album.js", "torrents.js"],
     "styles": ["/libs/album/style.css"]
+  }],
+  "searchEntry": [{
+    "entry": "/torrents.php?search=$key$",
+    "name": "综合",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+    "resultSelector": "table.torrents:last > tbody > tr",
+    "enabled": true
+  }, {
+    "entry": "/music.php?search=$key$",
+    "name": "音乐",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+    "resultSelector": "table.torrents:last > tbody > tr",
+    "enabled": true
+  }, {
+    "entry": "/adult.php?search=$key$",
+    "name": "adult",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+    "resultSelector": "table.torrents:last > tbody > tr",
+    "enabled": true
   }]
 }
