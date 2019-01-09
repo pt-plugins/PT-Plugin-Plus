@@ -231,9 +231,12 @@ export class Searcher {
   getSiteSchema(site: Site): SiteSchema {
     let schema: SiteSchema = {};
     if (typeof site.schema === "string") {
-      schema = this.options.system.schemas.find((item: SiteSchema) => {
-        return item.name == site.schema;
-      });
+      schema =
+        this.options.system &&
+        this.options.system.schemas &&
+        this.options.system.schemas.find((item: SiteSchema) => {
+          return item.name == site.schema;
+        });
     }
 
     return schema;

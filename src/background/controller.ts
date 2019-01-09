@@ -128,6 +128,12 @@ export default class Controller {
    */
   public sendTorrentToClient(data: DownloadOptions): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      if (!data.url) {
+        reject({
+          msg: "无效的地址"
+        });
+        return;
+      }
       let URL = Filters.parseURL(data.url);
       let host = URL.host;
       let clientConfig = this.options.clients.find((item: DownloadClient) => {
@@ -471,13 +477,19 @@ export default class Controller {
   private getSiteSchema(site: Site): SiteSchema {
     let schema: SiteSchema = {};
     if (typeof site.schema === "string") {
-      schema = this.options.system.schemas.find((item: SiteSchema) => {
-        return item.name == site.schema;
-      });
+      schema =
+        this.options.system &&
+        this.options.system.schemas &&
+        this.options.system.schemas.find((item: SiteSchema) => {
+          return item.name == site.schema;
+        });
     } else {
-      let site = this.options.system.sites.find((item: Site) => {
-        return item.host == site.host;
-      });
+      let site: Site =
+        this.options.system &&
+        this.options.system.sites &&
+        this.options.system.sites.find((item: Site) => {
+          return item.host == site.host;
+        });
       if (site && site.schema) {
         schema = site.schema;
         schema.siteOnly = true;

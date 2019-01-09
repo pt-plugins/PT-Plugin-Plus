@@ -18,5 +18,8 @@
     "parseScriptFile": "getSearchResult.js",
     "resultSelector": "table.torrents:last > tbody > tr",
     "enabled": true
-  }]
+  }],
+  "parser": {
+    "downloadURL": "(function (options) {\n  if (options.url && options.url.query && options.url.href.getQueryString) {\n    let id = options.url.href.getQueryString(\"id\");\n    if (!id) {\n      options.error = {\n        success: false,\n        msg: \"无效的下载地址\"\n      }\n      return;\n    }\n    let passkey = options.site.passkey || options.url.href.getQueryString(\"passkey\");\n    if (passkey) {\n      options.result = options.url.origin + \"/download.php?id=\" + id + \"&passkey=\" + options.site.passkey + (options.site.disableHttps ? \"\" : \"&https=1\");\n    } else {\n      options.error = {\n        success: false,\n        msg: \"请先设置站点的passkey\"\n      }\n    }\n  }\n})(options)"
+  }
 }

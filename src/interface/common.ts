@@ -63,6 +63,7 @@ export interface SearchOptions {
   tags?: string[];
   timeout?: number;
 }
+
 /**
  * 参数
  */
@@ -80,7 +81,7 @@ export interface Options {
   contextMenuRules?: ContextMenuRules;
   allowSelectionTextSearch?: boolean;
   schemas?: any[];
-  system?: any;
+  system?: SystemOptions;
   search?: SearchOptions | void;
   saveDownloadHistory?: boolean;
   connectClientTimeout?: number;
@@ -103,6 +104,7 @@ export interface SiteSchema {
   siteOnly?: boolean;
   securityKeyFields?: string[];
   searchEntry?: SearchEntry[];
+  parser?: Dictionary<any>;
 }
 
 /**
@@ -124,6 +126,7 @@ export interface Site {
   allowSearch?: boolean;
   securityKeys?: object;
   searchEntry?: SearchEntry[];
+  parser?: Dictionary<any>;
 }
 
 /**
@@ -169,7 +172,9 @@ export enum EAction {
   // 清除系统日志
   clearSystemLogs = "clearSystemLogs",
   readUIOptions = "readUIOptions",
-  saveUIOptions = "saveUIOptions"
+  saveUIOptions = "saveUIOptions",
+  // 在当前选项卡显示消息
+  showMessage = "showMessage"
 }
 
 export interface Request {

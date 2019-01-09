@@ -9,7 +9,8 @@ import {
   NoticeOptions,
   EDownloadClientType,
   ESizeUnit,
-  EDataResultType
+  EDataResultType,
+  Request
 } from "../interface/common";
 import { APP } from "../service/api";
 import { filters } from "../service/filters";
@@ -51,6 +52,7 @@ class PTPContent {
     this.extension = new Extension();
     if (this.extension.isExtensionMode) {
       this.readConfig();
+      this.initBrowserEvent();
     }
   }
 
@@ -83,13 +85,19 @@ class PTPContent {
     // 如果当前站点未定义，则不再继续操作
     if (this.site && this.site.name) {
       if (typeof this.site.schema === "string") {
-        this.schema = this.options.system.schemas.find((item: SiteSchema) => {
-          return item.name == this.site.schema;
-        });
+        this.schema =
+          this.options.system &&
+          this.options.system.schemas &&
+          this.options.system.schemas.find((item: SiteSchema) => {
+            return item.name == this.site.schema;
+          });
       } else {
-        let site = this.options.system.sites.find((item: Site) => {
-          return item.host == this.site.host;
-        });
+        let site =
+          this.options.system &&
+          this.options.system.sites &&
+          this.options.system.sites.find((item: Site) => {
+            return item.host == this.site.host;
+          });
         if (site && site.schema && typeof site.schema !== "string") {
           this.schema = site.schema;
           this.schema.siteOnly = true;
@@ -136,9 +144,12 @@ class PTPContent {
     }
 
     // 获取系统定义的网站信息
-    let site = this.options.system.sites.find((item: Site) => {
-      return item.name == this.site.name;
-    });
+    let site =
+      this.options.system &&
+      this.options.system.sites &&
+      this.options.system.sites.find((item: Site) => {
+        return item.name == this.site.name;
+      });
 
     if (!this.site.plugins) {
       this.site.plugins = [];
@@ -510,6 +521,24 @@ class PTPContent {
       this.logo.removeClass("onLoading");
       this.buttonBar.removeClass("pt-plugin-body-over");
     });
+  }
+
+  private initBrowserEvent() {
+    chrome.runtime.onMessage.addListener(
+      (
+        message: Request,
+        sender: chrome.runtime.MessageSender,
+        callback: (response: any) => void
+      ) => {
+        console.log("content.onMessage", message);
+        switch (message.action) {
+          case EAction.showMessage:
+            let notice = this.showNotice(message.data);
+            callback && callback(notice);
+            break;
+        }
+      }
+    );
   }
 }
 

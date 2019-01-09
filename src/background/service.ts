@@ -9,6 +9,7 @@ import Config from "./config";
 import Controller from "./controller";
 
 import { Logger } from "@/service/logger";
+import { ContextMenus } from "./contextMenus";
 /**
  * PT 助手后台服务类
  */
@@ -23,6 +24,7 @@ export default class PTPlugin {
   public localMode: boolean = false;
   public controller: Controller = new Controller();
   public logger: Logger = new Logger();
+  public contentMenus: ContextMenus = new ContextMenus(this);
 
   private reloadCount: number = 0;
 
@@ -76,6 +78,7 @@ export default class PTPlugin {
           if (this.controller.isInitialized) {
             this.controller.reset(this.options);
           }
+          this.contentMenus.init(this.options);
           break;
 
         // 发送种子到默认下载客户端
@@ -301,26 +304,7 @@ export default class PTPlugin {
 
   public init() {
     if (!this.localMode) {
-      this.initContextMenus();
-    }
-  }
-
-  /**
-   * 初始化上下文菜单
-   */
-  private initContextMenus() {
-    chrome.contextMenus.removeAll();
-    this.debug("initContextMenus", this.options);
-    // 是否启用选择内容时搜索
-    if (this.options.allowSelectionTextSearch) {
-      // 选中内容进行搜索
-      chrome.contextMenus.create({
-        title: '搜索 "%s" 相关的种子',
-        contexts: ["selection"],
-        onclick: (data, tab) => {
-          this.controller.openOptions(data.selectionText);
-        }
-      });
+      this.contentMenus.init(this.options);
     }
   }
 

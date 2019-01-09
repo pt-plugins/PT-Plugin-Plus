@@ -1,3 +1,4 @@
+import "../interface/types.expand";
 import PTPlugin from "./service";
 import { filters } from "../service/filters";
 

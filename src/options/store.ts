@@ -293,30 +293,38 @@ export default new Vuex.Store({
   },
   getters: {
     sites: state => {
-      return state.options.system.sites.filter((site: Site) => {
-        if (state.options.sites) {
-          return (
-            state.options.sites.findIndex(item => {
-              return item.host === site.host;
-            }) === -1
-          );
-        } else {
-          return true;
-        }
-      });
+      return (
+        state.options.system &&
+        state.options.system.sites &&
+        state.options.system.sites.filter((site: Site) => {
+          if (state.options.sites) {
+            return (
+              state.options.sites.findIndex(item => {
+                return item.host === site.host;
+              }) === -1
+            );
+          } else {
+            return true;
+          }
+        })
+      );
     },
     clients: state => {
-      return state.options.system.clients.filter((systemItem: any) => {
-        if (state.options.clients) {
-          return (
-            state.options.clients.findIndex(item => {
-              return item.name === systemItem.name;
-            }) === -1
-          );
-        } else {
-          return true;
-        }
-      });
+      return (
+        state.options.system &&
+        state.options.system.clients &&
+        state.options.system.clients.filter((systemItem: any) => {
+          if (state.options.clients) {
+            return (
+              state.options.clients.findIndex(item => {
+                return item.name === systemItem.name;
+              }) === -1
+            );
+          } else {
+            return true;
+          }
+        })
+      );
     },
     defaultClient: state => {
       if (!state.options.defaultClientId) {
