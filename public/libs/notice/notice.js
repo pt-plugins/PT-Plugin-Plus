@@ -187,7 +187,7 @@ var CloseItem = exports.CloseItem = function CloseItem(item) {
     var position = '.' + item.closest('.noticejs').className.replace('noticejs', '').trim();
     setTimeout(function () {
         if (document.querySelectorAll(position + ' .item').length <= 0) {
-            document.querySelector(position).remove();
+          document.querySelector(position) && document.querySelector(position).remove();
         }
     }, 500);
 };
