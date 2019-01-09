@@ -105,6 +105,7 @@ export interface SiteSchema {
   securityKeyFields?: string[];
   searchEntry?: SearchEntry[];
   parser?: Dictionary<any>;
+  patterns?: Dictionary<any>;
 }
 
 /**
@@ -127,6 +128,7 @@ export interface Site {
   securityKeys?: object;
   searchEntry?: SearchEntry[];
   parser?: Dictionary<any>;
+  patterns?: Dictionary<any>;
 }
 
 /**

@@ -115,16 +115,13 @@ export class ContextMenus {
 
         let count = 0;
 
-        // 添加分隔线
-        this.add({
-          type: "separator"
-        });
-
         // 添加以客户端名称为标题的菜单
         this.add({
           id: parentId,
           title: `${client.name} -> 指定目录`,
-          contexts: ["link"]
+          contexts: ["link"],
+          documentUrlPatterns: [`*://${site.host}/*`],
+          targetUrlPatterns: this.getSiteUrlPatterns(site)
         });
 
         // 根据已定义的路径创建菜单
@@ -144,6 +141,7 @@ export class ContextMenus {
               parentId: parentId,
               contexts: ["link"],
               documentUrlPatterns: [`*://${host}/*`],
+              targetUrlPatterns: this.getSiteUrlPatterns(site),
               onclick: (
                 info: chrome.contextMenus.OnClickData,
                 tab: chrome.tabs.Tab
@@ -168,6 +166,43 @@ export class ContextMenus {
         }
       }
     });
+  }
+
+  /**
+   * 获取指定站点的配置种子链接规则
+   * @param site
+   */
+  private getSiteUrlPatterns(site: Site): string[] {
+    let result: string[] = [];
+    if (site.patterns && site.patterns["torrentLinks"]) {
+      result = site.patterns["torrentLinks"];
+    } else {
+      let schema = this.getSiteSchema(site);
+      if (schema && schema.patterns && schema.patterns["torrentLinks"]) {
+        result = schema.patterns["torrentLinks"];
+      } else {
+        result.push("*://*/*");
+      }
+    }
+    return result;
+  }
+
+  /**
+   * 根据指定的站点获取站点的架构信息
+   * @param site 站点信息
+   */
+  private getSiteSchema(site: Site): SiteSchema {
+    let schema: SiteSchema = {};
+    if (typeof site.schema === "string") {
+      schema =
+        this.options.system &&
+        this.options.system.schemas &&
+        this.options.system.schemas.find((item: SiteSchema) => {
+          return item.name == site.schema;
+        });
+    }
+
+    return schema;
   }
 
   /**
@@ -265,11 +300,6 @@ export class ContextMenus {
               url: info.linkUrl as string
             });
           }
-        });
-
-        // 添加分隔线
-        this.add({
-          type: "separator"
         });
       }
     }
