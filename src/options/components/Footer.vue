@@ -1,6 +1,6 @@
 <template>
   <v-footer app fixed>
-    <span class="pl-2 grey--text text--darken-1">&copy; 栽培者 2019, 版本 v1.0.0.6 alpha
+    <span class="pl-2 grey--text text--darken-1">&copy; 栽培者 2019, 版本 v1.0.0.7 beta
       <v-chip label outline color="orange" disabled small v-if="isDebugMode">{{ words.isDebugMode }}</v-chip>
     </span>
     <v-spacer></v-spacer>
