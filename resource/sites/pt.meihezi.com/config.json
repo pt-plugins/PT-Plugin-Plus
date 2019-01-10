@@ -5,5 +5,13 @@
   "icon": "https://pt.meihezi.com/favicon.ico",
   "tags": ["影视", "综合"],
   "schema": "NexusPHP",
-  "host": "pt.meihezi.com"
+  "host": "pt.meihezi.com",
+  "searchEntry": [{
+    "entry": "/torrents.php?search=$key$",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table.torrents:last > tbody > tr",
+    "enabled": true
+  }]
 }

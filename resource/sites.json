@@ -55,5 +55,8 @@
   }, {
     "name": "pt.hdupt.com",
     "type": "dir"
+  }, {
+    "name": "pt.meihezi.com",
+    "type": "dir"
   }
 ]
