@@ -93,51 +93,63 @@ if (!"".getQueryString) {
     }
   }
 
-  // 遍历数据行
-  for (let index = 1; index < rows.length; index++) {
-    const row = rows.eq(index);
-    let cells = row.find(">td");
+  try {
+    // 遍历数据行
+    for (let index = 1; index < rows.length; index++) {
+      const row = rows.eq(index);
+      let cells = row.find(">td");
 
-    let title = row.find("a[href*='hit'][title]").first();
-    if (title.length == 0) {
-      title = row.find("a[href*='hit']").first();
-    }
-    let link = title.attr("href");
-    if (link.substr(0, 4) !== "http") {
-      link = `${site.url}${link}`;
-    }
-    let url = row.find("img.download").parent();
-    if (url.get(0).tagName !== "A") {
-      let id = link.getQueryString("id");
-      url = `download.php?id=${id}`;
-    } else {
-      url = url.attr("href");
-    }
+      let title = row.find("a[href*='hit'][title]").first();
+      if (title.length == 0) {
+        title = row.find("a[href*='hit']").first();
+      }
+      let link = title.attr("href");
+      if (link.substr(0, 4) !== "http") {
+        link = `${site.url}${link}`;
+      }
 
-    if (url.substr(0, 4) !== "http") {
-      url = `${site.url}${url}`;
-    }
+      // 获取下载链接
+      let url = row.find("img.download").parent();
 
-    let subTitle = title.parent().html().split("<br>");
-    if (subTitle && subTitle.length > 0) {
-      subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
-    }
+      if (url.length) {
+        if (url.get(0).tagName !== "A") {
+          let id = link.getQueryString("id");
+          url = `download.php?id=${id}`;
+        } else {
+          url = url.attr("href");
+        }
+      } else {
+        let id = link.getQueryString("id");
+        url = `download.php?id=${id}`;
+      }
 
-    let data = {
-      title: title.attr("title") || title.text(),
-      subTitle: subTitle || "",
-      link,
-      url: url + (site && site.passkey ? "&passkey=" + site.passkey : ""),
-      size: cells.eq(fieldIndex.size).html() || 0,
-      time: fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).find("span[title],time[title]").attr("title") || cells.eq(fieldIndex.time).text() || "",
-      author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",
-      seeders: fieldIndex.seeders == -1 ? "" : cells.eq(fieldIndex.seeders).text() || 0,
-      leechers: fieldIndex.leechers == -1 ? "" : cells.eq(fieldIndex.leechers).text() || 0,
-      completed: fieldIndex.completed == -1 ? "" : cells.eq(fieldIndex.completed).text() || 0,
-      comments: fieldIndex.comments == -1 ? "" : cells.eq(fieldIndex.comments).text() || 0,
-      site: site
-    };
-    options.results.push(data);
+      if (url.substr(0, 4) !== "http") {
+        url = `${site.url}${url}`;
+      }
+
+      let subTitle = title.parent().html().split("<br>");
+      if (subTitle && subTitle.length > 0) {
+        subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
+      }
+
+      let data = {
+        title: title.attr("title") || title.text(),
+        subTitle: subTitle || "",
+        link,
+        url: url + (site && site.passkey ? "&passkey=" + site.passkey : ""),
+        size: cells.eq(fieldIndex.size).html() || 0,
+        time: fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).find("span[title],time[title]").attr("title") || cells.eq(fieldIndex.time).text() || "",
+        author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",
+        seeders: fieldIndex.seeders == -1 ? "" : cells.eq(fieldIndex.seeders).text() || 0,
+        leechers: fieldIndex.leechers == -1 ? "" : cells.eq(fieldIndex.leechers).text() || 0,
+        completed: fieldIndex.completed == -1 ? "" : cells.eq(fieldIndex.completed).text() || 0,
+        comments: fieldIndex.comments == -1 ? "" : cells.eq(fieldIndex.comments).text() || 0,
+        site: site
+      };
+      options.results.push(data);
+    }
+  } catch (error) {
+    options.errorMsg = `[${options.site.name}]获取种子信息出错: ${error.stack}`;
   }
 
   console.log(options.results);
