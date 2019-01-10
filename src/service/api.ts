@@ -32,6 +32,7 @@ let productAPI = {
 export const APP = {
   debugMode: process.env.NODE_ENV === "development",
   scriptQueues: [] as any,
+  isExtensionMode: window["chrome"] && window.chrome.extension ? true : false,
   cache: {
     localStorage: new localStorage(),
     cacheKey: "PT-Plugin-Plus-Cache-Contents",
