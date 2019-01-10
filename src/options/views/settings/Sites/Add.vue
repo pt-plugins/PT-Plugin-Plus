@@ -45,7 +45,7 @@
                       <v-list-tile-sub-title v-html="data.item.url"></v-list-tile-sub-title>
                     </v-list-tile-content>
                     <v-list-tile-action>
-                      <v-list-tile-action-text>{{ data.item.tags.join(", ") }}</v-list-tile-action-text>
+                      <v-list-tile-action-text>{{ joinTags(data.item.tags) }}</v-list-tile-action-text>
                     </v-list-tile-action>
                   </template>
                 </v-autocomplete>
@@ -164,6 +164,12 @@ export default Vue.extend({
       this.isCustom = true;
       this.valid = false;
       this.step = 2;
+    },
+    joinTags(tags: any): string {
+      if (tags && tags.join) {
+        return tags.join(", ");
+      }
+      return "";
     }
   },
   computed: {
