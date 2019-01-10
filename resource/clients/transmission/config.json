@@ -2,7 +2,7 @@
   "name": "Transmission",
   "type": "transmission",
   "ver": "0.0.1",
-  "icon": "https://transmissionbt.com/favicon.ico",
+  "icon": "https://raw.githubusercontent.com/transmission/transmission/master/web/images/favicon.png",
   "scripts": [
     "init.js"
   ]
