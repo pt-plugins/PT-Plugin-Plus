@@ -226,6 +226,23 @@ export class ContextMenus {
       }
     );
 
+    let client = this.options.clients.find((item: DownloadClient) => {
+      return item.id === options.clientId;
+    });
+
+    if (!client) {
+      chrome.tabs.sendMessage(tabid, {
+        action: EAction.showMessage,
+        data: {
+          type: EDataResultType.error,
+          msg: "获取下载服务器失败。"
+        }
+      });
+      return;
+    }
+
+    // 设置是否自动开始
+    options.autoStart = client.autoStart;
     console.log(options);
 
     let url = this.getParsedURL(options.url);
@@ -234,7 +251,7 @@ export class ContextMenus {
         action: EAction.showMessage,
         data: url
       });
-      notice && notice.remove && notice.remove();
+      notice && notice.hide && notice.hide();
       return;
     }
 
@@ -243,18 +260,19 @@ export class ContextMenus {
     this.service.controller
       .sendTorrentToClient(options)
       .then((result: any) => {
-        notice && notice.remove && notice.remove();
         chrome.tabs.sendMessage(tabid, {
           action: EAction.showMessage,
           data: result
         });
       })
       .catch((result: any) => {
-        notice && notice.remove && notice.remove();
         chrome.tabs.sendMessage(tabid, {
           action: EAction.showMessage,
           data: result
         });
+      })
+      .finally(() => {
+        notice && notice.hide && notice.hide();
       });
   }
 
