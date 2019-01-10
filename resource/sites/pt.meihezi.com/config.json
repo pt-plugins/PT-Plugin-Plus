@@ -1,0 +1,9 @@
+{
+  "name": "MeiHeZi",
+  "description": "美盒子",
+  "url": "https://pt.meihezi.com/",
+  "icon": "https://pt.meihezi.com/favicon.ico",
+  "tags": ["影视", "综合"],
+  "schema": "NexusPHP",
+  "host": "pt.meihezi.com"
+}
