@@ -1,0 +1,7 @@
+{
+  "name": "keepfrds",
+  "url": "http://pt.keepfrds.com/",
+  "icon": "http://pt.keepfrds.com/favicon.ico",
+  "schema": "NexusPHP",
+  "host": "pt.keepfrds.com"
+}
