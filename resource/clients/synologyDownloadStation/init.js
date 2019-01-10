@@ -18,7 +18,8 @@
         let url = `${this.options.address}/webapi/auth.cgi?api=SYNO.API.Auth&version=${this.version}&method=login&account=${this.options.loginName}&passwd=${this.options.loginPwd}&session=DownloadStation&format=sid`;
         $.ajax({
           url,
-          timeout: PTBackgroundService.options.connectClientTimeout
+          timeout: PTBackgroundService.options.connectClientTimeout,
+          dataType: "json"
         }).done((result) => {
           console.log(result)
           if (result && result.success) {
@@ -107,7 +108,8 @@
       ];
       $.ajax({
         url: path.join("&"),
-        timeout: PTBackgroundService.options.connectClientTimeout
+        timeout: PTBackgroundService.options.connectClientTimeout,
+        dataType: "json"
       }).done((result) => {
         console.log(result)
         callback(result)
