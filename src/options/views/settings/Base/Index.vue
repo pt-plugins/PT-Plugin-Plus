@@ -59,7 +59,12 @@
                 ></v-text-field>
               </v-flex>
               <v-flex xs1>
-                <v-slider v-model="options.connectClientTimeout" :max="5000" :min="500" :step="500"></v-slider>
+                <v-slider
+                  v-model="options.connectClientTimeout"
+                  :max="60000"
+                  :min="500"
+                  :step="500"
+                ></v-slider>
               </v-flex>
 
               <v-flex xs12>
@@ -161,7 +166,7 @@ export default Vue.extend({
         searchResultRows: "搜索时每站点返回结果数量",
         saveDownloadHistory: "记录每次一键发送的种子信息，以供导出备份",
         connectClientTimeout:
-          "连接下载服务器超时时间（毫秒），超出后将中断连接",
+          "连接下载服务器超时时间（毫秒，1000毫秒=1秒），超出后将中断连接",
         noClient: "尚未配置下载服务器，请配置下载服务后再选择"
       },
       valid: false,
