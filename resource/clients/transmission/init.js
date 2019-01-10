@@ -132,7 +132,7 @@
             this.sessionId = request.getResponseHeader(XHEADER);
             this.headers[XHEADER] = this.sessionId;
             options.headers = this.headers;
-            this.sendRequest(options);
+            this.sendRequest(options, success, error);
             break;
 
           default:
