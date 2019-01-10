@@ -4,9 +4,6 @@
 (function ($, window) {
   const XHEADER = "X-Transmission-Session-Id";
   class Transmission {
-    // headers = [];
-    // options = {};
-
     /**
      * 初始化实例
      * @param {*} options 
@@ -83,56 +80,66 @@
 
         $.extend(data, options);
 
-        var settings = {
+        this.sendRequest({
           type: "POST",
           url: this.options.address,
           dataType: 'json',
           data: JSON.stringify(data),
           timeout: PTBackgroundService.options.connectClientTimeout,
-          success: (resultData, textStatus) => {
-            if (callback) {
-              callback(resultData, tags);
-            }
-            resolve(resultData);
-          },
-          error: (request, event, page) => {
-            switch (request.status) {
-              case 409:
-                this.sessionId = request.getResponseHeader(XHEADER);
-                this.headers[XHEADER] = this.sessionId;
-                settings.headers = this.headers;
-                $.ajax(settings);
-                break;
-
-              case 401:
-                result = {
-                  status: "error",
-                  code: request.status,
-                  msg: "身份验证失败"
-                };
-                if (callback) {
-                  callback(result);
-                }
-                reject(result)
-                break;
-
-              default:
-                result = {
-                  status: "error",
-                  code: request.status,
-                  msg: "未知错误"
-                };
-                if (callback) {
-                  callback(result);
-                }
-                reject(result)
-                break;
-
-            }
-          },
           headers: this.headers
-        };
-        $.ajax(settings);
+        }, (resultData) => {
+          if (callback) {
+            callback(resultData, tags);
+          }
+          resolve(resultData);
+        }, (request, event, page) => {
+          switch (request.status) {
+            case 401:
+              result = {
+                status: "error",
+                code: request.status,
+                msg: "身份验证失败"
+              };
+              reject && reject(result)
+              break;
+
+            default:
+              result = {
+                status: "error",
+                code: request.status,
+                msg: "未知错误"
+              };
+              reject && reject(result)
+              break;
+
+          }
+        });
+      });
+    }
+
+    /**
+     * 发送请求
+     * @param {*} options 
+     * @param {*} success 
+     * @param {*} error 
+     */
+    sendRequest(options, success, error) {
+      $.ajax(options).done((resultData, textStatus) => {
+        success && success(resultData, textStatus);
+      }).fail((request, event, page) => {
+        switch (request.status) {
+          case 409:
+            this.sessionId = request.getResponseHeader(XHEADER);
+            this.headers[XHEADER] = this.sessionId;
+            options.headers = this.headers;
+            this.sendRequest(options);
+            break;
+
+          default:
+            error && error(request, event, page);
+            break;
+        }
+
       });
     }
 
@@ -165,7 +172,7 @@
       if (savePath) {
         options.arguments["download-dir"] = savePath;
       }
-      this.exec(options, (data) => {
+      this.exec(options).then((data) => {
         switch (data.result) {
           // 添加成功
           case "success":
@@ -192,6 +199,8 @@
             break;
 
         }
+      }).catch((result) => {
+        callback && callback(result);
       });
     }
 
@@ -206,9 +215,10 @@
         arguments: {
           "path": path
         }
-      }, function (result) {
-        if (callback)
-          callback(result);
+      }).then((result) => {
+        callback && callback(result);
+      }).catch((result) => {
+        callback && callback(result);
       });
     }
   }
