@@ -41,7 +41,13 @@
       "parseScriptFile": "getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr"
     }
-  ]
+  ],
+  "patterns": {
+    "torrentLinks": ["*://*/*"]
+  },
+  "parser": {
+    "downloadURL": "解析脚本内容"
+  }
 }
 ```
 
@@ -51,12 +57,16 @@
   - `name` : 插件名称；
   - `pages` : 表示该插件在哪些页面加载；
   - `scripts` : 插件对应的脚本文件，`JavaScript` 文件
-- `searchEntry` : 搜索入口配置，必需为数组
+- `searchEntry` : 搜索入口配置，需定义为数组
   - `entry` : 入口文件
   - `name` : 自定义入口的名称
   - `resultType` : 搜索返回的原始结果类型：html, json, xml
   - `parseScriptFile` : 解析原始结果的脚本文件
   - `resultSelector` : 定位种子列表的 `jQuery` 查询表达式
+- `patterns` : （可选）页面匹配规则
+  - `torrentLinks` : 用于匹配有效的种子链接，作用于右键菜单，如果不指定，则匹配所有链接；
+- `parser` : （可选）解析器
+  - `downloadURL` : 解析下载链接，用于解析和生成点击右键下载时的链接
 
 ### 关于脚本及其他资源文件路径说明
 

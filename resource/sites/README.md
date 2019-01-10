@@ -40,7 +40,13 @@
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrent_list:last > tbody > tr"
     }
-  ]
+  ],
+  "patterns": {
+    "torrentLinks": ["*://*/*"]
+  },
+  "parser": {
+    "downloadURL": "解析脚本内容"
+  }
 }
 ```
 
@@ -63,6 +69,14 @@
   - `resultType` : 搜索返回的原始结果类型：html, json, xml
   - `parseScriptFile` : 解析原始结果的脚本文件
   - `resultSelector` : 定位种子列表的 `jQuery` 查询表达式
+- `patterns` : （可选）页面匹配规则
+  - `torrentLinks` : 用于匹配有效的种子链接，作用于右键菜单，如果不指定，则匹配所有链接；
+- `parser` : （可选）解析器
+  - `downloadURL` : 解析下载链接，用于解析和生成点击右键下载时的链接
+
+### 脚本及脚本文件定义
+
+脚本文件及脚本片段，请使用 `闭包` ，以避免 `命名污染` 。
 
 ### 关于脚本及其他资源文件路径说明
 
@@ -70,3 +84,26 @@
   - `https://github.com/ronggang/PT-Plugin-Plus/tree/master/resource/`
 - 如果第一个位置不是 `/` ，则表示当前路径为该网站所在目录，如 `open.cd` 的指向目录为：
   - `https://github.com/ronggang/PT-Plugin-Plus/tree/master/resource/sites/open.cd/`
+
+## 如何提交一个新的站点？
+
+> 由于本人精力及能力有限，仅能维护部分站点，如果你有更多更好玩的站点需要在助手中直接下拉选择显示，并愿意分享给其他用户使用，那么赶紧通过以下方式提交吧；（怎么听着像广告~\_~）
+
+1. 如果你有 `github` 账户，并知道如何使用 `git` ，那么可以按以下步骤进行提交
+
+   - `Fork` 本项目；
+   - 将 `Fork` 后的项目 `clone` 到本地；
+   - 在项目的 `resource\sites` 目录下新建一个站点目录，如：`pt.mysite.com`
+   - 在 `pt.mysite.com` 目录下新建一个 `config.json` 文件，内容参考上面的 `config.json 文件示例`；
+   - 如有需要，再创建特定的脚本；
+   - 以上操作完成后，使用 `git` 将修改内容 `push` 到自己的 `github` 仓库；
+   - 最后在 `github` 仓库中发起一个 `PR(pull request)` 即可；
+
+2. 加入开发交流 QQ 群：773500545，把你的配置文件分享给我们吧；
+
+## PR 参考资料
+
+- https://blog.csdn.net/vim_wj/article/details/78300239
+- http://www.ruanyifeng.com/blog/2017/07/pull_request.html
+- https://gist.github.com/zxhfighter/62847a087a2a8031fbdf
+- https://github.com/geeeeeeeeek/git-recipes/wiki/3.3-%E5%88%9B%E5%BB%BA-Pull-Request
