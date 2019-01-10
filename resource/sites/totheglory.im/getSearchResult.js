@@ -53,7 +53,7 @@
 
     // 格式：vvvid|||passkey|||sslzz
     let key = (new Base64).encode("vvv" + id + "|||" + site.passkey + "|||sslzz");
-    let url = `https://${site.host}/rssdd.php?par=${key}`;
+    let url = `https://${site.host}/rssdd.php?par=${key}&ssl=yes`;
 
     let subTitle = "";
     if (titleStrings.length > 0) {

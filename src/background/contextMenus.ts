@@ -412,6 +412,7 @@ export class ContextMenus {
     if (!site) {
       return source;
     }
+
     let options = {
       url,
       site,
@@ -419,7 +420,7 @@ export class ContextMenus {
       error: {} as DataResult
     };
 
-    let parser = this.getSiteParser(site, "downloadURL");
+    let parser = this.getSiteParser(site.host as string, "downloadURL");
     if (parser) {
       try {
         eval(parser);
@@ -435,7 +436,24 @@ export class ContextMenus {
     return options.result;
   }
 
-  private getSiteParser(site: Site, name: string): string {
+  /**
+   * 获取指定解析器
+   * @param host
+   * @param name
+   */
+  private getSiteParser(host: string, name: string): string {
+    // 由于解析器可能会更新，所以需要从系统配置中加载
+    let site: Site =
+      this.options.system &&
+      this.options.system.sites &&
+      this.options.system.sites.find((item: Site) => {
+        return item.host === host;
+      });
+
+    if (!site) {
+      return "";
+    }
+
     let result = site.parser && site.parser[name];
     if (!result) {
       let schema: SiteSchema =

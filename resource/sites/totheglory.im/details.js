@@ -75,7 +75,7 @@
 
           // 格式：vvvid|||passkey|||sslzz
           let key = (new Base64).encode("vvv" + id + "|||" + PTSevrice.site.passkey + "|||sslzz");
-          url = `https://${PTSevrice.site.host}/rssdd.php?par=${key}`;
+          url = `https://${PTSevrice.site.host}/rssdd.php?par=${key}&ssl=yes`;
         }
       }
 

@@ -108,7 +108,7 @@
       getDownloadURL(id) {
         // 格式：vvvid|||passkey|||sslzz
         let key = (new Base64).encode("vvv" + id + "|||" + PTSevrice.site.passkey + "|||sslzz");
-        return `https://${PTSevrice.site.host}/rssdd.php?par=${key}`;
+        return `https://${PTSevrice.site.host}/rssdd.php?par=${key}&ssl=yes`;
       }
 
       /**
