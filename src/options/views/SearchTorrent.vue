@@ -41,12 +41,12 @@
             <div class="sub-title">{{props.item.subTitle}}</div>
           </td>
           <td class="center" v-html="props.item.size"></td>
-          <td class="center">{{ props.item.comments }}</td>
+          <!-- <td class="center">{{ props.item.comments }}</td> -->
           <td class="center">{{ props.item.seeders }}</td>
           <td class="center">{{ props.item.leechers }}</td>
           <td class="center">{{ props.item.completed }}</td>
-          <td>{{ props.item.author }}</td>
-          <td>{{ props.item.time }}</td>
+          <!-- <td>{{ props.item.author }}</td> -->
+          <td>{{ props.item.time | formatDate }}</td>
           <td>
             <v-icon
               small
@@ -83,6 +83,7 @@ import {
   LogItem
 } from "@/interface/common";
 import { filters } from "@/service/filters";
+import moment from "moment";
 
 const extension = new Extension();
 export default Vue.extend({
@@ -108,11 +109,11 @@ export default Vue.extend({
         { text: "站点", align: "center", value: "site.host" },
         { text: "标题", align: "left", value: "title" },
         { text: "大小", align: "center", value: "size" },
-        { text: "评论", align: "center", value: "comments" },
+        // { text: "评论", align: "center", value: "comments" },
         { text: "上传", align: "center", value: "seeders" },
         { text: "下载", align: "center", value: "leechers" },
         { text: "完成", align: "center", value: "completed" },
-        { text: "发布者", align: "left", value: "author" },
+        // { text: "发布者", align: "left", value: "author" },
         { text: "发布时间", align: "left", value: "time" },
         { text: "操作", sortable: false }
       ],
@@ -121,7 +122,8 @@ export default Vue.extend({
       haveSuccess: false,
       successMsg: "",
       currentSite: {} as Site,
-      skipSites: ""
+      skipSites: "",
+      beginTime: null as any
     };
   },
   created() {
@@ -213,6 +215,7 @@ export default Vue.extend({
         return;
       }
 
+      this.beginTime = moment();
       this.writeLog({
         event: `SearchTorrent.Search.Start`,
         msg: `准备开始搜索，共需搜索 ${sites.length} 个站点`,
@@ -232,7 +235,9 @@ export default Vue.extend({
       let site = options.sites.shift();
 
       if (!site) {
-        this.searchMsg = `搜索完成，共找到 ${this.datas.length} 条结果`;
+        this.searchMsg = `搜索完成，共找到 ${
+          this.datas.length
+        } 条结果，耗时：${moment().diff(this.beginTime, "seconds", true)} 秒。`;
         this.loading = false;
         this.writeLog({
           event: `SearchTorrent.Search.Finished`,
