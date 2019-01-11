@@ -1,5 +1,6 @@
 import localStorage from "./localStorage";
 import md5 from "blueimp-md5";
+import { EConfigKey } from "@/interface/common";
 
 const API_RAW_URL =
   "https://raw.githubusercontent.com/ronggang/PT-Plugin-Plus/master/resource";
@@ -35,7 +36,7 @@ export const APP = {
   isExtensionMode: window["chrome"] && window.chrome.extension ? true : false,
   cache: {
     localStorage: new localStorage(),
-    cacheKey: "PT-Plugin-Plus-Cache-Contents",
+    cacheKey: EConfigKey.cache,
     contents: {} as any,
     // 10 天
     expires: 60 * 60 * 24 * 10,
@@ -71,6 +72,7 @@ export const APP = {
      */
     set(key: string, content: string) {
       this.contents[md5(key)] = content;
+      this.contents["update"] = new Date().getTime();
       this.contents["expires"] = new Date().getTime() + this.expires;
       this.localStorage.set(this.cacheKey, this.contents);
     },
@@ -80,6 +82,18 @@ export const APP = {
     clear() {
       this.contents = {};
       this.localStorage.set(this.cacheKey, this.contents);
+    },
+    getLastUpdateTime(): Promise<any> {
+      return new Promise<any>((resolve?: any, reject?: any) => {
+        this.localStorage.get(this.cacheKey, (result: any) => {
+          if (result) {
+            let update = result["update"];
+            resolve(update || 0);
+          } else {
+            reject();
+          }
+        });
+      });
     }
   },
   addScript(script: any) {
