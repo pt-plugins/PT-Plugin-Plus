@@ -249,18 +249,20 @@ export default class PTPlugin {
       return;
     }
     // 监听由活动页面发来的消息事件
-    chrome.runtime.onMessage.addListener(
-      (message: any, sender: chrome.runtime.MessageSender, callback) => {
-        this.requestMessage(message, sender)
-          .then((result: any) => {
-            callback && callback(result);
-          })
-          .catch((result: any) => {
-            callback && callback(result);
-          });
-        // 这句不能去掉
-        return true;
-      }
-    );
+    chrome.runtime &&
+      chrome.runtime.onMessage &&
+      chrome.runtime.onMessage.addListener(
+        (message: any, sender: chrome.runtime.MessageSender, callback) => {
+          this.requestMessage(message, sender)
+            .then((result: any) => {
+              callback && callback(result);
+            })
+            .catch((result: any) => {
+              callback && callback(result);
+            });
+          // 这句不能去掉
+          return true;
+        }
+      );
   }
 }
