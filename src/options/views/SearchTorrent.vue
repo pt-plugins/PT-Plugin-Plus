@@ -78,7 +78,9 @@ import {
   Dictionary,
   EDownloadClientType,
   DataResult,
-  EPaginationKey
+  EPaginationKey,
+  EModule,
+  LogItem
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 
@@ -123,6 +125,12 @@ export default Vue.extend({
     };
   },
   created() {
+    if (!this.options.system) {
+      this.writeLog({
+        event: `SearchTorrent.init`,
+        msg: "系统参数丢失"
+      });
+    }
     this.key = this.$route.params["key"];
     this.pagination = this.$store.getters.pagination(
       EPaginationKey.searchTorrent,
@@ -152,6 +160,14 @@ export default Vue.extend({
     }
   },
   methods: {
+    writeLog(options: LogItem) {
+      extension.sendRequest(EAction.writeLog, null, {
+        module: EModule.options,
+        event: options.event,
+        msg: options.msg,
+        data: options.data
+      });
+    },
     search() {
       if (window.location.hostname == "localhost") return;
       this.haveError = false;
@@ -197,6 +213,14 @@ export default Vue.extend({
         return;
       }
 
+      this.writeLog({
+        event: `SearchTorrent.Search.Start`,
+        msg: `准备开始搜索，共需搜索 ${sites.length} 个站点`,
+        data: {
+          key: this.key
+        }
+      });
+
       this.doSearchTorrent({
         count: sites.length,
         sites
@@ -208,8 +232,15 @@ export default Vue.extend({
       let site = options.sites.shift();
 
       if (!site) {
-        this.searchMsg = "搜索完成。";
+        this.searchMsg = `搜索完成，共找到 ${this.datas.length} 条结果`;
         this.loading = false;
+        this.writeLog({
+          event: `SearchTorrent.Search.Finished`,
+          msg: this.searchMsg,
+          data: {
+            key: this.key
+          }
+        });
         return;
       }
 
@@ -221,6 +252,16 @@ export default Vue.extend({
         "/" +
         options.count +
         ".";
+
+      this.writeLog({
+        event: `SearchTorrent.Search.Processing`,
+        msg: this.searchMsg,
+        data: {
+          host: site.host,
+          name: site.name,
+          key: this.key
+        }
+      });
       this.loading = true;
       extension
         .sendRequest(EAction.getSearchResult, null, {
@@ -229,8 +270,26 @@ export default Vue.extend({
         })
         .then((result: any) => {
           if (result && result.length) {
+            this.writeLog({
+              event: `SearchTorrent.Search.Done[${site.name}]`,
+              msg: `[${site.name}] 搜索完成，共有 ${result.length} 条结果`,
+              data: {
+                host: site.host,
+                name: site.name,
+                key: this.key
+              }
+            });
             this.datas.push(...result);
           } else if (result && result.msg) {
+            this.writeLog({
+              event: `SearchTorrent.Search.Error`,
+              msg: result.msg,
+              data: {
+                host: site.host,
+                name: site.name,
+                key: this.key
+              }
+            });
             this.errorMsg = result.msg;
           }
 
@@ -240,6 +299,11 @@ export default Vue.extend({
           if (result.msg) {
             this.errorMsg = result.msg;
           }
+          this.writeLog({
+            event: `SearchTorrent.Search.Error`,
+            msg: result.msg,
+            data: result
+          });
         });
     },
 
@@ -304,23 +368,44 @@ export default Vue.extend({
       this.haveSuccess = true;
       this.successMsg = "正在发送种子到下载服务器……";
 
+      let data = {
+        url,
+        title,
+        savePath: defaultPath,
+        autoStart: defaultClientOptions.autoStart
+      };
+      this.writeLog({
+        event: "SearchTorrent.sendTorrentToDefaultClient",
+        msg: "发送种子到下载服务器",
+        data
+      });
       extension
-        .sendRequest(EAction.sendTorrentToDefaultClient, null, {
-          url,
-          title,
-          savePath: defaultPath,
-          autoStart: defaultClientOptions.autoStart
-        })
+        .sendRequest(EAction.sendTorrentToDefaultClient, null, data)
         .then((result: any) => {
           console.log("命令执行完成", result);
 
           if (result.type == "success") {
-            this.haveSuccess = true;
             this.successMsg = result.msg;
+            this.writeLog({
+              event: "SearchTorrent.sendTorrentToDefaultClient.Success",
+              msg: "发送种子到下载服务器成功",
+              data: result
+            });
           } else {
-            this.haveError = true;
             this.errorMsg = result.msg;
+            this.writeLog({
+              event: "SearchTorrent.sendTorrentToDefaultClient.Error",
+              msg: "发送种子到下载服务器失败",
+              data: result
+            });
           }
+        })
+        .catch((result: any) => {
+          this.writeLog({
+            event: "SearchTorrent.sendTorrentToDefaultClient.Error",
+            msg: "发送种子到下载服务器失败",
+            data: result
+          });
         });
     },
     updatePagination(value: any) {

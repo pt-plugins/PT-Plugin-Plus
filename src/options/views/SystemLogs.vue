@@ -27,22 +27,30 @@
         :headers="headers"
         :items="items"
         :pagination.sync="pagination"
-        item-key="index"
+        item-key="time"
         select-all
         class="elevation-1"
         :rows-per-page-items="options.rowsPerPageItems"
         @update:pagination="updatePagination"
       >
         <template slot="items" slot-scope="props">
-          <td style="width:20px;">
-            <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
-          </td>
-          <td>{{ props.item.module }}</td>
-          <td>{{ props.item.event }}</td>
-          <td>{{ props.item.time | formatDate("YYYY-MM-DD HH:mm:ss") }}</td>
-          <td>
-            <v-icon small color="error" @click="removeConfirm(props.item)">delete</v-icon>
-          </td>
+          <tr @click="props.expanded = !props.expanded">
+            <td style="width:20px;">
+              <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+            </td>
+            <td>{{ props.item.module }}</td>
+            <td>{{ props.item.event }}</td>
+            <td>{{ props.item.time | formatDate("YYYY-MM-DD HH:mm:ss") }}</td>
+            <td>{{ props.item.msg }}</td>
+            <td>
+              <v-icon small color="error" @click="removeConfirm(props.item)">delete</v-icon>
+            </td>
+          </tr>
+        </template>
+        <template slot="expand" slot-scope="props">
+          <v-card flat>
+            <v-card-text>{{getErrorDetail(props.item.data)}}</v-card-text>
+          </v-card>
         </template>
       </v-data-table>
     </v-card>
@@ -106,6 +114,7 @@ export default Vue.extend({
         { text: "模块", align: "left", value: "module" },
         { text: "事件", align: "left", value: "event" },
         { text: "时间", align: "left", value: "time" },
+        { text: "描述", align: "left", value: "msg" },
         { text: "操作", value: "name", sortable: false }
       ],
       items: [],
@@ -158,6 +167,17 @@ export default Vue.extend({
         key: EPaginationKey.systemLogs,
         options: value
       });
+    },
+    getErrorDetail(data: any): string {
+      let result = "";
+      if (data) {
+        try {
+          result = JSON.stringify(data);
+        } catch (error) {
+          result = "";
+        }
+      }
+      return result;
     }
   },
 

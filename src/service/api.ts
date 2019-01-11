@@ -83,6 +83,9 @@ export const APP = {
       this.contents = {};
       this.localStorage.set(this.cacheKey, this.contents);
     },
+    /**
+     * 获取缓存最后更新时间
+     */
     getLastUpdateTime(): Promise<any> {
       return new Promise<any>((resolve?: any, reject?: any) => {
         this.localStorage.get(this.cacheKey, (result: any) => {

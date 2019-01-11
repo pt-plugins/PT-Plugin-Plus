@@ -8,12 +8,15 @@ import {
   EDownloadClientType,
   DownloadOptions,
   DataResult,
-  EDataResultType
+  EDataResultType,
+  Request
 } from "@/interface/common";
 import { filters as Filters } from "@/service/filters";
 import { ClientController } from "@/service/clientController";
 import { DownloadHistory } from "./downloadHistory";
 import { Searcher } from "./searcher";
+import PTPlugin from "./service";
+type Service = PTPlugin;
 export default class Controller {
   public options: Options = {
     sites: [],
@@ -30,6 +33,10 @@ export default class Controller {
 
   public clientController: ClientController = new ClientController();
   public isInitialized: boolean = false;
+
+  public contentPages: any[] = [];
+
+  constructor(public service: Service) {}
 
   public init(options: Options) {
     this.reset(options);
@@ -53,34 +60,6 @@ export default class Controller {
    */
   public getSearchResult(options: any): Promise<any> {
     return this.searcher.searchTorrent(options.site, options.key);
-    // return new Promise<any>((resolve?: any, reject?: any) => {
-    //   let settings = {
-    //     url: options.url,
-    //     success: (result: any) => {
-    //       if (
-    //         (result && (typeof result == "string" && result.length > 100)) ||
-    //         typeof result == "object"
-    //       ) {
-    //         console.log(result);
-
-    //         // let script = options.scripts[index];
-    //         const results: any[] = [];
-    //         if (options.script) {
-    //           eval(options.script);
-    //         }
-
-    //         resolve(results);
-    //       } else {
-    //         reject();
-    //       }
-    //     },
-    //     error: (result: any) => {
-    //       reject(result);
-    //     }
-    //   };
-
-    //   $.ajax(settings);
-    // });
   }
 
   /**
@@ -509,5 +488,38 @@ export default class Controller {
       }
     }
     return result;
+  }
+
+  /**
+   * 接收由前台发回的指令并执行
+   * @param action 指令
+   * @param callback 回调函数
+   */
+  public call(
+    request: Request,
+    sender?: chrome.runtime.MessageSender
+  ): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let service: any = this;
+      service[request.action](request.data, sender)
+        .then((result: any) => {
+          resolve(result);
+        })
+        .catch((result: any) => {
+          reject(result);
+        });
+    });
+  }
+
+  public addContentPage(
+    data: any,
+    sender: chrome.runtime.MessageSender
+  ): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (sender.tab) {
+        this.contentPages.push(sender.tab.id);
+      }
+      resolve();
+    });
   }
 }

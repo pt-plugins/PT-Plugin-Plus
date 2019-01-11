@@ -25,16 +25,21 @@ export default class Extension {
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       if (this.isExtensionMode) {
-        chrome.runtime.sendMessage(
-          {
-            action,
-            data
-          },
-          (result: any) => {
-            callback && callback(result);
-            resolve(result);
-          }
-        );
+        try {
+          chrome.runtime.sendMessage(
+            {
+              action,
+              data
+            },
+            (result: any) => {
+              callback && callback(result);
+              resolve(result);
+            }
+          );
+        } catch (error) {
+          reject(error);
+        }
+
         return;
       }
 

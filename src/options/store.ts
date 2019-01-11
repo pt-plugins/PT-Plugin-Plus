@@ -2,7 +2,13 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import md5 from "blueimp-md5";
-import { Options, EAction, Site, UIOptions } from "../interface/common";
+import {
+  Options,
+  EAction,
+  Site,
+  UIOptions,
+  EModule
+} from "../interface/common";
 import Extension from "../service/extension";
 const extension = new Extension();
 
@@ -252,8 +258,18 @@ export default new Vuex.Store({
   },
   actions: {
     readConfig({ commit }) {
-      extension.sendRequest(EAction.readConfig, (options: Options) => {
+      extension.sendRequest(EAction.writeLog, null, {
+        module: EModule.options,
+        event: "Options.readConfig",
+        msg: "开始加载配置信息"
+      });
+      extension.sendRequest(EAction.readConfig).then((options: Options) => {
         commit("updateOptions", options);
+        extension.sendRequest(EAction.writeLog, null, {
+          module: EModule.options,
+          event: "Options.readConfig.Finished",
+          msg: "配置加载完成"
+        });
       });
     },
 

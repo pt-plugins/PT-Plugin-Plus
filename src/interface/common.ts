@@ -178,7 +178,10 @@ export enum EAction {
   // 在当前选项卡显示消息
   showMessage = "showMessage",
   // 写入日志
-  writeLog = "writeLog"
+  writeLog = "writeLog",
+  // 后台服务停止
+  serviceStoped = "serviceStoped",
+  addContentPage = "addContentPage"
 }
 
 export interface Request {
@@ -259,7 +262,7 @@ export enum ELogEvent {
 }
 
 export interface LogItem {
-  module: string;
+  module?: string;
   event?: string;
   data?: any;
   id?: number | string;

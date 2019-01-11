@@ -22,13 +22,17 @@ export default class PTPlugin {
   };
   // 本地模式，用于本地快速调试
   public localMode: boolean = false;
-  public controller: Controller = new Controller();
+  // 事件处理器
+  public controller: Controller = new Controller(this);
+  // 日志处理器
   public logger: Logger = new Logger();
+  // 上下文菜单处理器
   public contentMenus: ContextMenus = new ContextMenus(this);
 
   private reloadCount: number = 0;
 
   constructor(localMode: boolean = false) {
+    this.initBrowserEvent();
     this.logger.add({
       module: EModule.background,
       event: ELogEvent.init
@@ -45,230 +49,155 @@ export default class PTPlugin {
   public requestMessage(request: Request, sender?: any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let result: any;
-      if (request.action !== EAction.getSystemLogs) {
+      if (![EAction.getSystemLogs, EAction.writeLog].includes(request.action)) {
         this.logger.add({
           module: EModule.background,
-          event: `${ELogEvent.requestMessage}.${request.action}`,
-          data: request.data
+          event: `${ELogEvent.requestMessage}.${request.action}`
         });
       }
 
-      switch (request.action) {
-        // 读取参数
-        case EAction.readConfig:
-          // this.config.read().then((result: any) => {
-          //   console.log("PTPlugin.requestMessage.done:", result);
-          //   this.options = result;
-          //   resolve(result);
-          // });
-          if (this.localMode) {
-            this.readConfig().then(() => {
+      try {
+        switch (request.action) {
+          // 读取参数
+          case EAction.readConfig:
+            // this.config.read().then((result: any) => {
+            //   console.log("PTPlugin.requestMessage.done:", result);
+            //   this.options = result;
+            //   resolve(result);
+            // });
+            if (this.localMode) {
+              this.readConfig().then(() => {
+                resolve(this.options);
+              });
+            } else {
               resolve(this.options);
-            });
-          } else {
-            resolve(this.options);
-          }
+            }
 
-          break;
+            break;
 
-        // 保存参数
-        case EAction.saveConfig:
-          this.config.save(request.data);
-          this.options = request.data;
-          if (this.controller.isInitialized) {
-            this.controller.reset(this.options);
-          }
-          this.contentMenus.init(this.options);
-          break;
+          // 保存参数
+          case EAction.saveConfig:
+            this.config.save(request.data);
+            this.options = request.data;
+            if (this.controller.isInitialized) {
+              this.controller.reset(this.options);
+            }
+            this.contentMenus.init(this.options);
+            break;
 
-        // 发送种子到默认下载客户端
-        case EAction.sendTorrentToDefaultClient:
-          this.controller
-            .sendTorrentToDefaultClient(request.data)
-            .then((result: any) => {
+          // 复制指定的内容到剪切板
+          case EAction.copyTextToClipboard:
+            result = this.controller.copyTextToClipboard(request.data);
+            if (result) {
               resolve(result);
-            })
-            .catch((result: any) => {
-              reject(result);
-            });
-          break;
+            } else {
+              reject();
+            }
+            break;
 
-        // 发送种子到指定的客户端
-        case EAction.sendTorrentToClient:
-          this.controller
-            .sendTorrentToClient(request.data)
-            .then((result: any) => {
-              resolve(result);
-            })
-            .catch((result: any) => {
-              reject(result);
-            });
-          break;
+          case EAction.openOptions:
+            this.controller.openOptions();
+            resolve(true);
+            break;
 
-        // 复制指定的内容到剪切板
-        case EAction.copyTextToClipboard:
-          result = this.controller.copyTextToClipboard(request.data);
-          if (result) {
-            resolve(result);
-          } else {
-            reject();
-          }
-          break;
+          case EAction.updateOptionsTabId:
+            this.controller.updateOptionsTabId(result.data);
+            resolve(true);
+            break;
 
-        // 获取可用空间
-        case EAction.getFreeSpace:
-          this.controller
-            .getFreeSpace(request.data)
-            .then((result: any) => {
-              resolve(result);
-            })
-            .catch((result: any) => {
-              reject(result);
-            });
-          break;
+          // 搜索种子
+          case EAction.searchTorrent:
+            console.log(request.data);
+            this.controller.openOptions(request.data);
+            resolve(true);
+            break;
 
-        case EAction.openOptions:
-          this.controller.openOptions();
-          resolve(true);
-          break;
-
-        case EAction.updateOptionsTabId:
-          this.controller.updateOptionsTabId(result.data);
-          resolve(true);
-          break;
-
-        // 搜索种子
-        case EAction.searchTorrent:
-          console.log(request.data);
-          this.controller.openOptions(request.data);
-          resolve(true);
-          // this.controller &&
-          //   this.controller
-          //     .searchTorrent(request.data)
-          //     .then((result: any) => {
-          //       resolve(result);
-          //     })
-          //     .catch((result: any) => {
-          //       reject(result);
-          //     });
-          break;
-
-        case EAction.getSearchResult:
-          this.controller.isInitialized &&
-            this.controller
-              .getSearchResult(request.data)
+          // 测试客户是否可连接
+          case EAction.testClientConnectivity:
+            this.controller.clientController
+              .testClientConnectivity(request.data)
               .then((result: any) => {
                 resolve(result);
               })
               .catch((result: any) => {
                 reject(result);
               });
-          break;
+            break;
 
-        // 获取下载记录
-        case EAction.getDownloadHistory:
-          this.controller.isInitialized &&
-            this.controller
-              .getDownloadHistory()
+          case EAction.getSystemLogs:
+            this.logger
+              .load()
               .then((result: any) => {
                 resolve(result);
               })
               .catch((result: any) => {
                 reject(result);
               });
-          break;
+            break;
 
-        // 删除下载记录
-        case EAction.removeDownloadHistory:
-          this.controller.isInitialized &&
-            this.controller
-              .removeDownloadHistory(request.data)
+          case EAction.removeSystemLogs:
+            this.logger
+              .remove(request.data)
               .then((result: any) => {
                 resolve(result);
               })
               .catch((result: any) => {
                 reject(result);
               });
-          break;
+            break;
 
-        // 清除下载记录
-        case EAction.clearDownloadHistory:
-          this.controller.isInitialized &&
-            this.controller
-              .clearDownloadHistory()
+          case EAction.clearSystemLogs:
+            this.logger
+              .clear()
               .then((result: any) => {
                 resolve(result);
               })
               .catch((result: any) => {
                 reject(result);
               });
-          break;
+            break;
 
-        case EAction.testClientConnectivity:
-          this.controller.clientController
-            .testClientConnectivity(request.data)
-            .then((result: any) => {
-              resolve(result);
-            })
-            .catch((result: any) => {
-              reject(result);
-            });
-          break;
+          case EAction.writeLog:
+            this.logger.add(request.data);
+            resolve(true);
+            break;
 
-        case EAction.getSystemLogs:
-          this.logger
-            .load()
-            .then((result: any) => {
-              resolve(result);
-            })
-            .catch((result: any) => {
-              reject(result);
-            });
-          break;
+          case EAction.readUIOptions:
+            this.config
+              .readUIOptions()
+              .then((result: any) => {
+                resolve(result);
+              })
+              .catch((result: any) => {
+                reject(result);
+              });
+            break;
 
-        case EAction.removeSystemLogs:
-          this.logger
-            .remove(request.data)
-            .then((result: any) => {
-              resolve(result);
-            })
-            .catch((result: any) => {
-              reject(result);
-            });
-          break;
+          case EAction.saveUIOptions:
+            this.config
+              .saveUIOptions(request.data)
+              .then((result: any) => {
+                resolve(result);
+              })
+              .catch((result: any) => {
+                reject(result);
+              });
+            break;
 
-        case EAction.clearSystemLogs:
-          this.logger
-            .clear()
-            .then((result: any) => {
-              resolve(result);
-            })
-            .catch((result: any) => {
-              reject(result);
-            });
-          break;
-
-        case EAction.readUIOptions:
-          this.config
-            .readUIOptions()
-            .then((result: any) => {
-              resolve(result);
-            })
-            .catch((result: any) => {
-              reject(result);
-            });
-          break;
-
-        case EAction.saveUIOptions:
-          this.config
-            .saveUIOptions(request.data)
-            .then((result: any) => {
-              resolve(result);
-            })
-            .catch((result: any) => {
-              reject(result);
-            });
-          break;
+          // 如果没有特殊的情况默认使用处理器来处理
+          default:
+            this.controller
+              .call(request, sender)
+              .then((result: any) => {
+                resolve(result);
+              })
+              .catch((result: any) => {
+                reject(result);
+              });
+            break;
+        }
+      } catch (error) {
+        reject(error);
       }
     });
   }
@@ -310,5 +239,28 @@ export default class PTPlugin {
 
   private debug(...msg: any) {
     // console.log("background", ...msg);
+  }
+
+  /**
+   * 初始化浏览器事件
+   */
+  private initBrowserEvent() {
+    if (window.chrome === undefined) {
+      return;
+    }
+    // 监听由活动页面发来的消息事件
+    chrome.runtime.onMessage.addListener(
+      (message: any, sender: chrome.runtime.MessageSender, callback) => {
+        this.requestMessage(message, sender)
+          .then((result: any) => {
+            callback && callback(result);
+          })
+          .catch((result: any) => {
+            callback && callback(result);
+          });
+        // 这句不能去掉
+        return true;
+      }
+    );
   }
 }

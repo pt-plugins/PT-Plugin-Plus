@@ -135,8 +135,14 @@ export default Vue.extend({
           console.log(result);
           if (result.success) {
             this.successMsg = "服务器可连接";
-          } else if (result.data && result.data && result.data.msg) {
-            this.errorMsg = result.data.msg;
+          } else if (result.data && result.data) {
+            if (result.data.msg) {
+              this.errorMsg = result.data.msg;
+            } else if (result.data.code === 0) {
+              this.errorMsg = "网络连接错误";
+            } else {
+              this.errorMsg = "其他错误，服务返回的代码为:" + result.data.code;
+            }
           } else {
             this.errorMsg = "未知错误";
           }

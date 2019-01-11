@@ -108,11 +108,14 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Site } from "../../../../interface/common";
+import { Site, LogItem, EAction, EModule } from "../../../../interface/common";
 import AddSite from "./Add.vue";
 import EditSite from "./Edit.vue";
 
 import { filters } from "@/service/filters";
+import Extension from "@/service/extension";
+const extension = new Extension();
+
 export default Vue.extend({
   components: {
     AddSite,
@@ -159,7 +162,8 @@ export default Vue.extend({
         }
       ],
       selectedSite: {},
-      dialogRemoveConfirm: false
+      dialogRemoveConfirm: false,
+      options: this.$store.state.options
     };
   },
   methods: {
@@ -244,9 +248,30 @@ export default Vue.extend({
           host: item.host
         }
       });
+    },
+    writeLog(options: LogItem) {
+      extension.sendRequest(EAction.writeLog, null, {
+        module: EModule.options,
+        event: options.event,
+        msg: options.msg,
+        data: options.data
+      });
     }
   },
   created() {
+    if (!this.options.system) {
+      this.writeLog({
+        event: "Sites.init.error",
+        msg: "系统配置信息丢失"
+      });
+    }
+
+    if (this.options.system && !this.options.system.sites) {
+      this.writeLog({
+        event: "Sites.init.error",
+        msg: "系统配置网站信息丢失"
+      });
+    }
     // this.sites = this.$store.state.options.sites;
   }
 });

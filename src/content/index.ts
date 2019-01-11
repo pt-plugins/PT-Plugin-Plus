@@ -45,6 +45,9 @@ class PTPContent {
   private buttonBarHeight: number = 0;
   private logo: JQuery = <any>null;
 
+  // 插件是否被重新启用过（暂不可用），onSuspend 事件无法执行。
+  private backgroundServiceIsStoped = false;
+
   // 用于接收页面程序
   public pageApp: any;
 
@@ -241,6 +244,9 @@ class PTPContent {
       // 按顺序执行所有脚本
       APP.applyScripts();
     }
+
+    // 通知后台添加了一个新页面
+    this.extension.sendRequest(EAction.addContentPage);
   }
 
   /**
@@ -251,17 +257,28 @@ class PTPContent {
    */
   public call(action: EAction, data?: any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      this.extension.sendRequest(
-        action,
-        (result: any) => {
-          if (result) {
-            resolve && resolve(result);
-          } else {
-            reject && reject();
-          }
-        },
-        data
-      );
+      if (this.backgroundServiceIsStoped) {
+        reject({
+          msg: "插件已被禁用过重启过，请刷新页面后再重试"
+        });
+        return;
+      }
+      try {
+        this.extension
+          .sendRequest(action, null, data)
+          .then((result: any) => {
+            if (result) {
+              resolve && resolve(result);
+            } else {
+              reject && reject();
+            }
+          })
+          .catch((result: any) => {
+            reject(result);
+          });
+      } catch (error) {
+        this.showNotice(`${action} 执行出错，可能后台服务不可用`);
+      }
     });
   }
 
@@ -535,6 +552,10 @@ class PTPContent {
           case EAction.showMessage:
             let notice = this.showNotice(message.data);
             callback && callback(notice);
+            break;
+
+          case EAction.serviceStoped:
+            this.backgroundServiceIsStoped = true;
             break;
         }
       }
