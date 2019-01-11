@@ -83,20 +83,18 @@
           type: "POST",
           url: this.options.address + this.api.login,
           data: data,
-          timeout: PTBackgroundService.options.connectClientTimeout,
-          success: (resultData, textStatus, request) => {
-            this.isInitialized = true;
-            if (callback) {
-              callback(resultData);
-            }
-            resolve()
-            console.log(this.sessionId);
-          },
-          error: (jqXHR, textStatus, errorThrown) => {
-            reject(jqXHR.status, textStatus)
-          }
+          timeout: PTBackgroundService.options.connectClientTimeout
         };
-        $.ajax(settings);
+        $.ajax(settings).done((resultData, textStatus, request) => {
+          this.isInitialized = true;
+          if (callback) {
+            callback(resultData);
+          }
+          resolve()
+          console.log(this.sessionId);
+        }).fail((jqXHR, textStatus, errorThrown) => {
+          reject(jqXHR.status, textStatus)
+        });
       });
 
     }
