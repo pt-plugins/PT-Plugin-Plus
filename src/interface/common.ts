@@ -176,7 +176,9 @@ export enum EAction {
   readUIOptions = "readUIOptions",
   saveUIOptions = "saveUIOptions",
   // 在当前选项卡显示消息
-  showMessage = "showMessage"
+  showMessage = "showMessage",
+  // 写入日志
+  writeLog = "writeLog"
 }
 
 export interface Request {
@@ -205,7 +207,8 @@ export enum EConfigKey {
   default = "PT-Plugin-Plus-Config",
   downloadHistory = "PT-Plugin-Plus-downloadHistory",
   systemLogs = "PT-Plugin-Plus-systemLogs",
-  uiOptions = "PT-Plugin-Plus-uiOptions"
+  uiOptions = "PT-Plugin-Plus-uiOptions",
+  cache = "PT-Plugin-Plus-Cache-Contents"
 }
 
 /**
@@ -240,9 +243,14 @@ export interface DataResult {
   data?: any;
 }
 
+/**
+ * 模块名称
+ */
 export enum EModule {
   background = "background",
-  content = "content"
+  content = "content",
+  options = "options",
+  popup = "popup"
 }
 
 export enum ELogEvent {
@@ -256,6 +264,7 @@ export interface LogItem {
   data?: any;
   id?: number | string;
   time?: number;
+  msg?: string;
 }
 
 /**

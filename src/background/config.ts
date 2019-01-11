@@ -19,6 +19,7 @@ class Config {
   public schemas: any[] = [];
   public sites: any[] = [];
   public clients: any[] = [];
+  public requestCount: number = 0;
 
   constructor() {
     this.getSchemas();
@@ -79,53 +80,66 @@ class Config {
         }
       });
 
-      this.localStorage.get(this.name, (result: any) => {
-        if (result) {
-          delete result.system;
-          let defaultOptions = Object.assign({}, this.options);
-          this.options = Object.assign(defaultOptions, result);
-        }
-        // 覆盖站点架构
-        this.options.system = {
-          schemas: this.schemas,
-          sites: this.sites,
-          clients: this.clients
-        };
+      this.loadConfig(resolve);
+    });
+  }
 
-        // 升级不存在的配置项
-        this.sites.forEach(item => {
-          let index = this.options.sites.findIndex((site: Site) => {
-            return site.host === item.host;
-          });
+  /**
+   * 加载配置
+   * @param success
+   */
+  private loadConfig(success: any) {
+    // 如果还有网络请求，则继续等待
+    if (this.requestCount > 0) {
+      setTimeout(() => {
+        this.loadConfig(success);
+      }, 100);
+      return;
+    }
+    this.localStorage.get(this.name, (result: any) => {
+      if (result) {
+        delete result.system;
+        let defaultOptions = Object.assign({}, this.options);
+        this.options = Object.assign(defaultOptions, result);
+      }
+      // 覆盖站点架构
+      this.options.system = {
+        schemas: this.schemas,
+        sites: this.sites,
+        clients: this.clients
+      };
 
-          if (index > -1) {
-            this.options.sites[index] = Object.assign(
-              Object.assign({}, item),
-              this.options.sites[index]
-            );
-          }
+      // 升级不存在的配置项
+      this.sites.forEach(item => {
+        let index = this.options.sites.findIndex((site: Site) => {
+          return site.host === item.host;
         });
 
-        // 升级不存在的配置项
-        this.clients.forEach(item => {
-          let index = this.options.clients.findIndex(
-            (client: DownloadClient) => {
-              return client.type === item.type;
-            }
+        if (index > -1) {
+          this.options.sites[index] = Object.assign(
+            Object.assign({}, item),
+            this.options.sites[index]
           );
+        }
+      });
 
-          if (index > -1) {
-            this.options.clients[index] = Object.assign(
-              Object.assign({}, item),
-              this.options.clients[index]
-            );
-          }
+      // 升级不存在的配置项
+      this.clients.forEach(item => {
+        let index = this.options.clients.findIndex((client: DownloadClient) => {
+          return client.type === item.type;
         });
 
-        console.log(this.options);
-
-        resolve(this.options);
+        if (index > -1) {
+          this.options.clients[index] = Object.assign(
+            Object.assign({}, item),
+            this.options.clients[index]
+          );
+        }
       });
+
+      console.log(this.options);
+
+      success && success(this.options);
     });
   }
 
@@ -219,18 +233,48 @@ class Config {
     });
   }
 
+  /**
+   * 从远程请求指定的内容
+   * @param api
+   */
   public getContentFromApi(api: string): Promise<any> {
+    this.updateBadge(++this.requestCount);
     return new Promise<any>((resolve?: any, reject?: any) => {
       let content = APP.cache.get(api);
       if (content) {
         resolve(content);
+        this.updateBadge(--this.requestCount);
         return;
       }
-      $.getJSON(api).then(result => {
-        APP.cache.set(api, result);
-        resolve(result);
-      });
+      $.getJSON(api)
+        .done(result => {
+          APP.cache.set(api, result);
+          this.updateBadge(--this.requestCount);
+          resolve(result);
+        })
+        .fail(result => {
+          this.updateBadge(--this.requestCount);
+          reject && reject(result);
+        });
     });
+  }
+
+  /**
+   * 更新插件徽标提示
+   * @param count
+   */
+  private updateBadge(count: number) {
+    if (!APP.isExtensionMode) return;
+    if (count == 0) {
+      chrome.browserAction.setBadgeText({ text: "" });
+      chrome.browserAction.enable();
+    } else {
+      chrome.browserAction.setBadgeText({ text: count.toString() });
+      chrome.browserAction.setBadgeBackgroundColor({
+        color: "#aabbcc"
+      });
+      chrome.browserAction.disable();
+    }
   }
 }
 export default Config;
