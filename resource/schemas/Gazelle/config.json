@@ -6,5 +6,13 @@
     "pages": ["/torrents.php"],
     "scripts": ["common.js", "torrents.js"]
   }],
-  "securityKeyFields": ["authkey", "torrent_pass"]
+  "securityKeyFields": ["authkey", "torrent_pass"],
+  "searchEntry": [{
+    "entry": "/torrents.php?searchstr=$key$&searchsubmit=1",
+    "name": "all",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table.torrent_table:last > tbody > tr",
+    "enabled": true
+  }]
 }
