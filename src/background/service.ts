@@ -95,13 +95,14 @@ export default class PTPlugin {
             }
             break;
 
+          // 打开选项卡
           case EAction.openOptions:
-            this.controller.openOptions();
+            this.controller.openOptions("", request.data);
             resolve(true);
             break;
 
           case EAction.updateOptionsTabId:
-            this.controller.updateOptionsTabId(result.data);
+            this.controller.updateOptionsTabId(request.data);
             resolve(true);
             break;
 

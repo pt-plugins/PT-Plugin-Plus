@@ -107,7 +107,7 @@
               result = {
                 status: "error",
                 code: request.status,
-                msg: "未知错误"
+                msg: event || "未知错误"
               };
               reject && reject(result)
               break;

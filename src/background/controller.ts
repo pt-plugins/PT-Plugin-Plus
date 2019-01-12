@@ -9,7 +9,8 @@ import {
   DownloadOptions,
   DataResult,
   EDataResultType,
-  Request
+  Request,
+  EModule
 } from "@/interface/common";
 import { filters as Filters } from "@/service/filters";
 import { ClientController } from "@/service/clientController";
@@ -126,10 +127,14 @@ export default class Controller {
       }
 
       this.getClient(clientConfig).then((result: any) => {
-        this.doDownload(result, data, data.savePath).then((result: any) => {
-          this.saveDownloadHistory(data, host, clientConfig.id);
-          resolve(result);
-        });
+        this.doDownload(result, data, data.savePath)
+          .then((result: any) => {
+            this.saveDownloadHistory(data, host, clientConfig.id);
+            resolve(result);
+          })
+          .catch((result: any) => {
+            reject(result);
+          });
       });
     });
   }
@@ -149,28 +154,32 @@ export default class Controller {
         this.initSiteDefaultClient(host).then((siteClientConfig: any) => {
           this.siteDefaultClients[host] = siteClientConfig;
 
-          this.doDownload(siteClientConfig, data, siteDefaultPath).then(
-            (result: any) => {
+          this.doDownload(siteClientConfig, data, siteDefaultPath)
+            .then((result: any) => {
               this.saveDownloadHistory(
                 data,
                 site.host,
                 siteClientConfig.options.id
               );
               resolve(result);
-            }
-          );
+            })
+            .catch((result: any) => {
+              reject(result);
+            });
         });
       } else {
-        this.doDownload(siteClientConfig, data, siteDefaultPath).then(
-          (result: any) => {
+        this.doDownload(siteClientConfig, data, siteDefaultPath)
+          .then((result: any) => {
             this.saveDownloadHistory(
               data,
               site.host,
               siteClientConfig.options.id
             );
             resolve(result);
-          }
-        );
+          })
+          .catch((result: any) => {
+            reject(result);
+          });
       }
     });
   }
@@ -194,15 +203,41 @@ export default class Controller {
           autoStart: data.autoStart
         })
         .then((result: any) => {
-          this.formatSendResult(
-            result,
-            clientConfig.options,
-            siteDefaultPath
-          ).then((result: any) => {
-            resolve(result);
+          this.service.logger.add({
+            module: EModule.background,
+            event: "service.controller.doDownload.finished",
+            msg: `下载服务器${clientConfig.options.name}处理[${
+              EAction.addTorrentFromURL
+            }]命令完成`,
+            data: result
           });
+
+          // 连接超时
+          if (result && result.code === 0 && result.msg === "timeout") {
+            reject({
+              success: false,
+              msg: "连接下载服务器超时，请检查网络设置或调整服务器超时时间！"
+            });
+            return;
+          }
+
+          this.formatSendResult(result, clientConfig.options, siteDefaultPath)
+            .then((result: any) => {
+              resolve(result);
+            })
+            .catch((result: any) => {
+              reject(result);
+            });
         })
         .catch((result: any) => {
+          this.service.logger.add({
+            module: EModule.background,
+            event: "service.controller.doDownload.error",
+            msg: `下载服务器${clientConfig.options.name}处理[${
+              EAction.addTorrentFromURL
+            }]命令失败`,
+            data: result
+          });
           reject(result);
         });
     });
@@ -416,9 +451,9 @@ export default class Controller {
     this.optionsTabId = id;
   }
 
-  public openOptions(searchKey: string = "") {
+  public openOptions(searchKey: string = "", path: string = "") {
     if (this.optionsTabId == 0) {
-      this.createOptionTab(searchKey);
+      this.createOptionTab(searchKey, path);
     } else {
       chrome.tabs.get(this.optionsTabId as number, tab => {
         if (!chrome.runtime.lastError && tab) {
@@ -428,16 +463,18 @@ export default class Controller {
           }
           chrome.tabs.update(tab.id as number, { selected: true, url: url });
         } else {
-          this.createOptionTab(searchKey);
+          this.createOptionTab(searchKey, path);
         }
       });
     }
   }
 
-  private createOptionTab(searchKey: string = "") {
+  private createOptionTab(searchKey: string = "", path: string = "") {
     let url = "index.html";
     if (searchKey) {
       url = `index.html#/search-torrent/${searchKey}`;
+    } else if (path) {
+      url = `index.html#/${path}`;
     }
     chrome.tabs.create(
       {
