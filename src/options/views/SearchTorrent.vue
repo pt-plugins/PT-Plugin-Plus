@@ -14,7 +14,7 @@
         :items="datas"
         :pagination.sync="pagination"
         :loading="loading"
-        item-key="name"
+        item-key="link"
         select-all
         class="elevation-1"
         :rows-per-page-items="options.rowsPerPageItems"
