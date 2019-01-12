@@ -22,8 +22,6 @@
             v-model="option.loginName"
             :label="words.loginName"
             :placeholder="words.loginName"
-            required
-            :rules="rules.require"
             v-if="!option.passwordOnly"
           ></v-text-field>
 
@@ -31,8 +29,6 @@
             v-model="option.loginPwd"
             :label="words.loginPwd"
             :placeholder="words.loginPwd"
-            required
-            :rules="rules.require"
             :type="showPassword ? 'text' : 'password'"
             :append-icon="showPassword ? 'visibility_off' : 'visibility'"
             @click:append="showPassword = !showPassword"
