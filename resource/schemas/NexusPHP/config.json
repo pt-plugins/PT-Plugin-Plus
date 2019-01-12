@@ -12,7 +12,7 @@
   }],
   "securityKeyFields": ["passkey"],
   "searchEntry": [{
-    "entry": "/torrents.php?search=$key$",
+    "entry": "/torrents.php?search=$key$&notnewword=1",
     "name": "全部",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
