@@ -35,12 +35,12 @@
             <a
               :href="props.item.link"
               target="_blank"
-              v-html="props.item.title"
+              v-html="props.item.titleHTML"
               rel="noopener noreferrer nofollow"
             ></a>
             <div class="sub-title">{{props.item.subTitle}}</div>
           </td>
-          <td class="center" v-html="props.item.size"></td>
+          <td class="size">{{props.item.size | formatSize}}</td>
           <!-- <td class="center">{{ props.item.comments }}</td> -->
           <td class="center">{{ props.item.seeders }}</td>
           <td class="center">{{ props.item.leechers }}</td>
@@ -80,7 +80,8 @@ import {
   DataResult,
   EPaginationKey,
   EModule,
-  LogItem
+  LogItem,
+  SearchResultItem
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import moment from "moment";
@@ -108,7 +109,7 @@ export default Vue.extend({
       headers: [
         { text: "站点", align: "center", value: "site.host" },
         { text: "标题", align: "left", value: "title" },
-        { text: "大小", align: "center", value: "size" },
+        { text: "大小", align: "right", value: "size" },
         // { text: "评论", align: "center", value: "comments" },
         { text: "上传", align: "center", value: "seeders" },
         { text: "下载", align: "center", value: "leechers" },
@@ -284,7 +285,8 @@ export default Vue.extend({
                 key: this.key
               }
             });
-            this.datas.push(...result);
+            // this.datas.push(...result);
+            this.addSearchResult(result);
           } else if (result && result.msg) {
             this.writeLog({
               event: `SearchTorrent.Search.Error`,
@@ -310,6 +312,65 @@ export default Vue.extend({
             data: result
           });
         });
+    },
+    /**
+     * 添加搜索结果，并组织字段格式
+     */
+    addSearchResult(result: any[]) {
+      result.forEach((item: SearchResultItem) => {
+        item.time = moment(item.time).valueOf();
+        if (!item.titleHTML) {
+          item.titleHTML = item.title;
+        }
+        item.title = $("<span/>")
+          .html(item.titleHTML)
+          .text()
+          .trim();
+        if (item.size) {
+          item.size = this.fileSizetoLength(item.size as string);
+        }
+
+        if (item.seeders) {
+          item.seeders = parseInt((item.seeders as string).replace(",", ""));
+        }
+
+        if (item.leechers) {
+          item.leechers = parseInt((item.leechers as string).replace(",", ""));
+        }
+
+        if (item.completed) {
+          item.completed = parseInt(
+            (item.completed as string).replace(",", "")
+          );
+        }
+        console.log(item);
+        this.datas.push(item);
+      });
+    },
+    /**
+     * @return {number}
+     */
+    fileSizetoLength(size: string): number {
+      let _size_raw_match = size.match(
+        /^(\d*\.?\d+)(.*[^TGMK])?([TGMK]?i?B)$/i
+      );
+      if (_size_raw_match) {
+        let _size_num = parseFloat(_size_raw_match[1]);
+        let _size_type = _size_raw_match[3];
+        switch (true) {
+          case /Ti?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 40);
+          case /Gi?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 30);
+          case /Mi?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 20);
+          case /Ki?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 10);
+          default:
+            return _size_num;
+        }
+      }
+      return 0;
     },
 
     /**
@@ -451,6 +512,10 @@ export default Vue.extend({
 
   .center {
     text-align: center;
+  }
+
+  .size {
+    text-align: right;
   }
 }
 </style>

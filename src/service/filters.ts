@@ -121,7 +121,7 @@ export const filters: IFilter = {
     zeroToEmpty: boolean = false,
     type: string = ""
   ): string {
-    bytes = parseInt(bytes, 10);
+    bytes = parseFloat(bytes);
     if (bytes === 0) {
       if (zeroToEmpty === true) {
         return "";

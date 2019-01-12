@@ -112,13 +112,17 @@ if (!"".getQueryString) {
 
       title = title.parent()
       title.find(">span, div.tags").remove();
+      let time = fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).attr("title") || cells.eq(fieldIndex.time).text() || "";
+      if (time) {
+        time += ":00";
+      }
 
       let data = {
         title: title.text(),
         link,
         url: url,
         size: cells.eq(fieldIndex.size).html() || 0,
-        time: fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).attr("title") || cells.eq(fieldIndex.time).text() || "",
+        time: time,
         author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",
         seeders: fieldIndex.seeders == -1 ? "" : cells.eq(fieldIndex.seeders).text() || 0,
         leechers: fieldIndex.leechers == -1 ? "" : cells.eq(fieldIndex.leechers).text() || 0,

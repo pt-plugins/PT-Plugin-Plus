@@ -106,6 +106,7 @@ export interface SiteSchema {
   searchEntry?: SearchEntry[];
   parser?: Dictionary<any>;
   patterns?: Dictionary<any>;
+  checker?: Dictionary<any>;
 }
 
 /**
@@ -115,6 +116,7 @@ export interface Site {
   id?: string;
   name: string;
   url?: string;
+  cdn?: string[];
   icon?: string;
   schema?: any;
   tags?: string[];
@@ -129,6 +131,7 @@ export interface Site {
   searchEntry?: SearchEntry[];
   parser?: Dictionary<any>;
   patterns?: Dictionary<any>;
+  checker?: Dictionary<any>;
 }
 
 /**
@@ -276,16 +279,17 @@ export interface LogItem {
 export interface SearchResultItem {
   site: Site;
   title: string;
+  titleHTML?: string;
   subTitle?: string;
-  time?: number;
+  time?: number | string;
   author?: string;
   url?: string;
   link?: string;
-  size?: number;
-  seeders?: number;
-  leechers?: number;
-  completed?: number;
-  comments?: number;
+  size?: number | string;
+  seeders?: number | string;
+  leechers?: number | string;
+  completed?: number | string;
+  comments?: number | string;
 }
 
 export interface SearchEntry {
