@@ -22,8 +22,8 @@
                   v-model="selectedSite"
                   :items="$store.getters.sites"
                   :label="words.validMsg"
-                  :menu-props="{maxHeight:'auto'}"
                   :hint="selectedSiteDescription"
+                  :filter="filterSite"
                   persistent-hint
                   return-object
                   single-line
@@ -101,7 +101,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Site } from "../../../../interface/common";
+import { Site } from "@/interface/common";
 import Vue from "vue";
 import SiteEditor from "./Editor.vue";
 export default Vue.extend({
@@ -115,7 +115,7 @@ export default Vue.extend({
         next: "下一步",
         prev: "上一步",
         help: "找不到想要的站点？来这里添加吧！",
-        validMsg: "请选择一个站点",
+        validMsg: "请选择一个站点（支持搜索）",
         custom: "自定义",
         step1: "选择站点",
         step2: "确认站点配置"
@@ -170,6 +170,18 @@ export default Vue.extend({
         return tags.join(", ");
       }
       return "";
+    },
+    filterSite(item: Site, queryText: string, itemText: string):boolean {
+      function hasValue(val: any): string {
+        return val != null ? val : '';
+      }
+
+      // 支持在Site中host,name,url属性中搜索
+      const text = hasValue(item.host) + hasValue(item.name) + hasValue(item.url);
+      const query = hasValue(queryText);
+
+      return text.toString().toLowerCase()
+              .indexOf(query.toString().toLowerCase()) > -1;
     }
   },
   computed: {
