@@ -213,6 +213,10 @@ if (!"".getQueryString) {
             subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
             break;
 
+          default:
+            subTitle = "";
+            break;
+
         }
       }
 
