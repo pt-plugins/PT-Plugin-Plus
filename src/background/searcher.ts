@@ -46,108 +46,62 @@ export class Searcher {
       };
 
       let siteServce: SiteService = new SiteService(site, this.options);
-      let host = site.host + "";
-      let searchConfig: SearchConfig = this.searchConfigs[host];
+      let searchConfig: SearchConfig = {};
       let schema = this.getSiteSchema(site);
 
-      if (!searchConfig) {
-        searchConfig = {
-          site,
-          rootPath: "",
-          entry: []
-        };
-
-        if (siteServce.options.searchEntry) {
-          searchConfig.rootPath = `sites/${site.host}/`;
-          searchConfig.entry = siteServce.options.searchEntry;
-        } else if (schema && schema.searchEntry) {
-          searchConfig.rootPath = `schemas/${schema.name}/`;
-          searchConfig.entry = schema.searchEntry;
-        }
-
-        if (siteServce.options.torrentTagSelectors) {
-          searchConfig.torrentTagSelectors =
-            siteServce.options.torrentTagSelectors;
-        } else if (schema && schema.torrentTagSelectors) {
-          searchConfig.torrentTagSelectors = schema.torrentTagSelectors;
-        }
-
-        if (!searchConfig.entry) {
-          result.msg = "该站点未配置搜索页面，请先配置";
-          result.type = EDataResultType.error;
-          reject(result);
-          return;
-        }
-
-        this.searchConfigs[host] = searchConfig;
+      if (siteServce.options.searchEntry) {
+        searchConfig.rootPath = `sites/${site.host}/`;
+        searchConfig.entry = siteServce.options.searchEntry;
+      } else if (schema && schema.searchEntry) {
+        searchConfig.rootPath = `schemas/${schema.name}/`;
+        searchConfig.entry = schema.searchEntry;
       }
 
-      if (!searchConfig) {
-        result.msg = "该站点搜索入口未配置，请先配置";
+      if (siteServce.options.torrentTagSelectors) {
+        searchConfig.torrentTagSelectors =
+          siteServce.options.torrentTagSelectors;
+      } else if (schema && schema.torrentTagSelectors) {
+        searchConfig.torrentTagSelectors = schema.torrentTagSelectors;
+      }
+
+      if (!searchConfig.entry) {
+        result.msg = "该站点未配置搜索页面，请先配置";
         result.type = EDataResultType.error;
         reject(result);
         return;
       }
 
-      if (searchConfig.entry) {
-        let results: any[] = [];
-        let entryCount = 0;
-        let doneCount = 0;
+      this.searchConfigs[site.host as string] = searchConfig;
 
-        searchConfig.entry.forEach((entry: SearchEntry) => {
-          // 判断是否指定了搜索页和用于获取搜索结果的脚本
-          if (entry.entry && entry.parseScriptFile && entry.enabled !== false) {
-            let rows: number =
-              this.options.search && this.options.search.rows
-                ? this.options.search.rows
-                : 10;
-            let url: string = site.url + entry.entry;
+      let results: any[] = [];
+      let entryCount = 0;
+      let doneCount = 0;
 
-            url = this.replaceKeys(url, {
-              key: key,
-              rows: rows,
-              passkey: site.passkey ? site.passkey : ""
-            });
+      searchConfig.entry.forEach((entry: SearchEntry) => {
+        // 判断是否指定了搜索页和用于获取搜索结果的脚本
+        if (entry.entry && entry.parseScriptFile && entry.enabled !== false) {
+          let rows: number =
+            this.options.search && this.options.search.rows
+              ? this.options.search.rows
+              : 10;
+          let url: string = site.url + entry.entry;
 
-            entryCount++;
+          url = this.replaceKeys(url, {
+            key: key,
+            rows: rows,
+            passkey: site.passkey ? site.passkey : ""
+          });
 
-            if (!entry.parseScript) {
-              let scriptPath = entry.parseScriptFile;
-              // 判断是否为相对路径
-              if (scriptPath.substr(0, 1) !== "/") {
-                scriptPath = `${searchConfig.rootPath}${scriptPath}`;
-              }
-              APP.getScriptContent(scriptPath).done((script: string) => {
-                entry.parseScript = script;
-                this.getSearchResult(
-                  url,
-                  site,
-                  entry,
-                  searchConfig.torrentTagSelectors
-                )
-                  .then((result: any) => {
-                    if (result && result.length) {
-                      results.push(...result);
-                    }
-                    doneCount++;
+          entryCount++;
 
-                    if (doneCount === entryCount || results.length >= rows) {
-                      resolve(results.slice(0, rows));
-                    }
-                  })
-                  .catch((result: any) => {
-                    doneCount++;
-
-                    if (doneCount === entryCount) {
-                      if (results.length > 0) {
-                        resolve(results.slice(0, rows));
-                      } else {
-                        reject(result);
-                      }
-                    }
-                  });
-              });
-            } else {
+          if (!entry.parseScript) {
+            let scriptPath = entry.parseScriptFile;
+            // 判断是否为相对路径
+            if (scriptPath.substr(0, 1) !== "/") {
+              scriptPath = `${searchConfig.rootPath}${scriptPath}`;
+            }
+            APP.getScriptContent(scriptPath).done((script: string) => {
+              entry.parseScript = script;
               this.getSearchResult(
                 url,
                 site,
@@ -175,10 +129,38 @@ export class Searcher {
                     }
                   }
                 });
-            }
+            });
+          } else {
+            this.getSearchResult(
+              url,
+              site,
+              entry,
+              searchConfig.torrentTagSelectors
+            )
+              .then((result: any) => {
+                if (result && result.length) {
+                  results.push(...result);
+                }
+                doneCount++;
+
+                if (doneCount === entryCount || results.length >= rows) {
+                  resolve(results.slice(0, rows));
+                }
+              })
+              .catch((result: any) => {
+                doneCount++;
+
+                if (doneCount === entryCount) {
+                  if (results.length > 0) {
+                    resolve(results.slice(0, rows));
+                  } else {
+                    reject(result);
+                  }
+                }
+              });
           }
-        });
-      }
+        }
+      });
     });
   }
 
