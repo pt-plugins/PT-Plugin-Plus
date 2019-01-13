@@ -26,6 +26,9 @@ if (!"".getQueryString) {
       this.haveData = true;
     }
 
+    /**
+     * 获取搜索结果
+     */
     getResult() {
       if (!this.haveData) {
         return [];
@@ -138,14 +141,9 @@ if (!"".getQueryString) {
             url = `${site.url}${url}`;
           }
 
-          let subTitle = title.parent().html().split("<br>");
-          if (subTitle && subTitle.length > 0) {
-            subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
-          }
-
           let data = {
             title: title.attr("title") || title.text(),
-            subTitle: subTitle || "",
+            subTitle: this.getSubTitle(title, row),
             link,
             url: url + (site && site.passkey ? "&passkey=" + site.passkey : ""),
             size: cells.eq(fieldIndex.size).html() || 0,
@@ -189,6 +187,36 @@ if (!"".getQueryString) {
         });
       }
       return tags;
+    }
+
+    /**
+     * 获取副标题
+     * @param {*} title 
+     * @param {*} row 
+     */
+    getSubTitle(title, row) {
+      let subTitle = title.parent().html().split("<br>");
+      if (subTitle && subTitle.length > 1) {
+        subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
+      } else {
+        // 特殊情况处理
+        switch (options.site.host) {
+          case "hdchina.org":
+            if (title.parent().next().is("h4")) {
+              subTitle = title.parent().next().text();
+              break;
+            }
+
+          case "tp.m-team.cc":
+            title = row.find("a[href*='hit'][title]").last();
+            subTitle = title.parent().html().split("<br>");
+            subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
+            break;
+
+        }
+      }
+
+      return subTitle || "";
     }
   }
 
