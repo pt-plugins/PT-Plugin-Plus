@@ -5,17 +5,20 @@
       <template v-for="(item, index) in searchQueue">
         <v-list-tile :key="item.site.host">
           <v-list-tile-action>
-            <v-avatar size="18">
-              <img :src="item.site.icon">
-            </v-avatar>
+            <v-progress-circular :size="18" :width="2" indeterminate color="primary"></v-progress-circular>
           </v-list-tile-action>
 
           <v-list-tile-content>
-            <v-list-tile-title>{{item.site.name}} {{ words.searching }}</v-list-tile-title>
+            <v-list-tile-title>
+              <v-avatar size="18" class="mr-2">
+                <img :src="item.site.icon">
+              </v-avatar>
+              {{item.site.name}} {{ words.searching }}
+            </v-list-tile-title>
           </v-list-tile-content>
 
-          <v-list-tile-action>
-            <v-icon @click="abortSearch(item.site)">cancel</v-icon>
+          <v-list-tile-action class="mr-5">
+            <v-icon @click="abortSearch(item.site)" color="red" :title="words.cancelSearch">cancel</v-icon>
           </v-list-tile-action>
         </v-list-tile>
         <v-divider v-if="index + 1 < searchQueue.length" :key="'line'+item.site.host+index"></v-divider>
@@ -126,7 +129,8 @@ export default Vue.extend({
         download: "下载",
         sendToClient: "发送到下载服务器",
         save: "下载种子文件到本地",
-        searching: "正在搜索……"
+        searching: "正在搜索中，请稍候……",
+        cancelSearch: "取消搜索"
       },
       key: "",
       options: this.$store.state.options,
@@ -536,7 +540,7 @@ export default Vue.extend({
         item.uid = this.getRandomString();
         // console.log(item);
         this.datas.push(item);
-        this.searchMsg = `已接收 ${this.datas.length} 条结果，还在继续搜索……`;
+        this.searchMsg = `已接收 ${this.datas.length} 条结果，搜索仍在进行……`;
       });
     },
     /**
