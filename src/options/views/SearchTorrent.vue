@@ -124,7 +124,8 @@ export default Vue.extend({
       successMsg: "",
       currentSite: {} as Site,
       skipSites: "",
-      beginTime: null as any
+      beginTime: null as any,
+      reloadCount: 0
     };
   },
   created() {
@@ -173,6 +174,23 @@ export default Vue.extend({
     },
     search() {
       if (window.location.hostname == "localhost") return;
+
+      if (!this.options.system) {
+        if (this.reloadCount >= 10) {
+          this.errorMsg =
+            "系统参数丢失，多次尝试等待后无效，请重新打开配置页再试";
+          this.writeLog({
+            event: `SearchTorrent.init`,
+            msg: this.errorMsg
+          });
+          return;
+        }
+        setTimeout(() => {
+          this.search();
+        }, 200);
+        this.reloadCount++;
+        return;
+      }
       this.haveError = false;
       this.haveSuccess = false;
       this.datas = [];
