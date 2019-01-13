@@ -44,5 +44,13 @@
     "name": "2x50%",
     "selector": "img.pro_50pctdown2up",
     "color": "light-green"
+  }, {
+    "name": "30%",
+    "selector": "img.pro_30pctdown",
+    "color": "indigo"
+  }, {
+    "name": "50%",
+    "selector": "img.pro_50pctdown",
+    "color": "orange"
   }]
 }

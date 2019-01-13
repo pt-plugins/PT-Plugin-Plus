@@ -22,5 +22,13 @@
     "name": "2x50%",
     "selector": ".twouphalfdown_bg",
     "color": "light-green"
+  }, {
+    "name": "30%",
+    "selector": ".thirtypercentdown_bg",
+    "color": "indigo"
+  }, {
+    "name": "50%",
+    "selector": ".halfdown_bg",
+    "color": "orange"
   }]
 }
