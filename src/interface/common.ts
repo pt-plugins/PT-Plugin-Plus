@@ -186,7 +186,8 @@ export enum EAction {
   writeLog = "writeLog",
   // 后台服务停止
   serviceStoped = "serviceStoped",
-  addContentPage = "addContentPage"
+  addContentPage = "addContentPage",
+  abortSearch = "abortSearch"
 }
 
 export interface Request {

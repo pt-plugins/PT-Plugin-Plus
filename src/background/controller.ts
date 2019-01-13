@@ -30,7 +30,7 @@ export default class Controller {
   public optionsTabId: number | undefined = 0;
   public downloadHistory: DownloadHistory = new DownloadHistory();
   public clients: any = {};
-  public searcher: Searcher = new Searcher();
+  public searcher: Searcher = new Searcher(this.service);
 
   public clientController: ClientController = new ClientController();
   public isInitialized: boolean = false;
@@ -61,6 +61,14 @@ export default class Controller {
    */
   public getSearchResult(options: any): Promise<any> {
     return this.searcher.searchTorrent(options.site, options.key);
+  }
+
+  /**
+   * 取消一个正在执行的搜索请求
+   * @param options
+   */
+  public abortSearch(options: any): Promise<any> {
+    return this.searcher.abortSearch(options.site, options.key);
   }
 
   /**

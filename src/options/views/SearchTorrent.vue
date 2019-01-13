@@ -1,6 +1,26 @@
 <template>
   <div class="search-torrent">
     <v-alert :value="true" type="info">{{ words.title }} [{{ key }}], {{searchMsg}} {{skipSites}}</v-alert>
+    <v-list small>
+      <template v-for="(item, index) in searchQueue">
+        <v-list-tile :key="item.site.host">
+          <v-list-tile-action>
+            <v-avatar size="18">
+              <img :src="item.site.icon">
+            </v-avatar>
+          </v-list-tile-action>
+
+          <v-list-tile-content>
+            <v-list-tile-title>{{item.site.name}} {{ words.searching }}</v-list-tile-title>
+          </v-list-tile-content>
+
+          <v-list-tile-action>
+            <v-icon @click="abortSearch(item.site)">cancel</v-icon>
+          </v-list-tile-action>
+        </v-list-tile>
+        <v-divider v-if="index + 1 < searchQueue.length" :key="'line'+item.site.host+index"></v-divider>
+      </template>
+    </v-list>
     <v-card>
       <v-card-title>
         <v-btn :disabled="selected.length==0" color="success">
@@ -8,6 +28,7 @@
           {{words.download}}
         </v-btn>
       </v-card-title>
+
       <v-data-table
         v-model="selected"
         :headers="headers"
@@ -104,7 +125,8 @@ export default Vue.extend({
         title: "搜索结果",
         download: "下载",
         sendToClient: "发送到下载服务器",
-        save: "下载种子文件到本地"
+        save: "下载种子文件到本地",
+        searching: "正在搜索……"
       },
       key: "",
       options: this.$store.state.options,
@@ -135,7 +157,8 @@ export default Vue.extend({
       currentSite: {} as Site,
       skipSites: "",
       beginTime: null as any,
-      reloadCount: 0
+      reloadCount: 0,
+      searchQueue: [] as any[]
     };
   },
   created() {
@@ -253,10 +276,149 @@ export default Vue.extend({
         }
       });
 
-      this.doSearchTorrent({
-        count: sites.length,
-        sites
+      // this.doSearchTorrent({
+      //   count: sites.length,
+      //   sites
+      // });
+      this.doSearchTorrentWithQueue(sites);
+    },
+
+    /**
+     * 执行搜索队列
+     */
+    doSearchTorrentWithQueue(sites: Site[]) {
+      this.loading = true;
+      sites.forEach((site: Site, index: number) => {
+        this.searchQueue.push({
+          site,
+          key: this.key
+        });
+
+        this.writeLog({
+          event: `SearchTorrent.Search.Processing`,
+          msg: "正在搜索 [" + site.name + "]",
+          data: {
+            host: site.host,
+            name: site.name,
+            key: this.key
+          }
+        });
+
+        extension
+          .sendRequest(EAction.getSearchResult, null, {
+            key: this.key,
+            site: site
+          })
+          .then((result: any) => {
+            if (result && result.length) {
+              this.writeLog({
+                event: `SearchTorrent.Search.Done[${site.name}]`,
+                msg: `[${site.name}] 搜索完成，共有 ${result.length} 条结果`,
+                data: {
+                  host: site.host,
+                  name: site.name,
+                  key: this.key
+                }
+              });
+              // this.datas.push(...result);
+              this.addSearchResult(result);
+            } else if (result && result.msg) {
+              this.writeLog({
+                event: `SearchTorrent.Search.Error`,
+                msg: result.msg,
+                data: {
+                  host: site.host,
+                  name: site.name,
+                  key: this.key
+                }
+              });
+              this.errorMsg = result.msg;
+            } else {
+              if (result && result.statusText === "abort") {
+                this.errorMsg = `${site.host} 搜索请求已取消`;
+              } else {
+                this.errorMsg = `${site.host} 发生网络或其他错误`;
+                this.writeLog({
+                  event: `SearchTorrent.Search.Error`,
+                  msg: this.errorMsg,
+                  data: {
+                    host: site.host,
+                    name: site.name,
+                    key: this.key,
+                    result
+                  }
+                });
+              }
+            }
+          })
+          .catch((result: DataResult) => {
+            if (result.msg) {
+              this.errorMsg = result.msg;
+            }
+            this.writeLog({
+              event: `SearchTorrent.Search.Error`,
+              msg: result.msg,
+              data: result
+            });
+          })
+          .finally(() => {
+            this.removeQueue(site);
+          });
       });
+    },
+
+    /**
+     * 取消一个搜索队列
+     */
+    abortSearch(site: Site) {
+      extension
+        .sendRequest(EAction.abortSearch, null, {
+          key: this.key,
+          site: site
+        })
+        .then(() => {
+          this.writeLog({
+            event: `SearchTorrent.Search.Abort`,
+            msg: `${site.name} 搜索已取消`
+          });
+        })
+        .catch(() => {
+          this.writeLog({
+            event: `SearchTorrent.Search.Abort.Error`,
+            msg: `${site.name} 搜索取消失败`
+          });
+          this.removeQueue(site);
+        });
+    },
+
+    /**
+     * 移除搜索队列
+     */
+    removeQueue(site: Site) {
+      console.log("done", site);
+      let index = this.searchQueue.findIndex((item: any) => {
+        return item.site.host === site.host;
+      });
+      if (index !== -1) {
+        this.searchQueue.splice(index, 1);
+        if (this.searchQueue.length == 0) {
+          this.searchMsg = `搜索完成，共找到 ${
+            this.datas.length
+          } 条结果，耗时：${moment().diff(
+            this.beginTime,
+            "seconds",
+            true
+          )} 秒。`;
+          this.loading = false;
+          this.writeLog({
+            event: `SearchTorrent.Search.Finished`,
+            msg: this.searchMsg,
+            data: {
+              key: this.key
+            }
+          });
+        }
+      }
     },
 
     doSearchTorrent(options: any) {
@@ -372,8 +534,9 @@ export default Vue.extend({
           );
         }
         item.uid = this.getRandomString();
-        console.log(item);
+        // console.log(item);
         this.datas.push(item);
+        this.searchMsg = `已接收 ${this.datas.length} 条结果，还在继续搜索……`;
       });
     },
     /**

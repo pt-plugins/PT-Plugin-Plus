@@ -5,10 +5,12 @@ import {
   Options,
   DataResult,
   EDataResultType,
-  SearchEntry
+  SearchEntry,
+  EModule
 } from "@/interface/common";
 import { APP } from "@/service/api";
 import { SiteService } from "./site";
+import PTPlugin from "./service";
 
 export type SearchConfig = {
   site?: Site;
@@ -27,6 +29,10 @@ export class Searcher {
     sites: [],
     clients: []
   };
+
+  private searchRequestQueue: Dictionary<JQueryXHR> = {};
+
+  constructor(public service: PTPlugin) {}
 
   /**
    * 搜索种子
@@ -176,6 +182,13 @@ export class Searcher {
     });
   }
 
+  /**
+   * 获取搜索结果
+   * @param url
+   * @param site
+   * @param entry
+   * @param torrentTagSelectors
+   */
   public getSearchResult(
     url: string,
     site: Site,
@@ -183,11 +196,12 @@ export class Searcher {
     torrentTagSelectors?: any[]
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      $.ajax({
+      this.searchRequestQueue[url] = $.ajax({
         url: url,
         timeout: (this.options.search && this.options.search.timeout) || 30000
       })
         .done((result: any) => {
+          delete this.searchRequestQueue[url];
           if (
             (result && (typeof result == "string" && result.length > 100)) ||
             typeof result == "object"
@@ -232,8 +246,72 @@ export class Searcher {
           }
         })
         .fail((result: any) => {
+          delete this.searchRequestQueue[url];
           reject(result);
         });
+    });
+  }
+
+  /**
+   * 取消正在执行的搜索请求
+   * @param site
+   * @param key
+   */
+  public abortSearch(site: Site, key: string = ""): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let host = site.host + "";
+      let searchConfig: SearchConfig = this.searchConfigs[host];
+
+      if (searchConfig.entry) {
+        this.service.logger.add({
+          module: EModule.background,
+          event: "searcher.abortSearch",
+          msg: `正在取消[${site.host}]的搜索请求`,
+          data: {
+            site: site.host,
+            key: key
+          }
+        });
+        searchConfig.entry.forEach((entry: SearchEntry) => {
+          // 判断是否指定了搜索页和用于获取搜索结果的脚本
+          if (entry.entry && entry.parseScriptFile && entry.enabled !== false) {
+            let rows: number =
+              this.options.search && this.options.search.rows
+                ? this.options.search.rows
+                : 10;
+            let url: string = site.url + entry.entry;
+
+            url = this.replaceKeys(url, {
+              key: key,
+              rows: rows,
+              passkey: site.passkey ? site.passkey : ""
+            });
+            let queue = this.searchRequestQueue[url];
+            if (queue) {
+              try {
+                queue.abort();
+                resolve();
+              } catch (error) {
+                this.service.logger.add({
+                  module: EModule.background,
+                  event: "searcher.abortSearch.error",
+                  msg: "取消搜索请求失败",
+                  data: {
+                    site: site.host,
+                    key: key,
+                    error
+                  }
+                });
+                reject(error);
+              }
+            } else {
+              resolve();
+            }
+          } else {
+            resolve();
+          }
+        });
+      }
     });
   }
 
