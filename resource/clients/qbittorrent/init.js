@@ -47,7 +47,11 @@
         switch (action) {
           case "addTorrentFromURL":
             this.addTorrentFromUrl(data.url, (result) => {
-              resolve(result);
+              if (result.status === "success") {
+                resolve(result);
+              } else {
+                reject(result);
+              }
             });
             break;
 
@@ -118,13 +122,13 @@
         },
         error: (jqXHR, textStatus, errorThrown) => {
           console.log(jqXHR);
-          this.getSessionId.then(() => {
+          this.getSessionId().then(() => {
             this.exec(options, callback, tags);
           }).catch((code, msg) => {
             callback({
               status: "error",
               code,
-              msg
+              msg: msg || code === 0 ? "服务器不可用或网络错误" : "未知错误"
             })
           });
         }
@@ -149,10 +153,7 @@
         }
       }, (resultData) => {
         if (callback) {
-          var result = {
-            status: "",
-            msg: ""
-          }
+          var result = resultData;
           if (!resultData.error && resultData.result) {
             result.status = "success";
             result.msg = "URL已添加至 qBittorrent 。";

@@ -33,7 +33,11 @@ export default class Extension {
             },
             (result: any) => {
               callback && callback(result);
-              resolve(result);
+              if (result && result.status === "error") {
+                reject(result);
+              } else {
+                resolve(result);
+              }
             }
           );
         } catch (error) {

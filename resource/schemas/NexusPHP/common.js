@@ -84,7 +84,7 @@ String.prototype.getQueryString = function (name, split) {
         }).catch((result) => {
           notice && notice.hide();
           PTSevrice.showNotice({
-            msg: result
+            msg: result && result.msg || result
           });
           reject(result);
         });
