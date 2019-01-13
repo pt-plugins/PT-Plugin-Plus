@@ -5,5 +5,22 @@
   "icon": "https://pt.gztown.net/favicon.ico",
   "tags": ["影视", "港片"],
   "schema": "NexusPHP",
-  "host": "pt.gztown.net"
+  "host": "pt.gztown.net",
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": ".free_bg",
+    "color": "blue"
+  }, {
+    "name": "2xFree",
+    "selector": ".twoupfree_bg",
+    "color": "green"
+  }, {
+    "name": "2xUp",
+    "selector": ".twoup_bg",
+    "color": "lime"
+  }, {
+    "name": "2x50%",
+    "selector": ".twouphalfdown_bg",
+    "color": "light-green"
+  }]
 }

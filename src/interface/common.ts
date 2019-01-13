@@ -107,6 +107,7 @@ export interface SiteSchema {
   parser?: Dictionary<any>;
   patterns?: Dictionary<any>;
   checker?: Dictionary<any>;
+  torrentTagSelectors?: any[];
 }
 
 /**
@@ -132,6 +133,7 @@ export interface Site {
   parser?: Dictionary<any>;
   patterns?: Dictionary<any>;
   checker?: Dictionary<any>;
+  torrentTagSelectors?: any[];
 }
 
 /**
@@ -290,6 +292,7 @@ export interface SearchResultItem {
   leechers?: number | string;
   completed?: number | string;
   comments?: number | string;
+  uid?: string;
 }
 
 export interface SearchEntry {
@@ -299,6 +302,7 @@ export interface SearchEntry {
   parseScript?: string;
   resultSelector?: string;
   enabled?: boolean;
+  tagSelectors?: any[];
 }
 
 export interface UIOptions {

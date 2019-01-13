@@ -8,11 +8,13 @@ import {
   SearchEntry
 } from "@/interface/common";
 import { APP } from "@/service/api";
+import { SiteService } from "./site";
 
 export type SearchConfig = {
   site?: Site;
   entry?: SearchEntry[];
   rootPath?: string;
+  torrentTagSelectors?: any[];
 };
 
 /**
@@ -37,6 +39,7 @@ export class Searcher {
         success: false
       };
 
+      let siteServce: SiteService = new SiteService(site, this.options);
       let host = site.host + "";
       let searchConfig: SearchConfig = this.searchConfigs[host];
       let schema = this.getSiteSchema(site);
@@ -44,15 +47,23 @@ export class Searcher {
       if (!searchConfig) {
         searchConfig = {
           site,
-          rootPath: ""
+          rootPath: "",
+          entry: []
         };
 
-        if (site.searchEntry) {
+        if (siteServce.options.searchEntry) {
           searchConfig.rootPath = `sites/${site.host}/`;
-          searchConfig.entry = site.searchEntry;
+          searchConfig.entry = siteServce.options.searchEntry;
         } else if (schema && schema.searchEntry) {
           searchConfig.rootPath = `schemas/${schema.name}/`;
           searchConfig.entry = schema.searchEntry;
+        }
+
+        if (siteServce.options.torrentTagSelectors) {
+          searchConfig.torrentTagSelectors =
+            siteServce.options.torrentTagSelectors;
+        } else if (schema && schema.torrentTagSelectors) {
+          searchConfig.torrentTagSelectors = schema.torrentTagSelectors;
         }
 
         if (!searchConfig.entry) {
@@ -104,9 +115,9 @@ export class Searcher {
                 entry.parseScript = script;
                 this.getSearchResult(
                   url,
-                  entry.parseScript,
                   site,
-                  entry.resultSelector
+                  entry,
+                  searchConfig.torrentTagSelectors
                 )
                   .then((result: any) => {
                     if (result && result.length) {
@@ -133,9 +144,9 @@ export class Searcher {
             } else {
               this.getSearchResult(
                 url,
-                entry.parseScript,
                 site,
-                entry.resultSelector
+                entry,
+                searchConfig.torrentTagSelectors
               )
                 .then((result: any) => {
                   if (result && result.length) {
@@ -167,9 +178,9 @@ export class Searcher {
 
   public getSearchResult(
     url: string,
-    getResultScript: string,
     site: Site,
-    resultSelector: string = ""
+    entry: SearchEntry,
+    torrentTagSelectors?: any[]
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       $.ajax({
@@ -189,15 +200,17 @@ export class Searcher {
               results: [],
               responseText: result,
               site,
-              resultSelector,
+              resultSelector: entry.resultSelector,
               page,
+              entry,
+              torrentTagSelectors: torrentTagSelectors,
               errorMsg: ""
             };
 
             // 执行获取结果的脚本
             try {
-              if (getResultScript) {
-                eval(getResultScript);
+              if (entry.parseScript) {
+                eval(entry.parseScript);
               }
               if (options.errorMsg) {
                 reject({

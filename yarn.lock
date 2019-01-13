@@ -606,6 +606,11 @@
   dependencies:
     "@types/filesystem" "*"
 
+"@types/extend@^3.0.0":
+  version "3.0.0"
+  resolved "http://registry.npm.taobao.org/@types/extend/download/@types/extend-3.0.0.tgz#d269e5af1463cd6344272abd814c8a833b914d07"
+  integrity sha1-0mnlrxRjzWNEJyq9gUyKgzuRTQc=
+
 "@types/file-saver@^2.0.0":
   version "2.0.0"
   resolved "http://registry.npm.taobao.org/@types/file-saver/download/@types/file-saver-2.0.0.tgz#cbb49815a5e1129d5f23836a98d65d93822409af"
@@ -2883,9 +2888,10 @@ extend-shallow@^3.0.0, extend-shallow@^3.0.2:
     assign-symbols "^1.0.0"
     is-extendable "^1.0.1"
 
-extend@~3.0.2:
+extend@^3.0.2, extend@~3.0.2:
   version "3.0.2"
   resolved "http://registry.npm.taobao.org/extend/download/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
+  integrity sha1-+LETa0Bx+9jrFAr/hYsQGewpFfo=
 
 external-editor@^2.0.4:
   version "2.2.0"

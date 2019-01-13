@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "blueimp-md5": "^2.10.0",
+    "extend": "^3.0.2",
     "file-saver": "^2.0.0",
     "moment": "^2.23.0",
     "url-parse": "^1.4.4",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@types/blueimp-md5": "^2.7.0",
     "@types/chrome": "^0.0.75",
+    "@types/extend": "^3.0.0",
     "@types/file-saver": "^2.0.0",
     "@types/jquery": "^3.3.22",
     "@types/url-parse": "^1.4.2",

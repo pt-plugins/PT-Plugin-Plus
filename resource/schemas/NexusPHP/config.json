@@ -21,5 +21,28 @@
   }],
   "parser": {
     "downloadURL": "(function (options) {\n  if (options.url && options.url.query && options.url.href.getQueryString) {\n    let id = options.url.href.getQueryString(\"id\");\n    if (!id) {\n      options.error = {\n        success: false,\n        msg: \"无效的下载地址\"\n      }\n      return;\n    }\n    let passkey = options.site.passkey || options.url.href.getQueryString(\"passkey\");\n    if (passkey) {\n      options.result = options.url.origin + \"/download.php?id=\" + id + \"&passkey=\" + options.site.passkey + (options.site.disableHttps ? \"\" : \"&https=1\");\n    } else {\n      options.error = {\n        success: false,\n        msg: \"请先设置站点的passkey\"\n      }\n    }\n  }\n})(options)"
-  }
+  },
+  "checker": {
+    "isLogin": {
+      "page": "/usercp.php",
+      "contains": "logout.php"
+    }
+  },
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "img.pro_free",
+    "color": "blue"
+  }, {
+    "name": "2xFree",
+    "selector": "img.pro_free2up",
+    "color": "green"
+  }, {
+    "name": "2xUp",
+    "selector": "img.pro_2up",
+    "color": "lime"
+  }, {
+    "name": "2x50%",
+    "selector": "img.pro_50pctdown2up",
+    "color": "light-green"
+  }]
 }

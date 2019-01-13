@@ -14,7 +14,7 @@
         :items="datas"
         :pagination.sync="pagination"
         :loading="loading"
-        item-key="link"
+        item-key="uid"
         select-all
         class="elevation-1"
         :rows-per-page-items="options.rowsPerPageItems"
@@ -38,7 +38,17 @@
               v-html="props.item.titleHTML"
               rel="noopener noreferrer nofollow"
             ></a>
-            <div class="sub-title">{{props.item.subTitle}}</div>
+            <div class="sub-title">
+              <span class="mr-1">
+                <span
+                  :class="['tag', `${tag.color}`]"
+                  v-for="(tag, index) in props.item.tags"
+                  :key="index"
+                >{{ tag.name }}</span>
+              </span>
+              
+              <span>{{props.item.subTitle}}</span>
+            </div>
           </td>
           <td class="size">{{props.item.size | formatSize}}</td>
           <!-- <td class="center">{{ props.item.comments }}</td> -->
@@ -361,6 +371,7 @@ export default Vue.extend({
             (item.completed as string).replace(",", "")
           );
         }
+        item.uid = this.getRandomString();
         console.log(item);
         this.datas.push(item);
       });
@@ -498,6 +509,25 @@ export default Vue.extend({
         key: EPaginationKey.searchTorrent,
         options: value
       });
+    },
+    /**
+     * 获取随机字符串
+     * @param  {number} length    [长度，默认为16]
+     * @param  {boolean} noSimilar [是否包含容易混淆的字符，默认为包含]
+     * @return {string}           [返回的内容]
+     */
+    getRandomString(length: number = 16, noSimilar: boolean = true): string {
+      // 是否包含容易混淆的字符[oO,Ll,9gq,Vv,Uu,I1]，默认为包含
+      let chars = noSimilar
+        ? "abcdefhijkmnprstwxyz2345678ABCDEFGHJKMNPQRSTWXYZ"
+        : "abcdefghijkmnopqrstuvwxyz0123456789ABCDEFGHIJKMNOPQRSTUVWXYZ";
+      let maxLength = chars.length;
+      let result = [];
+      for (let i = 0; i < length; i++) {
+        result.push(chars.charAt(Math.floor(Math.random() * maxLength)));
+      }
+
+      return result.join("");
     }
   }
 });
@@ -524,7 +554,7 @@ export default Vue.extend({
   .sub-title {
     font-size: 12px;
     word-break: break-all;
-    margin: 5px 0;
+    margin: 8px 0 5px 0;
     color: #aaaaaa;
   }
 
@@ -534,6 +564,14 @@ export default Vue.extend({
 
   .size {
     text-align: right;
+  }
+
+  .tag {
+    font-size: 9px;
+    margin: 0 1px;
+    border-radius: 2px;
+    color: #fff;
+    padding: 1px 3px;
   }
 }
 </style>
