@@ -7,7 +7,7 @@
   "schema": "NexusPHP",
   "host": "pt.meihezi.com",
   "searchEntry": [{
-    "entry": "/torrents.php?search=$key$",
+    "entry": "/torrents.php?search=$key$&notnewword=1",
     "name": "全部",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
