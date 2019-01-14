@@ -6,7 +6,8 @@ import {
   SiteSchema,
   EAction,
   EDataResultType,
-  DownloadOptions
+  DownloadOptions,
+  EModule
 } from "@/interface/common";
 import PTPlugin from "./service";
 import URLParse from "url-parse";
@@ -226,6 +227,13 @@ export class ContextMenus {
       }
     );
 
+    this.service.logger.add({
+      module: EModule.background,
+      event: "contextMenus.sendTorrentToClient.begin",
+      msg: "正在发送链接至下载服务器",
+      data: options
+    });
+
     let client = this.options.clients.find((item: DownloadClient) => {
       return item.id === options.clientId;
     });
@@ -237,6 +245,13 @@ export class ContextMenus {
           type: EDataResultType.error,
           msg: "获取下载服务器失败。"
         }
+      });
+
+      this.service.logger.add({
+        module: EModule.background,
+        event: "contextMenus.sendTorrentToClient.getClientError",
+        msg: "获取下载服务器失败。",
+        data: options
       });
       return;
     }
@@ -260,12 +275,24 @@ export class ContextMenus {
     this.service.controller
       .sendTorrentToClient(options)
       .then((result: any) => {
+        this.service.logger.add({
+          module: EModule.background,
+          event: "contextMenus.sendTorrentToClient.done",
+          msg: "下载链接发送完成。",
+          data: result
+        });
         chrome.tabs.sendMessage(tabid, {
           action: EAction.showMessage,
           data: result
         });
       })
       .catch((result: any) => {
+        this.service.logger.add({
+          module: EModule.background,
+          event: "contextMenus.sendTorrentToClient.error",
+          msg: "下载链接发送失败！",
+          data: result
+        });
         chrome.tabs.sendMessage(tabid, {
           action: EAction.showMessage,
           data: result
