@@ -8,7 +8,7 @@
           <v-form v-model="valid">
             <v-autocomplete
               v-model="selectedSite"
-              :items="$store.state.options.sites"
+              :items="getSites()"
               label="选择一个站点"
               :menu-props="{maxHeight:'auto'}"
               persistent-hint
@@ -65,7 +65,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Site } from "../../../../interface/common";
+import { Site, DownloadClient } from "@/interface/common";
 import Vue from "vue";
 export default Vue.extend({
   data() {
@@ -87,7 +87,8 @@ export default Vue.extend({
     };
   },
   props: {
-    value: Boolean
+    value: Boolean,
+    clientId: String
   },
   model: {
     prop: "value",
@@ -121,6 +122,27 @@ export default Vue.extend({
         return tags.join(", ");
       }
       return "";
+    },
+    getSites(): Site[] {
+      let clients = this.$store.state.options.clients;
+      let sites = this.$store.state.options.sites;
+      let result: Site[] = [];
+      if (clients && clients.length) {
+        let client: DownloadClient = clients.find((item: DownloadClient) => {
+          return item.id === this.clientId;
+        });
+        if (client) {
+          sites.forEach((site: Site) => {
+            if (!client.paths.hasOwnProperty(site.host)) {
+              result.push(site);
+            }
+          });
+        } else {
+          result = sites;
+        }
+        return result;
+      }
+      return sites;
     }
   },
   computed: {},

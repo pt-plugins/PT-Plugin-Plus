@@ -69,7 +69,7 @@
     </v-card>
 
     <!-- 新增 -->
-    <AddItem v-model="showAddDialog" @save="addItem"/>
+    <AddItem v-model="showAddDialog" @save="addItem" :clientId="selectedClient.id"/>
     <!-- 编辑 -->
     <EditItem v-model="showEditDialog" :option="selectedItem" @save="updateItem"/>
 
