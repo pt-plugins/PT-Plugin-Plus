@@ -28,6 +28,10 @@
       };
       this.api = {};
 
+      if (this.options.address.substr(-1) == "/") {
+        this.options.address = this.options.address.substr(0, this.options.address.length - 1);
+      }
+
       if (this.options.apiVer) {
         this.api = this.apiVer[this.options.apiVer];
       }

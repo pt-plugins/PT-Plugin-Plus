@@ -8,6 +8,9 @@
       this.options = options;
       this.sessionId = "";
       this.version = 2;
+      if (this.options.address.substr(-1) == "/") {
+        this.options.address = this.options.address.substr(0, this.options.address.length - 1);
+      }
     }
 
     /**
