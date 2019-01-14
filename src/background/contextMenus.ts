@@ -134,7 +134,7 @@ export class ContextMenus {
 
           count++;
           paths.forEach((path: string) => {
-            let id = `${client.id}-${host}-${path}`;
+            let id = `${client.id}**${host}**${path}`;
             this.add({
               id,
               title: path,
@@ -146,7 +146,7 @@ export class ContextMenus {
                 info: chrome.contextMenus.OnClickData,
                 tab: chrome.tabs.Tab
               ) => {
-                let data = info.menuItemId.split("-");
+                let data = info.menuItemId.split("**");
                 let options: DownloadOptions = {
                   clientId: data[0],
                   url: info.linkUrl as string,
