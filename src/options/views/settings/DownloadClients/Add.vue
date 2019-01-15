@@ -20,7 +20,7 @@
               <v-stepper-content step="1">
                 <v-autocomplete
                   v-model="selectedItem"
-                  :items="$store.state.options.system.clients"
+                  :items="items"
                   :label="words.validMsg"
                   :menu-props="{maxHeight:'auto'}"
                   :hint="selectedItem.description"
@@ -96,7 +96,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Site } from "../../../../interface/common";
+import { Site, Options } from "@/interface/common";
 import Vue from "vue";
 import Editor from "./Editor.vue";
 export default Vue.extend({
@@ -119,7 +119,9 @@ export default Vue.extend({
       stepCount: 2,
       selectedData: {} as any,
       selectedItem: {} as any,
-      valid: false
+      valid: false,
+      items: this.$store.state.options.system.clients,
+      options: this.$store.state.options
     };
   },
   props: {

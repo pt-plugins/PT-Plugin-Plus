@@ -133,7 +133,7 @@ export default Vue.extend({
         });
         if (client) {
           sites.forEach((site: Site) => {
-            if (!client.paths.hasOwnProperty(site.host)) {
+            if (client.paths && !client.paths.hasOwnProperty(site.host)) {
               result.push(site);
             }
           });

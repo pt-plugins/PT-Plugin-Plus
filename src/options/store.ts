@@ -23,7 +23,8 @@ export default new Vuex.Store({
       clients: []
     } as Options,
     schemas: [],
-    uiOptions: {} as UIOptions
+    uiOptions: {} as UIOptions,
+    initialized: false
   },
 
   /**
@@ -257,7 +258,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    readConfig({ commit }) {
+    readConfig({ commit, state }) {
       extension.sendRequest(EAction.writeLog, null, {
         module: EModule.options,
         event: "Options.readConfig",
@@ -265,11 +266,31 @@ export default new Vuex.Store({
       });
       extension.sendRequest(EAction.readConfig).then((options: Options) => {
         commit("updateOptions", options);
+        if (!options.system) {
+          extension.sendRequest(EAction.writeLog, null, {
+            module: EModule.options,
+            event: "Options.readConfig.Error",
+            msg: "配置信息加载失败，没有获取到系统定义信息"
+          });
+          return;
+        }
+
+        if (!options.system.clients || !options.system.schemas) {
+          extension.sendRequest(EAction.writeLog, null, {
+            module: EModule.options,
+            event: "Options.readConfig.Error",
+            msg: "配置信息加载失败，没有获取到下载服务器或站点架构信息"
+          });
+          return;
+        }
+
         extension.sendRequest(EAction.writeLog, null, {
           module: EModule.options,
           event: "Options.readConfig.Finished",
           msg: "配置加载完成"
         });
+
+        state.initialized = true;
       });
     },
 
