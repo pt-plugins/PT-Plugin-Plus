@@ -124,14 +124,14 @@ class Config {
       });
 
       // 升级不存在的配置项
-      this.clients.forEach(item => {
-        let index = this.options.clients.findIndex((client: DownloadClient) => {
-          return client.type === item.type;
+      this.options.clients.forEach((item, index) => {
+        let client = this.clients.find((c: DownloadClient) => {
+          return c.type === item.type;
         });
 
-        if (index > -1) {
+        if (client) {
           this.options.clients[index] = Object.assign(
-            Object.assign({}, item),
+            Object.assign({}, client),
             this.options.clients[index]
           );
         }
