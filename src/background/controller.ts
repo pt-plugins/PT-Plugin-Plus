@@ -459,30 +459,60 @@ export default class Controller {
     this.optionsTabId = id;
   }
 
-  public openOptions(searchKey: string = "", path: string = "") {
+  /**
+   * 打开搜索种子页面
+   * @param key 关键字
+   * @param host 指定站点，默认搜索所有站
+   */
+  public searchTorrent(key: string = "", host: string = "") {
+    let url = "";
+    if (key) {
+      url = `search-torrent/${key}`;
+    }
+
+    if (host) {
+      url += `/${host}`;
+    }
+
+    this.openOptions(url);
+  }
+
+  /**
+   * 打开配置页
+   * @param path 要跳转的路径
+   */
+  public openOptions(path: string = "") {
+    let url = "/";
+    if (path) {
+      url += path;
+    }
+
     if (this.optionsTabId == 0) {
-      this.createOptionTab(searchKey, path);
+      this.createOptionTab(url);
     } else {
       chrome.tabs.get(this.optionsTabId as number, tab => {
         if (!chrome.runtime.lastError && tab) {
-          let url = "index.html";
-          if (searchKey) {
-            url = `index.html#/search-torrent/${searchKey}`;
-          }
-          chrome.tabs.update(tab.id as number, { selected: true, url: url });
+          chrome.tabs.update(tab.id as number, {
+            selected: true,
+            url: "index.html#" + url
+          });
         } else {
-          this.createOptionTab(searchKey, path);
+          this.createOptionTab(url);
         }
       });
     }
   }
 
-  private createOptionTab(searchKey: string = "", path: string = "") {
-    let url = "index.html";
-    if (searchKey) {
-      url = `index.html#/search-torrent/${searchKey}`;
-    } else if (path) {
-      url = `index.html#/${path}`;
+  /**
+   * 创建配置页面选项卡
+   * @param url
+   */
+  private createOptionTab(url: string = "") {
+    if (!url) {
+      return;
+    }
+    if (url.substr(0, 1) === "/") {
+      url = "index.html#" + url;
     }
     chrome.tabs.create(
       {

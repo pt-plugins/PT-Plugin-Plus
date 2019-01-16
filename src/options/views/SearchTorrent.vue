@@ -133,6 +133,8 @@ export default Vue.extend({
         cancelSearch: "取消搜索"
       },
       key: "",
+      // 指定站点搜索
+      host: "",
       options: this.$store.state.options,
       getters: this.$store.getters,
       searchMsg: "",
@@ -162,7 +164,8 @@ export default Vue.extend({
       skipSites: "",
       beginTime: null as any,
       reloadCount: 0,
-      searchQueue: [] as any[]
+      searchQueue: [] as any[],
+      searchTimer: 0
     };
   },
   created() {
@@ -172,7 +175,9 @@ export default Vue.extend({
         msg: "系统参数丢失"
       });
     }
+    console.log(this.$route.params);
     this.key = this.$route.params["key"];
+    this.host = this.$route.params["host"];
     this.pagination = this.$store.getters.pagination(
       EPaginationKey.searchTorrent,
       {
@@ -185,13 +190,17 @@ export default Vue.extend({
       return;
     }
     this.key = to.params.key;
+    this.host = to.params.host;
     // console.log(to, from, next);
     // this.$route.params
     next();
   },
   watch: {
     key() {
-      this.search();
+      this.doSearch();
+    },
+    host() {
+      this.doSearch();
     },
     successMsg() {
       this.haveSuccess = this.successMsg != "";
@@ -209,8 +218,16 @@ export default Vue.extend({
         data: options.data
       });
     },
+    doSearch() {
+      clearTimeout(this.searchTimer);
+      this.searchTimer = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
     search() {
       if (window.location.hostname == "localhost") return;
+
+      if (this.loading) return;
 
       if (!this.options.system) {
         if (this.reloadCount >= 10) {
@@ -244,22 +261,32 @@ export default Vue.extend({
       let skipSites: string[] = [];
       this.skipSites = "";
 
-      this.options.sites.forEach((item: Site) => {
-        if (item.allowSearch) {
-          let siteSchema: SiteSchema = this.getSiteSchema(item);
-          if (
-            siteSchema &&
-            siteSchema.searchEntry &&
-            siteSchema.searchEntry.length > 0
-          ) {
-            sites.push(item);
-          } else if (item.searchEntry && item.searchEntry.length > 0) {
-            sites.push(item);
-          } else {
-            skipSites.push(item.name);
-          }
+      // 是否指定了站点
+      if (this.host) {
+        let site = this.options.sites.find((item: Site) => {
+          return item.host === this.host;
+        });
+        if (site) {
+          sites.push(site);
         }
-      });
+      } else {
+        this.options.sites.forEach((item: Site) => {
+          if (item.allowSearch) {
+            let siteSchema: SiteSchema = this.getSiteSchema(item);
+            if (
+              siteSchema &&
+              siteSchema.searchEntry &&
+              siteSchema.searchEntry.length > 0
+            ) {
+              sites.push(item);
+            } else if (item.searchEntry && item.searchEntry.length > 0) {
+              sites.push(item);
+            } else {
+              skipSites.push(item.name);
+            }
+          }
+        });
+      }
 
       if (skipSites.length > 0) {
         this.skipSites = " 暂不支持搜索的站点：" + skipSites.join(",");

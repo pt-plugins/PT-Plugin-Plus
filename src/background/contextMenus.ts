@@ -110,6 +110,26 @@ export class ContextMenus {
     if (!site) {
       return;
     }
+
+    // 是否启用选择内容时搜索
+    if (this.options.allowSelectionTextSearch) {
+      let menuId: string = site.host as string;
+      this.siteMenus.push(menuId);
+      // 选中内容进行搜索
+      this.add({
+        id: menuId,
+        title: '仅搜索本站 "%s" 相关的种子',
+        contexts: ["selection"],
+        documentUrlPatterns: [`*://${site.host}/*`],
+        onclick: (
+          info: chrome.contextMenus.OnClickData,
+          tab: chrome.tabs.Tab
+        ) => {
+          this.service.controller.searchTorrent(info.selectionText, host);
+        }
+      });
+    }
+
     this.options.clients.forEach((client: DownloadClient) => {
       if (client.paths) {
         let parentId = `${client.id}-path`;
@@ -317,7 +337,7 @@ export class ContextMenus {
           info: chrome.contextMenus.OnClickData,
           tab: chrome.tabs.Tab
         ) => {
-          this.service.controller.openOptions(info.selectionText);
+          this.service.controller.searchTorrent(info.selectionText);
         }
       });
     }

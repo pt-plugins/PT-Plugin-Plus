@@ -78,7 +78,7 @@ export default new Router({
       props: true
     },
     {
-      path: "/search-torrent/:key",
+      path: "/search-torrent/:key/:host?",
       name: "search-torrent",
       component: () => import("./views/SearchTorrent.vue"),
       props: true

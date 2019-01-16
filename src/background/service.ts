@@ -97,7 +97,7 @@ export default class PTPlugin {
 
           // 打开选项卡
           case EAction.openOptions:
-            this.controller.openOptions("", request.data);
+            this.controller.openOptions(request.data);
             resolve(true);
             break;
 
@@ -109,7 +109,7 @@ export default class PTPlugin {
           // 搜索种子
           case EAction.searchTorrent:
             console.log(request.data);
-            this.controller.openOptions(request.data);
+            this.controller.searchTorrent(request.data);
             resolve(true);
             break;
 
