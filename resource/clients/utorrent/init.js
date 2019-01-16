@@ -152,10 +152,7 @@
         },
         resultData => {
           if (callback) {
-            var result = {
-              status: "",
-              msg: ""
-            };
+            var result = resultData;
             if (resultData.build) {
               result.status = "success";
               result.msg = "URL已添加至 µTorrent 。";

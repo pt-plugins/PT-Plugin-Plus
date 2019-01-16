@@ -150,10 +150,7 @@
         }]
       }, (resultData) => {
         if (callback) {
-          var result = {
-            status: "",
-            msg: ""
-          }
+          var result = resultData;
           if (!resultData.error && resultData.result) {
             result.status = "success";
             result.msg = "URL已添加至 Deluge 。";
