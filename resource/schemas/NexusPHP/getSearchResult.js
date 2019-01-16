@@ -213,6 +213,10 @@ if (!"".getQueryString) {
             subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
             break;
 
+          case "u2.dmhy.org":
+            subTitle = $('.torrentname > tbody > tr:eq(1)', row).find('.tooltip').text();
+            break;
+
           default:
             subTitle = "";
             break;
