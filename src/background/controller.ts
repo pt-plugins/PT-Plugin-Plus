@@ -53,6 +53,7 @@ export default class Controller {
     this.clientController.init(options);
     this.searcher.options = options;
     this.initDefaultClient();
+    this.siteDefaultClients = {};
   }
 
   /**
@@ -220,12 +221,27 @@ export default class Controller {
             data: result
           });
 
-          // 连接超时
-          if (result && result.code === 0 && result.msg === "timeout") {
-            reject({
-              success: false,
-              msg: "连接下载服务器超时，请检查网络设置或调整服务器超时时间！"
-            });
+          if (result && result.code === 0) {
+            switch (result.msg) {
+              // 连接超时
+              case "timeout":
+                reject({
+                  success: false,
+                  msg:
+                    "连接下载服务器超时，请检查网络设置或调整服务器超时时间！",
+                  status: "error"
+                });
+                break;
+
+              default:
+                reject({
+                  success: false,
+                  msg: result.msg,
+                  status: "error"
+                });
+                break;
+            }
+
             return;
           }
 
