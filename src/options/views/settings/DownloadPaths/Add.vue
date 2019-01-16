@@ -44,6 +44,13 @@
               :hint="words.pathTip"
               :rules="rules.require"
             ></v-textarea>
+            <v-alert
+              :value="true"
+              color="info"
+              icon="info"
+              outline
+              v-if="client.pathDescription"
+            >{{ client.pathDescription}}</v-alert>
           </v-form>
         </v-card-text>
 
@@ -88,7 +95,7 @@ export default Vue.extend({
   },
   props: {
     value: Boolean,
-    clientId: String
+    client: Object
   },
   model: {
     prop: "value",
@@ -129,11 +136,11 @@ export default Vue.extend({
       let result: Site[] = [];
       if (clients && clients.length) {
         let client: DownloadClient = clients.find((item: DownloadClient) => {
-          return item.id === this.clientId;
+          return item.id === this.client.id;
         });
-        if (client) {
+        if (client && client.paths) {
           sites.forEach((site: Site) => {
-            if (client.paths && !client.paths.hasOwnProperty(site.host)) {
+            if (!client.paths.hasOwnProperty(site.host)) {
               result.push(site);
             }
           });

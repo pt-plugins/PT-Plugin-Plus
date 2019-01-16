@@ -13,6 +13,13 @@
             :hint="words.pathTip"
             :rules="rules.require"
           ></v-textarea>
+          <v-alert
+            :value="true"
+            color="info"
+            icon="info"
+            outline
+            v-if="client.pathDescription"
+          >{{ client.pathDescription}}</v-alert>
         </v-form>
       </v-card-text>
 
@@ -59,7 +66,8 @@ export default Vue.extend({
   },
   props: {
     value: Boolean,
-    option: Object
+    option: Object,
+    client: Object
   },
   model: {
     prop: "value",

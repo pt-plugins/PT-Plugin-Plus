@@ -6,5 +6,7 @@
   "scripts": [
     "init.js"
   ],
-  "description": "由于 µTorrent Web API 接口不统一，当前仅支持 µTorrent Windows 版本，Mac 版本测试不可用，其他系统未知。"
+  "description": "由于 µTorrent Web API 接口不统一，当前仅支持 µTorrent Windows 版本，Mac 版本测试不可用，其他系统未知。",
+  "allowCustomPath": true,
+  "pathDescription": "当前目录列表配置是基于 µTorrent 默认目录的相对路径，如默认目录为：D:\\download\\，自定义目录为 music\\，那么最终种子的下载目录为：D:\\download\\music\\"
 }

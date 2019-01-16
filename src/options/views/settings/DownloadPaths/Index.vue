@@ -5,7 +5,7 @@
       <v-card-title>
         <v-autocomplete
           v-model="selectedClient"
-          :items="this.$store.state.options.clients"
+          :items="items"
           :label="words.selectedClient"
           :menu-props="{maxHeight:'auto'}"
           style="max-width: 500px;"
@@ -16,22 +16,26 @@
           item-value="id"
         >
           <template slot="selection" slot-scope="{ item }">
-            <span v-text="item.name"></span>
+            <span>{{ item.name }}</span>
           </template>
-          <template slot="item" slot-scope="data" style>
+          <template slot="item" slot-scope="data">
             <v-list-tile-content>
               <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
               <v-list-tile-sub-title v-html="data.item.address"></v-list-tile-sub-title>
             </v-list-tile-content>
             <v-list-tile-action>
-              <v-list-tile-action-text>{{ data.item.type }}</v-list-tile-action-text>
+              <v-list-tile-action-text>{{ data.item.allowCustomPath?data.item.type:words.notSupport }}</v-list-tile-action-text>
             </v-list-tile-action>
           </template>
         </v-autocomplete>
 
         <v-spacer></v-spacer>
 
-        <v-btn color="success" @click="add" :disabled="!selectedClient.id">
+        <v-btn
+          color="success"
+          @click="add"
+          :disabled="!selectedClient.id||!selectedClient.allowCustomPath"
+        >
           <v-icon class="mr-2">add</v-icon>
           {{ words.add }}
         </v-btn>
@@ -69,9 +73,14 @@
     </v-card>
 
     <!-- 新增 -->
-    <AddItem v-model="showAddDialog" @save="addItem" :clientId="selectedClient.id"/>
+    <AddItem v-model="showAddDialog" @save="addItem" :client="selectedClient"/>
     <!-- 编辑 -->
-    <EditItem v-model="showEditDialog" :option="selectedItem" @save="updateItem"/>
+    <EditItem
+      v-model="showEditDialog"
+      :option="selectedItem"
+      @save="updateItem"
+      :client="selectedClient"
+    />
 
     <!-- 删除确认 -->
     <v-dialog v-model="dialogRemoveConfirm" width="300">
@@ -122,7 +131,8 @@ export default Vue.extend({
         removeConfirmTitle: "删除确认",
         clearConfirm: "确认要删除所有下载服务器吗？",
         ok: "确认",
-        cancel: "取消"
+        cancel: "取消",
+        notSupport: "暂不支持该服务器类型"
       },
       showAddDialog: false,
       showEditDialog: false,
@@ -143,7 +153,7 @@ export default Vue.extend({
     };
   },
   created() {
-    this.items = this.$store.state.options.system.clients;
+    this.items = this.$store.state.options.clients;
   },
   methods: {
     getPaths(paths: any) {

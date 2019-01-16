@@ -5,5 +5,7 @@
   "icon": "https://www.synology.com/img/icon/favicon.png",
   "scripts": [
     "init.js"
-  ]
+  ],
+  "allowCustomPath": true,
+  "pathDescription": "当前目录列表配置是基于 Synology Download Station 暂存位置的相对路径，如暂存位置为：/volume1/，自定义目录为 music/，那么最终种子的下载目录为：/volume1/music/"
 }

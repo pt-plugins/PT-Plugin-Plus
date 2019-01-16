@@ -5,5 +5,7 @@
   "icon": "https://raw.githubusercontent.com/transmission/transmission/master/web/images/favicon.png",
   "scripts": [
     "init.js"
-  ]
+  ],
+  "allowCustomPath": true,
+  "pathDescription": "当前目录列表配置是指定硬盘上的绝对路径，如 /volume1/music/"
 }
