@@ -1,3 +1,6 @@
+/**
+ * @see https://github.com/bittorrent/webui/blob/master/webui.js
+ */
 (function ($, window) {
   class uTorrent {
     /**
@@ -35,7 +38,7 @@
       return new Promise((resolve, reject) => {
         switch (action) {
           case "addTorrentFromURL":
-            this.addTorrentFromUrl(data.url, result => {
+            this.addTorrentFromUrl(data, result => {
               resolve(result);
             });
             break;
@@ -135,14 +138,17 @@
     }
 
     // 添加种子
-    addTorrentFromUrl(url, callback) {
+    addTorrentFromUrl(data, callback) {
+      let url = data.url;
       // 磁性连接（代码来自原版WEBUI）
       if (url.match(/^[0-9a-f]{40}$/i)) {
         url = "magnet:?xt=urn:btih:" + url;
       }
       this.exec({
           action: "add-url",
-          s: url
+          s: url,
+          download_dir: 0,
+          path: data.savePath ? data.savePath : ""
         },
         resultData => {
           if (callback) {
