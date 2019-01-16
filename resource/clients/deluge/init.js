@@ -1,3 +1,6 @@
+/**
+ * @see https://deluge.readthedocs.io/en/develop/reference/index.html
+ */
 (function ($) {
   //Deluge
   // id:1,method:auth.login,params:[url,null]
@@ -33,7 +36,7 @@
       return new Promise((resolve, reject) => {
         switch (action) {
           case "addTorrentFromURL":
-            this.addTorrentFromUrl(data.url, (result) => {
+            this.addTorrentFromUrl(data, (result) => {
               resolve(result);
             });
             break;
@@ -134,14 +137,17 @@
      * @param {*} url 
      * @param {*} callback 
      */
-    addTorrentFromUrl(url, callback) {
+    addTorrentFromUrl(data, callback) {
+      let url = data.url;
       // 磁性连接（代码来自原版WEBUI）
       if (url.match(/^[0-9a-f]{40}$/i)) {
         url = 'magnet:?xt=urn:btih:' + url;
       }
       this.exec({
         method: "core.add_torrent_url",
-        params: [url, null]
+        params: [url, {
+          "download_location": data.savePath
+        }]
       }, (resultData) => {
         if (callback) {
           var result = {
