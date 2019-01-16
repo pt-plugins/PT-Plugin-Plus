@@ -50,7 +50,7 @@
       return new Promise((resolve, reject) => {
         switch (action) {
           case "addTorrentFromURL":
-            this.addTorrentFromUrl(data.url, (result) => {
+            this.addTorrentFromUrl(data, (result) => {
               if (result.status === "success") {
                 resolve(result);
               } else {
@@ -145,7 +145,8 @@
      * @param {*} url 
      * @param {*} callback 
      */
-    addTorrentFromUrl(url, callback) {
+    addTorrentFromUrl(data, callback) {
+      let url = data.url;
       // 磁性连接（代码来自原版WEBUI）
       if (url.match(/^[0-9a-f]{40}$/i)) {
         url = 'magnet:?xt=urn:btih:' + url;
@@ -153,7 +154,9 @@
       this.exec({
         method: this.api.add,
         params: {
-          urls: url
+          urls: url,
+          savepath: data.savePath,
+          paused: !data.autoStart
         }
       }, (resultData) => {
         if (callback) {

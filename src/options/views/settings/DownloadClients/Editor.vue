@@ -37,7 +37,7 @@
           <v-switch
             :label="words.autoStart"
             v-model="option.autoStart"
-            v-if="option.type==='transmission'"
+            v-if="['transmission', 'qbittorrent'].includes(option.type)"
           ></v-switch>
 
           <v-text-field :value="option.type" :label="words.type" disabled></v-text-field>
