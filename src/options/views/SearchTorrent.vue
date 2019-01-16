@@ -548,7 +548,7 @@ export default Vue.extend({
      */
     fileSizetoLength(size: string): number {
       let _size_raw_match = size.match(
-        /^(\d*\.?\d+)(.*[^TGMK])?([TGMK]?i?B)$/i
+        /^(\d*\.?\d+)(.*[^TGMK])?([TGMK](B|iB))$/i
       );
       if (_size_raw_match) {
         let _size_num = parseFloat(_size_raw_match[1]);
