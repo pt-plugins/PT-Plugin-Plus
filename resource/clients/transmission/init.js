@@ -20,7 +20,24 @@
 
       if (this.options.address.indexOf("rpc") == -1) {
         let url = PTSevriceFilters.parseURL(this.options.address);
-        this.options.address = `${url.protocol}://${url.host}:${url.port}/transmission/rpc`;
+
+        let address = [
+          url.protocol,
+          "://",
+          url.host
+        ];
+        if (url.port) {
+          address.push(`:${url.port}`)
+        }
+
+        address.push(url.path);
+        if (url.path.substr(-1) != "/") {
+          address.push("/");
+        }
+
+        address.push("transmission/rpc");
+
+        this.options.address = address.join("");
       }
       console.log("transmission.init", this.options.address);
     }

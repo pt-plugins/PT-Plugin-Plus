@@ -121,6 +121,12 @@ export default class PTPlugin {
                 resolve(result);
               })
               .catch((result: any) => {
+                this.logger.add({
+                  module: EModule.background,
+                  event: `${EAction.testClientConnectivity}`,
+                  msg: `测试客户连接失败[${request.data.address}]`,
+                  data: result
+                });
                 reject(result);
               });
             break;

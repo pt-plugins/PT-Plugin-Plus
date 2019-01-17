@@ -22,7 +22,22 @@
 
       if (this.options.address.indexOf("gui") == -1) {
         let url = PTSevriceFilters.parseURL(this.options.address);
-        this.options.address = `${url.protocol}://${url.host}:${url.port}/gui/`;
+        let address = [
+          url.protocol,
+          "://",
+          url.host
+        ];
+        if (url.port) {
+          address.push(`:${url.port}`)
+        }
+
+        address.push(url.path);
+        if (url.path.substr(-1) != "/") {
+          address.push("/");
+        }
+
+        address.push("gui/");
+        this.options.address = address.join("");
       }
       console.log("uTorrent.init", this.options.address);
     }
@@ -80,13 +95,17 @@
           })
           .fail((jqXHR, textStatus) => {
             let result = {
-              status: "error",
+              status: textStatus || "error",
               code: jqXHR.status,
-              msg: "未知错误"
+              msg: textStatus === "timeout" ? "连接超时" : "未知错误"
             };
             switch (jqXHR.status) {
               case 401:
                 result.msg = "身份验证失败";
+                break;
+
+              case 404:
+                result.msg = "指定的地址未找到，服务器返回了 404";
                 break;
             }
             reject(result);

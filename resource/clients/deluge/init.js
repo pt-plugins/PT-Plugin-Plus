@@ -20,7 +20,22 @@
 
       if (this.options.address.indexOf("/json") == -1) {
         let url = PTSevriceFilters.parseURL(this.options.address);
-        this.options.address = `${url.protocol}://${url.host}:${url.port}/json`;
+        let address = [
+          url.protocol,
+          "://",
+          url.host
+        ];
+        if (url.port) {
+          address.push(`:${url.port}`)
+        }
+
+        address.push(url.path);
+        if (url.path.substr(-1) != "/") {
+          address.push("/");
+        }
+
+        address.push("json");
+        this.options.address = address.join("");
       }
       console.log("Deluge.init", this.options.address);
     }
@@ -82,13 +97,17 @@
           resolve(this.token);
         }).fail((jqXHR, textStatus) => {
           let result = {
-            status: "error",
+            status: textStatus || "error",
             code: jqXHR.status,
-            msg: "未知错误"
+            msg: textStatus === "timeout" ? "连接超时" : "未知错误"
           };
           switch (jqXHR.status) {
             case 401:
               result.msg = "身份验证失败";
+              break;
+
+            case 404:
+              result.msg = "指定的地址未找到，服务器返回了 404";
               break;
           }
           reject(result);
