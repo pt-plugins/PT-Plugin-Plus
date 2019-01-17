@@ -35,7 +35,6 @@ PT 助手 Plus，是一款 Google Chrome 浏览器插件（Google Extensions）�
   - 已支持：
     - 理论上支持所有原生 `NexusPHP` 架构的站点；
     - TTG；
-  - 计划中：
     - `Gazelle` 架构的站点；
 - 根据当前站点显示专属功能，如：
   - 封面模式浏览种子页面；
