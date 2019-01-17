@@ -276,6 +276,11 @@ export interface LogItem {
   msg?: string;
 }
 
+export interface SearchResultItemTag {
+  color?: string;
+  name?: string;
+}
+
 /**
  * 搜索返回结果
  */
@@ -294,6 +299,8 @@ export interface SearchResultItem {
   completed?: number | string;
   comments?: number | string;
   uid?: string;
+  tags?: any[];
+  entryName?: string;
 }
 
 export interface SearchEntry {

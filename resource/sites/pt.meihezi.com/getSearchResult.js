@@ -70,7 +70,8 @@
       leechers: _tag_leechers.text().replace(',', '') || 0,
       completed: _tag_completed.text().replace(',', '') || 0,
       comments: _tag_date.prev("td").text().replace(',', '') || 0,
-      site: site
+      site: site,
+      entryName: options.entry.name
     };
     options.results.push(data);
   }

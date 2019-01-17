@@ -72,7 +72,8 @@
       leechers: cells.eq(fieldIndex.leechers).text().split("/")[1] || 0,
       completed: cells.eq(fieldIndex.completed).text() || 0,
       comments: cells.eq(fieldIndex.comments).text() || 0,
-      site: site
+      site: site,
+      entryName: options.entry.name
     };
     options.results.push(data);
   }

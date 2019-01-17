@@ -154,7 +154,8 @@ if (!"".getQueryString) {
             completed: fieldIndex.completed == -1 ? "" : cells.eq(fieldIndex.completed).text() || 0,
             comments: fieldIndex.comments == -1 ? "" : cells.eq(fieldIndex.comments).text() || 0,
             site: site,
-            tags: this.getTags(row, options.torrentTagSelectors)
+            tags: this.getTags(row, options.torrentTagSelectors),
+            entryName: options.entry.name
           };
           results.push(data);
         }

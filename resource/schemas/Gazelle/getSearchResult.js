@@ -125,7 +125,8 @@ if (!"".getQueryString) {
         leechers: fieldIndex.leechers == -1 ? "" : cells.eq(fieldIndex.leechers).text() || 0,
         completed: fieldIndex.completed == -1 ? "" : cells.eq(fieldIndex.completed).text() || 0,
         comments: fieldIndex.comments == -1 ? "" : cells.eq(fieldIndex.comments).text() || 0,
-        site: site
+        site: site,
+        entryName: options.entry.name
       };
       options.results.push(data);
     }

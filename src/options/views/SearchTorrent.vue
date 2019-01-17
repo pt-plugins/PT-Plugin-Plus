@@ -1,6 +1,7 @@
 <template>
   <div class="search-torrent">
     <v-alert :value="true" type="info">{{ words.title }} [{{ key }}], {{searchMsg}} {{skipSites}}</v-alert>
+    <!-- 搜索队列 -->
     <v-list small>
       <template v-for="(item, index) in searchQueue">
         <v-list-tile :key="item.site.host">
@@ -24,8 +25,37 @@
         <v-divider v-if="index + 1 < searchQueue.length" :key="'line'+item.site.host+index"></v-divider>
       </template>
     </v-list>
+    <!-- 搜索结果列表 -->
     <v-card>
       <v-card-title>
+        <template v-for="(item, key) in searchResult.sites">
+          <v-chip
+            :key="key"
+            label
+            color="blue-grey darken-2"
+            text-color="white"
+            small
+            class="mr-2 py-3 pl-1"
+          >
+            <v-avatar class="mr-1">
+              <img :src="item[0].site.icon" style="width:60%;height:60%;">
+            </v-avatar>
+            <span>{{ key }}</span>
+            <v-chip
+              label
+              color="blue-grey"
+              small
+              text-color="white"
+              style="margin-right:-12px;"
+              class="ml-2 py-3"
+              disabled
+            >
+              <span>{{ item.length }}</span>
+            </v-chip>
+          </v-chip>
+        </template>
+
+        <v-spacer></v-spacer>
         <v-btn :disabled="selected.length==0" color="success">
           <v-icon class="mr-2">cloud_download</v-icon>
           {{words.download}}
@@ -120,6 +150,11 @@ import {
 import { filters } from "@/service/filters";
 import moment from "moment";
 
+type searchResult = {
+  sites: Dictionary<any>;
+  tags: Dictionary<any>;
+};
+
 const extension = new Extension();
 export default Vue.extend({
   data() {
@@ -165,7 +200,9 @@ export default Vue.extend({
       beginTime: null as any,
       reloadCount: 0,
       searchQueue: [] as any[],
-      searchTimer: 0
+      searchTimer: 0,
+      // 搜索结果
+      searchResult: {} as searchResult
     };
   },
   created() {
@@ -306,6 +343,10 @@ export default Vue.extend({
           key: this.key
         }
       });
+      this.searchResult = {
+        sites: {},
+        tags: {}
+      } as searchResult;
 
       // this.doSearchTorrent({
       //   count: sites.length,
@@ -565,9 +606,15 @@ export default Vue.extend({
           );
         }
         item.uid = this.getRandomString();
-        // console.log(item);
+        console.log(item);
         this.datas.push(item);
         this.searchMsg = `已接收 ${this.datas.length} 条结果，搜索仍在进行……`;
+
+        let siteName = item.site.name;
+        if (!this.searchResult.sites[siteName]) {
+          this.searchResult.sites[siteName] = [];
+        }
+        this.searchResult.sites[siteName].push(item);
       });
     },
     /**
