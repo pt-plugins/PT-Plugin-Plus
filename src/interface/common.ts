@@ -299,7 +299,7 @@ export interface SearchResultItem {
   completed?: number | string;
   comments?: number | string;
   uid?: string;
-  tags?: any[];
+  tags?: SearchResultItemTag[];
   entryName?: string;
 }
 

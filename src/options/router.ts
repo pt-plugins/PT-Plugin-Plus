@@ -80,7 +80,7 @@ export default new Router({
     {
       path: "/search-torrent/:key/:host?",
       name: "search-torrent",
-      component: () => import("./views/SearchTorrent.vue"),
+      component: () => import("./views/search/SearchTorrent.vue"),
       props: true
     },
     {

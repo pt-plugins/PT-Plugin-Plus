@@ -1,0 +1,58 @@
+.search-torrent {
+  .torrent {
+
+    table.v-table thead th,
+    table.v-table tbody tr td {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    table.v-table thead th:first-child:not([role]) {
+      width: 35px;
+    }
+  }
+
+  .title {
+    max-width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 10px 0 5px 15px;
+  }
+
+  a {
+    color: #111;
+    text-decoration: none;
+    font-size: 15px;
+  }
+
+  a:hover {
+    color: #008c00;
+  }
+
+  .sub-title {
+    word-break: break-all;
+    margin: 8px 0 5px 0;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  .size {
+    text-align: right;
+  }
+
+  .tag {
+    font-size: 9px;
+    margin: 0 1px;
+    border-radius: 2px;
+    color: #fff;
+    padding: 1px 3px;
+  }
+
+  .captionText {
+    font-size: 12px;
+    color: #aaaaaa;
+  }
+}

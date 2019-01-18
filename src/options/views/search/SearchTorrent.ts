@@ -1,137 +1,3 @@
-<template>
-  <div class="search-torrent">
-    <v-alert :value="true" type="info">{{ words.title }} [{{ key }}], {{searchMsg}} {{skipSites}}</v-alert>
-    <!-- 搜索队列 -->
-    <v-list small>
-      <template v-for="(item, index) in searchQueue">
-        <v-list-tile :key="item.site.host">
-          <v-list-tile-action>
-            <v-progress-circular :size="18" :width="2" indeterminate color="primary"></v-progress-circular>
-          </v-list-tile-action>
-
-          <v-list-tile-content>
-            <v-list-tile-title>
-              <v-avatar size="18" class="mr-2">
-                <img :src="item.site.icon">
-              </v-avatar>
-              {{item.site.name}} {{ words.searching }}
-            </v-list-tile-title>
-          </v-list-tile-content>
-
-          <v-list-tile-action class="mr-5">
-            <v-icon @click="abortSearch(item.site)" color="red" :title="words.cancelSearch">cancel</v-icon>
-          </v-list-tile-action>
-        </v-list-tile>
-        <v-divider v-if="index + 1 < searchQueue.length" :key="'line'+item.site.host+index"></v-divider>
-      </template>
-    </v-list>
-    <!-- 搜索结果列表 -->
-    <v-card>
-      <v-card-title>
-        <template v-for="(item, key) in searchResult.sites">
-          <v-chip
-            :key="key"
-            label
-            color="blue-grey darken-2"
-            text-color="white"
-            small
-            class="mr-2 py-3 pl-1"
-          >
-            <v-avatar class="mr-1">
-              <img :src="item[0].site.icon" style="width:60%;height:60%;">
-            </v-avatar>
-            <span>{{ key }}</span>
-            <v-chip
-              label
-              color="blue-grey"
-              small
-              text-color="white"
-              style="margin-right:-12px;"
-              class="ml-2 py-3"
-              disabled
-            >
-              <span>{{ item.length }}</span>
-            </v-chip>
-          </v-chip>
-        </template>
-
-        <v-spacer></v-spacer>
-        <v-btn :disabled="selected.length==0" color="success">
-          <v-icon class="mr-2">cloud_download</v-icon>
-          {{words.download}}
-        </v-btn>
-      </v-card-title>
-
-      <v-data-table
-        v-model="selected"
-        :headers="headers"
-        :items="datas"
-        :pagination.sync="pagination"
-        :loading="loading"
-        item-key="uid"
-        select-all
-        class="elevation-1"
-        :rows-per-page-items="options.rowsPerPageItems"
-        @update:pagination="updatePagination"
-      >
-        <template slot="items" slot-scope="props">
-          <td style="width:20px;">
-            <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
-          </td>
-          <td class="center">
-            <v-avatar size="18">
-              <img :src="props.item.site.icon">
-            </v-avatar>
-            <br>
-            <span>{{ props.item.site.name }}</span>
-          </td>
-          <td class="title">
-            <a
-              :href="props.item.link"
-              target="_blank"
-              v-html="props.item.titleHTML"
-              rel="noopener noreferrer nofollow"
-            ></a>
-            <div class="sub-title">
-              <span class="mr-1">
-                <span
-                  :class="['tag', `${tag.color}`]"
-                  v-for="(tag, index) in props.item.tags"
-                  :key="index"
-                >{{ tag.name }}</span>
-              </span>
-              
-              <span>{{props.item.subTitle}}</span>
-            </div>
-          </td>
-          <td class="size">{{props.item.size | formatSize}}</td>
-          <!-- <td class="center">{{ props.item.comments }}</td> -->
-          <td class="center">{{ props.item.seeders }}</td>
-          <td class="center">{{ props.item.leechers }}</td>
-          <td class="center">{{ props.item.completed }}</td>
-          <!-- <td>{{ props.item.author }}</td> -->
-          <td>{{ props.item.time | formatDate }}</td>
-          <td>
-            <v-icon
-              small
-              class="mr-2"
-              @click="download(props.item.url, props.item.title)"
-              :title="words.sendToClient"
-            >cloud_download</v-icon>
-
-            <a :href="props.item.url" target="_blank" rel="noopener noreferrer nofollow">
-              <v-icon small class="mr-2" :title="words.save">get_app</v-icon>
-            </a>
-          </td>
-        </template>
-      </v-data-table>
-    </v-card>
-
-    <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
-    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{ successMsg }}</v-snackbar>
-  </div>
-</template>
-<script lang="ts">
 import Vue from "vue";
 import Extension from "@/service/extension";
 import { Route } from "vue-router";
@@ -145,7 +11,8 @@ import {
   EPaginationKey,
   EModule,
   LogItem,
-  SearchResultItem
+  SearchResultItem,
+  SearchResultItemTag
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import moment from "moment";
@@ -165,7 +32,10 @@ export default Vue.extend({
         sendToClient: "发送到下载服务器",
         save: "下载种子文件到本地",
         searching: "正在搜索中，请稍候……",
-        cancelSearch: "取消搜索"
+        cancelSearch: "取消搜索",
+        showCheckbox: "开启多选模式",
+        noTag: "无标签",
+        allSites: "全部站点"
       },
       key: "",
       // 指定站点搜索
@@ -202,7 +72,11 @@ export default Vue.extend({
       searchQueue: [] as any[],
       searchTimer: 0,
       // 搜索结果
-      searchResult: {} as searchResult
+      searchResult: {
+        sites: {},
+        tags: {}
+      } as searchResult,
+      checkBox: false
     };
   },
   created() {
@@ -212,7 +86,6 @@ export default Vue.extend({
         msg: "系统参数丢失"
       });
     }
-    console.log(this.$route.params);
     this.key = this.$route.params["key"];
     this.host = this.$route.params["host"];
     this.pagination = this.$store.getters.pagination(
@@ -262,7 +135,18 @@ export default Vue.extend({
       }, 100);
     },
     search() {
-      if (window.location.hostname == "localhost") return;
+      if (window.location.hostname == "localhost") {
+        $.getJSON("http://localhost:8001/testSearchData.json").done(
+          (result: any) => {
+            if (result) {
+              this.addSearchResult(result);
+              // this.datas = result;
+            }
+            // console.log(result);
+          }
+        );
+        return;
+      }
 
       if (this.loading) return;
 
@@ -289,10 +173,6 @@ export default Vue.extend({
         this.errorMsg = "请先设置站点";
         return;
       }
-      let rows: number =
-        this.options.search && this.options.search.rows
-          ? this.options.search.rows
-          : 10;
 
       let sites: Site[] = [];
       let skipSites: string[] = [];
@@ -348,10 +228,6 @@ export default Vue.extend({
         tags: {}
       } as searchResult;
 
-      // this.doSearchTorrent({
-      //   count: sites.length,
-      //   sites
-      // });
       this.doSearchTorrentWithQueue(sites);
     },
 
@@ -467,7 +343,6 @@ export default Vue.extend({
      * 移除搜索队列
      */
     removeQueue(site: Site) {
-      console.log("done", site);
       let index = this.searchQueue.findIndex((item: any) => {
         return item.site.host === site.host;
       });
@@ -492,93 +367,16 @@ export default Vue.extend({
         }
       }
     },
-
-    doSearchTorrent(options: any) {
-      let index = options.count - options.sites.length;
-      let site = options.sites.shift();
-
-      if (!site) {
-        this.searchMsg = `搜索完成，共找到 ${
-          this.datas.length
-        } 条结果，耗时：${moment().diff(this.beginTime, "seconds", true)} 秒。`;
-        this.loading = false;
-        this.writeLog({
-          event: `SearchTorrent.Search.Finished`,
-          msg: this.searchMsg,
-          data: {
-            key: this.key
-          }
-        });
-        return;
-      }
-
-      this.searchMsg =
-        "正在搜索 [" +
-        site.name +
-        "]..." +
-        (index + 1) +
-        "/" +
-        options.count +
-        ".";
-
-      this.writeLog({
-        event: `SearchTorrent.Search.Processing`,
-        msg: this.searchMsg,
-        data: {
-          host: site.host,
-          name: site.name,
-          key: this.key
-        }
-      });
-      this.loading = true;
-      extension
-        .sendRequest(EAction.getSearchResult, null, {
-          key: this.key,
-          site: site
-        })
-        .then((result: any) => {
-          if (result && result.length) {
-            this.writeLog({
-              event: `SearchTorrent.Search.Done[${site.name}]`,
-              msg: `[${site.name}] 搜索完成，共有 ${result.length} 条结果`,
-              data: {
-                host: site.host,
-                name: site.name,
-                key: this.key
-              }
-            });
-            // this.datas.push(...result);
-            this.addSearchResult(result);
-          } else if (result && result.msg) {
-            this.writeLog({
-              event: `SearchTorrent.Search.Error`,
-              msg: result.msg,
-              data: {
-                host: site.host,
-                name: site.name,
-                key: this.key
-              }
-            });
-            this.errorMsg = result.msg;
-          }
-
-          this.doSearchTorrent(options);
-        })
-        .catch((result: DataResult) => {
-          if (result.msg) {
-            this.errorMsg = result.msg;
-          }
-          this.writeLog({
-            event: `SearchTorrent.Search.Error`,
-            msg: result.msg,
-            data: result
-          });
-        });
-    },
     /**
      * 添加搜索结果，并组织字段格式
      */
     addSearchResult(result: any[]) {
+      let allSites = this.words.allSites;
+
+      if (!this.searchResult.sites[allSites]) {
+        this.searchResult.sites[allSites] = [];
+      }
+
       result.forEach((item: SearchResultItem) => {
         item.time = moment(item.time).valueOf();
         if (!item.titleHTML) {
@@ -606,7 +404,6 @@ export default Vue.extend({
           );
         }
         item.uid = this.getRandomString();
-        console.log(item);
         this.datas.push(item);
         this.searchMsg = `已接收 ${this.datas.length} 条结果，搜索仍在进行……`;
 
@@ -615,6 +412,39 @@ export default Vue.extend({
           this.searchResult.sites[siteName] = [];
         }
         this.searchResult.sites[siteName].push(item);
+        this.addTagResult(item);
+      });
+
+      this.searchResult.sites[allSites] = this.datas;
+    },
+    addTagResult(item: SearchResultItem) {
+      let noTag = this.words.noTag;
+
+      if (!this.searchResult.tags[noTag]) {
+        this.searchResult.tags[noTag] = {
+          tag: {
+            name: noTag,
+            color: "blue-grey darken-2"
+          },
+          items: []
+        };
+      }
+
+      if (item.tags == undefined || !item.tags.length) {
+        this.searchResult.tags[noTag].items.push(item);
+        return;
+      }
+
+      item.tags.forEach((tag: SearchResultItemTag) => {
+        let name = tag.name as string;
+        if (!name) return;
+        if (!this.searchResult.tags[name]) {
+          this.searchResult.tags[name] = {
+            tag,
+            items: []
+          };
+        }
+        this.searchResult.tags[name].items.push(item);
       });
     },
     /**
@@ -769,50 +599,9 @@ export default Vue.extend({
       }
 
       return result.join("");
+    },
+    resetDatas(datas: any) {
+      this.datas = datas;
     }
   }
 });
-</script>
-
-<style lang="scss" scoped>
-.search-torrent {
-  .title {
-    max-width: 500px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 10px 0 5px 15px;
-  }
-  a {
-    color: #111;
-    text-decoration: none;
-    font-size: 16px;
-  }
-  a:hover {
-    color: #008c00;
-  }
-
-  .sub-title {
-    font-size: 12px;
-    word-break: break-all;
-    margin: 8px 0 5px 0;
-    color: #aaaaaa;
-  }
-
-  .center {
-    text-align: center;
-  }
-
-  .size {
-    text-align: right;
-  }
-
-  .tag {
-    font-size: 9px;
-    margin: 0 1px;
-    border-radius: 2px;
-    color: #fff;
-    padding: 1px 3px;
-  }
-}
-</style>
