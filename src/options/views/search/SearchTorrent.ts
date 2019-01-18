@@ -16,6 +16,7 @@ import {
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import moment from "moment";
+import { Downloader, downloadFile } from "@/service/downloader";
 
 type searchResult = {
   sites: Dictionary<any>;
@@ -35,7 +36,9 @@ export default Vue.extend({
         cancelSearch: "取消搜索",
         showCheckbox: "开启多选模式",
         noTag: "无标签",
-        allSites: "全部站点"
+        allSites: "全部站点",
+        multiDownloadConfirm:
+          "当前下载的种子数量超过一个，浏览器可能会多次提示保存，是否继续？"
       },
       key: "",
       // 指定站点搜索
@@ -602,6 +605,32 @@ export default Vue.extend({
     },
     resetDatas(datas: any) {
       this.datas = datas;
+      this.selected = [];
+    },
+    /**
+     * 下载已选中的种子文件
+     */
+    downloadSelected() {
+      let files: downloadFile[] = [];
+      this.selected.forEach((item: SearchResultItem) => {
+        item.url &&
+          files.push({
+            url: item.url,
+            fileName: `[${item.site.name}][${item.title}].torrent`
+          });
+      });
+      console.log(files);
+      if (files.length) {
+        if (files.length > 1) {
+          if (!confirm(this.words.multiDownloadConfirm)) {
+            return;
+          }
+        }
+        new Downloader({
+          files: files,
+          autoStart: true
+        });
+      }
     }
   }
 });

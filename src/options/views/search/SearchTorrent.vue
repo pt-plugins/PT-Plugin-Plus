@@ -96,9 +96,18 @@
               :label="words.showCheckbox"
               style="width: 200px;flex:none;"
             ></v-switch>
-            <v-btn :disabled="selected.length==0" color="success">
+            <v-btn :disabled="selected.length==0" color="success" :title="words.sendToClient">
               <v-icon class="mr-2">cloud_download</v-icon>
-              {{words.download}}
+              {{words.sendToClient}} ({{selected.length}})
+            </v-btn>
+            <v-btn
+              :disabled="selected.length==0"
+              @click="downloadSelected"
+              color="success"
+              :title="words.save"
+            >
+              <v-icon class="mr-2">get_app</v-icon>
+              {{words.download}} ({{selected.length}})
             </v-btn>
           </v-layout>
         </v-flex>
@@ -166,8 +175,13 @@
               :title="words.sendToClient"
             >cloud_download</v-icon>
 
-            <a :href="props.item.url" target="_blank" rel="noopener noreferrer nofollow">
-              <v-icon small class="mr-2" :title="words.save">get_app</v-icon>
+            <a
+              :href="props.item.url"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              :title="words.save"
+            >
+              <v-icon small class="mr-2">get_app</v-icon>
             </a>
           </td>
         </template>
