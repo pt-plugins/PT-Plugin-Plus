@@ -17,7 +17,8 @@ let developmentAPI = {
   sites: `${TEST_API_URL}/sites.json`,
   siteConfig: `${TEST_API_URL}/sites/{$site}/config.json`,
   clients: `${TEST_API_URL}/clients.json`,
-  clientConfig: `${TEST_API_URL}/clients/{$client}/config.json`
+  clientConfig: `${TEST_API_URL}/clients/{$client}/config.json`,
+  latestReleases: `https://api.github.com/repos/ronggang/PT-Plugin-Plus/releases/latest`
 };
 
 let productAPI = {
@@ -27,7 +28,8 @@ let productAPI = {
   sites: `${API_URL}/sites`,
   siteConfig: `${API_RAW_URL}/sites/{$site}/config.json`,
   clients: `${API_URL}/clients`,
-  clientConfig: `${API_RAW_URL}/clients/{$client}/config.json`
+  clientConfig: `${API_RAW_URL}/clients/{$client}/config.json`,
+  latestReleases: `https://api.github.com/repos/ronggang/PT-Plugin-Plus/releases/latest`
 };
 
 export const APP = {
