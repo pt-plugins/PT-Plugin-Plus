@@ -2,38 +2,23 @@ import localStorage from "./localStorage";
 import md5 from "blueimp-md5";
 import { EConfigKey } from "@/interface/common";
 
-const API_RAW_URL =
-  "https://raw.githubusercontent.com/ronggang/PT-Plugin-Plus/master/resource";
-const API_URL =
-  "https://api.github.com/repos/ronggang/PT-Plugin-Plus/contents/resource";
-
-const TEST_API_URL = "http://localhost:8001";
+const RESOURCE_URL = "/resource";
 
 // 调试信息
-let developmentAPI = {
-  host: TEST_API_URL,
-  schemas: `${TEST_API_URL}/schema.json`,
-  schemaConfig: `${TEST_API_URL}/schemas/{$schema}/config.json`,
-  sites: `${TEST_API_URL}/sites.json`,
-  siteConfig: `${TEST_API_URL}/sites/{$site}/config.json`,
-  clients: `${TEST_API_URL}/clients.json`,
-  clientConfig: `${TEST_API_URL}/clients/{$client}/config.json`
-};
-
-let productAPI = {
-  host: API_RAW_URL,
-  schemas: `${API_URL}/schemas`,
-  schemaConfig: `${API_RAW_URL}/schemas/{$schema}/config.json`,
-  sites: `${API_URL}/sites`,
-  siteConfig: `${API_RAW_URL}/sites/{$site}/config.json`,
-  clients: `${API_URL}/clients`,
-  clientConfig: `${API_RAW_URL}/clients/{$client}/config.json`
+let RESOURCE_API = {
+  host: RESOURCE_URL,
+  schemas: `${RESOURCE_URL}/schema.json`,
+  schemaConfig: `${RESOURCE_URL}/schemas/{$schema}/config.json`,
+  sites: `${RESOURCE_URL}/sites.json`,
+  siteConfig: `${RESOURCE_URL}/sites/{$site}/config.json`,
+  clients: `${RESOURCE_URL}/clients.json`,
+  clientConfig: `${RESOURCE_URL}/clients/{$client}/config.json`
 };
 
 export const APP = {
   debugMode: process.env.NODE_ENV === "development",
   scriptQueues: [] as any,
-  isExtensionMode: window["chrome"] && window.chrome.extension ? true : false,
+  isExtensionMode: !!(window["chrome"] && window.chrome.extension),
   cache: {
     localStorage: new localStorage(),
     cacheKey: EConfigKey.cache,
@@ -204,10 +189,6 @@ export const APP = {
   }
 };
 
-if (APP.debugMode) {
-  productAPI = developmentAPI;
-}
-
 APP.cache.init();
 
-export const API = productAPI;
+export const API = RESOURCE_API;

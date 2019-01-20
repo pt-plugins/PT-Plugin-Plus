@@ -1930,6 +1930,7 @@ copy-descriptor@^0.1.0:
 copy-webpack-plugin@^4.6.0:
   version "4.6.0"
   resolved "http://registry.npm.taobao.org/copy-webpack-plugin/download/copy-webpack-plugin-4.6.0.tgz#e7f40dd8a68477d405dd1b7a854aae324b158bae"
+  integrity sha1-5/QN2KaEd9QF3Rt6hUquMksVi64=
   dependencies:
     cacache "^10.0.4"
     find-cache-dir "^1.0.0"

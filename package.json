@@ -7,7 +7,6 @@
     "build": "vue-cli-service build && webpack --config webpack/prod.js",
     "lint": "vue-cli-service lint",
     "background": "webpack --config webpack/prod.js",
-    "dev-s": "cd test && yarn install && tsc && node ./dist/index.js",
     "dev": "vue-cli-service build --mode=development && webpack --config webpack/dev.js"
   },
   "dependencies": {
@@ -36,6 +35,7 @@
     "@vue/cli-service": "^3.0.5",
     "@vue/eslint-config-typescript": "^3.2.0",
     "babel-eslint": "^10.0.1",
+    "copy-webpack-plugin": "^4.6.0",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
     "node-sass": "^4.10.0",
