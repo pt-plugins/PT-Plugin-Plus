@@ -203,6 +203,8 @@ export default Vue.extend({
 
       if (this.key === this.latestTorrentsKey) {
         this.latestTorrentsOnly = true;
+      } else {
+        this.latestTorrentsOnly = false;
       }
 
       // 是否指定了站点
