@@ -39,7 +39,7 @@ module.exports = {
     new CopyWebpackPlugin([{
       from: resolve('/resource/'),
       to: path.join(resolve('/dist/'), 'resource'),
-      ignore: ["README.md"]
+      ignore: [".DS_Store", "README.md"]
     }])
   ]
 };
