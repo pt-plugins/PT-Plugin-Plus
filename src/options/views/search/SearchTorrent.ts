@@ -79,7 +79,16 @@ export default Vue.extend({
         sites: {},
         tags: {}
       } as searchResult,
-      checkBox: false
+      checkBox: false,
+      // 正在下载的种子文件进度信息
+      downloading: {
+        count: 0,
+        completed: 0,
+        speed: 0,
+        progress: 0
+      },
+      latestTorrentsKey: "__LatestTorrents__",
+      latestTorrentsOnly: false
     };
   },
   created() {
@@ -123,6 +132,10 @@ export default Vue.extend({
     }
   },
   methods: {
+    /**
+     * 记录日志
+     * @param options
+     */
     writeLog(options: LogItem) {
       extension.sendRequest(EAction.writeLog, null, {
         module: EModule.options,
@@ -131,13 +144,20 @@ export default Vue.extend({
         data: options.data
       });
     },
+    /**
+     * 延迟执行搜索
+     */
     doSearch() {
       clearTimeout(this.searchTimer);
       this.searchTimer = setTimeout(() => {
         this.search();
       }, 100);
     },
+    /**
+     * 开始搜索
+     */
     search() {
+      this.selected = [];
       if (window.location.hostname == "localhost") {
         $.getJSON("http://localhost:8001/testSearchData.json").done(
           (result: any) => {
@@ -180,6 +200,10 @@ export default Vue.extend({
       let sites: Site[] = [];
       let skipSites: string[] = [];
       this.skipSites = "";
+
+      if (this.key === this.latestTorrentsKey) {
+        this.latestTorrentsOnly = true;
+      }
 
       // 是否指定了站点
       if (this.host) {
@@ -257,7 +281,7 @@ export default Vue.extend({
 
         extension
           .sendRequest(EAction.getSearchResult, null, {
-            key: this.key,
+            key: this.latestTorrentsOnly ? "" : this.key,
             site: site
           })
           .then((result: any) => {
@@ -420,6 +444,11 @@ export default Vue.extend({
 
       this.searchResult.sites[allSites] = this.datas;
     },
+
+    /**
+     * 添加搜索结果标签
+     * @param item
+     */
     addTagResult(item: SearchResultItem) {
       let noTag = this.words.noTag;
 
@@ -490,42 +519,12 @@ export default Vue.extend({
 
       return schema;
     },
-    replaceKeys(source: string, keys: Dictionary<any>): string {
-      let result: string = source;
-
-      for (const key in keys) {
-        if (keys.hasOwnProperty(key)) {
-          const value = keys[key];
-          result = result.replace("$" + key + "$", value);
-        }
-      }
-      return result;
-    },
-    formatTitle(title: string): string {
-      if (title.indexOf("[") !== -1) {
-        return title.split("[").join("<br/>");
-      }
-      return title;
-    },
-    getTitle(title: string): string {
-      if (title.indexOf("[") !== -1) {
-        return title.split("[")[0].replace(/]/g, "");
-      }
-      return title;
-    },
-    getSubTitle(title: string): string {
-      if (title.indexOf("[") !== -1) {
-        return title.split("[")[1].replace(/]/g, "");
-      }
-      return title;
-    },
-    getAuthor(author: string): string {
-      if (author.indexOf("(") !== -1) {
-        return author.split("(")[1].replace(/\)/g, "");
-      }
-      return author;
-    },
-    download(url: string, title: string) {
+    /**
+     * 发送下载链接到服务器
+     * @param url
+     * @param title
+     */
+    sendToClient(url: string, title: string) {
       console.log(url);
       let host = filters.parseURL(url).host;
       let site = this.options.sites.find((site: Site) => {
@@ -577,6 +576,10 @@ export default Vue.extend({
           });
         });
     },
+    /**
+     * 更新分页信息
+     * @param value
+     */
     updatePagination(value: any) {
       console.log(value);
       this.$store.dispatch("updatePagination", {
@@ -603,6 +606,10 @@ export default Vue.extend({
 
       return result.join("");
     },
+    /**
+     * 重设当前列表数据
+     * @param datas
+     */
     resetDatas(datas: any) {
       this.datas = datas;
       this.selected = [];
@@ -626,9 +633,24 @@ export default Vue.extend({
             return;
           }
         }
+        this.downloading.count = files.length;
+        this.downloading.completed = 0;
+        this.downloading.speed = 0;
+        this.downloading.progress = 0;
         new Downloader({
           files: files,
-          autoStart: true
+          autoStart: true,
+          onCompleted: () => {
+            this.downloading.completed++;
+            this.downloading.progress =
+              (this.downloading.completed / this.downloading.count) * 100;
+
+            // 是否已完成
+            if (this.downloading.completed >= this.downloading.count) {
+              this.downloading.count = 0;
+              this.selected = [];
+            }
+          }
         });
       }
     }

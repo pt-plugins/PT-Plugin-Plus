@@ -2,18 +2,23 @@
   <v-toolbar :color="baseColor" app fixed clipped-left>
     <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
     <v-toolbar-title style="width: 220px;">
-      <span>PT 助手</span>
+      <span>{{ words.title }}</span>
     </v-toolbar-title>
 
     <v-text-field
       flat
       solo-inverted
       prepend-icon="search"
-      label="搜索种子"
+      :label="words.searchTip"
       class="hidden-sm-and-down mt-2"
       v-model="searchKey"
       @change="searchTorrent"
     ></v-text-field>
+
+    <v-btn flat to="/search-torrent/__LatestTorrents__" class="grey--text text--darken-2">
+      <v-icon>fiber_new</v-icon>
+      <span class="ml-2">查看最新种子</span>
+    </v-btn>
 
     <v-spacer></v-spacer>
     <v-toolbar-items>
@@ -42,6 +47,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import { Site } from "@/interface/common";
 export default Vue.extend({
   props: {
     value: Boolean
@@ -60,9 +66,14 @@ export default Vue.extend({
   },
   data() {
     return {
+      words: {
+        title: "PT 助手",
+        searchTip: ""
+      },
       drawer: true,
       baseColor: "amber",
-      searchKey: ""
+      searchKey: "",
+      options: this.$store.state.options
     };
   },
   methods: {
@@ -76,6 +87,21 @@ export default Vue.extend({
           key: this.searchKey
         }
       });
+    }
+  },
+  created() {
+    if (this.options.sites) {
+      let count = 0;
+      this.options.sites.forEach((item: Site) => {
+        if (item.allowSearch) {
+          count++;
+        }
+      });
+      if (count > 0) {
+        this.words.searchTip = `输入种子关键字，将会在 ${count} 个站点中进行搜索。`;
+      } else {
+        this.words.searchTip = "暂未配置允许搜索的站点，请先配置";
+      }
     }
   }
 });

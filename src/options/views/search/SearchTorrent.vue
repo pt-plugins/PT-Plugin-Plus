@@ -88,6 +88,7 @@
             </template>
           </div>
         </v-flex>
+        <!-- 操作按钮列表 -->
         <v-flex xs6>
           <v-layout align-center justify-end>
             <v-switch
@@ -109,6 +110,15 @@
               <v-icon class="mr-2">get_app</v-icon>
               {{words.download}} ({{selected.length}})
             </v-btn>
+            <!-- 文件下载进度 -->
+            <v-progress-circular
+              v-if="downloading.count>0"
+              :rotate="-90"
+              :size="60"
+              :width="10"
+              :value="downloading.progress"
+              color="primary"
+            >{{ downloading.progress.toFixed(0) }}%</v-progress-circular>
           </v-layout>
         </v-flex>
       </v-card-title>
@@ -171,7 +181,7 @@
             <v-icon
               small
               class="mr-2"
-              @click="download(props.item.url, props.item.title)"
+              @click="sendToClient(props.item.url, props.item.title)"
               :title="words.sendToClient"
             >cloud_download</v-icon>
 
