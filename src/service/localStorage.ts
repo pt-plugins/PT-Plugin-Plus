@@ -1,4 +1,4 @@
-import { EStorageType } from "../interface/common";
+import { EStorageType } from "@/interface/common";
 export default class localStorage {
   private isExtensionMode: boolean = false;
   constructor() {
