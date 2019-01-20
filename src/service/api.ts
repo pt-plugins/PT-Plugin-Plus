@@ -2,8 +2,10 @@ import localStorage from "./localStorage";
 import md5 from "blueimp-md5";
 import { EConfigKey } from "@/interface/common";
 
-const RESOURCE_URL = "/resource";
-
+const isExtensionMode = !!(window["chrome"] && window.chrome.extension);
+const RESOURCE_URL =
+  (isExtensionMode ? `chrome-extension://${chrome.runtime.id}` : "") +
+  "/resource";
 // 调试信息
 let RESOURCE_API = {
   host: RESOURCE_URL,
@@ -19,7 +21,7 @@ let RESOURCE_API = {
 export const APP = {
   debugMode: process.env.NODE_ENV === "development",
   scriptQueues: [] as any,
-  isExtensionMode: !!(window["chrome"] && window.chrome.extension),
+  isExtensionMode: isExtensionMode,
   cache: {
     localStorage: new localStorage(),
     cacheKey: EConfigKey.cache,
