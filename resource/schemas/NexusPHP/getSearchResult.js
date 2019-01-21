@@ -145,7 +145,7 @@ if (!"".getQueryString) {
             title: title.attr("title") || title.text(),
             subTitle: this.getSubTitle(title, row),
             link,
-            url: url + (site && site.passkey ? "&passkey=" + site.passkey : ""),
+            url: url + (site && site.passkey ? "&passkey=" + site.passkey : "") + "&https=1",
             size: cells.eq(fieldIndex.size).html() || 0,
             time: fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).find("span[title],time[title]").attr("title") || cells.eq(fieldIndex.time).text() || "",
             author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",

@@ -70,7 +70,7 @@
 
         let link = site.url + _tag_name.attr("href");
         let id = link.getQueryString("id");
-        let url = `${site.url}download.php?id=${id}` + (site.passkey ? "&passkey=" + site.passkey : "");
+        let url = `${site.url}download.php?id=${id}` + (site.passkey ? "&passkey=" + site.passkey : "") + "&https=1";
         let author = torrent_data_raw_1.find("td:last").text();
 
         let data = {
