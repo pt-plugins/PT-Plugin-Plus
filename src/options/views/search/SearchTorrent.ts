@@ -30,7 +30,8 @@ export default Vue.extend({
       words: {
         title: "搜索结果",
         download: "下载",
-        sendToClient: "发送到下载服务器",
+        sendToClient: "服务器下载",
+        sendToClientTip: "发送到下载服务器",
         save: "下载种子文件到本地",
         searching: "正在搜索中，请稍候……",
         cancelSearch: "取消搜索",
@@ -38,7 +39,10 @@ export default Vue.extend({
         noTag: "无标签",
         allSites: "全部站点",
         multiDownloadConfirm:
-          "当前下载的种子数量超过一个，浏览器可能会多次提示保存，是否继续？"
+          "当前下载的种子数量超过一个，浏览器可能会多次提示保存，是否继续？",
+        copyToClipboard: "复制链接",
+        copyToClipboardTip: "复制下载链接到剪切板",
+        reSearch: "重新再搜索"
       },
       key: "",
       // 指定站点搜索
@@ -89,7 +93,13 @@ export default Vue.extend({
       },
       latestTorrentsKey: "__LatestTorrents__",
       latestTorrentsOnly: false,
-      searchSiteCount: 0
+      searchSiteCount: 0,
+      sending: {
+        count: 0,
+        completed: 0,
+        speed: 0,
+        progress: 0
+      }
     };
   },
   created() {
@@ -536,7 +546,7 @@ export default Vue.extend({
      * @param url
      * @param title
      */
-    sendToClient(url: string, title: string) {
+    sendToClient(url: string, title: string, callback?: any) {
       console.log(url);
       let host = filters.parseURL(url).host;
       let site = this.options.sites.find((site: Site) => {
@@ -579,6 +589,7 @@ export default Vue.extend({
               data: result
             });
           }
+          callback && callback();
         })
         .catch((result: any) => {
           this.writeLog({
@@ -586,6 +597,7 @@ export default Vue.extend({
             msg: "发送种子到下载服务器失败",
             data: result
           });
+          callback && callback();
         });
     },
     /**
@@ -665,6 +677,75 @@ export default Vue.extend({
           }
         });
       }
+    },
+    /**
+     * 发送已选择的种子到下载服务器
+     * @param datas
+     * @param count
+     */
+    sendSelectedToClient(datas?: SearchResultItem[], count: number = 0) {
+      if (datas === undefined) {
+        datas = [...this.selected];
+        count = datas.length;
+        this.sending.count = count;
+        this.sending.completed = 0;
+        this.sending.speed = 0;
+        this.sending.progress = 0;
+      }
+      if (datas.length === 0) {
+        this.sending.count = 0;
+        return;
+      }
+      let data: SearchResultItem = datas.shift() as SearchResultItem;
+      this.sendToClient(data.url as string, data.title, () => {
+        this.sending.completed++;
+        this.sending.progress =
+          (this.sending.completed / this.sending.count) * 100;
+
+        // 是否已完成
+        if (this.sending.completed >= this.sending.count) {
+          this.sending.count = 0;
+          this.selected = [];
+          return;
+        }
+        this.sendSelectedToClient(datas, count);
+      });
+    },
+    /**
+     * 复制当前链接到剪切板
+     * @param url
+     */
+    copyLinkToClipboard(url: string) {
+      this.successMsg = "";
+      this.errorMsg = "";
+      extension
+        .sendRequest(EAction.copyTextToClipboard, null, url)
+        .then(result => {
+          this.successMsg = `下载链接已复制到剪切板`;
+        })
+        .catch(() => {
+          this.errorMsg = "复制下载链接失败！";
+        });
+    },
+    /**
+     * 复制下载链接到剪切板
+     */
+    copySelectedToClipboard() {
+      let urls: string[] = [];
+      this.selected.forEach((item: SearchResultItem) => {
+        item.url && urls.push(item.url);
+      });
+      this.successMsg = "";
+      this.errorMsg = "";
+      extension
+        .sendRequest(EAction.copyTextToClipboard, null, urls.join("\n"))
+        .then(result => {
+          this.successMsg = `${urls.length} 条下载链接已复制到剪切板`;
+          this.selected = [];
+        })
+        .catch(() => {
+          this.errorMsg = "复制下载链接失败！";
+        });
     }
   }
 });

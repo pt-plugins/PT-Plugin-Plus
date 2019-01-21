@@ -1,7 +1,20 @@
 <template>
   <div class="search-torrent">
-    <v-alert :value="true" type="info">{{ words.title }} [{{ key }}], {{searchMsg}} {{skipSites}}</v-alert>
-    <!-- 搜索队列 -->
+    <v-alert :value="true" type="info">
+      {{ words.title }} [{{ key }}], {{searchMsg}} {{skipSites}}
+      <v-btn
+        flat
+        icon
+        small
+        color="white"
+        @click.stop="doSearch"
+        :title="words.reSearch"
+        v-if="!loading && key!=''"
+      >
+        <v-icon>cached</v-icon>
+      </v-btn>
+    </v-alert>
+    <!-- 搜索队列-->
     <v-list small v-if="searchQueue && searchQueue.length">
       <template v-for="(item, index) in searchQueue">
         <v-list-tile :key="item.site.host">
@@ -97,17 +110,48 @@
               :label="words.showCheckbox"
               style="width: 200px;flex:none;"
             ></v-switch>
-            <v-btn :disabled="selected.length==0" color="success" :title="words.sendToClient">
-              <v-icon class="mr-2">cloud_download</v-icon>
+
+            <!-- 复制下载链接 -->
+            <v-btn
+              :disabled="selected.length==0"
+              color="success"
+              small
+              :title="words.copyToClipboardTip"
+              @click="copySelectedToClipboard()"
+            >
+              <v-icon class="mr-2" small>file_copy</v-icon>
+              {{words.copyToClipboard}} ({{selected.length}})
+            </v-btn>
+            <!-- 发送到下载服务器 -->
+            <v-btn
+              :disabled="selected.length==0"
+              color="success"
+              small
+              :title="words.sendToClientTip"
+              @click="sendSelectedToClient()"
+            >
+              <v-icon class="mr-2" small>cloud_download</v-icon>
               {{words.sendToClient}} ({{selected.length}})
             </v-btn>
+
+            <!-- 文件发送进度 -->
+            <v-progress-circular
+              v-if="sending.count>0"
+              :rotate="-90"
+              :size="60"
+              :width="10"
+              :value="sending.progress"
+              color="primary"
+            >{{ sending.progress.toFixed(0) }}%</v-progress-circular>
+
             <v-btn
               :disabled="selected.length==0"
               @click="downloadSelected"
               color="success"
+              small
               :title="words.save"
             >
-              <v-icon class="mr-2">get_app</v-icon>
+              <v-icon class="mr-2" small>get_app</v-icon>
               {{words.download}} ({{selected.length}})
             </v-btn>
             <!-- 文件下载进度 -->
@@ -178,6 +222,13 @@
           <!-- <td>{{ props.item.author }}</td> -->
           <td>{{ props.item.time | formatDate }}</td>
           <td>
+            <v-icon
+              small
+              class="mr-2"
+              @click="copyLinkToClipboard(props.item.url)"
+              :title="words.copyToClipboardTip"
+            >file_copy</v-icon>
+
             <v-icon
               small
               class="mr-2"
