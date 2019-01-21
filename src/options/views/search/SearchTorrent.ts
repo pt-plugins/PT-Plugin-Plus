@@ -88,7 +88,8 @@ export default Vue.extend({
         progress: 0
       },
       latestTorrentsKey: "__LatestTorrents__",
-      latestTorrentsOnly: false
+      latestTorrentsOnly: false,
+      searchSiteCount: 0
     };
   },
   created() {
@@ -98,8 +99,6 @@ export default Vue.extend({
         msg: "系统参数丢失"
       });
     }
-    this.key = this.$route.params["key"];
-    this.host = this.$route.params["host"];
     this.pagination = this.$store.getters.pagination(
       EPaginationKey.searchTorrent,
       {
@@ -113,9 +112,19 @@ export default Vue.extend({
     }
     this.key = to.params.key;
     this.host = to.params.host;
-    // console.log(to, from, next);
     // this.$route.params
     next();
+  },
+  /**
+   * 当前组件激活时触发
+   * 因为启用了搜索结果缓存，所以需要在这里处理关键字
+   */
+  activated() {
+    if (this.$route.params["key"]) {
+      this.key = this.$route.params["key"];
+    }
+
+    this.host = this.$route.params["host"];
   },
   watch: {
     key() {
@@ -171,7 +180,7 @@ export default Vue.extend({
         return;
       }
 
-      if (this.loading) return;
+      if (this.loading || !this.key) return;
 
       if (!this.options.system) {
         if (this.reloadCount >= 10) {
@@ -244,6 +253,7 @@ export default Vue.extend({
         return;
       }
 
+      this.searchSiteCount = sites.length;
       this.beginTime = moment();
       this.writeLog({
         event: `SearchTorrent.Search.Start`,

@@ -78,10 +78,14 @@ export default new Router({
       props: true
     },
     {
-      path: "/search-torrent/:key/:host?",
+      path: "/search-torrent/:key?/:host?",
       name: "search-torrent",
       component: () => import("./views/search/SearchTorrent.vue"),
-      props: true
+      props: true,
+      meta: {
+        // 需要被缓存
+        keepAlive: true
+      }
     },
     {
       path: "/history",

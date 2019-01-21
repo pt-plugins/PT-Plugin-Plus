@@ -30,7 +30,7 @@
       <v-card-title>
         <v-flex xs6>
           <!-- 站点返回的搜索结果 -->
-          <div>
+          <div v-if="searchSiteCount>1">
             <template v-for="(item, key) in searchResult.sites">
               <v-chip
                 :key="key"

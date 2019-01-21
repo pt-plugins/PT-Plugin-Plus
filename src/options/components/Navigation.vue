@@ -1,7 +1,7 @@
 <template>
   <!-- 导航栏 -->
   <v-navigation-drawer clipped fixed v-model="drawer" app>
-    <v-list v-for="(group,index) in navs" :key="index">
+    <v-list v-for="(group,index) in navs" :key="index" dense>
       <v-subheader v-if="group.title" class="grey--text text--darken-1">{{group.title}}</v-subheader>
       <v-list-tile
         :to="item.key"
@@ -51,6 +51,11 @@ export default Vue.extend({
               title: "概览",
               icon: "dashboard",
               key: "/home"
+            },
+            {
+              title: "种子搜索",
+              icon: "search",
+              key: "/search-torrent"
             },
             {
               title: "下载历史",
