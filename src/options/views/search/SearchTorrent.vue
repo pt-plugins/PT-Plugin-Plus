@@ -1,6 +1,6 @@
 <template>
   <div class="search-torrent">
-    <v-alert :value="true" type="info">
+    <v-alert :value="true" type="info" style="padding:8px 16px;">
       {{ words.title }} [{{ key }}], {{searchMsg}} {{skipSites}}
       <v-btn
         flat
