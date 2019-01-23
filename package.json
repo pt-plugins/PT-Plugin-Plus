@@ -7,7 +7,8 @@
     "build": "vue-cli-service build && webpack --config webpack/prod.js",
     "lint": "vue-cli-service lint",
     "background": "webpack --config webpack/prod.js",
-    "dev": "vue-cli-service build --mode=development && webpack --config webpack/dev.js"
+    "dev": "vue-cli-service build --mode=development && webpack --config webpack/dev.js",
+    "dev-s": "cd test && yarn install && tsc && node ./dist/index.js"
   },
   "dependencies": {
     "blueimp-md5": "^2.10.0",

@@ -3,9 +3,11 @@ import md5 from "blueimp-md5";
 import { EConfigKey } from "@/interface/common";
 
 const isExtensionMode = !!(window["chrome"] && window.chrome.extension);
-const RESOURCE_URL =
-  (isExtensionMode ? `chrome-extension://${chrome.runtime.id}` : "") +
-  "/resource";
+const isLocalhost = window.location.hostname === "localhost";
+const RESOURCE_URL = isLocalhost
+  ? "http://localhost:8001"
+  : (isExtensionMode ? `chrome-extension://${chrome.runtime.id}` : "") +
+    "/resource";
 // 调试信息
 let RESOURCE_API = {
   host: RESOURCE_URL,
