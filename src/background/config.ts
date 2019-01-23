@@ -53,7 +53,8 @@ class Config {
       100,
       200,
       { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }
-    ]
+    ],
+    searchSolutions: []
   };
 
   public uiOptions: UIOptions = {};

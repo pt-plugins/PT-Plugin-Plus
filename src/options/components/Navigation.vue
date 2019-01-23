@@ -92,11 +92,11 @@ export default Vue.extend({
               icon: "folder_open",
               key: "/set-download-paths"
             },
-            // {
-            //   title: "搜索设置",
-            //   icon: "search",
-            //   key: "/set-search"
-            // },
+            {
+              title: "搜索方案",
+              icon: "widgets",
+              key: "/set-search"
+            },
             {
               title: "参数备份与恢复",
               icon: "restore",

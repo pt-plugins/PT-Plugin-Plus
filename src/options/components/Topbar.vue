@@ -13,7 +13,20 @@
       class="hidden-sm-and-down mt-2"
       v-model="searchKey"
       @change="searchTorrent"
-    ></v-text-field>
+    >
+      <v-menu slot="append" offset-y class="search-solution">
+        <v-btn slot="activator" flat class="white--text text--white">{{selectedSearchSolutionName}}</v-btn>
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-title @click="changeSearchSolution(null)">{{ words.default }}</v-list-tile-title>
+          </v-list-tile>
+          <v-divider></v-divider>
+          <v-list-tile v-for="(item, index) in $store.state.options.searchSolutions" :key="index">
+            <v-list-tile-title @click="changeSearchSolution(item)">{{ item.name }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+    </v-text-field>
 
     <v-btn flat to="/search-torrent/__LatestTorrents__" class="grey--text text--darken-2">
       <v-icon>fiber_new</v-icon>
@@ -47,7 +60,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { Site } from "@/interface/common";
+import { Site, SearchSolution, Options } from "@/interface/common";
 export default Vue.extend({
   props: {
     value: Boolean
@@ -68,12 +81,14 @@ export default Vue.extend({
     return {
       words: {
         title: "PT 助手",
-        searchTip: ""
+        searchTip: "",
+        default: "<默认>"
       },
       drawer: true,
       baseColor: "amber",
       searchKey: "",
-      options: this.$store.state.options
+      options: this.$store.state.options as Options,
+      selectedSearchSolutionName: ""
     };
   },
   methods: {
@@ -87,9 +102,36 @@ export default Vue.extend({
           key: this.searchKey
         }
       });
+    },
+    changeSearchSolution(solution?: SearchSolution) {
+      let defaultSearchSolutionId = "";
+      if (solution) {
+        this.selectedSearchSolutionName = solution.name;
+        defaultSearchSolutionId = solution.id;
+      } else {
+        this.selectedSearchSolutionName = this.words.default;
+      }
+
+      this.$store.dispatch("saveConfig", {
+        defaultSearchSolutionId: defaultSearchSolutionId
+      });
     }
   },
   created() {
+    this.selectedSearchSolutionName = this.words.default;
+    if (this.options.defaultSearchSolutionId && this.options.searchSolutions) {
+      let searchSolution:
+        | SearchSolution
+        | undefined = this.options.searchSolutions.find(
+        (item: SearchSolution) => {
+          return item.id === this.options.defaultSearchSolutionId;
+        }
+      );
+
+      if (searchSolution) {
+        this.selectedSearchSolutionName = searchSolution.name;
+      }
+    }
     if (this.options.sites) {
       let count = 0;
       this.options.sites.forEach((item: Site) => {
@@ -98,7 +140,7 @@ export default Vue.extend({
         }
       });
       if (count > 0) {
-        this.words.searchTip = `输入种子关键字，将会在 ${count} 个站点中进行搜索。`;
+        this.words.searchTip = `输入种子关键字，按回车进行搜索。`;
       } else {
         this.words.searchTip = "暂未配置允许搜索的站点，请先配置";
       }
@@ -106,3 +148,8 @@ export default Vue.extend({
   }
 });
 </script>
+<style lang="scss" scoped>
+.search-solution {
+  margin-right: -10px;
+}
+</style>

@@ -86,6 +86,8 @@ export interface Options {
   saveDownloadHistory?: boolean;
   connectClientTimeout?: number;
   rowsPerPageItems?: any[];
+  defaultSearchSolutionId?: string;
+  searchSolutions?: SearchSolution[];
 }
 
 export interface Plugin {
@@ -304,6 +306,7 @@ export interface SearchResultItem {
 }
 
 export interface SearchEntry {
+  name?: string;
   entry?: string;
   resultType?: ESearchResultType;
   parseScriptFile?: string;
@@ -320,4 +323,17 @@ export interface UIOptions {
 export enum EPaginationKey {
   systemLogs = "systemLogs",
   searchTorrent = "searchTorrent"
+}
+
+// 搜索方案
+export interface SearchSolution {
+  id: string;
+  name: string;
+  range: SearchSolutionRange[];
+}
+
+export interface SearchSolutionRange {
+  host?: string;
+  siteName?: string;
+  entry?: boolean[];
 }
