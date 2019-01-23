@@ -21,13 +21,18 @@
             <v-list-tile-title>{{ words.default }}</v-list-tile-title>
           </v-list-tile>
           <v-divider></v-divider>
-          <v-list-tile
-            @click="changeSearchSolution(item)"
-            v-for="(item, index) in $store.state.options.searchSolutions"
-            :key="index"
+          <template
+            v-if="$store.state.options.searchSolutions && $store.state.options.searchSolutions.length>0"
           >
-            <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-          </v-list-tile>
+            <v-list-tile
+              @click="changeSearchSolution(item)"
+              v-for="(item, index) in $store.state.options.searchSolutions"
+              :key="index"
+            >
+              <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+            </v-list-tile>
+          </template>
+          <v-btn flat small v-else to="/set-search-solution">{{words.noSearchSolution}}</v-btn>
         </v-list>
       </v-menu>
     </v-text-field>
@@ -86,7 +91,8 @@ export default Vue.extend({
       words: {
         title: "PT 助手",
         searchTip: "",
-        default: "<默认>"
+        default: "<默认>",
+        noSearchSolution: "暂无方案，请添加"
       },
       drawer: true,
       baseColor: "amber",

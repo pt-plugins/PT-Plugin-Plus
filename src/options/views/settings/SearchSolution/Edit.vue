@@ -4,7 +4,7 @@
       <v-card-title class="headline blue-grey darken-2" style="color:white">{{ words.title }}</v-card-title>
 
       <v-card-text>
-        <Editor :option="defaultItem" :sites="sites" @change="change"/>
+        <Editor :option="defaultItem" :initSites="sites" @change="change"/>
       </v-card-text>
 
       <v-divider></v-divider>
@@ -103,6 +103,7 @@ export default Vue.extend({
 
       console.log("resetSites", this.option, this.sites);
       if (this.option && this.option.id) {
+        // this.valid = true;
         this.option.range.forEach((range: SearchSolutionRange) => {
           let index = this.sites.findIndex((item: any) => {
             return item.host === range.host;

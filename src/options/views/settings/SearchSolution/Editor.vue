@@ -14,7 +14,7 @@
                 :placeholder="words.name"
                 required
                 :rules="rules.require"
-                @change="change"
+                @change="change(true)"
               ></v-text-field>
             </v-flex>
           </v-layout>
@@ -36,7 +36,7 @@
                   <template v-for="(site, index) in sites">
                     <v-list-tile :key="site.host" avatar>
                       <v-list-tile-action>
-                        <v-checkbox v-model="site.enabled" color="teal" @change="change"></v-checkbox>
+                        <v-checkbox v-model="site.enabled" color="teal" @change="change(true)"></v-checkbox>
                       </v-list-tile-action>
 
                       <v-list-tile-content>
@@ -57,7 +57,7 @@
                                     class="ma-0 pa-0 caption"
                                     :label="item.name"
                                     v-model="item.enabled"
-                                    @change="change"
+                                    @change="change(true)"
                                   ></v-checkbox>
                                 </v-flex>
                               </v-layout>
@@ -144,12 +144,13 @@ export default Vue.extend({
       successMsg: "",
       errorMsg: "",
       isValid: false,
-      checked: [] as SearchSolutionRange[]
+      checked: [] as SearchSolutionRange[],
+      sites: [] as Site[]
     };
   },
   props: {
     option: Object,
-    sites: {
+    initSites: {
       type: Array as () => Array<any>
     }
   },
@@ -160,7 +161,8 @@ export default Vue.extend({
     errorMsg() {
       this.haveError = this.errorMsg != "";
     },
-    sites() {
+    initSites() {
+      this.sites = this.initSites;
       this.change(false);
     }
   },
@@ -207,7 +209,7 @@ export default Vue.extend({
       this.change();
     },
     getSiteEntry(host: string, entry: boolean[]): string {
-      let site: Site = this.sites.find((item: Site) => {
+      let site: Site | undefined = this.sites.find((item: Site) => {
         return item.host === host;
       });
 
