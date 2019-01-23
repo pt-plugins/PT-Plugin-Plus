@@ -180,7 +180,9 @@ export enum EAction {
   removeSystemLogs = "removeSystemLogs",
   // 清除系统日志
   clearSystemLogs = "clearSystemLogs",
+  // 读取UI参数
   readUIOptions = "readUIOptions",
+  // 保存UI参数
   saveUIOptions = "saveUIOptions",
   // 在当前选项卡显示消息
   showMessage = "showMessage",
@@ -188,8 +190,14 @@ export enum EAction {
   writeLog = "writeLog",
   // 后台服务停止
   serviceStoped = "serviceStoped",
+  // 增加内容页面
   addContentPage = "addContentPage",
-  abortSearch = "abortSearch"
+  // 取消搜索
+  abortSearch = "abortSearch",
+  // 将参数备份至Google
+  backupToGoogle = "backupToGoogle",
+  // 从Google恢复已备份的参数
+  restoreFromGoogle = "restoreFromGoogle"
 }
 
 export interface Request {

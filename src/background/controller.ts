@@ -613,4 +613,18 @@ export default class Controller {
       resolve();
     });
   }
+
+  /**
+   * 备份系统参数至Google
+   */
+  public backupToGoogle(): Promise<any> {
+    return this.service.config.backupToGoogle();
+  }
+
+  /**
+   * 从Google恢复系统参数
+   */
+  public restoreFromGoogle(): Promise<any> {
+    return this.service.config.restoreFromGoogle();
+  }
 }

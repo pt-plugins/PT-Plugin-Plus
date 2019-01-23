@@ -65,6 +65,9 @@ class Config {
    */
   public save(options?: Options) {
     this.localStorage.set(this.name, options || this.options);
+    if (options) {
+      this.options = options;
+    }
   }
 
   /**
@@ -111,32 +114,36 @@ class Config {
       };
 
       // 升级不存在的配置项
-      this.sites.forEach(item => {
-        let index = this.options.sites.findIndex((site: Site) => {
-          return site.host === item.host;
-        });
+      this.options.sites &&
+        this.options.sites.length &&
+        this.sites.forEach(item => {
+          let index = this.options.sites.findIndex((site: Site) => {
+            return site.host === item.host;
+          });
 
-        if (index > -1) {
-          this.options.sites[index] = Object.assign(
-            Object.assign({}, item),
-            this.options.sites[index]
-          );
-        }
-      });
+          if (index > -1) {
+            this.options.sites[index] = Object.assign(
+              Object.assign({}, item),
+              this.options.sites[index]
+            );
+          }
+        });
 
       // 升级不存在的配置项
-      this.options.clients.forEach((item, index) => {
-        let client = this.clients.find((c: DownloadClient) => {
-          return c.type === item.type;
-        });
+      this.options.clients &&
+        this.options.clients.length &&
+        this.options.clients.forEach((item, index) => {
+          let client = this.clients.find((c: DownloadClient) => {
+            return c.type === item.type;
+          });
 
-        if (client) {
-          this.options.clients[index] = Object.assign(
-            Object.assign({}, client),
-            this.options.clients[index]
-          );
-        }
-      });
+          if (client) {
+            this.options.clients[index] = Object.assign(
+              Object.assign({}, client),
+              this.options.clients[index]
+            );
+          }
+        });
 
       console.log(this.options);
 
@@ -276,6 +283,151 @@ class Config {
       });
       chrome.browserAction.disable();
     }
+  }
+
+  /**
+   * 保存指定的键值到Google
+   * @param key
+   * @param value
+   */
+  public syncSet(key: string, value: any): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (chrome.storage && chrome.storage.sync) {
+        try {
+          chrome.storage.sync.set(
+            {
+              [key]: value
+            },
+            () => {
+              if (chrome.runtime.lastError) {
+                reject(APP.createErrorMessage(chrome.runtime.lastError));
+              } else {
+                resolve(value);
+              }
+            }
+          );
+        } catch (error) {
+          reject(APP.createErrorMessage(error));
+        }
+      } else {
+        reject(APP.createErrorMessage("chrome.storage 不存在"));
+      }
+    });
+  }
+
+  /**
+   * 从Google中获取指定的键值
+   * @param key
+   */
+  public syncGet(key: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (chrome.storage && chrome.storage.sync) {
+        try {
+          chrome.storage.sync.get(key, result => {
+            try {
+              if (result[key]) {
+                resolve(result[key]);
+              } else {
+                reject(APP.createErrorMessage("参数不存在"));
+              }
+            } catch (error) {
+              reject(APP.createErrorMessage(error));
+            }
+          });
+        } catch (error) {
+          reject(APP.createErrorMessage(error));
+        }
+      } else {
+        reject(APP.createErrorMessage("chrome.storage 不存在"));
+      }
+    });
+  }
+
+  /**
+   * 将系统参数备份到Google
+   */
+  public backupToGoogle(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (chrome.storage && chrome.storage.sync) {
+        let options = Object.assign({}, this.options);
+        if (options.system) {
+          delete options.system;
+        }
+
+        // 因Google 8K限制，固将内容拆分后保存
+        let clients = Object.assign([], options.clients);
+        let sites = Object.assign([], options.sites);
+
+        delete options.clients;
+        delete options.sites;
+
+        this.syncSet(this.name, options)
+          .then(() => {
+            this.syncSet(this.name + ".clients", clients)
+              .then(() => {
+                this.syncSet(this.name + ".sites", sites)
+                  .then(() => {
+                    resolve(this.options);
+                  })
+                  .catch((error: any) => {
+                    reject(APP.createErrorMessage(error));
+                  });
+              })
+              .catch((error: any) => {
+                reject(APP.createErrorMessage(error));
+              });
+          })
+          .catch((error: any) => {
+            reject(APP.createErrorMessage(error));
+          });
+      } else {
+        reject(APP.createErrorMessage("chrome.storage 不存在"));
+      }
+    });
+  }
+
+  /**
+   * 从Google云端恢复系统参数
+   */
+  public restoreFromGoogle(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (chrome.storage && chrome.storage.sync) {
+        this.syncGet(this.name)
+          .then((result: any) => {
+            let system = Object.assign({}, this.options.system);
+            let options = result;
+
+            options.system = system;
+
+            // 获取客户端配置
+            this.syncGet(this.name + ".clients")
+              .then((result: any) => {
+                options.clients = result;
+                // 获取站点配置
+                this.syncGet(this.name + ".sites")
+                  .then((result: any) => {
+                    options.sites = result;
+                    this.options = options;
+                    this.save();
+                    setTimeout(() => {
+                      resolve(this.options);
+                    }, 300);
+                  })
+                  .catch((error: any) => {
+                    reject(APP.createErrorMessage(error));
+                  });
+              })
+              .catch((error: any) => {
+                reject(APP.createErrorMessage(error));
+              });
+          })
+          .catch((error: any) => {
+            reject(APP.createErrorMessage(error));
+          });
+      } else {
+        reject(APP.createErrorMessage("chrome.storage 不存在"));
+      }
+    });
   }
 }
 export default Config;

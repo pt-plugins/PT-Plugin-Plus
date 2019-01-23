@@ -33,7 +33,10 @@ export default class Extension {
             },
             (result: any) => {
               callback && callback(result);
-              if (result && result.status === "error") {
+              if (
+                result &&
+                (result.status === "error" || result.success === false)
+              ) {
                 reject(result);
               } else {
                 resolve(result);
@@ -51,10 +54,14 @@ export default class Extension {
       PTService.requestMessage({
         action,
         data
-      }).then((result: any) => {
-        callback && callback.call(this, result);
-        resolve(result);
-      });
+      })
+        .then((result: any) => {
+          callback && callback.call(this, result);
+          resolve(result);
+        })
+        .catch((error: any) => {
+          reject(error);
+        });
     });
   }
 }

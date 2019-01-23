@@ -1,6 +1,6 @@
 import localStorage from "./localStorage";
 import md5 from "blueimp-md5";
-import { EConfigKey } from "@/interface/common";
+import { EConfigKey, DataResult, EDataResultType } from "@/interface/common";
 
 const isExtensionMode = !!(window["chrome"] && window.chrome.extension);
 const isLocalhost = window.location.hostname === "localhost";
@@ -191,6 +191,17 @@ export const APP = {
       url: `${API.host}/${path}`,
       dataType: "text"
     });
+  },
+  /**
+   * 创建错误信息，用于函数返回
+   * @param msg
+   */
+  createErrorMessage(msg: any): DataResult {
+    return {
+      type: EDataResultType.error,
+      msg,
+      success: false
+    };
   }
 };
 
