@@ -15,14 +15,18 @@
       @change="searchTorrent"
     >
       <v-menu slot="append" offset-y class="search-solution">
-        <v-btn slot="activator" flat class="white--text text--white">{{selectedSearchSolutionName}}</v-btn>
-        <v-list>
-          <v-list-tile>
-            <v-list-tile-title @click="changeSearchSolution(null)">{{ words.default }}</v-list-tile-title>
+        <v-btn slot="activator" flat small color="grey lighten-2">{{selectedSearchSolutionName}}</v-btn>
+        <v-list dense>
+          <v-list-tile @click="changeSearchSolution(null)">
+            <v-list-tile-title>{{ words.default }}</v-list-tile-title>
           </v-list-tile>
           <v-divider></v-divider>
-          <v-list-tile v-for="(item, index) in $store.state.options.searchSolutions" :key="index">
-            <v-list-tile-title @click="changeSearchSolution(item)">{{ item.name }}</v-list-tile-title>
+          <v-list-tile
+            @click="changeSearchSolution(item)"
+            v-for="(item, index) in $store.state.options.searchSolutions"
+            :key="index"
+          >
+            <v-list-tile-title>{{ item.name }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>

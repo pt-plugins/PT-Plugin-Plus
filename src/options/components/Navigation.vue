@@ -95,7 +95,7 @@ export default Vue.extend({
             {
               title: "搜索方案",
               icon: "widgets",
-              key: "/set-search"
+              key: "/set-search-solution"
             },
             {
               title: "参数备份与恢复",

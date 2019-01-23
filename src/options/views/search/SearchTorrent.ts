@@ -12,7 +12,11 @@ import {
   EModule,
   LogItem,
   SearchResultItem,
-  SearchResultItemTag
+  SearchResultItemTag,
+  SearchSolution,
+  Options,
+  SearchSolutionRange,
+  SearchEntry
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import moment from "moment";
@@ -47,7 +51,7 @@ export default Vue.extend({
       key: "",
       // 指定站点搜索
       host: "",
-      options: this.$store.state.options,
+      options: this.$store.state.options as Options,
       getters: this.$store.getters,
       searchMsg: "",
       datas: [] as any,
@@ -148,6 +152,10 @@ export default Vue.extend({
     },
     errorMsg() {
       this.haveError = this.errorMsg != "";
+    },
+    "$store.state.options.defaultSearchSolutionId"() {
+      this.doSearch();
+      // console.log(this.options.defaultSearchSolutionId);
     }
   },
   methods: {
@@ -170,13 +178,21 @@ export default Vue.extend({
       clearTimeout(this.searchTimer);
       this.searchTimer = setTimeout(() => {
         this.search();
-      }, 100);
+      }, 220);
     },
     /**
      * 开始搜索
      */
     search() {
       this.selected = [];
+      this.haveError = false;
+      this.haveSuccess = false;
+      this.datas = [];
+      this.searchResult = {
+        sites: {},
+        tags: {}
+      } as searchResult;
+
       if (window.location.hostname == "localhost") {
         $.getJSON("http://localhost:8001/testSearchData.json").done(
           (result: any) => {
@@ -208,9 +224,7 @@ export default Vue.extend({
         this.reloadCount++;
         return;
       }
-      this.haveError = false;
-      this.haveSuccess = false;
-      this.datas = [];
+
       if (!this.options.sites) {
         this.errorMsg = "请先设置站点";
         return;
@@ -226,6 +240,8 @@ export default Vue.extend({
         this.latestTorrentsOnly = false;
       }
 
+      this.options = this.$store.state.options;
+
       // 是否指定了站点
       if (this.host) {
         let site = this.options.sites.find((item: Site) => {
@@ -233,6 +249,43 @@ export default Vue.extend({
         });
         if (site) {
           sites.push(site);
+        }
+      } else if (
+        // 指定了搜索方案
+        this.options.defaultSearchSolutionId &&
+        this.options.searchSolutions
+      ) {
+        let _sites: Site[] = [];
+        this.options.sites.forEach((item: Site) => {
+          _sites.push(Object.assign({}, item));
+        });
+
+        let searchSolution:
+          | SearchSolution
+          | undefined = this.options.searchSolutions.find(
+          (solution: SearchSolution) => {
+            return solution.id === this.options.defaultSearchSolutionId;
+          }
+        );
+
+        if (searchSolution) {
+          searchSolution.range.forEach((range: SearchSolutionRange) => {
+            let index = _sites.findIndex((item: any) => {
+              return item.host === range.host;
+            });
+
+            if (index > -1) {
+              let site: any = _sites[index];
+              let siteEntry: SearchEntry[] = site.searchEntry;
+              range.entry &&
+                range.entry.forEach((v: boolean, index) => {
+                  if (siteEntry[index] && siteEntry[index].name) {
+                    siteEntry[index].enabled = v;
+                  }
+                });
+              sites.push(site);
+            }
+          });
         }
       } else {
         this.options.sites.forEach((item: Site) => {
@@ -272,10 +325,6 @@ export default Vue.extend({
           key: this.key
         }
       });
-      this.searchResult = {
-        sites: {},
-        tags: {}
-      } as searchResult;
 
       this.doSearchTorrentWithQueue(sites);
     },
@@ -534,9 +583,12 @@ export default Vue.extend({
     getSiteSchema(site: Site): SiteSchema {
       let schema: SiteSchema = {};
       if (typeof site.schema === "string") {
-        schema = this.options.system.schemas.find((item: SiteSchema) => {
-          return item.name == site.schema;
-        });
+        schema =
+          this.options.system &&
+          this.options.system.schemas &&
+          this.options.system.schemas.find((item: SiteSchema) => {
+            return item.name == site.schema;
+          });
       }
 
       return schema;

@@ -39,7 +39,7 @@ export default Vue.extend({
   data() {
     return {
       words: {
-        title: "编辑搜索方案",
+        title: "搜索方案定义",
         ok: "确认",
         cancel: "取消"
       },
@@ -115,8 +115,8 @@ export default Vue.extend({
             let siteEntry: SearchEntry[] = site.searchEntry;
             range.entry &&
               range.entry.forEach((v: boolean, index) => {
-                if (v && siteEntry[index] && siteEntry[index].name) {
-                  siteEntry[index].enabled = true;
+                if (siteEntry[index] && siteEntry[index].name) {
+                  siteEntry[index].enabled = v;
                 }
               });
           }

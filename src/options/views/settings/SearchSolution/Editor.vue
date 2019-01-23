@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mb-5" color="grey lighten-4">
+    <v-card color="grey lighten-4">
       <v-card-text>
         <v-form v-model="isValid">
           <v-layout row>
@@ -24,15 +24,21 @@
             </v-flex>
             <v-flex xs9>
               <div class="list">
-                <v-list>
+                <v-list dense>
+                  <v-list-tile @click="selectAll(!selectedAll)">
+                    <v-list-tile-action>
+                      <v-icon>{{ selectAllIcon }}</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-title>{{words.selectAll}}</v-list-tile-title>
+                  </v-list-tile>
+                  <v-divider></v-divider>
+                  <v-divider></v-divider>
                   <template v-for="(site, index) in sites">
                     <v-list-tile :key="site.host" avatar>
                       <v-list-tile-action>
                         <v-checkbox v-model="site.enabled" color="teal" @change="change"></v-checkbox>
                       </v-list-tile-action>
-                      <!-- <v-list-tile-avatar :size="site.enabled?30:18">
-                      <img :src="site.icon">
-                      </v-list-tile-avatar>-->
+
                       <v-list-tile-content>
                         <v-list-tile-title :color="site.enabled?'blue':'grey'">
                           <span>{{site.name}}</span>
@@ -59,15 +65,41 @@
                           </template>
                         </v-list-tile-sub-title>
                       </v-list-tile-content>
+
+                      <v-list-tile-avatar :size="20">
+                        <img :src="site.icon" :class="site.enabled?'':'grey'">
+                      </v-list-tile-avatar>
                     </v-list-tile>
 
                     <v-divider :key="index"></v-divider>
+                  </template>
+
+                  <template v-if="sites.length>5">
+                    <v-divider></v-divider>
+                    <v-list-tile @click="selectAll(!selectedAll)">
+                      <v-list-tile-action>
+                        <v-icon>{{ selectAllIcon }}</v-icon>
+                      </v-list-tile-action>
+                      <v-list-tile-title>{{words.selectAll}}</v-list-tile-title>
+                    </v-list-tile>
                   </template>
                 </v-list>
               </div>
             </v-flex>
           </v-layout>
         </v-form>
+        <v-divider class="mb-2"></v-divider>
+        <template v-for="(item, index) in checked">
+          <v-chip
+            :key="index"
+            label
+            color="blue-grey"
+            text-color="white"
+            small
+            class="mr-2 pl-0"
+            disabled
+          >{{ item.siteName }}{{ getSiteEntry(item.host, item.entry) }}</v-chip>
+        </template>
       </v-card-text>
     </v-card>
     <v-snackbar v-model="haveError" absolute top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
@@ -101,7 +133,8 @@ export default Vue.extend({
         range: "搜索范围",
         id: "ID",
         ok: "确认",
-        cancel: "取消"
+        cancel: "取消",
+        selectAll: "全选/取消全选"
       },
       rules: {
         require: [(v: any) => !!v || "!"]
@@ -126,10 +159,13 @@ export default Vue.extend({
     },
     errorMsg() {
       this.haveError = this.errorMsg != "";
+    },
+    sites() {
+      this.change(false);
     }
   },
   methods: {
-    change() {
+    change(update: boolean = true) {
       let checked: SearchSolutionRange[] = [];
 
       this.sites.forEach((item: any) => {
@@ -149,20 +185,92 @@ export default Vue.extend({
       });
       // console.log(checked);
 
-      this.$emit("change", {
-        id: this.option.id,
-        name: this.option.name,
-        range: checked
+      if (update) {
+        this.$emit("change", {
+          id: this.option.id,
+          name: this.option.name,
+          range: checked
+        });
+      }
+
+      this.checked = checked;
+    },
+    selectAll(selected: boolean) {
+      this.sites.forEach((item: any) => {
+        item.enabled = selected;
+        if (item.searchEntry) {
+          item.searchEntry.forEach((e: SearchEntry) => {
+            e.enabled = selected;
+          });
+        }
       });
+      this.change();
+    },
+    getSiteEntry(host: string, entry: boolean[]): string {
+      let site: Site = this.sites.find((item: Site) => {
+        return item.host === host;
+      });
+
+      if (site && site.searchEntry) {
+        let results: string[] = [];
+        let siteEntry: SearchEntry[] = site.searchEntry;
+        entry.forEach((v: boolean, index) => {
+          if (v && siteEntry[index] && siteEntry[index].name) {
+            results.push(siteEntry[index].name as string);
+          }
+        });
+
+        if (results.length > 0) {
+          return " -> " + results.join(";");
+        }
+      }
+      return "";
     }
   },
-  created() {}
+  created() {},
+  computed: {
+    selectedAll(): boolean {
+      return this.checked.length === this.sites.length;
+    },
+    selectedSome(): boolean {
+      return this.checked.length > 0 && !this.selectedAll;
+    },
+    selectAllIcon(): string {
+      if (this.selectedAll) return "check_box";
+      if (this.selectedSome) return "indeterminate_check_box";
+      return "check_box_outline_blank";
+    }
+  }
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 .list {
   max-height: 350px;
   overflow-y: auto;
+
+  .caption {
+    .v-input__control {
+      .v-input__slot {
+        margin: 0;
+      }
+
+      .v-input--selection-controls__input {
+        margin-right: 0;
+      }
+    }
+
+    .v-icon {
+      font-size: 18px;
+    }
+
+    .v-label {
+      font-size: 12px;
+    }
+  }
+
+  .grey {
+    filter: grayscale(100%);
+  }
 }
 </style>
