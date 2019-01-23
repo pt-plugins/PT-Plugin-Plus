@@ -53,7 +53,7 @@ export default Vue.extend({
               key: "/home"
             },
             {
-              title: "种子搜索",
+              title: "搜索结果",
               icon: "search",
               key: "/search-torrent"
             },
