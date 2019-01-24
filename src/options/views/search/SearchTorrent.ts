@@ -25,6 +25,7 @@ import { Downloader, downloadFile } from "@/service/downloader";
 type searchResult = {
   sites: Dictionary<any>;
   tags: Dictionary<any>;
+  categories: Dictionary<any>;
 };
 
 const extension = new Extension();
@@ -39,14 +40,15 @@ export default Vue.extend({
         save: "下载种子文件到本地",
         searching: "正在搜索中，请稍候……",
         cancelSearch: "取消搜索",
-        showCheckbox: "开启多选模式",
+        showCheckbox: "多选",
         noTag: "无标签",
         allSites: "全部站点",
         multiDownloadConfirm:
           "当前下载的种子数量超过一个，浏览器可能会多次提示保存，是否继续？",
         copyToClipboard: "复制链接",
         copyToClipboardTip: "复制下载链接到剪切板",
-        reSearch: "重新再搜索"
+        reSearch: "重新再搜索",
+        showCategory: "分类"
       },
       key: "",
       // 指定站点搜索
@@ -63,6 +65,7 @@ export default Vue.extend({
       headers: [
         { text: "站点", align: "center", value: "site.host" },
         { text: "标题", align: "left", value: "title" },
+        { text: "分类", align: "center", value: "category.name" },
         { text: "大小", align: "right", value: "size" },
         // { text: "评论", align: "center", value: "comments" },
         { text: "上传", align: "center", value: "seeders" },
@@ -85,7 +88,8 @@ export default Vue.extend({
       // 搜索结果
       searchResult: {
         sites: {},
-        tags: {}
+        tags: {},
+        categories: {}
       } as searchResult,
       checkBox: false,
       // 正在下载的种子文件进度信息
@@ -103,7 +107,8 @@ export default Vue.extend({
         completed: 0,
         speed: 0,
         progress: 0
-      }
+      },
+      showCategory: false
     };
   },
   created() {
@@ -190,7 +195,8 @@ export default Vue.extend({
       this.datas = [];
       this.searchResult = {
         sites: {},
-        tags: {}
+        tags: {},
+        categories: {}
       } as searchResult;
 
       if (window.location.hostname == "localhost") {
@@ -511,6 +517,7 @@ export default Vue.extend({
         }
         this.searchResult.sites[siteName].push(item);
         this.addTagResult(item);
+        this.addCategoryResult(item);
       });
 
       this.searchResult.sites[allSites] = this.datas;
@@ -549,6 +556,26 @@ export default Vue.extend({
         }
         this.searchResult.tags[name].items.push(item);
       });
+    },
+
+    /**
+     * 添加搜索结果分类
+     * @param item
+     */
+    addCategoryResult(item: SearchResultItem) {
+      if (!item.category) {
+        return;
+      }
+
+      let name = item.category.name as string;
+      if (!name) return;
+      if (!this.searchResult.categories[name]) {
+        this.searchResult.categories[name] = {
+          name,
+          items: []
+        };
+      }
+      this.searchResult.categories[name].items.push(item);
     },
     /**
      * @return {number}

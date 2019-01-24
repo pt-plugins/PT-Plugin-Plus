@@ -291,6 +291,11 @@ export interface SearchResultItemTag {
   name?: string;
 }
 
+export interface SearchResultItemCategory {
+  name?: string;
+  link?: string;
+}
+
 /**
  * 搜索返回结果
  */
@@ -311,6 +316,7 @@ export interface SearchResultItem {
   uid?: string;
   tags?: SearchResultItemTag[];
   entryName?: string;
+  category?: SearchResultItemCategory;
 }
 
 export interface SearchEntry {

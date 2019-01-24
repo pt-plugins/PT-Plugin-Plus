@@ -100,69 +100,106 @@
               </v-chip>
             </template>
           </div>
+          <!-- 分类列表 -->
+          <div class="mt-1" v-if="showCategory">
+            <template v-for="(item, key) in searchResult.categories">
+              <v-chip
+                :key="key"
+                label
+                color="grey darken-1"
+                text-color="white"
+                small
+                class="mr-2 pl-0"
+                @click.stop="resetDatas(item.items)"
+              >
+                <span>{{ key }}</span>
+                <v-chip
+                  label
+                  color="grey"
+                  small
+                  text-color="white"
+                  style="margin-right:-13px;"
+                  class="ml-2"
+                  disabled
+                >
+                  <span>{{ item.items.length }}</span>
+                </v-chip>
+              </v-chip>
+            </template>
+          </div>
         </v-flex>
         <!-- 操作按钮列表 -->
         <v-flex xs6>
-          <v-layout align-center justify-end>
-            <v-switch
-              color="success"
-              v-model="checkBox"
-              :label="words.showCheckbox"
-              style="width: 200px;flex:none;"
-            ></v-switch>
+          <v-layout row wrap align-center justify-end>
+            <div>
+              <v-switch
+                color="success"
+                v-model="checkBox"
+                :label="words.showCheckbox"
+                style="width: 100px;flex:none;float:right;"
+              ></v-switch>
+              <v-switch
+                color="success"
+                v-model="showCategory"
+                :label="words.showCategory"
+                style="width: 100px;flex:none;float:right;"
+              ></v-switch>
+            </div>
 
-            <!-- 复制下载链接 -->
-            <v-btn
-              :disabled="selected.length==0"
-              color="success"
-              small
-              :title="words.copyToClipboardTip"
-              @click="copySelectedToClipboard()"
-            >
-              <v-icon class="mr-2" small>file_copy</v-icon>
-              {{words.copyToClipboard}} ({{selected.length}})
-            </v-btn>
-            <!-- 发送到下载服务器 -->
-            <v-btn
-              :disabled="selected.length==0"
-              color="success"
-              small
-              :title="words.sendToClientTip"
-              @click="sendSelectedToClient()"
-            >
-              <v-icon class="mr-2" small>cloud_download</v-icon>
-              {{words.sendToClient}} ({{selected.length}})
-            </v-btn>
+            <div>
+              <!-- 复制下载链接 -->
+              <v-btn
+                :disabled="selected.length==0"
+                color="success"
+                small
+                :title="words.copyToClipboardTip"
+                @click="copySelectedToClipboard()"
+              >
+                <v-icon class="mr-2" small>file_copy</v-icon>
+                {{words.copyToClipboard}} ({{selected.length}})
+              </v-btn>
+              <!-- 发送到下载服务器 -->
+              <v-btn
+                :disabled="selected.length==0"
+                color="success"
+                small
+                :title="words.sendToClientTip"
+                @click="sendSelectedToClient()"
+              >
+                <v-icon class="mr-2" small>cloud_download</v-icon>
+                {{words.sendToClient}} ({{selected.length}})
+              </v-btn>
 
-            <!-- 文件发送进度 -->
-            <v-progress-circular
-              v-if="sending.count>0"
-              :rotate="-90"
-              :size="60"
-              :width="10"
-              :value="sending.progress"
-              color="primary"
-            >{{ sending.progress.toFixed(0) }}%</v-progress-circular>
+              <!-- 文件发送进度 -->
+              <v-progress-circular
+                v-if="sending.count>0"
+                :rotate="-90"
+                :size="60"
+                :width="10"
+                :value="sending.progress"
+                color="primary"
+              >{{ sending.progress.toFixed(0) }}%</v-progress-circular>
 
-            <v-btn
-              :disabled="selected.length==0"
-              @click="downloadSelected"
-              color="success"
-              small
-              :title="words.save"
-            >
-              <v-icon class="mr-2" small>get_app</v-icon>
-              {{words.download}} ({{selected.length}})
-            </v-btn>
-            <!-- 文件下载进度 -->
-            <v-progress-circular
-              v-if="downloading.count>0"
-              :rotate="-90"
-              :size="60"
-              :width="10"
-              :value="downloading.progress"
-              color="primary"
-            >{{ downloading.progress.toFixed(0) }}%</v-progress-circular>
+              <v-btn
+                :disabled="selected.length==0"
+                @click="downloadSelected"
+                color="success"
+                small
+                :title="words.save"
+              >
+                <v-icon class="mr-2" small>get_app</v-icon>
+                {{words.download}} ({{selected.length}})
+              </v-btn>
+              <!-- 文件下载进度 -->
+              <v-progress-circular
+                v-if="downloading.count>0"
+                :rotate="-90"
+                :size="60"
+                :width="10"
+                :value="downloading.progress"
+                color="primary"
+              >{{ downloading.progress.toFixed(0) }}%</v-progress-circular>
+            </div>
           </v-layout>
         </v-flex>
       </v-card-title>
@@ -184,6 +221,7 @@
           <td v-if="checkBox">
             <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
           </td>
+          <!-- 站点 -->
           <td class="center">
             <v-avatar size="18">
               <img :src="props.item.site.icon">
@@ -191,6 +229,7 @@
             <br>
             <span class="captionText">{{ props.item.site.name }}</span>
           </td>
+          <!-- 标题 -->
           <td class="title">
             <a
               :href="props.item.link"
@@ -213,6 +252,14 @@
               
               <span v-if="props.item.subTitle">{{props.item.subTitle}}</span>
             </div>
+          </td>
+          <!-- 分类 -->
+          <td class="category center">
+            <span
+              v-if="props.item.category && !!props.item.category.name"
+              :title="props.item.category.name"
+              class="captionText"
+            >{{ props.item.category.name }}</span>
           </td>
           <td class="size">{{props.item.size | formatSize}}</td>
           <!-- <td class="center">{{ props.item.comments }}</td> -->

@@ -46,14 +46,22 @@ if (!"".getQueryString) {
 
       // 用于定位每个字段所列的位置
       let fieldIndex = {
+        // 发布时间
         time: -1,
+        // 大小
         size: -1,
+        // 上传数量
         seeders: -1,
+        // 下载数量
         leechers: -1,
+        // 完成数量
         completed: -1,
+        // 评论数量
         comments: -1,
-        // 最后一栏确定为发布人
-        author: header.length - 1
+        // 发布人
+        author: header.length - 1,
+        // 分类
+        category: -1
       };
 
       if (site.url.lastIndexOf("/") != site.url.length - 1) {
@@ -62,7 +70,8 @@ if (!"".getQueryString) {
 
       // 获取字段所在的列
       for (let index = 0; index < header.length; index++) {
-        const cell = header.eq(index);
+        let cell = header.eq(index);
+        let text = cell.text();
 
         // 评论数
         if (cell.find("img.comments").length) {
@@ -102,6 +111,13 @@ if (!"".getQueryString) {
         // 完成数
         if (cell.find("img.snatched").length) {
           fieldIndex.completed = index;
+          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          continue;
+        }
+
+        // 分类
+        if (/(cat|类型|類型|分类|分類|Тип)/gi.test(text)) {
+          fieldIndex.category = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
@@ -155,7 +171,8 @@ if (!"".getQueryString) {
             comments: fieldIndex.comments == -1 ? "" : cells.eq(fieldIndex.comments).text() || 0,
             site: site,
             tags: this.getTags(row, options.torrentTagSelectors),
-            entryName: options.entry.name
+            entryName: options.entry.name,
+            category: fieldIndex.category == -1 ? null : this.getCategory(cells.eq(fieldIndex.category))
           };
           results.push(data);
         }
@@ -226,6 +243,31 @@ if (!"".getQueryString) {
       }
 
       return subTitle || "";
+    }
+
+    /**
+     * 获取分类
+     * @param {*} cell 当前列
+     */
+    getCategory(cell) {
+      let result = {
+        name: "",
+        link: ""
+      };
+      let link = cell.find("a:first");
+      let img = link.find("img:first");
+
+      result.link = link.attr("href");
+      if (result.link.substr(0, 4) !== "http") {
+        result.link = options.site.url + result.link;
+      }
+
+      if (img.length) {
+        result.name = img.attr("title");
+      } else {
+        result.name = link.text();
+      }
+      return result;
     }
   }
 
