@@ -8,7 +8,8 @@ import {
   Site,
   UIOptions,
   EModule,
-  SearchSolution
+  SearchSolution,
+  SearchEntry
 } from "../interface/common";
 import Extension from "../service/extension";
 
@@ -408,6 +409,78 @@ export default new Vuex.Store({
             commit("updateOptions", _options);
           })
           .catch();
+      }
+    },
+
+    /**
+     * 添加搜索入口
+     * @param state
+     * @param options
+     */
+    addSiteSearchEntry({ commit, state }, options) {
+      let _options: Options = Object.assign({}, state.options);
+
+      let site: any = _options.sites.find((item: any) => {
+        return item.host === options.host;
+      });
+
+      if (site) {
+        if (!site.searchEntry) {
+          site.searchEntry = [];
+        }
+        options.item.id = md5(new Date().toString());
+        site.searchEntry.push(options.item);
+
+        commit("updateOptions", _options);
+        extension.save(_options);
+      }
+    },
+
+    /**
+     * 更新插件
+     * @param state
+     * @param options
+     */
+    updateSiteSearchEntry({ commit, state }, options) {
+      let _options: Options = Object.assign({}, state.options);
+
+      let site: any = _options.sites.find((item: any) => {
+        return item.host === options.host;
+      });
+
+      if (site) {
+        let index: any = site.searchEntry.findIndex((item: SearchEntry) => {
+          return item.isCustom && item.id === options.item.id;
+        });
+        if (index !== -1) {
+          site.searchEntry[index] = options.item;
+
+          commit("updateOptions", _options);
+          extension.save(_options);
+        }
+      }
+    },
+
+    /**
+     * 删除插件
+     * @param state
+     * @param options
+     */
+    removeSiteSearchEntry({ commit, state }, options) {
+      let _options: Options = Object.assign({}, state.options);
+
+      let site: any = _options.sites.find((item: any) => {
+        return item.host === options.host;
+      });
+      if (site) {
+        let index: any = site.searchEntry.findIndex((item: any) => {
+          return item.isCustom && item.id === options.item.id;
+        });
+        if (index !== -1) {
+          site.searchEntry.splice(index, 1);
+          commit("updateOptions", _options);
+          extension.save(_options);
+        }
       }
     }
   },

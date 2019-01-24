@@ -328,6 +328,8 @@ export interface SearchEntry {
   resultSelector?: string;
   enabled?: boolean;
   tagSelectors?: any[];
+  isCustom?: boolean;
+  id?: string;
 }
 
 export interface UIOptions {

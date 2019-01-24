@@ -67,6 +67,12 @@
               @click="editPlugins(props.item)"
               :title="words.plugins"
             >assistant</v-icon>
+            <v-icon
+              small
+              class="mr-2"
+              @click="editSearchEntry(props.item)"
+              :title="words.plugins"
+            >search</v-icon>
             <v-icon small color="error" @click="removeConfirm(props.item)">delete</v-icon>
           </td>
         </template>
@@ -108,7 +114,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Site, LogItem, EAction, EModule } from "../../../../interface/common";
+import { Site, LogItem, EAction, EModule } from "@/interface/common";
 import AddSite from "./Add.vue";
 import EditSite from "./Edit.vue";
 
@@ -130,7 +136,8 @@ export default Vue.extend({
         removeSelectedConfirm: "确认要删除已选中的站点吗？",
         plugins: "插件",
         title: "站点设置",
-        subTitle: "只有配置过的站点才会显示插件图标及相应的功能。"
+        subTitle: "只有配置过的站点才会显示插件图标及相应的功能。",
+        searchEntry: "搜索入口"
       },
       selected: [],
       pagination: {
@@ -255,6 +262,14 @@ export default Vue.extend({
         event: options.event,
         msg: options.msg,
         data: options.data
+      });
+    },
+    editSearchEntry(item: Site) {
+      this.$router.push({
+        name: "set-site-search-entry",
+        params: {
+          host: item.host as string
+        }
       });
     }
   },
