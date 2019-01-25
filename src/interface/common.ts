@@ -113,6 +113,20 @@ export interface SiteSchema {
 }
 
 /**
+ * 站点资源类别（分类）
+ */
+export interface SiteCategory {
+  id?: number | string;
+  name?: string;
+}
+
+export interface SiteCategories {
+  entry?: string;
+  result?: string;
+  category?: SiteCategory[];
+}
+
+/**
  * 站点配置
  */
 export interface Site {
@@ -136,6 +150,7 @@ export interface Site {
   patterns?: Dictionary<any>;
   checker?: Dictionary<any>;
   torrentTagSelectors?: any[];
+  categories?: SiteCategories[];
 }
 
 /**
@@ -330,6 +345,8 @@ export interface SearchEntry {
   tagSelectors?: any[];
   isCustom?: boolean;
   id?: string;
+  queryString?: string;
+  categories?: string[];
 }
 
 export interface UIOptions {
@@ -351,5 +368,5 @@ export interface SearchSolution {
 export interface SearchSolutionRange {
   host?: string;
   siteName?: string;
-  entry?: boolean[];
+  entry?: string[];
 }

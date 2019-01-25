@@ -1,10 +1,10 @@
 <template>
-  <v-dialog v-model="show" max-width="800">
+  <v-dialog v-model="show" max-width="900">
     <v-card>
       <v-card-title class="headline blue-grey darken-2" style="color:white">{{ words.title }}</v-card-title>
 
       <v-card-text>
-        <Editor :data="defaultItem"/>
+        <Editor :data="defaultItem" :site="site"/>
       </v-card-text>
 
       <v-divider></v-divider>
@@ -43,7 +43,8 @@ export default Vue.extend({
   },
   props: {
     value: Boolean,
-    data: Object
+    data: Object,
+    site: Object
   },
   model: {
     prop: "value",

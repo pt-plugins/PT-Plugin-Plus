@@ -84,7 +84,10 @@ export class Searcher {
             this.options.search && this.options.search.rows
               ? this.options.search.rows
               : 10;
-          let url: string = site.url + entry.entry;
+          let url: string =
+            site.url +
+            entry.entry +
+            (entry.queryString ? `&${entry.queryString}` : "");
 
           url = this.replaceKeys(url, {
             key: key,

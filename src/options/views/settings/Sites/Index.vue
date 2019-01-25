@@ -60,7 +60,7 @@
             >{{ props.item.url }}</a>
           </td>
           <td>
-            <v-icon small class="mr-2" @click="edit(props.item)">edit</v-icon>
+            <v-icon small class="mr-2" @click="edit(props.item)" :title="words.edit">edit</v-icon>
             <v-icon
               small
               class="mr-2"
@@ -71,9 +71,14 @@
               small
               class="mr-2"
               @click="editSearchEntry(props.item)"
-              :title="words.plugins"
+              :title="words.searchEntry"
             >search</v-icon>
-            <v-icon small color="error" @click="removeConfirm(props.item)">delete</v-icon>
+            <v-icon
+              small
+              color="error"
+              @click="removeConfirm(props.item)"
+              :title="words.remove"
+            >delete</v-icon>
           </td>
         </template>
       </v-data-table>
@@ -132,6 +137,7 @@ export default Vue.extend({
       words: {
         add: "新增",
         remove: "删除",
+        edit: "编辑",
         importAll: "导入所有",
         removeSelectedConfirm: "确认要删除已选中的站点吗？",
         plugins: "插件",

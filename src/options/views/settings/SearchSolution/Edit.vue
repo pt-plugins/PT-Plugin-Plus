@@ -114,10 +114,19 @@ export default Vue.extend({
             site.enabled = true;
             let results: string[] = [];
             let siteEntry: SearchEntry[] = site.searchEntry;
+
+            siteEntry.forEach((v, index) => {
+              siteEntry[index].enabled = false;
+            });
             range.entry &&
-              range.entry.forEach((v: boolean, index) => {
+              range.entry.forEach((key: string) => {
+                let index: number = siteEntry.findIndex(
+                  (entry: SearchEntry) => {
+                    return entry.id == key || entry.name == key;
+                  }
+                );
                 if (siteEntry[index] && siteEntry[index].name) {
-                  siteEntry[index].enabled = v;
+                  siteEntry[index].enabled = true;
                 }
               });
           }

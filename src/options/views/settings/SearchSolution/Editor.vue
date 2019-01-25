@@ -114,7 +114,6 @@
 </template>
 
 <script lang="ts">
-import md5 from "blueimp-md5";
 import Vue from "vue";
 import Extension from "@/service/extension";
 import {
@@ -175,7 +174,9 @@ export default Vue.extend({
           let entry: any[] = [];
           if (item.searchEntry) {
             item.searchEntry.forEach((e: SearchEntry) => {
-              entry.push(e.enabled);
+              if (e.enabled) {
+                entry.push(e.id || e.name);
+              }
             });
           }
           checked.push({
@@ -185,7 +186,7 @@ export default Vue.extend({
           });
         }
       });
-      // console.log(checked);
+      console.log(checked);
 
       if (update) {
         this.$emit("change", {
@@ -208,7 +209,7 @@ export default Vue.extend({
       });
       this.change();
     },
-    getSiteEntry(host: string, entry: boolean[]): string {
+    getSiteEntry(host: string, entry: string[]): string {
       let site: Site | undefined = this.sites.find((item: Site) => {
         return item.host === host;
       });
@@ -216,8 +217,12 @@ export default Vue.extend({
       if (site && site.searchEntry) {
         let results: string[] = [];
         let siteEntry: SearchEntry[] = site.searchEntry;
-        entry.forEach((v: boolean, index) => {
-          if (v && siteEntry[index] && siteEntry[index].name) {
+
+        entry.forEach((key: string) => {
+          let index: number = siteEntry.findIndex((entry: SearchEntry) => {
+            return entry.id == key || entry.name == key;
+          });
+          if (siteEntry[index] && siteEntry[index].name) {
             results.push(siteEntry[index].name as string);
           }
         });

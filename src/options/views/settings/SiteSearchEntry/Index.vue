@@ -33,6 +33,19 @@
             </a>
           </td>
           <td>
+            <template v-for="(item, index) in getCategory(props.item)">
+              <v-chip
+                :key="index"
+                label
+                color="blue-grey"
+                text-color="white"
+                small
+                class="mr-2 pl-0"
+                disabled
+              >{{ item }}</v-chip>
+            </template>
+          </td>
+          <td>
             <v-switch
               true-value="true"
               false-value="false"
@@ -41,13 +54,20 @@
             ></v-switch>
           </td>
           <td>
-            <v-icon small class="mr-2" @click="copy(props.item)">file_copy</v-icon>
-            <v-icon small class="mr-2" @click="edit(props.item)" v-if="props.item.isCustom">edit</v-icon>
+            <v-icon small class="mr-2" @click="copy(props.item)" :title="words.copy">file_copy</v-icon>
+            <v-icon
+              small
+              class="mr-2"
+              @click="edit(props.item)"
+              v-if="props.item.isCustom"
+              :title="words.edit"
+            >edit</v-icon>
             <v-icon
               small
               color="error"
               @click="removeConfirm(props.item)"
               v-if="props.item.isCustom"
+              :title="words.remove"
             >delete</v-icon>
           </td>
         </template>
@@ -55,9 +75,9 @@
     </v-card>
 
     <!-- 新增 -->
-    <AddItem v-model="showAddDialog" @save="addItem"/>
+    <AddItem v-model="showAddDialog" @save="addItem" :site="site"/>
     <!-- 编辑 -->
-    <EditItem v-model="showEditDialog" :data="selectedItem" @save="updateItem"/>
+    <EditItem v-model="showEditDialog" :site="site" :data="selectedItem" @save="updateItem"/>
 
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
@@ -85,7 +105,12 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Site, SearchEntry } from "@/interface/common";
+import {
+  Site,
+  SearchEntry,
+  SiteCategory,
+  SiteCategories
+} from "@/interface/common";
 import AddItem from "./Add.vue";
 import EditItem from "./Edit.vue";
 
@@ -106,7 +131,9 @@ export default Vue.extend({
         removeConfirm: "确认要删除这个搜索入口吗？",
         removeTitle: "删除确认",
         ok: "确认",
-        cancel: "取消"
+        cancel: "取消",
+        copy: "复制",
+        edit: "编辑"
       },
       selected: [],
       pagination: {
@@ -118,6 +145,7 @@ export default Vue.extend({
       siteDuplicateText: "该站点已存在",
       headers: [
         { text: "名称", align: "left", value: "name" },
+        { text: "已选择分类", align: "left", value: "categories" },
         { text: "启用", align: "left", value: "enable" },
         { text: "操作", value: "name", sortable: false }
       ],
@@ -211,6 +239,29 @@ export default Vue.extend({
 
         this.searchEntry = searchEntry;
       }
+    },
+    getCategory(entry: SearchEntry): string[] {
+      let site: Site = this.site;
+      let result: string[] = [];
+      if (site.categories && entry.categories) {
+        site.categories.forEach((item: SiteCategories) => {
+          if (
+            item.category &&
+            (item.entry == "*" ||
+              (entry.entry as string).indexOf(item.entry as string))
+          ) {
+            item.category.forEach((c: SiteCategory) => {
+              if (
+                entry.categories &&
+                entry.categories.includes(c.id as string)
+              ) {
+                result.push(c.name as string);
+              }
+            });
+          }
+        });
+      }
+      return result;
     }
   },
   created() {

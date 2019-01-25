@@ -1,8 +1,8 @@
 <template>
-  <v-card class="mb-5" color="grey lighten-4">
+  <v-card color="grey lighten-4">
     <v-card-text>
       <v-form v-model="data.valid">
-        <!-- 站点名称 -->
+        <!-- 名称 -->
         <v-text-field
           ref="name"
           v-model="data.name"
@@ -13,6 +13,7 @@
           :disabled="!data.isCustom"
         ></v-text-field>
 
+        <!-- 入口页面 -->
         <v-text-field
           v-model="data.entry"
           :label="words.entry"
@@ -22,6 +23,29 @@
           :disabled="!data.isCustom"
         ></v-text-field>
 
+        <!-- 资源分类 -->
+        <v-autocomplete
+          v-if="category && category.length"
+          v-model="data.categories"
+          :items="category"
+          :label="words.category"
+          item-text="name"
+          item-value="id"
+          chips
+          clearable
+          multiple
+          :disabled="!data.isCustom"
+        >
+          <template slot="selection" slot-scope="data">
+            <v-chip
+              small
+              :selected="data.selected"
+              close
+              @input="remove(data.item)"
+            >{{ data.item.name }}</v-chip>
+          </template>
+        </v-autocomplete>
+
         <v-text-field
           v-model="data.parseScriptFile"
           :label="words.parseScriptFile"
@@ -29,17 +53,6 @@
           :disabled="!data.isCustom"
         ></v-text-field>
 
-        <!-- export interface SearchEntry {
-  name?: string;
-  entry?: string;
-  resultType?: ESearchResultType;
-  parseScriptFile?: string;
-  parseScript?: string;
-  resultSelector?: string;
-  enabled?: boolean;
-  tagSelectors?: any[];
-  isCustom?: boolean;
-        }-->
         <!-- 脚本 -->
         <v-textarea
           v-model="data.parseScript"
@@ -61,28 +74,22 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { Site } from "@/interface/common";
+import { Site, SiteCategories, SiteCategory } from "@/interface/common";
 export default Vue.extend({
   data() {
     return {
       words: {
         name: "入口名称",
         entry: "入口页面",
-        pages: "适用页面",
-        pagesTip:
-          "页面以'/'开始表示网站根目录，输入完成后按回车添加，可添加多个，可以是正则表达式",
-        scripts: "附加脚本文件",
-        scriptsTip: "/ 表示从资源目录根加载脚本，可添加多个",
         parseScript: "搜索结果解析脚本",
         parseScriptFile: "搜索结果解析脚本文件",
         resultSelector: "种子列表定位选择器",
-        style: "附加样式",
-        styles: "附加样式文件",
-        stylesTip: "/ 表示从资源目录根加载脚本，可添加多个"
+        category: "资源分类（不选表示所有）"
       },
       rules: {
         require: [(v: any) => !!v || "!"]
-      }
+      },
+      checked: []
     };
   },
   props: {
@@ -91,15 +98,61 @@ export default Vue.extend({
       default: () => ({
         valid: false
       })
-    }
+    },
+    site: Object
   },
   watch: {
-    "data.script"() {
-      console.log(
-        JSON.stringify({
-          script: this.data.script
-        })
-      );
+    "data.categories"() {
+      let result: string[] = [];
+      this.data.categories.forEach((id: number) => {
+        let cat: any = this.category.find((c: any) => {
+          return c.id == id;
+        });
+        if (cat) {
+          result.push(cat.key);
+        }
+      });
+
+      this.data.queryString = result.join("&");
+    }
+  },
+  methods: {
+    remove(category: SiteCategory) {
+      let index: number = this.data.categories.findIndex((item: any) => {
+        return category.id === item.id;
+      });
+
+      if (index != -1) {
+        this.data.categories.splice(index, 1);
+      }
+    }
+  },
+  computed: {
+    category(): SiteCategory[] {
+      let site: Site = this.site;
+      let result: SiteCategory[] = [];
+      if (site.categories) {
+        site.categories.forEach((item: SiteCategories) => {
+          if (
+            item.category &&
+            (item.entry == "*" || this.data.entry.indexOf(item.entry))
+          ) {
+            let key = item.result + "";
+            console.log(key);
+            item.category.forEach((c: SiteCategory) => {
+              result.push(
+                Object.assign(
+                  {
+                    key: key.replace(/\$id\$/gi, c.id + "")
+                  },
+                  c
+                )
+              );
+            });
+          }
+        });
+      }
+      return result;
     }
   }
 });

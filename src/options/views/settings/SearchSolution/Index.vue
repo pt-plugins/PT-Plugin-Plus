@@ -44,7 +44,7 @@
                 text-color="white"
                 small
                 class="mr-2 pl-0"
-                disabled
+                @click="editSearchEntry(item.host)"
               >{{ item.siteName }}{{ getSiteEntry(item.host, item.entry) }}</v-chip>
             </template>
           </td>
@@ -169,7 +169,7 @@ export default Vue.extend({
         this.selected = [];
       }
     },
-    getSiteEntry(host: string, entry: boolean[]): string {
+    getSiteEntry(host: string, entry: string[]): string {
       let site: Site = this.options.sites.find((item: Site) => {
         return item.host === host;
       });
@@ -177,8 +177,12 @@ export default Vue.extend({
       if (site && site.searchEntry) {
         let results: string[] = [];
         let siteEntry: SearchEntry[] = site.searchEntry;
-        entry.forEach((v: boolean, index) => {
-          if (v && siteEntry[index] && siteEntry[index].name) {
+
+        entry.forEach((key: string) => {
+          let index: number = siteEntry.findIndex((entry: SearchEntry) => {
+            return entry.id == key || entry.name == key;
+          });
+          if (siteEntry[index] && siteEntry[index].name) {
             results.push(siteEntry[index].name as string);
           }
         });
@@ -188,6 +192,14 @@ export default Vue.extend({
         }
       }
       return "";
+    },
+    editSearchEntry(host: string) {
+      this.$router.push({
+        name: "set-site-search-entry",
+        params: {
+          host: host
+        }
+      });
     }
   },
   computed: {}
