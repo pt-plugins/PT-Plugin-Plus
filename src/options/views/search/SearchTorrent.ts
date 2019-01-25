@@ -63,17 +63,22 @@ export default Vue.extend({
       },
       loading: false,
       headers: [
-        { text: "站点", align: "center", value: "site.host" },
+        { text: "站点", align: "center", value: "site.host", width: "100px" },
         { text: "标题", align: "left", value: "title" },
-        { text: "分类", align: "center", value: "category.name" },
-        { text: "大小", align: "right", value: "size" },
+        {
+          text: "分类",
+          align: "center",
+          value: "category.name",
+          width: "150px"
+        },
+        { text: "大小", align: "right", value: "size", width: "100px" },
         // { text: "评论", align: "center", value: "comments" },
-        { text: "上传", align: "center", value: "seeders" },
-        { text: "下载", align: "center", value: "leechers" },
-        { text: "完成", align: "center", value: "completed" },
+        { text: "上传", align: "right", value: "seeders", width: "60px" },
+        { text: "下载", align: "right", value: "leechers", width: "60px" },
+        { text: "完成", align: "right", value: "completed", width: "60px" },
         // { text: "发布者", align: "left", value: "author" },
-        { text: "发布时间", align: "left", value: "time" },
-        { text: "操作", sortable: false }
+        { text: "发布时间", align: "left", value: "time", width: "130px" },
+        { text: "操作", sortable: false, width: "100px" }
       ],
       errorMsg: "",
       haveError: false,
@@ -108,7 +113,8 @@ export default Vue.extend({
         speed: 0,
         progress: 0
       },
-      showCategory: false
+      showCategory: false,
+      fixedTable: false
     };
   },
   created() {
@@ -340,6 +346,7 @@ export default Vue.extend({
      */
     doSearchTorrentWithQueue(sites: Site[]) {
       this.loading = true;
+      this.searchMsg = "正在搜索……";
       sites.forEach((site: Site, index: number) => {
         this.searchQueue.push({
           site,

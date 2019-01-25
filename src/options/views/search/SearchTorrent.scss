@@ -13,7 +13,7 @@
   }
 
   .title {
-    max-width: 500px;
+    max-width: 40vw;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -61,5 +61,67 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+
+  .theme--dark.v-table thead th {
+    background-color: #424242;
+  }
+
+  .theme--light.v-table thead th {
+    background-color: #ffffff;
+  }
+
+  .fixed-table {
+    max-height: 68vh;
+    backface-visibility: hidden;
+  }
+
+  .fixed-header {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    table {
+      table-layout: fixed;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    }
+
+    tr.v-datatable__progress th {
+      height: 1px;
+    }
+
+    .v-table__overflow {
+      flex-grow: 1;
+      flex-shrink: 1;
+      overflow-x: auto;
+      overflow-y: auto;
+    }
+
+    .v-datatable.v-table {
+      flex-grow: 0;
+      flex-shrink: 1;
+
+      .v-datatable__actions {
+        flex-wrap: nowrap;
+
+        .v-datatable__actions__pagination {
+          white-space: nowrap;
+        }
+      }
+    }
   }
 }

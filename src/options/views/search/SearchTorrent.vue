@@ -212,7 +212,7 @@
         :pagination.sync="pagination"
         :loading="loading"
         item-key="uid"
-        class="torrent"
+        :class="'torrent'+(fixedTable?' fixed-table fixed-header v-table__overflow':'')"
         :select-all="checkBox"
         :rows-per-page-items="options.rowsPerPageItems"
         @update:pagination="updatePagination"
@@ -263,9 +263,9 @@
           </td>
           <td class="size">{{props.item.size | formatSize}}</td>
           <!-- <td class="center">{{ props.item.comments }}</td> -->
-          <td class="center">{{ props.item.seeders }}</td>
-          <td class="center">{{ props.item.leechers }}</td>
-          <td class="center">{{ props.item.completed }}</td>
+          <td class="size">{{ props.item.seeders }}</td>
+          <td class="size">{{ props.item.leechers }}</td>
+          <td class="size">{{ props.item.completed }}</td>
           <!-- <td>{{ props.item.author }}</td> -->
           <td>{{ props.item.time | formatDate }}</td>
           <td>
