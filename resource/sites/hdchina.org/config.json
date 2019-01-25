@@ -13,5 +13,88 @@
     "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
     "resultSelector": "table.torrent_list:last > tbody > tr",
     "enabled": true
+  }],
+  "categories": [{
+    "entry": "*",
+    "result": "cat$id$=1",
+    "category": [{
+      "id": 20,
+      "name": "原盘(Full BD)"
+    }, {
+      "id": 17,
+      "name": "电影Movie(1080p)"
+    }, {
+      "id": 16,
+      "name": "电影Movie(1080i)"
+    }, {
+      "id": 9,
+      "name": "电影Movie(720p)"
+    }, {
+      "id": 13,
+      "name": "欧美剧(EU/US TV series)"
+    }, {
+      "id": 25,
+      "name": "中港台剧集(Chinese TV series)"
+    }, {
+      "id": 26,
+      "name": "韩剧(Kor Drama)"
+    }, {
+      "id": 24,
+      "name": "日剧(Jpn Drama)"
+    }, {
+      "id": 21,
+      "name": "欧美剧集包(EU/US TV series pack)"
+    }, {
+      "id": 22,
+      "name": "中港台剧集包(Chinese TV series pack)"
+    }, {
+      "id": 23,
+      "name": "日韩剧集包(JPN/KOR drama pack)"
+    }, {
+      "id": 27,
+      "name": "iPad视频(iPad Video)"
+    }, {
+      "id": 5,
+      "name": "纪录片(Documentary)"
+    }, {
+      "id": 15,
+      "name": "体育节目(Sports)"
+    }, {
+      "id": 14,
+      "name": "动画片(Animation)"
+    }, {
+      "id": 401,
+      "name": "综艺(TV Shows)"
+    }, {
+      "id": 402,
+      "name": "演唱会(Vocal Concert)"
+    }, {
+      "id": 406,
+      "name": "MV(Music Video)"
+    }, {
+      "id": 408,
+      "name": "音乐(Music)"
+    }, {
+      "id": 19,
+      "name": "补充音轨(Audio Track)"
+    }, {
+      "id": 405,
+      "name": "戏剧(Drama)"
+    }, {
+      "id": 404,
+      "name": "书籍(Book)"
+    }, {
+      "id": 409,
+      "name": "其他(Other)"
+    }, {
+      "id": 410,
+      "name": "4K UltraHD"
+    }, {
+      "id": 411,
+      "name": "旅游(Travel)"
+    }, {
+      "id": 412,
+      "name": "饮食(Food)"
+    }]
   }]
 }
