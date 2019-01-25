@@ -128,28 +128,33 @@ export default Vue.extend({
     }
   },
   computed: {
+    /**
+     * 获取当前可用类别
+     */
     category(): SiteCategory[] {
       let site: Site = this.site;
       let result: SiteCategory[] = [];
       if (site.categories) {
-        site.categories.forEach((item: SiteCategories) => {
+        site.categories.find((item: SiteCategories) => {
           if (
             item.category &&
-            (item.entry == "*" || this.data.entry.indexOf(item.entry))
+            (item.entry == "*" ||
+              (this.data.entry && this.data.entry.indexOf(item.entry) > -1))
           ) {
             let key = item.result + "";
-            console.log(key);
-            item.category.forEach((c: SiteCategory) => {
+            item.category.forEach((category: SiteCategory) => {
               result.push(
                 Object.assign(
                   {
-                    key: key.replace(/\$id\$/gi, c.id + "")
+                    key: key.replace(/\$id\$/gi, category.id + "")
                   },
-                  c
+                  category
                 )
               );
             });
+            return true;
           }
+          return false;
         });
       }
       return result;
