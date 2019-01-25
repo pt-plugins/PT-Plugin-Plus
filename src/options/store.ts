@@ -402,6 +402,9 @@ export default new Vuex.Store({
       }
 
       if (index > -1) {
+        if (_options.defaultSearchSolutionId == options.id) {
+          _options.defaultSearchSolutionId = "";
+        }
         _options.searchSolutions.splice(index, 1);
         extension
           .save(_options)
