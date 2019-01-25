@@ -4,7 +4,8 @@ import {
   EConfigKey,
   Site,
   DownloadClient,
-  UIOptions
+  UIOptions,
+  SearchEntry
 } from "../interface/common";
 import { API, APP } from "../service/api";
 import localStorage from "../service/localStorage";
@@ -64,10 +65,45 @@ class Config {
    * @param options 配置信息
    */
   public save(options?: Options) {
-    this.localStorage.set(this.name, options || this.options);
     if (options) {
       this.options = options;
     }
+    this.localStorage.set(this.name, this.cleaningOptions(this.options));
+  }
+
+  /**
+   * 清理参数配置，一些参数只需要运行时可用即可
+   * @param options
+   */
+  private cleaningOptions(options: Options): Options {
+    let _options = Object.assign({}, options);
+    if (_options.sites) {
+      _options.sites.forEach((item: Site) => {
+        let systemSite: Site | undefined = this.sites.find((site: Site) => {
+          return site.host == item.host;
+        });
+
+        if (systemSite) {
+          // 不保存分类信息
+          if (item.categories) {
+            delete item.categories;
+          }
+          if (item.searchEntry) {
+            item.searchEntry.forEach((entry: SearchEntry, index: number) => {
+              if (!entry.isCustom) {
+                (item.searchEntry as any)[index] = {
+                  name: entry.name,
+                  enabled: entry.enabled
+                };
+              }
+            });
+          }
+        }
+      });
+    }
+
+    console.log(_options);
+    return _options;
   }
 
   /**
@@ -116,16 +152,41 @@ class Config {
       // 升级不存在的配置项
       this.options.sites &&
         this.options.sites.length &&
-        this.sites.forEach(item => {
+        this.sites.forEach((item: Site) => {
           let index = this.options.sites.findIndex((site: Site) => {
             return site.host === item.host;
           });
 
           if (index > -1) {
-            this.options.sites[index] = Object.assign(
+            let _site = Object.assign(
               Object.assign({}, item),
               this.options.sites[index]
             );
+
+            if (_site.searchEntry) {
+              _site.searchEntry.forEach(
+                (entry: SearchEntry, _index: number) => {
+                  if (!entry.isCustom && item.searchEntry) {
+                    let _entry = item.searchEntry.find(
+                      (sysEntry: SearchEntry) => {
+                        return entry.name == sysEntry.name;
+                      }
+                    );
+
+                    if (_entry) {
+                      (_site.searchEntry as any)[_index] = Object.assign(
+                        _entry,
+                        {
+                          enabled: entry.enabled
+                        }
+                      );
+                    }
+                  }
+                }
+              );
+            }
+
+            this.options.sites[index] = _site;
           }
         });
 
