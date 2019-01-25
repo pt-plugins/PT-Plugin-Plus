@@ -104,14 +104,20 @@ export default Vue.extend({
   watch: {
     "data.categories"() {
       let result: string[] = [];
-      this.data.categories.forEach((id: number) => {
-        let cat: any = this.category.find((c: any) => {
-          return c.id == id;
+      if (
+        this.data &&
+        this.data.categories &&
+        this.data.categories.length > 0
+      ) {
+        this.data.categories.forEach((id: number) => {
+          let cat: any = this.category.find((c: any) => {
+            return c.id == id;
+          });
+          if (cat) {
+            result.push(cat.key);
+          }
         });
-        if (cat) {
-          result.push(cat.key);
-        }
-      });
+      }
 
       this.data.queryString = result.join("&");
     }

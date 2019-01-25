@@ -25,64 +25,45 @@
             <v-flex xs9>
               <div class="list">
                 <v-list dense>
-                  <v-list-tile @click="selectAll(!selectedAll)">
-                    <v-list-tile-action>
-                      <v-icon>{{ selectAllIcon }}</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-title>{{words.selectAll}}</v-list-tile-title>
-                  </v-list-tile>
-                  <v-divider></v-divider>
-                  <v-divider></v-divider>
-                  <template v-for="(site, index) in sites">
-                    <v-list-tile :key="site.host" avatar>
-                      <v-list-tile-action>
-                        <v-checkbox v-model="site.enabled" color="teal" @change="change(true)"></v-checkbox>
-                      </v-list-tile-action>
-
-                      <v-list-tile-content>
-                        <v-list-tile-title :color="site.enabled?'blue':'grey'">
-                          <span>{{site.name}}</span>
-                        </v-list-tile-title>
-                        <v-list-tile-sub-title>
-                          <template v-if="site.enabled">
-                            <v-container fluid class="ma-0 pa-0 ml-4">
-                              <v-layout row wrap class="ma-0 pa-0">
-                                <v-flex
-                                  class="ma-0 pa-0"
-                                  xs3
-                                  v-for="(item, key, index) in site.searchEntry"
-                                  :key="index"
-                                >
-                                  <v-checkbox
-                                    class="ma-0 pa-0 caption"
-                                    :label="item.name"
-                                    v-model="item.enabled"
-                                    @change="change(true)"
-                                  ></v-checkbox>
-                                </v-flex>
-                              </v-layout>
-                            </v-container>
-                          </template>
-                        </v-list-tile-sub-title>
-                      </v-list-tile-content>
-
-                      <v-list-tile-avatar :size="20">
-                        <img :src="site.icon" :class="site.enabled?'':'grey'">
-                      </v-list-tile-avatar>
-                    </v-list-tile>
-
-                    <v-divider :key="index"></v-divider>
-                  </template>
-
-                  <template v-if="sites.length>5">
-                    <v-divider></v-divider>
-                    <v-list-tile @click="selectAll(!selectedAll)">
-                      <v-list-tile-action>
-                        <v-icon>{{ selectAllIcon }}</v-icon>
-                      </v-list-tile-action>
-                      <v-list-tile-title>{{words.selectAll}}</v-list-tile-title>
-                    </v-list-tile>
-                  </template>
+                  <!-- 站点列表 -->
+                  <v-data-table
+                    v-model="selected"
+                    :headers="headers"
+                    :items="sites"
+                    :pagination.sync="pagination"
+                    item-key="host"
+                    select-all
+                    class="elevation-1"
+                    hide-actions
+                  >
+                    <template slot="items" slot-scope="props">
+                      <tr>
+                        <td style="width:20px;">
+                          <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+                        </td>
+                        <td>
+                          <div>{{ props.item.name }}</div>
+                          <v-container v-if="props.item.enabled" fluid class="ma-0 pa-0 ml-4">
+                            <v-layout row wrap class="ma-0 pa-0">
+                              <v-flex
+                                class="ma-0 pa-0"
+                                xs3
+                                v-for="(item, key, index) in props.item.searchEntry"
+                                :key="index"
+                              >
+                                <v-checkbox
+                                  class="ma-0 pa-0 caption"
+                                  :label="item.name"
+                                  v-model="item.enabled"
+                                  @change="change(true)"
+                                ></v-checkbox>
+                              </v-flex>
+                            </v-layout>
+                          </v-container>
+                        </td>
+                      </tr>
+                    </template>
+                  </v-data-table>
                 </v-list>
               </div>
             </v-flex>
@@ -138,13 +119,19 @@ export default Vue.extend({
       rules: {
         require: [(v: any) => !!v || "!"]
       },
+      pagination: {
+        rowsPerPage: -1
+      },
+      headers: [{ text: "站点", align: "left", value: "name" }],
       haveError: false,
       haveSuccess: false,
       successMsg: "",
       errorMsg: "",
       isValid: false,
       checked: [] as SearchSolutionRange[],
-      sites: [] as Site[]
+      sites: [] as Site[],
+      selected: [] as any,
+      loading: false
     };
   },
   props: {
@@ -161,12 +148,32 @@ export default Vue.extend({
       this.haveError = this.errorMsg != "";
     },
     initSites() {
+      this.loading = true;
+      this.selected = [];
       this.sites = this.initSites;
+      this.sites.forEach((item: any) => {
+        if (item.enabled) {
+          this.selected.push(item);
+        }
+      });
+      this.loading = false;
       this.change(false);
+    },
+    selected() {
+      this.sites.forEach((item: any) => {
+        item.enabled = false;
+      });
+
+      this.selected.forEach((item: any) => {
+        item.enabled = true;
+      });
+
+      this.change();
     }
   },
   methods: {
     change(update: boolean = true) {
+      if (this.loading) return;
       let checked: SearchSolutionRange[] = [];
 
       this.sites.forEach((item: any) => {
@@ -186,7 +193,6 @@ export default Vue.extend({
           });
         }
       });
-      console.log(checked);
 
       if (update) {
         this.$emit("change", {

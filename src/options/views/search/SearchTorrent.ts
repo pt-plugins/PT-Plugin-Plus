@@ -289,20 +289,23 @@ export default Vue.extend({
             if (index > -1) {
               let site: any = _sites[index];
               let siteEntry: SearchEntry[] = site.searchEntry;
-              siteEntry.forEach((v, index) => {
-                siteEntry[index].enabled = false;
-              });
-              range.entry &&
-                range.entry.forEach((key: string) => {
-                  let index: number = siteEntry.findIndex(
-                    (entry: SearchEntry) => {
-                      return entry.id == key || entry.name == key;
-                    }
-                  );
-                  if (siteEntry[index] && siteEntry[index].name) {
-                    siteEntry[index].enabled = true;
-                  }
+              if (siteEntry) {
+                siteEntry.forEach((v, index) => {
+                  siteEntry[index].enabled = false;
                 });
+                range.entry &&
+                  range.entry.forEach((key: string) => {
+                    let index: number = siteEntry.findIndex(
+                      (entry: SearchEntry) => {
+                        return entry.id == key || entry.name == key;
+                      }
+                    );
+                    if (siteEntry[index] && siteEntry[index].name) {
+                      siteEntry[index].enabled = true;
+                    }
+                  });
+              }
+
               sites.push(site);
             }
           });

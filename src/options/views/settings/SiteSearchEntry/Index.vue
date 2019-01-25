@@ -32,7 +32,7 @@
               <span class="ml-2">{{ props.item.name }}</span>
             </a>
           </td>
-          <td>
+          <td class="cat">
             <template v-for="(item, index) in getCategory(props.item)">
               <v-chip
                 :key="index"
@@ -145,7 +145,11 @@ export default Vue.extend({
       siteDuplicateText: "该站点已存在",
       headers: [
         { text: "名称", align: "left", value: "name" },
-        { text: "已选择分类", align: "left", value: "categories" },
+        {
+          text: "已选择分类",
+          align: "left",
+          value: "categories"
+        },
         { text: "启用", align: "left", value: "enable" },
         { text: "操作", value: "name", sortable: false }
       ],
@@ -221,7 +225,7 @@ export default Vue.extend({
       if (this.site) {
         let searchEntry: any[] = [];
 
-        if (this.site.searchEntry) {
+        if (this.site.searchEntry && this.site.searchEntry.length > 0) {
           searchEntry.push(...this.site.searchEntry);
         } else {
           let schema = this.site.schema;
@@ -278,6 +282,10 @@ export default Vue.extend({
 .site-search-entry {
   .search {
     max-width: 400px;
+  }
+
+  .cat {
+    max-width: 40vw;
   }
 }
 </style>

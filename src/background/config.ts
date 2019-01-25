@@ -152,38 +152,45 @@ class Config {
       // 升级不存在的配置项
       this.options.sites &&
         this.options.sites.length &&
-        this.sites.forEach((item: Site) => {
+        this.sites.forEach((systemSite: Site) => {
           let index = this.options.sites.findIndex((site: Site) => {
-            return site.host === item.host;
+            return site.host === systemSite.host;
           });
 
           if (index > -1) {
-            let _site = Object.assign(
-              Object.assign({}, item),
+            let _site: Site = Object.assign(
+              Object.assign({}, systemSite),
               this.options.sites[index]
             );
 
-            if (_site.searchEntry) {
-              _site.searchEntry.forEach(
-                (entry: SearchEntry, _index: number) => {
-                  if (!entry.isCustom && item.searchEntry) {
-                    let _entry = item.searchEntry.find(
-                      (sysEntry: SearchEntry) => {
-                        return entry.name == sysEntry.name;
+            if (systemSite.categories) {
+              _site.categories = systemSite.categories;
+            }
+
+            // 合并系统定义的搜索入口
+            if (_site.searchEntry && systemSite.searchEntry) {
+              systemSite.searchEntry.forEach((sysEntry: SearchEntry) => {
+                if (_site.searchEntry) {
+                  let _index: number | undefined =
+                    _site.searchEntry &&
+                    _site.searchEntry.findIndex((entry: SearchEntry) => {
+                      return entry.name == sysEntry.name && !entry.isCustom;
+                    });
+
+                  if (_index != undefined && _index > -1) {
+                    _site.searchEntry[_index] = Object.assign(
+                      Object.assign({}, sysEntry),
+                      {
+                        enabled: _site.searchEntry[_index].enabled
                       }
                     );
-
-                    if (_entry) {
-                      (_site.searchEntry as any)[_index] = Object.assign(
-                        _entry,
-                        {
-                          enabled: entry.enabled
-                        }
-                      );
-                    }
+                  } else {
+                    _site.searchEntry.push(Object.assign({}, sysEntry));
                   }
                 }
-              );
+              });
+            } else if (systemSite.searchEntry) {
+              _site.searchEntry = systemSite.searchEntry;
             }
 
             this.options.sites[index] = _site;
