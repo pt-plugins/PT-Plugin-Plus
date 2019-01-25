@@ -100,3 +100,22 @@
   - `call`: 调用指定的命令
 
 - `jQuery` : jQuery 对象
+
+## NexusPHP 获取站点分类信息
+
+```js
+JSON.stringify(
+  jQuery.map(jQuery("#ksearchboxmain").find("a[href*='cat']"), function(n) {
+    return {
+      id: parseInt(
+        jQuery(n)
+          .attr("href")
+          .replace("?cat=", "")
+      ),
+      name: jQuery(n)
+        .find("img")
+        .attr("title")
+    };
+  })
+);
+```
