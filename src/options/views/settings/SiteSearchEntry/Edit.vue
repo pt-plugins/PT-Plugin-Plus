@@ -15,7 +15,12 @@
           <v-icon>cancel</v-icon>
           <span class="ml-1">{{ words.cancel }}</span>
         </v-btn>
-        <v-btn flat color="success" @click="save" :disabled="!defaultItem.valid">
+        <v-btn
+          flat
+          color="success"
+          @click="save"
+          :disabled="!defaultItem.valid && !defaultItem.isCustom"
+        >
           <v-icon>check_circle_outline</v-icon>
           <span class="ml-1">{{ words.ok }}</span>
         </v-btn>
