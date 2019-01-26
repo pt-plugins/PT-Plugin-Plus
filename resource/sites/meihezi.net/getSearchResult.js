@@ -87,7 +87,8 @@
           comments: _tag_date.prev("td").text().replace(',', '') || 0,
           site: site,
           tags: this.getTags(torrent_data_raw_1, options.torrentTagSelectors),
-          entryName: options.entry.name
+          entryName: options.entry.name,
+          category: this.getCategory(torrent_data_raw_1.find("td:first"))
         };
         results.push(data);
       }
@@ -133,6 +134,31 @@
       }
 
       return subTitle || "";
+    }
+
+    /**
+     * 获取分类
+     * @param {*} cell 当前列
+     */
+    getCategory(cell) {
+      let result = {
+        name: "",
+        link: ""
+      };
+      let link = cell.find("a:first");
+      let img = link.find("img:first");
+
+      result.link = link.attr("href");
+      if (result.link.substr(0, 4) !== "http") {
+        result.link = options.site.url + result.link;
+      }
+
+      if (img.length) {
+        result.name = img.attr("title");
+      } else {
+        result.name = link.text();
+      }
+      return result;
     }
   }
 

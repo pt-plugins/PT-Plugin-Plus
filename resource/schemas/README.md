@@ -112,9 +112,10 @@ JSON.stringify(
           .attr("href")
           .replace("?cat=", "")
       ),
-      name: jQuery(n)
-        .find("img")
-        .attr("title")
+      name:
+        jQuery(n)
+          .find("img")
+          .attr("title") || jQuery(n).text()
     };
   })
 );

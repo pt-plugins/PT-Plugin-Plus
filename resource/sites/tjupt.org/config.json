@@ -30,5 +30,46 @@
     "name": "50%",
     "selector": "font.halfdown",
     "color": "orange"
+  }],
+  "categories": [{
+    "entry": "*",
+    "result": "cat$id$=1",
+    "category": [{
+      "id": 401,
+      "name": "电影"
+    }, {
+      "id": 402,
+      "name": "剧集"
+    }, {
+      "id": 403,
+      "name": "综艺"
+    }, {
+      "id": 404,
+      "name": "资料"
+    }, {
+      "id": 405,
+      "name": "动漫"
+    }, {
+      "id": 406,
+      "name": "音乐"
+    }, {
+      "id": 407,
+      "name": "体育"
+    }, {
+      "id": 408,
+      "name": "软件"
+    }, {
+      "id": 409,
+      "name": "游戏"
+    }, {
+      "id": 411,
+      "name": "纪录片"
+    }, {
+      "id": 412,
+      "name": "移动视频"
+    }, {
+      "id": 410,
+      "name": "其他"
+    }]
   }]
 }

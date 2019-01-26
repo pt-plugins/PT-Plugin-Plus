@@ -15,7 +15,7 @@
     "entry": "/torrents.php?search=$key$&notnewword=1",
     "name": "全部",
     "resultType": "html",
-    "parseScriptFile": "getSearchResult.js",
+    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
     "resultSelector": "table.torrents:last > tbody > tr",
     "enabled": true
   }],

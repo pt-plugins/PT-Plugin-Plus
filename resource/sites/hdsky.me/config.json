@@ -5,5 +5,50 @@
   "icon": "https://hdsky.me/favicon.ico",
   "tags": ["影视", "纪录片", "综合"],
   "schema": "NexusPHP",
-  "host": "hdsky.me"
+  "host": "hdsky.me",
+  "categories": [{
+    "entry": "*",
+    "result": "cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "Movies/电影"
+      },
+      {
+        "id": 404,
+        "name": "Documentaries/纪录片"
+      },
+      {
+        "id": 410,
+        "name": "iPad/iPad影视"
+      },
+      {
+        "id": 405,
+        "name": "Animations/动漫"
+      },
+      {
+        "id": 402,
+        "name": "TV Series/剧集"
+      },
+      {
+        "id": 403,
+        "name": "TV Shows/综艺"
+      },
+      {
+        "id": 406,
+        "name": "Music Videos/音乐MV"
+      },
+      {
+        "id": 407,
+        "name": "Sports/体育"
+      },
+      {
+        "id": 408,
+        "name": "HQ Audio/无损音乐"
+      },
+      {
+        "id": 409,
+        "name": "Misc/其他"
+      }
+    ]
+  }]
 }
