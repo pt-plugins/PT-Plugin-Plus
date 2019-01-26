@@ -28,8 +28,8 @@ export const APP = {
     localStorage: new localStorage(),
     cacheKey: EConfigKey.cache,
     contents: {} as any,
-    // 10 天
-    expires: 60 * 60 * 24 * 10,
+    // 1 天
+    expires: 60 * 60 * 24 * 1,
     init(callback?: any) {
       console.log("cache.init");
       this.localStorage.get(this.cacheKey, (result: any) => {

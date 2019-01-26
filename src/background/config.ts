@@ -23,6 +23,11 @@ class Config {
   public requestCount: number = 0;
 
   constructor() {
+    this.reload();
+  }
+
+  public reload() {
+    APP.cache.clear();
     this.getSchemas();
     this.getSites();
     this.getClients();
@@ -244,6 +249,7 @@ class Config {
    * 获取支持的网站架构
    */
   public getSchemas(): any {
+    this.schemas = [];
     this.getContentFromApi(`${API.schemas}`).then((result: any) => {
       if (result.length) {
         result.forEach((item: any) => {
@@ -266,6 +272,7 @@ class Config {
   }
 
   public getSites() {
+    this.sites = [];
     this.getContentFromApi(API.sites).then((result: any) => {
       if (result.length) {
         result.forEach((item: any) => {

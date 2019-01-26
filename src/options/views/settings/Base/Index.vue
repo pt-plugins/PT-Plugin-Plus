@@ -73,36 +73,32 @@
                   v-model="options.autoUpdate"
                   :label="words.autoUpdate+lastUpdate"
                 ></v-switch>
-              </v-flex>
-              <v-flex xs12>
+
                 <v-switch
                   color="success"
                   v-model="options.allowSelectionTextSearch"
                   :label="words.allowSelectionTextSearch"
                 ></v-switch>
-              </v-flex>
 
-              <v-flex xs12>
                 <v-switch
                   color="success"
                   v-model="options.allowDropToSend"
                   :label="words.allowDropToSend"
                 ></v-switch>
-              </v-flex>
-              <v-flex xs12>
+
                 <v-switch
                   color="success"
                   v-model="options.saveDownloadHistory"
                   :label="words.saveDownloadHistory"
                 ></v-switch>
-              </v-flex>
-              <v-flex xs12>
+
                 <v-switch
                   color="success"
                   v-model="options.needConfirmWhenExceedSize"
                   :label="words.needConfirmWhenExceedSize"
                 ></v-switch>
               </v-flex>
+
               <v-flex xs12>
                 <div style="margin: -40px 0 0 40px;">
                   <v-text-field
@@ -180,7 +176,7 @@ export default Vue.extend({
         connectClientTimeout:
           "连接下载服务器超时时间（毫秒，1000毫秒=1秒），超出后将中断连接",
         noClient: "尚未配置下载服务器，请配置下载服务后再选择",
-        cacheIsCleared: "缓存已清除",
+        cacheIsCleared: "缓存已清除，如需立即生效，请重新打开页面",
         saved: "参数已保存"
       },
       valid: false,
@@ -209,7 +205,15 @@ export default Vue.extend({
     clearCache() {
       if (confirm(this.words.clearCacheConfirm)) {
         APP.cache.clear();
-        this.successMsg = this.words.cacheIsCleared;
+
+        setTimeout(() => {
+          extension
+            .sendRequest(EAction.reloadConfig)
+            .then(() => {
+              this.successMsg = this.words.cacheIsCleared;
+            })
+            .catch();
+        }, 200);
       }
     }
   },
@@ -261,3 +265,9 @@ export default Vue.extend({
   }
 });
 </script>
+<style lang="scss" scoped>
+.v-input--selection-controls {
+  margin: 0;
+  padding: 0;
+}
+</style>

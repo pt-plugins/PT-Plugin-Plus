@@ -161,6 +161,8 @@ export enum EAction {
   readConfig = "readConfig",
   // 保存参数
   saveConfig = "saveConfig",
+  // 从网络中重新加载配置文件
+  reloadConfig = "reloadConfig",
   // 发送种子到默认的下载服务器（客户端）
   sendTorrentToDefaultClient = "sendTorrentToDefaultClient",
   // 发送种子到指定的客户端

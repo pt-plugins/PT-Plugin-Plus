@@ -627,4 +627,14 @@ export default class Controller {
   public restoreFromGoogle(): Promise<any> {
     return this.service.config.restoreFromGoogle();
   }
+
+  /**
+   * 重新从网络中加载配置文件
+   */
+  public reloadConfig(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.service.config.reload();
+      resolve();
+    });
+  }
 }
