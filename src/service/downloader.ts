@@ -189,7 +189,7 @@ export class FileDownloader {
     }
 
     // 替换双引号
-    result = result.replace(/\"/g, "");
+    result = result.replace(/"/g, "");
     return decodeURI(result);
   }
 
