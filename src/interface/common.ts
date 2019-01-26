@@ -214,7 +214,9 @@ export enum EAction {
   // 将参数备份至Google
   backupToGoogle = "backupToGoogle",
   // 从Google恢复已备份的参数
-  restoreFromGoogle = "restoreFromGoogle"
+  restoreFromGoogle = "restoreFromGoogle",
+  // 从Google中清除已备份的参数
+  clearFromGoogle = "clearFromGoogle"
 }
 
 export interface Request {

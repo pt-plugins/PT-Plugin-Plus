@@ -6,9 +6,10 @@ import {
   DownloadClient,
   UIOptions,
   SearchEntry
-} from "../interface/common";
-import { API, APP } from "../service/api";
-import localStorage from "../service/localStorage";
+} from "@/interface/common";
+import { API, APP } from "@/service/api";
+import localStorage from "@/service/localStorage";
+import { SyncStorage } from "./syncStorage";
 
 /**
  * 配置信息类
@@ -16,6 +17,7 @@ import localStorage from "../service/localStorage";
 class Config {
   private name: string = EConfigKey.default;
   private localStorage: localStorage = new localStorage();
+  public syncStorage: SyncStorage = new SyncStorage();
 
   public schemas: any[] = [];
   public sites: any[] = [];
@@ -107,7 +109,7 @@ class Config {
       });
     }
 
-    console.log(_options);
+    console.log("cleaningOptions", _options);
     return _options;
   }
 
@@ -361,64 +363,6 @@ class Config {
   }
 
   /**
-   * 保存指定的键值到Google
-   * @param key
-   * @param value
-   */
-  public syncSet(key: string, value: any): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      if (chrome.storage && chrome.storage.sync) {
-        try {
-          chrome.storage.sync.set(
-            {
-              [key]: value
-            },
-            () => {
-              if (chrome.runtime.lastError) {
-                reject(APP.createErrorMessage(chrome.runtime.lastError));
-              } else {
-                resolve(value);
-              }
-            }
-          );
-        } catch (error) {
-          reject(APP.createErrorMessage(error));
-        }
-      } else {
-        reject(APP.createErrorMessage("chrome.storage 不存在"));
-      }
-    });
-  }
-
-  /**
-   * 从Google中获取指定的键值
-   * @param key
-   */
-  public syncGet(key: string): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      if (chrome.storage && chrome.storage.sync) {
-        try {
-          chrome.storage.sync.get(key, result => {
-            try {
-              if (result[key]) {
-                resolve(result[key]);
-              } else {
-                reject(APP.createErrorMessage("参数不存在"));
-              }
-            } catch (error) {
-              reject(APP.createErrorMessage(error));
-            }
-          });
-        } catch (error) {
-          reject(APP.createErrorMessage(error));
-        }
-      } else {
-        reject(APP.createErrorMessage("chrome.storage 不存在"));
-      }
-    });
-  }
-
-  /**
    * 将系统参数备份到Google
    */
   public backupToGoogle(): Promise<any> {
@@ -430,17 +374,24 @@ class Config {
         }
 
         // 因Google 8K限制，固将内容拆分后保存
+        // https://developer.chrome.com/extensions/storage#type-StorageArea
         let clients = Object.assign([], options.clients);
         let sites = Object.assign([], options.sites);
 
         delete options.clients;
         delete options.sites;
 
-        this.syncSet(this.name, options)
+        // 主要配置
+        this.syncStorage
+          .set(this.name, options)
           .then(() => {
-            this.syncSet(this.name + ".clients", clients)
+            // 客户端配置
+            this.syncStorage
+              .set(this.name + ".clients", clients)
               .then(() => {
-                this.syncSet(this.name + ".sites", sites)
+                // 站点配置
+                this.syncStorage
+                  .set(this.name + ".sites", sites)
                   .then(() => {
                     resolve(this.options);
                   })
@@ -467,7 +418,8 @@ class Config {
   public restoreFromGoogle(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       if (chrome.storage && chrome.storage.sync) {
-        this.syncGet(this.name)
+        this.syncStorage
+          .get(this.name)
           .then((result: any) => {
             let system = Object.assign({}, this.options.system);
             let options = result;
@@ -475,11 +427,13 @@ class Config {
             options.system = system;
 
             // 获取客户端配置
-            this.syncGet(this.name + ".clients")
+            this.syncStorage
+              .get(this.name + ".clients")
               .then((result: any) => {
                 options.clients = result;
                 // 获取站点配置
-                this.syncGet(this.name + ".sites")
+                this.syncStorage
+                  .get(this.name + ".sites")
                   .then((result: any) => {
                     options.sites = result;
                     this.options = options;

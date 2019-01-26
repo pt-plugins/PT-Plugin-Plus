@@ -18,6 +18,7 @@
           @click="backupToGoogle"
           :loading="status.backupToGoogle"
           :disabled="status.backupToGoogle"
+          :title="words.backupToGoogle"
         >
           <v-icon>backup</v-icon>
           <span class="ml-1">{{ words.backupToGoogle }}</span>
@@ -27,9 +28,21 @@
           @click="restoreFromGoogle"
           :loading="status.restoreFromGoogle"
           :disabled="status.restoreFromGoogle"
+          :title="words.restoreFromGoogle"
         >
           <v-icon>cloud_download</v-icon>
           <span class="ml-1">{{ words.restoreFromGoogle }}</span>
+        </v-btn>
+
+        <v-btn
+          color="error"
+          @click="clearFromGoogle"
+          :loading="status.clearFromGoogle"
+          :disabled="status.clearFromGoogle"
+          :title="words.clearFromGoogleTip"
+        >
+          <v-icon>delete_sweep</v-icon>
+          <span class="ml-1">{{ words.clearFromGoogle }}</span>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -63,7 +76,12 @@ export default Vue.extend({
         backupError: "备份参数失败！",
         errorMessage: {
           QUOTA_BYTES_PER_ITEM: "要保存的内容大小超出了Google限制（8K）"
-        }
+        },
+        clearFromGoogle: "清除",
+        clearFromGoogleTip: "从Google中清除已备份的参数",
+        clearFromGoogleConfirm: "是否要从Google中清除已备份的参数？",
+        clearFromGoogleError: "清除失败！",
+        clearFromGoogleSuccess: "内容已清除"
       },
       fileName: "PT-plugin-plus-config.json",
       fileInput: null as any,
@@ -73,7 +91,8 @@ export default Vue.extend({
       successMsg: "",
       status: {
         backupToGoogle: false,
-        restoreFromGoogle: false
+        restoreFromGoogle: false,
+        clearFromGoogle: false
       }
     };
   },
@@ -189,6 +208,30 @@ export default Vue.extend({
     clearMessage() {
       this.successMsg = "";
       this.errorMsg = "";
+    },
+    clearFromGoogle() {
+      if (!confirm(this.words.clearFromGoogleConfirm)) {
+        return;
+      }
+      this.clearMessage();
+      this.status.clearFromGoogle = true;
+      extension
+        .sendRequest(EAction.clearFromGoogle)
+        .then((options: Options) => {
+          this.successMsg = this.words.clearFromGoogleSuccess;
+        })
+        .catch((error: any) => {
+          this.errorMsg = this.words.clearFromGoogleError;
+          extension.sendRequest(EAction.writeLog, null, {
+            module: EModule.options,
+            event: "clearFromGoogle",
+            msg: this.words.clearFromGoogleError,
+            data: error
+          });
+        })
+        .finally(() => {
+          this.status.clearFromGoogle = false;
+        });
     }
   },
   watch: {

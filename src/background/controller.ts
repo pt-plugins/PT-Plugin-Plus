@@ -629,6 +629,13 @@ export default class Controller {
   }
 
   /**
+   * 从Google中清除已备份的参数
+   */
+  public clearFromGoogle(): Promise<any> {
+    return this.service.config.syncStorage.clear();
+  }
+
+  /**
    * 重新从网络中加载配置文件
    */
   public reloadConfig(): Promise<any> {
