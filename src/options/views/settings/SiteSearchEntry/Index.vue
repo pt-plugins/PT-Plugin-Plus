@@ -11,6 +11,15 @@
           <v-icon class="mr-2">remove</v-icon>
           {{words.remove}}
         </v-btn>
+        <v-btn
+          color="info"
+          href="https://github.com/ronggang/PT-Plugin-Plus/wiki/search-entry-definition"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          <v-icon class="mr-2">help</v-icon>
+          {{ words.help }}
+        </v-btn>
         <v-spacer></v-spacer>
         <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-card-title>
@@ -133,7 +142,8 @@ export default Vue.extend({
         ok: "确认",
         cancel: "取消",
         copy: "复制",
-        edit: "编辑"
+        edit: "编辑",
+        help: "如何使用？"
       },
       selected: [],
       pagination: {
