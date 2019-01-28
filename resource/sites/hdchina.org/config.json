@@ -16,7 +16,7 @@
   }],
   "categories": [{
     "entry": "*",
-    "result": "cat$id$=1",
+    "result": "&cat$id$=1",
     "category": [{
       "id": 20,
       "name": "原盘(Full BD)"

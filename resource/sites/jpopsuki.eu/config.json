@@ -16,7 +16,7 @@
   }],
   "categories": [{
     "entry": "*",
-    "result": "filter_cat[$id$]=1",
+    "result": "&filter_cat[$id$]=1",
     "category": [{
       "id": 1,
       "name": "Album"

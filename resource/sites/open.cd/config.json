@@ -20,5 +20,49 @@
     "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
     "resultSelector": "table.torrents:last > tbody > tr",
     "enabled": true
+  }],
+  "categories": [{
+    "entry": "*",
+    "result": "&source$id$=1",
+    "category": [{
+      "id": 2,
+      "name": "流行(Pop)"
+    }, {
+      "id": 3,
+      "name": "古典(Classical)"
+    }, {
+      "id": 11,
+      "name": "器乐(Instrumental)"
+    }, {
+      "id": 4,
+      "name": "原声(OST)"
+    }, {
+      "id": 5,
+      "name": "摇滚(Rock)"
+    }, {
+      "id": 8,
+      "name": "爵士(Jazz)"
+    }, {
+      "id": 12,
+      "name": "新世纪(NewAge)"
+    }, {
+      "id": 13,
+      "name": "舞曲(Dance)"
+    }, {
+      "id": 14,
+      "name": "电子(Electronic)"
+    }, {
+      "id": 15,
+      "name": "民谣(Folk)"
+    }, {
+      "id": 16,
+      "name": "独立(Indie)"
+    }, {
+      "id": 17,
+      "name": "嘻哈(Hip Hop)"
+    }, {
+      "id": 9,
+      "name": "其他(Others)"
+    }]
   }]
 }
