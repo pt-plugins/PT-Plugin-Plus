@@ -123,6 +123,7 @@ export interface SiteCategory {
 export interface SiteCategories {
   entry?: string;
   result?: string;
+  appendToSearchKey?: boolean;
   category?: SiteCategory[];
 }
 
@@ -351,6 +352,7 @@ export interface SearchEntry {
   id?: string;
   queryString?: string;
   categories?: string[];
+  appendToSearchKeyString?: string;
 }
 
 export interface UIOptions {

@@ -89,7 +89,8 @@ export default Vue.extend({
       rules: {
         require: [(v: any) => !!v || "!"]
       },
-      checked: []
+      checked: [],
+      categoryConfig: {} as SiteCategories
     };
   },
   props: {
@@ -109,7 +110,7 @@ export default Vue.extend({
         this.data.categories &&
         this.data.categories.length > 0
       ) {
-        this.data.categories.forEach((id: number) => {
+        this.data.categories.forEach((id: number | string) => {
           let cat: any = this.category.find((c: any) => {
             return c.id == id;
           });
@@ -119,7 +120,11 @@ export default Vue.extend({
         });
       }
 
-      this.data.queryString = result.join("&");
+      if (this.categoryConfig.appendToSearchKey) {
+        this.data.appendToSearchKeyString = result.join("");
+      } else {
+        this.data.queryString = result.join("");
+      }
     }
   },
   methods: {
@@ -147,6 +152,7 @@ export default Vue.extend({
             (item.entry == "*" ||
               (this.data.entry && this.data.entry.indexOf(item.entry) > -1))
           ) {
+            this.categoryConfig = item;
             let key = item.result + "";
             item.category.forEach((category: SiteCategory) => {
               result.push(

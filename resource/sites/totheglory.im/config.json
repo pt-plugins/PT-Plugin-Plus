@@ -35,5 +35,101 @@
   },
   "parser": {
     "downloadURL": "(function (options) {\n  if (options.url && options.url.href) {\n    let id_match = options.url.href.match(/\\/t\\/(\\d+)/);\n    if (!id_match) {\n      options.error = {\n        success: false,\n        msg: \"无效的下载地址\"\n      }\n      return;\n    }\n    let passkey = options.site.passkey;\n    if (passkey) {\n      let id = id_match[1];\n      // 格式：vvvid|||passkey|||sslzz\n      let key = (new Base64).encode(\"vvv\" + id + \"|||\" + options.site.passkey + \"|||sslzz\");\n      options.result = `https://${options.site.host}/rssdd.php?par=${key}&ssl=yes`;\n    } else {\n      options.error = {\n        success: false,\n        msg: \"请先设置站点的passkey\"\n      }\n    }\n  } else {\n    options.error = {\n      success: false,\n      msg: \"无效的下载地址\"\n    }\n  }\n})(options)"
-  }
+  },
+  "categories": [{
+    "entry": "browse.php?c=M",
+    "appendToSearchKey": true,
+    "result": "分类:`$id$` ",
+    "category": [{
+      "id": "电影DVDRip",
+      "name": "电影DVDRip"
+    }, {
+      "id": "电影720p",
+      "name": "电影720p"
+    }, {
+      "id": "电影1080i/p",
+      "name": "电影1080i/p"
+    }, {
+      "id": "BluRay原盘",
+      "name": "BluRay原盘"
+    }, {
+      "id": "影视2160p",
+      "name": "影视2160p"
+    }, {
+      "id": "UHD原盘",
+      "name": "UHD原盘"
+    }, {
+      "id": "纪录片720p",
+      "name": "纪录片720p"
+    }, {
+      "id": "纪录片1080i/p",
+      "name": "纪录片1080i/p"
+    }, {
+      "id": "纪录片BluRay原盘",
+      "name": "纪录片BluRay原盘"
+    }, {
+      "id": "欧美剧720p",
+      "name": "欧美剧720p"
+    }, {
+      "id": "欧美剧1080i/p",
+      "name": "欧美剧1080i/p"
+    }, {
+      "id": "高清日剧",
+      "name": "高清日剧"
+    }, {
+      "id": "大陆港台剧1080i/p",
+      "name": "大陆港台剧1080i/p"
+    }, {
+      "id": "大陆港台剧720p",
+      "name": "大陆港台剧720p"
+    }, {
+      "id": "高清韩剧",
+      "name": "高清韩剧"
+    }, {
+      "id": "欧美剧包",
+      "name": "欧美剧包"
+    }, {
+      "id": "日剧包",
+      "name": "日剧包"
+    }, {
+      "id": "华语剧包",
+      "name": "华语剧包"
+    }, {
+      "id": "韩剧包",
+      "name": "韩剧包"
+    }, {
+      "id": "(电影原声&Game)OST",
+      "name": "(电影原声&Game)OST"
+    }, {
+      "id": "无损音乐FLAC&APE",
+      "name": "无损音乐FLAC&APE"
+    }, {
+      "id": "MV&演唱会",
+      "name": "MV&演唱会"
+    }, {
+      "id": "高清体育节目",
+      "name": "高清体育节目"
+    }, {
+      "id": "高清动漫",
+      "name": "高清动漫"
+    }, {
+      "id": "韩国综艺",
+      "name": "韩国综艺"
+    }, {
+      "id": "高清综艺",
+      "name": "高清综艺"
+    }, {
+      "id": "日本综艺",
+      "name": "日本综艺"
+    }, {
+      "id": "MiniVideo",
+      "name": "MiniVideo"
+    }, {
+      "id": "补充音轨",
+      "name": "补充音轨"
+    }, {
+      "id": "iPhone/iPad视频",
+      "name": "iPhone/iPad视频"
+    }]
+  }]
 }
