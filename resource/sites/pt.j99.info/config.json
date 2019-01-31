@@ -1,0 +1,9 @@
+{
+    "name": "PT99",
+    "description": "An Average PT",
+    "url": "https://pt.j99.info/",
+    "icon": "https://pt.j99.info/favicon.ico",
+    "tags": ["综合","记录片","影视","综合"],
+    "schema": "NexusPHP",
+    "host": "pt.j99.info"
+}
