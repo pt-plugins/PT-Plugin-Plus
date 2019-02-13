@@ -33,7 +33,7 @@
   }],
   "categories": [{
     "entry": "*",
-    "result": "cat$id$=1",
+    "result": "&cat$id$=1",
     "category": [{
       "id": 401,
       "name": "中国大陆"

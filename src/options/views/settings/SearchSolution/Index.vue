@@ -15,6 +15,15 @@
           <v-icon class="mr-2">clear</v-icon>
           {{ words.clear }}
         </v-btn>-->
+        <v-btn
+          color="info"
+          href="https://github.com/ronggang/PT-Plugin-Plus/wiki/search-solution-definition"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          <v-icon class="mr-2">help</v-icon>
+          {{ words.help }}
+        </v-btn>
         <v-spacer></v-spacer>
         <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-card-title>
@@ -109,7 +118,8 @@ export default Vue.extend({
         clearConfirm: "确认要删除所有搜索方案吗？",
         removeSelectedConfirm: "确认要删除已选中的搜索方案吗？",
         ok: "确认",
-        cancel: "取消"
+        cancel: "取消",
+        help: "如何使用？"
       },
       showAddDialog: false,
       showEditDialog: false,
