@@ -6,4 +6,8 @@
   "name": "Gazelle",
   "path": "schema/Gazelle",
   "type": "dir"
+}, {
+  "name": "AvistaZ",
+  "path": "schema/AvistaZ",
+  "type": "dir"
 }]
