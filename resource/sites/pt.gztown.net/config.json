@@ -6,31 +6,6 @@
   "tags": ["影视", "港片"],
   "schema": "NexusPHP",
   "host": "pt.gztown.net",
-  "torrentTagSelectors": [{
-    "name": "Free",
-    "selector": ".free_bg",
-    "color": "blue"
-  }, {
-    "name": "2xFree",
-    "selector": ".twoupfree_bg",
-    "color": "green"
-  }, {
-    "name": "2xUp",
-    "selector": ".twoup_bg",
-    "color": "lime"
-  }, {
-    "name": "2x50%",
-    "selector": ".twouphalfdown_bg",
-    "color": "light-green"
-  }, {
-    "name": "30%",
-    "selector": ".thirtypercentdown_bg",
-    "color": "indigo"
-  }, {
-    "name": "50%",
-    "selector": ".halfdown_bg",
-    "color": "orange"
-  }],
   "categories": [{
     "entry": "*",
     "result": "&cat$id$=1",
