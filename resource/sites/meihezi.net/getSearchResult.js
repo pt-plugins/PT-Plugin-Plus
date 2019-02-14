@@ -105,7 +105,8 @@
     getTags(row, selectors) {
       let tags = [];
       if (selectors && selectors.length > 0) {
-        selectors.forEach(item => {
+        // 使用 some 避免错误的背景类名返回多个标签
+        selectors.some(item => {
           if (item.selector) {
             let result = row.find(item.selector)
             if (result.length) {
@@ -113,6 +114,7 @@
                 name: item.name,
                 color: item.color
               });
+              return true;
             }
           }
         });
