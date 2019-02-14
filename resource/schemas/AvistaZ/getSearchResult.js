@@ -50,7 +50,7 @@
         // 发布人
         author: header.length - 1,
         // 分类
-        category: -1
+        category: 0
       };
 
       if (site.url.lastIndexOf("/") != site.url.length - 1) {
@@ -118,14 +118,14 @@
           const row = rows.eq(index);
           let cells = row.find(">td");
 
-          let title = row.find("a.torrent-filename");
+          let title = row.find("a.torrent-filename, a.torrent-link");
           let link = title.attr("href");
           if (link.substr(0, 4) !== "http") {
             link = `${site.url}${link}`;
           }
 
           // 获取下载链接
-          let url = row.find("a.torrent-download-icon").attr("href");
+          let url = row.find("a[href*='/download/torrent/']").attr("href");
 
           if (url.substr(0, 4) !== "http") {
             url = `${site.url}${url}`;
@@ -197,7 +197,7 @@
      */
     getCategory(cell) {
       let result = {
-        name: cell.find("i").attr("title"),
+        name: cell.find("i:first").attr("title"),
         link: ""
       };
       if (result.name) {
