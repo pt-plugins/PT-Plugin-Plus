@@ -45,7 +45,7 @@ if (!"".getQueryString) {
       }
       let results = [];
       // 获取表头
-      let header = table.find("> thead > th");
+      let header = table.find("> thead > tr > th");
       if (header.length == 0) {
         header = rows.eq(0).find("th,td");
       }
