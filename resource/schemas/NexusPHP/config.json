@@ -16,7 +16,7 @@
     "name": "全部",
     "resultType": "html",
     "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr",
+    "resultSelector": "table.torrents:last",
     "enabled": true
   }],
   "parser": {

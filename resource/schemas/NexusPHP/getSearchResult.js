@@ -34,15 +34,21 @@ if (!"".getQueryString) {
         return [];
       }
       let site = options.site;
+      let selector = options.resultSelector || "table.torrents:last";
+      selector = selector.replace("> tbody > tr", "");
+      let table = options.page.find(selector);
       // 获取种子列表行
-      let rows = options.page.find(options.resultSelector || "table.torrents:last > tbody > tr");
+      let rows = table.find("> tbody > tr");
       if (rows.length == 0) {
         options.errorMsg = `[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
         return [];
       }
       let results = [];
       // 获取表头
-      let header = rows.eq(0).find("th,td");
+      let header = table.find("> thead > th");
+      if (header.length == 0) {
+        header = rows.eq(0).find("th,td");
+      }
 
       // 用于定位每个字段所列的位置
       let fieldIndex = {
