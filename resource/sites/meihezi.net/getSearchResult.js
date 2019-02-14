@@ -55,7 +55,7 @@
         let _tag_size = _tag_date.next("td");
         let _tag_seeders = torrent_data_raw_1.find("a[href$='#seeders']");
         let _tag_leechers = torrent_data_raw_1.find("a[href$='#leechers']");
-        let _tag_completed = torrent_data_raw_1.find("a[href^='viewsnatches.php']");
+        let _tag_completed = torrent_data_raw_1.find("a[href^='viewsnatches.php']:first");
 
         // table_append({
         //   "site": site,
