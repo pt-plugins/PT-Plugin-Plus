@@ -230,13 +230,14 @@
             <span class="captionText">{{ props.item.site.name }}</span>
           </td>
           <!-- 标题 -->
-          <td class="title">
+          <td class="titleCell">
             <a
               :href="props.item.link"
               target="_blank"
               v-html="props.item.titleHTML"
               :title="props.item.title"
               rel="noopener noreferrer nofollow"
+              class="subheading font-weight-medium"
             ></a>
             <div
               class="sub-title captionText"
