@@ -10,5 +10,26 @@
     "pages": ["/torrents"],
     "styles": ["/libs/album/style.css"],
     "scripts": ["/libs/album/album.js", "torrents.js"]
+  }],
+  "searchEntry": [{
+    "entry": "/torrents?in=1&search=$key$",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/AvistaZ/getSearchResult.js",
+    "resultSelector": "div.table-responsive > table:first",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "i.fa-star",
+    "color": "blue"
+  }, {
+    "name": "2xUp",
+    "selector": "i.fa-diamond",
+    "color": "lime"
+  }, {
+    "name": "50%",
+    "selector": "i.fa-star-half-o",
+    "color": "orange"
   }]
 }
