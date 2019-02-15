@@ -169,7 +169,7 @@
           let formData = new FormData();
           formData.append("savepath", data.savePath)
           formData.append("paused", !data.autoStart)
-          formData.append("torrents", result)
+          formData.append("torrents", result, "file.torrent")
 
           this.addTorrent(formData, callback);
         })

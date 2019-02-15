@@ -193,7 +193,7 @@
         })
         .then((result) => {
           let formData = new FormData();
-          formData.append("torrent_file", result)
+          formData.append("torrent_file", result, "file.torrent")
 
           this.addTorrent({
             settings: {
