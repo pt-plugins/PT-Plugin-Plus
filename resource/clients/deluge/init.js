@@ -135,6 +135,15 @@
         contentType: "application/json",
         timeout: PTBackgroundService.options.connectClientTimeout,
         success: (resultData, textStatus) => {
+          // 未认证
+          if (resultData && resultData.error && resultData.error.code == 1) {
+            this.getSessionId().then(() => {
+              this.exec(options, callback, tags);
+            }).catch((result) => {
+              callback && callback(result)
+            });
+            return;
+          }
           if (callback) {
             callback(resultData, tags);
           }
@@ -161,13 +170,46 @@
       // 磁性连接（代码来自原版WEBUI）
       if (url.match(/^[0-9a-f]{40}$/i)) {
         url = 'magnet:?xt=urn:btih:' + url;
+        this.addTorrent({
+          method: "core.add_torrent_url",
+          params: [url, {
+            "download_location": data.savePath
+          }]
+        }, callback);
+        return;
       }
-      this.exec({
-        method: "core.add_torrent_url",
-        params: [url, {
-          "download_location": data.savePath
-        }]
-      }, (resultData) => {
+      PTBackgroundService.requestMessage({
+          action: "getTorrentDataFromURL",
+          data: url
+        })
+        .then((result) => {
+          var fileReader = new FileReader();
+
+          fileReader.onload = (e) => {
+            var contents = e.target.result;
+            var key = "base64,";
+            var index = contents.indexOf(key);
+            if (index == -1) {
+              return;
+            }
+            var metainfo = contents.substring(index + key.length);
+
+            this.addTorrent({
+              method: "core.add_torrent_file",
+              params: ["", metainfo, {
+                "download_location": data.savePath
+              }]
+            }, callback);
+          }
+          fileReader.readAsDataURL(result);
+        })
+        .catch((result) => {
+          callback && callback(result);
+        });
+    }
+
+    addTorrent(options, callback) {
+      this.exec(options, (resultData) => {
         if (callback) {
           var result = resultData;
           if (!resultData.error && resultData.result) {
