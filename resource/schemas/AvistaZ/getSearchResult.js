@@ -1,25 +1,9 @@
-if (!"".getQueryString) {
-  String.prototype.getQueryString = function (name, split) {
-    if (split == undefined) split = "&";
-    var reg = new RegExp(
-        "(^|" + split + "|\\?)" + name + "=([^" + split + "]*)(" + split + "|$)"
-      ),
-      r;
-    if ((r = this.match(reg))) return decodeURI(r[2]);
-    return null;
-  };
-}
-
 (function (options) {
   class Parser {
     constructor() {
       this.haveData = false;
-      if (/takelogin\.php/.test(options.responseText)) {
+      if (/\/auth\/login/.test(options.responseText)) {
         options.errorMsg = `[${options.site.name}]需要登录后再搜索`;
-        return;
-      }
-      if (/没有种子|No [Tt]orrents?|Your search did not match anything|用准确的关键字重试/.test(options.responseText)) {
-        options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
         return;
       }
 
@@ -34,8 +18,7 @@ if (!"".getQueryString) {
         return [];
       }
       let site = options.site;
-      let selector = options.resultSelector || "table.torrents:last";
-      selector = selector.replace("> tbody > tr", "");
+      let selector = options.resultSelector || "div.table-responsive > table:first";
       let table = options.page.find(selector);
       // 获取种子列表行
       let rows = table.find("> tbody > tr");
@@ -67,7 +50,7 @@ if (!"".getQueryString) {
         // 发布人
         author: header.length - 1,
         // 分类
-        category: -1
+        category: 0
       };
 
       if (site.url.lastIndexOf("/") != site.url.length - 1) {
@@ -80,49 +63,49 @@ if (!"".getQueryString) {
         let text = cell.text();
 
         // 评论数
-        if (cell.find("img.comments").length) {
+        if (cell.find("a[href*='comments']").length) {
           fieldIndex.comments = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 发布时间
-        if (cell.find("img.time").length) {
+        if (cell.find("a[href*='age']").length) {
           fieldIndex.time = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 大小
-        if (cell.find("img.size").length) {
+        if (cell.find("a[href*='size']").length) {
           fieldIndex.size = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 种子数
-        if (cell.find("img.seeders").length) {
+        if (cell.find("a[href*='seed']").length) {
           fieldIndex.seeders = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 下载数
-        if (cell.find("img.leechers").length) {
+        if (cell.find("a[href*='leech']").length) {
           fieldIndex.leechers = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 完成数
-        if (cell.find("img.snatched").length) {
+        if (cell.find("a[href*='complete']").length) {
           fieldIndex.completed = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 分类
-        if (/(cat|类型|類型|分类|分類|Тип)/gi.test(text)) {
+        if (cell.is(".torrents-icon")) {
           fieldIndex.category = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
@@ -135,41 +118,26 @@ if (!"".getQueryString) {
           const row = rows.eq(index);
           let cells = row.find(">td");
 
-          let title = row.find("a[href*='hit'][title]").first();
-          if (title.length == 0) {
-            title = row.find("a[href*='hit']").first();
-          }
+          let title = row.find("a.torrent-filename, a.torrent-link");
           let link = title.attr("href");
           if (link.substr(0, 4) !== "http") {
             link = `${site.url}${link}`;
           }
 
           // 获取下载链接
-          let url = row.find("img.download").parent();
-
-          if (url.length) {
-            if (url.get(0).tagName !== "A") {
-              let id = link.getQueryString("id");
-              url = `download.php?id=${id}`;
-            } else {
-              url = url.attr("href");
-            }
-          } else {
-            let id = link.getQueryString("id");
-            url = `download.php?id=${id}`;
-          }
+          let url = row.find("a[href*='/download/torrent/']").attr("href");
 
           if (url.substr(0, 4) !== "http") {
             url = `${site.url}${url}`;
           }
 
           let data = {
-            title: title.attr("title") || title.text(),
+            title: title.text(),
             subTitle: this.getSubTitle(title, row),
             link,
-            url: url + (site && site.passkey ? "&passkey=" + site.passkey : "") + "&https=1",
-            size: cells.eq(fieldIndex.size).html() || 0,
-            time: fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).find("span[title],time[title]").attr("title") || cells.eq(fieldIndex.time).text() || "",
+            url: url,
+            size: cells.eq(fieldIndex.size).text().trim() || 0,
+            time: fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).find("span[title]").attr("title") || cells.eq(fieldIndex.time).text() || "",
             author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",
             seeders: fieldIndex.seeders == -1 ? "" : cells.eq(fieldIndex.seeders).text() || 0,
             leechers: fieldIndex.leechers == -1 ? "" : cells.eq(fieldIndex.leechers).text() || 0,
@@ -183,6 +151,7 @@ if (!"".getQueryString) {
           results.push(data);
         }
       } catch (error) {
+        console.log(error);
         options.errorMsg = `[${options.site.name}]获取种子信息出错: ${error.stack}`;
       }
 
@@ -219,36 +188,7 @@ if (!"".getQueryString) {
      * @param {*} row 
      */
     getSubTitle(title, row) {
-      let subTitle = title.parent().html().split("<br>");
-      if (subTitle && subTitle.length > 1) {
-        subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
-      } else {
-        // 特殊情况处理
-        switch (options.site.host) {
-          case "hdchina.org":
-            if (title.parent().next().is("h4")) {
-              subTitle = title.parent().next().text();
-              break;
-            }
-
-          case "tp.m-team.cc":
-            title = row.find("a[href*='hit'][title]").last();
-            subTitle = title.parent().html().split("<br>");
-            subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
-            break;
-
-          case "u2.dmhy.org":
-            subTitle = $('.torrentname > tbody > tr:eq(1)', row).find('.tooltip').text();
-            break;
-
-          default:
-            subTitle = "";
-            break;
-
-        }
-      }
-
-      return subTitle || "";
+      return "";
     }
 
     /**
@@ -257,21 +197,11 @@ if (!"".getQueryString) {
      */
     getCategory(cell) {
       let result = {
-        name: "",
+        name: cell.find("i:first").attr("title"),
         link: ""
       };
-      let link = cell.find("a:first");
-      let img = link.find("img:first");
-
-      result.link = link.attr("href");
-      if (result.link.substr(0, 4) !== "http") {
-        result.link = options.site.url + result.link;
-      }
-
-      if (img.length) {
-        result.name = img.attr("title");
-      } else {
-        result.name = link.text();
+      if (result.name) {
+        result.name = result.name.replace(" Torrent", "");
       }
       return result;
     }

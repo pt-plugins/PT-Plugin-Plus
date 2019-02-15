@@ -174,6 +174,11 @@ class Config {
               _site.categories = systemSite.categories;
             }
 
+            // 清理已移除的标签选择器
+            if (!systemSite.torrentTagSelectors && _site.torrentTagSelectors) {
+              delete _site.torrentTagSelectors;
+            }
+
             // 合并系统定义的搜索入口
             if (_site.searchEntry && systemSite.searchEntry) {
               systemSite.searchEntry.forEach((sysEntry: SearchEntry) => {

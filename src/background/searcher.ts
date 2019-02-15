@@ -90,7 +90,11 @@ export class Searcher {
             (entry.queryString ? `&${entry.queryString}` : "");
 
           url = this.replaceKeys(url, {
-            key: key,
+            key:
+              key +
+              (entry.appendToSearchKeyString
+                ? ` ${entry.appendToSearchKeyString}`
+                : ""),
             rows: rows,
             passkey: site.passkey ? site.passkey : ""
           });

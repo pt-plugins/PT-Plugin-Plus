@@ -12,18 +12,17 @@
     }
   }
 
-  .title {
+  .titleCell {
     max-width: 35vw;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 10px 0 5px 15px;
+    padding: 6px 0 !important;
   }
 
   a {
-    color: #111;
+    color: #000;
     text-decoration: none;
-    font-size: 15px;
   }
 
   a:hover {
@@ -32,7 +31,7 @@
 
   .sub-title {
     word-break: break-all;
-    margin: 8px 0 5px 0;
+    margin-top: 2px;
   }
 
   .center {

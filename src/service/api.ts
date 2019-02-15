@@ -11,7 +11,7 @@ const RESOURCE_URL = isLocalhost
 // 调试信息
 let RESOURCE_API = {
   host: RESOURCE_URL,
-  schemas: `${RESOURCE_URL}/schema.json`,
+  schemas: `${RESOURCE_URL}/schemas.json`,
   schemaConfig: `${RESOURCE_URL}/schemas/{$schema}/config.json`,
   sites: `${RESOURCE_URL}/sites.json`,
   siteConfig: `${RESOURCE_URL}/sites/{$site}/config.json`,

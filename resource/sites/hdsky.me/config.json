@@ -8,7 +8,7 @@
   "host": "hdsky.me",
   "categories": [{
     "entry": "*",
-    "result": "cat$id$=1",
+    "result": "&cat$id$=1",
     "category": [{
         "id": 401,
         "name": "Movies/电影"

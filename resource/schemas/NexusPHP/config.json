@@ -16,7 +16,7 @@
     "name": "全部",
     "resultType": "html",
     "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr",
+    "resultSelector": "table.torrents:last",
     "enabled": true
   }],
   "parser": {
@@ -30,27 +30,27 @@
   },
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "img.pro_free",
+    "selector": "img.pro_free, .free_bg, font.free",
     "color": "blue"
   }, {
     "name": "2xFree",
-    "selector": "img.pro_free2up",
+    "selector": "img.pro_free2up, .twoupfree_bg, font.twoupfree",
     "color": "green"
   }, {
     "name": "2xUp",
-    "selector": "img.pro_2up",
+    "selector": "img.pro_2up, .twoup_bg, font.twoup",
     "color": "lime"
   }, {
     "name": "2x50%",
-    "selector": "img.pro_50pctdown2up",
+    "selector": "img.pro_50pctdown2up, .twouphalfdown_bg, font.twouphalfdown",
     "color": "light-green"
   }, {
     "name": "30%",
-    "selector": "img.pro_30pctdown",
+    "selector": "img.pro_30pctdown, .thirtypercentdown_bg, font.thirtypercent",
     "color": "indigo"
   }, {
     "name": "50%",
-    "selector": "img.pro_50pctdown",
+    "selector": "img.pro_50pctdown, .halfdown_bg, font.halfdown",
     "color": "orange"
   }]
 }

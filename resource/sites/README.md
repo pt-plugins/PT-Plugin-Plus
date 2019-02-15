@@ -46,7 +46,26 @@
   },
   "parser": {
     "downloadURL": "解析脚本内容"
-  }
+  },
+  "torrentTagSelectors": [
+    {
+      "name": "Free",
+      "selector": "img.pro_free",
+      "color": "blue"
+    }
+  ],
+  "categories": [
+    {
+      "entry": "*",
+      "result": "cat$id$=1",
+      "category": [
+        {
+          "id": 20,
+          "name": "原盘(Full BD)"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -73,6 +92,16 @@
   - `torrentLinks` : 用于匹配有效的种子链接，作用于右键菜单，如果不指定，则匹配所有链接；
 - `parser` : （可选）解析器
   - `downloadURL` : 解析下载链接，用于解析和生成点击右键下载时的链接
+- `torrentTagSelectors` : （可选）种子标签选择器，数组
+  - `name` : 标签名称
+  - `selector` : 选择器
+  - `color` : 标签颜色
+- `categories` : 站点对应搜索入口的种子分类信息，数组
+  - `entry` : 需要匹配的入口，`*` 表示适用于所有入口；`torrents.php` 表示只适用于 `torrents.php` 的入口页面
+  - `result` : 分类配置返回信息 `$id$` 会被替换为具体的分类编号，最终会拼接到入口地址后面，如：`&cat10=1&cat11=1`
+  - `category` : 分类信息，数组
+    - `id` : 分类编号
+    - `name` : 分类名称
 
 ### 脚本及脚本文件定义
 

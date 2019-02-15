@@ -43,7 +43,7 @@
   }],
   "categories": [{
     "entry": "torrents.php",
-    "result": "cat$id$=1",
+    "result": "&cat$id$=1",
     "category": [{
       "id": 401,
       "name": "Movie(電影)/SD"
@@ -95,7 +95,7 @@
     }]
   }, {
     "entry": "movie.php",
-    "result": "cat$id$=1",
+    "result": "&cat$id$=1",
     "category": [{
       "id": 401,
       "name": "Movie(電影)/SD"
@@ -117,7 +117,7 @@
     }]
   }, {
     "entry": "music.php",
-    "result": "cat$id$=1",
+    "result": "&cat$id$=1",
     "category": [{
       "id": 406,
       "name": "MV(演唱)"
@@ -130,7 +130,7 @@
     }]
   }, {
     "entry": "adult.php",
-    "result": "cat$id$=1",
+    "result": "&cat$id$=1",
     "category": [{
       "id": 410,
       "name": "AV(有碼)/HD Censored"
