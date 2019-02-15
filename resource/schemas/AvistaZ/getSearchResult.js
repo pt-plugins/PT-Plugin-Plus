@@ -29,7 +29,9 @@
       let results = [];
       // 获取表头
       let header = table.find("> thead > tr > th");
+      let beginRowIndex = 0;
       if (header.length == 0) {
+        beginRowIndex = 1;
         header = rows.eq(0).find("th,td");
       }
 
@@ -114,7 +116,7 @@
 
       try {
         // 遍历数据行
-        for (let index = 1; index < rows.length; index++) {
+        for (let index = beginRowIndex; index < rows.length; index++) {
           const row = rows.eq(index);
           let cells = row.find(">td");
 
