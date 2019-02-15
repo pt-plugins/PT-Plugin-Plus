@@ -217,7 +217,9 @@ export enum EAction {
   // 从Google恢复已备份的参数
   restoreFromGoogle = "restoreFromGoogle",
   // 从Google中清除已备份的参数
-  clearFromGoogle = "clearFromGoogle"
+  clearFromGoogle = "clearFromGoogle",
+  // 获取种子数据
+  getTorrentDataFromURL = "getTorrentDataFromURL"
 }
 
 export interface Request {

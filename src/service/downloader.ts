@@ -4,6 +4,7 @@ import FileSaver from "file-saver";
 export type downloadFile = {
   url: string;
   fileName?: string;
+  getDataOnly?: boolean;
 };
 
 export type downloadOptions = {
@@ -85,12 +86,14 @@ export class FileDownloader {
   public onCompleted: Function = function() {};
   public onError: Function = function() {};
   public onStart: Function = function() {};
+  public getDataOnly: boolean = false;
 
   private xhr: XMLHttpRequest = new XMLHttpRequest();
 
   constructor(options: downloadFile) {
     this.fileName = options.fileName || "";
     this.url = options.url;
+    this.getDataOnly = options.getDataOnly || false;
   }
 
   public start() {
@@ -114,7 +117,7 @@ export class FileDownloader {
               break;
 
             default:
-              this.downloadError();
+              this.downloadError(this.xhr.status);
               break;
           }
 
@@ -126,7 +129,7 @@ export class FileDownloader {
             "Content-Disposition"
           );
           // 从服务端获取文件名
-          if (contentDisposition && !this.fileName) {
+          if (contentDisposition && !this.fileName && !this.getDataOnly) {
             this.fileName = this.getFileName(contentDisposition);
           }
           break;
@@ -150,7 +153,7 @@ export class FileDownloader {
 
     // 错误事件
     this.xhr.onerror = e => {
-      this.downloadError();
+      this.downloadError(e);
     };
 
     var data = null;
@@ -194,7 +197,7 @@ export class FileDownloader {
   }
 
   public downloadCompleted() {
-    if (this.loaded > 0) {
+    if (this.loaded > 0 && !this.getDataOnly) {
       // 保存文件
       FileSaver.saveAs(this.content, this.fileName);
     }
@@ -204,7 +207,11 @@ export class FileDownloader {
     }
   }
 
-  public downloadError() {}
+  public downloadError(error: any) {
+    if (this.onError) {
+      this.onError.call(this, error);
+    }
+  }
 
   public updateProgress() {
     if (this.onProgress) {

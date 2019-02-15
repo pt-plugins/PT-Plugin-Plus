@@ -174,10 +174,6 @@
      * @param function callback 回调
      */
     addTorrentFromUrl(url, savePath, autoStart, callback) {
-      // 磁性连接（代码来自原版WEBUI）
-      if (url.match(/^[0-9a-f]{40}$/i)) {
-        url = 'magnet:?xt=urn:btih:' + url;
-      }
       var options = {
         method: "torrent-add",
         arguments: {
@@ -189,6 +185,48 @@
       if (savePath) {
         options.arguments["download-dir"] = savePath;
       }
+
+      // 磁性连接（代码来自原版WEBUI）
+      if (url.match(/^[0-9a-f]{40}$/i)) {
+        url = 'magnet:?xt=urn:btih:' + url;
+        options.arguments["filename"] = url;
+        this.addTorrent(options, callback)
+      } else {
+        PTBackgroundService.requestMessage({
+            action: "getTorrentDataFromURL",
+            data: url
+          })
+          .then((result) => {
+            var fileReader = new FileReader();
+
+            fileReader.onload = (e) => {
+              var contents = e.target.result;
+              var key = "base64,";
+              var index = contents.indexOf(key);
+              if (index == -1) {
+                return;
+              }
+              var metainfo = contents.substring(index + key.length);
+
+              delete options.arguments["filename"];
+              options.arguments["metainfo"] = metainfo;
+
+              this.addTorrent(options, callback);
+            }
+            fileReader.readAsDataURL(result);
+          })
+          .catch((result) => {
+            callback && callback(result);
+          });
+      }
+    }
+
+    /**
+     * 添加种子
+     * @param {*} options 
+     * @param {*} callback 
+     */
+    addTorrent(options, callback) {
       this.exec(options).then((data) => {
         switch (data.result) {
           // 添加成功
@@ -220,6 +258,7 @@
         callback && callback(result);
       });
     }
+
 
     /**
      * 獲取指定目錄的大小

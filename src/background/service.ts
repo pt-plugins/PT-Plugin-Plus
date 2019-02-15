@@ -4,7 +4,7 @@ import {
   Options,
   EModule,
   ELogEvent
-} from "../interface/common";
+} from "@/interface/common";
 import Config from "./config";
 import Controller from "./controller";
 

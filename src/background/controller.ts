@@ -17,6 +17,7 @@ import { ClientController } from "@/service/clientController";
 import { DownloadHistory } from "./downloadHistory";
 import { Searcher } from "./searcher";
 import PTPlugin from "./service";
+import { FileDownloader } from "@/service/downloader";
 type Service = PTPlugin;
 export default class Controller {
   public options: Options = {
@@ -642,6 +643,26 @@ export default class Controller {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.service.config.reload();
       resolve();
+    });
+  }
+
+  public getTorrentDataFromURL(url: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      var file = new FileDownloader({
+        url,
+        getDataOnly: true
+      });
+
+      file.onCompleted = () => {
+        console.log("getTorrentDataFromURL.completed", url);
+        resolve(file.content);
+      };
+
+      file.onError = (e: any) => {
+        reject(e);
+      };
+
+      file.start();
     });
   }
 }
