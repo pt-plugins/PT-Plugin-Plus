@@ -14,7 +14,7 @@ export class BuildPlugin {
   private resourceMap = ["sites", "schemas", "clients"];
 
   constructor() {
-    this.resourcePath = PATH.resolve(__dirname, "../../resource");
+    this.resourcePath = PATH.resolve(__dirname, "../../dist/resource");
     console.log(this.resourcePath);
   }
 
