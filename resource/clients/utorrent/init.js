@@ -130,12 +130,28 @@
       }
       var data = {};
 
-      $.extend(data, options);
+      var _settings = $.extend({
+        method: "GET",
+        processData: undefined,
+        contentType: undefined,
+        queryString: ""
+      }, options.settings);
+
+      if (options.settings) {
+        delete options.settings;
+      }
+      if (options.formData) {
+        data = options.formData;
+      } else {
+        $.extend(data, options);
+      }
 
       var settings = {
-        type: "GET",
-        url: this.options.address + "?token=" + this.token,
+        type: _settings.method,
+        url: this.options.address + "?token=" + this.token + _settings.queryString,
         dataType: "json",
+        processData: _settings.processData,
+        contentType: _settings.contentType,
         data: data,
         timeout: PTBackgroundService.options.connectClientTimeout,
         success: (resultData, textStatus) => {
@@ -162,13 +178,41 @@
       // 磁性连接（代码来自原版WEBUI）
       if (url.match(/^[0-9a-f]{40}$/i)) {
         url = "magnet:?xt=urn:btih:" + url;
-      }
-      this.exec({
+        this.addTorrent({
           action: "add-url",
           s: url,
           download_dir: 0,
           path: data.savePath ? data.savePath : ""
-        },
+        }, callback);
+        return;
+      }
+
+      PTBackgroundService.requestMessage({
+          action: "getTorrentDataFromURL",
+          data: url
+        })
+        .then((result) => {
+          let formData = new FormData();
+          formData.append("torrent_file", result)
+
+          this.addTorrent({
+            settings: {
+              method: "POST",
+              processData: false,
+              contentType: false,
+              queryString: `&action=add-file&download_dir=0&path=` + (data.savePath ? data.savePath : "")
+            },
+            formData
+          }, callback);
+        })
+        .catch((result) => {
+          callback && callback(result);
+        });
+
+    }
+
+    addTorrent(options, callback) {
+      this.exec(options,
         resultData => {
           if (callback) {
             var result = resultData;
