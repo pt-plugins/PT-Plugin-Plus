@@ -1,10 +1,1 @@
-[{
-  "name": "NexusPHP",
-  "type": "dir"
-}, {
-  "name": "Gazelle",
-  "type": "dir"
-}, {
-  "name": "AvistaZ",
-  "type": "dir"
-}]
+[{"name":"AvistaZ","type":"dir"},{"name":"Gazelle","type":"dir"},{"name":"NexusPHP","type":"dir"}]
