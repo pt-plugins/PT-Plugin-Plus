@@ -116,6 +116,9 @@
     exec(options, callback, tags) {
       var settings = {
         type: "POST",
+        processData: false,
+        contentType: false,
+        method: "POST",
         url: this.options.address + options.method,
         data: options.params,
         timeout: PTBackgroundService.options.connectClientTimeout,
@@ -150,14 +153,35 @@
       // 磁性连接（代码来自原版WEBUI）
       if (url.match(/^[0-9a-f]{40}$/i)) {
         url = 'magnet:?xt=urn:btih:' + url;
-      }
-      this.exec({
-        method: this.api.add,
-        params: {
+        this.addTorrent({
           urls: url,
           savepath: data.savePath,
           paused: !data.autoStart
-        }
+        }, callback)
+        return;
+      }
+
+      PTBackgroundService.requestMessage({
+          action: "getTorrentDataFromURL",
+          data: url
+        })
+        .then((result) => {
+          let formData = new FormData();
+          formData.append("savepath", data.savePath)
+          formData.append("paused", !data.autoStart)
+          formData.append("torrents", result)
+
+          this.addTorrent(formData, callback);
+        })
+        .catch((result) => {
+          callback && callback(result);
+        });
+    }
+
+    addTorrent(params, callback) {
+      this.exec({
+        method: this.api.add,
+        params: params
       }, (resultData) => {
         if (callback) {
           var result = resultData;
