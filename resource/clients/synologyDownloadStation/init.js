@@ -102,16 +102,60 @@
         })
         return;
       }
-      let path = [`${this.options.address}/webapi/DownloadStation/task.cgi?api=SYNO.DownloadStation.Task`,
-        `version=${this.version}`,
-        `method=create`,
-        `_sid=${this.sessionId}`,
-        `uri=` + encodeURIComponent(options.url),
-        `destination=` + encodeURIComponent(options.savePath)
-      ];
+      // let path = [`${this.options.address}/webapi/DownloadStation/task.cgi?api=SYNO.DownloadStation.Task`,
+      //   `version=${this.version}`,
+      //   `method=create`,
+      //   `_sid=${this.sessionId}`,
+      //   `uri=` + encodeURIComponent(options.url),
+      //   `destination=` + encodeURIComponent(options.savePath)
+      // ];
+      // $.ajax({
+      //   url: path.join("&"),
+      //   timeout: PTBackgroundService.options.connectClientTimeout,
+      //   dataType: "json"
+      // }).done((result) => {
+      //   console.log(result)
+      //   callback(result)
+      // }).fail(() => {
+      //   callback({
+      //     status: "error",
+      //     msg: "服务器连接失败"
+      //   })
+      // })
+
+      PTBackgroundService.requestMessage({
+          action: "getTorrentDataFromURL",
+          data: options.url
+        })
+        .then((result) => {
+          let formData = new FormData();
+          formData.append("_sid", this.sessionId);
+          formData.append("api", "SYNO.DownloadStation.Task");
+          formData.append("version", this.version);
+          formData.append("method", "create");
+
+          if (options.savePath) {
+            formData.append("destination", encodeURIComponent(options.savePath))
+          }
+
+          formData.append("file", result, "file.torrent")
+
+          this.addTorrent(formData, callback);
+        })
+        .catch((result) => {
+          callback && callback(result);
+        });
+    }
+
+    addTorrent(options, callback) {
       $.ajax({
-        url: path.join("&"),
+        url: `${this.options.address}/webapi/DownloadStation/task.cgi`,
         timeout: PTBackgroundService.options.connectClientTimeout,
+        type: "POST",
+        processData: false,
+        contentType: false,
+        method: "POST",
+        data: options,
         dataType: "json"
       }).done((result) => {
         console.log(result)
