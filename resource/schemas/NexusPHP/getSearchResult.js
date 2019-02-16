@@ -171,7 +171,7 @@ if (!"".getQueryString) {
             link,
             url: url + (site && site.passkey ? "&passkey=" + site.passkey : "") + "&https=1",
             size: cells.eq(fieldIndex.size).html() || 0,
-            time: fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).find("span[title],time[title]").attr("title") || cells.eq(fieldIndex.time).text() || "",
+            time: fieldIndex.time == -1 ? "" : this.getTime(cells.eq(fieldIndex.time)),
             author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",
             seeders: fieldIndex.seeders == -1 ? "" : cells.eq(fieldIndex.seeders).text() || 0,
             leechers: fieldIndex.leechers == -1 ? "" : cells.eq(fieldIndex.leechers).text() || 0,
@@ -189,6 +189,18 @@ if (!"".getQueryString) {
       }
 
       return results;
+    }
+
+    /**
+     * 获取时间
+     * @param {*} cell 
+     */
+    getTime(cell) {
+      let time = cell.find("span[title],time[title]").attr("title");
+      if (!time) {
+        time = $("<span>").html(cell.html().replace("<br>", " ")).text();
+      }
+      return time || "";
     }
 
     /**
