@@ -196,8 +196,7 @@ export default Vue.extend({
      */
     search() {
       this.selected = [];
-      this.haveError = false;
-      this.haveSuccess = false;
+      this.clearMessage();
       this.datas = [];
       this.searchResult = {
         sites: {},
@@ -652,7 +651,7 @@ export default Vue.extend({
       let defaultClientOptions = this.getters.clientOptions(site);
       let defaultPath = this.getters.siteDefaultPath(site);
 
-      this.haveSuccess = true;
+      this.clearMessage();
       this.successMsg = "正在发送种子到下载服务器……";
 
       let data = {
@@ -694,6 +693,7 @@ export default Vue.extend({
             msg: "发送种子到下载服务器失败",
             data: result
           });
+          this.errorMsg = result.msg;
           callback && callback();
         });
     },
@@ -843,6 +843,10 @@ export default Vue.extend({
         .catch(() => {
           this.errorMsg = "复制下载链接失败！";
         });
+    },
+    clearMessage() {
+      this.successMsg = "";
+      this.errorMsg = "";
     }
   }
 });

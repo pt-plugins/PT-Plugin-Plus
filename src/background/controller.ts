@@ -18,6 +18,7 @@ import { DownloadHistory } from "./downloadHistory";
 import { Searcher } from "./searcher";
 import PTPlugin from "./service";
 import { FileDownloader } from "@/service/downloader";
+import { APP } from "@/service/api";
 type Service = PTPlugin;
 export default class Controller {
   public options: Options = {
@@ -646,6 +647,10 @@ export default class Controller {
     });
   }
 
+  /**
+   * 从指定的链接获取种子文件内容
+   * @param url
+   */
   public getTorrentDataFromURL(url: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       var file = new FileDownloader({
@@ -654,8 +659,12 @@ export default class Controller {
       });
 
       file.onCompleted = () => {
-        console.log("getTorrentDataFromURL.completed", url);
-        resolve(file.content);
+        console.log("getTorrentDataFromURL.completed", url, file.content.type);
+        if (file.content && file.content.type == "application/x-bittorrent") {
+          resolve(file.content);
+        } else {
+          reject(APP.createErrorMessage("无效的种子文件"));
+        }
       };
 
       file.onError = (e: any) => {

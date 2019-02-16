@@ -128,6 +128,19 @@
           }
         },
         error: (jqXHR, textStatus, errorThrown) => {
+          switch (jqXHR.status) {
+            // Unsupported Media Type
+            case 415:
+              callback({
+                status: "error",
+                code: jqXHR.status,
+                msg: "种子文件有误"
+              })
+              return;
+
+            default:
+              break;
+          }
           console.log(jqXHR);
           this.getSessionId().then(() => {
             this.exec(options, callback, tags);
@@ -184,8 +197,11 @@
         params: params
       }, (resultData) => {
         if (callback) {
-          var result = resultData;
-          if (!resultData.error && resultData.result) {
+          var result = Object.assign({
+            status: "",
+            msg: ""
+          }, resultData);
+          if (!resultData.error && resultData.result || resultData == "Ok.") {
             result.status = "success";
             result.msg = "URL已添加至 qBittorrent 。";
           }
