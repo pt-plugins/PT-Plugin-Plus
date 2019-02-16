@@ -20,7 +20,10 @@ import moment from "moment";
 
   // 初始化时间格式化过滤器
   Vue.filter("formatDate", (val: any, format: string = "YYYY-MM-DD HH:mm") => {
-    return moment(val).format(format);
+    if (moment(val).isValid()) {
+      return moment(val).format(format);
+    }
+    return val;
   });
 
   // 读取配置信息

@@ -499,7 +499,11 @@ export default Vue.extend({
       }
 
       result.forEach((item: SearchResultItem) => {
-        item.time = moment(item.time).valueOf();
+        if (moment(item.time).isValid()) {
+          // 转成整数是为了排序
+          item.time = moment(item.time).valueOf();
+        }
+
         if (!item.titleHTML) {
           item.titleHTML = item.title;
         }
@@ -644,6 +648,7 @@ export default Vue.extend({
      */
     sendToClient(url: string, title: string, callback?: any) {
       console.log(url);
+      this.clearMessage();
       let host = filters.parseURL(url).host;
       let site = this.options.sites.find((site: Site) => {
         return site.host === host;
@@ -651,7 +656,7 @@ export default Vue.extend({
       let defaultClientOptions = this.getters.clientOptions(site);
       let defaultPath = this.getters.siteDefaultPath(site);
 
-      this.clearMessage();
+      this.haveSuccess = true;
       this.successMsg = "正在发送种子到下载服务器……";
 
       let data = {
