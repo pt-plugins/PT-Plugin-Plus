@@ -135,19 +135,19 @@
           formData.append("method", "create");
 
           if (options.savePath) {
-            formData.append("destination", encodeURIComponent(options.savePath))
+            formData.append("destination", options.savePath)
           }
 
           formData.append("file", result, "file.torrent")
 
-          this.addTorrent(formData, callback);
+          this.addTorrent(formData, options, callback);
         })
         .catch((result) => {
           callback && callback(result);
         });
     }
 
-    addTorrent(options, callback) {
+    addTorrent(formData, options, callback) {
       $.ajax({
         url: `${this.options.address}/webapi/DownloadStation/task.cgi`,
         timeout: PTBackgroundService.options.connectClientTimeout,
@@ -155,10 +155,33 @@
         processData: false,
         contentType: false,
         method: "POST",
-        data: options,
+        data: formData,
         dataType: "json"
       }).done((result) => {
         console.log(result)
+        if (result.error) {
+          let errorMap = {
+            400: "文件上传失败",
+            401: "达到的最大任务数",
+            402: `指定的目录[${options.savePath}]不可用或无权限`,
+            403: `指定的目录[${options.savePath}]不存在`
+          };
+          /**
+           * 400 File upload failed
+              401 Max number of tasks reached
+              402 Destination denied
+              403 Destination does not exist
+              404 Invalid task id
+              405 Invalid task action
+              406 No default destination
+              407 Set destination failed
+              408 File does not exist
+           */
+          if (result.error.code) {
+            result.msg = errorMap[result.error.code];
+          }
+        }
+
         callback(result)
       }).fail(() => {
         callback({
