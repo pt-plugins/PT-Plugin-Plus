@@ -5,5 +5,43 @@
   "icon": "https://ourbits.club/favicon.ico",
   "tags": ["影视", "动漫", "纪录片", "综艺"],
   "schema": "NexusPHP",
-  "host": "ourbits.club"
+  "host": "ourbits.club",
+  "categories": [{
+    "entry": "*",
+    "result": "&cat$id$=1",
+    "category": [{
+      "id": 401,
+      "name": "Movies"
+    }, {
+      "id": 402,
+      "name": "Movies-3D"
+    }, {
+      "id": 419,
+      "name": "Concert"
+    }, {
+      "id": 412,
+      "name": "TV-Episode"
+    }, {
+      "id": 405,
+      "name": "TV-Pack"
+    }, {
+      "id": 413,
+      "name": "TV-Show"
+    }, {
+      "id": 410,
+      "name": "Documentary"
+    }, {
+      "id": 411,
+      "name": "Animation"
+    }, {
+      "id": 415,
+      "name": "Sports"
+    }, {
+      "id": 414,
+      "name": "Music-Video"
+    }, {
+      "id": 416,
+      "name": "Music"
+    }]
+  }]
 }
