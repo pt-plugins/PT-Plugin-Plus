@@ -52,4 +52,54 @@ export class BuildPlugin {
 
     FS.writeFileSync(fileName, JSON.stringify(results));
   }
+
+  public getSupportedSites() {
+    let schemaFolder = PATH.join(this.resourcePath, "schemas");
+    let schemaList = FS.readdirSync(schemaFolder);
+
+    let schemas: any = {};
+    schemaList.forEach((path: string) => {
+      let file = PATH.join(schemaFolder, path);
+      var stat = FS.statSync(file);
+      // 仅获取目录
+      if (stat && stat.isDirectory()) {
+        schemas[path] = [];
+      }
+    });
+
+    schemas["其他架构"] = [];
+
+    let parentFolder = PATH.join(this.resourcePath, "sites");
+
+    let list = FS.readdirSync(parentFolder);
+
+    list.forEach((path: string) => {
+      let file = PATH.join(parentFolder, path);
+      var stat = FS.statSync(file);
+      // 仅获取目录
+      if (stat && stat.isDirectory()) {
+        let fileName = PATH.join(file, `config.json`);
+        let content = JSON.parse(FS.readFileSync(fileName, "utf-8"));
+        let schema = content.schema;
+        if (!schemas[schema]) {
+          schema = "其他架构";
+        }
+
+        schemas[schema].push(content.name);
+      }
+    });
+
+    for (const key in schemas) {
+      if (schemas.hasOwnProperty(key)) {
+        const items = schemas[key];
+        console.log(`\n## ${key}`);
+
+        items.sort().forEach((item: string) => {
+          console.log(`- ${item}`);
+        });
+      }
+    }
+
+    // console.log(results);
+  }
 }
