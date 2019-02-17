@@ -1,0 +1,30 @@
+{
+  "name": "UNIT3D",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["^/torrents/(.+)$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "searchEntry": [{
+    "entry": "/filterTorrents?search=$key$",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/UNIT3D/getSearchResult.js",
+    "resultSelector": "div.table-responsive > table:first",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "i.fa-star text-gold",
+    "color": "blue"
+  }, {
+    "name": "2xUp",
+    "selector": "i.fa-globe",
+    "color": "lime"
+  }]
+}
