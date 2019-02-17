@@ -84,6 +84,10 @@
         }
       }
 
+      if (!url) {
+        url = $("a[href*='download.php?id=']:first").attr("href");
+      }
+
       if (url && url.substr(0, 1) === "/") {
         url = `${location.origin}${url}`;
       } else if (url && url.substr(0, 4) !== "http") {

@@ -97,14 +97,6 @@ String.prototype.getQueryString = function (name, split) {
      * @param {*} callback 
      */
     downloadFromDroper(data, callback) {
-      if (!PTSevrice.site.passkey) {
-        PTSevrice.showNotice({
-          msg: "请先设置站点密钥（Passkey）。"
-        });
-        callback();
-        return;
-      }
-
       if (typeof data === "string") {
         data = {
           url: data,
@@ -112,20 +104,24 @@ String.prototype.getQueryString = function (name, split) {
         };
       }
 
-      if (!data.url.getQueryString) {
-        PTSevrice.showNotice({
-          msg: "系统依赖函数（getQueryString）未正确加载，请尝试刷新页面或重新启用插件。"
-        });
-        callback();
-        return;
-      }
+      if (PTSevrice.site.schema == "NexusPHP") {
+        if (!data.url.getQueryString) {
+          PTSevrice.showNotice({
+            msg: "系统依赖函数（getQueryString）未正确加载，请尝试刷新页面或重新启用插件。"
+          });
+          callback();
+          return;
+        }
 
-      let id = data.url.getQueryString("id");
-      if (id) {
-        // 如果站点没有配置禁用https，则默认添加https链接
-        data.url = PTSevrice.site.url + "download.php?id=" + id + "&passkey=" + PTSevrice.site.passkey + (PTSevrice.site.disableHttps ? "" : "&https=1");
-      } else {
-        data.url = "";
+        if (data.url.indexOf("download.php") == -1) {
+          let id = data.url.getQueryString("id");
+          if (id) {
+            // 如果站点没有配置禁用https，则默认添加https链接
+            data.url = PTSevrice.site.url + "download.php?id=" + id + (PTSevrice.site.passkey ? "&passkey=" + PTSevrice.site.passkey : "") + (PTSevrice.site.disableHttps ? "" : "&https=1");
+          } else {
+            data.url = "";
+          }
+        }
       }
 
       if (!data.url) {

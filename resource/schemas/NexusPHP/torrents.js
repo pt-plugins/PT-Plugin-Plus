@@ -19,11 +19,6 @@
           icon: "get_app",
           label: "下载所有",
           click: (success, error) => {
-            if (!PTSevrice.site.passkey) {
-              error("请先设置站点密钥（Passkey）。");
-              return;
-            }
-
             let size = this.checkSize();
 
             if (size !== true) {
@@ -50,11 +45,6 @@
           icon: "file_copy",
           label: "复制链接",
           click: (success, error) => {
-            if (!PTSevrice.site.passkey) {
-              error("请先设置站点密钥（Passkey）。");
-              return;
-            }
-
             let urls = this.getDownloadURLs();
 
             PTSevrice.call(
@@ -106,7 +96,7 @@
       getDownloadURLs() {
         let links = $("a[href*='download']").toArray();
         let urls = $.map(links, (item) => {
-          return PTSevrice.site.url + $(item).attr("href") + "&passkey=" + PTSevrice.site.passkey + (PTSevrice.site.disableHttps ? "" : "&https=1");
+          return PTSevrice.site.url + $(item).attr("href") + (PTSevrice.site.passkey ? "&passkey=" + PTSevrice.site.passkey : "") + (PTSevrice.site.disableHttps ? "" : "&https=1");
         });
 
         return urls;
