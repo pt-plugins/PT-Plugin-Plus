@@ -180,8 +180,14 @@
         })
         .then((result) => {
           let formData = new FormData();
-          formData.append("savepath", data.savePath)
-          formData.append("paused", !data.autoStart)
+          if (data.savePath) {
+            formData.append("savepath", data.savePath)
+          }
+
+          if (data.autoStart != undefined) {
+            formData.append("paused", !data.autoStart)
+          }
+
           formData.append("torrents", result, "file.torrent")
 
           this.addTorrent(formData, callback);
