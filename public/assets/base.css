@@ -43,7 +43,7 @@
   z-index: 100;
 }
 
-.pt-plugin-body .button {
+.pt-plugin-body .pt-plugin-button {
   height: 50px;
   display: flex;
   justify-content: center;
@@ -52,16 +52,16 @@
   text-decoration: none;
 }
 
-.pt-plugin-body a.button {
+.pt-plugin-body a.pt-plugin-button {
   cursor: pointer;
   text-decoration: none;
 }
 
-.pt-plugin-body a.button:hover {
+.pt-plugin-body a.pt-plugin-button:hover {
   background-color: rgba(77, 154, 231, 0.226)
 }
 
-.pt-plugin-body .button .inner {
+.pt-plugin-body .pt-plugin-button .inner {
   text-align: center;
 }
 

@@ -304,9 +304,9 @@ class PTPContent {
    */
   public addButton(options: ButtonOption) {
     let line = $("<hr/>").appendTo(this.buttonBar);
-    let buttonType = "<a class='button'/>";
+    let buttonType = "<a class='pt-plugin-button'/>";
     if (!options.click) {
-      buttonType = "<span class='button'/>";
+      buttonType = "<span class='pt-plugin-button'/>";
     }
     let button = $(buttonType).attr("title", options.title);
     let inner = $("<div class='inner'/>").appendTo(button);
