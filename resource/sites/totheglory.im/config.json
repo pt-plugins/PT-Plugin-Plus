@@ -131,5 +131,18 @@
       "id": "iPhone/iPad视频",
       "name": "iPhone/iPad视频"
     }]
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "img[alt='free']",
+    "color": "blue"
+  }, {
+    "name": "30%",
+    "selector": "img[alt='30%']",
+    "color": "indigo"
+  }, {
+    "name": "50%",
+    "selector": "img[alt='50%']",
+    "color": "orange"
   }]
 }
