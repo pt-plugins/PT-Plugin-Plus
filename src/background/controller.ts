@@ -655,7 +655,8 @@ export default class Controller {
     return new Promise<any>((resolve?: any, reject?: any) => {
       var file = new FileDownloader({
         url,
-        getDataOnly: true
+        getDataOnly: true,
+        timeout: this.service.options.connectClientTimeout
       });
 
       file.onCompleted = () => {
