@@ -26,8 +26,8 @@
           if (url) {
             this.sendTorrentToDefaultClient(url).then(() => {
               success();
-            }).catch(() => {
-              success();
+            }).catch((result) => {
+              error(result);
             });
           }
         }
@@ -46,8 +46,8 @@
           ).then((result) => {
             console.log("命令执行完成", result);
             success();
-          }).catch(() => {
-            error()
+          }).catch((result) => {
+            error(result)
           });
         }
       });

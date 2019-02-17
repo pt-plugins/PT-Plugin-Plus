@@ -16,7 +16,8 @@
 		"clipboardRead",
 		"clipboardWrite",
 		"storage",
-		"contextMenus"
+		"contextMenus",
+		"notifications"
 	],
 	"icons": {
 		"16": "assets/icon.png",

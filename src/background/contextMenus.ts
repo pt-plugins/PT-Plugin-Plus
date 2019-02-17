@@ -11,6 +11,7 @@ import {
 } from "@/interface/common";
 import PTPlugin from "./service";
 import URLParse from "url-parse";
+import { APP } from "@/service/api";
 
 type Service = PTPlugin;
 
@@ -233,19 +234,39 @@ export class ContextMenus {
    */
   private sendTorrentToClient(tabid: number = 0, options: DownloadOptions) {
     let notice: any;
-    chrome.tabs.sendMessage(
-      tabid,
-      {
-        action: EAction.showMessage,
-        data: {
-          type: EDataResultType.info,
-          msg: "正在发送链接至下载服务器 "
+    try {
+      chrome.tabs.sendMessage(
+        tabid,
+        {
+          action: EAction.showMessage,
+          data: {
+            type: EDataResultType.info,
+            msg: "正在发送链接至下载服务器 "
+          }
+        },
+        (result: any) => {
+          if (chrome.runtime.lastError) {
+            let message = chrome.runtime.lastError.message || "";
+            if (message.match(/Could not establish connection/)) {
+              APP.showNotifications({
+                message: "插件状态未知，当前操作可能失败，请刷新页面后再试"
+              });
+            } else {
+              APP.showNotifications({
+                message: chrome.runtime.lastError.message
+              });
+            }
+            return;
+          }
+          notice = result;
         }
-      },
-      (result: any) => {
-        notice = result;
-      }
-    );
+      );
+    } catch (error) {
+      APP.showNotifications({
+        message: error
+      });
+      return;
+    }
 
     this.service.logger.add({
       module: EModule.background,

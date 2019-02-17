@@ -378,6 +378,7 @@ class PTPContent {
    * @return DOM
    */
   public showNotice(options: NoticeOptions | string) {
+    console.log(options);
     options = Object.assign(
       {
         type: "error",
@@ -386,7 +387,11 @@ class PTPContent {
         progressBar: true,
         width: 320
       },
-      typeof options === "string" ? { msg: options } : options
+      typeof options === "string"
+        ? { msg: options }
+        : typeof options.msg === "object"
+        ? options.msg
+        : options
     );
 
     options.text = options.text || options.msg;

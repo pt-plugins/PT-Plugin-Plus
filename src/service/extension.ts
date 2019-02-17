@@ -1,8 +1,8 @@
 /**
  * 导入这个是为了本地测试，对于 Chrome 插件实际运行时不起作用
  */
-import PTPlugin from "../background/service";
-import { EAction } from "../interface/common";
+import PTPlugin from "@/background/service";
+import { EAction, EDataResultType } from "@/interface/common";
 
 export default class Extension {
   public isExtensionMode: boolean = false;
@@ -44,7 +44,23 @@ export default class Extension {
             }
           );
         } catch (error) {
-          reject(error);
+          // @see https://groups.google.com/a/chromium.org/forum/#!topic/chromium-extensions/QLC4gNlYjbA
+          if (
+            /Invocation of form runtime\.connect|doesn't match definition runtime\.connect|Extension context invalidated/.test(
+              error.message
+            )
+          ) {
+            // console.error(
+            //   "Chrome extension, Actson has been reloaded. Please refresh the page"
+            // );
+            reject({
+              type: EDataResultType.error,
+              msg: "插件状态未知，当前操作可能失败，请刷新页面后再试",
+              success: false
+            });
+          } else {
+            reject(error);
+          }
         }
 
         return;

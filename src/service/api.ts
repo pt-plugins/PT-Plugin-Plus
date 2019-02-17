@@ -202,6 +202,33 @@ export const APP = {
       msg,
       success: false
     };
+  },
+
+  /**
+   * 显示系统提示信息
+   * @param options
+   */
+  showNotifications(options: chrome.notifications.NotificationOptions) {
+    options = Object.assign(
+      {
+        type: "basic",
+        iconUrl: "assets/icon-128.png",
+        title: "PT 助手 Plus",
+        priority: 0,
+        message: ""
+      },
+      options
+    );
+
+    let id = Math.floor(Math.random() * 99999) + "";
+
+    chrome.notifications.create(id, options, function(myId) {
+      id = myId;
+    });
+
+    setTimeout(() => {
+      chrome.notifications.clear(id, () => {});
+    }, 3000);
   }
 };
 
