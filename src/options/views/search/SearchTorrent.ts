@@ -429,6 +429,14 @@ export default Vue.extend({
               msg: result.msg,
               data: result
             });
+
+            if (result.data && result.data.isLogged == false) {
+              let siteName = result.data.site.name;
+              this.searchResult.sites[siteName] = {
+                site: site,
+                msg: "未登录"
+              };
+            }
           })
           .finally(() => {
             this.removeQueue(site);
@@ -737,8 +745,10 @@ export default Vue.extend({
      * @param datas
      */
     resetDatas(datas: any) {
-      this.datas = datas;
-      this.selected = [];
+      if (datas.length) {
+        this.datas = datas;
+        this.selected = [];
+      }
     },
     /**
      * 下载已选中的种子文件

@@ -7,6 +7,8 @@
         return;
       }
 
+      options.isLogged = true;
+
       this.haveData = true;
     }
 

@@ -6,6 +6,9 @@
         options.errorMsg = `[${options.site.name}]需要登录后再搜索`;
         return;
       }
+
+      options.isLogged = true;
+
       if (/没有种子|No [Tt]orrents?|Your search did not match anything|用准确的关键字重试/.test(options.responseText)) {
         options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
         return;
@@ -90,7 +93,8 @@
           comments: cells.eq(fieldIndex.comments).text() || 0,
           site: site,
           entryName: options.entry.name,
-          category: this.getCategory(cells.eq(fieldIndex.category))
+          category: this.getCategory(cells.eq(fieldIndex.category)),
+          tags: this.getTags(row, options.torrentTagSelectors)
         };
         results.push(data);
       }
@@ -117,6 +121,32 @@
 
       result.name = img.attr("alt");
       return result;
+    }
+
+    /**
+     * 获取标签
+     * @param {*} row 
+     * @param {*} selectors 
+     * @return array
+     */
+    getTags(row, selectors) {
+      let tags = [];
+      if (selectors && selectors.length > 0) {
+        // 使用 some 避免错误的背景类名返回多个标签
+        selectors.some(item => {
+          if (item.selector) {
+            let result = row.find(item.selector)
+            if (result.length) {
+              tags.push({
+                name: item.name,
+                color: item.color
+              });
+              return true;
+            }
+          }
+        });
+      }
+      return tags;
     }
   }
   let parser = new Parser(options)

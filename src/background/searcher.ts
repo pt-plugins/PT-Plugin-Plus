@@ -207,7 +207,8 @@ export class Searcher {
               page,
               entry,
               torrentTagSelectors: torrentTagSelectors,
-              errorMsg: ""
+              errorMsg: "",
+              isLogged: false
             };
 
             // 执行获取结果的脚本
@@ -218,7 +219,11 @@ export class Searcher {
               if (options.errorMsg) {
                 reject({
                   success: false,
-                  msg: options.errorMsg
+                  msg: options.errorMsg,
+                  data: {
+                    site,
+                    isLogged: options.isLogged
+                  }
                 });
               } else {
                 resolve(options.results);

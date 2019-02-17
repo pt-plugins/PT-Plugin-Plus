@@ -9,6 +9,9 @@
         options.errorMsg = `[${options.site.name}]需要登录后再搜索`;
         return;
       }
+
+      options.isLogged = true;
+
       if (/没有种子|No [Tt]orrents?|Your search did not match anything|用准确的关键字重试/.test(options.responseText)) {
         options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
         return;

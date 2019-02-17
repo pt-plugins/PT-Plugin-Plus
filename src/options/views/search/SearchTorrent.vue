@@ -48,27 +48,33 @@
               <v-chip
                 :key="key"
                 label
-                color="blue-grey darken-2"
+                :color="item.length?'blue-grey darken-2':'grey'"
                 text-color="white"
                 small
                 class="mr-2 py-3 pl-1"
                 @click.stop="resetDatas(item)"
+                :disabled="!item.length"
               >
                 <v-icon class="mr-1" left v-if="key===words.allSites">public</v-icon>
-                <v-avatar class="mr-1" v-else>
-                  <img :src="item[0].site.icon" style="width:60%;height:60%;">
-                </v-avatar>
+                <template v-else>
+                  <v-avatar class="mr-1" v-if="item.length>0">
+                    <img :src="item[0].site.icon" style="width:60%;height:60%;">
+                  </v-avatar>
+                  <v-avatar class="mr-1" v-else>
+                    <img :src="item.site.icon" style="width:60%;height:60%;">
+                  </v-avatar>
+                </template>
                 <span>{{ key }}</span>
                 <v-chip
                   label
-                  color="blue-grey"
+                  :color="item.length?'blue-grey':'grey'"
                   small
                   text-color="white"
                   style="margin-right:-13px;"
                   class="ml-2 py-3"
                   disabled
                 >
-                  <span>{{ item.length }}</span>
+                  <span>{{ item.length || item.msg }}</span>
                 </v-chip>
               </v-chip>
             </template>
