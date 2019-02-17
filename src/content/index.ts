@@ -308,10 +308,12 @@ class PTPContent {
     if (!options.click) {
       buttonType = "<span class='pt-plugin-button'/>";
     }
-    let button = $(buttonType).attr({
-      title: options.title,
-      key: options.key
-    });
+    let button = $(buttonType)
+      .attr({
+        title: options.title,
+        key: options.key
+      })
+      .data("line", line);
     let inner = $("<div class='inner'/>").appendTo(button);
     let loading = $("<div class='loading'/>").appendTo(button);
     let success = $("<div class='action-success'/>")
@@ -386,10 +388,14 @@ class PTPContent {
 
     if (index != -1) {
       let button = this.buttons[index];
-      let line = $("<hr/>").appendTo(this.buttonBar);
-      let offset = <any>line.outerHeight(true) + <any>button.outerHeight(true);
+
+      let offset = <any>button.outerHeight(true);
       this.buttonBarHeight -= offset;
-      line.remove();
+      let line = button.data("line");
+      if (line) {
+        this.buttonBarHeight -= <any>line.outerHeight(true);
+        line.remove();
+      }
       button.remove();
       this.buttons.splice(index, 1);
       this.buttonBar.height(this.buttonBarHeight).show();
