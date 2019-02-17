@@ -58,6 +58,24 @@
           });
         }
       });
+
+      let sayThanksButton = $("input#saythanks:not(:disabled)");
+      if (sayThanksButton.length) {
+        // 说谢谢
+        PTSevrice.addButton({
+          title: "对当前种子说谢谢",
+          icon: "thumb_up",
+          label: "感谢发布者",
+          key: "sayThanks",
+          click: (success, error) => {
+            sayThanksButton.click();
+            success();
+            setTimeout(() => {
+              PTSevrice.removeButton("sayThanks")
+            }, 1000)
+          }
+        });
+      }
     }
 
     /**

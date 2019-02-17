@@ -308,7 +308,10 @@ class PTPContent {
     if (!options.click) {
       buttonType = "<span class='pt-plugin-button'/>";
     }
-    let button = $(buttonType).attr("title", options.title);
+    let button = $(buttonType).attr({
+      title: options.title,
+      key: options.key
+    });
     let inner = $("<div class='inner'/>").appendTo(button);
     let loading = $("<div class='loading'/>").appendTo(button);
     let success = $("<div class='action-success'/>")
@@ -370,6 +373,27 @@ class PTPContent {
 
     // console.log(this.buttonBarHeight, offset);
     this.buttonBar.height(this.buttonBarHeight).show();
+  }
+
+  /**
+   * 删除指定Key的按钮
+   * @param key
+   */
+  public removeButton(key: string) {
+    let index = this.buttons.findIndex((button: JQuery) => {
+      return button.attr("key") == key;
+    });
+
+    if (index != -1) {
+      let button = this.buttons[index];
+      let line = $("<hr/>").appendTo(this.buttonBar);
+      let offset = <any>line.outerHeight(true) + <any>button.outerHeight(true);
+      this.buttonBarHeight -= offset;
+      line.remove();
+      button.remove();
+      this.buttons.splice(index, 1);
+      this.buttonBar.height(this.buttonBarHeight).show();
+    }
   }
 
   /**
