@@ -373,75 +373,83 @@ export default Vue.extend({
           }
         });
 
-        extension
-          .sendRequest(EAction.getSearchResult, null, {
-            key: this.latestTorrentsOnly ? "" : this.key,
-            site: site
-          })
-          .then((result: any) => {
-            if (result && result.length) {
-              this.writeLog({
-                event: `SearchTorrent.Search.Done[${site.name}]`,
-                msg: `[${site.name}] 搜索完成，共有 ${result.length} 条结果`,
-                data: {
-                  host: site.host,
-                  name: site.name,
-                  key: this.key
-                }
-              });
-              // this.datas.push(...result);
-              this.addSearchResult(result);
-            } else if (result && result.msg) {
-              this.writeLog({
-                event: `SearchTorrent.Search.Error`,
-                msg: result.msg,
-                data: {
-                  host: site.host,
-                  name: site.name,
-                  key: this.key
-                }
-              });
-              this.errorMsg = result.msg;
-            } else {
-              if (result && result.statusText === "abort") {
-                this.errorMsg = `${site.host} 搜索请求已取消`;
-              } else {
-                this.errorMsg = `${site.host} 发生网络或其他错误`;
-                this.writeLog({
-                  event: `SearchTorrent.Search.Error`,
-                  msg: this.errorMsg,
-                  data: {
-                    host: site.host,
-                    name: site.name,
-                    key: this.key,
-                    result
-                  }
-                });
+        this.sendSearchRequest(site);
+      });
+    },
+
+    /**
+     * 发送搜索请求
+     * @param site
+     */
+    sendSearchRequest(site: Site) {
+      extension
+        .sendRequest(EAction.getSearchResult, null, {
+          key: this.latestTorrentsOnly ? "" : this.key,
+          site: site
+        })
+        .then((result: any) => {
+          if (result && result.length) {
+            this.writeLog({
+              event: `SearchTorrent.Search.Done[${site.name}]`,
+              msg: `[${site.name}] 搜索完成，共有 ${result.length} 条结果`,
+              data: {
+                host: site.host,
+                name: site.name,
+                key: this.key
               }
-            }
-          })
-          .catch((result: DataResult) => {
-            if (result.msg) {
-              this.errorMsg = result.msg;
-            }
+            });
+            // this.datas.push(...result);
+            this.addSearchResult(result);
+          } else if (result && result.msg) {
             this.writeLog({
               event: `SearchTorrent.Search.Error`,
               msg: result.msg,
-              data: result
+              data: {
+                host: site.host,
+                name: site.name,
+                key: this.key
+              }
             });
-
-            if (result.data && result.data.isLogged == false) {
-              let siteName = result.data.site.name;
-              this.searchResult.sites[siteName] = {
-                site: site,
-                msg: "未登录"
-              };
+            this.errorMsg = result.msg;
+          } else {
+            if (result && result.statusText === "abort") {
+              this.errorMsg = `${site.host} 搜索请求已取消`;
+            } else {
+              this.errorMsg = `${site.host} 发生网络或其他错误`;
+              this.writeLog({
+                event: `SearchTorrent.Search.Error`,
+                msg: this.errorMsg,
+                data: {
+                  host: site.host,
+                  name: site.name,
+                  key: this.key,
+                  result
+                }
+              });
             }
-          })
-          .finally(() => {
-            this.removeQueue(site);
+          }
+        })
+        .catch((result: DataResult) => {
+          if (result.msg) {
+            this.errorMsg = result.msg;
+          }
+          this.writeLog({
+            event: `SearchTorrent.Search.Error`,
+            msg: result.msg,
+            data: result
           });
-      });
+
+          if (result.data && result.data.isLogged == false) {
+            let siteName = result.data.site.name;
+            this.searchResult.sites[siteName] = {
+              site: site,
+              msg: "未登录"
+            };
+          }
+        })
+        .finally(() => {
+          this.removeQueue(site);
+        });
     },
 
     /**
