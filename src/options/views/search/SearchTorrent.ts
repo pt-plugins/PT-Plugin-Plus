@@ -17,7 +17,8 @@ import {
   Options,
   SearchSolutionRange,
   SearchEntry,
-  DownloadClient
+  DownloadClient,
+  DownloadOptions
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import moment from "moment";
@@ -117,7 +118,8 @@ export default Vue.extend({
       },
       showCategory: false,
       fixedTable: false,
-      siteMenus: {} as any
+      siteContentMenus: {} as any,
+      clientContentMenus: [] as any
     };
   },
   created() {
@@ -672,39 +674,48 @@ export default Vue.extend({
       let site = this.options.sites.find((site: Site) => {
         return site.host === host;
       });
-      let defaultClientOptions = this.getters.clientOptions(site);
-      let defaultPath = this.getters.siteDefaultPath(site);
+      let defaultClientOptions: any = {};
+      let defaultPath: string = "";
+
+      if (options) {
+        defaultClientOptions = options.client;
+        defaultPath = options.path;
+      } else {
+        defaultClientOptions = this.getters.clientOptions(site);
+        defaultPath = this.getters.siteDefaultPath(site);
+      }
 
       this.haveSuccess = true;
       this.successMsg = "正在发送种子到下载服务器……";
 
-      let data = {
+      let data: DownloadOptions = {
         url,
         title,
         savePath: defaultPath,
-        autoStart: defaultClientOptions.autoStart
+        autoStart: defaultClientOptions.autoStart,
+        clientId: defaultClientOptions.id
       };
       this.writeLog({
-        event: "SearchTorrent.sendTorrentToDefaultClient",
+        event: "SearchTorrent.sendTorrentClient",
         msg: "发送种子到下载服务器",
         data
       });
       extension
-        .sendRequest(EAction.sendTorrentToDefaultClient, null, data)
+        .sendRequest(EAction.sendTorrentToClient, null, data)
         .then((result: any) => {
           console.log("命令执行完成", result);
 
           if (result.type == "success") {
             this.successMsg = result.msg;
             this.writeLog({
-              event: "SearchTorrent.sendTorrentToDefaultClient.Success",
+              event: "SearchTorrent.sendTorrentToClient.Success",
               msg: "发送种子到下载服务器成功",
               data: result
             });
           } else {
             this.errorMsg = result.msg;
             this.writeLog({
-              event: "SearchTorrent.sendTorrentToDefaultClient.Error",
+              event: "SearchTorrent.sendTorrentToClient.Error",
               msg: "发送种子到下载服务器失败",
               data: result
             });
@@ -713,7 +724,7 @@ export default Vue.extend({
         })
         .catch((result: any) => {
           this.writeLog({
-            event: "SearchTorrent.sendTorrentToDefaultClient.Error",
+            event: "SearchTorrent.sendTorrentToClient.Error",
             msg: "发送种子到下载服务器失败",
             data: result
           });
@@ -806,7 +817,11 @@ export default Vue.extend({
      * @param datas
      * @param count
      */
-    sendSelectedToClient(datas?: SearchResultItem[], count: number = 0) {
+    sendSelectedToClient(
+      datas?: SearchResultItem[],
+      count: number = 0,
+      downloadOptions?: any
+    ) {
       if (datas === undefined) {
         datas = [...this.selected];
         count = datas.length;
@@ -820,7 +835,7 @@ export default Vue.extend({
         return;
       }
       let data: SearchResultItem = datas.shift() as SearchResultItem;
-      this.sendToClient(data.url as string, data.title, null, () => {
+      this.sendToClient(data.url as string, data.title, downloadOptions, () => {
         this.sending.completed++;
         this.sending.progress =
           (this.sending.completed / this.sending.count) * 100;
@@ -831,7 +846,7 @@ export default Vue.extend({
           this.selected = [];
           return;
         }
-        this.sendSelectedToClient(datas, count);
+        this.sendSelectedToClient(datas, count, downloadOptions);
       });
     },
     /**
@@ -879,7 +894,7 @@ export default Vue.extend({
      * 根据指定的站点获取可用的下载目录及客户端信息
      * @param site
      */
-    getSiteMenus(site: Site): any[] {
+    getSiteContentMenus(site: Site): any[] {
       let results: any[] = [];
       let clients: any[] = [];
       let host = site.host;
@@ -887,8 +902,8 @@ export default Vue.extend({
         return [];
       }
 
-      if (this.siteMenus[host]) {
-        return this.siteMenus[host];
+      if (this.siteContentMenus[host]) {
+        return this.siteContentMenus[host];
       }
 
       this.options.clients.forEach((client: DownloadClient) => {
@@ -918,35 +933,86 @@ export default Vue.extend({
         }
       });
 
-      if (results.length == 0) {
-        results = clients;
+      if (results.length > 0) {
+        clients.splice(0, 0, {});
       }
 
-      this.siteMenus[host] = results;
+      results = results.concat(clients);
+
+      this.siteContentMenus[host] = results;
 
       return results;
     },
 
-    showSiteMenus(options: SearchResultItem, event?: any) {
-      let items = this.getSiteMenus(options.site);
+    /**
+     * 显示指定链接的下载服务器及目录菜单
+     * @param options
+     * @param event
+     */
+    showSiteContentMenus(options: SearchResultItem, event?: any) {
+      let items = this.getSiteContentMenus(options.site);
       let menus: any[] = [];
 
       items.forEach((item: any) => {
-        if (item.client.name) {
+        if (item.client && item.client.name) {
           menus.push({
-            title: item.client.name + (item.path ? ` -> ${item.path}` : ""),
+            title:
+              `下载到：${item.client.name} -> ${item.client.address}` +
+              (item.path ? ` -> ${item.path}` : ""),
             fn: () => {
               if (options.url) {
+                // console.log(options, item);
                 this.sendToClient(options.url, options.title, item);
               }
             }
           });
+        } else {
+          menus.push({});
         }
       });
 
       console.log(items, menus);
 
       basicContext.show(menus, event);
+      $(".basicContext").css({
+        left: "-=20px",
+        top: "+=10px"
+      });
+    },
+
+    showAllContentMenus(event: any) {
+      let clients: any[] = [];
+      let menus: any[] = [];
+
+      if (this.clientContentMenus.length == 0) {
+        this.options.clients.forEach((client: DownloadClient) => {
+          clients.push({
+            client: client,
+            path: ""
+          });
+        });
+        clients.forEach((item: any) => {
+          if (item.client && item.client.name) {
+            menus.push({
+              title: `下载到：${item.client.name} -> ${item.client.address}`,
+              fn: () => {
+                this.sendSelectedToClient(undefined, 0, item);
+              }
+            });
+          } else {
+            menus.push({});
+          }
+        });
+        this.clientContentMenus = menus;
+      } else {
+        menus = this.clientContentMenus;
+      }
+
+      basicContext.show(menus, event);
+      $(".basicContext").css({
+        left: "-=20px",
+        top: "+=10px"
+      });
     }
   }
 });

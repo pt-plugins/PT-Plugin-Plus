@@ -170,7 +170,7 @@
                 color="success"
                 small
                 :title="words.sendToClientTip"
-                @click="sendSelectedToClient()"
+                @click.stop="showAllContentMenus($event)"
               >
                 <v-icon class="mr-2" small>cloud_download</v-icon>
                 {{words.sendToClient}} ({{selected.length}})
@@ -285,7 +285,7 @@
 
             <!-- 服务端下载 -->
             <v-icon
-              @click.stop="showSiteMenus(props.item, $event)"
+              @click.stop="showSiteContentMenus(props.item, $event)"
               small
               class="mr-2"
               :title="words.sendToClient"
@@ -310,3 +310,4 @@
 </template>
 <script lang="ts" src="./SearchTorrent.ts"></script>
 <style lang="scss" src="./SearchTorrent.scss"></style>
+<style lang="scss" src="./contextMenu.scss"></style>
