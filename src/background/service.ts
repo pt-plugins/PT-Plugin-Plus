@@ -83,6 +83,7 @@ export default class PTPlugin {
               this.controller.reset(this.options);
             }
             this.contentMenus.init(this.options);
+            resolve(this.options);
             break;
 
           // 复制指定的内容到剪切板

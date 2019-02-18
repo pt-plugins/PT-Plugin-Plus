@@ -32,6 +32,23 @@ export default class Extension {
               data
             },
             (result: any) => {
+              if (chrome.runtime.lastError) {
+                let message = chrome.runtime.lastError.message || "";
+                console.log(
+                  "Extension.sendRequest.runtime",
+                  action,
+                  data,
+                  chrome.runtime.lastError.message
+                );
+                if (
+                  !/The message port closed before a response was received/.test(
+                    message
+                  )
+                ) {
+                  reject(chrome.runtime.lastError);
+                  return;
+                }
+              }
               callback && callback(result);
               if (
                 result &&

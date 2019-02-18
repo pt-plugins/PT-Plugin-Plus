@@ -313,8 +313,15 @@ export default new Vuex.Store({
     saveConfig({ commit, state }, options: Options) {
       let _options: Options = Object.assign({}, state.options);
       Object.assign(_options, options);
-      commit("updateOptions", _options);
-      extension.sendRequest(EAction.saveConfig, null, _options);
+
+      extension
+        .sendRequest(EAction.saveConfig, null, _options)
+        .then(() => {
+          commit("updateOptions", _options);
+        })
+        .catch(error => {
+          console.log("store.saveConfig.error", error);
+        });
     },
 
     readUIOptions({ commit }) {
