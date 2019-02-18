@@ -283,10 +283,11 @@
               :title="words.copyToClipboardTip"
             >file_copy</v-icon>
 
+            <!-- 服务端下载 -->
             <v-icon
+              @click.stop="showSiteMenus(props.item, $event)"
               small
               class="mr-2"
-              @click="sendToClient(props.item.url, props.item.title)"
               :title="words.sendToClient"
             >cloud_download</v-icon>
 

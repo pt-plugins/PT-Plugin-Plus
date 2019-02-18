@@ -12,6 +12,7 @@
     "res": "cd test && yarn install && tsc && node ./dist/buildResource.js"
   },
   "dependencies": {
+    "basiccontext": "^3.5.1",
     "blueimp-md5": "^2.10.0",
     "extend": "^3.0.2",
     "file-saver": "^2.0.0",

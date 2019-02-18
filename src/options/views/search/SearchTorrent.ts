@@ -16,11 +16,13 @@ import {
   SearchSolution,
   Options,
   SearchSolutionRange,
-  SearchEntry
+  SearchEntry,
+  DownloadClient
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import moment from "moment";
 import { Downloader, downloadFile } from "@/service/downloader";
+import * as basicContext from "basiccontext";
 
 type searchResult = {
   sites: Dictionary<any>;
@@ -114,7 +116,8 @@ export default Vue.extend({
         progress: 0
       },
       showCategory: false,
-      fixedTable: false
+      fixedTable: false,
+      siteMenus: {} as any
     };
   },
   created() {
@@ -662,7 +665,7 @@ export default Vue.extend({
      * @param url
      * @param title
      */
-    sendToClient(url: string, title: string, callback?: any) {
+    sendToClient(url: string, title?: string, options?: any, callback?: any) {
       console.log(url);
       this.clearMessage();
       let host = filters.parseURL(url).host;
@@ -817,7 +820,7 @@ export default Vue.extend({
         return;
       }
       let data: SearchResultItem = datas.shift() as SearchResultItem;
-      this.sendToClient(data.url as string, data.title, () => {
+      this.sendToClient(data.url as string, data.title, null, () => {
         this.sending.completed++;
         this.sending.progress =
           (this.sending.completed / this.sending.count) * 100;
@@ -870,6 +873,80 @@ export default Vue.extend({
     clearMessage() {
       this.successMsg = "";
       this.errorMsg = "";
+    },
+
+    /**
+     * 根据指定的站点获取可用的下载目录及客户端信息
+     * @param site
+     */
+    getSiteMenus(site: Site): any[] {
+      let results: any[] = [];
+      let clients: any[] = [];
+      let host = site.host;
+      if (!host) {
+        return [];
+      }
+
+      if (this.siteMenus[host]) {
+        return this.siteMenus[host];
+      }
+
+      this.options.clients.forEach((client: DownloadClient) => {
+        clients.push({
+          client: client,
+          path: "",
+          host: site.host
+        });
+
+        if (client.paths) {
+          // 根据已定义的路径创建菜单
+          for (const host in client.paths) {
+            let paths = client.paths[host];
+
+            if (host !== site.host) {
+              continue;
+            }
+
+            paths.forEach((path: string) => {
+              results.push({
+                client: client,
+                path: path,
+                host: host
+              });
+            });
+          }
+        }
+      });
+
+      if (results.length == 0) {
+        results = clients;
+      }
+
+      this.siteMenus[host] = results;
+
+      return results;
+    },
+
+    showSiteMenus(options: SearchResultItem, event?: any) {
+      let items = this.getSiteMenus(options.site);
+      let menus: any[] = [];
+
+      items.forEach((item: any) => {
+        if (item.client.name) {
+          menus.push({
+            title: item.client.name + (item.path ? ` -> ${item.path}` : ""),
+            fn: () => {
+              if (options.url) {
+                this.sendToClient(options.url, options.title, item);
+              }
+            }
+          });
+        }
+      });
+
+      console.log(items, menus);
+
+      basicContext.show(menus, event);
     }
   }
 });
