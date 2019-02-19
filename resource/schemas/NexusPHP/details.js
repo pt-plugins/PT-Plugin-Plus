@@ -122,7 +122,7 @@
     getTitle() {
       let title = $("title").text();
       let datas = /\"(.*?)\"/.exec(title);
-      if (datas.length > 1) {
+      if (datas && datas.length > 1) {
         return datas[1] || title;
       }
       return title;
