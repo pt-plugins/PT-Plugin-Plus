@@ -217,7 +217,7 @@
         :items="datas"
         :pagination.sync="pagination"
         :loading="loading"
-        item-key="uid"
+        item-key="link"
         :class="'torrent'+(fixedTable?' fixed-table fixed-header v-table__overflow':'')"
         :select-all="checkBox"
         :rows-per-page-items="options.rowsPerPageItems"
