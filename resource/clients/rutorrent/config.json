@@ -1,0 +1,13 @@
+{
+  "name": "ruTorrent",
+  "type": "ruTorrent",
+  "ver": "0.0.1",
+  "icon": "https://raw.githubusercontent.com/Novik/ruTorrent/master/images/favicon.ico",
+  "scripts": [
+    "init.js"
+  ],
+  "description": "ruTorrent",
+  "warning": "",
+  "allowCustomPath": true,
+  "pathDescription": "当前目录列表配置是指定硬盘上的绝对路径，如 /volume1/music/ 或 D:\\download\\music\\"
+}
