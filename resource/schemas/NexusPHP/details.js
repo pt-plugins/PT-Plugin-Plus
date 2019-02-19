@@ -120,7 +120,12 @@
     }
 
     getTitle() {
-      return /\"(.*?)\"/.exec($("title").text())[1];
+      let title = $("title").text();
+      let datas = /\"(.*?)\"/.exec(title);
+      if (datas.length > 1) {
+        return datas[1] || title;
+      }
+      return title;
     }
   };
   (new App()).init();
