@@ -60,6 +60,7 @@ export default Vue.extend({
       getters: this.$store.getters,
       searchMsg: "",
       datas: [] as any,
+      getLinks: [] as any,
       selected: [],
       pagination: {
         rowsPerPage: 100
@@ -549,8 +550,13 @@ export default Vue.extend({
             (item.completed as string).replace(",", "")
           );
         }
-        item.uid = this.getRandomString();
-        this.datas.push(item);
+
+        // 忽略重复的搜索结果
+        if (this.getLinks.indexOf(item.link) == -1) {
+          this.datas.push(item);
+          this.getLinks.push(item.link);
+        }
+
         this.searchMsg = `已接收 ${this.datas.length} 条结果，搜索仍在进行……`;
 
         let siteName = item.site.name;
