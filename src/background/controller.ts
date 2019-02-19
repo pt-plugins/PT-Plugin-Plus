@@ -660,8 +660,11 @@ export default class Controller {
       });
 
       file.onCompleted = () => {
-        console.log("getTorrentDataFromURL.completed", url, file.content.type);
-        if (file.content && file.content.type == "application/x-bittorrent") {
+        console.log("getTorrentDataFromURL.completed", url);
+        if (
+          file.content &&
+          /octet-stream|x-bittorrent/gi.test(file.content.type)
+        ) {
           resolve(file.content);
         } else {
           reject(APP.createErrorMessage("无效的种子文件"));
