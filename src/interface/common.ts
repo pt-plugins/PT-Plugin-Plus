@@ -27,7 +27,8 @@ export enum EDownloadClientType {
   transmission = "transmission",
   utorrent = "utorrent",
   deluge = "deluge",
-  synologyDownloadStation = "synologyDownloadStation"
+  synologyDownloadStation = "synologyDownloadStation",
+  rutorrent = "rutorrent"
 }
 
 export interface DownloadClient {
