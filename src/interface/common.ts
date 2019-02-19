@@ -127,6 +127,11 @@ export interface SiteCategories {
   category?: SiteCategory[];
 }
 
+export enum ERequsetType {
+  POST = "POST",
+  GET = "GET"
+}
+
 /**
  * 站点配置
  */
@@ -152,6 +157,7 @@ export interface Site {
   checker?: Dictionary<any>;
   torrentTagSelectors?: any[];
   categories?: SiteCategories[];
+  downloadMethod?: ERequsetType;
 }
 
 /**

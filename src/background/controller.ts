@@ -10,7 +10,8 @@ import {
   DataResult,
   EDataResultType,
   Request,
-  EModule
+  EModule,
+  ERequsetType
 } from "@/interface/common";
 import { filters as Filters } from "@/service/filters";
 import { ClientController } from "@/service/clientController";
@@ -19,6 +20,7 @@ import { Searcher } from "./searcher";
 import PTPlugin from "./service";
 import { FileDownloader } from "@/service/downloader";
 import { APP } from "@/service/api";
+import URLParse from "url-parse";
 type Service = PTPlugin;
 export default class Controller {
   public options: Options = {
@@ -653,12 +655,18 @@ export default class Controller {
    */
   public getTorrentDataFromURL(url: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      var file = new FileDownloader({
+      let site = this.getSiteOptionsFromURL(url);
+      let requestType = ERequsetType.GET;
+      if (site) {
+        requestType = site.downloadMethod || ERequsetType.GET;
+      }
+      let file = new FileDownloader({
         url,
         getDataOnly: true,
         timeout: this.service.options.connectClientTimeout
       });
 
+      file.requsetType = requestType;
       file.onCompleted = () => {
         console.log("getTorrentDataFromURL.completed", url);
         if (
@@ -677,5 +685,21 @@ export default class Controller {
 
       file.start();
     });
+  }
+
+  /**
+   * 根据指定URL获取站点配置信息
+   * @param url
+   */
+  public getSiteOptionsFromURL(url: string): Site | undefined {
+    let host = new URLParse(url).host;
+    let site: Site =
+      this.options.system &&
+      this.options.system.sites &&
+      this.options.system.sites.find((item: Site) => {
+        return item.host == host;
+      });
+
+    return site;
   }
 }

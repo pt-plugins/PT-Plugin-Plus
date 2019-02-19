@@ -1,4 +1,4 @@
-import { Dictionary } from "@/interface/common";
+import { Dictionary, ERequsetType } from "@/interface/common";
 import FileSaver from "file-saver";
 
 export type downloadFile = {
@@ -13,11 +13,6 @@ export type downloadOptions = {
   autoStart?: boolean;
   onCompleted?: Function;
 };
-
-export enum requsetType {
-  POST = "POST",
-  GET = "GET"
-}
 
 export class Downloader {
   public count: number = 0;
@@ -74,7 +69,7 @@ export class FileDownloader {
   public status: number = 0;
   public statusText: string = "";
   public url: string = "";
-  public requsetType: requsetType = requsetType.GET;
+  public requsetType: ERequsetType = ERequsetType.GET;
   public postData: any = null;
   public content: any;
   public fileName: string = "";
@@ -166,7 +161,7 @@ export class FileDownloader {
     if (this.postData) {
       data = $.param(this.postData);
     }
-    if (this.requsetType == "POST") {
+    if (this.requsetType == ERequsetType.POST) {
       this.xhr.setRequestHeader(
         "Content-Type",
         "application/x-www-form-urlencoded"

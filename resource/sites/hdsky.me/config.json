@@ -50,5 +50,6 @@
         "name": "Misc/其他"
       }
     ]
-  }]
+  }],
+  "downloadMethod": "POST"
 }
