@@ -521,6 +521,12 @@ export default Vue.extend({
       }
 
       result.forEach((item: SearchResultItem) => {
+        // 忽略重复的搜索结果
+        if (this.getLinks.indexOf(item.link) !== -1) {
+          // 跳过本次循环进行下一个元素
+          return;
+        }
+
         if (moment(item.time).isValid()) {
           // 转成整数是为了排序
           item.time = moment(item.time).valueOf();
@@ -551,11 +557,8 @@ export default Vue.extend({
           );
         }
 
-        // 忽略重复的搜索结果
-        if (this.getLinks.indexOf(item.link) == -1) {
-          this.datas.push(item);
-          this.getLinks.push(item.link);
-        }
+        this.datas.push(item);
+        this.getLinks.push(item.link);
 
         this.searchMsg = `已接收 ${this.datas.length} 条结果，搜索仍在进行……`;
 
