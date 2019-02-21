@@ -2,9 +2,15 @@
   "name": "pt-plugin-plus",
   "version": "1.0.0",
   "private": true,
+  "author": {
+    "name": "ronggang",
+    "url": "https://github.com/ronggang"
+  },
+  "displayName": "PT 助手 Plus",
+  "homepage": "https://github.com/ronggang/PT-Plugin-Plus",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && webpack --config webpack/prod.js && node ./test/dist/buildResource.js",
+    "build": "vue-cli-service build && webpack --config webpack/prod.js && node ./test/dist/buildResource.js && web-ext build -s ./dist -a ./releases -o",
     "lint": "vue-cli-service lint",
     "background": "webpack --config webpack/prod.js",
     "dev": "vue-cli-service build --mode=development && webpack --config webpack/dev.js && node ./test/dist/buildResource.js",
