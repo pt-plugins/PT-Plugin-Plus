@@ -40,6 +40,7 @@ export class Searcher {
    * @param key 需要搜索的关键字
    */
   public searchTorrent(site: Site, key: string = ""): Promise<any> {
+    console.log("searchTorrent: start");
     return new Promise<any>((resolve?: any, reject?: any) => {
       let result: DataResult = {
         success: false
@@ -68,6 +69,7 @@ export class Searcher {
         result.msg = "该站点未配置搜索页面，请先配置";
         result.type = EDataResultType.error;
         reject(result);
+        console.log("searchTorrent: tip");
         return;
       }
 
@@ -84,6 +86,14 @@ export class Searcher {
             this.options.search && this.options.search.rows
               ? this.options.search.rows
               : 10;
+
+          // 组织搜索入口
+          if ((site.url + "").substr(-1) != "/") {
+            site.url += "/";
+          }
+          if ((entry.entry + "").substr(0, 1) == "/") {
+            entry.entry = (entry.entry + "").substr(1);
+          }
           let url: string =
             site.url +
             entry.entry +
@@ -107,36 +117,48 @@ export class Searcher {
             if (scriptPath.substr(0, 1) !== "/") {
               scriptPath = `${searchConfig.rootPath}${scriptPath}`;
             }
-            APP.getScriptContent(scriptPath).done((script: string) => {
-              entry.parseScript = script;
-              this.getSearchResult(
-                url,
-                site,
-                entry,
-                searchConfig.torrentTagSelectors
-              )
-                .then((result: any) => {
-                  if (result && result.length) {
-                    results.push(...result);
-                  }
-                  doneCount++;
-
-                  if (doneCount === entryCount || results.length >= rows) {
-                    resolve(results.slice(0, rows));
-                  }
-                })
-                .catch((result: any) => {
-                  doneCount++;
-
-                  if (doneCount === entryCount) {
-                    if (results.length > 0) {
-                      resolve(results.slice(0, rows));
-                    } else {
-                      reject(result);
+            console.log("searchTorrent: getScriptContent", scriptPath);
+            APP.getScriptContent(scriptPath)
+              .done((script: string) => {
+                console.log("searchTorrent: getScriptContent done", scriptPath);
+                entry.parseScript = script;
+                this.getSearchResult(
+                  url,
+                  site,
+                  entry,
+                  searchConfig.torrentTagSelectors
+                )
+                  .then((result: any) => {
+                    console.log("searchTorrent: getSearchResult done", url);
+                    if (result && result.length) {
+                      results.push(...result);
                     }
-                  }
-                });
-            });
+                    doneCount++;
+
+                    if (doneCount === entryCount || results.length >= rows) {
+                      resolve(results.slice(0, rows));
+                    }
+                  })
+                  .catch((result: any) => {
+                    console.log(
+                      "searchTorrent: getSearchResult catch",
+                      url,
+                      result
+                    );
+                    doneCount++;
+
+                    if (doneCount === entryCount) {
+                      if (results.length > 0) {
+                        resolve(results.slice(0, rows));
+                      } else {
+                        reject(result);
+                      }
+                    }
+                  });
+              })
+              .fail(error => {
+                console.log("searchTorrent: getScriptContent fail", error);
+              });
           } else {
             this.getSearchResult(
               url,
@@ -168,6 +190,8 @@ export class Searcher {
           }
         }
       });
+
+      console.log("searchTorrent: quene done");
     });
   }
 
@@ -184,12 +208,16 @@ export class Searcher {
     entry: SearchEntry,
     torrentTagSelectors?: any[]
   ): Promise<any> {
+    console.log("getSearchResult.start", url);
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.searchRequestQueue[url] = $.ajax({
         url: url,
+        dataType: "text",
+        contentType: "text/plain",
         timeout: (this.options.search && this.options.search.timeout) || 30000
       })
         .done((result: any) => {
+          console.log("getSearchResult.done", url);
           delete this.searchRequestQueue[url];
           if (
             (result && (typeof result == "string" && result.length > 100)) ||
@@ -240,6 +268,7 @@ export class Searcher {
           }
         })
         .fail((result: any) => {
+          console.log("getSearchResult.fail", url);
           delete this.searchRequestQueue[url];
           reject(result);
         });

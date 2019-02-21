@@ -513,7 +513,7 @@ export default class Controller {
       chrome.tabs.get(this.optionsTabId as number, tab => {
         if (!chrome.runtime.lastError && tab) {
           chrome.tabs.update(tab.id as number, {
-            selected: true,
+            active: true,
             url: "index.html#" + url
           });
         } else {

@@ -47,6 +47,7 @@ export default class PTPlugin {
    * @param callback 回调函数
    */
   public requestMessage(request: Request, sender?: any): Promise<any> {
+    console.log("requestMessage", request.action);
     return new Promise<any>((resolve?: any, reject?: any) => {
       let result: any;
       if (![EAction.getSystemLogs, EAction.writeLog].includes(request.action)) {
@@ -256,6 +257,7 @@ export default class PTPlugin {
     if (window.chrome === undefined) {
       return;
     }
+    console.log("service.initBrowserEvent");
     // 监听由活动页面发来的消息事件
     chrome.runtime &&
       chrome.runtime.onMessage &&

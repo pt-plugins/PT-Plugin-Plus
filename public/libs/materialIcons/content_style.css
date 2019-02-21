@@ -6,6 +6,16 @@
   src: url('chrome-extension://__MSG_@@extension_id__/libs/materialIcons/font.woff2') format('woff2');
 }
 
+/*This will work for firefox*/
+@-moz-document url-prefix() {
+  @font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url('moz-extension://__MSG_@@extension_id__/libs/materialIcons/font.woff2') format('woff2');
+  }
+}
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;

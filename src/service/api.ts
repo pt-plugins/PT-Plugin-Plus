@@ -2,12 +2,30 @@ import localStorage from "./localStorage";
 import md5 from "blueimp-md5";
 import { EConfigKey, DataResult, EDataResultType } from "@/interface/common";
 
-const isExtensionMode = !!(window["chrome"] && window.chrome.extension);
+let rootPath = "";
+let isExtensionMode = false;
+
+// 检测浏览器当前状态和模式
+try {
+  let runtime = chrome.runtime as any;
+  isExtensionMode = true;
+  rootPath = runtime.getManifest().options_ui.page.replace("index.html", "");
+  if (rootPath && rootPath.substr(-1) == "/") {
+    rootPath = rootPath.substr(0, rootPath.length - 1);
+  }
+
+  if (!rootPath) {
+    rootPath = `chrome-extension://${chrome.runtime.id}`;
+  }
+} catch (error) {
+  console.log("is not extension mode.");
+}
+
+// const isExtensionMode = !!(window["chrome"] && window.chrome.extension);
 const isLocalhost = window.location.hostname === "localhost";
 const RESOURCE_URL = isLocalhost
   ? "http://localhost:8001"
-  : (isExtensionMode ? `chrome-extension://${chrome.runtime.id}` : "") +
-    "/resource";
+  : (isExtensionMode ? rootPath : "") + "/resource";
 // 调试信息
 let RESOURCE_API = {
   host: RESOURCE_URL,
@@ -90,6 +108,7 @@ export const APP = {
     }
   },
   addScript(script: any) {
+    console.log("addScript", script);
     this.scriptQueues.push(script);
   },
   applyScripts() {
@@ -187,8 +206,10 @@ export const APP = {
    * @param path 路径
    */
   getScriptContent(path: string): JQueryXHR {
+    let url = `${API.host}/${path}`;
+    console.log("getScriptContent", url);
     return $.ajax({
-      url: `${API.host}/${path}`,
+      url: url.replace("resource//", "resource/"),
       dataType: "text"
     });
   },

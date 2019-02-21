@@ -33,6 +33,13 @@
   cursor: pointer;
 }
 
+@-moz-document url-prefix() {
+  .pt-plugin-body .logo {
+    background-image: url('moz-extension://__MSG_@@extension_id__/assets/icon-64.png');
+  }
+}
+
+
 .pt-plugin-body .droper {
   height: 45px;
   width: 100%;

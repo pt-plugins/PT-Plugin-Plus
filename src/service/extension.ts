@@ -3,13 +3,19 @@
  */
 import PTPlugin from "@/background/service";
 import { EAction, EDataResultType } from "@/interface/common";
+import { APP } from "./api";
 
 export default class Extension {
   public isExtensionMode: boolean = false;
   constructor() {
-    if (window["chrome"] && window.chrome.extension) {
-      this.isExtensionMode = true;
+    try {
+      this.isExtensionMode = !!(chrome.runtime && chrome.extension);
+    } catch (error) {
+      console.log("is not extension mode.", error);
     }
+    // if (window["chrome"] && window.chrome.extension) {
+    //   this.isExtensionMode = true;
+    // }
   }
 
   /**
@@ -40,6 +46,14 @@ export default class Extension {
                   data,
                   chrome.runtime.lastError.message
                 );
+                if (/Could not establish connection/.test(message)) {
+                  APP.showNotifications({
+                    message: "插件状态未知，当前操作可能失败，请刷新页面后再试"
+                  });
+                  reject(chrome.runtime.lastError);
+                  return;
+                }
+
                 if (
                   !/The message port closed before a response was received/.test(
                     message
