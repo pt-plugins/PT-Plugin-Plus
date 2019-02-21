@@ -204,6 +204,7 @@ export default Vue.extend({
       this.selected = [];
       this.clearMessage();
       this.datas = [];
+      this.getLinks = [];
       this.searchResult = {
         sites: {},
         tags: {},
