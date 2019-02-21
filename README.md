@@ -2,7 +2,8 @@
 <img src="https://github.com/ronggang/PT-Plugin-Plus/raw/master/public/assets/icon-128.png"><br/>
 <a href="https://github.com/ronggang/PT-Plugin-Plus/releases" title="GitHub Releases"><img src="https://img.shields.io/github/release/ronggang/PT-Plugin-Plus.svg"></a>
 <img src="https://img.shields.io/badge/used-TypeScript Vue-blue.svg">
-<a href="https://chrome.google.com/webstore/detail/abkdiiddckphbigmakaojlnmakpllenb" title="已在Chrome 市场上发布的版本"><img src="https://img.shields.io/chrome-web-store/v/abkdiiddckphbigmakaojlnmakpllenb.svg"></a>
+<a href="https://chrome.google.com/webstore/detail/abkdiiddckphbigmakaojlnmakpllenb" title="已在 Chrome Web Store 市场上发布的版本"><img src="https://img.shields.io/chrome-web-store/v/abkdiiddckphbigmakaojlnmakpllenb.svg?label=Chrome"></a>
+<a href="https://addons.mozilla.org/zh-CN/firefox/addon/pt-plugin-plus/" title="已在 Mozilla Add-on 上发布的版本"><img src="https://img.shields.io/amo/v/pt-plugin-plus.svg?label=Firefox"></a>
 <a href="https://github.com/ronggang/PT-Plugin-Plus/LICENSE" title="GitHub license"><img src="https://img.shields.io/github/license/ronggang/PT-Plugin-Plus.svg"></a>
 </p>
 
@@ -10,7 +11,7 @@
 
 ## 关于
 
-PT 助手 Plus，是一款 Google Chrome 浏览器插件（Google Extensions），主要用于辅助下载 PT 站的种子。
+PT 助手 Plus，是一款 Google Chrome 和 Firefox 浏览器插件（Web Extensions），主要用于辅助下载 PT 站的种子。
 
 适用于各 PT 站，可使下载种子等各项操作变化更简单、快捷。配合下载服务器（如 Transmission、µTorrent 等），可一键下载指定的种子。
 
