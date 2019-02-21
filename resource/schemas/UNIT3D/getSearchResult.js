@@ -2,7 +2,7 @@
   class Parser {
     constructor() {
       this.haveData = false;
-      if (/\/auth\/login/.test(options.responseText)) {
+      if (/\/login/.test(options.responseText)) {
         options.errorMsg = `[${options.site.name}]需要登录后再搜索`;
         return;
       }
