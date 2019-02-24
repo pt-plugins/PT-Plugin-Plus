@@ -104,6 +104,11 @@ String.prototype.getQueryString = function (name, split) {
         };
       }
 
+      let siteURL = PTSevrice.site.url;
+      if (siteURL.substr(-1) != "/") {
+        siteURL += "/";
+      }
+
       if (PTSevrice.site.schema == "NexusPHP") {
         if (!data.url.getQueryString) {
           PTSevrice.showNotice({
@@ -117,7 +122,7 @@ String.prototype.getQueryString = function (name, split) {
           let id = data.url.getQueryString("id");
           if (id) {
             // 如果站点没有配置禁用https，则默认添加https链接
-            data.url = PTSevrice.site.url + "download.php?id=" + id + (PTSevrice.site.passkey ? "&passkey=" + PTSevrice.site.passkey : "") + (PTSevrice.site.disableHttps ? "" : "&https=1");
+            data.url = siteURL + "download.php?id=" + id + (PTSevrice.site.passkey ? "&passkey=" + PTSevrice.site.passkey : "") + (PTSevrice.site.disableHttps ? "" : "&https=1");
           } else {
             data.url = "";
           }

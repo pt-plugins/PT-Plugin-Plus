@@ -9,7 +9,7 @@
      */
     initButtons() {
       // 添加下载按钮
-      PTSevrice.addButton({
+      this.defaultClientOptions && PTSevrice.addButton({
         title: `将当前种子下载到[${this.defaultClientOptions.name}]` + (this.defaultPath ? "\n" + this.defaultPath : ""),
         icon: "get_app",
         label: "一键下载",

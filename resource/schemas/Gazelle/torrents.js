@@ -14,7 +14,7 @@
        */
       initButtons() {
         // 添加下载按钮
-        PTSevrice.addButton({
+        this.defaultClientOptions && PTSevrice.addButton({
           title: `将当前页面所有种子下载到[${this.defaultClientOptions.name}]`,
           icon: "get_app",
           label: "下载所有",
