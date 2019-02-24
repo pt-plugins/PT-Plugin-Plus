@@ -1,0 +1,10 @@
+{
+  "name": "HDArea",
+  "schema": "NexusPHP",
+  "url": "https://hdarea.co/",
+  "description": "高清世界",
+  "icon": "https://hdarea.co/favicon.ico",
+  "tags": ["影视", "综合"],
+  "host": "hdarea.co",
+  "collaborator": "lzl20110"
+}

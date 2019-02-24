@@ -1,0 +1,10 @@
+{
+  "name": "PTHome",
+  "schema": "NexusPHP",
+  "url": "https://pthome.net/",
+  "description": "只为成为您的家，快乐下载，分享至美！",
+  "icon": "https://pthome.net/favicon.ico",
+  "tags": ["综合", "影视", "游戏"],
+  "host": "pthome.net",
+  "collaborator": "waldens"
+}

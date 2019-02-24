@@ -1,0 +1,10 @@
+{
+  "name": "HDCity",
+  "schema": "NexusPHP",
+  "url": "https://hdcity.city/",
+  "description": "无",
+  "icon": "https://hdcity.city/favicon.ico",
+  "tags": ["综合", "影视"],
+  "host": "hdcity.city",
+  "collaborator": "waldens"
+}

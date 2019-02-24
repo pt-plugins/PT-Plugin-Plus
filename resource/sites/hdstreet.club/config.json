@@ -1,0 +1,9 @@
+{
+  "name": "hdstreet",
+  "schema": "NexusPHP",
+  "url": "https://hdstreet.club/",
+  "description": "高清剧集",
+  "icon": "https://hdstreet.club/favicon.ico",
+  "host": "hdstreet.club",
+  "collaborator": "wyl219"
+}
