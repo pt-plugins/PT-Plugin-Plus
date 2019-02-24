@@ -96,10 +96,14 @@
        */
       getDownloadURLs() {
         let links = $("a[href*='/download/']").toArray();
+        let siteURL = PTSevrice.site.url;
+        if (siteURL.substr(-1) != "/") {
+          siteURL += "/";
+        }
         let urls = $.map(links, (item) => {
           let link = $(item).attr("href");
           if (link && link.substr(0, 4) != 'http') {
-            link = PTSevrice.site.url + link;
+            link = siteURL + link;
           }
           return link;
         });

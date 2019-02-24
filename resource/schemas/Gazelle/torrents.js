@@ -101,8 +101,16 @@
        */
       getDownloadURLs() {
         let links = $(("a[title='Download']")).toArray();
+        let siteURL = PTSevrice.site.url;
+        if (siteURL.substr(-1) != "/") {
+          siteURL += "/";
+        }
         let urls = $.map(links, (item) => {
-          return PTSevrice.site.url + $(item).attr("href");
+          let link = $(item).attr("href");
+          if (link && link.substr(0, 4) != 'http') {
+            link = siteURL + link;
+          }
+          return link;
         });
 
         return urls;

@@ -95,8 +95,16 @@
        */
       getDownloadURLs() {
         let links = $("a[href*='download']").toArray();
+        let siteURL = PTSevrice.site.url;
+        if (siteURL.substr(-1) != "/") {
+          siteURL += "/";
+        }
         let urls = $.map(links, (item) => {
-          return PTSevrice.site.url + $(item).attr("href") + (PTSevrice.site.passkey ? "&passkey=" + PTSevrice.site.passkey : "") + (PTSevrice.site.disableHttps ? "" : "&https=1");
+          let link = $(item).attr("href") + (PTSevrice.site.passkey ? "&passkey=" + PTSevrice.site.passkey : "") + (PTSevrice.site.disableHttps ? "" : "&https=1");
+          if (link && link.substr(0, 4) != 'http') {
+            link = siteURL + link;
+          }
+          return link;
         });
 
         return urls;
