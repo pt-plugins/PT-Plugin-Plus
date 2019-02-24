@@ -51,7 +51,8 @@ export default Vue.extend({
         copyToClipboard: "复制链接",
         copyToClipboardTip: "复制下载链接到剪切板",
         reSearch: "重新再搜索",
-        showCategory: "分类"
+        showCategory: "分类",
+        filterSearchResults: "过滤搜索结果"
       },
       key: "",
       // 指定站点搜索
@@ -120,7 +121,8 @@ export default Vue.extend({
       showCategory: false,
       fixedTable: false,
       siteContentMenus: {} as any,
-      clientContentMenus: [] as any
+      clientContentMenus: [] as any,
+      filterKey: ""
     };
   },
   created() {
@@ -210,6 +212,7 @@ export default Vue.extend({
         tags: {},
         categories: {}
       } as searchResult;
+      this.filterKey = "";
 
       if (window.location.hostname == "localhost") {
         $.getJSON("http://localhost:8001/testSearchData.json").done(

@@ -136,6 +136,15 @@
         </v-flex>
         <!-- 操作按钮列表 -->
         <v-flex xs6>
+          <div>
+            <v-text-field
+              v-model="filterKey"
+              append-icon="search"
+              :label="words.filterSearchResults"
+              single-line
+              hide-details
+            ></v-text-field>
+          </div>
           <v-layout row wrap align-center justify-end>
             <div>
               <v-switch
@@ -213,6 +222,7 @@
       <!-- 数据表格 -->
       <v-data-table
         v-model="selected"
+        :search="filterKey"
         :headers="headers"
         :items="datas"
         :pagination.sync="pagination"
