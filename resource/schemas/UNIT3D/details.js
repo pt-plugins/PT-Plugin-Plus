@@ -3,6 +3,9 @@
   class App extends window.NexusPHPCommon {
     init() {
       this.initButtons()
+      this.initFreeSpaceButton()
+      // 设置当前页面
+      PTSevrice.pageApp = this;
     }
     /**
      * 初始化按钮列表

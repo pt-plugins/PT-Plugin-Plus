@@ -7,7 +7,7 @@
     "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
   }, {
     "name": "种子列表",
-    "pages": ["/torrents"],
+    "pages": ["^/torrents$"],
     "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
   }],
   "searchEntry": [{
