@@ -3,7 +3,10 @@
   "description": "HDHome",
   "url": "https://hdhome.org/",
   "icon": "https://hdhome.org/favicon.ico",
-  "tags": ["影视", "综合"],
+  "tags": [
+    "影视",
+    "综合"
+  ],
   "schema": "NexusPHP",
   "host": "hdhome.org"
 }

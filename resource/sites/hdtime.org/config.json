@@ -3,7 +3,182 @@
   "description": "HDTime, time to forever!",
   "url": "https://hdtime.org/",
   "icon": "https://hdtime.org/favicon.ico",
-  "tags": ["影视", "综合"],
+  "tags": [
+    "影视",
+    "综合"
+  ],
   "schema": "NexusPHP",
-  "host": "hdtime.org"
+  "host": "hdtime.org",
+  "searchEntry": [
+    {
+      "entry": "/torrents.php?search=$key$&notnewword=1",
+      "name": "全站",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": true
+    },
+    {
+      "entry": "/torrents.php?cat401=1&search=$key$&notnewword=1",
+      "name": "电影",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat424=1&search=$key$&notnewword=1",
+      "name": "Blu-Ray原盘",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat402=1&search=$key$&notnewword=1",
+      "name": "剧集",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat403=1&search=$key$&notnewword=1",
+      "name": "综艺",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat405=1&search=$key$&notnewword=1",
+      "name": "动漫",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat414=1&search=$key$&notnewword=1",
+      "name": "软件",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat407=1&search=$key$&notnewword=1",
+      "name": "体育",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat404=1&search=$key$&notnewword=1",
+      "name": "纪录片",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat406=1&search=$key$&notnewword=1",
+      "name": "MV",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat408=1&search=$key$&notnewword=1",
+      "name": "音乐",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat410=1&search=$key$&notnewword=1",
+      "name": "游戏",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat411=1&search=$key$&notnewword=1",
+      "name": "文档",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat409=1&search=$key$&notnewword=1",
+      "name": "其他",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    }
+  ],
+  "categories": [
+    {
+      "entry": "torrents.php",
+      "result": "&cat=$id$&cat$id$=1",
+      "category": {
+        "id": 401,
+        "name": "电影"
+      },
+    {
+      "id": 424,
+      "name": "Blu-Ray原盘"
+    },
+    {
+      "id": 402,
+      "name": "剧集"
+    },
+    {
+      "id": 403,
+      "name": "综艺"
+    },
+    {
+      "id": 405,
+      "name": "动漫"
+    },
+    {
+      "id": 414,
+      "name": "软件"
+    },
+    {
+      "id": 407,
+      "name": "体育"
+    },
+    {
+      "id": 404,
+      "name": "纪录片"
+    },
+    {
+      "id": 406,
+      "name": "MV"
+    },
+    {
+      "id": 408,
+      "name": "音乐"
+    },
+    {
+      "id": 410,
+      "name": "游戏"
+    },
+    {
+      "id": 411,
+      "name": "文档"
+    },
+    {
+      "id": 409,
+      "name": "其他"
+    }
+    }
+  ]
 }
