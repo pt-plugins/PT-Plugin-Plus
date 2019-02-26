@@ -135,7 +135,10 @@ export class BuildPlugin {
           schema = "其他架构";
         }
 
-        schemas[schema].push(content.name);
+        schemas[schema].push(
+          content.name +
+            (content.collaborator ? ` - @${content.collaborator}` : "")
+        );
       }
     });
 
