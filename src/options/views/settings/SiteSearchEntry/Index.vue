@@ -166,7 +166,8 @@ export default Vue.extend({
       site: {} as Site,
       selectedItem: {},
       dialogRemoveConfirm: false,
-      searchEntry: [] as any
+      searchEntry: [] as any,
+      options: this.$store.state.options
     };
   },
   methods: {
@@ -233,6 +234,12 @@ export default Vue.extend({
       });
 
       if (this.site) {
+        let systemSite = this.options.system.sites.find((item: Site) => {
+          return item.host == host;
+        });
+        if (systemSite) {
+          this.site.categories = systemSite.categories;
+        }
         let searchEntry: any[] = [];
 
         if (this.site.searchEntry && this.site.searchEntry.length > 0) {
