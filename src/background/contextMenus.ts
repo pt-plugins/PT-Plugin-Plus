@@ -38,7 +38,6 @@ export class ContextMenus {
     chrome.tabs.onActivated.addListener(
       (actionInfo: chrome.tabs.TabActiveInfo) => {
         chrome.tabs.get(actionInfo.tabId, (tab: chrome.tabs.Tab) => {
-          console.log("onActivated", tab);
           this.clearSiteMenus();
           if (tab.url) {
             let host = new URLParse(tab.url).host;
@@ -56,7 +55,6 @@ export class ContextMenus {
         changeInfo: chrome.tabs.TabChangeInfo,
         tab: chrome.tabs.Tab
       ) => {
-        console.log("onUpdated", tab);
         this.clearSiteMenus();
         if (tab.url) {
           let host = new URLParse(tab.url).host;
