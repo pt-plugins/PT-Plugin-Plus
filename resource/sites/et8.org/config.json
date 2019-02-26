@@ -1,0 +1,284 @@
+{
+  "name": "TorrentCCF",
+  "description": "兼有学习资源和软件资源的影视PT站点",
+  "url": "https://et8.org/",
+  "icon": "https://et8.org/favicon.ico",
+  "tags": [
+    "影视",
+    "学习",
+    "综合"
+  ],
+  "schema": "NexusPHP",
+  "host": "et8.org",
+  "collaborator": "Rhilip",
+  "searchEntry": [
+    {
+      "entry": "/torrents.php?search=$key$&notnewword=1",
+      "name": "全站",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": true
+    },
+    {
+      "entry": "/torrents.php?cat601=1&search=$key$&notnewword=1",
+      "name": "Movies",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat602=1&search=$key$&notnewword=1",
+      "name": "Animations",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat603=1&search=$key$&notnewword=1",
+      "name": "Sports",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat604=1&search=$key$&notnewword=1",
+      "name": "Documentaries",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat605=1&search=$key$&notnewword=1",
+      "name": "EDU",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat606=1&search=$key$&notnewword=1",
+      "name": "TV/Cn",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat607=1&search=$key$&notnewword=1",
+      "name": "TV/Western",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat608=1&search=$key$&notnewword=1",
+      "name": "TV/hk_tw",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat609=1&search=$key$&notnewword=1",
+      "name": "TV/Japan_korea",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat610=1&search=$key$&notnewword=1",
+      "name": "TV Shows",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat611=1&search=$key$&notnewword=1",
+      "name": "Music/Cn",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat612=1&search=$key$&notnewword=1",
+      "name": "Music/Western",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat613=1&search=$key$&notnewword=1",
+      "name": "Music/Asia",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat614=1&search=$key$&notnewword=1",
+      "name": "Music/Classic",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat615=1&search=$key$&notnewword=1",
+      "name": "MusicVideo",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat616=1&search=$key$&notnewword=1",
+      "name": "Appz",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat617=1&search=$key$&notnewword=1",
+      "name": "PC Games",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat618=1&search=$key$&notnewword=1",
+      "name": "Playstation",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat619=1&search=$key$&notnewword=1",
+      "name": "Xbox",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat620=1&search=$key$&notnewword=1",
+      "name": "Wii",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat621=1&search=$key$&notnewword=1",
+      "name": "Others",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    }
+  ],
+  "categories": [
+    {
+      "entry": "torrents.php",
+      "result": "&cat=$id$&cat$id$=1",
+      "category": [
+        {
+          "id": 601,
+          "name": "Movies"
+        },
+        {
+          "id": 602,
+          "name": "Animations"
+        },
+        {
+          "id": 603,
+          "name": "Sports"
+        },
+        {
+          "id": 604,
+          "name": "Documentaries"
+        },
+        {
+          "id": 605,
+          "name": "EDU"
+        },
+        {
+          "id": 606,
+          "name": "TV/Cn"
+        },
+        {
+          "id": 607,
+          "name": "TV/Western"
+        },
+        {
+          "id": 608,
+          "name": "TV/hk_tw"
+        },
+        {
+          "id": 609,
+          "name": "TV/Japan_korea"
+        },
+        {
+          "id": 610,
+          "name": "TV Shows"
+        },
+        {
+          "id": 611,
+          "name": "Music/Cn"
+        },
+        {
+          "id": 612,
+          "name": "Music/Western"
+        },
+        {
+          "id": 613,
+          "name": "Music/Asia"
+        },
+        {
+          "id": 614,
+          "name": "Music/Classic"
+        },
+        {
+          "id": 615,
+          "name": "MusicVideo"
+        },
+        {
+          "id": 616,
+          "name": "Appz"
+        },
+        {
+          "id": 617,
+          "name": "PC Games"
+        },
+        {
+          "id": 618,
+          "name": "Playstation"
+        },
+        {
+          "id": 619,
+          "name": "Xbox"
+        },
+        {
+          "id": 620,
+          "name": "Wii"
+        },
+        {
+          "id": 621,
+          "name": "Others"
+        }
+      ]
+    }
+  ]
+}
