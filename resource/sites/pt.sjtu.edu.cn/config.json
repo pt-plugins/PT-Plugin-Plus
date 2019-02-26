@@ -1,0 +1,130 @@
+{
+  "name": "葡萄",
+  "description": "Free Share, Join us",
+  "url": "https://pt.sjtu.edu.cn/",
+  "icon": "https://pt.sjtu.edu.cn/favicon.ico",
+  "tags": [
+    "教育网",
+    "影视",
+    "综合"
+  ],
+  "schema": "NexusPHP",
+  "host": "pt.sjtu.edu.cn",
+  "collaborator": "Rhilip",
+  "categories": [
+    {
+      "entry": "torrents.php",
+      "result": "&cat=$id$&cat$id$=1",
+      "category": [
+        {
+          "id": 401,
+          "name": "华语电影"
+        },
+        {
+          "id": 402,
+          "name": "欧美电影"
+        },
+        {
+          "id": 403,
+          "name": "亚洲电影"
+        },
+        {
+          "id": 406,
+          "name": "纪录片"
+        },
+        {
+          "id": 407,
+          "name": "港台电视剧"
+        },
+        {
+          "id": 408,
+          "name": "亚洲电视剧"
+        },
+        {
+          "id": 409,
+          "name": "大陆电视剧"
+        },
+        {
+          "id": 410,
+          "name": "欧美电视剧"
+        },
+        {
+          "id": 411,
+          "name": "大陆综艺节目"
+        },
+        {
+          "id": 412,
+          "name": "港台综艺节目"
+        },
+        {
+          "id": 413,
+          "name": "欧美综艺节目"
+        },
+        {
+          "id": 414,
+          "name": "日韩综艺节目"
+        },
+        {
+          "id": 420,
+          "name": "华语音乐"
+        },
+        {
+          "id": 421,
+          "name": "日韩音乐"
+        },
+        {
+          "id": 422,
+          "name": "欧美音乐"
+        },
+        {
+          "id": 423,
+          "name": "原声音乐"
+        },
+        {
+          "id": 425,
+          "name": "古典音乐"
+        },
+        {
+          "id": 426,
+          "name": "mp3合辑"
+        },
+        {
+          "id": 427,
+          "name": "Music Videos"
+        },
+        {
+          "id": 429,
+          "name": "游戏"
+        },
+        {
+          "id": 431,
+          "name": "动漫"
+        },
+        {
+          "id": 432,
+          "name": "体育"
+        },
+        {
+          "id": 434,
+          "name": "软件"
+        },
+        {
+          "id": 435,
+          "name": "学习"
+        },
+        {
+          "id": 440,
+          "name": "mac"
+        },
+        {
+          "id": 451,
+          "name": "校园原创"
+        },
+        {
+          "id": 450,
+          "name": "其他"
+        }
+      ]
+    }
+  ]
+}

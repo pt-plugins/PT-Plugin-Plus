@@ -291,7 +291,7 @@ if (!"".getQueryString) {
       }
 
       if (img.length) {
-        result.name = img.attr("title");
+        result.name = img.attr("title") || img.attr('alt');
       } else {
         result.name = link.text();
       }
