@@ -3,11 +3,11 @@
   "ver": "0.0.1",
   "plugins": [{
     "name": "种子详情页面",
-    "pages": ["/details.php", "/plugin_details.php"],
+    "pages": ["/details.php", "/plugin_details.php","\/t-\\d+"],
     "scripts": ["common.js", "details.js"]
   }, {
     "name": "种子列表",
-    "pages": ["/torrents.php", "/music.php", "/movie.php", "/adult.php"],
+    "pages": ["/torrents.php", "/music.php", "/movie.php", "/adult.php","/pt"],
     "scripts": ["common.js", "torrents.js"]
   }],
   "securityKeyFields": ["passkey"],

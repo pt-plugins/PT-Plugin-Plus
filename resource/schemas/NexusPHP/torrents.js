@@ -101,8 +101,12 @@
         }
         let urls = $.map(links, (item) => {
           let link = $(item).attr("href") + (PTSevrice.site.passkey ? "&passkey=" + PTSevrice.site.passkey : "") + (PTSevrice.site.disableHttps ? "" : "&https=1");
-          if (link && link.substr(0, 4) != 'http') {
-            link = siteURL + link;
+          if (link) {
+            if (link.substr(0, 2) === '//') {  // 适配HUDBT、WHU这样以相对链接开头
+              link = location.protocol + link;
+            } else if (url.substr(0, 4) !== "http") {
+              link = siteURL + link;
+            }
           }
           return link;
         });
