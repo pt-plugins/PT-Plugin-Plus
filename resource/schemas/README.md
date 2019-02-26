@@ -8,10 +8,13 @@
 
 ```
 --目录名
+----parser
+-------xxxx.js
 ----config.json
 ----xxxx.js
 ```
 
+- parser : （可选）解析器目录，会在打包时自动将该目录下的所有 js 文件内容生成到 config.js 文件中的 `parser` 字段中
 - config.json : 架构的定义
 - xxxx.js : 页面对应的脚本文件
 

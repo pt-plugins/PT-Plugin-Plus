@@ -6,10 +6,13 @@
 
 ```
 --目录名
+----parser
+-------xxxx.js
 ----config.json
 ----xxxx.js
 ```
 
+- parser : （可选）解析器目录，会在打包时自动将该目录下的所有 js 文件内容生成到 config.js 文件中的 `parser` 字段中
 - config.json : 网站的定义
 - xxxx.js : （可选）页面对应的脚本文件
 
@@ -90,7 +93,7 @@
   - `resultSelector` : 定位种子列表的 `jQuery` 查询表达式
 - `patterns` : （可选）页面匹配规则
   - `torrentLinks` : 用于匹配有效的种子链接，作用于右键菜单，如果不指定，则匹配所有链接；
-- `parser` : （可选）解析器
+- `parser` : （可选）解析器，打包时根据 parser 目录生成
   - `downloadURL` : 解析下载链接，用于解析和生成点击右键下载时的链接
 - `torrentTagSelectors` : （可选）种子标签选择器，数组
   - `name` : 标签名称
