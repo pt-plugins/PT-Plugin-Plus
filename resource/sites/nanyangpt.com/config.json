@@ -1,16 +1,15 @@
 {
-  "name": "OurBits",
-  "description": "综合性网站，有分享率要求",
-  "url": "https://ourbits.club/",
-  "icon": "https://ourbits.club/favicon.ico",
+  "name": "南洋PT",
+  "description": "网站由西安交通大学学生自主创建与管理，汇集学习资料、纪录片、电影、剧集等各类优质资源",
+  "url": "https://nanyangpt.com/",
+  "icon": "https://nanyangpt.com/favicon.ico",
   "tags": [
+    "教育网",
     "影视",
-    "动漫",
-    "纪录片",
-    "综艺"
+    "综合"
   ],
   "schema": "NexusPHP",
-  "host": "ourbits.club",
+  "host": "nanyangpt.com",
   "collaborator": "Rhilip",
   "searchEntry": [
     {
@@ -23,7 +22,7 @@
     },
     {
       "entry": "/torrents.php?cat401=1&search=$key$&notnewword=1",
-      "name": "Movies",
+      "name": "电影",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
@@ -31,23 +30,23 @@
     },
     {
       "entry": "/torrents.php?cat402=1&search=$key$&notnewword=1",
-      "name": "Movies-3D",
+      "name": "剧集",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat419=1&search=$key$&notnewword=1",
-      "name": "Concert",
+      "entry": "/torrents.php?cat403=1&search=$key$&notnewword=1",
+      "name": "动漫",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat412=1&search=$key$&notnewword=1",
-      "name": "TV-Episode",
+      "entry": "/torrents.php?cat404=1&search=$key$&notnewword=1",
+      "name": "综艺",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
@@ -55,15 +54,39 @@
     },
     {
       "entry": "/torrents.php?cat405=1&search=$key$&notnewword=1",
-      "name": "TV-Pack",
+      "name": "体育",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat413=1&search=$key$&notnewword=1",
-      "name": "TV-Show",
+      "entry": "/torrents.php?cat406=1&search=$key$&notnewword=1",
+      "name": "纪录",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat407=1&search=$key$&notnewword=1",
+      "name": "音乐",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat408=1&search=$key$&notnewword=1",
+      "name": "学习",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat409=1&search=$key$&notnewword=1",
+      "name": "软件",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
@@ -71,7 +94,7 @@
     },
     {
       "entry": "/torrents.php?cat410=1&search=$key$&notnewword=1",
-      "name": "Documentary",
+      "name": "游戏",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
@@ -79,31 +102,7 @@
     },
     {
       "entry": "/torrents.php?cat411=1&search=$key$&notnewword=1",
-      "name": "Animation",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
-      "enabled": false
-    },
-    {
-      "entry": "/torrents.php?cat415=1&search=$key$&notnewword=1",
-      "name": "Sports",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
-      "enabled": false
-    },
-    {
-      "entry": "/torrents.php?cat414=1&search=$key$&notnewword=1",
-      "name": "Music-Video",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
-      "enabled": false
-    },
-    {
-      "entry": "/torrents.php?cat416=1&search=$key$&notnewword=1",
-      "name": "Music",
+      "name": "其他",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
@@ -112,52 +111,52 @@
   ],
   "categories": [
     {
-      "entry": "*",
-      "result": "&cat$id$=1",
+      "entry": "torrents.php",
+      "result": "&cat=$id$&cat$id$=1",
       "category": [
         {
           "id": 401,
-          "name": "Movies"
+          "name": "电影"
         },
         {
           "id": 402,
-          "name": "Movies-3D"
+          "name": "剧集"
         },
         {
-          "id": 419,
-          "name": "Concert"
+          "id": 403,
+          "name": "动漫"
         },
         {
-          "id": 412,
-          "name": "TV-Episode"
+          "id": 404,
+          "name": "综艺"
         },
         {
           "id": 405,
-          "name": "TV-Pack"
+          "name": "体育"
         },
         {
-          "id": 413,
-          "name": "TV-Show"
+          "id": 406,
+          "name": "纪录"
+        },
+        {
+          "id": 407,
+          "name": "音乐"
+        },
+        {
+          "id": 408,
+          "name": "学习"
+        },
+        {
+          "id": 409,
+          "name": "软件"
         },
         {
           "id": 410,
-          "name": "Documentary"
+          "name": "游戏"
         },
         {
           "id": 411,
-          "name": "Animation"
-        },
-        {
-          "id": 415,
-          "name": "Sports"
-        },
-        {
-          "id": 414,
-          "name": "Music-Video"
-        },
-        {
-          "id": 416,
-          "name": "Music"
+          "name": "其他"
         }
       ]
     }

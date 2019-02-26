@@ -1,91 +1,100 @@
 {
-  "name": "CMCT",
-  "description": "Classic Movie Compression Team",
-  "url": "https://hdcmct.org/",
-  "icon": "https://hdcmct.org/favicon.ico",
+  "name": "BYRBT",
+  "description": "著名教育网PT站点（仅支持ipv6访问与下载），有10大类资源，资源更新快，保种好。",
+  "url": "https://bt.byr.cn/",
+  "icon": "https://bt.byr.cn/favicon.ico",
   "tags": [
+    "教育网",
     "影视",
-    "音乐",
     "综合"
   ],
   "schema": "NexusPHP",
-  "host": "hdcmct.org",
+  "host": "bt.byr.cn",
+  "collaborator": "Rhilip",
   "searchEntry": [
     {
       "entry": "/torrents.php?search=$key$&notnewword=1",
-      "name": "全部",
+      "name": "全站",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrent_list:last > tbody > tr",
+      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": true
     },
     {
-      "entry": "/torrents.php?cat501=1&search=$key$&notnewword=1",
-      "name": "Movies(电影)",
+      "entry": "/torrents.php?cat408=1&search=$key$&notnewword=1",
+      "name": "电影",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat502=1&search=$key$&notnewword=1",
-      "name": "TV Series(剧集)",
+      "entry": "/torrents.php?cat401=1&search=$key$&notnewword=1",
+      "name": "剧集",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat503=1&search=$key$&notnewword=1",
-      "name": "Docs(纪录)",
+      "entry": "/torrents.php?cat404=1&search=$key$&notnewword=1",
+      "name": "动漫",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat504=1&search=$key$&notnewword=1",
-      "name": "Animations(动画)",
+      "entry": "/torrents.php?cat402=1&search=$key$&notnewword=1",
+      "name": "音乐",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat505=1&search=$key$&notnewword=1",
-      "name": "TV Shows(综艺)",
+      "entry": "/torrents.php?cat405=1&search=$key$&notnewword=1",
+      "name": "综艺",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat506=1&search=$key$&notnewword=1",
-      "name": "Sports(体育)",
+      "entry": "/torrents.php?cat403=1&search=$key$&notnewword=1",
+      "name": "游戏",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat507=1&search=$key$&notnewword=1",
-      "name": "MV(音乐视频)",
+      "entry": "/torrents.php?cat406=1&search=$key$&notnewword=1",
+      "name": "软件",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat508=1&search=$key$&notnewword=1",
-      "name": "Music(音乐)",
+      "entry": "/torrents.php?cat407=1&search=$key$&notnewword=1",
+      "name": "资料",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat509=1&search=$key$&notnewword=1",
-      "name": "Others(其他)",
+      "entry": "/torrents.php?cat409=1&search=$key$&notnewword=1",
+      "name": "体育",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat410=1&search=$key$&notnewword=1",
+      "name": "纪录",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
       "resultSelector": "table.torrents:last > tbody > tr",
@@ -94,44 +103,48 @@
   ],
   "categories": [
     {
-      "entry": "*",
-      "result": "&cat$id$=1",
+      "entry": "torrents.php",
+      "result": "&cat=$id$&cat$id$=1",
       "category": [
         {
-          "id": 501,
-          "name": "Movies(电影)"
+          "id": 408,
+          "name": "电影"
         },
         {
-          "id": 502,
-          "name": "TV Series(剧集)"
+          "id": 401,
+          "name": "剧集"
         },
         {
-          "id": 503,
-          "name": "Docs(纪录)"
+          "id": 404,
+          "name": "动漫"
         },
         {
-          "id": 504,
-          "name": "Animations(动画)"
+          "id": 402,
+          "name": "音乐"
         },
         {
-          "id": 505,
-          "name": "TV Shows(综艺)"
+          "id": 405,
+          "name": "综艺"
         },
         {
-          "id": 506,
-          "name": "Sports(体育)"
+          "id": 403,
+          "name": "游戏"
         },
         {
-          "id": 507,
-          "name": "MV(音乐视频)"
+          "id": 406,
+          "name": "软件"
         },
         {
-          "id": 508,
-          "name": "Music(音乐)"
+          "id": 407,
+          "name": "资料"
         },
         {
-          "id": 509,
-          "name": "Others(其他)"
+          "id": 409,
+          "name": "体育"
+        },
+        {
+          "id": 410,
+          "name": "纪录"
         }
       ]
     }

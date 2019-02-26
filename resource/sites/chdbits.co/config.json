@@ -3,7 +3,148 @@
   "description": "CHDBits",
   "url": "https://chdbits.co/",
   "icon": "https://chdbits.co/favicon.ico",
-  "tags": ["影视", "综合"],
+  "tags": [
+    "影视",
+    "综合"
+  ],
   "schema": "NexusPHP",
-  "host": "chdbits.co"
+  "host": "chdbits.co",
+  "searchEntry": [
+    {
+      "entry": "/torrents.php?search=$key$&notnewword=1",
+      "name": "全站",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": true
+    },
+    {
+      "entry": "/torrents.php?cat401=1&search=$key$&notnewword=1",
+      "name": "Movies",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat404=1&search=$key$&notnewword=1",
+      "name": "Documentaries",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat405=1&search=$key$&notnewword=1",
+      "name": "Animations",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat402=1&search=$key$&notnewword=1",
+      "name": "TV Series",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat403=1&search=$key$&notnewword=1",
+      "name": "TV Shows",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat406=1&search=$key$&notnewword=1",
+      "name": "Music",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat407=1&search=$key$&notnewword=1",
+      "name": "Sports",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat409=1&search=$key$&notnewword=1",
+      "name": "Demo",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat408=1&search=$key$&notnewword=1",
+      "name": "HQ Audio",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat410=1&search=$key$&notnewword=1",
+      "name": "Game",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrents:last > tbody > tr",
+      "enabled": false
+    }
+  ],
+  "categories": [
+    {
+      "entry": "torrents.php",
+      "result": "&cat=$id$&cat$id$=1",
+      "category": [
+        {
+          "id": 401,
+          "name": "Movies"
+        },
+        {
+          "id": 404,
+          "name": "Documentaries"
+        },
+        {
+          "id": 405,
+          "name": "Animations"
+        },
+        {
+          "id": 402,
+          "name": "TV Series"
+        },
+        {
+          "id": 403,
+          "name": "TV Shows"
+        },
+        {
+          "id": 406,
+          "name": "Music"
+        },
+        {
+          "id": 407,
+          "name": "Sports"
+        },
+        {
+          "id": 409,
+          "name": "Demo"
+        },
+        {
+          "id": 408,
+          "name": "HQ Audio"
+        },
+        {
+          "id": 410,
+          "name": "Game"
+        }
+      ]
+    }
+  ]
 }
