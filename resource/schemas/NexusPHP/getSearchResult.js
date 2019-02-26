@@ -37,6 +37,7 @@ if (!"".getQueryString) {
         return [];
       }
       let site = options.site;
+      let site_url_help = PTSevriceFilters.parseURL(site.url);
       let selector = options.resultSelector || "table.torrents:last";
       selector = selector.replace("> tbody > tr", "");
       let table = options.page.find(selector);
@@ -145,7 +146,9 @@ if (!"".getQueryString) {
             title = row.find("a[href*='hit']").first();
           }
           let link = title.attr("href");
-          if (link.substr(0, 4) !== "http") {
+          if (link.substr(0, 2) === '//') {  // 适配HUDBT、WHU这样以相对链接开头
+            link = `${site_url_help.protocol}://${link}`;
+          } else if (link.substr(0, 4) !== "http") {
             link = `${site.url}${link}`;
           }
 
@@ -164,7 +167,9 @@ if (!"".getQueryString) {
             url = `download.php?id=${id}`;
           }
 
-          if (url.substr(0, 4) !== "http") {
+          if (url.substr(0, 2) === '//') {  // 适配HUDBT、WHU这样以相对链接开头
+            url = `${site_url_help.protocol}://${url}`;
+          } else if (url.substr(0, 4) !== "http") {
             url = `${site.url}${url}`;
           }
 
