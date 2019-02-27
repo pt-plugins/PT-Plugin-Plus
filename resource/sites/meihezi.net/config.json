@@ -1,6 +1,6 @@
 {
   "name": "MeiHeZi",
-  "description": "美盒子",
+  "description": "美盒子。如果搜索结果出现优惠信息显示不正确，请在网站设置中将“促销种子”设置为添加图标",
   "url": "https://meihezi.net/",
   "icon": "https://meihezi.net/favicon.ico",
   "tags": ["影视", "综合"],
@@ -45,5 +45,30 @@
       "id": 409,
       "name": "其他"
     }]
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "img.pro_free",
+    "color": "blue"
+  }, {
+    "name": "2xFree",
+    "selector": "img.pro_free2up",
+    "color": "green"
+  }, {
+    "name": "2xUp",
+    "selector": "img.pro_2up",
+    "color": "lime"
+  }, {
+    "name": "2x50%",
+    "selector": "img.pro_50pctdown2up",
+    "color": "light-green"
+  }, {
+    "name": "30%",
+    "selector": "img.pro_30pctdown",
+    "color": "indigo"
+  }, {
+    "name": "50%",
+    "selector": "img.pro_50pctdown",
+    "color": "orange"
   }]
 }
