@@ -103,10 +103,12 @@
       }
 
       if (!url) {
-        url = $("a[href*='download.php?id=']:first").attr("href");
+        url = $("a[href*='download'][href*='?id']:first").attr("href");
       }
 
-      if (url && url.substr(0, 1) === "/") {
+      if (url && url.substr(0, 2) === '//') {   // 首先尝试适配HUDBT、WHU这样以相对链接开头
+        url = `${location.protocol}${url}`;
+      } else if (url && url.substr(0, 1) === "/") {
         url = `${location.origin}${url}`;
       } else if (url && url.substr(0, 4) !== "http") {
         url = `${location.origin}/${url}`;
