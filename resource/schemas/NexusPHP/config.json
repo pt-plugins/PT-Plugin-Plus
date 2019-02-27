@@ -3,11 +3,11 @@
   "ver": "0.0.1",
   "plugins": [{
     "name": "种子详情页面",
-    "pages": ["/details.php", "/plugin_details.php","\/t-\\d+"],
+    "pages": ["/details.php", "/plugin_details.php", "\/t-\\d+"],
     "scripts": ["common.js", "details.js"]
   }, {
     "name": "种子列表",
-    "pages": ["/torrents.php", "/music.php", "/movie.php", "/adult.php","/pt"],
+    "pages": ["/torrents.php", "/music.php", "/movie.php", "/adult.php", "/pt"],
     "scripts": ["common.js", "torrents.js"]
   }],
   "securityKeyFields": ["passkey"],
@@ -49,5 +49,29 @@
     "name": "50%",
     "selector": "img.pro_50pctdown, .halfdown_bg, font.halfdown",
     "color": "orange"
-  }]
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": "a[href*='userdetails.php']",
+          "attribute": "href",
+          "filters": ["query.getQueryString('id')"]
+        },
+        "name": {
+          "selector": "a[href*='userdetails.php']"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$userId$",
+      "fields": {
+        "uploaded": {
+          "selector": "td.rowfollow:contains('传输')",
+          "filters": ["query.next().text().match(/上[传傳]量.+?([\\d.]+ [TGMK]?i?B)/)"]
+        }
+      }
+    }
+  }
 }

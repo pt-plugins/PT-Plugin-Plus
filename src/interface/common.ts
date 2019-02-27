@@ -111,6 +111,7 @@ export interface SiteSchema {
   patterns?: Dictionary<any>;
   checker?: Dictionary<any>;
   torrentTagSelectors?: any[];
+  selectors?: Dictionary<any>;
 }
 
 /**
@@ -159,6 +160,9 @@ export interface Site {
   torrentTagSelectors?: any[];
   categories?: SiteCategories[];
   downloadMethod?: ERequsetType;
+  user?: UserInfo;
+  selectors?: Dictionary<any>;
+  allowGetUserInfo?: boolean;
 }
 
 /**
@@ -226,7 +230,9 @@ export enum EAction {
   // 从Google中清除已备份的参数
   clearFromGoogle = "clearFromGoogle",
   // 获取种子数据
-  getTorrentDataFromURL = "getTorrentDataFromURL"
+  getTorrentDataFromURL = "getTorrentDataFromURL",
+  // 获取用户信息
+  getUserInfo = "getUserInfo"
 }
 
 export interface Request {
@@ -384,4 +390,50 @@ export interface SearchSolutionRange {
   host?: string;
   siteName?: string;
   entry?: string[];
+}
+
+/**
+ * 用户基本信息
+ */
+export interface UserBaseInfo {
+  // 用户ID
+  id: number | string;
+  // 用户名
+  name: string;
+}
+
+/**
+ * 用户扩展信息
+ */
+export interface UserExtendInfo {
+  // 上传量
+  uploaded?: number;
+  // 下载量
+  downloaded?: number;
+  // 分享率
+  ratio?: number;
+  // 当前做种数量
+  seeding?: number;
+  // 当前下载数量
+  leeching?: number;
+  // 等级名称
+  levelName?: string;
+  // 魔力值/积分
+  bonus?: number;
+  // 入站时间
+  joinTime?: number;
+  // 最近活动时间
+  activeTime?: number;
+  // 邀请数量
+  invites?: number;
+  // 头像
+  avatar?: string;
+}
+
+/**
+ * 用户信息
+ */
+export interface UserInfo {
+  base?: UserBaseInfo;
+  extend?: UserExtendInfo;
 }

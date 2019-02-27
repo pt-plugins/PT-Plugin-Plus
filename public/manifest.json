@@ -32,6 +32,7 @@
 	},
 	"background": {
 		"scripts": [
+			"libs/types.expand.js",
 			"libs/jquery/jquery-3.3.1.min.js",
 			"libs/Base64.js",
 			"js/background.js"

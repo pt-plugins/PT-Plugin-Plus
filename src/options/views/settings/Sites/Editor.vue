@@ -105,11 +105,14 @@
           </template>
         </v-autocomplete>
 
+        <!-- 允许获取用户信息 -->
+        <v-switch :label="words.allowGetUserInfo" v-model="site.allowGetUserInfo"></v-switch>
+
         <!-- 允许搜索 -->
         <v-switch :label="words.allowSearch" v-model="site.allowSearch"></v-switch>
 
         <!-- 搜索入口设置 v-if="site.allowSearch"  -->
-        <template>
+        <template v-if="site.allowSearch">
           <v-container fluid class="ma-0 pa-0 ml-4">
             <v-layout row wrap class="ma-0 pa-0">
               <v-flex
@@ -150,7 +153,8 @@ export default Vue.extend({
         urlTip: "网站完整地址，如：https://open.cd/",
         passkey: "密钥",
         passkeyTip: "密钥用于聚合搜索、生成下载链接等操作",
-        allowSearch: "允许搜索"
+        allowSearch: "允许搜索",
+        allowGetUserInfo: "允许获取用户信息（Beta）"
       },
       showPasskey: false,
       rules: {

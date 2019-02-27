@@ -3,7 +3,10 @@ import {
   Request,
   Options,
   EModule,
-  ELogEvent
+  ELogEvent,
+  Site,
+  SiteSchema,
+  Dictionary
 } from "@/interface/common";
 import Config from "./config";
 import Controller from "./controller";
@@ -274,5 +277,69 @@ export default class PTPlugin {
           return true;
         }
       );
+  }
+
+  /**
+   * 获取指定解析器
+   * @param host
+   * @param name
+   */
+  public getSiteParser(host: string, name: string): string {
+    // 由于解析器可能会更新，所以需要从系统配置中加载
+    let site: Site =
+      this.options.system &&
+      this.options.system.sites &&
+      this.options.system.sites.find((item: Site) => {
+        return item.host === host;
+      });
+
+    if (!site) {
+      return "";
+    }
+
+    let result = site.parser && site.parser[name];
+    if (!result) {
+      let schema: SiteSchema =
+        this.options.system &&
+        this.options.system.schemas &&
+        this.options.system.schemas.find((item: SiteSchema) => {
+          return item.name === site.schema;
+        });
+
+      result = schema.parser && schema.parser[name];
+    }
+    return result;
+  }
+
+  /**
+   * 获取指定选择器
+   * @param host
+   * @param name
+   */
+  public getSiteSelector(host: string, name: string): Dictionary<any> | null {
+    // 由于选择器可能会更新，所以需要从系统配置中加载
+    let site: Site =
+      this.options.system &&
+      this.options.system.sites &&
+      this.options.system.sites.find((item: Site) => {
+        return item.host === host;
+      });
+
+    if (!site) {
+      return null;
+    }
+
+    let result = site.selectors && site.selectors[name];
+    if (!result) {
+      let schema: SiteSchema =
+        this.options.system &&
+        this.options.system.schemas &&
+        this.options.system.schemas.find((item: SiteSchema) => {
+          return item.name === site.schema;
+        });
+
+      result = schema.selectors && schema.selectors[name];
+    }
+    return result;
   }
 }

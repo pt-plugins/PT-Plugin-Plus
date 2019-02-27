@@ -21,6 +21,8 @@ import PTPlugin from "./service";
 import { FileDownloader } from "@/service/downloader";
 import { APP } from "@/service/api";
 import URLParse from "url-parse";
+import { InfoParser } from "./infoParser";
+
 type Service = PTPlugin;
 export default class Controller {
   public options: Options = {
@@ -596,6 +598,7 @@ export default class Controller {
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let service: any = this;
+      console.log("contorller.call", request.action);
       service[request.action](request.data, sender)
         .then((result: any) => {
           resolve(result);
@@ -701,5 +704,75 @@ export default class Controller {
       });
 
     return site;
+  }
+
+  public getUserInfo(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let count = 0;
+      let completed = 0;
+      let results: any[] = [];
+      this.options.sites.forEach((site: Site) => {
+        if (site.allowGetUserInfo) {
+          count++;
+
+          this.getUserInfoForSite(site, (result: any) => {
+            if (result) {
+              results.push({
+                site,
+                userBaseInfo: result
+              });
+            }
+
+            completed++;
+            if (completed >= count) {
+              resolve(results);
+            }
+          });
+        }
+      });
+
+      if (completed == count && completed == 0) {
+        reject("没有站点需要获取用户信息");
+      }
+    });
+  }
+
+  public getUserInfoForSite(site: Site, callback: any) {
+    if (!site) {
+      callback && callback(null);
+      return;
+    }
+    let rule = this.service.getSiteSelector(
+      site.host as string,
+      "userBaseInfo"
+    );
+    if (!rule) {
+      callback && callback(null);
+      return;
+    }
+    let url = `${site.url}${rule.page}`;
+    $.ajax({
+      url,
+      dataType: "text",
+      contentType: "text/plain",
+      timeout: (this.options.search && this.options.search.timeout) || 30000
+    })
+      .done(result => {
+        let doc = new DOMParser().parseFromString(result, "text/html");
+        // 构造 jQuery 对象
+        let content = $(doc).find("body");
+        if (content && rule) {
+          try {
+            let results = new InfoParser().getResult(content, rule);
+            console.log(results);
+            callback(results);
+          } catch (error) {
+            callback(null);
+          }
+        }
+      })
+      .fail(() => {
+        callback(null);
+      });
   }
 }
