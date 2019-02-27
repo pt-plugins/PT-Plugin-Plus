@@ -1,5 +1,5 @@
 import { Dictionary } from "@/interface/common";
-
+import moment from "moment";
 export class InfoParser {
   constructor(public options?: any) {}
   getResult(content: any, rule: any) {
@@ -11,7 +11,7 @@ export class InfoParser {
           let config = rule.fields[key];
 
           let result = this.getFieldData(content, config);
-          if (result) {
+          if (result != null) {
             results[key] = result;
           }
         }
@@ -23,7 +23,8 @@ export class InfoParser {
 
   getFieldData(content: any, config: any) {
     let query: any = content.find(config.selector);
-    let result = "";
+    let result = null;
+    let dateTime = moment;
     if (query) {
       if (config.attribute || config.filters) {
         if (config.attribute) {

@@ -37,6 +37,7 @@
     "@types/extend": "^3.0.0",
     "@types/file-saver": "^2.0.0",
     "@types/jquery": "^3.3.22",
+    "@types/moment": "^2.13.0",
     "@types/url-parse": "^1.4.2",
     "@vue/cli-plugin-babel": "^3.0.5",
     "@vue/cli-plugin-eslint": "^3.0.5",

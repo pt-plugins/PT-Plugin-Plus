@@ -232,7 +232,9 @@ export enum EAction {
   // 获取种子数据
   getTorrentDataFromURL = "getTorrentDataFromURL",
   // 获取用户信息
-  getUserInfo = "getUserInfo"
+  getUserInfo = "getUserInfo",
+  // 取消获取用户信息请求
+  abortGetUserInfo = "abortGetUserInfo"
 }
 
 export interface Request {

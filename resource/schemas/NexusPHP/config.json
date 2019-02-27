@@ -55,12 +55,12 @@
       "page": "/index.php",
       "fields": {
         "id": {
-          "selector": "a[href*='userdetails.php']",
+          "selector": "a[href*='userdetails.php'][class*='Name']:first",
           "attribute": "href",
           "filters": ["query.getQueryString('id')"]
         },
         "name": {
-          "selector": "a[href*='userdetails.php']"
+          "selector": "a[href*='userdetails.php'][class*='Name']:first"
         }
       }
     },
@@ -68,8 +68,28 @@
       "page": "/userdetails.php?id=$userId$",
       "fields": {
         "uploaded": {
-          "selector": "td.rowfollow:contains('传输')",
-          "filters": ["query.next().text().match(/上[传傳]量.+?([\\d.]+ [TGMK]?i?B)/)"]
+          "selector": "td.rowfollow:contains('分享率')",
+          "filters": ["query.text().match(/上[传傳]量.+?([\\d.]+ [TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": "td.rowfollow:contains('分享率')",
+          "filters": ["query.text().match(/下[载載]量.+?([\\d.]+ [TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "td.rowfollow:contains('分享率')",
+          "filters": ["query.text().match(/分享率.+?([\\d.]+|无限)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "levelName": {
+          "selector": "td.rowhead:contains('等級'), td.rowhead:contains('等级')",
+          "filters": ["query.next().find('img').attr('title')"]
+        },
+        "bonus": {
+          "selector": "td.rowhead:contains('魔力值'), td.rowhead:contains('UCoin'), td.rowhead:contains('猫粮')",
+          "filters": ["parseFloat(query.next().text().replace(/,/g,''))"]
+        },
+        "joinTime": {
+          "selector": "td.rowhead:contains('加入日期')",
+          "filters": ["query.next().text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         }
       }
     }

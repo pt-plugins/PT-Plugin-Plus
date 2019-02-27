@@ -11,7 +11,8 @@ import {
   EDataResultType,
   Request,
   EModule,
-  ERequsetType
+  ERequsetType,
+  UserInfo
 } from "@/interface/common";
 import { filters as Filters } from "@/service/filters";
 import { ClientController } from "@/service/clientController";
@@ -22,6 +23,7 @@ import { FileDownloader } from "@/service/downloader";
 import { APP } from "@/service/api";
 import URLParse from "url-parse";
 import { InfoParser } from "./infoParser";
+import { User } from "./user";
 
 type Service = PTPlugin;
 export default class Controller {
@@ -37,6 +39,7 @@ export default class Controller {
   public downloadHistory: DownloadHistory = new DownloadHistory();
   public clients: any = {};
   public searcher: Searcher = new Searcher(this.service);
+  public userService: User = new User(this.service);
 
   public clientController: ClientController = new ClientController();
   public isInitialized: boolean = false;
@@ -706,7 +709,7 @@ export default class Controller {
     return site;
   }
 
-  public getUserInfo(): Promise<any> {
+  public getUserInfoForAllSite(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let count = 0;
       let completed = 0;
@@ -715,19 +718,26 @@ export default class Controller {
         if (site.allowGetUserInfo) {
           count++;
 
-          this.getUserInfoForSite(site, (result: any) => {
-            if (result) {
-              results.push({
-                site,
-                userBaseInfo: result
-              });
-            }
+          this.getUserInfo(site)
+            .then((result: any) => {
+              if (result) {
+                results.push({
+                  site,
+                  user: result
+                });
+              }
 
-            completed++;
-            if (completed >= count) {
-              resolve(results);
-            }
-          });
+              completed++;
+              if (completed >= count) {
+                resolve(results);
+              }
+            })
+            .catch(() => {
+              completed++;
+              if (completed >= count) {
+                resolve(results);
+              }
+            });
         }
       });
 
@@ -737,42 +747,16 @@ export default class Controller {
     });
   }
 
-  public getUserInfoForSite(site: Site, callback: any) {
-    if (!site) {
-      callback && callback(null);
-      return;
-    }
-    let rule = this.service.getSiteSelector(
-      site.host as string,
-      "userBaseInfo"
-    );
-    if (!rule) {
-      callback && callback(null);
-      return;
-    }
-    let url = `${site.url}${rule.page}`;
-    $.ajax({
-      url,
-      dataType: "text",
-      contentType: "text/plain",
-      timeout: (this.options.search && this.options.search.timeout) || 30000
-    })
-      .done(result => {
-        let doc = new DOMParser().parseFromString(result, "text/html");
-        // 构造 jQuery 对象
-        let content = $(doc).find("body");
-        if (content && rule) {
-          try {
-            let results = new InfoParser().getResult(content, rule);
-            console.log(results);
-            callback(results);
-          } catch (error) {
-            callback(null);
-          }
-        }
-      })
-      .fail(() => {
-        callback(null);
-      });
+  /**
+   * 获取指定站点的用户信息
+   * @param site
+   * @param callback
+   */
+  public getUserInfo(site: Site): Promise<any> {
+    return this.userService.getUserInfo(site);
+  }
+
+  public abortGetUserInfo(site: Site): Promise<any> {
+    return this.userService.abortGetUserInfo(site);
   }
 }

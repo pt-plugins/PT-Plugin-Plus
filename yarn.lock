@@ -630,6 +630,13 @@
   dependencies:
     "@types/sizzle" "*"
 
+"@types/moment@^2.13.0":
+  version "2.13.0"
+  resolved "http://registry.npm.taobao.org/@types/moment/download/@types/moment-2.13.0.tgz#604ebd189bc3bc34a1548689404e61a2a4aac896"
+  integrity sha1-YE69GJvDvDShVIaJQE5hoqSqyJY=
+  dependencies:
+    moment "*"
+
 "@types/q@^1.5.1":
   version "1.5.1"
   resolved "http://registry.npm.taobao.org/@types/q/download/@types/q-1.5.1.tgz#48fd98c1561fe718b61733daed46ff115b496e18"
@@ -4541,6 +4548,11 @@ mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdi
   resolved "http://registry.npm.taobao.org/mkdirp/download/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
+
+moment@*:
+  version "2.24.0"
+  resolved "http://registry.npm.taobao.org/moment/download/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha1-DQVdU/UFKqZTyfbraLtdEr9cK1s=
 
 moment@^2.23.0:
   version "2.23.0"
