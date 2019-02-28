@@ -1,4 +1,4 @@
-import { Site, Dictionary, EModule } from "@/interface/common";
+import { Site, Dictionary, EModule, UserInfo } from "@/interface/common";
 import PTPlugin from "./service";
 import { InfoParser } from "./infoParser";
 
@@ -19,14 +19,17 @@ export class User {
         reject(null);
         return;
       }
-      let userInfo: any = {};
+      let userInfo: UserInfo = {
+        id: "",
+        name: ""
+      };
 
       let rule = this.service.getSiteSelector(
         site.host as string,
         "userBaseInfo"
       );
       if (!rule) {
-        resolve(userInfo);
+        reject(null);
         return;
       }
       let url: string = `${site.url}${rule.page}`;
@@ -35,7 +38,7 @@ export class User {
         rule,
         (result: any) => {
           delete this.requestQueue[`${site.host}-base`];
-          userInfo["base"] = result;
+          userInfo = Object.assign({}, result);
 
           rule = this.service.getSiteSelector(
             site.host as string,
@@ -43,23 +46,22 @@ export class User {
           );
 
           if (!rule) {
-            resolve(userInfo);
+            reject(null);
             return;
           }
 
-          if (userInfo["base"] && userInfo["base"].id) {
+          if (userInfo.id) {
             this.requestQueue[`${site.host}-extend`] = this.getInfos(
-              `${site.url}${rule.page.replace(
-                "$userId$",
-                userInfo["base"].id
-              )}`,
+              `${site.url}${rule.page.replace("$userId$", userInfo.id)}`,
               rule,
               (result: any) => {
                 delete this.requestQueue[`${site.host}-extend`];
-                userInfo["extend"] = result;
+                userInfo = Object.assign(userInfo, result);
                 resolve(userInfo);
               }
             );
+          } else {
+            reject(null);
           }
         }
       );
@@ -70,6 +72,11 @@ export class User {
    * getInfos
    */
   public getInfos(url: string, rule: Dictionary<any>, callback: any) {
+    url = url
+      .replace("://", "****")
+      .replace(/\/\//g, "/")
+      .replace("****", "://");
+
     return $.ajax({
       url,
       dataType: "text",
@@ -79,13 +86,12 @@ export class User {
         30000
     })
       .done(result => {
-        console.log("done");
         let doc = new DOMParser().parseFromString(result, "text/html");
         // 构造 jQuery 对象
         let content = $(doc).find("body");
         if (content && rule) {
           try {
-            let results = new InfoParser().getResult(content, rule);
+            let results = new InfoParser(this.service).getResult(content, rule);
             console.log(results);
             callback && callback(results);
           } catch (error) {

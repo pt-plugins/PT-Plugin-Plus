@@ -53,15 +53,16 @@
             </v-avatar>
             <span class="ml-2">{{ props.item.site.name }}</span>
           </td>
-          <td>{{ props.item.user.base.name }}</td>
-          <td>{{ props.item.user.extend.levelName }}</td>
-          <td class="number">{{ props.item.user.extend.uploaded | formatSize }}</td>
-          <td class="number">{{ props.item.user.extend.downloaded | formatSize }}</td>
-          <td class="number">{{ props.item.user.extend.ratio }}</td>
-          <td class="number">{{ props.item.user.extend.bonus }}</td>
-          <td class>{{ props.item.user.extend.joinTime | formatDate }}</td>
-          <td class>{{ props.item.user.extend.activeTime | formatDate }}</td>
-          <td class="number">{{ props.item.user.extend.invites }}</td>
+          <td>{{ props.item.user.name }}</td>
+          <td>{{ props.item.user.levelName }}</td>
+          <td class="number">{{ props.item.user.uploaded | formatSize }}</td>
+          <td class="number">{{ props.item.user.downloaded | formatSize }}</td>
+          <td class="number">{{ props.item.user.ratio }}</td>
+          <td class="number">{{ props.item.user.seeding }}</td>
+          <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>
+          <td class="number">{{ props.item.user.bonus | formatNumber }}</td>
+          <td class="number">{{ props.item.user.joinTime | timeAgo }}</td>
+          <td class="number">{{ props.item.user.invites }}</td>
         </template>
       </v-data-table>
     </v-card>
@@ -75,32 +76,6 @@ import { EAction, Site, LogItem, EModule } from "@/interface/common";
 import moment from "moment";
 
 const extension = new Extension();
-/**
- * export interface UserExtendInfo {
-  // 上传量
-  uploaded?: number;
-  // 下载量
-  downloaded?: number;
-  // 分享率
-  ratio?: number;
-  // 当前做种数量
-  seeding?: number;
-  // 当前下载数量
-  leeching?: number;
-  // 等级名称
-  levelName?: string;
-  // 魔力值/积分
-  bonus?: number;
-  // 入站时间
-  joinTime?: number;
-  // 最近活动时间
-  activeTime?: number;
-  // 邀请数量
-  invites?: number;
-  // 头像
-  avatar?: string;
-}
- */
 export default Vue.extend({
   data() {
     return {
@@ -117,15 +92,15 @@ export default Vue.extend({
       },
       headers: [
         { text: "站点", align: "left", value: "site.name" },
-        { text: "用户名", align: "left", value: "user.base.name" },
-        { text: "等级", align: "left", value: "user.extend.levelName" },
-        { text: "上传量", align: "right", value: "user.extend.uploaded" },
-        { text: "下载量", align: "right", value: "user.extend.downloaded" },
-        { text: "分享率", align: "right", value: "user.extend.ratio" },
-        { text: "魔力值/积分", align: "right", value: "user.extend.bonus" },
-        { text: "入站时间", align: "center", value: "user.extend.joinTime" },
-        { text: "最近活动", align: "center", value: "user.extend.activeTime" },
-        { text: "邀请数量", align: "right", value: "user.extend.invites" }
+        { text: "用户名", align: "left", value: "user.name" },
+        { text: "等级", align: "left", value: "user.levelName" },
+        { text: "上传量", align: "right", value: "user.uploaded" },
+        { text: "下载量", align: "right", value: "user.downloaded" },
+        { text: "分享率", align: "right", value: "user.ratio" },
+        { text: "做种数量", align: "right", value: "user.seeding" },
+        { text: "做种体积", align: "right", value: "user.seedingSize" },
+        { text: "魔力值/积分", align: "right", value: "user.bonus" },
+        { text: "入站时间", align: "right", value: "user.joinTime" }
       ],
       options: this.$store.state.options,
       beginTime: null as any,
@@ -139,6 +114,7 @@ export default Vue.extend({
   methods: {
     getInfos() {
       this.loading = true;
+      this.items = [];
 
       this.beginTime = moment();
       this.writeLog({

@@ -14,5 +14,49 @@
     "parseScriptFile": "/schemas/Gazelle/getSearchResult.js",
     "resultSelector": "table.torrent_table:last > tbody > tr",
     "enabled": true
-  }]
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": ["a.username[href*='user.php']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["a.username[href*='user.php']:first"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/user.php?id=$userId$",
+      "fields": {
+        "uploaded": {
+          "selector": "div:contains('Stats') + ul.stats > li:contains('Uploaded')",
+          "filters": ["query.text().match(/Uploaded.+?([\\d.]+ [TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": "div:contains('Stats') + ul.stats > li:contains('Downloaded')",
+          "filters": ["query.text().match(/Downloaded.+?([\\d.]+ [TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "div:contains('Stats') + ul.stats > li:contains('Ratio:')",
+          "filters": ["query.text().match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "levelName": {
+          "selector": "div:contains('Personal') + ul.stats > li:contains('Class:')",
+          "filters": ["query.text().match(/Class:.+?(.+)/)", "(query && query.length>=2)?query[1]:''"]
+        },
+        "bonus": {
+          "selector": ["div:contains('Stats') + ul.stats > li:contains('Bonus Points:')", "div:contains('Stats') + ul.stats > li:contains('SeedBonus:')"],
+          "filters": ["query.text().replace(/,/g,'')", "query.match(/Bonus Points.+?([\\d.]+)/)||query.match(/SeedBonus.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "joinTime": {
+          "selector": ["div:contains('Stats') + ul.stats > li:contains('Joined:') > span"],
+          "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    }
+  }
 }

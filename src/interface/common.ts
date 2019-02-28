@@ -395,19 +395,13 @@ export interface SearchSolutionRange {
 }
 
 /**
- * 用户基本信息
+ * 用户信息
  */
-export interface UserBaseInfo {
+export interface UserInfo {
   // 用户ID
   id: number | string;
   // 用户名
   name: string;
-}
-
-/**
- * 用户扩展信息
- */
-export interface UserExtendInfo {
   // 上传量
   uploaded?: number;
   // 下载量
@@ -416,6 +410,8 @@ export interface UserExtendInfo {
   ratio?: number;
   // 当前做种数量
   seeding?: number;
+  // 做种体积
+  seedingSize?: number;
   // 当前下载数量
   leeching?: number;
   // 等级名称
@@ -430,12 +426,4 @@ export interface UserExtendInfo {
   invites?: number;
   // 头像
   avatar?: string;
-}
-
-/**
- * 用户信息
- */
-export interface UserInfo {
-  base?: UserBaseInfo;
-  extend?: UserExtendInfo;
 }

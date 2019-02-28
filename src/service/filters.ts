@@ -15,7 +15,7 @@ export const filters: IFilter = {
    * @param source 数字来源
    * @param format 格式化格式
    */
-  formatNumber(source: number, format: string = ""): string {
+  formatNumber(source: number, format: string = "###,###,###,###.00"): string {
     const fStr = (sNumber: string, fmt?: any, p?: any) => {
       if (sNumber === "" || sNumber === undefined) {
         if (fmt === "" || fmt === undefined) {
@@ -117,11 +117,14 @@ export const filters: IFilter = {
    * @param type 类型，可指定为 `speed` 为速度，会在后面加上 /s
    */
   formatSize(
-    bytes: any,
+    sourceBytes: any,
     zeroToEmpty: boolean = false,
     type: string = ""
   ): string {
-    bytes = parseFloat(bytes);
+    let bytes = parseFloat(sourceBytes);
+    if (isNaN(bytes)) {
+      return "";
+    }
     if (bytes === 0) {
       if (zeroToEmpty === true) {
         return "";

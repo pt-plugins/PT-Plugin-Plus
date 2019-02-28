@@ -53,7 +53,16 @@ export default class PTPlugin {
     console.log("requestMessage", request.action);
     return new Promise<any>((resolve?: any, reject?: any) => {
       let result: any;
-      if (![EAction.getSystemLogs, EAction.writeLog].includes(request.action)) {
+      if (
+        ![
+          EAction.getSystemLogs,
+          EAction.writeLog,
+          EAction.readConfig,
+          EAction.saveConfig,
+          EAction.saveUIOptions,
+          EAction.openOptions
+        ].includes(request.action)
+      ) {
         this.logger.add({
           module: EModule.background,
           event: `${ELogEvent.requestMessage}.${request.action}`
@@ -249,8 +258,8 @@ export default class PTPlugin {
     }
   }
 
-  private debug(...msg: any) {
-    // console.log("background", ...msg);
+  public debug(...msg: any) {
+    console.log(new Date().toLocaleString(), ...msg);
   }
 
   /**

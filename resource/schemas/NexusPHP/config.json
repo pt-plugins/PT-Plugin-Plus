@@ -55,12 +55,12 @@
       "page": "/index.php",
       "fields": {
         "id": {
-          "selector": "a[href*='userdetails.php'][class*='Name']:first",
+          "selector": ["a[href*='userdetails.php'][class*='Name']:first", "a[href*='userdetails.php']:first"],
           "attribute": "href",
-          "filters": ["query.getQueryString('id')"]
+          "filters": ["query ? query.getQueryString('id'):''"]
         },
         "name": {
-          "selector": "a[href*='userdetails.php'][class*='Name']:first"
+          "selector": ["a[href*='userdetails.php'][class*='Name']:first", "a[href*='userdetails.php']:first"]
         }
       }
     },
@@ -84,8 +84,8 @@
           "filters": ["query.next().find('img').attr('title')"]
         },
         "bonus": {
-          "selector": "td.rowhead:contains('魔力值'), td.rowhead:contains('UCoin'), td.rowhead:contains('猫粮')",
-          "filters": ["parseFloat(query.next().text().replace(/,/g,''))"]
+          "selector": ["td.rowhead:contains('魔力值') + td", "td.rowhead:contains('UCoin') + td", "td.rowhead:contains('猫粮') + td", "td.rowfollow:contains('魔力值')"],
+          "filters": ["query.is(\":contains('魔力值:')\")?query.text().replace(/,/g,'').match(/魔力值.+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')", "parseFloat(query)"]
         },
         "joinTime": {
           "selector": "td.rowhead:contains('加入日期')",

@@ -53,6 +53,15 @@
             ></v-switch>
           </td>
           <td>
+            <v-switch
+              true-value="true"
+              false-value="false"
+              :input-value="props.item.allowGetUserInfo?'true':'false'"
+              hide-details
+              @click.stop="updateAllowGetUserInfo(props.item)"
+            ></v-switch>
+          </td>
+          <td>
             <a
               :href="props.item.url"
               target="_blank"
@@ -157,6 +166,7 @@ export default Vue.extend({
         { text: "名称", align: "left", value: "name" },
         { text: "标签", align: "left", value: "tags" },
         { text: "允许搜索", align: "left", value: "allowSearch" },
+        { text: "个人信息", align: "left", value: "allowGetUserInfo" },
         { text: "URL", align: "left", value: "url" },
         { text: "操作", value: "name", sortable: false }
       ],
@@ -212,6 +222,12 @@ export default Vue.extend({
     },
     updateSearchStatus(item: any) {
       item.allowSearch = !(<boolean>item.allowSearch);
+      this.$store.commit("updateSite", item);
+      this.pagination.rowsPerPage = 0;
+      this.pagination.rowsPerPage = -1;
+    },
+    updateAllowGetUserInfo(item: any) {
+      item.allowGetUserInfo = !(<boolean>item.allowGetUserInfo);
       this.$store.commit("updateSite", item);
       this.pagination.rowsPerPage = 0;
       this.pagination.rowsPerPage = -1;

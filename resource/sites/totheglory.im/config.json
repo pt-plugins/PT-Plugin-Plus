@@ -141,5 +141,48 @@
     "name": "50%",
     "selector": "img[alt='50%']",
     "color": "orange"
-  }]
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": "a[href*='userdetails.php']:first",
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": "a[href*='userdetails.php']:first"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$userId$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.rowhead:contains('上传量') + td", "td.rowhead:contains('上傳量') + td"],
+          "filters": ["query.text().sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ["td.rowhead:contains('下载量') + td", "td.rowhead:contains('下載量') + td"],
+          "filters": ["query.text().sizeToNumber()"]
+        },
+        "ratio": {
+          "selector": "td.rowhead:contains('分享率') + td",
+          "filters": ["parseFloat(query.text())"]
+        },
+        "levelName": {
+          "selector": ["td.rowhead:contains('等级') + td", "td.rowhead:contains('等級') + td"]
+        },
+        "bonus": {
+          "selector": ["td.rowhead:contains('积分') + td", "td.rowhead:contains('積分') + td"],
+          "filters": ["parseFloat(query.text())"]
+        },
+        "joinTime": {
+          "selector": ["td.rowhead:contains('注册日期') + td", "td.rowhead:contains('註冊日期') + td"],
+          "filters": ["dateTime(query.text()).isValid()?dateTime(query.text()).valueOf():query.text()"]
+        }
+      }
+    }
+  }
 }
