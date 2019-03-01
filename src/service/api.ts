@@ -17,6 +17,7 @@ try {
   if (!rootPath) {
     rootPath = `chrome-extension://${chrome.runtime.id}`;
   }
+  console.log("is extension mode.");
 } catch (error) {
   console.log("is not extension mode.");
 }
@@ -35,7 +36,8 @@ let RESOURCE_API = {
   siteConfig: `${RESOURCE_URL}/sites/{$site}/config.json`,
   clients: `${RESOURCE_URL}/clients.json`,
   clientConfig: `${RESOURCE_URL}/clients/{$client}/config.json`,
-  latestReleases: `https://api.github.com/repos/ronggang/PT-Plugin-Plus/releases/latest`
+  latestReleases: `https://api.github.com/repos/ronggang/PT-Plugin-Plus/releases/latest`,
+  systemConfig: `${RESOURCE_URL}/systemConfig.json`
 };
 
 export const APP = {

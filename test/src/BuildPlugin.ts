@@ -1,11 +1,6 @@
 import * as FS from "fs";
 import * as PATH from "path";
 
-type resource = {
-  name: string;
-  type: string;
-};
-
 /**
  * 构建过程辅助工具
  */
@@ -13,8 +8,8 @@ export class BuildPlugin {
   public resourcePath: string = "";
   private resourceMap = ["sites", "schemas", "clients"];
 
-  constructor() {
-    this.resourcePath = PATH.resolve(__dirname, "../../dist/resource");
+  constructor(rootPaht: string = "../../dist/resource") {
+    this.resourcePath = PATH.resolve(__dirname, rootPaht);
     console.log(this.resourcePath);
   }
 
@@ -22,38 +17,51 @@ export class BuildPlugin {
    * 创建资源文件列表
    */
   public buildResource() {
-    this.resourceMap.forEach((name: string) => {
-      this.makeResourceMap(name);
-    });
-
-    this.makeParser("schemas");
-    this.makeParser("sites");
+    let fileName = PATH.join(this.resourcePath, `systemConfig.json`);
+    FS.writeFileSync(fileName, JSON.stringify(this.getSystemConfig()));
   }
 
   /**
-   * 创建指定的资源列表
+   * 获取系统配置信息
+   */
+  public getSystemConfig() {
+    let result = {};
+    this.resourceMap.forEach((name: string) => {
+      result[name] = this.getResourceConfig(name);
+    });
+
+    return result;
+  }
+
+  /**
+   * 获取指定的资源配置信息
    * @param name
    */
-  private makeResourceMap(name: string): void {
+  private getResourceConfig(name: string): any {
     let parentFolder = PATH.join(this.resourcePath, name);
-    let fileName = PATH.join(this.resourcePath, `${name}.json`);
-
     let list = FS.readdirSync(parentFolder);
 
-    let results: resource[] = [];
+    let results: any[] = [];
     list.forEach((path: string) => {
-      let file = PATH.join(parentFolder, path);
-      var stat = FS.statSync(file);
+      let _path = PATH.join(parentFolder, path);
+      var stat = FS.statSync(_path);
       // 仅获取目录
       if (stat && stat.isDirectory()) {
-        results.push({
-          name: path,
-          type: "dir"
-        });
+        let file = PATH.join(_path, `config.json`);
+        if (FS.existsSync(file)) {
+          let content = JSON.parse(FS.readFileSync(file, "utf-8"));
+
+          // 获取解析器
+          let parser = this.getParser(PATH.join(file, "parser"));
+          if (parser) {
+            content["parser"] = parser;
+          }
+          results.push(content);
+        }
       }
     });
 
-    FS.writeFileSync(fileName, JSON.stringify(results));
+    return results;
   }
 
   /**

@@ -30,9 +30,10 @@ class Config {
 
   public reload() {
     APP.cache.clear();
-    this.getSchemas();
-    this.getSites();
-    this.getClients();
+    // this.getSchemas();
+    // this.getSites();
+    // this.getClients();
+    this.getSystemConfig();
   }
 
   /**
@@ -253,6 +254,22 @@ class Config {
   }
 
   /**
+   * 获取系统配置
+   */
+  public getSystemConfig() {
+    this.schemas = [];
+    this.sites = [];
+    this.clients = [];
+    this.getContentFromApi(`${API.systemConfig}`).then((result: any) => {
+      if (result) {
+        this.schemas = result.schemas;
+        this.sites = result.sites;
+        this.clients = result.clients;
+      }
+    });
+  }
+
+  /**
    * 获取支持的网站架构
    */
   public getSchemas(): any {
@@ -355,15 +372,19 @@ class Config {
    */
   private updateBadge(count: number) {
     if (!APP.isExtensionMode) return;
-    if (count == 0) {
-      chrome.browserAction.setBadgeText({ text: "" });
-      chrome.browserAction.enable();
-    } else {
-      chrome.browserAction.setBadgeText({ text: count.toString() });
-      chrome.browserAction.setBadgeBackgroundColor({
-        color: "#aabbcc"
-      });
-      chrome.browserAction.disable();
+    try {
+      if (count == 0) {
+        chrome.browserAction.setBadgeText({ text: "" });
+        chrome.browserAction.enable();
+      } else {
+        chrome.browserAction.setBadgeText({ text: count.toString() });
+        chrome.browserAction.setBadgeBackgroundColor({
+          color: "#aabbcc"
+        });
+        chrome.browserAction.disable();
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 

@@ -3,13 +3,15 @@ import * as Express from "express";
 import * as cors from "cors";
 import * as BodyParser from "body-parser";
 import * as Path from "path";
+import { BuildPlugin } from "./BuildPlugin";
 
 /**
  * 默认APP
  */
 class App {
-  public express;
+  public express = Express();
   public options;
+  public systemConfig;
 
   constructor(options) {
     this.options = options || {
@@ -18,7 +20,9 @@ class App {
       to: "/"
     };
 
-    this.express = Express();
+    let buildPlugin = new BuildPlugin("../../resource");
+    this.systemConfig = JSON.stringify(buildPlugin.getSystemConfig());
+
     this.useModules();
     this.mountRoutes();
   }
@@ -40,6 +44,10 @@ class App {
    * 挂载路由
    */
   private mountRoutes(): void {
+    this.express.get("/systemConfig.json", (req, res) => {
+      res.send(this.systemConfig);
+    });
+
     // //设置跨域访问
     // this.express.all("*", (req, res, next) => {
     //   console.log("all-----test");
