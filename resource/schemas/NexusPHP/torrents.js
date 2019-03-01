@@ -29,6 +29,17 @@
             }
 
             let urls = this.getDownloadURLs();
+            if (!urls.length) {
+              error(urls);
+              return;
+            }
+
+            if (!PTSevrice.site.passkey) {
+              if (!confirm("该站点未设置密钥，可能无法正常下载，是否继续？")) {
+                error("操作已取消");
+                return;
+              }
+            }
 
             this.downloadURLs(urls, urls.length, (msg) => {
               success({
@@ -46,6 +57,18 @@
           label: "复制链接",
           click: (success, error) => {
             let urls = this.getDownloadURLs();
+
+            if (!urls.length) {
+              error(urls);
+              return;
+            }
+
+            if (!PTSevrice.site.passkey) {
+              if (!confirm("该站点未设置密钥，请在复制链接后手工添加密钥，是否继续？")) {
+                error("操作已取消");
+                return;
+              }
+            }
 
             PTSevrice.call(
               PTSevrice.action.copyTextToClipboard,
@@ -99,16 +122,25 @@
         if (siteURL.substr(-1) != "/") {
           siteURL += "/";
         }
+
+        if (links.length == 0) {
+          links = $(".torrentname a[href*='details.php']").toArray();
+        }
+
+        if (links.length == 0) {
+          return "获取下载链接失败，未能正确定位到链接";
+        }
+
         let urls = $.map(links, (item) => {
-          let link = $(item).attr("href") + (PTSevrice.site.passkey ? "&passkey=" + PTSevrice.site.passkey : "") + (PTSevrice.site.disableHttps ? "" : "&https=1");
-          if (link) {
-            if (link.substr(0, 2) === '//') {  // 适配HUDBT、WHU这样以相对链接开头
-              link = location.protocol + link;
+          let url = $(item).attr("href").replace(/details\.php/gi, "download.php") + (PTSevrice.site.passkey ? "&passkey=" + PTSevrice.site.passkey : "") + (PTSevrice.site.disableHttps ? "" : "&https=1");
+          if (url) {
+            if (url.substr(0, 2) === '//') { // 适配HUDBT、WHU这样以相对链接开头
+              url = location.protocol + url;
             } else if (url.substr(0, 4) !== "http") {
-              link = siteURL + link;
+              url = siteURL + url;
             }
           }
-          return link;
+          return url;
         });
 
         return urls;
