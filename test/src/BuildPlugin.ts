@@ -52,7 +52,7 @@ export class BuildPlugin {
           let content = JSON.parse(FS.readFileSync(file, "utf-8"));
 
           // 获取解析器
-          let parser = this.getParser(PATH.join(file, "parser"));
+          let parser = this.getParser(PATH.join(_path, "parser"));
           if (parser) {
             content["parser"] = parser;
           }
