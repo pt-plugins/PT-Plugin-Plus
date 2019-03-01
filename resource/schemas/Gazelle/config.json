@@ -26,6 +26,10 @@
         },
         "name": {
           "selector": ["a.username[href*='user.php']:first"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
         }
       }
     },

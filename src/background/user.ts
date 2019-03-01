@@ -1,6 +1,7 @@
 import { Site, Dictionary, EModule, UserInfo } from "@/interface/common";
 import PTPlugin from "./service";
 import { InfoParser } from "./infoParser";
+import { APP } from "@/service/api";
 
 type Service = PTPlugin;
 
@@ -29,7 +30,7 @@ export class User {
         "userBaseInfo"
       );
       if (!rule) {
-        reject(null);
+        reject(APP.createErrorMessage("没有找到 userBaseInfo 选择器"));
         return;
       }
       let url: string = `${site.url}${rule.page}`;
@@ -40,13 +41,23 @@ export class User {
           delete this.requestQueue[`${site.host}-base`];
           userInfo = Object.assign({}, result);
 
+          if (!userInfo.isLogged) {
+            reject(
+              APP.createErrorMessage({
+                msg: "未登录",
+                isLogged: false
+              })
+            );
+            return;
+          }
+
           rule = this.service.getSiteSelector(
             site.host as string,
             "userExtendInfo"
           );
 
           if (!rule) {
-            reject(null);
+            reject(APP.createErrorMessage("没有找到 userExtendInfo 选择器"));
             return;
           }
 
@@ -58,11 +69,17 @@ export class User {
                 delete this.requestQueue[`${site.host}-extend`];
                 userInfo = Object.assign(userInfo, result);
                 resolve(userInfo);
+              },
+              (error: any) => {
+                reject(APP.createErrorMessage(error));
               }
             );
           } else {
-            reject(null);
+            reject(APP.createErrorMessage("获取用户编号失败"));
           }
+        },
+        (error: any) => {
+          reject(APP.createErrorMessage(error));
         }
       );
     });
@@ -71,7 +88,12 @@ export class User {
   /**
    * getInfos
    */
-  public getInfos(url: string, rule: Dictionary<any>, callback: any) {
+  public getInfos(
+    url: string,
+    rule: Dictionary<any>,
+    onSuccess: any,
+    onError: any
+  ) {
     url = url
       .replace("://", "****")
       .replace(/\/\//g, "/")
@@ -92,16 +114,16 @@ export class User {
         if (content && rule) {
           try {
             let results = new InfoParser(this.service).getResult(content, rule);
-            console.log(results);
-            callback && callback(results);
+            this.service.debug(results);
+            onSuccess && onSuccess(results);
           } catch (error) {
-            console.log(error);
-            callback && callback(null);
+            this.service.debug(error);
+            onError && onError(error);
           }
         }
       })
-      .fail(() => {
-        callback && callback(null);
+      .fail(error => {
+        onError && onError(error);
       });
   }
 

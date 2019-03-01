@@ -3,7 +3,7 @@
     <v-alert :value="true" type="info">{{ words.title }}</v-alert>
 
     <!-- 请求队列-->
-    <v-list small v-if="requestQueue && requestQueue.length">
+    <!-- <v-list small v-if="requestQueue && requestQueue.length">
       <template v-for="(item, index) in requestQueue">
         <v-list-tile :key="item.site.host">
           <v-list-tile-action>
@@ -25,8 +25,7 @@
         </v-list-tile>
         <v-divider v-if="index + 1 < requestQueue.length" :key="'line'+item.site.host+index"></v-divider>
       </template>
-    </v-list>
-
+    </v-list>-->
     <v-card>
       <v-card-title>
         <v-btn color="success" @click="getInfos" :loading="loading">
@@ -40,18 +39,18 @@
 
       <v-data-table
         :headers="headers"
-        :items="items"
+        :items="sites"
         :pagination.sync="pagination"
-        item-key="site.host"
+        item-key="host"
         class="elevation-1"
       >
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
           <td class="center">
             <v-avatar size="18">
-              <img :src="props.item.site.icon">
+              <img :src="props.item.icon">
             </v-avatar>
-            <span class="ml-2">{{ props.item.site.name }}</span>
+            <span class="ml-2">{{ props.item.name }}</span>
           </td>
           <td>{{ props.item.user.name }}</td>
           <td>{{ props.item.user.levelName }}</td>
@@ -62,7 +61,27 @@
           <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>
           <td class="number">{{ props.item.user.bonus | formatNumber }}</td>
           <td class="number">{{ props.item.user.joinTime | timeAgo }}</td>
-          <td class="number">{{ props.item.user.invites }}</td>
+          <td
+            class="number"
+          >{{ props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</td>
+          <td class="number">
+            <v-progress-circular
+              indeterminate
+              :width="3"
+              size="30"
+              color="green"
+              v-if="props.item.user.isLoading"
+            >
+              <v-icon
+                v-if="props.item.user.isLoading"
+                @click="abortRequest(props.item)"
+                color="red"
+                small
+                :title="words.cancelRequest"
+              >cancel</v-icon>
+            </v-progress-circular>
+            <span v-else>{{ props.item.user.lastErrorMsg }}</span>
+          </td>
         </template>
       </v-data-table>
     </v-card>
@@ -91,7 +110,7 @@ export default Vue.extend({
         rowsPerPage: 50
       },
       headers: [
-        { text: "站点", align: "left", value: "site.name" },
+        { text: "站点", align: "left", value: "name" },
         { text: "用户名", align: "left", value: "user.name" },
         { text: "等级", align: "left", value: "user.levelName" },
         { text: "上传量", align: "right", value: "user.uploaded" },
@@ -100,45 +119,58 @@ export default Vue.extend({
         { text: "做种数量", align: "right", value: "user.seeding" },
         { text: "做种体积", align: "right", value: "user.seedingSize" },
         { text: "魔力值/积分", align: "right", value: "user.bonus" },
-        { text: "入站时间", align: "right", value: "user.joinTime" }
+        { text: "入站时间", align: "right", value: "user.joinTime" },
+        { text: "数据更新于", align: "right", value: "user.lastUpdateTime" },
+        { text: "状态", align: "center", value: "" }
       ],
       options: this.$store.state.options,
       beginTime: null as any,
       reloadCount: 0,
       requestQueue: [] as any[],
       requestTimer: 0,
-      requestMsg: ""
+      requestMsg: "",
+      sites: [] as any[]
     };
+  },
+  created() {
+    this.init();
   },
 
   methods: {
+    init() {
+      this.options.sites.forEach((site: Site) => {
+        if (site.allowGetUserInfo) {
+          if (!site.user) {
+            site.user = {
+              id: "",
+              name: "",
+              isLogged: false,
+              isLoading: false
+            };
+          }
+          this.sites.push(Object.assign({}, site));
+        }
+      });
+    },
     getInfos() {
       this.loading = true;
-      this.items = [];
-
       this.beginTime = moment();
       this.writeLog({
         event: `Home.getUserInfo.Start`,
         msg: `准备开始获取个人数据`
       });
 
-      this.options.sites.forEach((site: Site) => {
-        if (site.allowGetUserInfo) {
-          this.requestQueue.push({
-            site
-          });
+      this.sites.forEach((site: Site, index: number) => {
+        this.writeLog({
+          event: `Home.getUserInfo.Processing`,
+          msg: "正在获取 [" + site.name + "] 个人数据",
+          data: {
+            host: site.host,
+            name: site.name
+          }
+        });
 
-          this.writeLog({
-            event: `Home.getUserInfo.Processing`,
-            msg: "正在获取 [" + site.name + "] 个人数据",
-            data: {
-              host: site.host,
-              name: site.name
-            }
-          });
-
-          this.getSiteUserInfo(site);
-        }
+        this.getSiteUserInfo(site, index);
       });
     },
     /**
@@ -159,7 +191,7 @@ export default Vue.extend({
      */
     removeQueue(site: Site) {
       let index = this.requestQueue.findIndex((item: any) => {
-        return item.site.host === site.host;
+        return item.host === site.host;
       });
       if (index !== -1) {
         this.requestQueue.splice(index, 1);
@@ -178,19 +210,38 @@ export default Vue.extend({
       }
     },
 
-    getSiteUserInfo(site: Site) {
+    /**
+     * 获取站点用户信息
+     */
+    getSiteUserInfo(site: Site, index: number) {
+      if (!site.user) {
+        return;
+      }
+
+      let user = site.user;
+      user.isLoading = true;
+      user.lastErrorMsg = "";
+
+      this.requestQueue.push(Object.assign({}, site));
       extension
         .sendRequest(EAction.getUserInfo, null, site)
         .then((result: any) => {
           console.log(result);
           if (result) {
-            this.items.push({
-              site,
-              user: result
-            });
+            user = Object.assign(user, result);
+            user.lastUpdateTime = new Date().getTime();
+          }
+        })
+        .catch(result => {
+          console.log("error", result);
+          if (result.msg && result.msg.isLogged === false) {
+            user.lastErrorMsg = "未登录";
+          } else {
+            user.lastErrorMsg = "发生错误";
           }
         })
         .finally(() => {
+          user.isLoading = false;
           this.removeQueue(site);
         });
     },

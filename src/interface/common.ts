@@ -420,10 +420,16 @@ export interface UserInfo {
   bonus?: number;
   // 入站时间
   joinTime?: number;
-  // 最近活动时间
-  activeTime?: number;
+  // 最后更新时间
+  lastUpdateTime?: number;
   // 邀请数量
   invites?: number;
   // 头像
   avatar?: string;
+  // 是否已登录
+  isLogged?: boolean;
+  // 正在加载
+  isLoading?: boolean;
+  // 最后错误信息
+  lastErrorMsg?: string;
 }

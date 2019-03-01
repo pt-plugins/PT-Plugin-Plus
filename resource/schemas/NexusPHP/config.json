@@ -61,6 +61,10 @@
         },
         "name": {
           "selector": ["a[href*='userdetails.php'][class*='Name']:first", "a[href*='userdetails.php']:first"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
         }
       }
     },
@@ -68,11 +72,11 @@
       "page": "/userdetails.php?id=$userId$",
       "fields": {
         "uploaded": {
-          "selector": "td.rowfollow:contains('分享率')",
+          "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td"],
           "filters": ["query.text().match(/上[传傳]量.+?([\\d.]+ [TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "downloaded": {
-          "selector": "td.rowfollow:contains('分享率')",
+          "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td"],
           "filters": ["query.text().match(/下[载載]量.+?([\\d.]+ [TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "ratio": {

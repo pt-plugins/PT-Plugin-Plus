@@ -20,6 +20,9 @@ import moment from "moment";
 
   // 初始化时间格式化过滤器
   Vue.filter("formatDate", (val: any, format: string = "YYYY-MM-DD HH:mm") => {
+    if (!val) {
+      return "";
+    }
     if (moment(val).isValid()) {
       return moment(val).format(format);
     }
@@ -27,12 +30,15 @@ import moment from "moment";
   });
 
   Vue.filter("timeAgo", (source: any) => {
+    if (!source) {
+      return "";
+    }
     let unit = {
       year: "年",
       month: "月",
       day: "日",
-      hour: "小时",
-      min: "分钟"
+      hour: "时",
+      mins: "分"
     };
 
     let now = new Date().getTime();
@@ -65,12 +71,16 @@ import moment from "moment";
         result = days + unit["day"] + hours + unit["hour"];
         break;
 
+      case hours > 0:
+        result = hours + unit["hour"] + mins + unit["mins"];
+        break;
+
       case mins > 0:
-        result = mins + unit["min"];
+        result = mins + unit["mins"];
         break;
 
       default:
-        result = "&lt; 1" + unit["min"];
+        result = "< 1" + unit["mins"];
     }
 
     return result + "之前";
