@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <v-card color="grey lighten-4">
+  <div class="search-solution-editor">
+    <v-card color="grey lighten-4" class="body">
       <v-card-text>
-        <v-form v-model="isValid">
+        <v-form v-model="isValid" class="content">
           <v-layout row>
             <v-flex xs3>
               <v-subheader>{{words.name}}</v-subheader>
@@ -70,17 +70,19 @@
           </v-layout>
         </v-form>
         <v-divider class="mb-2"></v-divider>
-        <template v-for="(item, index) in checked">
-          <v-chip
-            :key="index"
-            label
-            color="blue-grey"
-            text-color="white"
-            small
-            class="mr-2 pl-0"
-            disabled
-          >{{ item.siteName }}{{ getSiteEntry(item.host, item.entry) }}</v-chip>
-        </template>
+        <div class="bottom">
+          <template v-for="(item, index) in checked">
+            <v-chip
+              :key="index"
+              label
+              color="blue-grey"
+              text-color="white"
+              small
+              class="mr-2 pl-0"
+              disabled
+            >{{ item.siteName }}{{ getSiteEntry(item.host, item.entry) }}</v-chip>
+          </template>
+        </div>
       </v-card-text>
     </v-card>
     <v-snackbar v-model="haveError" absolute top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
@@ -258,32 +260,49 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" >
-.list {
-  max-height: 350px;
-  overflow-y: auto;
+.search-solution-editor {
+  height: 100%;
+  .body {
+    height: 100%;
 
-  .caption {
-    .v-input__control {
-      .v-input__slot {
-        margin: 0;
+    .content {
+      position: absolute;
+      bottom: 80px;
+      top: 20px;
+      width: 100%;
+      overflow-y: auto;
+
+      .list {
+        .caption {
+          .v-input__control {
+            .v-input__slot {
+              margin: 0;
+            }
+
+            .v-input--selection-controls__input {
+              margin-right: 0;
+            }
+          }
+
+          .v-icon {
+            font-size: 18px;
+          }
+
+          .v-label {
+            font-size: 12px;
+          }
+        }
+
+        .grey {
+          filter: grayscale(100%);
+        }
       }
-
-      .v-input--selection-controls__input {
-        margin-right: 0;
-      }
     }
-
-    .v-icon {
-      font-size: 18px;
+    .bottom {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
     }
-
-    .v-label {
-      font-size: 12px;
-    }
-  }
-
-  .grey {
-    filter: grayscale(100%);
   }
 }
 </style>

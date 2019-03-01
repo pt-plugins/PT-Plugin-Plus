@@ -1,15 +1,15 @@
 <template>
-  <v-dialog v-model="show" max-width="800">
+  <v-dialog v-model="show" fullscreen>
     <v-card>
       <v-card-title class="headline blue-grey darken-2" style="color:white">{{ words.title }}</v-card-title>
 
-      <v-card-text>
+      <v-card-text class="body">
         <Editor :option="defaultItem" :initSites="sites" @change="change"/>
       </v-card-text>
 
       <v-divider></v-divider>
 
-      <v-card-actions class="pa-3">
+      <v-card-actions class="pa-3 toolber">
         <v-spacer></v-spacer>
         <v-btn flat color="error" @click="cancel">
           <v-icon>cancel</v-icon>
@@ -141,3 +141,16 @@ export default Vue.extend({
   }
 });
 </script>
+<style lang="scss" scoped>
+.body {
+  position: absolute;
+  bottom: 65px;
+  top: 65px;
+  overflow-y: auto;
+}
+.toolber {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+</style>
