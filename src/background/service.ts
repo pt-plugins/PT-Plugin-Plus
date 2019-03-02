@@ -13,6 +13,7 @@ import Controller from "./controller";
 
 import { Logger } from "@/service/logger";
 import { ContextMenus } from "./contextMenus";
+import { UserData } from "./userData";
 /**
  * PT 助手后台服务类
  */
@@ -31,6 +32,8 @@ export default class PTPlugin {
   public logger: Logger = new Logger();
   // 上下文菜单处理器
   public contentMenus: ContextMenus = new ContextMenus(this);
+  // 用户数据处理
+  public userData: UserData = new UserData(this);
 
   private reloadCount: number = 0;
 
@@ -223,6 +226,9 @@ export default class PTPlugin {
     });
   }
 
+  /**
+   * 初始化参数
+   */
   private initConfig() {
     if (
       this.reloadCount < 10 &&
@@ -240,9 +246,13 @@ export default class PTPlugin {
     });
   }
 
+  /**
+   * 读取参数信息
+   */
   private readConfig(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.config.read().then((result: any) => {
+        this.initUserData();
         this.options = result;
         resolve(result);
         if (!this.localMode) {
@@ -252,12 +262,36 @@ export default class PTPlugin {
     });
   }
 
+  /**
+   * 初始化用户数据
+   */
+  private initUserData() {
+    this.options.sites.forEach((site: Site) => {
+      site.user = this.userData.get(site.host as string);
+    });
+  }
+
+  /**
+   * 保存用户数据
+   */
+  public saveUserData() {
+    this.initUserData();
+    this.config.save(this.options);
+  }
+
+  /**
+   * 服务初始化
+   */
   public init() {
     if (!this.localMode) {
       this.contentMenus.init(this.options);
     }
   }
 
+  /**
+   * 输出调试信息
+   * @param msg
+   */
   public debug(...msg: any) {
     console.log(new Date().toLocaleString(), ...msg);
   }

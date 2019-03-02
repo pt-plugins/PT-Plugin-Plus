@@ -234,7 +234,9 @@ export enum EAction {
   // 获取用户信息
   getUserInfo = "getUserInfo",
   // 取消获取用户信息请求
-  abortGetUserInfo = "abortGetUserInfo"
+  abortGetUserInfo = "abortGetUserInfo",
+  // 刷新用户数据
+  refreshUserData = "refreshUserData"
 }
 
 export interface Request {
@@ -264,7 +266,8 @@ export enum EConfigKey {
   downloadHistory = "PT-Plugin-Plus-downloadHistory",
   systemLogs = "PT-Plugin-Plus-systemLogs",
   uiOptions = "PT-Plugin-Plus-uiOptions",
-  cache = "PT-Plugin-Plus-Cache-Contents"
+  cache = "PT-Plugin-Plus-Cache-Contents",
+  userDatas = "PT-Plugin-Plus-User-Datas"
 }
 
 /**
@@ -432,4 +435,19 @@ export interface UserInfo {
   isLoading?: boolean;
   // 最后错误信息
   lastErrorMsg?: string;
+}
+
+export enum EUserDataRange {
+  latest = "latest",
+  today = "today",
+  all = "all"
+}
+
+/**
+ * 用户数据请求返回状态
+ */
+export enum EUserDataRequestStatus {
+  needLogin = "needLogin",
+  notSupported = "notSupported",
+  unknown = "unknown"
 }

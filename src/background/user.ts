@@ -1,4 +1,10 @@
-import { Site, Dictionary, EModule, UserInfo } from "@/interface/common";
+import {
+  Site,
+  Dictionary,
+  EModule,
+  UserInfo,
+  EUserDataRequestStatus
+} from "@/interface/common";
 import PTPlugin from "./service";
 import { InfoParser } from "./infoParser";
 import { APP } from "@/service/api";
@@ -9,6 +15,9 @@ export class User {
   private requestQueue: Dictionary<JQueryXHR> = {};
 
   constructor(public service: Service) {}
+
+  public refreshUserData() {}
+
   /**
    * 获取指定站点的用户信息
    * @param site
@@ -20,19 +29,30 @@ export class User {
         reject(null);
         return;
       }
-      let userInfo: UserInfo = {
-        id: "",
-        name: ""
-      };
+
+      // 获取最近一次数据
+      let userInfo: UserInfo = this.service.userData.get(site.host as string);
 
       let rule = this.service.getSiteSelector(
         site.host as string,
         "userBaseInfo"
       );
       if (!rule) {
-        reject(APP.createErrorMessage("没有找到 userBaseInfo 选择器"));
+        reject(
+          APP.createErrorMessage({
+            status: EUserDataRequestStatus.notSupported,
+            msg: "暂不支持"
+          })
+        );
         return;
       }
+
+      // 上次请求未完成时，直接返回最近的数据
+      if (this.requestQueue[`${site.host}-base`]) {
+        resolve(userInfo);
+        return;
+      }
+
       let url: string = `${site.url}${rule.page}`;
       this.requestQueue[`${site.host}-base`] = this.getInfos(
         url,
@@ -45,7 +65,7 @@ export class User {
             reject(
               APP.createErrorMessage({
                 msg: "未登录",
-                isLogged: false
+                status: EUserDataRequestStatus.needLogin
               })
             );
             return;
@@ -57,28 +77,48 @@ export class User {
           );
 
           if (!rule) {
-            reject(APP.createErrorMessage("没有找到 userExtendInfo 选择器"));
+            reject(
+              APP.createErrorMessage({
+                status: EUserDataRequestStatus.notSupported,
+                msg: "没有找到 userExtendInfo 选择器"
+              })
+            );
             return;
           }
 
           if (userInfo.id) {
+            // 上次请求未完成时，直接返回最近的数据
+            if (this.requestQueue[`${site.host}-extend`]) {
+              resolve(userInfo);
+              return;
+            }
+
             this.requestQueue[`${site.host}-extend`] = this.getInfos(
               `${site.url}${rule.page.replace("$userId$", userInfo.id)}`,
               rule,
               (result: any) => {
                 delete this.requestQueue[`${site.host}-extend`];
                 userInfo = Object.assign(userInfo, result);
+                userInfo.lastUpdateTime = new Date().getTime();
+                this.service.userData.update(site, userInfo);
                 resolve(userInfo);
               },
               (error: any) => {
+                delete this.requestQueue[`${site.host}-extend`];
                 reject(APP.createErrorMessage(error));
               }
             );
           } else {
-            reject(APP.createErrorMessage("获取用户编号失败"));
+            reject(
+              APP.createErrorMessage({
+                status: EUserDataRequestStatus.unknown,
+                msg: "获取用户编号失败"
+              })
+            );
           }
         },
         (error: any) => {
+          delete this.requestQueue[`${site.host}-base`];
           reject(APP.createErrorMessage(error));
         }
       );
@@ -175,7 +215,7 @@ export class User {
       if (errors.length > 0) {
         reject(errors);
       } else {
-        resolve();
+        resolve(true);
       }
     });
   }

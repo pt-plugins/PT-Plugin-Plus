@@ -91,7 +91,13 @@
 <script lang="ts">
 import Vue from "vue";
 import Extension from "@/service/extension";
-import { EAction, Site, LogItem, EModule } from "@/interface/common";
+import {
+  EAction,
+  Site,
+  LogItem,
+  EModule,
+  EUserDataRequestStatus
+} from "@/interface/common";
 import moment from "moment";
 
 const extension = new Extension();
@@ -100,7 +106,7 @@ export default Vue.extend({
     return {
       words: {
         title: "概览",
-        getInfos: "获取用户信息",
+        getInfos: "手动刷新用户数据",
         cancelRequest: "取消请求",
         requesting: "正在请求"
       },
@@ -229,13 +235,12 @@ export default Vue.extend({
           console.log(result);
           if (result) {
             user = Object.assign(user, result);
-            user.lastUpdateTime = new Date().getTime();
           }
         })
         .catch(result => {
           console.log("error", result);
-          if (result.msg && result.msg.isLogged === false) {
-            user.lastErrorMsg = "未登录";
+          if (result.msg && result.msg.status) {
+            user.lastErrorMsg = result.msg.msg;
           } else {
             user.lastErrorMsg = "发生错误";
           }

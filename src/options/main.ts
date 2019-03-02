@@ -29,6 +29,10 @@ import moment from "moment";
     return val;
   });
 
+  /**
+   * 将时间格式化为 xxx 前
+   * 修改自 NexusPHP
+   */
   Vue.filter("timeAgo", (source: any) => {
     if (!source) {
       return "";
@@ -83,7 +87,7 @@ import moment from "moment";
         result = "< 1" + unit["mins"];
     }
 
-    return result + "之前";
+    return result + "前";
   });
 
   // 读取配置信息
