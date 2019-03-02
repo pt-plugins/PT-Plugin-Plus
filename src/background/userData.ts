@@ -7,6 +7,7 @@ import {
 } from "@/interface/common";
 import localStorage from "@/service/localStorage";
 import PTPlugin from "./service";
+import { PPF } from "@/service/public";
 
 export class UserData {
   public items: Dictionary<any> | null = null;
@@ -47,8 +48,7 @@ export class UserData {
       case EUserDataRange.all:
         return datas;
       case EUserDataRange.today:
-        let key = this.getKeyForToDay();
-        return datas[key];
+        return datas[PPF.getToDay()];
     }
 
     return datas[EUserDataRange.latest];
@@ -71,7 +71,7 @@ export class UserData {
       });
     } else {
       let siteData = this.items[host];
-      let key = this.getKeyForToDay();
+      let key = PPF.getToDay();
       if (!siteData) {
         siteData = {};
       }
@@ -96,20 +96,5 @@ export class UserData {
       this.service.saveUserData();
       resolve(this.items);
     });
-  }
-
-  /**
-   * 获取当天日期的键值
-   */
-  getKeyForToDay(): string {
-    let day = new Date();
-    let yyyy = day.getFullYear();
-    let m = day.getMonth() + 1;
-    let mm = m < 10 ? "0" + m : m;
-
-    let d = day.getDate();
-    let dd = d < 10 ? "0" + d : d;
-
-    return `${yyyy}${mm}${dd}`;
   }
 }

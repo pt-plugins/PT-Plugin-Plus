@@ -89,6 +89,15 @@ export interface Options {
   rowsPerPageItems?: any[];
   defaultSearchSolutionId?: string;
   searchSolutions?: SearchSolution[];
+  autoRefreshUserData?: boolean;
+  autoRefreshUserDataHours?: number | string;
+  autoRefreshUserDataMinutes?: number | string;
+  autoRefreshUserDataNextTime?: number;
+  autoRefreshUserDataLastTime?: number;
+  // 自动获取用户数据失败重试次数
+  autoRefreshUserDataFailedRetryCount?: number;
+  // 自动获取用户数据失败重试间隔时间（分钟）
+  autoRefreshUserDataFailedRetryInterval?: number;
 }
 
 export interface Plugin {
@@ -425,6 +434,8 @@ export interface UserInfo {
   joinTime?: number;
   // 最后更新时间
   lastUpdateTime?: number;
+  // 最后更新状态
+  lastUpdateStatus?: EUserDataRequestStatus;
   // 邀请数量
   invites?: number;
   // 头像
@@ -449,5 +460,6 @@ export enum EUserDataRange {
 export enum EUserDataRequestStatus {
   needLogin = "needLogin",
   notSupported = "notSupported",
-  unknown = "unknown"
+  unknown = "unknown",
+  success = "success"
 }

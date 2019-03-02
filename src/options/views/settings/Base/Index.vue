@@ -68,12 +68,61 @@
               </v-flex>
 
               <v-flex xs12>
-                <v-switch
+                <!-- <v-switch
                   color="success"
                   v-model="options.autoUpdate"
                   :label="words.autoUpdate+lastUpdate"
+                ></v-switch>-->
+                <!-- 自动刷新用户数据 -->
+                <v-switch
+                  color="success"
+                  v-model="options.autoRefreshUserData"
+                  :label="words.autoRefreshUserData+autoRefreshUserDataLastUpdate"
                 ></v-switch>
 
+                <!-- 自动刷新用户数据时间 -->
+                <v-flex xs12 v-if="options.autoRefreshUserData">
+                  <div style="margin: -40px 0 10px 45px;">
+                    <span>{{ words.autoRefreshUserDataTip1 }}</span>
+                    <v-select
+                      v-model="options.autoRefreshUserDataHours"
+                      :items="hours"
+                      class="mx-2 d-inline-flex"
+                      style="max-width: 50px;max-height: 30px;"
+                    ></v-select>
+                    <span>:</span>
+                    <v-select
+                      v-model="options.autoRefreshUserDataMinutes"
+                      :items="minutes"
+                      class="mx-2 d-inline-flex"
+                      style="max-width: 50px;max-height: 30px;"
+                    ></v-select>
+                    <span>{{ words.autoRefreshUserDataTip2 }}</span>
+                  </div>
+                </v-flex>
+
+                <!-- 失败重试 -->
+                <v-flex xs12 v-if="options.autoRefreshUserData">
+                  <div style="margin: -20px 0 10px 45px;">
+                    <span>{{ words.autoRefreshUserDataTip3 }}</span>
+                    <v-select
+                      v-model="options.autoRefreshUserDataFailedRetryCount"
+                      :items="[1,2,3,4,5]"
+                      class="mx-2 d-inline-flex"
+                      style="max-width: 50px;max-height: 30px;"
+                    ></v-select>
+                    <span>{{ words.autoRefreshUserDataTip4 }}</span>
+                    <v-select
+                      v-model="options.autoRefreshUserDataFailedRetryInterval"
+                      :items="[1,2,3,4,5]"
+                      class="mx-2 d-inline-flex"
+                      style="max-width: 50px;max-height: 30px;"
+                    ></v-select>
+                    <span>{{ words.autoRefreshUserDataTip5 }}</span>
+                  </div>
+                </v-flex>
+
+                <!-- 启用内容选择搜索 -->
                 <v-switch
                   color="success"
                   v-model="options.allowSelectionTextSearch"
@@ -97,25 +146,23 @@
                   v-model="options.needConfirmWhenExceedSize"
                   :label="words.needConfirmWhenExceedSize"
                 ></v-switch>
-              </v-flex>
 
-              <v-flex xs12>
-                <div style="margin: -40px 0 0 40px;">
-                  <v-text-field
-                    v-model="options.exceedSize"
-                    :placeholder="words.exceedSize"
-                    class="ml-2 d-inline-flex"
-                    style="max-width: 100px;max-height: 30px;"
-                    :disabled="!options.needConfirmWhenExceedSize"
-                  ></v-text-field>
-                  <v-select
-                    v-model="options.exceedSizeUnit"
-                    :items="units"
-                    class="mx-2 d-inline-flex"
-                    style="max-width: 50px;max-height: 30px;"
-                    :disabled="!options.needConfirmWhenExceedSize"
-                  ></v-select>
-                </div>
+                <v-flex xs12 v-if="options.needConfirmWhenExceedSize">
+                  <div style="margin: -40px 0 0 40px;">
+                    <v-text-field
+                      v-model="options.exceedSize"
+                      :placeholder="words.exceedSize"
+                      class="ml-2 d-inline-flex"
+                      style="max-width: 100px;max-height: 30px;"
+                    ></v-text-field>
+                    <v-select
+                      v-model="options.exceedSizeUnit"
+                      :items="units"
+                      class="mx-2 d-inline-flex"
+                      style="max-width: 50px;max-height: 30px;"
+                    ></v-select>
+                  </div>
+                </v-flex>
               </v-flex>
             </v-layout>
           </v-container>
@@ -130,10 +177,10 @@
           <span class="ml-1">{{ words.save }}</span>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="warning" @click="clearCache">
+        <!-- <v-btn color="warning" @click="clearCache">
           <v-icon>settings_backup_restore</v-icon>
           <span class="ml-1">{{ words.clearCache }}</span>
-        </v-btn>
+        </v-btn>-->
       </v-card-actions>
     </v-card>
     <v-snackbar v-model="haveError" absolute top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
@@ -150,7 +197,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { APP } from "@/service/api";
-import { ESizeUnit, EAction } from "@/interface/common";
+import { ESizeUnit, EAction, Options } from "@/interface/common";
 import Extension from "@/service/extension";
 
 const extension = new Extension();
@@ -177,7 +224,14 @@ export default Vue.extend({
           "连接下载服务器超时时间（毫秒，1000毫秒=1秒），超出后将中断连接",
         noClient: "尚未配置下载服务器，请配置下载服务后再选择",
         cacheIsCleared: "缓存已清除，如需立即生效，请重新打开页面",
-        saved: "参数已保存"
+        saved: "参数已保存",
+        autoRefreshUserData: "在浏览器打开的情况下自动刷新用户数据",
+        autoRefreshUserDataTip1: "每天于",
+        autoRefreshUserDataTip2:
+          "自动刷新（如果浏览器在这个时间之后打开，则在浏览器打开时自动刷新）",
+        autoRefreshUserDataTip3: "失败后重试",
+        autoRefreshUserDataTip4: "次，每次间隔",
+        autoRefreshUserDataTip5: "分钟"
       },
       valid: false,
       rules: {
@@ -185,15 +239,24 @@ export default Vue.extend({
       },
       options: {
         defaultClientId: "",
-        search: {}
-      },
+        search: {},
+        needConfirmWhenExceedSize: false,
+        autoRefreshUserData: false,
+        autoRefreshUserDataHours: "00",
+        autoRefreshUserDataMinutes: "00",
+        autoRefreshUserDataFailedRetryCount: 3,
+        autoRefreshUserDataFailedRetryInterval: 5
+      } as Options,
       units: [] as any,
+      hours: [] as any,
+      minutes: [] as any,
       downloadHistory: [] as any,
       haveError: false,
       haveSuccess: false,
       successMsg: "",
       errorMsg: "",
-      lastUpdate: ""
+      lastUpdate: "",
+      autoRefreshUserDataLastUpdate: ""
     };
   },
   methods: {
@@ -218,11 +281,20 @@ export default Vue.extend({
     }
   },
   created() {
-    this.options = Object.assign({}, this.$store.state.options);
+    this.options = Object.assign(this.options, this.$store.state.options);
     this.units.push(ESizeUnit.MiB);
     this.units.push(ESizeUnit.GiB);
     this.units.push(ESizeUnit.TiB);
     this.units.push(ESizeUnit.PiB);
+
+    for (let index = 0; index < 24; index++) {
+      this.hours.push(`0${index}`.substr(-2));
+    }
+
+    for (let index = 0; index < 60; index += 5) {
+      this.minutes.push(`0${index}`.substr(-2));
+    }
+
     extension.sendRequest(EAction.getDownloadHistory).then((result: any) => {
       console.log("downloadHistory", result);
       this.downloadHistory = result;
@@ -239,6 +311,12 @@ export default Vue.extend({
       .catch(() => {
         this.lastUpdate = " （更新时间获取失败）";
       });
+
+    if (this.options.autoRefreshUserDataLastTime) {
+      this.autoRefreshUserDataLastUpdate = `（最后更新于 ${new Date(
+        this.options.autoRefreshUserDataLastTime
+      ).toLocaleString()}）`;
+    }
   },
   watch: {
     successMsg() {

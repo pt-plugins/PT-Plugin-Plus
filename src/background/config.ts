@@ -10,6 +10,7 @@ import {
 import { API, APP } from "@/service/api";
 import localStorage from "@/service/localStorage";
 import { SyncStorage } from "./syncStorage";
+import { PPF } from "@/service/public";
 
 /**
  * 配置信息类
@@ -110,7 +111,6 @@ class Config {
       });
     }
 
-    console.log("cleaningOptions", _options);
     return _options;
   }
 
@@ -345,47 +345,25 @@ class Config {
    * @param api
    */
   public getContentFromApi(api: string): Promise<any> {
-    this.updateBadge(++this.requestCount);
+    PPF.updateBadge(++this.requestCount);
     return new Promise<any>((resolve?: any, reject?: any) => {
       let content = APP.cache.get(api);
       if (content) {
         resolve(content);
-        this.updateBadge(--this.requestCount);
+        PPF.updateBadge(--this.requestCount);
         return;
       }
       $.getJSON(api)
         .done(result => {
           APP.cache.set(api, result);
-          this.updateBadge(--this.requestCount);
+          PPF.updateBadge(--this.requestCount);
           resolve(result);
         })
         .fail(result => {
-          this.updateBadge(--this.requestCount);
+          PPF.updateBadge(--this.requestCount);
           reject && reject(result);
         });
     });
-  }
-
-  /**
-   * 更新插件徽标提示
-   * @param count
-   */
-  private updateBadge(count: number) {
-    if (!APP.isExtensionMode) return;
-    try {
-      if (count == 0) {
-        chrome.browserAction.setBadgeText({ text: "" });
-        chrome.browserAction.enable();
-      } else {
-        chrome.browserAction.setBadgeText({ text: count.toString() });
-        chrome.browserAction.setBadgeBackgroundColor({
-          color: "#aabbcc"
-        });
-        chrome.browserAction.disable();
-      }
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   /**

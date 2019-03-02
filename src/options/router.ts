@@ -10,11 +10,7 @@ export default new Router({
       path: "/",
       name: "home",
       component: Home,
-      alias: "/home",
-      meta: {
-        // 需要被缓存
-        keepAlive: true
-      }
+      alias: "/home"
     },
     // {
     //   path: "/about",

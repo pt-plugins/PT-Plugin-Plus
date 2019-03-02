@@ -6,7 +6,8 @@ import {
   ELogEvent,
   Site,
   SiteSchema,
-  Dictionary
+  Dictionary,
+  EUserDataRequestStatus
 } from "@/interface/common";
 import Config from "./config";
 import Controller from "./controller";
@@ -14,6 +15,7 @@ import Controller from "./controller";
 import { Logger } from "@/service/logger";
 import { ContextMenus } from "./contextMenus";
 import { UserData } from "./userData";
+import { PPF } from "@/service/public";
 /**
  * PT 助手后台服务类
  */
@@ -36,6 +38,9 @@ export default class PTPlugin {
   public userData: UserData = new UserData(this);
 
   private reloadCount: number = 0;
+  private autoRefreshUserDataTimer: number = 0;
+  private autoRefreshUserDataIsWorking: boolean = false;
+  private autoRefreshUserDataFailedCount: number = 0;
 
   constructor(localMode: boolean = false) {
     this.initBrowserEvent();
@@ -99,6 +104,7 @@ export default class PTPlugin {
               this.controller.reset(this.options);
             }
             this.contentMenus.init(this.options);
+            this.resetAutoRefreshUserDataTimer();
             resolve(this.options);
             break;
 
@@ -263,12 +269,127 @@ export default class PTPlugin {
   }
 
   /**
+   * 保存当前参数
+   */
+  public saveConfig() {
+    this.config.save(this.options);
+  }
+
+  /**
    * 初始化用户数据
    */
   private initUserData() {
     this.options.sites.forEach((site: Site) => {
       site.user = this.userData.get(site.host as string);
     });
+  }
+
+  /**
+   * 重设自动获取用户数据定时器
+   */
+  private resetAutoRefreshUserDataTimer(isInit: boolean = false) {
+    clearInterval(this.autoRefreshUserDataTimer);
+    if (!this.options.autoRefreshUserData) {
+      return;
+    }
+
+    // 先尝试当天
+    this.options.autoRefreshUserDataNextTime = this.getNextTime(0);
+    // 如果当前下次获取时间小于当前时间，则设置为第二天
+    if (new Date().getTime() >= this.options.autoRefreshUserDataNextTime) {
+      // 初始化时，10 秒后获取数据
+      if (isInit) {
+        // 如果当天还没有获取过，就重新获取
+        if (
+          PPF.getToDay() !=
+          PPF.getToDay(this.options.autoRefreshUserDataLastTime)
+        ) {
+          this.options.autoRefreshUserDataNextTime =
+            new Date().getTime() + 10000;
+        } else {
+          this.options.autoRefreshUserDataNextTime = this.getNextTime();
+        }
+      } else {
+        this.options.autoRefreshUserDataNextTime = this.getNextTime();
+      }
+    }
+
+    this.autoRefreshUserDataFailedCount = 0;
+    let failedRetryCount =
+      this.options.autoRefreshUserDataFailedRetryCount || 3;
+    let failedRetryInterval =
+      this.options.autoRefreshUserDataFailedRetryInterval || 5;
+
+    this.autoRefreshUserDataTimer = setInterval(() => {
+      let time = new Date().getTime();
+
+      if (
+        this.options.autoRefreshUserDataNextTime &&
+        time >= this.options.autoRefreshUserDataNextTime &&
+        !this.autoRefreshUserDataIsWorking
+      ) {
+        this.options.autoRefreshUserDataNextTime = this.getNextTime();
+        this.autoRefreshUserDataIsWorking = true;
+        this.controller.userService
+          .refreshUserData(this.autoRefreshUserDataFailedCount > 0)
+          .then((results: any) => {
+            this.debug("refreshUserData DONE.", results);
+            this.autoRefreshUserDataIsWorking = false;
+            let haveError = false;
+            results.some((result: any) => {
+              if (!result) {
+                haveError = true;
+                return true;
+              }
+
+              if (!result.id) {
+                if (
+                  result.msg &&
+                  result.msg.status != EUserDataRequestStatus.notSupported
+                ) {
+                  haveError = true;
+                  return true;
+                }
+              }
+            });
+
+            if (haveError) {
+              // 失败重试
+              if (this.autoRefreshUserDataFailedCount < failedRetryCount) {
+                // 设置几分钟后重试
+                this.options.autoRefreshUserDataNextTime =
+                  new Date().getTime() + failedRetryInterval * 60000;
+                this.debug(
+                  "数据刷新失败, 下次重试时间",
+                  new Date(this.options
+                    .autoRefreshUserDataNextTime as number).toLocaleString()
+                );
+              } else {
+                this.debug("数据刷新失败, 重试次数已超限制");
+              }
+              this.autoRefreshUserDataFailedCount++;
+            } else {
+              this.debug("数据刷新完成");
+              this.autoRefreshUserDataFailedCount = 0;
+            }
+          });
+      }
+    }, 1000);
+  }
+
+  /**
+   * 获取下一个时间
+   * @param addDays
+   */
+  private getNextTime(addDays: number = 1) {
+    let today = PPF.getToDay();
+    let time = new Date(
+      `${today} ${this.options.autoRefreshUserDataHours}:${
+        this.options.autoRefreshUserDataMinutes
+      }:00`
+    );
+
+    return new Date(time.setDate(time.getDate() + addDays)).getTime();
   }
 
   /**
@@ -285,6 +406,7 @@ export default class PTPlugin {
   public init() {
     if (!this.localMode) {
       this.contentMenus.init(this.options);
+      this.resetAutoRefreshUserDataTimer(true);
     }
   }
 

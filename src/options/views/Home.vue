@@ -233,7 +233,7 @@ export default Vue.extend({
         .sendRequest(EAction.getUserInfo, null, site)
         .then((result: any) => {
           console.log(result);
-          if (result) {
+          if (result && result.id) {
             user = Object.assign(user, result);
           }
         })
