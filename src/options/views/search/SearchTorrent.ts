@@ -29,6 +29,8 @@ type searchResult = {
   sites: Dictionary<any>;
   tags: Dictionary<any>;
   categories: Dictionary<any>;
+  failedSites: any[];
+  noResultsSites: any[];
 };
 
 const extension = new Extension();
@@ -52,7 +54,10 @@ export default Vue.extend({
         copyToClipboardTip: "复制下载链接到剪切板",
         reSearch: "重新再搜索",
         showCategory: "分类",
-        filterSearchResults: "过滤搜索结果"
+        filterSearchResults: "过滤搜索结果",
+        noResultsSites: "无结果站点：",
+        failedSites: "失败站点：",
+        reSearchFailedSites: "重试失败的站点"
       },
       key: "",
       // 指定站点搜索
@@ -99,7 +104,9 @@ export default Vue.extend({
       searchResult: {
         sites: {},
         tags: {},
-        categories: {}
+        categories: {},
+        failedSites: [],
+        noResultsSites: []
       } as searchResult,
       checkBox: false,
       // 正在下载的种子文件进度信息
@@ -122,7 +129,9 @@ export default Vue.extend({
       fixedTable: false,
       siteContentMenus: {} as any,
       clientContentMenus: [] as any,
-      filterKey: ""
+      filterKey: "",
+      showFailedSites: false,
+      showNoResultsSites: false
     };
   },
   created() {
@@ -210,7 +219,9 @@ export default Vue.extend({
       this.searchResult = {
         sites: {},
         tags: {},
-        categories: {}
+        categories: {},
+        failedSites: [],
+        noResultsSites: []
       } as searchResult;
       this.filterKey = "";
 
@@ -412,8 +423,8 @@ export default Vue.extend({
                 key: this.key
               }
             });
-            // this.datas.push(...result);
             this.addSearchResult(result);
+            return;
           } else if (result && result.msg) {
             this.writeLog({
               event: `SearchTorrent.Search.Error`,
@@ -426,10 +437,15 @@ export default Vue.extend({
             });
             this.errorMsg = result.msg;
           } else {
-            if (result && result.statusText === "abort") {
+            if (result && result.statusText == "abort") {
               this.errorMsg = `${site.host} 搜索请求已取消`;
             } else {
-              this.errorMsg = `${site.host} 发生网络或其他错误`;
+              if (result && result.statusText == "timeout") {
+                this.errorMsg = `${site.host} 连接超时`;
+              } else {
+                this.errorMsg = `${site.host} 发生网络或其他错误`;
+              }
+
               this.writeLog({
                 event: `SearchTorrent.Search.Error`,
                 msg: this.errorMsg,
@@ -442,6 +458,11 @@ export default Vue.extend({
               });
             }
           }
+          this.searchResult.failedSites.push({
+            site: site,
+            msg: this.errorMsg,
+            color: "orange darken-1"
+          });
         })
         .catch((result: DataResult) => {
           if (result.msg) {
@@ -454,11 +475,17 @@ export default Vue.extend({
           });
 
           if (result.data && result.data.isLogged == false) {
-            let siteName = result.data.site.name;
-            this.searchResult.sites[siteName] = {
+            this.searchResult.failedSites.push({
               site: site,
-              msg: "未登录"
-            };
+              msg: "未登录",
+              color: "grey"
+            });
+          } else {
+            this.searchResult.noResultsSites.push({
+              site: site,
+              msg: this.errorMsg,
+              color: "light-blue darken-2"
+            });
           }
         })
         .finally(() => {
@@ -1030,6 +1057,38 @@ export default Vue.extend({
         left: "-=20px",
         top: "+=10px"
       });
+    },
+
+    /**
+     * 重新搜索失败的站点
+     */
+    reSearchFailedSites() {
+      if (this.searchResult.failedSites.length == 0) {
+        return false;
+      }
+
+      let sites: Site[] = [];
+      this.searchResult.failedSites.forEach((item: any) => {
+        sites.push(item.site);
+      });
+
+      if (sites.length === 0) {
+        this.errorMsg = "没有需要重新搜索的站点";
+        return;
+      }
+
+      this.searchResult.failedSites = [];
+
+      this.beginTime = moment();
+      this.writeLog({
+        event: `SearchTorrent.Search.Start`,
+        msg: `准备开始搜索，共需搜索 ${sites.length} 个站点`,
+        data: {
+          key: this.key
+        }
+      });
+
+      this.doSearchTorrentWithQueue(sites);
     }
   }
 });

@@ -13,6 +13,46 @@
       >
         <v-icon>cached</v-icon>
       </v-btn>
+
+      <!-- 无结果的站点 -->
+      <v-btn
+        v-if="searchResult.noResultsSites.length>0"
+        class="mt-1"
+        flat
+        small
+        color="white"
+        @click.stop="showNoResultsSites=!showNoResultsSites"
+      >
+        <v-icon small class="mr-1" color="grey darken-2">face</v-icon>
+        {{ words.noResultsSites }}
+        {{ searchResult.noResultsSites.length }}
+      </v-btn>
+
+      <!-- 失败的站点 -->
+      <v-btn
+        v-if="searchResult.failedSites.length>0"
+        class="mt-1"
+        flat
+        small
+        color="white"
+        @click.stop="showFailedSites=!showFailedSites"
+      >
+        <v-icon small class="mr-1" color="orange">warning</v-icon>
+        {{ words.failedSites }}
+        {{ searchResult.failedSites.length }}
+      </v-btn>
+
+      <v-btn
+        v-if="searchResult.failedSites.length>0 && showFailedSites"
+        class="mt-1"
+        flat
+        small
+        color="white"
+        @click.stop="reSearchFailedSites"
+      >
+        <v-icon small class="mr-1">autorenew</v-icon>
+        {{ words.reSearchFailedSites }}
+      </v-btn>
     </v-alert>
     <!-- 搜索队列-->
     <v-list small v-if="searchQueue && searchQueue.length">
@@ -79,6 +119,73 @@
               </v-chip>
             </template>
           </div>
+
+          <!-- 无结果的站点 -->
+          <div v-if="searchResult.noResultsSites.length>0 && showNoResultsSites">
+            <template v-for="(item, index) in searchResult.noResultsSites">
+              <v-chip
+                :key="index"
+                label
+                color="grey darken-1"
+                text-color="white"
+                small
+                class="mr-2 py-3 pl-1"
+                disabled
+              >
+                <template>
+                  <v-avatar class="mr-1">
+                    <img :src="item.site.icon" style="width:60%;height:60%;">
+                  </v-avatar>
+                </template>
+                <span>{{ item.site.name }}</span>
+                <v-chip
+                  label
+                  color="grey"
+                  small
+                  text-color="white"
+                  style="margin-right:-13px;"
+                  class="ml-2 py-3"
+                  disabled
+                >
+                  <span>{{ item.msg }}</span>
+                </v-chip>
+              </v-chip>
+            </template>
+          </div>
+
+          <!-- 站点返回的失败的站点 -->
+          <div v-if="searchResult.failedSites.length>0 && showFailedSites">
+            <template v-for="(item, index) in searchResult.failedSites">
+              <v-chip
+                :key="index"
+                label
+                color="orange darken-3"
+                text-color="white"
+                small
+                class="mr-2 py-3 pl-1"
+                disabled
+              >
+                <template>
+                  <v-avatar class="mr-1">
+                    <img :src="item.site.icon" style="width:60%;height:60%;">
+                  </v-avatar>
+                </template>
+                <span>{{ item.site.name }}</span>
+                <v-chip
+                  label
+                  :color="item.color"
+                  small
+                  text-color="white"
+                  style="margin-right:-13px;"
+                  class="ml-2 py-3"
+                  disabled
+                >
+                  <span>{{ item.msg }}</span>
+                </v-chip>
+              </v-chip>
+            </template>
+          </div>
+
           <!-- 标签列表 -->
           <div class="mt-1">
             <template v-for="(item, key) in searchResult.tags">
