@@ -1,0 +1,17 @@
+{
+  "name": "TorrentsTD",
+  "description": "Torrents - TD",
+  "url": "https://www.torrentday.com/",
+  "icon": "https://www.torrentday.com/favicon.ico",
+  "tags": ["综合"],
+  "schema": "IPTorrents",
+  "host": "www.torrentday.com",
+  "searchEntry": [{
+    "entry": "/t?q=$key$",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/IPTorrents/getSearchResult.js",
+    "resultSelector": "table#torrentTable:first",
+    "enabled": true
+  }]
+}

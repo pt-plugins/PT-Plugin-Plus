@@ -1,0 +1,86 @@
+(function ($, window) {
+  console.log("this is details.js");
+  class App extends window.NexusPHPCommon {
+    init() {
+      this.initButtons()
+      this.initFreeSpaceButton()
+      // 设置当前页面
+      PTSevrice.pageApp = this;
+    }
+    /**
+     * 初始化按钮列表
+     */
+    initButtons() {
+      // 添加下载按钮
+      this.defaultClientOptions && PTSevrice.addButton({
+        title: `将当前种子下载到[${this.defaultClientOptions.name}]` + (this.defaultPath ? "\n" + this.defaultPath : ""),
+        icon: "get_app",
+        label: "一键下载",
+        /**
+         * 单击事件
+         * @param success 成功回调事件
+         * @param error 失败回调事件
+         * 
+         * 两个事件必需执行一个，可以传递一个参数
+         */
+        click: (success, error) => {
+          let url = this.getDownloadURL();
+
+          if (url) {
+            this.sendTorrentToDefaultClient(url).then(() => {
+              success();
+            }).catch((result) => {
+              error(result);
+            });
+          } else {
+            error("获取下载链接失败");
+          }
+        }
+      });
+
+      // 复制下载链接
+      PTSevrice.addButton({
+        title: "复制下载链接到剪切板",
+        icon: "file_copy",
+        label: "复制链接",
+        click: (success, error) => {
+          console.log(PTSevrice.site, this.defaultPath);
+
+          let url = this.getDownloadURL();
+
+          if (!url) {
+            error("获取下载链接失败");
+            return;
+          }
+
+          PTSevrice.call(
+            PTSevrice.action.copyTextToClipboard,
+            url
+          ).then((result) => {
+            console.log("命令执行完成", result);
+            success();
+          }).catch((result) => {
+            error(result)
+          });
+        }
+      });
+    }
+
+    /**
+     * 获取下载链接
+     */
+    getDownloadURL() {
+      let query = $("a[href*='download.php/']:first");
+      let url = "";
+      if (query.length > 0) {
+        url = query.attr("href");
+        if (url.substr(0, 4) != "http") {
+          url = PTSevrice.site.url + url;
+        }
+      }
+
+      return url;
+    }
+  };
+  (new App()).init();
+})(jQuery, window);

@@ -1,0 +1,9 @@
+{
+  "name": "IPTorrents",
+  "description": "IPTorrents - #1 Private Tracker",
+  "url": "https://iptorrents.com/",
+  "icon": "https://iptorrents.com/favicon.ico",
+  "tags": ["综合"],
+  "schema": "IPTorrents",
+  "host": "iptorrents.com"
+}

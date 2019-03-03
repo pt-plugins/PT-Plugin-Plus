@@ -1,0 +1,26 @@
+{
+  "name": "IPTorrents",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["^/t$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "searchEntry": [{
+    "entry": "/t?q=$key$",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/IPTorrents/getSearchResult.js",
+    "resultSelector": "table#torrents:first",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "span.t_tag_free_leech",
+    "color": "blue"
+  }]
+}
