@@ -274,7 +274,8 @@ export default Vue.extend({
       } else if (
         // 指定了搜索方案
         this.options.defaultSearchSolutionId &&
-        this.options.searchSolutions
+        this.options.searchSolutions &&
+        this.options.defaultSearchSolutionId != "all"
       ) {
         let _sites: Site[] = [];
         this.options.sites.forEach((item: Site) => {
@@ -321,7 +322,10 @@ export default Vue.extend({
         }
       } else {
         this.options.sites.forEach((item: Site) => {
-          if (item.allowSearch) {
+          if (
+            item.allowSearch ||
+            this.options.defaultSearchSolutionId == "all"
+          ) {
             let siteSchema: SiteSchema = this.getSiteSchema(item);
             if (
               siteSchema &&

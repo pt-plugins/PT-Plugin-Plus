@@ -17,7 +17,7 @@
       <v-menu slot="append" offset-y class="search-solution">
         <v-btn slot="activator" flat small color="grey lighten-2">{{selectedSearchSolutionName}}</v-btn>
         <v-list dense>
-          <v-list-tile @click="changeSearchSolution(null)">
+          <v-list-tile @click="changeSearchSolution(null)" :title="words.defaultTip">
             <v-list-tile-title>{{ words.default }}</v-list-tile-title>
           </v-list-tile>
           <v-divider></v-divider>
@@ -33,6 +33,11 @@
             </v-list-tile>
           </template>
           <v-btn flat small v-else to="/set-search-solution">{{words.noSearchSolution}}</v-btn>
+
+          <v-divider></v-divider>
+          <v-list-tile @click="changeSearchSolution(allSite)">
+            <v-list-tile-title>{{ words.all }}</v-list-tile-title>
+          </v-list-tile>
         </v-list>
       </v-menu>
     </v-text-field>
@@ -92,13 +97,19 @@ export default Vue.extend({
         title: "PT 助手",
         searchTip: "",
         default: "<默认>",
+        defaultTip: "仅搜索允许搜索的站点",
+        all: "<所有站点>",
         noSearchSolution: "暂无方案，请添加"
       },
       drawer: true,
       baseColor: "amber",
       searchKey: "",
       options: this.$store.state.options as Options,
-      selectedSearchSolutionName: ""
+      selectedSearchSolutionName: "",
+      allSite: {
+        id: "all",
+        name: "<所有站点>"
+      }
     };
   },
   methods: {
@@ -129,7 +140,12 @@ export default Vue.extend({
   },
   created() {
     this.selectedSearchSolutionName = this.words.default;
-    if (this.options.defaultSearchSolutionId && this.options.searchSolutions) {
+    if (this.options.defaultSearchSolutionId == this.allSite.id) {
+      this.selectedSearchSolutionName = this.allSite.name;
+    } else if (
+      this.options.defaultSearchSolutionId &&
+      this.options.searchSolutions
+    ) {
       let searchSolution:
         | SearchSolution
         | undefined = this.options.searchSolutions.find(
