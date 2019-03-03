@@ -245,7 +245,8 @@ export default Vue.extend({
         autoRefreshUserDataHours: "00",
         autoRefreshUserDataMinutes: "00",
         autoRefreshUserDataFailedRetryCount: 3,
-        autoRefreshUserDataFailedRetryInterval: 5
+        autoRefreshUserDataFailedRetryInterval: 5,
+        connectClientTimeout: 10000
       } as Options,
       units: [] as any,
       hours: [] as any,
