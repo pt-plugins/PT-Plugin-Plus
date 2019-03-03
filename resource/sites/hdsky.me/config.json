@@ -10,13 +10,12 @@
   ],
   "schema": "NexusPHP",
   "host": "hdsky.me",
-  "searchEntry": [
-    {
+  "searchEntry": [{
       "entry": "/torrents.php?search=$key$&notnewword=1",
       "name": "全部",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrent_list:last > tbody > tr",
+      "resultSelector": "table.torrents:last",
       "enabled": true
     },
     {
@@ -100,53 +99,50 @@
       "enabled": false
     }
   ],
-  "categories": [
-    {
-      "entry": "*",
-      "result": "&cat$id$=1",
-      "category": [
-        {
-          "id": 401,
-          "name": "Movies/电影"
-        },
-        {
-          "id": 404,
-          "name": "Documentaries/纪录片"
-        },
-        {
-          "id": 410,
-          "name": "iPad/iPad影视"
-        },
-        {
-          "id": 405,
-          "name": "Animations/动漫"
-        },
-        {
-          "id": 402,
-          "name": "TV Series/剧集"
-        },
-        {
-          "id": 403,
-          "name": "TV Shows/综艺"
-        },
-        {
-          "id": 406,
-          "name": "Music Videos/音乐MV"
-        },
-        {
-          "id": 407,
-          "name": "Sports/体育"
-        },
-        {
-          "id": 408,
-          "name": "HQ Audio/无损音乐"
-        },
-        {
-          "id": 409,
-          "name": "Misc/其他"
-        }
-      ]
-    }
-  ],
+  "categories": [{
+    "entry": "*",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "Movies/电影"
+      },
+      {
+        "id": 404,
+        "name": "Documentaries/纪录片"
+      },
+      {
+        "id": 410,
+        "name": "iPad/iPad影视"
+      },
+      {
+        "id": 405,
+        "name": "Animations/动漫"
+      },
+      {
+        "id": 402,
+        "name": "TV Series/剧集"
+      },
+      {
+        "id": 403,
+        "name": "TV Shows/综艺"
+      },
+      {
+        "id": 406,
+        "name": "Music Videos/音乐MV"
+      },
+      {
+        "id": 407,
+        "name": "Sports/体育"
+      },
+      {
+        "id": 408,
+        "name": "HQ Audio/无损音乐"
+      },
+      {
+        "id": 409,
+        "name": "Misc/其他"
+      }
+    ]
+  }],
   "downloadMethod": "POST"
 }
