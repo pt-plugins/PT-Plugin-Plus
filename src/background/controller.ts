@@ -686,7 +686,7 @@ export default class Controller {
       };
 
       file.onError = (e: any) => {
-        reject(e);
+        reject(APP.createErrorMessage(e));
       };
 
       file.start();

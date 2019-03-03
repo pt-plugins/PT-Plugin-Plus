@@ -118,7 +118,12 @@ export class FileDownloader {
               break;
 
             default:
-              this.downloadError(this.xhr.status);
+              if (this.xhr.status != 0) {
+                this.downloadError(
+                  `[${this.url}] 下载失败，返回的状态码为：${this.xhr.status}`
+                );
+              }
+
               break;
           }
 
@@ -155,6 +160,11 @@ export class FileDownloader {
     // 错误事件
     this.xhr.onerror = e => {
       this.downloadError(e);
+    };
+
+    // 超时
+    this.xhr.ontimeout = () => {
+      this.downloadError(`[${this.url}] 下载超时`);
     };
 
     var data = null;
