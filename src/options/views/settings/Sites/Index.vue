@@ -166,7 +166,7 @@ export default Vue.extend({
         { text: "名称", align: "left", value: "name" },
         { text: "标签", align: "left", value: "tags" },
         { text: "允许搜索", align: "left", value: "allowSearch" },
-        { text: "个人信息", align: "left", value: "allowGetUserInfo" },
+        { text: "个人信息(Beta)", align: "left", value: "allowGetUserInfo" },
         { text: "URL", align: "left", value: "url" },
         { text: "操作", value: "name", sortable: false }
       ],
