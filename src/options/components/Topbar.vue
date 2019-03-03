@@ -97,7 +97,7 @@ export default Vue.extend({
         title: "PT 助手",
         searchTip: "",
         default: "<默认>",
-        defaultTip: "仅搜索允许搜索的站点",
+        defaultTip: "仅搜索已允许的站点",
         all: "<所有站点>",
         noSearchSolution: "暂无方案，请添加"
       },
@@ -117,6 +117,11 @@ export default Vue.extend({
       if (!this.searchKey) {
         return;
       }
+
+      this.$store.dispatch("saveConfig", {
+        lastSearchKey: this.searchKey
+      });
+
       this.$router.push({
         name: "search-torrent",
         params: {
@@ -171,6 +176,7 @@ export default Vue.extend({
         this.words.searchTip = "暂未配置允许搜索的站点，请先配置";
       }
     }
+    this.searchKey = this.options.lastSearchKey || "";
   }
 });
 </script>

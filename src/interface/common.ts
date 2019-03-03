@@ -98,6 +98,8 @@ export interface Options {
   autoRefreshUserDataFailedRetryCount?: number;
   // 自动获取用户数据失败重试间隔时间（分钟）
   autoRefreshUserDataFailedRetryInterval?: number;
+  // 最近搜索的关键字
+  lastSearchKey?: string;
 }
 
 export interface Plugin {
