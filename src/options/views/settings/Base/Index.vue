@@ -225,7 +225,7 @@ export default Vue.extend({
         noClient: "尚未配置下载服务器，请配置下载服务后再选择",
         cacheIsCleared: "缓存已清除，如需立即生效，请重新打开页面",
         saved: "参数已保存",
-        autoRefreshUserData: "在浏览器打开的情况下自动刷新用户数据",
+        autoRefreshUserData: "在浏览器打开的情况下自动刷新用户数据（Beta）",
         autoRefreshUserDataTip1: "每天于",
         autoRefreshUserDataTip2:
           "自动刷新（如果浏览器在这个时间之后打开，则在浏览器打开时自动刷新）",

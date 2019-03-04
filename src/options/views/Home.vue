@@ -57,8 +57,8 @@
           <td class="number">{{ props.item.user.uploaded | formatSize }}</td>
           <td class="number">{{ props.item.user.downloaded | formatSize }}</td>
           <td class="number">{{ props.item.user.ratio }}</td>
-          <td class="number">{{ props.item.user.seeding }}</td>
-          <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>
+          <!-- <td class="number">{{ props.item.user.seeding }}</td>
+          <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>-->
           <td class="number">{{ props.item.user.bonus | formatNumber }}</td>
           <td class="number">{{ props.item.user.joinTime | timeAgo }}</td>
           <td
@@ -105,7 +105,7 @@ export default Vue.extend({
   data() {
     return {
       words: {
-        title: "概览",
+        title: "概览（Beta）",
         getInfos: "手动刷新用户数据",
         cancelRequest: "取消请求",
         requesting: "正在请求"
@@ -122,8 +122,8 @@ export default Vue.extend({
         { text: "上传量", align: "right", value: "user.uploaded" },
         { text: "下载量", align: "right", value: "user.downloaded" },
         { text: "分享率", align: "right", value: "user.ratio" },
-        { text: "做种数量", align: "right", value: "user.seeding" },
-        { text: "做种体积", align: "right", value: "user.seedingSize" },
+        // { text: "做种数量", align: "right", value: "user.seeding" },
+        // { text: "做种体积", align: "right", value: "user.seedingSize" },
         { text: "魔力值/积分", align: "right", value: "user.bonus" },
         { text: "入站时间", align: "right", value: "user.joinTime" },
         { text: "数据更新于", align: "right", value: "user.lastUpdateTime" },
