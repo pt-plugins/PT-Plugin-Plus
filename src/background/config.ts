@@ -178,6 +178,8 @@ class Config {
             // 清理已移除的标签选择器
             if (!systemSite.torrentTagSelectors && _site.torrentTagSelectors) {
               delete _site.torrentTagSelectors;
+            } else {
+              _site.torrentTagSelectors = systemSite.torrentTagSelectors;
             }
 
             // 合并系统定义的搜索入口
