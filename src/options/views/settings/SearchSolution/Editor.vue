@@ -269,7 +269,7 @@ export default Vue.extend({
       position: absolute;
       bottom: 80px;
       top: 20px;
-      width: 100%;
+      width: 99%;
       overflow-y: auto;
 
       .list {
