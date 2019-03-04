@@ -1,0 +1,43 @@
+{
+  "name": "HD-Torrents",
+  "description": "HD-Torrents.org - Index",
+  "url": "https://hd-torrents.org/",
+  "icon": "https://hd-torrents.org/favicon.ico",
+  "tags": ["综合"],
+  "schema": "HD-Torrents",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "host": "hd-torrents.org",
+  "searchEntry": [{
+    "entry": "/torrents.php?search=$key$&active=1&options=0",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table.mainblockcontenttt:last > tbody > tr",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "img[src*='free.png']",
+    "color": "blue"
+  }, {
+    "name": "25%",
+    "selector": "img[src*='25.png']",
+    "color": "indigo"
+  }, {
+    "name": "50%",
+    "selector": "img[src*='50.png']",
+    "color": "orange"
+  }, {
+    "name": "75%",
+    "selector": "img[src*='75.png']",
+    "color": "lime"
+  }]
+}
