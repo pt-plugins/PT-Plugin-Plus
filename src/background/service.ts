@@ -502,8 +502,9 @@ export default class PTPlugin {
         this.options.system.schemas.find((item: SiteSchema) => {
           return item.name === site.schema;
         });
-
-      result = schema.selectors && schema.selectors[name];
+      if (schema && schema.selectors) {
+        result = schema.selectors[name];
+      }
     }
     return result;
   }
