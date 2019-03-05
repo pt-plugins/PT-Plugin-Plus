@@ -34,7 +34,7 @@
       }
     },
     "userExtendInfo": {
-      "page": "/user.php?id=$userId$",
+      "page": "/user.php?id=$user.id$",
       "fields": {
         "uploaded": {
           "selector": "div:contains('Stats') + ul.stats > li:contains('Uploaded')",

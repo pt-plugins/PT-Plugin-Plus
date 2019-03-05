@@ -22,5 +22,59 @@
     "name": "Free",
     "selector": "span.t_tag_free_leech",
     "color": "blue"
-  }]
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ["a[href*='/u/']:first", "a[href*='userdetails.php']:first"],
+          "attribute": "href",
+          "switchFilters": [
+            ["query.match(/u\\/(.+)/)", "(query && query.length>=2)?(query[1]):''"],
+            ["query ? query.getQueryString('id'):''"]
+          ]
+        },
+        "name": {
+          "selector": ["a[href*='/u/']:first", "a[href*='userdetails.php']:first"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']", "form[action*='lout']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["th:contains('Uploaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["th:contains('Downloaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "th:contains('Share ratio') + td",
+          "filters": ["query.text().replace(/,/g,'')"]
+        },
+        "levelName": {
+          "selector": "th:contains('Class') + td"
+        },
+        "bonus": {
+          "selector": ["th:contains('Bonus Points') + td"],
+          "filters": ["query.text().replace(/,/g,'')"]
+        },
+        "joinTime": {
+          "selector": "th:contains('Join date') + td",
+          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["th:contains('Seeding') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d]+)/)", "(query && query.length>=2)?query[1]:''"]
+        }
+      }
+    }
+  }
 }

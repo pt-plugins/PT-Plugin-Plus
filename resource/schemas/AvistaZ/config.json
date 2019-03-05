@@ -31,5 +31,55 @@
     "name": "50%",
     "selector": "i.fa-star-half-o",
     "color": "orange"
-  }]
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "name": {
+          "selector": ["a[href*='/profile/']:first"],
+          "filters": ["query.attr('href').match(/profile\\/(.+)/)", "(query && query.length>=2)?(query[1]):''"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='/logout']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/profile/$user.name$",
+      "fields": {
+        "id": {
+          "selector": ["td:contains('User ID') + td"]
+        },
+        "uploaded": {
+          "selector": ["td:contains('Uploaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td:contains('Downloaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "td:contains('Ratio') + td",
+          "filters": ["query.text().replace(/,/g,'')"]
+        },
+        "levelName": {
+          "selector": "td:contains('Rank') + td"
+        },
+        "bonus": {
+          "selector": ["td:contains('Bonus Points') + td"],
+          "filters": ["query.text().replace(/,/g,'')"]
+        },
+        "joinTime": {
+          "selector": "td:contains('Joined') + td",
+          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["li:contains('Seeding'):first", "li:contains('Seeds'):first"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d]+)/)", "(query && query.length>=2)?query[1]:''"]
+        }
+      }
+    }
+  }
 }

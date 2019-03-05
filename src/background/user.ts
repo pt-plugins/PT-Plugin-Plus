@@ -136,7 +136,7 @@ export class User {
             return;
           }
 
-          if (userInfo.id) {
+          if (userInfo.name) {
             // 上次请求未完成时，直接返回最近的数据
             if (this.requestQueue[`${site.host}-extend`]) {
               resolve(userInfo);
@@ -144,7 +144,9 @@ export class User {
             }
 
             this.requestQueue[`${site.host}-extend`] = this.getInfos(
-              `${site.url}${rule.page.replace("$userId$", userInfo.id)}`,
+              `${site.url}${rule.page
+                .replace("$user.id$", userInfo.id)
+                .replace("$user.name$", userInfo.name)}`,
               rule,
               (result: any) => {
                 delete this.requestQueue[`${site.host}-extend`];
@@ -167,7 +169,7 @@ export class User {
             rejectFN(
               APP.createErrorMessage({
                 status: EUserDataRequestStatus.unknown,
-                msg: "获取用户编号失败"
+                msg: "获取用户名和编号失败"
               })
             );
           }

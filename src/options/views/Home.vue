@@ -34,10 +34,18 @@
         </v-btn>
         <v-spacer></v-spacer>
 
-        <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+        <v-text-field
+          class="search"
+          v-model="filterKey"
+          append-icon="search"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
       </v-card-title>
 
       <v-data-table
+        :search="filterKey"
         :headers="headers"
         :items="sites"
         :pagination.sync="pagination"
@@ -50,15 +58,24 @@
             <v-avatar size="18">
               <img :src="props.item.icon">
             </v-avatar>
-            <span class="ml-2">{{ props.item.name }}</span>
+            <br>
+            <span class="caption">{{ props.item.name }}</span>
           </td>
           <td>{{ props.item.user.name }}</td>
           <td>{{ props.item.user.levelName }}</td>
-          <td class="number">{{ props.item.user.uploaded | formatSize }}</td>
-          <td class="number">{{ props.item.user.downloaded | formatSize }}</td>
-          <td class="number">{{ props.item.user.ratio }}</td>
-          <!-- <td class="number">{{ props.item.user.seeding }}</td>
-          <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>-->
+          <td class="number">
+            <div>
+              {{ props.item.user.uploaded | formatSize }}
+              <v-icon small color="green darken-4">expand_less</v-icon>
+            </div>
+            <div>
+              {{ props.item.user.downloaded | formatSize }}
+              <v-icon small color="red darken-4">expand_more</v-icon>
+            </div>
+          </td>
+          <td class="number">{{ props.item.user.ratio | formatRatio }}</td>
+          <td class="number">{{ props.item.user.seeding }}</td>
+          <!-- <td class="number">{{ props.item.user.seedingSize | formatSize }}</td> -->
           <td class="number">{{ props.item.user.bonus | formatNumber }}</td>
           <td class="number">{{ props.item.user.joinTime | timeAgo }}</td>
           <td
@@ -116,13 +133,12 @@ export default Vue.extend({
         rowsPerPage: 50
       },
       headers: [
-        { text: "站点", align: "left", value: "name" },
+        { text: "站点", align: "center", value: "name", width: "100px" },
         { text: "用户名", align: "left", value: "user.name" },
         { text: "等级", align: "left", value: "user.levelName" },
-        { text: "上传量", align: "right", value: "user.uploaded" },
-        { text: "下载量", align: "right", value: "user.downloaded" },
+        { text: "数据量", align: "right", value: "user.uploaded" },
         { text: "分享率", align: "right", value: "user.ratio" },
-        // { text: "做种数量", align: "right", value: "user.seeding" },
+        { text: "做种数量", align: "right", value: "user.seeding" },
         // { text: "做种体积", align: "right", value: "user.seedingSize" },
         { text: "魔力值/积分", align: "right", value: "user.bonus" },
         { text: "入站时间", align: "right", value: "user.joinTime" },
@@ -135,7 +151,8 @@ export default Vue.extend({
       requestQueue: [] as any[],
       requestTimer: 0,
       requestMsg: "",
-      sites: [] as any[]
+      sites: [] as any[],
+      filterKey: ""
     };
   },
   created() {
@@ -233,7 +250,7 @@ export default Vue.extend({
         .sendRequest(EAction.getUserInfo, null, site)
         .then((result: any) => {
           console.log(result);
-          if (result && result.id) {
+          if (result && result.name) {
             user = Object.assign(user, result);
           }
         })
@@ -268,12 +285,24 @@ export default Vue.extend({
           this.removeQueue(site);
         });
     }
+  },
+
+  filters: {
+    formatRatio(v: any) {
+      if (v > 10000) {
+        return "∞";
+      }
+      return v;
+    }
   }
 });
 </script>
 
 <style lang="scss" scoped>
 .home {
+  .center {
+    text-align: center;
+  }
   .number {
     text-align: right;
   }

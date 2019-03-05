@@ -25,6 +25,8 @@ export class InfoParser {
 
   getFieldData(content: any, config: any) {
     let query: any;
+    // selectorIndex 表示当前匹配了哪条选择器
+    let selectorIndex: number = 0;
     // 直接表达式
     if (typeof config.selector == "string") {
       query = content.find(config.selector);
@@ -35,12 +37,14 @@ export class InfoParser {
         if (query.length > 0) {
           return true;
         }
+        selectorIndex++;
       });
     } else {
       return null;
     }
 
     let result = null;
+    // 该变量 dateTime 用于 eval 内部执行，不可删除或改名
     let dateTime = moment;
     if (query) {
       if (config.attribute || config.filters) {
@@ -48,8 +52,19 @@ export class InfoParser {
           query = query.attr(config.attribute);
         }
 
-        if (config.filters) {
-          config.filters.forEach((filter: string) => {
+        let filters: any;
+
+        // 按 selectorIndex 来选择
+        if (config.switchFilters) {
+          filters = config.switchFilters[selectorIndex] || null;
+        } else {
+          filters = config.filters;
+        }
+
+        console.log(filters);
+
+        if (filters) {
+          filters.forEach((filter: string) => {
             try {
               query = eval(filter);
             } catch (error) {
@@ -60,7 +75,7 @@ export class InfoParser {
         }
         result = query;
       } else {
-        result = query.text();
+        result = query.text().trim();
       }
     }
     return result;

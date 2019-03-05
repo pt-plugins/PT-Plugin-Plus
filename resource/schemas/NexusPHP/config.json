@@ -69,7 +69,7 @@
       }
     },
     "userExtendInfo": {
-      "page": "/userdetails.php?id=$userId$",
+      "page": "/userdetails.php?id=$user.id$",
       "fields": {
         "uploaded": {
           "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td"],
