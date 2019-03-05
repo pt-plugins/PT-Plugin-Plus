@@ -39,5 +39,56 @@
     "name": "75%",
     "selector": "img[src*='75.png']",
     "color": "lime"
-  }]
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ["a[href*='usercp.php?uid=']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('uid'):''"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php?']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/usercp.php?uid=$user.id$",
+      "fields": {
+        "name": {
+          "selector": ["tr#CurrentDetailsHideShowTR td.header:contains('User') + td"]
+        },
+        "uploaded": {
+          "selector": ["td.header:contains('Uploaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td.header:contains('Downloaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "td.header:contains('Ratio') + td",
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "levelName": {
+          "selector": "td.header:contains('Rank') + td"
+        },
+        "bonus": {
+          "selector": ["td.header:contains('Seed Bonus Points') + td"],
+          "filters": ["query.text().replace(/,/g,'')"]
+        },
+        "joinTime": {
+          "selector": "td.header:contains('Joined on') + td",
+          "filters": ["query.text().split(' ')", "query[0].split('/')[2]+'-'+query[0].split('/')[1]+'-'+query[0].split('/')[0]+' '+query[1]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["td.nav[title='Active-Torrents'] > a[href*='#actives']"],
+          "filters": ["query.text().replace(/,/g,'')"]
+        }
+      }
+    }
+  }
 }
