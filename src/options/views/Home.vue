@@ -133,7 +133,7 @@ export default Vue.extend({
         rowsPerPage: 50
       },
       headers: [
-        { text: "站点", align: "center", value: "name", width: "100px" },
+        { text: "站点", align: "center", value: "name", width: "120px" },
         { text: "用户名", align: "left", value: "user.name" },
         { text: "等级", align: "left", value: "user.levelName" },
         { text: "数据量", align: "right", value: "user.uploaded" },
