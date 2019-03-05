@@ -73,15 +73,15 @@
       "fields": {
         "uploaded": {
           "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td"],
-          "filters": ["query.text().match(/上[传傳]量.+?([\\d.]+ [TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/上[传傳]量.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "downloaded": {
           "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td"],
-          "filters": ["query.text().match(/下[载載]量.+?([\\d.]+ [TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/下[载載]量.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "ratio": {
           "selector": "td.rowfollow:contains('分享率')",
-          "filters": ["query.text().match(/分享率.+?([\\d.]+|无限)/)", "(query && query.length>=2)?query[1]:0"]
+          "filters": ["query.text().replace(/,/g,'').match(/分享率.+?([\\d.]+|无限)/)", "(query && query.length>=2)?query[1]:0"]
         },
         "levelName": {
           "selector": "td.rowhead:contains('等級'), td.rowhead:contains('等级')",
