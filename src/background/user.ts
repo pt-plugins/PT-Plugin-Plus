@@ -136,7 +136,7 @@ export class User {
             return;
           }
 
-          if (userInfo.name) {
+          if (userInfo.name || userInfo.id) {
             // 上次请求未完成时，直接返回最近的数据
             if (this.requestQueue[`${site.host}-extend`]) {
               resolve(userInfo);
