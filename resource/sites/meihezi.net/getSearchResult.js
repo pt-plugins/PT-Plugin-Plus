@@ -100,6 +100,9 @@
           };
           results.push(data);
         }
+        if (results.length == 0) {
+          options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
+        }
       } catch (error) {
         console.log(error);
         options.errorMsg = `[${options.site.name}]获取种子信息出错: ${error.stack}`;

@@ -107,7 +107,7 @@ if (!"".getQueryString) {
           }
 
           let link = title.attr("href");
-          if (link.substr(0, 4) !== "http") {
+          if (link && link.substr(0, 4) !== "http") {
             link = `${site.url}${link}`;
           }
 
@@ -145,6 +145,9 @@ if (!"".getQueryString) {
             category: this.getCategory(cells.find("a[href*='filter_cat']"))
           };
           results.push(data);
+        }
+        if (results.length == 0) {
+          options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
         }
       } catch (error) {
         console.error(error)

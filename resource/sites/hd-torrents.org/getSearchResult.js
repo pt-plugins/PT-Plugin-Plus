@@ -60,6 +60,9 @@
         let cells = row.find(">td");
 
         let title = cells.eq(fieldIndex.title).find("a[href*='details.php']");
+        if (title.length == 0) {
+          continue;
+        }
         let link = title.attr("href");
         if (link && link.substr(0, 4) !== "http") {
           link = `${site.url}${link}`;
@@ -92,6 +95,10 @@
           tags: this.getTags(row, options.torrentTagSelectors)
         };
         results.push(data);
+      }
+
+      if (results.length == 0) {
+        options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
       }
 
       return results;

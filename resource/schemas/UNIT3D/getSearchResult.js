@@ -123,8 +123,11 @@
           let cells = row.find(">td");
 
           let title = row.find("a.view-torrent");
+          if (title.length == 0) {
+            continue;
+          }
           let link = title.attr("href");
-          if (link.substr(0, 4) !== "http") {
+          if (link && link.substr(0, 4) !== "http") {
             link = `${site.url}${link}`;
           }
 
@@ -153,6 +156,9 @@
             category: fieldIndex.category == -1 ? null : this.getCategory(cells.eq(fieldIndex.category))
           };
           results.push(data);
+        }
+        if (results.length == 0) {
+          options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
         }
       } catch (error) {
         console.log(error);
