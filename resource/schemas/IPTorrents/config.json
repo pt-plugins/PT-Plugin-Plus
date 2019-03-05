@@ -63,8 +63,8 @@
           "selector": "th:contains('Class') + td"
         },
         "bonus": {
-          "selector": ["th:contains('Bonus Points') + td"],
-          "filters": ["query.text().replace(/,/g,'')"]
+          "selector": ["a[href='/mybonus.php']"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?query[1]:''"]
         },
         "joinTime": {
           "selector": "th:contains('Join date') + td",
