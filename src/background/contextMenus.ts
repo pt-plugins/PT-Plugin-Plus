@@ -529,7 +529,9 @@ export class ContextMenus {
           return item.name === site.schema;
         });
 
-      result = schema.parser && schema.parser[name];
+      if (schema && schema.parser) {
+        result = schema.parser[name];
+      }
     }
     return result;
   }
