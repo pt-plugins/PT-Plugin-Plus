@@ -9,6 +9,7 @@
   top: 50%;
   bottom: 50%;
   opacity: .3;
+  z-index: 100;
 }
 
 .pt-plugin-body:hover,
