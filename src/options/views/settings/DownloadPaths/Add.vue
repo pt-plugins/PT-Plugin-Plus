@@ -10,7 +10,6 @@
               v-model="selectedSite"
               :items="getSites()"
               label="选择一个站点"
-              :menu-props="{maxHeight:'auto'}"
               persistent-hint
               single-line
               item-text="name"

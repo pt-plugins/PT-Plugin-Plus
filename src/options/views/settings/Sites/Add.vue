@@ -78,6 +78,10 @@
             <span class="ml-1">{{ words.custom }}</span>
           </v-btn>
           <v-spacer></v-spacer>
+          <v-btn flat color="error" @click="cancel">
+            <v-icon>cancel</v-icon>
+            <span class="ml-1">{{ words.cancel }}</span>
+          </v-btn>
           <v-btn flat color="grey darken-1" @click="step--" :disabled="step===1">
             <v-icon>navigate_before</v-icon>
             <span>{{ words.prev }}</span>
@@ -118,7 +122,8 @@ export default Vue.extend({
         validMsg: "请选择一个站点（支持搜索）",
         custom: "自定义",
         step1: "选择站点",
-        step2: "确认站点配置"
+        step2: "确认站点配置",
+        cancel: "取消"
       },
       step: 1,
       show: false,
@@ -171,17 +176,25 @@ export default Vue.extend({
       }
       return "";
     },
-    filterSite(item: Site, queryText: string, itemText: string):boolean {
+    filterSite(item: Site, queryText: string, itemText: string): boolean {
       function hasValue(val: any): string {
-        return val != null ? val : '';
+        return val != null ? val : "";
       }
 
       // 支持在Site中host,name,url属性中搜索
-      const text = hasValue(item.host) + hasValue(item.name) + hasValue(item.url);
+      const text =
+        hasValue(item.host) + hasValue(item.name) + hasValue(item.url);
       const query = hasValue(queryText);
 
-      return text.toString().toLowerCase()
-              .indexOf(query.toString().toLowerCase()) > -1;
+      return (
+        text
+          .toString()
+          .toLowerCase()
+          .indexOf(query.toString().toLowerCase()) > -1
+      );
+    },
+    cancel() {
+      this.show = false;
     }
   },
   computed: {

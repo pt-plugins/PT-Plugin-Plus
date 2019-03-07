@@ -73,6 +73,10 @@
             <span class="ml-1">{{ words.helpMsg }}</span>
           </v-btn>
           <v-spacer></v-spacer>
+          <v-btn flat color="error" @click="cancel">
+            <v-icon>cancel</v-icon>
+            <span class="ml-1">{{ words.cancel }}</span>
+          </v-btn>
           <v-btn flat color="grey darken-1" @click="step--" :disabled="step===1">
             <v-icon>navigate_before</v-icon>
             <span>{{ words.prevStep }}</span>
@@ -112,7 +116,8 @@ export default Vue.extend({
         validMsg: "请选择一个服务器类型",
         helpMsg: "找不到想要的服务器类型？来这里添加吧！",
         nextStep: "下一步",
-        prevStep: "上一步"
+        prevStep: "上一步",
+        cancel: "取消"
       },
       step: 1,
       show: false,
@@ -156,6 +161,9 @@ export default Vue.extend({
       } else {
         this.valid = true;
       }
+    },
+    cancel() {
+      this.show = false;
     }
   },
   created() {}
