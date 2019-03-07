@@ -182,6 +182,12 @@ class Config {
               _site.torrentTagSelectors = systemSite.torrentTagSelectors;
             }
 
+            if (!systemSite.patterns && _site.patterns) {
+              delete _site.patterns;
+            } else {
+              _site.patterns = systemSite.patterns;
+            }
+
             // 合并系统定义的搜索入口
             if (_site.searchEntry && systemSite.searchEntry) {
               systemSite.searchEntry.forEach((sysEntry: SearchEntry) => {

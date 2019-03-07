@@ -30,9 +30,6 @@
     "resultSelector": "table#torrent_table:last > tbody > tr",
     "enabled": true
   }],
-  "patterns": {
-    "torrentLinks": ["*://totheglory.im/t/*"]
-  },
   "categories": [{
     "entry": "browse.php?c=M",
     "appendToSearchKey": true,
