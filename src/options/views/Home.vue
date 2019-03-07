@@ -55,7 +55,7 @@
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
           <td class="center">
-            <v-avatar size="18">
+            <v-avatar size="18" @click.stop="getSiteUserInfo(props.item)">
               <img :src="props.item.icon">
             </v-avatar>
             <br>
@@ -75,7 +75,7 @@
           </td>
           <td class="number">{{ props.item.user.ratio | formatRatio }}</td>
           <td class="number">{{ props.item.user.seeding }}</td>
-          <!-- <td class="number">{{ props.item.user.seedingSize | formatSize }}</td> -->
+          <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>
           <td class="number">{{ props.item.user.bonus | formatNumber }}</td>
           <td class="number">{{ props.item.user.joinTime | timeAgo }}</td>
           <td
@@ -139,7 +139,7 @@ export default Vue.extend({
         { text: "数据量", align: "right", value: "user.uploaded" },
         { text: "分享率", align: "right", value: "user.ratio" },
         { text: "做种数量", align: "right", value: "user.seeding" },
-        // { text: "做种体积", align: "right", value: "user.seedingSize" },
+        { text: "做种体积", align: "right", value: "user.seedingSize" },
         { text: "魔力值/积分", align: "right", value: "user.bonus" },
         { text: "入站时间", align: "right", value: "user.joinTime" },
         { text: "数据更新于", align: "right", value: "user.lastUpdateTime" },
@@ -193,7 +193,7 @@ export default Vue.extend({
           }
         });
 
-        this.getSiteUserInfo(site, index);
+        this.getSiteUserInfo(site);
       });
     },
     /**
@@ -236,7 +236,7 @@ export default Vue.extend({
     /**
      * 获取站点用户信息
      */
-    getSiteUserInfo(site: Site, index: number) {
+    getSiteUserInfo(site: Site) {
       if (!site.user) {
         return;
       }

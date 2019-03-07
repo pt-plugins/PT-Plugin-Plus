@@ -13,7 +13,7 @@ import { PPF } from "@/service/public";
 type Service = PTPlugin;
 
 export class User {
-  private requestQueue: Dictionary<JQueryXHR> = {};
+  private requestQueue: any = {};
   private requestQueueCount: number = 0;
 
   constructor(public service: Service) {}
@@ -92,17 +92,17 @@ export class User {
         return;
       }
 
+      let url: string = `${site.url}${rule.page}`;
+      let host = site.host as string;
       // 上次请求未完成时，直接返回最近的数据
-      if (this.requestQueue[`${site.host}-base`]) {
+      if (this.checkQueue(host, url)) {
         resolve(userInfo);
         return;
       }
 
-      let url: string = `${site.url}${rule.page}`;
-      this.requestQueue[`${site.host}-base`] = this.getInfos(
-        url,
-        rule,
-        (result: any) => {
+      // 获取用户基本信息（用户名、ID、是否登录等）
+      this.getInfos(host, url, rule)
+        .then((result: any) => {
           delete this.requestQueue[`${site.host}-base`];
           userInfo = Object.assign({}, result);
 
@@ -137,32 +137,30 @@ export class User {
           }
 
           if (userInfo.name || userInfo.id) {
+            let url = `${site.url}${rule.page
+              .replace("$user.id$", userInfo.id)
+              .replace("$user.name$", userInfo.name)}`;
             // 上次请求未完成时，直接返回最近的数据
-            if (this.requestQueue[`${site.host}-extend`]) {
+            if (this.checkQueue(host, url)) {
               resolve(userInfo);
               return;
             }
 
-            this.requestQueue[`${site.host}-extend`] = this.getInfos(
-              `${site.url}${rule.page
-                .replace("$user.id$", userInfo.id)
-                .replace("$user.name$", userInfo.name)}`,
-              rule,
-              (result: any) => {
-                delete this.requestQueue[`${site.host}-extend`];
+            this.getInfos(host, url, rule)
+              .then((result: any) => {
                 userInfo = Object.assign(userInfo, result);
 
                 userInfo.lastUpdateStatus = EUserDataRequestStatus.success;
                 this.updateStatus(site, userInfo);
-                resolve(userInfo);
-              },
-              (error: any) => {
-                delete this.requestQueue[`${site.host}-extend`];
+                this.getMoreInfos(site, userInfo).then(() => {
+                  resolve(userInfo);
+                });
+              })
+              .catch((error: any) => {
                 userInfo.lastUpdateStatus = EUserDataRequestStatus.unknown;
                 this.updateStatus(site, userInfo);
                 rejectFN(APP.createErrorMessage(error));
-              }
-            );
+              });
           } else {
             userInfo.lastUpdateStatus = EUserDataRequestStatus.unknown;
             this.updateStatus(site, userInfo);
@@ -173,14 +171,61 @@ export class User {
               })
             );
           }
-        },
-        (error: any) => {
+        })
+        .catch((error: any) => {
           userInfo.lastUpdateStatus = EUserDataRequestStatus.unknown;
           this.updateStatus(site, userInfo);
           delete this.requestQueue[`${site.host}-base`];
           rejectFN(APP.createErrorMessage(error));
+        });
+    });
+  }
+
+  /**
+   * 获取更多用户信息（如有有定义的话）
+   * @param site
+   * @param userInfo
+   */
+  public getMoreInfos(site: Site, userInfo: UserInfo): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let requests: any[] = [];
+      let selectors = ["userSeedingTorrents"];
+
+      selectors.forEach((name: string) => {
+        let host = site.host as string;
+        let rule = this.service.getSiteSelector(host, name);
+
+        if (rule) {
+          let url = `${site.url}${rule.page
+            .replace("$user.id$", userInfo.id)
+            .replace("$user.name$", userInfo.name)}`;
+          // 上次请求未完成时，跳过
+          if (this.checkQueue(host, url)) {
+            return;
+          }
+
+          requests.push(this.getInfos(host, url, rule));
         }
-      );
+      });
+      if (requests.length) {
+        // 不管是否成功都执行 resolve 回调
+        Promise.all(requests)
+          .then((results: any[]) => {
+            results.forEach((result: any) => {
+              userInfo = Object.assign(userInfo, result);
+
+              userInfo.lastUpdateStatus = EUserDataRequestStatus.success;
+              this.updateStatus(site, userInfo);
+            });
+
+            resolve(userInfo);
+          })
+          .catch(result => {
+            resolve(userInfo);
+          });
+      } else {
+        resolve(userInfo);
+      }
     });
   }
 
@@ -188,43 +233,71 @@ export class User {
    * getInfos
    */
   public getInfos(
+    host: string,
     url: string,
-    rule: Dictionary<any>,
-    onSuccess: any,
-    onError: any
-  ) {
-    url = url
-      .replace("://", "****")
-      .replace(/\/\//g, "/")
-      .replace("****", "://");
-    PPF.updateBadge(++this.requestQueueCount);
-    return $.ajax({
-      url,
-      dataType: "text",
-      contentType: "text/plain",
-      timeout:
-        (this.service.options.search && this.service.options.search.timeout) ||
-        30000
-    })
-      .done(result => {
-        PPF.updateBadge(--this.requestQueueCount);
-        let doc = new DOMParser().parseFromString(result, "text/html");
-        // 构造 jQuery 对象
-        let content = $(doc).find("body");
-        if (content && rule) {
-          try {
-            let results = new InfoParser(this.service).getResult(content, rule);
-            onSuccess && onSuccess(results);
-          } catch (error) {
-            this.service.debug(error);
-            onError && onError(error);
-          }
-        }
+    rule: Dictionary<any>
+  ): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      url = url
+        .replace("://", "****")
+        .replace(/\/\//g, "/")
+        .replace("****", "://");
+      PPF.updateBadge(++this.requestQueueCount);
+      let request = $.ajax({
+        url,
+        dataType: "text",
+        contentType: "text/plain",
+        timeout:
+          (this.service.options.search &&
+            this.service.options.search.timeout) ||
+          30000
       })
-      .fail(error => {
-        PPF.updateBadge(--this.requestQueueCount);
-        onError && onError(error);
-      });
+        .done(result => {
+          this.removeQueue(host, url);
+          PPF.updateBadge(--this.requestQueueCount);
+          let doc = new DOMParser().parseFromString(result, "text/html");
+          // 构造 jQuery 对象
+          let content = $(doc).find("body");
+          if (content && rule) {
+            try {
+              let results = new InfoParser(this.service).getResult(
+                content,
+                rule
+              );
+              resolve(results);
+            } catch (error) {
+              this.service.debug(error);
+              reject(error);
+            }
+          }
+        })
+        .fail(error => {
+          this.removeQueue(host, url);
+          PPF.updateBadge(--this.requestQueueCount);
+          reject(error);
+        });
+
+      this.addQueue(host, url, request);
+    });
+  }
+
+  public addQueue(host: string, url: string, request: any) {
+    let queues = this.requestQueue[host] || {};
+    queues[url] = request;
+    this.requestQueue[host] = queues;
+  }
+
+  public checkQueue(host: string, url: string): boolean {
+    let queues = this.requestQueue[host] || {};
+    return queues[url] ? true : false;
+  }
+
+  public removeQueue(host: string, url: string) {
+    let queues = this.requestQueue[host] || {};
+    if (queues[url]) {
+      delete queues[url];
+    }
+    this.requestQueue[host] = queues;
   }
 
   /**
@@ -234,42 +307,31 @@ export class User {
    */
   public abortGetUserInfo(site: Site): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      let queueBase = this.requestQueue[`${site.host}-base`];
-      let queueExtend = this.requestQueue[`${site.host}-extend`];
+      let host = site.host as string;
+      let queues = this.requestQueue[host];
       let errors: any[] = [];
 
-      if (queueBase) {
-        try {
-          queueBase.abort();
-        } catch (error) {
-          this.service.logger.add({
-            module: EModule.background,
-            event: "user.abortGetUserInfo.Base.error",
-            msg: "取消获取用户信息请求失败",
-            data: {
-              site: site.host,
-              error
+      if (queues) {
+        for (const key in queues) {
+          if (queues.hasOwnProperty(key)) {
+            const request = queues[key];
+            try {
+              request.abort();
+            } catch (error) {
+              this.service.logger.add({
+                module: EModule.background,
+                event: "user.abortGetUserInfo.error",
+                msg: "取消获取用户信息请求失败",
+                data: {
+                  site: site.host,
+                  error
+                }
+              });
+              errors.push(error);
             }
-          });
-          errors.push(error);
+          }
         }
-      }
-
-      if (queueExtend) {
-        try {
-          queueExtend.abort();
-        } catch (error) {
-          this.service.logger.add({
-            module: EModule.background,
-            event: "user.abortGetUserInfo.Extend.error",
-            msg: "取消获取用户信息请求失败",
-            data: {
-              site: site.host,
-              error
-            }
-          });
-          errors.push(error);
-        }
+        delete this.requestQueue[host];
       }
 
       if (errors.length > 0) {

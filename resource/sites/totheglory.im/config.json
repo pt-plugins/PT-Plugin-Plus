@@ -182,6 +182,14 @@
         "joinTime": {
           "selector": ["td.rowhead:contains('注册日期') + td", "td.rowhead:contains('註冊日期') + td"],
           "filters": ["dateTime(query.text()).isValid()?dateTime(query.text()).valueOf():query.text()"]
+        },
+        "seeding": {
+          "selector": ["div#ka2 tr:not(:eq(0))"],
+          "filters": ["query.length"]
+        },
+        "seedingSize": {
+          "selector": ["div#ka2 tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td:eq(3)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
       }
     }

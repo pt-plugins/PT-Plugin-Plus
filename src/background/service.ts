@@ -495,15 +495,30 @@ export default class PTPlugin {
     }
 
     let result = site.selectors && site.selectors[name];
+    let schema: SiteSchema =
+      this.options.system &&
+      this.options.system.schemas &&
+      this.options.system.schemas.find((item: SiteSchema) => {
+        return item.name === site.schema;
+      });
     if (!result) {
-      let schema: SiteSchema =
-        this.options.system &&
-        this.options.system.schemas &&
-        this.options.system.schemas.find((item: SiteSchema) => {
-          return item.name === site.schema;
-        });
       if (schema && schema.selectors) {
         result = schema.selectors[name];
+      }
+    } else {
+      // 禁用
+      if (result.disabled === true) {
+        return null;
+      }
+      if (schema && schema.selectors && schema.selectors[name]) {
+        // 合并参数
+        if (result.merge === true) {
+          result.fields = Object.assign(
+            schema.selectors[name].fields,
+            result.fields
+          );
+          result = Object.assign(schema.selectors[name], result);
+        }
       }
     }
     return result;

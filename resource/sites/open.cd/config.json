@@ -64,5 +64,23 @@
       "id": 9,
       "name": "其他(Others)"
     }]
-  }]
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "seeding": {
+          "selector": ["div#ka1"],
+          "filters": ["query.parent().text().match(/\\(([\\d.]+)个种子/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "seedingSize": {
+          "selector": ["div#ka1"],
+          "filters": ["query.parent().text().match(/共计([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "disabled": true
+    }
+  }
 }

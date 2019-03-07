@@ -46,6 +46,7 @@ export class InfoParser {
     let result = null;
     // 该变量 dateTime 用于 eval 内部执行，不可删除或改名
     let dateTime = moment;
+    let _self = this;
     if (query) {
       if (config.attribute || config.filters) {
         if (config.attribute) {
@@ -79,5 +80,39 @@ export class InfoParser {
       }
     }
     return result;
+  }
+
+  /**
+   * 获取指定数组的合计尺寸
+   * @param datas 表示大小的数组
+   */
+  getTotalSize(datas: string[]) {
+    let total: number = 0.0;
+
+    console.log(datas);
+
+    datas.forEach((item: string) => {
+      let size = parseFloat(item.replace(/[A-Za-z]/g, ""));
+      let unit = item.replace(/[^A-Za-z]/g, "").toLowerCase();
+      switch (true) {
+        case /ki?b/.test(unit):
+          total += size * 1024;
+          break;
+
+        case /mi?b/.test(unit):
+          total += size * 1048576;
+          break;
+
+        case /gi?b/.test(unit):
+          total += size * 1073741824;
+          break;
+
+        case /ti?b?/.test(unit):
+          total += size * 1099511627776;
+          break;
+      }
+    });
+
+    return total;
   }
 }
