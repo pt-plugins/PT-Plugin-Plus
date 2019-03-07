@@ -43,12 +43,25 @@ export interface DownloadClient {
   type?: string;
 }
 
+/**
+ * 助手按钮类型
+ */
+export enum EButtonType {
+  normal = "normal",
+  label = "label",
+  spliter = "spliter",
+  popup = "popup"
+}
+/**
+ * 助手按钮
+ */
 export interface ButtonOption {
   title: string;
   label: string;
   key?: string;
   click?: Function;
   icon?: string;
+  type?: EButtonType;
 }
 
 export interface SystemOptions {

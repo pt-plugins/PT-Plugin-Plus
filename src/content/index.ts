@@ -10,7 +10,8 @@ import {
   EDownloadClientType,
   ESizeUnit,
   EDataResultType,
-  Request
+  Request,
+  EButtonType
 } from "../interface/common";
 import { APP } from "../service/api";
 import { filters } from "../service/filters";
@@ -33,6 +34,7 @@ class PTPContent {
   public defaultClient: any;
   public downloadClientType = EDownloadClientType;
   public sizeUnit = ESizeUnit;
+  public buttonType = EButtonType;
 
   public schema: SiteSchema = {};
 
@@ -303,9 +305,16 @@ class PTPContent {
    * @param options 按钮参数
    */
   public addButton(options: ButtonOption) {
+    options = Object.assign(
+      {
+        type: EButtonType.normal
+      },
+      options
+    );
+
     let line = $("<hr/>").appendTo(this.buttonBar);
     let buttonType = "<a class='pt-plugin-button'/>";
-    if (!options.click) {
+    if (!options.click || options.type == EButtonType.label) {
       buttonType = "<span class='pt-plugin-button'/>";
     }
     let button = $(buttonType)
@@ -329,14 +338,20 @@ class PTPContent {
       .appendTo(inner);
 
     if (options.click) {
-      button.click(() => {
-        inner.hide();
-        loading.show();
-        // success.show();
-        // console.log((<any>options).click);
+      button.click(event => {
+        if (options.type == EButtonType.normal) {
+          inner.hide();
+          loading.show();
+        }
+
         (<any>options).click(
           (result: any) => {
-            loading.hide();
+            if (options.type == EButtonType.normal) {
+              loading.hide();
+            } else {
+              inner.hide();
+            }
+
             success.show();
             if (result && result.msg) {
               if (!result.type) {
@@ -350,18 +365,15 @@ class PTPContent {
             }, 2000);
           },
           (error: any) => {
-            loading.hide();
+            if (options.type == EButtonType.normal) {
+              loading.hide();
+            }
             inner.show();
             this.showNotice({
               msg: error || `${options.label} 发生错误，请重试。`
             });
-            // new (<any>window)["NoticeJs"]({
-            //   type: "error",
-            //   text: error || `${options.label} 发生错误，请重试。`,
-            //   position: "bottomRight",
-            //   timeout: 50
-            // }).show();
-          }
+          },
+          event
         );
       });
     }
