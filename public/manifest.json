@@ -45,12 +45,15 @@
 		"css": [
 			"assets/base.css",
 			"libs/materialIcons/content_style.css",
-			"libs/notice/noticejs.css"
+			"libs/notice/noticejs.css",
+			"libs/basicContext/basicContext.min.css",
+			"libs/basicContext/themes/default.min.css"
 		],
 		"js": [
 			"libs/jquery/jquery-3.3.1.min.js",
 			"libs/Base64.js",
 			"libs/notice/notice.js",
+			"libs/basicContext/basicContext.min.js",
 			"js/content.js"
 		]
 	}],
