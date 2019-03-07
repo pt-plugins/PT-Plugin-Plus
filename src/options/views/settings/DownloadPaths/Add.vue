@@ -9,7 +9,7 @@
             <v-autocomplete
               v-model="selectedSite"
               :items="getSites()"
-              label="选择一个站点"
+              :label="words.selectSite"
               persistent-hint
               single-line
               item-text="name"
@@ -81,7 +81,8 @@ export default Vue.extend({
         path: "目录列表",
         pathTip: "多个目录按回车分隔，第一个为默认目录",
         ok: "确认",
-        cancel: "取消"
+        cancel: "取消",
+        selectSite: "选择一个站点（不选表示所有站点都可用）"
       },
       rules: {
         require: [(v: any) => !!v || "!"]

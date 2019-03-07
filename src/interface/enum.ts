@@ -194,3 +194,10 @@ export enum EUserDataRequestStatus {
   unknown = "unknown",
   success = "success"
 }
+
+/**
+ * 公用的一些键值
+ */
+export enum ECommonKey {
+  allSite = "__allSite__"
+}

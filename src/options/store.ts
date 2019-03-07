@@ -9,9 +9,10 @@ import {
   UIOptions,
   EModule,
   SearchSolution,
-  SearchEntry
-} from "../interface/common";
-import Extension from "../service/extension";
+  SearchEntry,
+  ECommonKey
+} from "@/interface/common";
+import Extension from "@/service/extension";
 
 class ExtensionWorker extends Extension {
   constructor() {
@@ -159,32 +160,27 @@ export default new Vuex.Store({
       extension.sendRequest(EAction.saveConfig, null, state.options);
     },
 
-    addPathToClient(state, options) {
-      // let client = state.options.clients.find(data => {
-      //   return options.clientId === data.id;
-      // });
-      // if (client) {
-      //   if (!client.paths) {
-      //     client.paths = {};
-      //   }
-      //   if (!options.site) {
-      //     options.site = "__default__";
-      //   }
-      //   client.paths[options.site] = options.paths;
-      //   extension.sendRequest(EAction.saveConfig, null, state.options);
-      // }
-    },
-
+    /**
+     * 更新指定客户端的保存目录信息
+     * @param state
+     * @param options
+     */
     updatePathsOfClient(state, options) {
       let client = state.options.clients.find(data => {
         return options.clientId === data.id;
       });
-      if (client && options.site) {
+      if (client) {
         if (!client.paths) {
           client.paths = {};
         }
 
-        client.paths[options.site.host] = options.paths;
+        if (options.site && options.site.host) {
+          client.paths[options.site.host] = options.paths;
+        } else {
+          // 如果未指定网站，则用于所有站点
+          client.paths[ECommonKey.allSite] = options.paths;
+        }
+
         extension.sendRequest(EAction.saveConfig, null, state.options);
       }
     },

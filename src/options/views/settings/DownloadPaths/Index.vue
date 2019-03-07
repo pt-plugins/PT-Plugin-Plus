@@ -113,6 +113,7 @@
 import Vue from "vue";
 import AddItem from "./Add.vue";
 import EditItem from "./Edit.vue";
+import { ECommonKey } from "@/interface/enum";
 export default Vue.extend({
   components: {
     AddItem,
@@ -132,7 +133,8 @@ export default Vue.extend({
         clearConfirm: "确认要删除所有下载服务器吗？",
         ok: "确认",
         cancel: "取消",
-        notSupport: "暂不支持该服务器类型"
+        notSupport: "暂不支持该服务器类型",
+        allSite: "<所有站点>"
       },
       showAddDialog: false,
       showEditDialog: false,
@@ -205,7 +207,20 @@ export default Vue.extend({
   },
   computed: {
     getClientPaths(): any {
+      if (!this.selectedClient.paths) {
+        return [];
+      }
       let result = [];
+
+      let allSite = this.selectedClient.paths[ECommonKey.allSite];
+      if (allSite) {
+        result.push({
+          name: this.words.allSite,
+          site: {},
+          paths: allSite
+        });
+      }
+
       for (const host in this.selectedClient.paths) {
         let site = this.$store.state.options.sites.find((item: any) => {
           return item.host == host;

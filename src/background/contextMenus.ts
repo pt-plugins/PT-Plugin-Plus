@@ -7,7 +7,8 @@ import {
   EAction,
   EDataResultType,
   DownloadOptions,
-  EModule
+  EModule,
+  ECommonKey
 } from "@/interface/common";
 import PTPlugin from "./service";
 import URLParse from "url-parse";
@@ -84,7 +85,7 @@ export class ContextMenus {
    * 清除菜单
    */
   public clear() {
-    chrome.contextMenus.removeAll();
+    chrome && chrome.contextMenus.removeAll();
   }
 
   /**
@@ -96,6 +97,45 @@ export class ContextMenus {
     });
 
     this.siteMenus = [];
+  }
+
+  /**
+   * 根据指定的目录信息创建菜单
+   * @param paths
+   * @param site
+   * @param client
+   * @param parentId
+   */
+  private createPathMenus(
+    paths: string[],
+    site: Site,
+    client: DownloadClient,
+    parentId: string
+  ) {
+    paths.forEach((path: string) => {
+      let id = `${client.id}**${site.host}**${path}`;
+      this.add({
+        id,
+        title: path,
+        parentId: parentId,
+        contexts: ["link"],
+        documentUrlPatterns: [`*://${site.host}/*`],
+        targetUrlPatterns: this.getSiteUrlPatterns(site),
+        onclick: (
+          info: chrome.contextMenus.OnClickData,
+          tab: chrome.tabs.Tab
+        ) => {
+          let data = info.menuItemId.split("**");
+          let options: DownloadOptions = {
+            clientId: data[0],
+            url: info.linkUrl as string,
+            savePath: data[2]
+          };
+
+          this.sendTorrentToClient(tab.id, options);
+        }
+      });
+    });
   }
 
   /**
@@ -153,30 +193,15 @@ export class ContextMenus {
           }
 
           count++;
-          paths.forEach((path: string) => {
-            let id = `${client.id}**${host}**${path}`;
-            this.add({
-              id,
-              title: path,
-              parentId: parentId,
-              contexts: ["link"],
-              documentUrlPatterns: [`*://${host}/*`],
-              targetUrlPatterns: this.getSiteUrlPatterns(site),
-              onclick: (
-                info: chrome.contextMenus.OnClickData,
-                tab: chrome.tabs.Tab
-              ) => {
-                let data = info.menuItemId.split("**");
-                let options: DownloadOptions = {
-                  clientId: data[0],
-                  url: info.linkUrl as string,
-                  savePath: data[2]
-                };
+          this.createPathMenus(paths, site, client, parentId);
+        }
 
-                this.sendTorrentToClient(tab.id, options);
-              }
-            });
-          });
+        // 最后添加当前客户端适用于所有站点的目录
+        let publicPaths = client.paths[ECommonKey.allSite];
+        if (publicPaths) {
+          count++;
+          console.log("Add public paths", publicPaths);
+          this.createPathMenus(publicPaths, site, client, parentId);
         }
 
         if (count > 0) {

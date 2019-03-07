@@ -374,6 +374,21 @@ String.prototype.getQueryString = function (name, split) {
         return this.siteContentMenus[host];
       }
 
+      /**
+       * 增加下载目录
+       * @param paths
+       * @param client
+       */
+      function pushPath(paths, client) {
+        paths.forEach((path) => {
+          results.push({
+            client: client,
+            path: path,
+            host: host
+          });
+        });
+      }
+
       PTSevrice.options.clients.forEach((client) => {
         clients.push({
           client: client,
@@ -390,14 +405,19 @@ String.prototype.getQueryString = function (name, split) {
               continue;
             }
 
-            paths.forEach((path) => {
-              results.push({
-                client: client,
-                path: path,
-                host: host
-              });
-            });
+            pushPath(paths, client);
           }
+
+          // 最后添加当前客户端适用于所有站点的目录
+          let publicPaths = client.paths[PTSevrice.allSiteKey];
+          if (publicPaths) {
+            if (results.length > 0) {
+              results.push({});
+            }
+
+            pushPath(publicPaths, client);
+          }
+
         }
       });
 

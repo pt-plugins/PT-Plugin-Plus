@@ -11,7 +11,8 @@ import {
   ESizeUnit,
   EDataResultType,
   Request,
-  EButtonType
+  EButtonType,
+  ECommonKey
 } from "../interface/common";
 import { APP } from "../service/api";
 import { filters } from "../service/filters";
@@ -35,6 +36,7 @@ class PTPContent {
   public downloadClientType = EDownloadClientType;
   public sizeUnit = ESizeUnit;
   public buttonType = EButtonType;
+  public allSiteKey = ECommonKey.allSite;
 
   public schema: SiteSchema = {};
 

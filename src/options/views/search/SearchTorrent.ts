@@ -18,7 +18,8 @@ import {
   SearchSolutionRange,
   SearchEntry,
   DownloadClient,
-  DownloadOptions
+  DownloadOptions,
+  ECommonKey
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import moment from "moment";
@@ -950,6 +951,21 @@ export default Vue.extend({
         return this.siteContentMenus[host];
       }
 
+      /**
+       * 增加下载目录
+       * @param paths
+       * @param client
+       */
+      function pushPath(paths: string[], client: any) {
+        paths.forEach((path: string) => {
+          results.push({
+            client: client,
+            path: path,
+            host: site.host
+          });
+        });
+      }
+
       this.options.clients.forEach((client: DownloadClient) => {
         clients.push({
           client: client,
@@ -966,13 +982,17 @@ export default Vue.extend({
               continue;
             }
 
-            paths.forEach((path: string) => {
-              results.push({
-                client: client,
-                path: path,
-                host: host
-              });
-            });
+            pushPath(paths, client);
+          }
+
+          // 最后添加当前客户端适用于所有站点的目录
+          let publicPaths = client.paths[ECommonKey.allSite];
+          if (publicPaths) {
+            if (results.length > 0) {
+              results.push({});
+            }
+
+            pushPath(publicPaths, client);
           }
         }
       });
