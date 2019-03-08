@@ -44,6 +44,9 @@
         "seeding": {
           "selector": ["a[href*='/peers?u='] > img[alt='downloads'] + span"],
           "filters": ["query.text().replace(/,/g,'')"]
+        },
+        "seedingSize": {
+          "value": -1
         }
       }
     }

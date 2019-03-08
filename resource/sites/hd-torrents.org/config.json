@@ -87,6 +87,9 @@
         "seeding": {
           "selector": ["td.nav[title='Active-Torrents'] > a[href*='#actives']"],
           "filters": ["query.text().replace(/,/g,'')"]
+        },
+        "seedingSize": {
+          "value": -1
         }
       }
     }
