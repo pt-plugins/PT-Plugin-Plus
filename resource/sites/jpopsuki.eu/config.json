@@ -48,5 +48,19 @@
       "id": 10,
       "name": "Misc"
     }]
-  }]
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "seeding": {
+          "selector": "div:contains('Community') + ul.stats > li:contains('Seeding:')",
+          "filters": ["query.text().match(/Seeding.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "seedingSize": {
+          "value": -1
+        }
+      }
+    }
+  }
 }

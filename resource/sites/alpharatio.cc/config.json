@@ -100,5 +100,19 @@
       "id": 30,
       "name": "Misc"
     }]
-  }]
+  }],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/ajax.php?action=community_stats&userid=$user.id$",
+      "dataType": "json",
+      "fields": {
+        "seeding": {
+          "selector": ["response.seeding"]
+        },
+        "seedingSize": {
+          "value": -1
+        }
+      }
+    }
+  }
 }
