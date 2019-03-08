@@ -32,6 +32,13 @@
           <v-icon class="mr-2">cached</v-icon>
           {{words.getInfos}}
         </v-btn>
+        <v-switch
+          v-model="isSecret"
+          class="ml-2 mt-4"
+          color="success"
+          :label="words.secret"
+          style="width: 100px;flex:none;"
+        ></v-switch>
         <v-spacer></v-spacer>
 
         <v-text-field
@@ -61,8 +68,8 @@
             <br>
             <span class="caption">{{ props.item.name }}</span>
           </td>
-          <td>{{ props.item.user.name }}</td>
-          <td>{{ props.item.user.levelName }}</td>
+          <td>{{ isSecret ? "****" : props.item.user.name }}</td>
+          <td>{{ isSecret ? "****" : props.item.user.levelName }}</td>
           <td class="number">
             <div>
               {{ props.item.user.uploaded | formatSize }}
@@ -125,7 +132,8 @@ export default Vue.extend({
         title: "概览（Beta）",
         getInfos: "手动刷新用户数据",
         cancelRequest: "取消请求",
-        requesting: "正在请求"
+        requesting: "正在请求",
+        secret: "密"
       },
       loading: false,
       items: [] as any[],
@@ -152,7 +160,8 @@ export default Vue.extend({
       requestTimer: 0,
       requestMsg: "",
       sites: [] as any[],
-      filterKey: ""
+      filterKey: "",
+      isSecret: false
     };
   },
   created() {
