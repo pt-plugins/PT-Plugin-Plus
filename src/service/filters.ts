@@ -125,6 +125,11 @@ export const filters: IFilter = {
     if (isNaN(bytes)) {
       return "";
     }
+
+    if (bytes < 0) {
+      return "unknown";
+    }
+
     if (bytes === 0) {
       if (zeroToEmpty === true) {
         return "";
