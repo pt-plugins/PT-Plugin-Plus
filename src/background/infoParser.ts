@@ -1,10 +1,16 @@
-import { Dictionary } from "@/interface/common";
+import { Dictionary, ERequestResultType } from "@/interface/common";
 import moment from "moment";
 import PTPlugin from "./service";
 type Service = PTPlugin;
 export class InfoParser {
   constructor(public service: Service) {}
-  getResult(content: any, rule: any) {
+  /**
+   * 根据指定规则和原始获取需要的数据
+   * @param content 原始内容
+   * @param rule 规则配置
+   * @return Dictionary<any>
+   */
+  getResult(content: any, rule: any): Dictionary<any> {
     let results: Dictionary<any> = {};
 
     if (content) {
@@ -12,7 +18,7 @@ export class InfoParser {
         if (rule.fields.hasOwnProperty(key)) {
           let config = rule.fields[key];
 
-          let result = this.getFieldData(content, config);
+          let result = this.getFieldData(content, config, rule);
           if (result != null) {
             results[key] = result;
           }
@@ -23,24 +29,60 @@ export class InfoParser {
     return results;
   }
 
-  getFieldData(content: any, config: any) {
+  /**
+   * 获取字段信息
+   * @param content
+   * @param config
+   */
+  getFieldData(content: any, config: any, rule: any) {
     let query: any;
     // selectorIndex 表示当前匹配了哪条选择器
     let selectorIndex: number = 0;
+    let selectors = [];
     // 直接表达式
     if (typeof config.selector == "string") {
-      query = content.find(config.selector);
+      selectors.push(config.selector);
     } else if (config.selector && config.selector.length) {
-      // 数组时
-      config.selector.some((selector: string) => {
-        query = content.find(selector);
-        if (query.length > 0) {
-          return true;
-        }
-        selectorIndex++;
-      });
+      selectors = config.selector;
     } else {
-      return null;
+      return config.value === undefined ? null : config.value;
+    }
+
+    // 遍历选择器
+    selectors.some((selector: string) => {
+      try {
+        switch (rule.dataType) {
+          case ERequestResultType.JSON:
+            if (selector.substr(0, 1) == "[") {
+              query = eval("content" + selector);
+            } else {
+              query = eval("content." + selector);
+            }
+            if (query) {
+              return true;
+            }
+            break;
+
+          case ERequestResultType.TEXT:
+          case ERequestResultType.HTML:
+          default:
+            query = content.find(selector);
+            if (query.length > 0) {
+              return true;
+            }
+            break;
+        }
+
+        selectorIndex++;
+      } catch (error) {
+        this.service.debug("InfoParser.getFieldData.Error", selector, error);
+        return true;
+      }
+    });
+
+    // 如果是JSON数据，则直接返回
+    if (rule.dataType == ERequestResultType.JSON) {
+      return query;
     }
 
     let result = null;
@@ -69,7 +111,7 @@ export class InfoParser {
             try {
               query = eval(filter);
             } catch (error) {
-              this.service.debug("InfoParser.Error", filter, error);
+              this.service.debug("InfoParser.filter.Error", filter, error);
               return;
             }
           });

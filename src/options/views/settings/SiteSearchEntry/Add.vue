@@ -28,7 +28,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Editor from "./Editor.vue";
-import { ESearchResultType } from "@/interface/common";
+import { ERequestResultType } from "@/interface/common";
 export default Vue.extend({
   components: {
     Editor
@@ -69,7 +69,7 @@ export default Vue.extend({
       this.$emit(
         "save",
         Object.assign(
-          { isCustom: true, resultType: ESearchResultType.HTML },
+          { isCustom: true, resultType: ERequestResultType.HTML },
           this.selected
         )
       );

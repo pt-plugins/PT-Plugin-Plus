@@ -1,6 +1,6 @@
 export * from "./enum";
 import {
-  ESearchResultType,
+  ERequestResultType,
   ESizeUnit,
   EButtonType,
   ERequsetType,
@@ -249,7 +249,7 @@ export interface SearchResultItem {
 export interface SearchEntry {
   name?: string;
   entry?: string;
-  resultType?: ESearchResultType;
+  resultType?: ERequestResultType;
   parseScriptFile?: string;
   parseScript?: string;
   resultSelector?: string;

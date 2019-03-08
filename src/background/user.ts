@@ -3,7 +3,8 @@ import {
   Dictionary,
   EModule,
   UserInfo,
-  EUserDataRequestStatus
+  EUserDataRequestStatus,
+  ERequestResultType
 } from "@/interface/common";
 import PTPlugin from "./service";
 import { InfoParser } from "./infoParser";
@@ -103,7 +104,6 @@ export class User {
       // 获取用户基本信息（用户名、ID、是否登录等）
       this.getInfos(host, url, rule)
         .then((result: any) => {
-          delete this.requestQueue[`${site.host}-base`];
           userInfo = Object.assign({}, result);
 
           if (!userInfo.isLogged) {
@@ -255,9 +255,15 @@ export class User {
         .done(result => {
           this.removeQueue(host, url);
           PPF.updateBadge(--this.requestQueueCount);
-          let doc = new DOMParser().parseFromString(result, "text/html");
-          // 构造 jQuery 对象
-          let content = $(doc).find("body");
+          let content: any;
+          if (rule.dataType !== ERequestResultType.JSON) {
+            let doc = new DOMParser().parseFromString(result, "text/html");
+            // 构造 jQuery 对象
+            content = $(doc).find("body");
+          } else {
+            content = JSON.parse(result);
+          }
+
           if (content && rule) {
             try {
               let results = new InfoParser(this.service).getResult(
@@ -274,6 +280,7 @@ export class User {
         .fail(error => {
           this.removeQueue(host, url);
           PPF.updateBadge(--this.requestQueueCount);
+          this.service.debug(error);
           reject(error);
         });
 

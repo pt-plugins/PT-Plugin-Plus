@@ -12,10 +12,11 @@ export enum ESizeUnit {
 /**
  * 数据请求返回类型
  */
-export enum ESearchResultType {
+export enum ERequestResultType {
   JSON = "json",
   XML = "xml",
-  HTML = "html"
+  HTML = "html",
+  TEXT = "text"
 }
 
 /**
