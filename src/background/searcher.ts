@@ -191,6 +191,13 @@ export class Searcher {
         }
       });
 
+      // 没有指定搜索入口
+      if (entryCount == 0) {
+        result.msg = "该站点未指定搜索页面，请先指定一个搜索入口";
+        result.type = EDataResultType.error;
+        reject(result);
+      }
+
       console.log("searchTorrent: quene done");
     });
   }
