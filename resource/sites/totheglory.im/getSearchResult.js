@@ -61,7 +61,7 @@
         let cells = row.find(">td");
 
         let title = row.find("div.name_left > a");
-        if (title.length) {
+        if (title.length == 0) {
           continue;
         }
         let titleStrings = title.html().split("<br>");
