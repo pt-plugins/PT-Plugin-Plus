@@ -10,13 +10,12 @@
   ],
   "schema": "NexusPHP",
   "host": "hdcmct.org",
-  "searchEntry": [
-    {
+  "searchEntry": [{
       "entry": "/torrents.php?search=$key$&notnewword=1",
       "name": "全部",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrent_list:last > tbody > tr",
+      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": true
     },
     {
@@ -92,48 +91,45 @@
       "enabled": false
     }
   ],
-  "categories": [
-    {
-      "entry": "*",
-      "result": "&cat$id$=1",
-      "category": [
-        {
-          "id": 501,
-          "name": "Movies(电影)"
-        },
-        {
-          "id": 502,
-          "name": "TV Series(剧集)"
-        },
-        {
-          "id": 503,
-          "name": "Docs(纪录)"
-        },
-        {
-          "id": 504,
-          "name": "Animations(动画)"
-        },
-        {
-          "id": 505,
-          "name": "TV Shows(综艺)"
-        },
-        {
-          "id": 506,
-          "name": "Sports(体育)"
-        },
-        {
-          "id": 507,
-          "name": "MV(音乐视频)"
-        },
-        {
-          "id": 508,
-          "name": "Music(音乐)"
-        },
-        {
-          "id": 509,
-          "name": "Others(其他)"
-        }
-      ]
-    }
-  ]
+  "categories": [{
+    "entry": "*",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 501,
+        "name": "Movies(电影)"
+      },
+      {
+        "id": 502,
+        "name": "TV Series(剧集)"
+      },
+      {
+        "id": 503,
+        "name": "Docs(纪录)"
+      },
+      {
+        "id": 504,
+        "name": "Animations(动画)"
+      },
+      {
+        "id": 505,
+        "name": "TV Shows(综艺)"
+      },
+      {
+        "id": 506,
+        "name": "Sports(体育)"
+      },
+      {
+        "id": 507,
+        "name": "MV(音乐视频)"
+      },
+      {
+        "id": 508,
+        "name": "Music(音乐)"
+      },
+      {
+        "id": 509,
+        "name": "Others(其他)"
+      }
+    ]
+  }]
 }
