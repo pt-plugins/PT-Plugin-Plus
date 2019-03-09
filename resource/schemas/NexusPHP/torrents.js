@@ -132,12 +132,16 @@
         }
 
         let urls = $.map(links, (item) => {
-          let url = $(item).attr("href").replace(/details\.php/gi, "download.php") + (PTSevrice.site.passkey ? "&passkey=" + PTSevrice.site.passkey : "") + (PTSevrice.site.disableHttps ? "" : "&https=1");
+          let url = $(item).attr("href").replace(/details\.php/gi, "download.php") + (PTSevrice.site.passkey ? "&passkey=" + PTSevrice.site.passkey : "");
           if (url) {
             if (url.substr(0, 2) === '//') { // 适配HUDBT、WHU这样以相对链接开头
               url = location.protocol + url;
             } else if (url.substr(0, 4) !== "http") {
               url = siteURL + url;
+            }
+
+            if (url && url.indexOf("https=1") === -1 && !PTSevrice.site.disableHttps) {
+              url += "&https=1"
             }
           }
           return url;
