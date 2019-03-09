@@ -180,7 +180,13 @@
                   class="ml-2 py-3"
                   disabled
                 >
-                  <span>{{ item.msg }}</span>
+                  <a
+                    v-if="item.url"
+                    :href="item.url"
+                    rel="noopener noreferrer nofollow"
+                    target="_blank"
+                  >{{ item.msg }}</a>
+                  <span v-if="!item.url">{{ item.msg }}</span>
                 </v-chip>
               </v-chip>
             </template>

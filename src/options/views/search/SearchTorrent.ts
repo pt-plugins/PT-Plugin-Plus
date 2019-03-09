@@ -478,6 +478,7 @@ export default Vue.extend({
           if (result.data && result.data.isLogged == false) {
             this.searchResult.failedSites.push({
               site: site,
+              url: site.url,
               msg: "未登录",
               color: "grey"
             });
