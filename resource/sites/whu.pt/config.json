@@ -239,5 +239,16 @@
         }
       ]
     }
-  ]
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "isLogged": {
+          "selector": ["form[action*='\/\/whu.pt\/logout.php']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    }
+  }
 }
