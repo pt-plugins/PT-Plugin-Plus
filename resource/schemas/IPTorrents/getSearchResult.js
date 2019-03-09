@@ -130,6 +130,10 @@
           // 获取下载链接
           let url = row.find("a[href*='/download.php']").attr("href");
 
+          if (url.length == 0) {
+            continue;
+          }
+
           if (url && url.substr(0, 4) !== "http") {
             url = `${site.url}${url}`;
           }
