@@ -145,10 +145,15 @@ if (!"".getQueryString) {
           if (title.length == 0) {
             title = row.find("a[href*='hit']").first();
           }
+
+          // 没有获取标题时，继续下一个
+          if (title.length == 0) {
+            continue;
+          }
           let link = title.attr("href");
-          if (link.substr(0, 2) === '//') {  // 适配HUDBT、WHU这样以相对链接开头
+          if (link && link.substr(0, 2) === '//') { // 适配HUDBT、WHU这样以相对链接开头
             link = `${site_url_help.protocol}://${link}`;
-          } else if (link.substr(0, 4) !== "http") {
+          } else if (link && link.substr(0, 4) !== "http") {
             link = `${site.url}${link}`;
           }
 
@@ -167,17 +172,23 @@ if (!"".getQueryString) {
             url = `download.php?id=${id}`;
           }
 
-          if (url.substr(0, 2) === '//') {  // 适配HUDBT、WHU这样以相对链接开头
+          if (url && url.substr(0, 2) === '//') { // 适配HUDBT、WHU这样以相对链接开头
             url = `${site_url_help.protocol}://${url}`;
-          } else if (url.substr(0, 4) !== "http") {
+          } else if (url && url.substr(0, 4) !== "http") {
             url = `${site.url}${url}`;
           }
+
+          if (!url) {
+            continue;
+          }
+
+          url = url + (site && site.passkey ? "&passkey=" + site.passkey : "") + "&https=1";
 
           let data = {
             title: title.attr("title") || title.text(),
             subTitle: this.getSubTitle(title, row),
             link,
-            url: url + (site && site.passkey ? "&passkey=" + site.passkey : "") + "&https=1",
+            url,
             size: cells.eq(fieldIndex.size).html() || 0,
             time: fieldIndex.time == -1 ? "" : this.getTime(cells.eq(fieldIndex.time)),
             author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",
