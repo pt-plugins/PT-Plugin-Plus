@@ -137,7 +137,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { Site } from "../../../../interface/common";
+import { Site } from "@/interface/common";
 export default Vue.extend({
   data() {
     return {
@@ -152,7 +152,7 @@ export default Vue.extend({
         url: "网站地址",
         urlTip: "网站完整地址，如：https://open.cd/",
         passkey: "密钥",
-        passkeyTip: "密钥用于聚合搜索、生成下载链接等操作",
+        passkeyTip: "密钥仅用于复制下载地址操作，如果不需要用到此功能，请留空",
         allowSearch: "允许搜索",
         allowGetUserInfo: "允许获取用户信息（Beta）"
       },
