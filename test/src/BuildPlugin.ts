@@ -8,7 +8,7 @@ export class BuildPlugin {
   public resourcePath: string = "";
   private resourceMap = ["sites", "schemas", "clients"];
 
-  constructor(rootPaht: string = "../../resource") {
+  constructor(rootPaht: string = "../../dist/resource") {
     this.resourcePath = PATH.resolve(__dirname, rootPaht);
     console.log(this.resourcePath);
   }
