@@ -148,6 +148,7 @@ export default Vue.extend({
         remove: "删除",
         edit: "编辑",
         importAll: "导入所有",
+        importAllConfirm: "确认要导入所有站点吗？此操作会导入未添加过的站点。",
         removeSelectedConfirm: "确认要删除已选中的站点吗？",
         plugins: "插件",
         title: "站点设置",
@@ -170,20 +171,7 @@ export default Vue.extend({
         { text: "URL", align: "left", value: "url" },
         { text: "操作", value: "name", sortable: false }
       ],
-      sites: [
-        {
-          value: false,
-          name: "OpenCD",
-          tags: ["音乐"],
-          url: "https://open.cd/"
-        },
-        {
-          value: false,
-          name: "CMCT",
-          tags: ["电影"],
-          url: "https://hdcmct.org/"
-        }
-      ],
+      sites: [] as Site[],
       selectedSite: {},
       dialogRemoveConfirm: false,
       options: this.$store.state.options
@@ -259,6 +247,9 @@ export default Vue.extend({
       }
     },
     importAll() {
+      if (!confirm(this.words.importAllConfirm)) {
+        return;
+      }
       this.$store.state.options.system.sites.forEach((site: any) => {
         let index = this.$store.state.options.sites
           ? this.$store.state.options.sites.findIndex((item: any) => {
