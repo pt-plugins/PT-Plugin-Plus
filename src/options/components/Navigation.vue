@@ -113,12 +113,12 @@ export default Vue.extend({
           title: "鸣谢",
           items: [
             {
-              title: "特别感谢",
+              title: "项目参考与引用",
               icon: "developer_board",
               key: "/technology-stack"
             },
             {
-              title: "项目参与人员",
+              title: "特别感谢",
               icon: "people",
               key: "/dev-team"
             }

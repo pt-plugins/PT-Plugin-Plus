@@ -102,6 +102,11 @@ export default new Router({
       name: "set-site-search-entry",
       component: () => import("./views/settings/SiteSearchEntry/Index.vue"),
       props: true
+    },
+    {
+      path: "/dev-team",
+      name: "dev-team",
+      component: () => import("./views/Teams.vue")
     }
   ]
 });
