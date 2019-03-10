@@ -2,7 +2,7 @@
   <div>
     <v-alert :value="true" type="info">{{ words.title }}</v-alert>
     <v-card>
-      <div v-for="(item, index) in items.sort()" :key="index">
+      <div v-for="(item, index) in peoples" :key="index">
         <v-avatar>
           <v-icon>account_circle</v-icon>
         </v-avatar>
@@ -50,6 +50,11 @@ export default Vue.extend({
         "frank777777777 (杀死那个异教徒)"
       ]
     };
+  },
+  computed: {
+    peoples(): string[] {
+      return this.items.sort();
+    }
   }
 });
 </script>
