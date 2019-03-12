@@ -43,8 +43,6 @@
         query = $("a[href*='passkey']");
         if (query.length > 0) {
           url = query.attr("href");
-        } else {
-          url = $(":contains('passkey'):last").text();
         }
       }
 
@@ -61,15 +59,19 @@
         }
       }
 
-      if (url && url.substr(0, 2) === '//') { // 首先尝试适配HUDBT、WHU这样以相对链接开头
+      if (!url) {
+        return "";
+      }
+
+      if (url.substr(0, 2) === '//') { // 首先尝试适配HUDBT、WHU这样以相对链接开头
         url = `${location.protocol}${url}`;
-      } else if (url && url.substr(0, 1) === "/") {
+      } else if (url.substr(0, 1) === "/") {
         url = `${location.origin}${url}`;
-      } else if (url && url.substr(0, 4) !== "http") {
+      } else if (url.substr(0, 4) !== "http") {
         url = `${location.origin}/${url}`;
       }
 
-      if (url && url.indexOf("https=1") === -1) {
+      if (url.indexOf("https=1") === -1) {
         url += "&https=1"
       }
 
