@@ -68,7 +68,8 @@ export default class PTPlugin {
           EAction.readConfig,
           EAction.saveConfig,
           EAction.saveUIOptions,
-          EAction.openOptions
+          EAction.openOptions,
+          EAction.getClearedOptions
         ].includes(request.action)
       ) {
         this.logger.add({
@@ -81,11 +82,6 @@ export default class PTPlugin {
         switch (request.action) {
           // 读取参数
           case EAction.readConfig:
-            // this.config.read().then((result: any) => {
-            //   console.log("PTPlugin.requestMessage.done:", result);
-            //   this.options = result;
-            //   resolve(result);
-            // });
             if (this.localMode) {
               this.readConfig().then(() => {
                 resolve(this.options);
@@ -105,6 +101,18 @@ export default class PTPlugin {
             }
             this.contentMenus.init(this.options);
             this.resetAutoRefreshUserDataTimer();
+            resolve(this.options);
+            break;
+
+          // 获取已清理的配置
+          case EAction.getClearedOptions:
+            resolve(this.config.cleaningOptions(this.options));
+            break;
+
+          // 重置运行时配置
+          case EAction.resetRunTimeOptions:
+            this.config.resetRunTimeOptions(request.data);
+            this.options = this.config.options;
             resolve(this.options);
             break;
 

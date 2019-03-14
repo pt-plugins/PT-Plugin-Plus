@@ -120,7 +120,11 @@ export enum EAction {
   // 取消获取用户信息请求
   abortGetUserInfo = "abortGetUserInfo",
   // 刷新用户数据
-  refreshUserData = "refreshUserData"
+  refreshUserData = "refreshUserData",
+  // 获取已清理过的配置
+  getClearedOptions = "getClearedOptions",
+  // 重置运行时配置
+  resetRunTimeOptions = "resetRunTimeOptions"
 }
 
 /**

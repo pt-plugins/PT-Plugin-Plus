@@ -267,6 +267,21 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    /**
+     * 重置运行时配置
+     * @param param0
+     */
+    resetRunTimeOptions({ commit, state }, options: Options) {
+      extension
+        .sendRequest(EAction.resetRunTimeOptions, null, options)
+        .then(result => {
+          commit("updateOptions", result);
+        })
+        .catch(error => {
+          console.log("store.resetRunTimeOptions.error", error);
+        });
+    },
+
     readConfig({ commit, state }) {
       extension.sendRequest(EAction.writeLog, null, {
         module: EModule.options,

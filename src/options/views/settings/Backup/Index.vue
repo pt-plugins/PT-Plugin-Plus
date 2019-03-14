@@ -106,14 +106,20 @@ export default Vue.extend({
   methods: {
     backup() {
       this.clearMessage();
-      const Blob = window.Blob;
-      const options = Object.assign({}, this.$store.state.options);
-      delete options.system;
-      const data = new Blob([JSON.stringify(options)], {
-        type: "text/plain"
-      });
-      FileSaver.saveAs(data, this.fileName);
-      this.successMsg = this.words.backupDone;
+      extension
+        .sendRequest(EAction.getClearedOptions)
+        .then((options: any) => {
+          const Blob = window.Blob;
+          delete options.system;
+          const data = new Blob([JSON.stringify(options)], {
+            type: "text/plain"
+          });
+          FileSaver.saveAs(data, this.fileName);
+          this.successMsg = this.words.backupDone;
+        })
+        .catch(() => {
+          this.errorMsg = this.words.backupError;
+        });
     },
     restore() {
       this.fileInput.click();
@@ -130,7 +136,7 @@ export default Vue.extend({
           if (confirm(this.words.restoreConfirm)) {
             try {
               let result = JSON.parse(e.target.result);
-              this.$store.commit("resetConfig", result);
+              this.$store.dispatch("resetRunTimeOptions", result);
               // let system = this.$store.state.options.system;
               console.log(result);
               this.successMsg = this.words.restoreSuccess;

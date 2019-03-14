@@ -84,8 +84,10 @@ class Config {
    * 清理参数配置，一些参数只需要运行时可用即可
    * @param options
    */
-  private cleaningOptions(options: Options): Options {
-    let _options = Object.assign({}, options);
+  public cleaningOptions(options: Options): Options {
+    // 因 Object.assign 无法进行深拷贝，会造成对原有参数的破坏
+    // 故还是采用 JSON 的方式
+    let _options = JSON.parse(JSON.stringify(options));
     if (_options.sites) {
       _options.sites.forEach((item: Site) => {
         let systemSite: Site | undefined = this.sites.find((site: Site) => {
@@ -93,13 +95,24 @@ class Config {
         });
 
         if (systemSite) {
-          // 不保存分类信息
-          if (item.categories) {
-            delete item.categories;
-          }
+          // 移除运行时参数
+          [
+            "categories",
+            "selectors",
+            "patterns",
+            "torrentTagSelectors",
+            "icon"
+          ].forEach((key: string) => {
+            let _item = item as any;
+            if (_item[key]) {
+              delete _item[key];
+            }
+          });
+
           if (item.searchEntry) {
             item.searchEntry.forEach((entry: SearchEntry, index: number) => {
               if (!entry.isCustom) {
+                // 仅保存名称和是否启用
                 (item.searchEntry as any)[index] = {
                   name: entry.name,
                   enabled: entry.enabled
@@ -108,6 +121,24 @@ class Config {
             });
           }
         }
+      });
+    }
+
+    // 移除客户端配置中运行时内容
+    if (_options.clients) {
+      _options.clients.forEach((item: any) => {
+        [
+          "pathDescription",
+          "description",
+          "warning",
+          "scripts",
+          "ver",
+          "icon"
+        ].forEach((key: string) => {
+          if (item[key]) {
+            delete item[key];
+          }
+        });
       });
     }
 
@@ -145,99 +176,109 @@ class Config {
       return;
     }
     this.localStorage.get(this.name, (result: any) => {
-      if (result) {
-        delete result.system;
-        let defaultOptions = Object.assign({}, this.options);
-        this.options = Object.assign(defaultOptions, result);
-      }
-      // 覆盖站点架构
-      this.options.system = {
-        schemas: this.schemas,
-        sites: this.sites,
-        clients: this.clients
-      };
-
-      // 升级不存在的配置项
-      this.options.sites &&
-        this.options.sites.length &&
-        this.sites.forEach((systemSite: Site) => {
-          let index = this.options.sites.findIndex((site: Site) => {
-            return site.host === systemSite.host;
-          });
-
-          if (index > -1) {
-            let _site: Site = Object.assign(
-              Object.assign({}, systemSite),
-              this.options.sites[index]
-            );
-
-            if (systemSite.categories) {
-              _site.categories = systemSite.categories;
-            }
-
-            // 清理已移除的标签选择器
-            if (!systemSite.torrentTagSelectors && _site.torrentTagSelectors) {
-              delete _site.torrentTagSelectors;
-            } else {
-              _site.torrentTagSelectors = systemSite.torrentTagSelectors;
-            }
-
-            if (!systemSite.patterns && _site.patterns) {
-              delete _site.patterns;
-            } else {
-              _site.patterns = systemSite.patterns;
-            }
-
-            // 合并系统定义的搜索入口
-            if (_site.searchEntry && systemSite.searchEntry) {
-              systemSite.searchEntry.forEach((sysEntry: SearchEntry) => {
-                if (_site.searchEntry) {
-                  let _index: number | undefined =
-                    _site.searchEntry &&
-                    _site.searchEntry.findIndex((entry: SearchEntry) => {
-                      return entry.name == sysEntry.name && !entry.isCustom;
-                    });
-
-                  if (_index != undefined && _index > -1) {
-                    _site.searchEntry[_index] = Object.assign(
-                      Object.assign({}, sysEntry),
-                      {
-                        enabled: _site.searchEntry[_index].enabled
-                      }
-                    );
-                  } else {
-                    _site.searchEntry.push(Object.assign({}, sysEntry));
-                  }
-                }
-              });
-            } else if (systemSite.searchEntry) {
-              _site.searchEntry = systemSite.searchEntry;
-            }
-
-            this.options.sites[index] = _site;
-          }
-        });
-
-      // 升级不存在的配置项
-      this.options.clients &&
-        this.options.clients.length &&
-        this.options.clients.forEach((item, index) => {
-          let client = this.clients.find((c: DownloadClient) => {
-            return c.type === item.type;
-          });
-
-          if (client) {
-            this.options.clients[index] = Object.assign(
-              Object.assign({}, client),
-              this.options.clients[index]
-            );
-          }
-        });
-
-      console.log(this.options);
-
+      this.resetRunTimeOptions(result);
       success && success(this.options);
     });
+  }
+
+  /**
+   * 重置运行时配置
+   * @param options
+   */
+  public resetRunTimeOptions(options?: Options) {
+    if (options) {
+      if (options.system) {
+        delete options.system;
+      }
+      let defaultOptions = Object.assign({}, this.options);
+      this.options = Object.assign(defaultOptions, options);
+    }
+
+    // 覆盖站点架构
+    this.options.system = {
+      schemas: this.schemas,
+      sites: this.sites,
+      clients: this.clients
+    };
+
+    // 升级不存在的配置项
+    this.options.sites &&
+      this.options.sites.length &&
+      this.sites.forEach((systemSite: Site) => {
+        let index = this.options.sites.findIndex((site: Site) => {
+          return site.host === systemSite.host;
+        });
+
+        if (index > -1) {
+          let _site: Site = Object.assign(
+            Object.assign({}, systemSite),
+            this.options.sites[index]
+          );
+
+          if (systemSite.categories) {
+            _site.categories = systemSite.categories;
+          }
+
+          // 清理已移除的标签选择器
+          if (!systemSite.torrentTagSelectors && _site.torrentTagSelectors) {
+            delete _site.torrentTagSelectors;
+          } else {
+            _site.torrentTagSelectors = systemSite.torrentTagSelectors;
+          }
+
+          if (!systemSite.patterns && _site.patterns) {
+            delete _site.patterns;
+          } else {
+            _site.patterns = systemSite.patterns;
+          }
+
+          // 合并系统定义的搜索入口
+          if (_site.searchEntry && systemSite.searchEntry) {
+            systemSite.searchEntry.forEach((sysEntry: SearchEntry) => {
+              if (_site.searchEntry) {
+                let _index: number | undefined =
+                  _site.searchEntry &&
+                  _site.searchEntry.findIndex((entry: SearchEntry) => {
+                    return entry.name == sysEntry.name && !entry.isCustom;
+                  });
+
+                if (_index != undefined && _index > -1) {
+                  _site.searchEntry[_index] = Object.assign(
+                    Object.assign({}, sysEntry),
+                    {
+                      enabled: _site.searchEntry[_index].enabled
+                    }
+                  );
+                } else {
+                  _site.searchEntry.push(Object.assign({}, sysEntry));
+                }
+              }
+            });
+          } else if (systemSite.searchEntry) {
+            _site.searchEntry = systemSite.searchEntry;
+          }
+
+          this.options.sites[index] = _site;
+        }
+      });
+
+    // 升级不存在的配置项
+    this.options.clients &&
+      this.options.clients.length &&
+      this.options.clients.forEach((item, index) => {
+        let client = this.clients.find((c: DownloadClient) => {
+          return c.type === item.type;
+        });
+
+        if (client) {
+          this.options.clients[index] = Object.assign(
+            Object.assign({}, client),
+            this.options.clients[index]
+          );
+        }
+      });
+
+    console.log(this.options);
   }
 
   public readUIOptions(): Promise<any> {
@@ -380,7 +421,7 @@ class Config {
   public backupToGoogle(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       if (chrome.storage && chrome.storage.sync) {
-        let options = Object.assign({}, this.options);
+        let options = this.cleaningOptions(this.options);
         if (options.system) {
           delete options.system;
         }
@@ -448,7 +489,7 @@ class Config {
                   .get(this.name + ".sites")
                   .then((result: any) => {
                     options.sites = result;
-                    this.options = options;
+                    this.resetRunTimeOptions(options);
                     this.save();
                     setTimeout(() => {
                       resolve(this.options);
