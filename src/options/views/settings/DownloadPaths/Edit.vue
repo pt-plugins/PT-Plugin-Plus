@@ -13,13 +13,9 @@
             :hint="words.pathTip"
             :rules="rules.require"
           ></v-textarea>
-          <v-alert
-            :value="true"
-            color="info"
-            icon="info"
-            outline
-            v-if="client.pathDescription"
-          >{{ client.pathDescription}}</v-alert>
+          <v-alert :value="true" color="info" icon="info" outline v-if="client.pathDescription">
+            <dir v-html="client.pathDescription"></dir>
+          </v-alert>
         </v-form>
       </v-card-text>
 
