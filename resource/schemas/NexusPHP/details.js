@@ -47,7 +47,7 @@
       }
 
       if (!url) {
-        url = $("a[href*='download'][href*='?id']:first").attr("href");
+        url = $("a[href*='download'][href*='?id']:first").attr("href") || $("a[href*='download.php?']:first").attr("href");
       }
 
       // 如果还是没有获取到下载链接地址，则尝试 passkey 来生成下载链接
