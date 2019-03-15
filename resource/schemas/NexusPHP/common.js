@@ -454,7 +454,7 @@ String.prototype.getQueryString = function (name, split) {
                   url: options.url,
                   title: options.title,
                   savePath: item.path,
-                  autoStart: item.autoStart
+                  autoStart: item.client.autoStart
                 }).then((result) => {
                   success();
                 }).catch((result) => {
