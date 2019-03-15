@@ -135,7 +135,12 @@
           formData.append("method", "create");
 
           if (options.savePath) {
-            formData.append("destination", options.savePath)
+            let savePath = options.savePath + "";
+            // 去除路径最后的 / ，以确保可以正常添加目录信息
+            if (savePath.substr(-1) == "/") {
+              savePath = savePath.substr(0, savePath.length - 1);
+            }
+            formData.append("destination", savePath)
           }
 
           formData.append("file", result, "file.torrent")
