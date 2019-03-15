@@ -13,6 +13,7 @@
       class="hidden-sm-and-down mt-2"
       v-model="searchKey"
       @change="searchTorrent"
+      clearable
     >
       <v-menu slot="append" offset-y class="search-solution">
         <v-btn slot="activator" flat small color="grey lighten-2">{{selectedSearchSolutionName}}</v-btn>
