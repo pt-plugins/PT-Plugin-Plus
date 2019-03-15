@@ -18,7 +18,7 @@
      */
     getSessionId() {
       return new Promise((resolve, reject) => {
-        let url = `${this.options.address}/webapi/auth.cgi?api=SYNO.API.Auth&version=${this.version}&method=login&account=${this.options.loginName}&passwd=${this.options.loginPwd}&session=DownloadStation&format=sid`;
+        let url = `${this.options.address}/webapi/auth.cgi?api=SYNO.API.Auth&version=${this.version}&method=login&account=${encodeURIComponent(this.options.loginName)}&passwd=${encodeURIComponent(this.options.loginPwd)}&session=DownloadStation&format=sid`;
         $.ajax({
           url,
           timeout: PTBackgroundService.options.connectClientTimeout,
