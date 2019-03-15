@@ -252,36 +252,40 @@ if (!"".getQueryString) {
      * @param {*} row 
      */
     getSubTitle(title, row) {
-      let subTitle = title.parent().html().split("<br>");
-      if (subTitle && subTitle.length > 1) {
-        subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
-      } else {
-        // 特殊情况处理
-        switch (options.site.host) {
-          case "hdchina.org":
-            if (title.parent().next().is("h4")) {
-              subTitle = title.parent().next().text();
+      try {
+        let subTitle = title.parent().html().split("<br>");
+        if (subTitle && subTitle.length > 1) {
+          subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
+        } else {
+          // 特殊情况处理
+          switch (options.site.host) {
+            case "hdchina.org":
+              if (title.parent().next().is("h4")) {
+                subTitle = title.parent().next().text();
+                break;
+              }
+
+            case "tp.m-team.cc":
+              title = row.find("a[href*='hit'][title]").last();
+              subTitle = title.parent().html().split("<br>");
+              subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
               break;
-            }
 
-          case "tp.m-team.cc":
-            title = row.find("a[href*='hit'][title]").last();
-            subTitle = title.parent().html().split("<br>");
-            subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
-            break;
+            case "u2.dmhy.org":
+              subTitle = $('.torrentname > tbody > tr:eq(1)', row).find('.tooltip').text();
+              break;
 
-          case "u2.dmhy.org":
-            subTitle = $('.torrentname > tbody > tr:eq(1)', row).find('.tooltip').text();
-            break;
+            default:
+              subTitle = "";
+              break;
 
-          default:
-            subTitle = "";
-            break;
-
+          }
         }
-      }
 
-      return subTitle || "";
+        return subTitle || "";
+      } catch (error) {
+        return "";
+      }
     }
 
     /**
@@ -296,9 +300,11 @@ if (!"".getQueryString) {
       let link = cell.find("a:first");
       let img = link.find("img:first");
 
-      result.link = link.attr("href");
-      if (result.link.substr(0, 4) !== "http") {
-        result.link = options.site.url + result.link;
+      if (link.length) {
+        result.link = link.attr("href");
+        if (result.link.substr(0, 4) !== "http") {
+          result.link = options.site.url + result.link;
+        }
       }
 
       if (img.length) {
