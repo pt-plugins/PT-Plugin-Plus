@@ -25,6 +25,8 @@ export type SearchConfig = {
 export class Searcher {
   // 搜索入口定义缓存
   private searchConfigs: any = {};
+  // 解析文件内容缓存
+  private parseScriptCache: any = {};
   public options: Options = {
     sites: [],
     clients: []
@@ -49,9 +51,10 @@ export class Searcher {
       let siteServce: SiteService = new SiteService(site, this.options);
       let searchConfig: SearchConfig = {};
       let schema = this.getSiteSchema(site);
+      let host = site.host as string;
 
       if (siteServce.options.searchEntry) {
-        searchConfig.rootPath = `sites/${site.host}/`;
+        searchConfig.rootPath = `sites/${host}/`;
         searchConfig.entry = siteServce.options.searchEntry;
       } else if (schema && schema.searchEntry) {
         searchConfig.rootPath = `schemas/${schema.name}/`;
@@ -73,7 +76,7 @@ export class Searcher {
         return;
       }
 
-      this.searchConfigs[site.host as string] = searchConfig;
+      this.searchConfigs[host] = searchConfig;
 
       let results: any[] = [];
       let entryCount = 0;
@@ -111,16 +114,22 @@ export class Searcher {
 
           entryCount++;
 
+          let scriptPath = entry.parseScriptFile;
+          // 判断是否为相对路径
+          if (scriptPath.substr(0, 1) !== "/") {
+            scriptPath = `${searchConfig.rootPath}${scriptPath}`;
+          }
+
           if (!entry.parseScript) {
-            let scriptPath = entry.parseScriptFile;
-            // 判断是否为相对路径
-            if (scriptPath.substr(0, 1) !== "/") {
-              scriptPath = `${searchConfig.rootPath}${scriptPath}`;
-            }
+            entry.parseScript = this.parseScriptCache[scriptPath];
+          }
+
+          if (!entry.parseScript) {
             console.log("searchTorrent: getScriptContent", scriptPath);
             APP.getScriptContent(scriptPath)
               .done((script: string) => {
                 console.log("searchTorrent: getScriptContent done", scriptPath);
+                this.parseScriptCache[scriptPath] = script;
                 entry.parseScript = script;
                 this.getSearchResult(
                   url,
