@@ -1,6 +1,6 @@
 <p align="center">
 <img src="https://github.com/ronggang/PT-Plugin-Plus/raw/master/public/assets/icon-128.png"><br/>
-<a href="https://github.com/ronggang/PT-Plugin-Plus/releases/latest" title="GitHub Releases"><img src="https://img.shields.io/github/release/ronggang/PT-Plugin-Plus.svg?label=Latest"></a>
+<a href="https://github.com/ronggang/PT-Plugin-Plus/releases/latest" title="GitHub Releases"><img src="https://img.shields.io/github/release/ronggang/PT-Plugin-Plus.svg?label=Latest Release"></a>
 <a href="https://github.com/ronggang/PT-Plugin-Plus/releases" title="GitHub All Releases"><img alt="" src="https://img.shields.io/github/downloads/ronggang/PT-Plugin-Plus/total.svg?label=Downloads"></a>
 <img src="https://img.shields.io/badge/Used-TypeScript Vue-blue.svg">
 <a href="https://chrome.google.com/webstore/detail/abkdiiddckphbigmakaojlnmakpllenb" title="已在 Chrome Web Store 市场上发布的版本"><img src="https://img.shields.io/chrome-web-store/v/abkdiiddckphbigmakaojlnmakpllenb.svg?label=Chrome"></a>
