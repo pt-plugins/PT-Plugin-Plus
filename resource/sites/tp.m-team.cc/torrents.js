@@ -1,6 +1,6 @@
 (function ($, window) {
   // 添加封面模式
-  PTSevrice.addButton({
+  PTService.addButton({
     title: "以封面的方式进行查看",
     icon: "photo",
     label: "封面模式",
@@ -25,11 +25,11 @@
       new album({
         images: images,
         onClose: () => {
-          PTSevrice.buttonBar.show();
+          PTService.buttonBar.show();
         }
       });
       success()
-      PTSevrice.buttonBar.hide();
+      PTService.buttonBar.hide();
     }
   })
 })(jQuery, window)

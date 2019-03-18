@@ -18,7 +18,7 @@
             this.options = options;
 
             // 重写用户给的地址
-            let url = PTSevriceFilters.parseURL(this.options.address);
+            let url = PTServiceFilters.parseURL(this.options.address);
             let address = [url.protocol, "://", url.host];
             if (url.port) {
                 address.push(`:${url.port}`)

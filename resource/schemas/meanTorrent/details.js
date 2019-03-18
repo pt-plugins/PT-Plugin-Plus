@@ -17,12 +17,15 @@
      * 获取下载链接
      */
     getDownloadURL() {
-      let query = $("a.btn[href*='/download/torrent/']");
+      let query = $("button[mt-copy-to-clipboard]");
       let url = "";
+
       if (query.length > 0) {
-        url = query.attr("href");
-        if (PTService.site.passkey) {
-          url = url.replace('/download/torrent/', `/rss/download/${PTService.site.passkey}/`);
+        url = query.attr("mt-copy-to-clipboard");
+      } else {
+        query = location.pathname.match(/torrents\/([a-z0-9]{24})/);
+        if (query && query.length > 1) {
+          url = location.href.replace("torrents", "api/torrents/download");
         }
       }
 

@@ -37,7 +37,7 @@ if (!"".getQueryString) {
         return [];
       }
       let site = options.site;
-      let site_url_help = PTSevriceFilters.parseURL(site.url);
+      let site_url_help = PTServiceFilters.parseURL(site.url);
       let selector = options.resultSelector || "table.torrents:last";
       selector = selector.replace("> tbody > tr", "");
       let table = options.page.find(selector);

@@ -4,7 +4,7 @@
     init() {
       this.initButtons();
       // 设置当前页面
-      PTSevrice.pageApp = this;
+      PTService.pageApp = this;
     }
     /**
      * 初始化按钮列表
@@ -15,7 +15,7 @@
       let sayThanksButton = $("input#saythanks:not(:disabled)");
       if (sayThanksButton.length) {
         // 说谢谢
-        PTSevrice.addButton({
+        PTService.addButton({
           title: "对当前种子说谢谢",
           icon: "thumb_up",
           label: "感谢发布者",
@@ -24,7 +24,7 @@
             sayThanksButton.click();
             success();
             setTimeout(() => {
-              PTSevrice.removeButton("sayThanks")
+              PTService.removeButton("sayThanks")
             }, 1000)
           }
         });
@@ -51,11 +51,11 @@
       }
 
       // 如果还是没有获取到下载链接地址，则尝试 passkey 来生成下载链接
-      if (!url && PTSevrice.site.passkey) {
+      if (!url && PTService.site.passkey) {
         let id = location.href.getQueryString("id");
         if (id) {
           // 如果站点没有配置禁用https，则默认添加https链接
-          return location.origin + "/download.php?id=" + id + "&passkey=" + PTSevrice.site.passkey + (PTSevrice.site.disableHttps ? "" : "&https=1");
+          return location.origin + "/download.php?id=" + id + "&passkey=" + PTService.site.passkey + (PTService.site.disableHttps ? "" : "&https=1");
         }
       }
 
