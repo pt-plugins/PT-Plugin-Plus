@@ -6,7 +6,8 @@ import {
   DataResult,
   EDataResultType,
   SearchEntry,
-  EModule
+  EModule,
+  ERequestResultType
 } from "@/interface/common";
 import { APP } from "@/service/api";
 import { SiteService } from "./site";
@@ -239,9 +240,27 @@ export class Searcher {
             (result && (typeof result == "string" && result.length > 100)) ||
             typeof result == "object"
           ) {
-            let doc = new DOMParser().parseFromString(result, "text/html");
-            // 构造 jQuery 对象
-            let page = $(doc).find("body");
+            let page: any;
+            let doc: any;
+            try {
+              switch (entry.resultType) {
+                case ERequestResultType.JSON:
+                  page = JSON.parse(result);
+                  break;
+
+                default:
+                  doc = new DOMParser().parseFromString(result, "text/html");
+                  // 构造 jQuery 对象
+                  page = $(doc).find("body");
+                  break;
+              }
+            } catch (error) {
+              reject({
+                success: false,
+                msg: `[${site.name}]数据解析失败！`
+              });
+              return;
+            }
 
             const options = {
               results: [],
@@ -280,7 +299,10 @@ export class Searcher {
               });
             }
           } else {
-            reject();
+            reject({
+              success: false,
+              msg: `[${site.name}]没有返回预期的数据。`
+            });
           }
         })
         .fail((result: any) => {
