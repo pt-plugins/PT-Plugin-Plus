@@ -19,10 +19,18 @@
         </v-btn>
         <v-spacer></v-spacer>
 
-        <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+        <v-text-field
+          class="search"
+          append-icon="search"
+          label="Search"
+          single-line
+          hide-details
+          v-model="filterKey"
+        ></v-text-field>
       </v-card-title>
 
       <v-data-table
+        :search="filterKey"
         v-model="selected"
         :headers="headers"
         :items="items"
@@ -123,7 +131,8 @@ export default Vue.extend({
       errorMsg: "",
       haveError: false,
       haveSuccess: false,
-      successMsg: ""
+      successMsg: "",
+      filterKey: ""
     };
   },
 
