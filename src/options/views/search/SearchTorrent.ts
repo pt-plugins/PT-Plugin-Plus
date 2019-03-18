@@ -70,6 +70,7 @@ export default Vue.extend({
       getLinks: [] as any,
       selected: [],
       pagination: {
+        page: 1,
         rowsPerPage: 100
       },
       loading: false,
@@ -77,7 +78,7 @@ export default Vue.extend({
         { text: "站点", align: "center", value: "site.host", width: "100px" },
         { text: "标题", align: "left", value: "title" },
         {
-          text: "分类",
+          text: "分类/入口",
           align: "center",
           value: "category.name",
           width: "150px"
@@ -281,7 +282,7 @@ export default Vue.extend({
           return item.host === this.host;
         });
         if (site) {
-          sites.push(site);
+          sites.push(this.clone(site));
         }
       } else if (
         // 指定了搜索方案
@@ -291,7 +292,7 @@ export default Vue.extend({
       ) {
         let _sites: Site[] = [];
         this.options.sites.forEach((item: Site) => {
-          _sites.push(Object.assign({}, item));
+          _sites.push(this.clone(item));
         });
 
         let searchSolution:
@@ -344,9 +345,9 @@ export default Vue.extend({
               siteSchema.searchEntry &&
               siteSchema.searchEntry.length > 0
             ) {
-              sites.push(item);
+              sites.push(this.clone(item));
             } else if (item.searchEntry && item.searchEntry.length > 0) {
-              sites.push(item);
+              sites.push(this.clone(item));
             } else {
               skipSites.push(item.name);
             }
@@ -374,6 +375,7 @@ export default Vue.extend({
         }
       });
 
+      this.pagination.page = 1;
       this.doSearchTorrentWithQueue(sites);
     },
 
@@ -428,7 +430,7 @@ export default Vue.extend({
             return;
           } else if (result && result.msg) {
             this.writeLog({
-              event: `SearchTorrent.Search.Error`,
+              event: `SearchTorrent.Search.Error1`,
               msg: result.msg,
               data: {
                 host: site.host,
@@ -448,7 +450,7 @@ export default Vue.extend({
               }
 
               this.writeLog({
-                event: `SearchTorrent.Search.Error`,
+                event: `SearchTorrent.Search.Error2`,
                 msg: this.errorMsg,
                 data: {
                   host: site.host,
@@ -466,11 +468,12 @@ export default Vue.extend({
           });
         })
         .catch((result: DataResult) => {
+          console.log(result);
           if (result.msg) {
             this.errorMsg = result.msg;
           }
           this.writeLog({
-            event: `SearchTorrent.Search.Error`,
+            event: `SearchTorrent.Search.Error3`,
             msg: result.msg,
             data: result
           });
@@ -580,15 +583,15 @@ export default Vue.extend({
           item.size = this.fileSizetoLength(item.size as string);
         }
 
-        if (item.seeders) {
+        if (item.seeders && typeof item.seeders == "string") {
           item.seeders = parseInt((item.seeders as string).replace(",", ""));
         }
 
-        if (item.leechers) {
+        if (item.leechers && typeof item.leechers == "string") {
           item.leechers = parseInt((item.leechers as string).replace(",", ""));
         }
 
-        if (item.completed) {
+        if (item.completed && typeof item.completed == "string") {
           item.completed = parseInt(
             (item.completed as string).replace(",", "")
           );
@@ -628,7 +631,7 @@ export default Vue.extend({
         };
       }
 
-      if (item.tags == undefined || !item.tags.length) {
+      if (item.tags == undefined || item.tags == null || !item.tags.length) {
         this.searchResult.tags[noTag].items.push(item);
         return;
       }
@@ -655,8 +658,18 @@ export default Vue.extend({
         return;
       }
 
-      let name = item.category.name as string;
+      let name = "";
+      if (typeof item.category == "string") {
+        name = item.category;
+        item.category = {
+          name: name
+        };
+      } else {
+        name = item.category.name as string;
+      }
+
       if (!name) return;
+
       if (!this.searchResult.categories[name]) {
         this.searchResult.categories[name] = {
           name,
@@ -668,7 +681,10 @@ export default Vue.extend({
     /**
      * @return {number}
      */
-    fileSizetoLength(size: string): number {
+    fileSizetoLength(size: string | number): number {
+      if (typeof size == "number") {
+        return size;
+      }
       let _size_raw_match = size.match(
         /^(\d*\.?\d+)(.*[^TGMK])?([TGMK](B|iB))$/i
       );
@@ -814,6 +830,7 @@ export default Vue.extend({
      */
     resetDatas(datas: any) {
       if (datas.length) {
+        this.pagination.page = 1;
         this.datas = datas;
         this.selected = [];
       }
@@ -1110,6 +1127,14 @@ export default Vue.extend({
       });
 
       this.doSearchTorrentWithQueue(sites);
+    },
+
+    /**
+     * 用JSON对象模拟对象克隆
+     * @param source
+     */
+    clone(source: any) {
+      return JSON.parse(JSON.stringify(source));
     }
   }
 });
