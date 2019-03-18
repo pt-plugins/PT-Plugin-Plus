@@ -12,9 +12,9 @@ String.prototype.getQueryString = function (name, split) {
   class Common {
     constructor() {
       this.siteContentMenus = {};
-      this.defaultPath = PTSevrice.getSiteDefaultPath();
-      this.downloadClientType = PTSevrice.downloadClientType;
-      this.defaultClientOptions = PTSevrice.getClientOptions();
+      this.defaultPath = PTService.getSiteDefaultPath();
+      this.downloadClientType = PTService.downloadClientType;
+      this.defaultClientOptions = PTService.getClientOptions();
     }
 
     /**
@@ -24,20 +24,20 @@ String.prototype.getQueryString = function (name, split) {
       if (!this.defaultPath) {
         return;
       }
-      PTSevrice.call(
-        PTSevrice.action.getFreeSpace, {
+      PTService.call(
+        PTService.action.getFreeSpace, {
           path: this.defaultPath,
-          clientId: PTSevrice.site.defaultClientId
+          clientId: PTService.site.defaultClientId
         }
       ).then((result) => {
         console.log("命令执行完成", result);
         if (result && result.arguments) {
-          // console.log(PTSevrice.filters.formatSize(result.arguments["size-bytes"]));
+          // console.log(PTService.filters.formatSize(result.arguments["size-bytes"]));
 
-          PTSevrice.addButton({
+          PTService.addButton({
             title: "默认服务器剩余空间\n" + this.defaultPath,
             icon: "filter_drama",
-            label: PTSevrice.filters.formatSize(result.arguments["size-bytes"])
+            label: PTService.filters.formatSize(result.arguments["size-bytes"])
           })
 
         }
@@ -78,14 +78,14 @@ String.prototype.getQueryString = function (name, split) {
 
         let notice = null;
         if (showNotice) {
-          notice = PTSevrice.showNotice({
+          notice = PTService.showNotice({
             type: "info",
             msg: "正在发送下载链接到服务器，请稍候……"
           });
         }
 
-        PTSevrice.call(
-          PTSevrice.action.sendTorrentToDefaultClient, {
+        PTService.call(
+          PTService.action.sendTorrentToDefaultClient, {
             url: option.url,
             title: option.title,
             savePath: this.defaultPath,
@@ -95,12 +95,12 @@ String.prototype.getQueryString = function (name, split) {
           notice && notice.hide();
           console.log("命令执行完成", result);
           if (showNotice) {
-            PTSevrice.showNotice(result);
+            PTService.showNotice(result);
           }
           resolve(result);
         }).catch((result) => {
           notice && notice.hide();
-          PTSevrice.showNotice({
+          PTService.showNotice({
             msg: result && result.msg || result
           });
           reject(result);
@@ -128,24 +128,24 @@ String.prototype.getQueryString = function (name, split) {
 
         let notice = null;
         if (showNotice) {
-          notice = PTSevrice.showNotice({
+          notice = PTService.showNotice({
             type: "info",
             msg: "正在发送下载链接到服务器，请稍候……"
           });
         }
 
-        PTSevrice.call(
-          PTSevrice.action.sendTorrentToClient, options
+        PTService.call(
+          PTService.action.sendTorrentToClient, options
         ).then(result => {
           notice && notice.hide();
           console.log("命令执行完成", result);
           if (showNotice) {
-            PTSevrice.showNotice(result);
+            PTService.showNotice(result);
           }
           resolve(result);
         }).catch((result) => {
           notice && notice.hide();
-          PTSevrice.showNotice({
+          PTService.showNotice({
             msg: result && result.msg || result
           });
           reject(result);
@@ -166,14 +166,14 @@ String.prototype.getQueryString = function (name, split) {
         };
       }
 
-      let siteURL = PTSevrice.site.url;
+      let siteURL = PTService.site.url;
       if (siteURL.substr(-1) != "/") {
         siteURL += "/";
       }
 
-      if (PTSevrice.site.schema == "NexusPHP") {
+      if (PTService.site.schema == "NexusPHP") {
         if (!data.url.getQueryString) {
-          PTSevrice.showNotice({
+          PTService.showNotice({
             msg: "系统依赖函数（getQueryString）未正确加载，请尝试刷新页面或重新启用插件。"
           });
           callback();
@@ -184,7 +184,7 @@ String.prototype.getQueryString = function (name, split) {
           let id = data.url.getQueryString("id");
           if (id) {
             // 如果站点没有配置禁用https，则默认添加https链接
-            data.url = siteURL + "download.php?id=" + id + (PTSevrice.site.passkey ? "&passkey=" + PTSevrice.site.passkey : "") + (PTSevrice.site.disableHttps ? "" : "&https=1");
+            data.url = siteURL + "download.php?id=" + id + (PTService.site.passkey ? "&passkey=" + PTService.site.passkey : "") + (PTService.site.disableHttps ? "" : "&https=1");
           } else {
             data.url = "";
           }
@@ -192,7 +192,7 @@ String.prototype.getQueryString = function (name, split) {
       }
 
       if (!data.url) {
-        PTSevrice.showNotice({
+        PTService.showNotice({
           msg: "无效的链接"
         });
         callback();
@@ -217,7 +217,7 @@ String.prototype.getQueryString = function (name, split) {
       return new Promise((resolve, reject) => {
         switch (action) {
           // 从当前的DOM中获取下载链接地址
-          case PTSevrice.action.downloadFromDroper:
+          case PTService.action.downloadFromDroper:
             this.downloadFromDroper(data, () => {
               resolve()
             });
@@ -231,10 +231,10 @@ String.prototype.getQueryString = function (name, split) {
      */
     addSendTorrentToClientButton() {
       // 添加下载按钮
-      PTSevrice.addButton({
+      PTService.addButton({
         title: `将当前种子下载到指定的服务器`,
         icon: "save_alt",
-        type: PTSevrice.buttonType.popup,
+        type: PTService.buttonType.popup,
         label: "下载到…",
         /**
          * 单击事件
@@ -277,7 +277,7 @@ String.prototype.getQueryString = function (name, split) {
      */
     addSendTorrentToDefaultClientButton() {
       // 添加下载按钮
-      this.defaultClientOptions && PTSevrice.addButton({
+      this.defaultClientOptions && PTService.addButton({
         title: `将当前种子下载到[${this.defaultClientOptions.name}]` + (this.defaultPath ? "\n" + this.defaultPath : ""),
         icon: "get_app",
         label: "一键下载",
@@ -325,7 +325,7 @@ String.prototype.getQueryString = function (name, split) {
      */
     addCopyTextToClipboardButton() {
       // 复制下载链接
-      PTSevrice.addButton({
+      PTService.addButton({
         title: "复制下载链接到剪切板",
         icon: "file_copy",
         label: "复制链接",
@@ -336,7 +336,7 @@ String.prototype.getQueryString = function (name, split) {
             return;
           }
 
-          console.log(PTSevrice.site, this.defaultPath);
+          console.log(PTService.site, this.defaultPath);
           let url = this.getDownloadURL();
 
           if (!url) {
@@ -344,8 +344,8 @@ String.prototype.getQueryString = function (name, split) {
             return;
           }
 
-          PTSevrice.call(
-            PTSevrice.action.copyTextToClipboard,
+          PTService.call(
+            PTService.action.copyTextToClipboard,
             url
           ).then((result) => {
             console.log("命令执行完成", result);
@@ -362,7 +362,7 @@ String.prototype.getQueryString = function (name, split) {
      * @param url
      */
     getContentMenusForUrl(url) {
-      let urlParser = PTSevrice.filters.parseURL(url);
+      let urlParser = PTService.filters.parseURL(url);
       if (!urlParser.host) {
         return [];
       }
@@ -389,7 +389,7 @@ String.prototype.getQueryString = function (name, split) {
         });
       }
 
-      PTSevrice.options.clients.forEach((client) => {
+      PTService.options.clients.forEach((client) => {
         clients.push({
           client: client,
           path: "",
@@ -409,7 +409,7 @@ String.prototype.getQueryString = function (name, split) {
           }
 
           // 最后添加当前客户端适用于所有站点的目录
-          let publicPaths = client.paths[PTSevrice.allSiteKey];
+          let publicPaths = client.paths[PTService.allSiteKey];
           if (publicPaths) {
             if (results.length > 0) {
               results.push({});
@@ -475,6 +475,124 @@ String.prototype.getQueryString = function (name, split) {
         left: "-=20px",
         top: "+=10px"
       });
+    }
+
+    /**
+     * 验证指定元素的大小信息
+     * @param {*} doms 
+     */
+    checkSize(doms) {
+      if (!PTService.options.needConfirmWhenExceedSize) {
+        return true;
+      }
+      // 获取所有种子的大小信息
+      let size = this.getTotalSize(doms);
+
+      let exceedSize = 0;
+      switch (PTService.options.exceedSizeUnit) {
+        // 
+        case PTService.sizeUnit.MiB:
+          exceedSize = (PTService.options.exceedSize * 1048576);
+          break;
+
+        case PTService.sizeUnit.GiB:
+          exceedSize = (PTService.options.exceedSize * 1073741824);
+          break;
+
+        case "T":
+        case PTService.sizeUnit.TiB:
+          exceedSize = (PTService.options.exceedSize * 1099511627776);
+          break;
+      }
+
+      return (size >= exceedSize ? PTService.filters.formatSize(size) : true);
+    }
+
+    /**
+     * 
+     * @param {*} source 
+     */
+    getTotalSize(source) {
+      let total = 0;
+
+      $.each(source, (index, item) => {
+        total += this.getSize($(item).text())
+      });
+
+      return (total);
+    }
+
+    /**
+     * @return {number}
+     */
+    getSize(size) {
+      if (typeof size == "number") {
+        return size;
+      }
+      let _size_raw_match = size.match(
+        /^(\d*\.?\d+)(.*[^TGMK])?([TGMK](B|iB){0,1})$/i
+      );
+      if (_size_raw_match) {
+        let _size_num = parseFloat(_size_raw_match[1]);
+        let _size_type = _size_raw_match[3];
+        switch (true) {
+          case /Ti?B?/i.test(_size_type):
+            return _size_num * Math.pow(2, 40);
+          case /Gi?B?/i.test(_size_type):
+            return _size_num * Math.pow(2, 30);
+          case /Mi?B?/i.test(_size_type):
+            return _size_num * Math.pow(2, 20);
+          case /Ki?B?/i.test(_size_type):
+            return _size_num * Math.pow(2, 10);
+          default:
+            return _size_num;
+        }
+      }
+      return 0;
+    }
+
+    /**
+     * 种子大小超限时确认
+     */
+    confirmSize(doms) {
+      let size = this.checkSize(doms);
+
+      if (size !== true) {
+        if (!confirm("当前页面种子容量为 " + size + " 已超过 " + PTService.options.exceedSize + " " + PTService.options.exceedSizeUnit + "，是否发送？")) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    downloadURLs(urls, count, callback) {
+      let index = count - urls.length;
+      let url = urls.shift();
+      if (!url) {
+        $(this.statusBar).remove();
+        this.statusBar = null;
+        callback(count + "条链接已发送完成。");
+        return;
+      }
+      this.showStatusMessage("正在发送：" + (url.replace(PTService.site.passkey, "***")) + "(" + (count - index) + "/" + count + ")", 0);
+      this.sendTorrentToDefaultClient(url, false).then((result) => {
+        this.downloadURLs(urls, count, callback);
+      }).catch((result) => {
+        this.downloadURLs(urls, count, callback);
+      });
+    }
+
+    showStatusMessage(msg) {
+      if (!this.statusBar) {
+        this.statusBar = PTService.showNotice({
+          text: msg,
+          type: "info",
+          width: 600,
+          progressBar: false
+        });
+      } else {
+        this.statusBar.find(".noticejs-content").html(msg);
+      }
     }
   }
 

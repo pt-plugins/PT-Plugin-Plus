@@ -19,7 +19,7 @@
       }
 
       if (this.options.address.indexOf("rpc") == -1) {
-        let url = PTSevriceFilters.parseURL(this.options.address);
+        let url = PTServiceFilters.parseURL(this.options.address);
 
         let address = [
           url.protocol,

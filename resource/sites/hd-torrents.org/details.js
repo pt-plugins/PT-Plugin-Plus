@@ -4,7 +4,7 @@
     init() {
       this.initButtons();
       // 设置当前页面
-      PTSevrice.pageApp = this;
+      PTService.pageApp = this;
     }
     /**
      * 初始化按钮列表
@@ -22,7 +22,7 @@
       if (query.length > 0) {
         url = query.attr("href");
         if (url.substr(0, 4) != "http") {
-          url = PTSevrice.site.url + url;
+          url = PTService.site.url + url;
         }
       }
 

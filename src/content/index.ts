@@ -54,6 +54,8 @@ class PTPContent {
 
   // 用于接收页面程序
   public pageApp: any;
+  // 当前页面地址
+  public locationURL: string = location.href;
 
   constructor() {
     this.extension = new Extension();
@@ -72,6 +74,12 @@ class PTPContent {
 
   private init() {
     this.initPages();
+
+    // 由于无法直接绑定 window 相关事件，故使用定时器来监听地址变化
+    // 主要用于单页面站点，地址栏由 history.pushState 等方法来变更后可以重新创建插件图标
+    setInterval(() => {
+      this.checkLocationURL();
+    }, 1000);
   }
 
   /**
@@ -113,6 +121,9 @@ class PTPContent {
     } else {
       return;
     }
+
+    this.scripts = [];
+    this.styles = [];
 
     // 初始化插件按钮列表
     this.initButtonBar();
@@ -290,6 +301,10 @@ class PTPContent {
    * 初始化按钮栏
    */
   private initButtonBar() {
+    // 删除之前已创建的插件按钮栏
+    if ($(".pt-plugin-body").length) {
+      $(".pt-plugin-body").remove();
+    }
     this.buttonBar = $("<div class='pt-plugin-body'/>").appendTo(document.body);
     this.logo = $(
       "<div class='logo' title='PT助手 - 点击打开配置页'/>"
@@ -610,9 +625,20 @@ class PTPContent {
       }
     );
   }
+
+  /**
+   * 验证地址栏变化后重新创建插件图标
+   */
+  public checkLocationURL() {
+    if (location.href != this.locationURL) {
+      console.log(`地址变化：${this.locationURL} -> ${location.href}`);
+      this.locationURL = location.href;
+      this.initPages();
+    }
+  }
 }
 
 // 暴露到 window 对象
 Object.assign(window, {
-  PTSevrice: new PTPContent()
+  PTService: new PTPContent()
 });

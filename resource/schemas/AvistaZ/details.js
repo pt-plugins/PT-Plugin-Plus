@@ -4,7 +4,7 @@
     init() {
       this.initButtons();
       // 设置当前页面
-      PTSevrice.pageApp = this;
+      PTService.pageApp = this;
     }
     /**
      * 初始化按钮列表
@@ -21,8 +21,8 @@
       let url = "";
       if (query.length > 0) {
         url = query.attr("href");
-        if (PTSevrice.site.passkey) {
-          url = url.replace('/download/torrent/', `/rss/download/${PTSevrice.site.passkey}/`);
+        if (PTService.site.passkey) {
+          url = url.replace('/download/torrent/', `/rss/download/${PTService.site.passkey}/`);
         }
       }
 
