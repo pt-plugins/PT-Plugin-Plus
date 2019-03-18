@@ -1,11 +1,8 @@
 {
   "name": "keepfrds",
-  "url": "http://pt.keepfrds.com/",
-  "icon": "http://pt.keepfrds.com/favicon.ico",
-  "tags": [
-    "影视",
-    "综合"
-  ],
+  "url": "https://pt.keepfrds.com/",
+  "icon": "https://pt.keepfrds.com/favicon.ico",
+  "tags": ["影视", "综合"],
   "schema": "NexusPHP",
   "host": "pt.keepfrds.com",
   "searchEntry": [
@@ -18,7 +15,7 @@
       "enabled": true
     },
     {
-      "entry": "/torrents.php?cat401=1&search=$key$&notnewword=1",
+      "entry": "/torrents.php?cat=401&search=$key$&notnewword=1",
       "name": "Movies",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
@@ -26,7 +23,7 @@
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat404=1&search=$key$&notnewword=1",
+      "entry": "/torrents.php?cat=404&search=$key$&notnewword=1",
       "name": "Documentaries",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
@@ -34,7 +31,7 @@
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat405=1&search=$key$&notnewword=1",
+      "entry": "/torrents.php?cat=405&search=$key$&notnewword=1",
       "name": "Animations",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
@@ -42,7 +39,7 @@
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat402=1&search=$key$&notnewword=1",
+      "entry": "/torrents.php?cat=402&search=$key$&notnewword=1",
       "name": "TV Series",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
@@ -50,7 +47,7 @@
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat403=1&search=$key$&notnewword=1",
+      "entry": "/torrents.php?cat=403&search=$key$&notnewword=1",
       "name": "TV Shows",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
@@ -58,7 +55,7 @@
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat406=1&search=$key$&notnewword=1",
+      "entry": "/torrents.php?cat=406&search=$key$&notnewword=1",
       "name": "Music Videos",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
@@ -66,7 +63,7 @@
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat407=1&search=$key$&notnewword=1",
+      "entry": "/torrents.php?cat=407&search=$key$&notnewword=1",
       "name": "Sports",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
@@ -74,7 +71,7 @@
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat409=1&search=$key$&notnewword=1",
+      "entry": "/torrents.php?cat=409&search=$key$&notnewword=1",
       "name": "Misc",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
@@ -82,7 +79,7 @@
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat408=1&search=$key$&notnewword=1",
+      "entry": "/torrents.php?cat=408&search=$key$&notnewword=1",
       "name": "HQ Audio",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
