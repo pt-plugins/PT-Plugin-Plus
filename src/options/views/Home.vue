@@ -62,11 +62,18 @@
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
           <td class="center">
-            <v-avatar size="18" @click.stop="getSiteUserInfo(props.item)">
-              <img :src="props.item.icon">
-            </v-avatar>
-            <br>
-            <span class="caption">{{ props.item.name }}</span>
+            <a
+              :href="props.item.url"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              class="nodecoration"
+            >
+              <v-avatar size="18" @click.stop="getSiteUserInfo(props.item)">
+                <img :src="props.item.icon">
+              </v-avatar>
+              <br>
+              <span class="caption">{{ props.item.name }}</span>
+            </a>
           </td>
           <td>{{ isSecret ? "****" : props.item.user.name }}</td>
           <td>{{ isSecret ? "****" : props.item.user.levelName }}</td>
@@ -335,6 +342,10 @@ export default Vue.extend({
   }
   .number {
     text-align: right;
+  }
+
+  .nodecoration {
+    text-decoration: none;
   }
 }
 </style>
