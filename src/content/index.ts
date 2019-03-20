@@ -13,9 +13,10 @@ import {
   Request,
   EButtonType,
   ECommonKey
-} from "../interface/common";
-import { APP } from "../service/api";
-import { filters } from "../service/filters";
+} from "@/interface/common";
+import { APP } from "@/service/api";
+import { filters } from "@/service/filters";
+import { PathHandler } from "@/service/pathHandler";
 
 /**
  * 插件背景脚本，会插入到每个页面
@@ -56,6 +57,8 @@ class PTPContent {
   public pageApp: any;
   // 当前页面地址
   public locationURL: string = location.href;
+  // 保存路径处理器
+  public pathHandler: PathHandler = new PathHandler();
 
   constructor() {
     this.extension = new Extension();

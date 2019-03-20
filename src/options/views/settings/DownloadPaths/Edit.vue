@@ -14,7 +14,8 @@
             :rules="rules.require"
           ></v-textarea>
           <v-alert :value="true" color="info" icon="info" outline v-if="client.pathDescription">
-            <dir v-html="client.pathDescription"></dir>
+            <div v-html="client.pathDescription"></div>
+            <KeyDescription/>
           </v-alert>
         </v-form>
       </v-card-text>
@@ -37,7 +38,12 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import KeyDescription from "./KeyDescription.vue";
+
 export default Vue.extend({
+  components: {
+    KeyDescription
+  },
   data() {
     return {
       words: {

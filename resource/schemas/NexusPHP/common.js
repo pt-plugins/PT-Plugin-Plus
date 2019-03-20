@@ -76,6 +76,13 @@ String.prototype.getQueryString = function (name, split) {
           }
         }
 
+        let savePath = PTService.pathHandler.getSavePath(this.defaultPath, PTService.site);
+
+        if (savePath === false) {
+          reject("用户取消操作");
+          return;
+        }
+
         let notice = null;
         if (showNotice) {
           notice = PTService.showNotice({
@@ -88,7 +95,7 @@ String.prototype.getQueryString = function (name, split) {
           PTService.action.sendTorrentToDefaultClient, {
             url: option.url,
             title: option.title,
-            savePath: this.defaultPath,
+            savePath: savePath,
             autoStart: this.defaultClientOptions.autoStart
           }
         ).then(result => {
@@ -123,6 +130,12 @@ String.prototype.getQueryString = function (name, split) {
 
         if (!options.clientId) {
           reject("无效的下载服务器");
+          return;
+        }
+
+        options.savePath = PTService.pathHandler.getSavePath(options.savePath, PTService.site);
+        if (options.savePath === false) {
+          reject("用户取消操作");
           return;
         }
 
@@ -445,7 +458,7 @@ String.prototype.getQueryString = function (name, split) {
         if (item.client && item.client.name) {
           menus.push({
             title: `下载到：${item.client.name} -> ${item.client.address}` +
-              (item.path ? ` -> ${item.path}` : ""),
+              (item.path ? ` -> ${PTService.pathHandler.replacePathKey(item.path, PTService.site)}` : ""),
             fn: () => {
               if (options.url) {
                 // console.log(options, item);

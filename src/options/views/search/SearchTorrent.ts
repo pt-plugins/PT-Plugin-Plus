@@ -25,6 +25,7 @@ import { filters } from "@/service/filters";
 import moment from "moment";
 import { Downloader, downloadFile } from "@/service/downloader";
 import * as basicContext from "basiccontext";
+import { PathHandler } from "@/service/pathHandler";
 
 type searchResult = {
   sites: Dictionary<any>;
@@ -35,6 +36,7 @@ type searchResult = {
 };
 
 const extension = new Extension();
+
 export default Vue.extend({
   data() {
     return {
@@ -133,7 +135,8 @@ export default Vue.extend({
       clientContentMenus: [] as any,
       filterKey: "",
       showFailedSites: false,
-      showNoResultsSites: false
+      showNoResultsSites: false,
+      pathHandler: new PathHandler()
     };
   },
   created() {
@@ -747,13 +750,20 @@ export default Vue.extend({
         defaultPath = this.getters.siteDefaultPath(site);
       }
 
+      let savePath = this.pathHandler.getSavePath(defaultPath, site);
+      // 取消
+      if (savePath === false) {
+        this.errorMsg = "用户已取消";
+        return;
+      }
+
       this.haveSuccess = true;
       this.successMsg = "正在发送种子到下载服务器……";
 
       let data: DownloadOptions = {
         url,
         title,
-        savePath: defaultPath,
+        savePath: savePath,
         autoStart: defaultClientOptions.autoStart,
         clientId: defaultClientOptions.id
       };
@@ -936,8 +946,7 @@ export default Vue.extend({
       this.selected.forEach((item: SearchResultItem) => {
         item.url && urls.push(item.url);
       });
-      this.successMsg = "";
-      this.errorMsg = "";
+      this.clearMessage();
       extension
         .sendRequest(EAction.copyTextToClipboard, null, urls.join("\n"))
         .then(result => {
@@ -951,6 +960,8 @@ export default Vue.extend({
     clearMessage() {
       this.successMsg = "";
       this.errorMsg = "";
+      this.haveSuccess = false;
+      this.haveError = false;
     },
 
     /**
@@ -1040,7 +1051,12 @@ export default Vue.extend({
           menus.push({
             title:
               `下载到：${item.client.name} -> ${item.client.address}` +
-              (item.path ? ` -> ${item.path}` : ""),
+              (item.path
+                ? ` -> ${this.pathHandler.replacePathKey(
+                    item.path,
+                    options.site
+                  )}`
+                : ""),
             fn: () => {
               if (options.url) {
                 // console.log(options, item);
