@@ -6,7 +6,8 @@ import {
   DataResult,
   EDataResultType,
   SearchEntry,
-  EModule
+  EModule,
+  ERequestResultType
 } from "@/interface/common";
 import { APP } from "@/service/api";
 import { SiteService } from "./site";
@@ -25,6 +26,8 @@ export type SearchConfig = {
 export class Searcher {
   // 搜索入口定义缓存
   private searchConfigs: any = {};
+  // 解析文件内容缓存
+  private parseScriptCache: any = {};
   public options: Options = {
     sites: [],
     clients: []
@@ -49,9 +52,10 @@ export class Searcher {
       let siteServce: SiteService = new SiteService(site, this.options);
       let searchConfig: SearchConfig = {};
       let schema = this.getSiteSchema(site);
+      let host = site.host as string;
 
       if (siteServce.options.searchEntry) {
-        searchConfig.rootPath = `sites/${site.host}/`;
+        searchConfig.rootPath = `sites/${host}/`;
         searchConfig.entry = siteServce.options.searchEntry;
       } else if (schema && schema.searchEntry) {
         searchConfig.rootPath = `schemas/${schema.name}/`;
@@ -66,14 +70,14 @@ export class Searcher {
       }
 
       if (!searchConfig.entry) {
-        result.msg = "该站点未配置搜索页面，请先配置";
+        result.msg = `该站点[${site.name}]未配置搜索页面，请先配置`;
         result.type = EDataResultType.error;
         reject(result);
         console.log("searchTorrent: tip");
         return;
       }
 
-      this.searchConfigs[site.host as string] = searchConfig;
+      this.searchConfigs[host] = searchConfig;
 
       let results: any[] = [];
       let entryCount = 0;
@@ -111,16 +115,22 @@ export class Searcher {
 
           entryCount++;
 
+          let scriptPath = entry.parseScriptFile;
+          // 判断是否为相对路径
+          if (scriptPath.substr(0, 1) !== "/") {
+            scriptPath = `${searchConfig.rootPath}${scriptPath}`;
+          }
+
           if (!entry.parseScript) {
-            let scriptPath = entry.parseScriptFile;
-            // 判断是否为相对路径
-            if (scriptPath.substr(0, 1) !== "/") {
-              scriptPath = `${searchConfig.rootPath}${scriptPath}`;
-            }
+            entry.parseScript = this.parseScriptCache[scriptPath];
+          }
+
+          if (!entry.parseScript) {
             console.log("searchTorrent: getScriptContent", scriptPath);
             APP.getScriptContent(scriptPath)
               .done((script: string) => {
                 console.log("searchTorrent: getScriptContent done", scriptPath);
+                this.parseScriptCache[scriptPath] = script;
                 entry.parseScript = script;
                 this.getSearchResult(
                   url,
@@ -193,7 +203,7 @@ export class Searcher {
 
       // 没有指定搜索入口
       if (entryCount == 0) {
-        result.msg = "该站点未指定搜索页面，请先指定一个搜索入口";
+        result.msg = `该站点[${site.name}]未指定搜索页面，请先指定一个搜索入口`;
         result.type = EDataResultType.error;
         reject(result);
       }
@@ -230,9 +240,27 @@ export class Searcher {
             (result && (typeof result == "string" && result.length > 100)) ||
             typeof result == "object"
           ) {
-            let doc = new DOMParser().parseFromString(result, "text/html");
-            // 构造 jQuery 对象
-            let page = $(doc).find("body");
+            let page: any;
+            let doc: any;
+            try {
+              switch (entry.resultType) {
+                case ERequestResultType.JSON:
+                  page = JSON.parse(result);
+                  break;
+
+                default:
+                  doc = new DOMParser().parseFromString(result, "text/html");
+                  // 构造 jQuery 对象
+                  page = $(doc).find("body");
+                  break;
+              }
+            } catch (error) {
+              reject({
+                success: false,
+                msg: `[${site.name}]数据解析失败！`
+              });
+              return;
+            }
 
             const options = {
               results: [],
@@ -271,7 +299,10 @@ export class Searcher {
               });
             }
           } else {
-            reject();
+            reject({
+              success: false,
+              msg: `[${site.name}]没有返回预期的数据。`
+            });
           }
         })
         .fail((result: any) => {

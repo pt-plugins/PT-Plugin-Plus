@@ -132,6 +132,7 @@
    - 最后在 `github` 仓库中发起一个 `PR(pull request)` 即可；
 
 2. 加入开发交流 QQ 群：773500545，把你的配置文件分享给我们吧；
+3. 通过 [该主题](https://github.com/ronggang/PT-Plugin-Plus/issues/30) 留言，按格式提交已测试可用的站点信息；
 
 ## PR 参考资料
 

@@ -9,12 +9,11 @@
   "homepage": "https://github.com/ronggang/PT-Plugin-Plus",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && webpack --config webpack/prod.js && node ./test/dist/buildResource.js && web-ext build -s ./dist -a ./releases -o",
+    "build": "vue-cli-service build && webpack --config webpack/prod.js && cd test && yarn install && tsc && node ./dist/buildResource.js && cd .. && web-ext build -s ./dist -a ./releases -o",
     "lint": "vue-cli-service lint",
     "background": "webpack --config webpack/prod.js",
-    "dev": "vue-cli-service build --mode=development && webpack --config webpack/dev.js && node ./test/dist/buildResource.js",
-    "dev-s": "cd test && yarn install && tsc && node ./dist/index.js",
-    "res": "cd test && yarn install && tsc && node ./dist/buildResource.js"
+    "dev": "vue-cli-service build --mode=development && webpack --config webpack/dev.js && cd test && yarn install && tsc && node ./dist/buildResource.js",
+    "dev-s": "cd test && yarn install && tsc && node ./dist/index.js"
   },
   "dependencies": {
     "basiccontext": "^3.5.1",
@@ -57,6 +56,7 @@
     "vue-cli-plugin-vuetify": "^0.4.6",
     "vue-template-compiler": "^2.5.17",
     "vuetify-loader": "^1.0.5",
+    "web-ext": "^3.0.0",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2",
     "webpack-merge": "^4.1.4"

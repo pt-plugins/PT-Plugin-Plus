@@ -131,7 +131,7 @@ export default Vue.extend({
           console.log(result);
           if (result.success) {
             this.successMsg = "服务器可连接";
-          } else if (result.data && result.data) {
+          } else if (result && result.data) {
             if (result.data.msg) {
               this.errorMsg = result.data.msg;
             } else if (result.data.code === 0) {
@@ -145,7 +145,13 @@ export default Vue.extend({
           this.testing = false;
         })
         .catch((result: DataResult) => {
-          this.errorMsg = "服务器连接失败";
+          console.log(result);
+          if (result && result.data && result.data.msg) {
+            this.errorMsg = result.data.msg;
+          } else {
+            this.errorMsg = "服务器连接失败";
+          }
+
           this.testing = false;
         });
     }

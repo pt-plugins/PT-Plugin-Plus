@@ -75,5 +75,63 @@
         }
       ]
     }
-  ]
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/userdetails",
+      "fields": {
+        "id": {
+          "selector": ["div.text:contains('ID')"],
+          "filters": ["query.text().match(/\\d+/)"]
+        },
+        "name": {
+          "selector": ["a[href*='userdetails'] > strong:first"],
+          "filters": ["query.text()"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout']"],
+          "filters": ["query.length > 0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails",
+      "fields": {
+        "uploaded": {
+          "selector": "div.text:contains('上传量')",
+          "filters": ["query.text().replace(/,/g,'').match(/上[传傳]量.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": "div.text:contains('下载量')",
+          "filters": ["query.text().replace(/,/g,'').match(/下[载載]量.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "levelName": {
+          "selector": "img[src*='/pic/class/']",
+          "attribute": "src",
+          "filters": ["query.match(/\\/pic\\/class\\/(\\d+).gif/)[1]", "({0:'堕落者',1: '天使',2: '大天使',3:'权天使',4:'能天使',5:'力天使',6:'主天使',7:'座天使',8:'智天使',9:'炽天使',10:'壕(VIP)',11:'隐天使(Retiree)',12:'射种天使(Uploader)',13:'论坛版主(Forum Moderator)',14:'总版主(Moderator)',15:'管理员(Administrator)',16:'守护天使(Sysop)',17:'市长(Mayor)'})[query]"]
+        },
+        "bonus": {
+          "selector": "div.text:contains('魅力值')",
+          "filters": ["query.is(\":contains('魅力值')\") ? query.text().replace(/,/g,'').match(/魅力值.+?([\\d.]+)/)[1] : query.text().replace(/,/g,'')", "parseFloat(query)"]
+        },
+        "joinTime": {
+          "selector": "div.text:contains('加入日期')",
+          "filters": ["query.text().split(' (')[0].replace('加入日期','').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["query.find('td.rowfollow:eq(2)').length"]
+        },
+        "seedingSize": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    }
+  }
 }

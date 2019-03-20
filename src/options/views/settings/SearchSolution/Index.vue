@@ -100,7 +100,7 @@
 <script lang="ts">
 import Vue from "vue";
 import EditItem from "./Edit.vue";
-import { SearchSolution, Site, SearchEntry } from "@/interface/common";
+import { SearchSolution, Site, SearchEntry, Options } from "@/interface/common";
 export default Vue.extend({
   components: {
     EditItem
@@ -134,9 +134,9 @@ export default Vue.extend({
         { text: "范围", align: "left", value: "range" },
         { text: "操作", value: "name", sortable: false }
       ],
-      items: this.$store.state.options.searchSolutions as SearchSolution[],
+      items: [] as SearchSolution[],
       dialogRemoveConfirm: false,
-      options: this.$store.state.options
+      options: {} as Options
     };
   },
   methods: {
@@ -151,12 +151,18 @@ export default Vue.extend({
     },
 
     edit(item: any) {
+      if (!this.options.searchSolutions) {
+        return;
+      }
       let index = this.options.searchSolutions.findIndex((data: any) => {
         return item.id === data.id;
       });
 
       if (index !== -1) {
-        this.selectedItem = this.options.searchSolutions[index];
+        this.selectedItem = Object.assign(
+          {},
+          this.options.searchSolutions[index]
+        );
         this.showEditDialog = true;
       }
     },
@@ -212,7 +218,10 @@ export default Vue.extend({
       });
     }
   },
-  computed: {}
+  created() {
+    this.options = this.$store.state.options;
+    this.items = this.$store.state.options.searchSolutions;
+  }
 });
 </script>
 

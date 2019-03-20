@@ -7,5 +7,5 @@
     "init.js"
   ],
   "allowCustomPath": true,
-  "pathDescription": "当前目录列表配置是基于 Synology Download Station 暂存位置的相对路径，如暂存位置为：/volume1/，自定义目录为 music/，那么最终种子的下载目录为：/volume1/music/"
+  "pathDescription": "因 Synology Download Station API 接口限制，保存目录依赖于“暂存位置”，并且只允许使用相对路径；<br/>如暂存位置为：/volume1/，自定义目录为 music，那么最终种子的下载目录为：/volume1/music/"
 }

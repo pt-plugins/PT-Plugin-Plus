@@ -43,13 +43,10 @@
               :hint="words.pathTip"
               :rules="rules.require"
             ></v-textarea>
-            <v-alert
-              :value="true"
-              color="info"
-              icon="info"
-              outline
-              v-if="client.pathDescription"
-            >{{ client.pathDescription}}</v-alert>
+            <v-alert :value="true" color="info" icon="info" outline v-if="client.pathDescription">
+              <div v-html="client.pathDescription"></div>
+              <KeyDescription/>
+            </v-alert>
           </v-form>
         </v-card-text>
 
@@ -73,7 +70,12 @@
 <script lang="ts">
 import { Site, DownloadClient } from "@/interface/common";
 import Vue from "vue";
+import KeyDescription from "./KeyDescription.vue";
+
 export default Vue.extend({
+  components: {
+    KeyDescription
+  },
   data() {
     return {
       words: {

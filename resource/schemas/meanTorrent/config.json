@@ -1,0 +1,21 @@
+{
+  "name": "meanTorrent",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["^\/torrents\/[a-z0-9]{24}$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["^\/torrents\/[a-zA-Z]{1,23}$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "searchEntry": [{
+    "entry": "/api/torrents?keys=$key$&limit=$rows$&torrent_type=all",
+    "name": "全部",
+    "resultType": "json",
+    "parseScriptFile": "/schemas/meanTorrent/getSearchResult.js",
+    "resultSelector": ".torrent-list table:first",
+    "enabled": true
+  }]
+}

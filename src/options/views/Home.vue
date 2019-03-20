@@ -62,11 +62,18 @@
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
           <td class="center">
-            <v-avatar size="18" @click.stop="getSiteUserInfo(props.item)">
-              <img :src="props.item.icon">
-            </v-avatar>
-            <br>
-            <span class="caption">{{ props.item.name }}</span>
+            <a
+              :href="props.item.url"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              class="nodecoration"
+            >
+              <v-avatar size="18" @click.stop="getSiteUserInfo(props.item)">
+                <img :src="props.item.icon">
+              </v-avatar>
+              <br>
+              <span class="caption">{{ props.item.name }}</span>
+            </a>
           </td>
           <td>{{ isSecret ? "****" : props.item.user.name }}</td>
           <td>{{ isSecret ? "****" : props.item.user.levelName }}</td>
@@ -88,7 +95,7 @@
           <td
             class="number"
           >{{ props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</td>
-          <td class="number">
+          <td class="center">
             <v-progress-circular
               indeterminate
               :width="3"
@@ -138,15 +145,20 @@ export default Vue.extend({
       loading: false,
       items: [] as any[],
       pagination: {
-        rowsPerPage: 50
+        rowsPerPage: -1
       },
       headers: [
-        { text: "站点", align: "center", value: "name", width: "120px" },
+        { text: "站点", align: "center", value: "name", width: "110px" },
         { text: "用户名", align: "left", value: "user.name" },
         { text: "等级", align: "left", value: "user.levelName" },
-        { text: "数据量", align: "right", value: "user.uploaded" },
+        {
+          text: "数据量",
+          align: "right",
+          value: "user.uploaded",
+          width: "120px"
+        },
         { text: "分享率", align: "right", value: "user.ratio" },
-        { text: "做种数量", align: "right", value: "user.seeding" },
+        { text: "做种数", align: "right", value: "user.seeding" },
         { text: "做种体积", align: "right", value: "user.seedingSize" },
         { text: "魔力值/积分", align: "right", value: "user.bonus" },
         { text: "入站时间", align: "right", value: "user.joinTime" },
@@ -261,6 +273,16 @@ export default Vue.extend({
           console.log(result);
           if (result && result.name) {
             user = Object.assign(user, result);
+            let downloaded = user.downloaded as number;
+            let uploaded = user.uploaded as number;
+            // 没有下载量时设置分享率为无限
+            if (downloaded == 0 && uploaded > 0) {
+              user.ratio = -1;
+            }
+            // 没有分享率时，重新以 上传量 / 下载量计算
+            else if (downloaded > 0 && !user.ratio) {
+              user.ratio = uploaded / downloaded;
+            }
           }
         })
         .catch(result => {
@@ -298,7 +320,7 @@ export default Vue.extend({
 
   filters: {
     formatRatio(v: any) {
-      if (v > 10000) {
+      if (v > 10000 || v == -1) {
         return "∞";
       }
       return v;
@@ -307,13 +329,23 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 .home {
+  table.v-table thead tr:not(.v-datatable__progress) th,
+  table.v-table tbody tr td {
+    padding: 5px !important;
+    font-size: 12px;
+  }
+
   .center {
     text-align: center;
   }
   .number {
     text-align: right;
+  }
+
+  .nodecoration {
+    text-decoration: none;
   }
 }
 </style>

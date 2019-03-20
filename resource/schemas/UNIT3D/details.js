@@ -4,7 +4,7 @@
     init() {
       this.initButtons();
       // 设置当前页面
-      PTSevrice.pageApp = this;
+      PTService.pageApp = this;
     }
     /**
      * 初始化按钮列表

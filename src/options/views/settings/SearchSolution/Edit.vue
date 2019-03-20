@@ -94,10 +94,10 @@ export default Vue.extend({
       this.valid = !!value.name;
     },
     resetSites() {
-      let options = Object.assign({}, this.$store.state.options);
+      let sites: Site[] = Object.assign([], this.$store.state.options.sites);
       // this.sites = JSON.parse(JSON.stringify(options.sites)) as Site[];
       this.sites = [];
-      options.sites.forEach((item: Site) => {
+      sites.forEach((item: Site) => {
         this.sites.push(Object.assign({}, item));
       });
 

@@ -390,6 +390,8 @@
               :title="props.item.category.name"
               class="captionText"
             >{{ props.item.category.name }}</span>
+            <br>
+            <span class="captionText">&lt;{{ props.item.entryName }}&gt;</span>
           </td>
           <td class="size">{{props.item.size | formatSize}}</td>
           <!-- <td class="center">{{ props.item.comments }}</td> -->

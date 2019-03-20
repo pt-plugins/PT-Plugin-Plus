@@ -13,6 +13,7 @@ import {
 import PTPlugin from "./service";
 import URLParse from "url-parse";
 import { APP } from "@/service/api";
+import { PathHandler } from "@/service/pathHandler";
 
 type Service = PTPlugin;
 
@@ -26,6 +27,7 @@ export class ContextMenus {
   private currentTabId = 0;
 
   private siteMenus: string[] = [];
+  private pathHandler: PathHandler = new PathHandler();
 
   constructor(public service: Service) {
     chrome && chrome.tabs && this.initBrowserEvent();
@@ -116,7 +118,7 @@ export class ContextMenus {
       let id = `${client.id}**${site.host}**${path}`;
       this.add({
         id,
-        title: path,
+        title: this.pathHandler.replacePathKey(path, site),
         parentId: parentId,
         contexts: ["link"],
         documentUrlPatterns: [`*://${site.host}/*`],
@@ -200,7 +202,6 @@ export class ContextMenus {
         let publicPaths = client.paths[ECommonKey.allSite];
         if (publicPaths) {
           count++;
-          console.log("Add public paths", publicPaths);
           this.createPathMenus(publicPaths, site, client, parentId);
         }
 
@@ -256,6 +257,19 @@ export class ContextMenus {
    * @param options
    */
   private sendTorrentToClient(tabid: number = 0, options: DownloadOptions) {
+    let site = this.getSiteFromURL(options.url);
+    if (site) {
+      let savePath = this.pathHandler.getSavePath(options.savePath, site);
+      if (savePath === false) {
+        APP.showNotifications({
+          message: "用户已取消"
+        });
+        return;
+      }
+
+      options.savePath = savePath;
+    }
+
     let notice: any;
     try {
       chrome.tabs.sendMessage(
@@ -559,5 +573,21 @@ export class ContextMenus {
       }
     }
     return result;
+  }
+
+  /**
+   * 根据指定的URL获取站点信息
+   * @param source
+   */
+  private getSiteFromURL(source: string) {
+    let url = new URLParse(source);
+    let site: Site = this.options.sites.find((item: Site) => {
+      return item.host === url.hostname;
+    });
+
+    if (!site) {
+      return null;
+    }
+    return site;
   }
 }

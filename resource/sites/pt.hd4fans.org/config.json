@@ -1,0 +1,9 @@
+{
+  "name": "HD4FANS",
+  "schema": "NexusPHP",
+  "url": "https://pt.hd4fans.org",
+  "icon": "https://pt.hd4fans.org/favicon.ico",
+  "tags": ["影视", "兽组"],
+  "host": "pt.hd4fans.org",
+  "collaborator": "lilungpo"
+}

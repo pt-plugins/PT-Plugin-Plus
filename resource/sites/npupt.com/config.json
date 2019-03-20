@@ -1,0 +1,81 @@
+{
+  "name": "NPUBits",
+  "description": "界面独具一格的教育网站点",
+  "url": "https://npupt.com/",
+  "icon": "https://npupt.com/favicon.ico",
+  "tags": [
+    "教育网",
+    "综合"
+  ],
+  "schema": "NexusPHP",
+  "host": "npupt.com",
+  "collaborator": "Rhilip",
+  "searchEntry": [{
+    "entry": "/torrents.php?search=$key$&notnewword=1",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "enabled": true
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": "span#curuser a[href*='userdetails.php'][class*='Name']:first",
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": "span#curuser a[href*='userdetails.php'][class*='Name']:first"
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/上[传傳]量.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/下[载載]量.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "td.rowfollow:contains('分享率')",
+          "filters": ["query.text().replace(/,/g,'').match(/分享率.+?([\\d.]+|无限)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "levelName": {
+          "selector": "td.rowhead:contains('等級'), td.rowhead:contains('等级')",
+          "filters": ["query.next().find('img').attr('title')"]
+        },
+        "bonus": {
+          "selector": ["td.rowhead:contains('沙粒') + td"],
+          "filters": ["query.is(\":contains('沙粒:')\")?query.text().replace(/,/g,'').match(/沙粒.+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')", "parseFloat(query)"]
+        },
+        "joinTime": {
+          "selector": "td.rowhead:contains('加入日期')",
+          "filters": ["query.next().text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["query.find('td.rowfollow:eq(2)').length"]
+        },
+        "seedingSize": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    }
+  }
+}
