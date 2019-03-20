@@ -1,8 +1,8 @@
 <p align="center">
 <img src="https://github.com/ronggang/PT-Plugin-Plus/raw/master/public/assets/icon-128.png"><br/>
-<a href="https://github.com/ronggang/PT-Plugin-Plus/releases/latest" title="GitHub Releases"><img src="https://img.shields.io/github/release/ronggang/PT-Plugin-Plus.svg?label=Latest Release"></a>
+<a href="https://github.com/ronggang/PT-Plugin-Plus/releases/latest" title="GitHub Releases"><img src="https://img.shields.io/github/release/ronggang/PT-Plugin-Plus.svg?label=Latest%20Release"></a>
 <a href="https://github.com/ronggang/PT-Plugin-Plus/releases" title="GitHub All Releases"><img alt="" src="https://img.shields.io/github/downloads/ronggang/PT-Plugin-Plus/total.svg?label=Downloads"></a>
-<img src="https://img.shields.io/badge/Used-TypeScript Vue-blue.svg">
+<img src="https://img.shields.io/badge/Used-TypeScript%20Vue-blue.svg">
 <a href="https://chrome.google.com/webstore/detail/abkdiiddckphbigmakaojlnmakpllenb" title="已在 Chrome Web Store 市场上发布的版本"><img src="https://img.shields.io/chrome-web-store/v/abkdiiddckphbigmakaojlnmakpllenb.svg?label=Chrome"></a>
 <a href="https://addons.mozilla.org/zh-CN/firefox/addon/pt-plugin-plus/" title="已在 Mozilla Add-on 上发布的版本"><img src="https://img.shields.io/amo/v/pt-plugin-plus.svg?label=Firefox"></a>
 <a href="https://github.com/ronggang/PT-Plugin-Plus/LICENSE" title="GitHub license"><img src="https://img.shields.io/github/license/ronggang/PT-Plugin-Plus.svg?label=License"></a>
@@ -29,9 +29,12 @@ PT 助手 Plus，是一款 Google Chrome 和 Firefox 浏览器插件（Web Exten
   - Deluge
   - qBittorrent `v4.1+`
   - ruTorrent
-- 比 RSS 更灵活的下载方式，可根据不同的站点发送到不同的默认服务器；
-- 批量下载当前页所有种子（`需要设置站点 passkey`）；
-- 批量复制当前页面所有种子的下载链接（`需要设置站点 passkey`）；
+- 比 RSS 更灵活的下载方式：
+  - 针对不同的站点发送到不同的下载服务器；
+  - 针对不同的站点、下载服务器设置不同的保存路径；
+- 可针对不同的下载服务器、站点设置不同的保存路径；
+- 批量下载当前页所有种子；
+- 批量复制当前页面所有种子的下载链接（`部分站点需要设置 passkey`）；
 - 显示默认下载服务器当前可用空间，目前已支持：
   - Transmission
 - 多站聚合搜索相同关键字的种子；
