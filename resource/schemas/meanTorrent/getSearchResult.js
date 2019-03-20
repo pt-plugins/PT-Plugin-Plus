@@ -36,8 +36,8 @@
           let detail = row.resource_detail_info;
 
           let data = {
-            title: detail.title || detail.custom_title,
-            subTitle: detail.subtitle || detail.custom_subtitle,
+            title: detail.custom_title || detail.title,
+            subTitle: detail.custom_subtitle || detail.subtitle,
             link: `${site.url}torrents/${row._id}`,
             url: `${site.url}api/torrents/download/${row._id}`,
             size: row.torrent_size,
