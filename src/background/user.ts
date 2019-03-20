@@ -125,14 +125,8 @@ export class User {
           );
 
           if (!rule) {
-            userInfo.lastUpdateStatus = EUserDataRequestStatus.notSupported;
             this.updateStatus(site, userInfo);
-            rejectFN(
-              APP.createErrorMessage({
-                status: EUserDataRequestStatus.notSupported,
-                msg: "没有找到 userExtendInfo 选择器"
-              })
-            );
+            resolve(userInfo);
             return;
           }
 
