@@ -70,7 +70,7 @@ export class Searcher {
       }
 
       if (!searchConfig.entry) {
-        result.msg = "该站点未配置搜索页面，请先配置";
+        result.msg = `该站点[${site.name}]未配置搜索页面，请先配置`;
         result.type = EDataResultType.error;
         reject(result);
         console.log("searchTorrent: tip");
@@ -203,7 +203,7 @@ export class Searcher {
 
       // 没有指定搜索入口
       if (entryCount == 0) {
-        result.msg = "该站点未指定搜索页面，请先指定一个搜索入口";
+        result.msg = `该站点[${site.name}]未指定搜索页面，请先指定一个搜索入口`;
         result.type = EDataResultType.error;
         reject(result);
       }
