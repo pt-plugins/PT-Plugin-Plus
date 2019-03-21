@@ -336,6 +336,7 @@
       <v-data-table
         v-model="selected"
         :search="filterKey"
+        :custom-filter="searchResultFilter"
         :headers="headers"
         :items="datas"
         :pagination.sync="pagination"

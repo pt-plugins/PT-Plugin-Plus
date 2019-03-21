@@ -1151,6 +1151,31 @@ export default Vue.extend({
      */
     clone(source: any) {
       return JSON.parse(JSON.stringify(source));
+    },
+
+    /**
+     * 搜索结果过滤器，用于用户二次过滤
+     * @param items
+     * @param search
+     */
+    searchResultFilter(items: any[], search: string) {
+      search = search.toString().toLowerCase();
+      if (search.trim() === "") return items;
+
+      // 以空格分隔要过滤的关键字
+      let searchs = search.split(" ");
+
+      return items.filter((item: SearchResultItem) => {
+        // 过滤标题和副标题
+        let source = (item.title + (item.subTitle || "")).toLowerCase();
+        let result = true;
+        searchs.forEach(key => {
+          if (key.trim() != "") {
+            result = result && source.indexOf(key) > -1;
+          }
+        });
+        return result;
+      });
     }
   }
 });
