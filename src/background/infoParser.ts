@@ -104,8 +104,6 @@ export class InfoParser {
           filters = config.filters;
         }
 
-        console.log(filters);
-
         if (filters) {
           filters.forEach((filter: string) => {
             try {

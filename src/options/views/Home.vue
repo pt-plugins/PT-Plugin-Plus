@@ -127,7 +127,8 @@ import {
   Site,
   LogItem,
   EModule,
-  EUserDataRequestStatus
+  EUserDataRequestStatus,
+  Options
 } from "@/interface/common";
 import moment from "moment";
 
@@ -181,7 +182,8 @@ export default Vue.extend({
   },
 
   methods: {
-    init() {
+    resetSites() {
+      this.sites = [];
       this.options.sites.forEach((site: Site) => {
         if (site.allowGetUserInfo) {
           if (!site.user) {
@@ -192,9 +194,19 @@ export default Vue.extend({
               isLoading: false
             };
           }
-          this.sites.push(Object.assign({}, site));
+          this.sites.push(site);
         }
       });
+    },
+
+    init() {
+      extension
+        .sendRequest(EAction.readConfig)
+        .then((options: Options) => {
+          this.options = this.clone(options);
+          this.resetSites();
+        })
+        .catch();
     },
     getInfos() {
       this.loading = true;
@@ -237,6 +249,7 @@ export default Vue.extend({
       let index = this.requestQueue.findIndex((item: any) => {
         return item.host === site.host;
       });
+      (site.user as any).isLoading = false;
       if (index !== -1) {
         this.requestQueue.splice(index, 1);
         if (this.requestQueue.length == 0) {
@@ -250,6 +263,8 @@ export default Vue.extend({
             event: `Home.getUserInfo.Finished`,
             msg: this.requestMsg
           });
+          // 重置站点信息，因为有时候加载完成后，某些行还显示正在加载，暂时未明是哪里问题
+          this.sites = this.clone(this.sites);
         }
       }
     },
@@ -294,7 +309,6 @@ export default Vue.extend({
           }
         })
         .finally(() => {
-          user.isLoading = false;
           this.removeQueue(site);
         });
     },
@@ -315,6 +329,14 @@ export default Vue.extend({
           });
           this.removeQueue(site);
         });
+    },
+
+    /**
+     * 用JSON对象模拟对象克隆
+     * @param source
+     */
+    clone(source: any) {
+      return JSON.parse(JSON.stringify(source));
     }
   },
 

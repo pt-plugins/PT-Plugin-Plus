@@ -104,7 +104,11 @@ export class User {
       // 获取用户基本信息（用户名、ID、是否登录等）
       this.getInfos(host, url, rule)
         .then((result: any) => {
+          console.log("userBaseInfo", host, result);
           userInfo = Object.assign({}, result);
+          if (userInfo.name || userInfo.id) {
+            userInfo.isLogged = true;
+          }
 
           if (!userInfo.isLogged) {
             userInfo.lastUpdateStatus = EUserDataRequestStatus.needLogin;
@@ -169,7 +173,6 @@ export class User {
         .catch((error: any) => {
           userInfo.lastUpdateStatus = EUserDataRequestStatus.unknown;
           this.updateStatus(site, userInfo);
-          delete this.requestQueue[`${site.host}-base`];
           rejectFN(APP.createErrorMessage(error));
         });
     });
@@ -250,12 +253,18 @@ export class User {
           this.removeQueue(host, url);
           PPF.updateBadge(--this.requestQueueCount);
           let content: any;
-          if (rule.dataType !== ERequestResultType.JSON) {
-            let doc = new DOMParser().parseFromString(result, "text/html");
-            // 构造 jQuery 对象
-            content = $(doc).find("body");
-          } else {
-            content = JSON.parse(result);
+          try {
+            if (rule.dataType !== ERequestResultType.JSON) {
+              let doc = new DOMParser().parseFromString(result, "text/html");
+              // 构造 jQuery 对象
+              content = $(doc).find("body");
+            } else {
+              content = JSON.parse(result);
+            }
+          } catch (error) {
+            this.service.debug(error);
+            reject(error);
+            return;
           }
 
           if (content && rule) {
