@@ -80,8 +80,8 @@
     </v-list>
     <!-- 搜索结果列表 -->
     <v-card>
-      <v-card-title>
-        <v-flex xs6>
+      <v-card-title style="padding: 0 10px 0 3px;">
+        <v-flex xs12>
           <!-- 站点返回的搜索结果 -->
           <div v-if="searchSiteCount>1">
             <template v-for="(item, key) in searchResult.sites">
@@ -91,7 +91,7 @@
                 :color="item.length?'blue-grey darken-2':'grey'"
                 text-color="white"
                 small
-                class="mr-2 py-3 pl-1"
+                class="mr-1 py-3 pl-1"
                 @click.stop="resetDatas(item)"
                 :disabled="!item.length"
               >
@@ -129,7 +129,7 @@
                 color="grey darken-1"
                 text-color="white"
                 small
-                class="mr-2 py-3 pl-1"
+                class="mr-1 py-3 pl-1"
                 disabled
               >
                 <template>
@@ -162,7 +162,7 @@
                 color="orange darken-3"
                 text-color="white"
                 small
-                class="mr-2 py-3 pl-1"
+                class="mr-1 py-3 pl-1"
                 disabled
               >
                 <template>
@@ -191,7 +191,8 @@
               </v-chip>
             </template>
           </div>
-
+        </v-flex>
+        <v-flex xs6>
           <!-- 标签列表 -->
           <div class="mt-1">
             <template v-for="(item, key) in searchResult.tags">
@@ -201,7 +202,7 @@
                 :color="item.tag.color"
                 text-color="white"
                 small
-                class="mr-2 pl-0"
+                class="mr-1 pl-0"
                 @click.stop="resetDatas(item.items)"
               >
                 <span>{{ key }}</span>
@@ -228,7 +229,7 @@
                 color="grey darken-1"
                 text-color="white"
                 small
-                class="mr-2 pl-0"
+                class="mr-1 pl-0"
                 @click.stop="resetDatas(item.items)"
               >
                 <span>{{ key }}</span>
