@@ -86,6 +86,24 @@ class PTPContent {
   }
 
   /**
+   * 根据指定的host获取已定义的站点信息
+   * @param host
+   */
+  public getSiteFromHost(host: string) {
+    let site = this.options.sites.find((item: Site) => {
+      let cdn = item.cdn || [];
+      item.url && cdn.push(item.url);
+      return item.host == host || cdn.join("").indexOf(host) > -1;
+    });
+
+    if (site) {
+      return JSON.parse(JSON.stringify(site));
+    }
+
+    return null;
+  }
+
+  /**
    * 初始化符合条件的附加页面
    */
   private initPages() {
@@ -95,9 +113,12 @@ class PTPContent {
     }
     // 判断当前页面的所属站点是否已经被定义
     if (this.options.sites.length) {
-      this.site = this.options.sites.find((item: any) => {
-        return item.host == window.location.hostname;
-      });
+      this.site = this.getSiteFromHost(window.location.hostname);
+
+      if (this.site) {
+        // 适应多域名
+        this.site.url = window.location.origin + "/";
+      }
     }
 
     // 如果当前站点未定义，则不再继续操作

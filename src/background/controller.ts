@@ -166,6 +166,8 @@ export default class Controller {
       let URL = Filters.parseURL(data.url);
       let host = URL.host;
       let site = this.getSiteFromHost(host);
+      // 重新指定host内容，因为站点可能定义了多域名
+      host = site.host;
       let siteDefaultPath = this.getSiteDefaultPath(site);
       let siteClientConfig = this.siteDefaultClients[host];
       if (!siteClientConfig) {
@@ -282,7 +284,9 @@ export default class Controller {
    */
   public getSiteFromHost(host: string): Site {
     return this.options.sites.find((item: Site) => {
-      return item.host === host;
+      let cdn = item.cdn || [];
+      item.url && cdn.push(item.url);
+      return item.host == host || cdn.join("").indexOf(host) > -1;
     });
   }
 

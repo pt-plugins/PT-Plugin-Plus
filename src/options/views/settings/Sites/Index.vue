@@ -63,10 +63,10 @@
           </td>
           <td>
             <a
-              :href="props.item.url"
+              :href="props.item.activeURL"
               target="_blank"
               rel="noopener noreferrer nofollow"
-            >{{ props.item.url }}</a>
+            >{{ props.item.activeURL }}</a>
           </td>
           <td>
             <v-icon small class="mr-2" @click="edit(props.item)" :title="words.edit">edit</v-icon>
@@ -168,7 +168,7 @@ export default Vue.extend({
         { text: "标签", align: "left", value: "tags" },
         { text: "允许搜索", align: "left", value: "allowSearch" },
         { text: "个人信息(Beta)", align: "left", value: "allowGetUserInfo" },
-        { text: "URL", align: "left", value: "url" },
+        { text: "URL", align: "left", value: "activeURL" },
         { text: "操作", value: "name", sortable: false }
       ],
       sites: [] as Site[],

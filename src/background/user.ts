@@ -57,6 +57,14 @@ export class User {
     this.service.userData.update(site, userInfo);
   }
 
+  private getSiteURL(site: Site) {
+    if (site.cdn && site.cdn.length > 0) {
+      return site.cdn[0];
+    }
+
+    return site.url;
+  }
+
   /**
    * 获取指定站点的用户信息
    * @param site
@@ -93,7 +101,7 @@ export class User {
         return;
       }
 
-      let url: string = `${site.url}${rule.page}`;
+      let url: string = `${this.getSiteURL(site)}${rule.page}`;
       let host = site.host as string;
       // 上次请求未完成时，直接返回最近的数据
       if (this.checkQueue(host, url)) {
@@ -135,7 +143,7 @@ export class User {
           }
 
           if (userInfo.name || userInfo.id) {
-            let url = `${site.url}${rule.page
+            let url = `${this.getSiteURL(site)}${rule.page
               .replace("$user.id$", userInfo.id)
               .replace("$user.name$", userInfo.name)}`;
             // 上次请求未完成时，直接返回最近的数据
@@ -193,7 +201,7 @@ export class User {
         let rule = this.service.getSiteSelector(host, name);
 
         if (rule) {
-          let url = `${site.url}${rule.page
+          let url = `${this.getSiteURL(site)}${rule.page
             .replace("$user.id$", userInfo.id)
             .replace("$user.name$", userInfo.name)}`;
           // 上次请求未完成时，跳过

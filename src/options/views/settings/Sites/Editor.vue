@@ -80,6 +80,9 @@
           :rules="rules.require"
           :disabled="!custom"
         ></v-text-field>
+
+        <v-textarea v-model="cdn" :label="words.cdn" value :hint="words.cdnTip"></v-textarea>
+
         <v-text-field v-model="site.description" :label="words.description"></v-text-field>
 
         <v-autocomplete
@@ -142,7 +145,8 @@ export default Vue.extend({
   data() {
     return {
       words: {
-        defaultClient: "默认下载服务器",
+        defaultClient:
+          "指定下载服务器（如不选择则以基本设置的默认下载服务器为准）",
         name: "站点名称",
         tags: "站点标签",
         inputTags: "标签输入完成后按回车添加，可添加多个",
@@ -154,27 +158,53 @@ export default Vue.extend({
         passkey: "密钥",
         passkeyTip: "密钥仅用于复制下载地址操作，如果不需要用到此功能，请留空",
         allowSearch: "允许搜索",
-        allowGetUserInfo: "允许获取用户信息（Beta）"
+        allowGetUserInfo: "允许获取用户信息（Beta）",
+        cdn: "站点CDN列表",
+        cdnTip:
+          "如您使用的网址和系统定义的不同，可在此填写当前使用的网站地址，每行填写一个地址，第一个将做为搜索时使用的地址"
       },
       showPasskey: false,
       rules: {
         require: [(v: any) => !!v || "!"]
-      }
+      },
+      cdn: ""
     };
   },
   props: {
     site: Object,
     custom: Boolean
   },
-  computed: {
-    selectedTags(): string {
-      let site = this.site;
-      let tags = "";
-      if (site.tags !== undefined) {
-        tags = site.tags.join(",");
+  watch: {
+    site() {
+      if (this.site.cdn) {
+        this.cdn = this.site.cdn.join("\n");
+      } else {
+        this.cdn = "";
       }
-      return tags;
     },
+    cdn() {
+      let items = this.cdn.split("\n");
+      let result: string[] = [];
+      items.forEach(cdn => {
+        if (
+          /(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/.test(
+            cdn
+          )
+        ) {
+          result.push(cdn);
+        }
+      });
+
+      if (result.length > 0) {
+        this.site.activeURL = result[0];
+      } else {
+        this.site.activeURL = this.site.url;
+      }
+
+      this.site.cdn = result;
+    }
+  },
+  computed: {
     getSchema(): string {
       let result: string = "";
       if (typeof this.site.schema === "string") {

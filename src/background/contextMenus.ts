@@ -102,6 +102,20 @@ export class ContextMenus {
   }
 
   /**
+   * 获取指定站点的URL匹配规则
+   * @param site
+   */
+  private getSiteDocumentUrlPatterns(site: Site): string[] {
+    let documentUrlPatterns: string[] = [`*://${site.host}/*`, `${site.url}`];
+
+    if (site.cdn && site.cdn.length > 0) {
+      documentUrlPatterns.push(...site.cdn);
+    }
+
+    return documentUrlPatterns;
+  }
+
+  /**
    * 根据指定的目录信息创建菜单
    * @param paths
    * @param site
@@ -121,7 +135,7 @@ export class ContextMenus {
         title: this.pathHandler.replacePathKey(path, site),
         parentId: parentId,
         contexts: ["link"],
-        documentUrlPatterns: [`*://${site.host}/*`],
+        documentUrlPatterns: this.getSiteDocumentUrlPatterns(site),
         targetUrlPatterns: this.getSiteUrlPatterns(site),
         onclick: (
           info: chrome.contextMenus.OnClickData,
@@ -161,7 +175,7 @@ export class ContextMenus {
         id: menuId,
         title: '仅搜索本站 "%s" 相关的种子',
         contexts: ["selection"],
-        documentUrlPatterns: [`*://${site.host}/*`],
+        documentUrlPatterns: this.getSiteDocumentUrlPatterns(site),
         onclick: (
           info: chrome.contextMenus.OnClickData,
           tab: chrome.tabs.Tab
@@ -182,7 +196,7 @@ export class ContextMenus {
           id: parentId,
           title: `${client.name} -> 指定目录`,
           contexts: ["link"],
-          documentUrlPatterns: [`*://${site.host}/*`],
+          documentUrlPatterns: this.getSiteDocumentUrlPatterns(site),
           targetUrlPatterns: this.getSiteUrlPatterns(site)
         });
 
@@ -510,9 +524,7 @@ export class ContextMenus {
    */
   private getParsedURL(source: string | any): string | DataResult {
     let url = new URLParse(source);
-    let site: Site = this.options.sites.find((item: Site) => {
-      return item.host === url.hostname;
-    });
+    let site: Site | null = this.getSiteFromURL(source);
 
     if (!site) {
       return source;
@@ -582,7 +594,9 @@ export class ContextMenus {
   private getSiteFromURL(source: string) {
     let url = new URLParse(source);
     let site: Site = this.options.sites.find((item: Site) => {
-      return item.host === url.hostname;
+      let cdn = item.cdn || [];
+      item.url && cdn.push(item.url);
+      return item.host == url.host || cdn.join("").indexOf(url.host) > -1;
     });
 
     if (!site) {

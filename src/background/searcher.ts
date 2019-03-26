@@ -91,6 +91,11 @@ export class Searcher {
               ? this.options.search.rows
               : 10;
 
+          // 如果有自定义地址，则使用自定义地址
+          if (site.cdn && site.cdn.length > 0) {
+            site.url = site.cdn[0];
+          }
+
           // 组织搜索入口
           if ((site.url + "").substr(-1) != "/") {
             site.url += "/";
@@ -336,6 +341,11 @@ export class Searcher {
         searchConfig.entry.forEach((entry: SearchEntry) => {
           // 判断是否指定了搜索页和用于获取搜索结果的脚本
           if (entry.entry && entry.parseScriptFile && entry.enabled !== false) {
+            // 如果有自定义地址，则使用自定义地址
+            if (site.cdn && site.cdn.length > 0) {
+              site.url = site.cdn[0];
+            }
+
             let rows: number =
               this.options.search && this.options.search.rows
                 ? this.options.search.rows

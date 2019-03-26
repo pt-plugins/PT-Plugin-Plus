@@ -138,6 +138,8 @@ export interface Site {
   id?: string;
   name: string;
   url?: string;
+  // 运行时配置，当定义了cdn时，获取第一个地址，没有时使用url
+  activeURL?: string;
   cdn?: string[];
   icon?: string;
   schema?: any;

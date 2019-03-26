@@ -62,16 +62,16 @@
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
           <td class="center">
+            <v-avatar size="18" @click.stop="getSiteUserInfo(props.item)">
+              <img :src="props.item.icon">
+            </v-avatar>
+            <br>
             <a
-              :href="props.item.url"
+              :href="props.item.activeURL"
               target="_blank"
               rel="noopener noreferrer nofollow"
               class="nodecoration"
             >
-              <v-avatar size="18" @click.stop="getSiteUserInfo(props.item)">
-                <img :src="props.item.icon">
-              </v-avatar>
-              <br>
               <span class="caption">{{ props.item.name }}</span>
             </a>
           </td>
