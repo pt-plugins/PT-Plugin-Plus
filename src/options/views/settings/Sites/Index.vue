@@ -241,6 +241,9 @@ export default Vue.extend({
         return site.host === item.host;
       });
       if (index === -1) {
+        if (!item.activeURL) {
+          item.activeURL = item.url;
+        }
         this.$store.commit("addSite", item);
       } else {
         this.siteDuplicate = true;
