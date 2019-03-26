@@ -58,7 +58,7 @@ export class InfoParser {
             } else {
               query = eval("content." + selector);
             }
-            if (query) {
+            if (query != null) {
               return true;
             }
             break;
@@ -80,18 +80,13 @@ export class InfoParser {
       }
     });
 
-    // 如果是JSON数据，则直接返回
-    if (rule.dataType == ERequestResultType.JSON) {
-      return query;
-    }
-
     let result = null;
     // 该变量 dateTime 用于 eval 内部执行，不可删除或改名
     let dateTime = moment;
     let _self = this;
-    if (query) {
+    if (query != null) {
       if (config.attribute || config.filters) {
-        if (config.attribute) {
+        if (config.attribute && rule.dataType != ERequestResultType.JSON) {
           query = query.attr(config.attribute);
         }
 
@@ -116,7 +111,15 @@ export class InfoParser {
         }
         result = query;
       } else {
-        result = query.text().trim();
+        switch (rule.dataType) {
+          case ERequestResultType.JSON:
+            result = query;
+            break;
+
+          default:
+            result = query.text().trim();
+            break;
+        }
       }
     }
     return result;

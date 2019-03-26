@@ -17,5 +17,48 @@
     "parseScriptFile": "/schemas/meanTorrent/getSearchResult.js",
     "resultSelector": ".torrent-list table:first",
     "enabled": true
-  }]
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ["script:contains('var user')"],
+          "filters": ["query.text().match(/var user = (.+);\\n/)", "(query && query.length>=2)?query[1]:''", "query=='null'?'':JSON.parse(query)._id"]
+        },
+        "name": {
+          "selector": ["script:contains('var user')"],
+          "filters": ["query.text().match(/var user = (.+);\\n/)", "(query && query.length>=2)?query[1]:''", "query=='null'?'':JSON.parse(query).displayName"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/api/users/$user.id$",
+      "dataType": "json",
+      "fields": {
+        "uploaded": {
+          "selector": ["uploaded"]
+        },
+        "downloaded": {
+          "selector": ["downloaded"]
+        },
+        "levelName": {
+          "selector": ["roles[0]"]
+        },
+        "bonus": {
+          "selector": ["score"]
+        },
+        "joinTime": {
+          "selector": ["created"],
+          "filters": ["dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["seeded"]
+        },
+        "seedingSize": {
+          "value": -1
+        }
+      }
+    }
+  }
 }

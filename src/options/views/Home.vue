@@ -128,7 +128,8 @@ import {
   LogItem,
   EModule,
   EUserDataRequestStatus,
-  Options
+  Options,
+  UserInfo
 } from "@/interface/common";
 import moment from "moment";
 
@@ -193,6 +194,8 @@ export default Vue.extend({
               isLogged: false,
               isLoading: false
             };
+          } else {
+            this.formatUserInfo(site.user);
           }
           this.sites.push(site);
         }
@@ -268,7 +271,21 @@ export default Vue.extend({
         }
       }
     },
-
+    /**
+     * 格式化一些用户信息
+     */
+    formatUserInfo(user: UserInfo) {
+      let downloaded = user.downloaded as number;
+      let uploaded = user.uploaded as number;
+      // 没有下载量时设置分享率为无限
+      if (downloaded == 0 && uploaded > 0) {
+        user.ratio = -1;
+      }
+      // 没有分享率时，重新以 上传量 / 下载量计算
+      else if (downloaded > 0 && !user.ratio) {
+        user.ratio = uploaded / downloaded;
+      }
+    },
     /**
      * 获取站点用户信息
      */
@@ -288,16 +305,7 @@ export default Vue.extend({
           console.log(result);
           if (result && result.name) {
             user = Object.assign(user, result);
-            let downloaded = user.downloaded as number;
-            let uploaded = user.uploaded as number;
-            // 没有下载量时设置分享率为无限
-            if (downloaded == 0 && uploaded > 0) {
-              user.ratio = -1;
-            }
-            // 没有分享率时，重新以 上传量 / 下载量计算
-            else if (downloaded > 0 && !user.ratio) {
-              user.ratio = uploaded / downloaded;
-            }
+            this.formatUserInfo(user);
           }
         })
         .catch(result => {
