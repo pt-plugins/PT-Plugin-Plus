@@ -84,10 +84,7 @@ export class User {
       let userInfo: UserInfo =
         this.service.userData.get(site.host as string) || {};
 
-      let rule = this.service.getSiteSelector(
-        site.host as string,
-        "userBaseInfo"
-      );
+      let rule = this.service.getSiteSelector(site, "userBaseInfo");
       if (!rule) {
         userInfo.lastUpdateStatus = EUserDataRequestStatus.notSupported;
         this.updateStatus(site, userInfo);
@@ -131,10 +128,7 @@ export class User {
             return;
           }
 
-          rule = this.service.getSiteSelector(
-            site.host as string,
-            "userExtendInfo"
-          );
+          rule = this.service.getSiteSelector(site, "userExtendInfo");
 
           if (!rule) {
             this.updateStatus(site, userInfo);
@@ -198,7 +192,7 @@ export class User {
 
       selectors.forEach((name: string) => {
         let host = site.host as string;
-        let rule = this.service.getSiteSelector(host, name);
+        let rule = this.service.getSiteSelector(site, name);
 
         if (rule) {
           let url = `${this.getSiteURL(site)}${rule.page
