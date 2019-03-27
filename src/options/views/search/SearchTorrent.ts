@@ -839,6 +839,7 @@ export default Vue.extend({
      * @param datas
      */
     resetDatas(datas: any) {
+      if (this.loading) return;
       if (datas.length) {
         this.pagination.page = 1;
         this.datas = datas;
