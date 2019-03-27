@@ -1,7 +1,7 @@
 <template>
   <v-toolbar :color="baseColor" app fixed clipped-left>
     <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-    <v-toolbar-title style="width: 220px;">
+    <v-toolbar-title style="width: 220px;" class="hidden-sm-and-down">
       <span>{{ words.title }}</span>
     </v-toolbar-title>
 
@@ -10,7 +10,7 @@
       solo-inverted
       prepend-icon="search"
       :label="words.searchTip"
-      class="hidden-sm-and-down mt-2"
+      class="mt-2"
       v-model="searchKey"
       @change="searchTorrent"
       clearable
@@ -43,13 +43,17 @@
       </v-menu>
     </v-text-field>
 
-    <v-btn flat to="/search-torrent/__LatestTorrents__" class="grey--text text--darken-2">
+    <v-btn
+      flat
+      to="/search-torrent/__LatestTorrents__"
+      class="grey--text text--darken-2 hidden-sm-and-down"
+    >
       <v-icon>fiber_new</v-icon>
       <span class="ml-2">查看最新种子</span>
     </v-btn>
 
     <v-spacer></v-spacer>
-    <v-toolbar-items>
+    <v-toolbar-items class="hidden-sm-and-down">
       <v-btn
         flat
         href="https://github.com/ronggang/PT-Plugin-Plus"
