@@ -353,7 +353,11 @@ export default Vue.extend({
       if (v > 10000 || v == -1) {
         return "∞";
       }
-      return v;
+      let number = parseFloat(v);
+      if (isNaN(number)) {
+        return "-";
+      }
+      return number.toFixed(2);
     }
   }
 });
