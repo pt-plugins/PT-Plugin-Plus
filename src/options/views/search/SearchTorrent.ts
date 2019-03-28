@@ -1079,6 +1079,10 @@ export default Vue.extend({
       });
     },
 
+    /**
+     * 显示批量下载时可用下载服务器菜单
+     * @param event
+     */
     showAllContentMenus(event: any) {
       let clients: any[] = [];
       let menus: any[] = [];
@@ -1098,6 +1102,29 @@ export default Vue.extend({
                 this.sendSelectedToClient(undefined, 0, item);
               }
             });
+
+            // 添加适用于所有站点的目录
+            let publicPaths = item.client.paths[ECommonKey.allSite];
+            if (publicPaths) {
+              publicPaths.forEach((path: string) => {
+                // 去除带关键字的目录
+                if (
+                  path.indexOf("$site.name$") == -1 &&
+                  path.indexOf("$site.host$") == -1 &&
+                  path.indexOf("<...>") == -1
+                ) {
+                  item.path = path;
+                  menus.push({
+                    title: `下载到：${item.client.name} -> ${
+                      item.client.address
+                    } -> ${path}`,
+                    fn: () => {
+                      this.sendSelectedToClient(undefined, 0, item);
+                    }
+                  });
+                }
+              });
+            }
           } else {
             menus.push({});
           }
