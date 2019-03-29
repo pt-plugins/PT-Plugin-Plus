@@ -203,6 +203,21 @@ export class User {
             return;
           }
 
+          // 执行该规则的前提条件（条件表达式）
+          if (rule.prerequisites) {
+            // user 用于条件中执行的内容
+            const user = userInfo;
+            try {
+              let result = eval(rule.prerequisites);
+              if (result !== true) {
+                return;
+              }
+            } catch (error) {
+              console.log(error);
+              return;
+            }
+          }
+
           requests.push(this.getInfos(host, url, rule));
         }
       });
