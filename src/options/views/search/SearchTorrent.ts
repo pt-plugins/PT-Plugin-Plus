@@ -91,7 +91,7 @@ export default Vue.extend({
         { text: "下载", align: "right", value: "leechers", width: "60px" },
         { text: "完成", align: "right", value: "completed", width: "60px" },
         // { text: "发布者", align: "left", value: "author" },
-        { text: "发布时间", align: "left", value: "time", width: "130px" },
+        { text: "发布于(≈)", align: "left", value: "time", width: "130px" },
         { text: "操作", sortable: false, width: "100px" }
       ],
       errorMsg: "",
@@ -573,6 +573,11 @@ export default Vue.extend({
         if (moment(item.time).isValid()) {
           // 转成整数是为了排序
           item.time = moment(item.time).valueOf();
+        } else if (typeof item.time == "string") {
+          let time = filters.timeAgoToNumber(item.time);
+          if (time > 0) {
+            item.time = time;
+          }
         }
 
         if (!item.titleHTML) {
@@ -588,17 +593,37 @@ export default Vue.extend({
 
         if (item.seeders && typeof item.seeders == "string") {
           item.seeders = parseInt((item.seeders as string).replace(",", ""));
+          if (isNaN(item.seeders)) {
+            item.seeders = 0;
+          }
         }
 
         if (item.leechers && typeof item.leechers == "string") {
           item.leechers = parseInt((item.leechers as string).replace(",", ""));
+          if (isNaN(item.leechers)) {
+            item.leechers = 0;
+          }
         }
 
         if (item.completed && typeof item.completed == "string") {
           item.completed = parseInt(
             (item.completed as string).replace(",", "")
           );
+          if (isNaN(item.completed)) {
+            item.completed = 0;
+          }
         }
+
+        // 将 // 替换为 /
+        item.link = (item.link as string)
+          .replace("://", "****")
+          .replace(/\/\//g, "/")
+          .replace("****", "://");
+
+        item.url = (item.url as string)
+          .replace("://", "****")
+          .replace(/\/\//g, "/")
+          .replace("****", "://");
 
         this.datas.push(item);
         this.getLinks.push(item.link);
