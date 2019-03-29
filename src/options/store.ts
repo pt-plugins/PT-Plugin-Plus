@@ -185,15 +185,24 @@ export default new Vuex.Store({
       }
     },
 
+    /**
+     * 移除下载服务器已配置的保存目录
+     * @param state
+     * @param options
+     */
     removePathsOfClient(state, options) {
       let client = state.options.clients.find(data => {
         return options.clientId === data.id;
       });
-      if (client && options.site) {
-        if (client.paths) {
-          delete client.paths[options.site.host];
-          extension.sendRequest(EAction.saveConfig, null, state.options);
+      if (client && client.paths) {
+        let key = "";
+        if (options.site) {
+          key = options.site.host;
+        } else {
+          key = ECommonKey.allSite;
         }
+        delete client.paths[key];
+        extension.sendRequest(EAction.saveConfig, null, state.options);
       }
     },
 
