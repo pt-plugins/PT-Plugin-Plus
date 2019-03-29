@@ -9,8 +9,7 @@
   ],
   "schema": "NexusPHP",
   "host": "u2.dmhy.org",
-  "searchEntry": [
-    {
+  "searchEntry": [{
       "entry": "/torrents.php?search=$key$&notnewword=1",
       "name": "全站",
       "resultType": "html",
@@ -155,80 +154,88 @@
       "enabled": false
     }
   ],
-  "categories": [
-    {
-      "entry": "*",
-      "result": "cat$id$=1",
-      "category": [
-        {
-          "id": 9,
-          "name": "U2-Rip"
-        },
-        {
-          "id": 411,
-          "name": "U2-RBD"
-        },
-        {
-          "id": 10,
-          "name": "R3TRAW"
-        },
-        {
-          "id": 11,
-          "name": "R2JRAW"
-        },
-        {
-          "id": 12,
-          "name": "BDRip"
-        },
-        {
-          "id": 13,
-          "name": "DVDRip"
-        },
-        {
-          "id": 14,
-          "name": "HDTVRip"
-        },
-        {
-          "id": 15,
-          "name": "DVDISO"
-        },
-        {
-          "id": 16,
-          "name": "BDMV"
-        },
-        {
-          "id": 17,
-          "name": "LQRip"
-        },
-        {
-          "id": 410,
-          "name": "外挂结构"
-        },
-        {
-          "id": 412,
-          "name": "加流重灌"
-        },
-        {
-          "id": 21,
-          "name": "Raw Books"
-        },
-        {
-          "id": 22,
-          "name": "港译漫画"
-        },
-        {
-          "id": 23,
-          "name": "台译漫画"
-        },
-        {
-          "id": 30,
-          "name": "Lossless Music"
-        },
-        {
-          "id": 40,
-          "name": "Others"
+  "categories": [{
+    "entry": "*",
+    "result": "cat$id$=1",
+    "category": [{
+        "id": 9,
+        "name": "U2-Rip"
+      },
+      {
+        "id": 411,
+        "name": "U2-RBD"
+      },
+      {
+        "id": 10,
+        "name": "R3TRAW"
+      },
+      {
+        "id": 11,
+        "name": "R2JRAW"
+      },
+      {
+        "id": 12,
+        "name": "BDRip"
+      },
+      {
+        "id": 13,
+        "name": "DVDRip"
+      },
+      {
+        "id": 14,
+        "name": "HDTVRip"
+      },
+      {
+        "id": 15,
+        "name": "DVDISO"
+      },
+      {
+        "id": 16,
+        "name": "BDMV"
+      },
+      {
+        "id": 17,
+        "name": "LQRip"
+      },
+      {
+        "id": 410,
+        "name": "外挂结构"
+      },
+      {
+        "id": 412,
+        "name": "加流重灌"
+      },
+      {
+        "id": 21,
+        "name": "Raw Books"
+      },
+      {
+        "id": 22,
+        "name": "港译漫画"
+      },
+      {
+        "id": 23,
+        "name": "台译漫画"
+      },
+      {
+        "id": 30,
+        "name": "Lossless Music"
+      },
+      {
+        "id": 40,
+        "name": "Others"
+      }
+    ]
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowhead:contains('UCoin') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/\\(([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
         }
-      ]
+      }
     }
-  ]
+  }
 }
