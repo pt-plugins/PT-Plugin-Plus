@@ -1,0 +1,9 @@
+{
+  "name": "DIC",
+  "description": "music",
+  "url": "https://dicmusic.club/",
+  "icon": "https://dicmusic.club/favicon.ico",
+  "tags": ["音乐"],
+  "schema": "Gazelle",
+  "host": "dicmusic.club"
+}
