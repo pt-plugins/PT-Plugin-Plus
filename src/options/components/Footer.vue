@@ -35,7 +35,8 @@ export default Vue.extend({
   },
   created() {
     if (APP.isExtensionMode) {
-      this.version = "v" + chrome.runtime.getManifest().version;
+      let manifest = chrome.runtime.getManifest();
+      this.version = "v" + (manifest.version_name || manifest.version);
     } else {
       this.version = "localVersion";
     }
@@ -49,7 +50,7 @@ export default Vue.extend({
             // 版本号
             this.releasesVersion = result.tag_name;
 
-            if (this.releasesVersion !== this.version) {
+            if (this.releasesVersion > this.version) {
               this.newReleases = true;
             }
           }
