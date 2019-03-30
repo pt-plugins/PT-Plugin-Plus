@@ -1,0 +1,9 @@
+{
+  "name": "OPS",
+  "description": "music",
+  "url": "https://orpheus.network/",
+  "icon": "https://orpheus.network/favicon.ico",
+  "tags": ["音乐"],
+  "schema": "Gazelle",
+  "host": "orpheus.network"
+}

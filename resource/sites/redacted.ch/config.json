@@ -1,0 +1,9 @@
+{
+  "name": "RED",
+  "description": "music",
+  "url": "https://redacted.ch/",
+  "icon": "https://redacted.ch/favicon.ico",
+  "tags": ["音乐"],
+  "schema": "Gazelle",
+  "host": "redacted.ch"
+}
