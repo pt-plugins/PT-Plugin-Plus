@@ -32,6 +32,9 @@
           <v-icon class="mr-2">cached</v-icon>
           {{words.getInfos}}
         </v-btn>
+        <v-btn @click="share">
+          <v-icon class="mr-2">share</v-icon>
+        </v-btn>
         <v-switch
           v-model="isSecret"
           class="ml-2 mt-4"
@@ -58,6 +61,7 @@
         :pagination.sync="pagination"
         item-key="host"
         class="elevation-1"
+        ref="userDataTable"
       >
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
@@ -132,6 +136,8 @@ import {
   UserInfo
 } from "@/interface/common";
 import moment from "moment";
+import html2canvas from "html2canvas";
+import FileSaver from "file-saver";
 
 const extension = new Extension();
 export default Vue.extend({
@@ -345,6 +351,24 @@ export default Vue.extend({
      */
     clone(source: any) {
       return JSON.parse(JSON.stringify(source));
+    },
+
+    share() {
+      let table: Vue = this.$refs.userDataTable as Vue;
+      html2canvas(table.$el as any, {
+        // allowTaint: false,
+        // useCORS: true,
+        // foreignObjectRendering: true
+      }).then(canvas => {
+        // console.log(canvas);
+        // console.log(canvas.toDataURL());
+        // return;
+        canvas.toBlob((blob: any) => {
+          if (blob) {
+            FileSaver.saveAs(blob, "PT-Plugin-Plus-UserData.png");
+          }
+        });
+      });
     }
   },
 
