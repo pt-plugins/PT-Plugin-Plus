@@ -51,8 +51,8 @@
         category: 0
       };
 
-      if (site.url.lastIndexOf("/") != site.url.length - 1) {
-        site.url += "/";
+      if (site.url.substr(-1) == "/") {
+        site.url = site.url.substr(0, site.url.length - 1);
       }
 
       // 遍历数据行
@@ -72,10 +72,22 @@
 
         let values = link.split("/");
         let id = values[values.length - 2];
+        let url = "";
 
-        // 格式：vvvid|||passkey|||sslzz
-        let key = (new Base64).encode("vvv" + id + "|||" + site.passkey + "|||sslzz");
-        let url = `https://${site.host}/rssdd.php?par=${key}&ssl=yes`;
+        if (site.passkey && id) {
+          // 格式：vvvid|||passkey|||sslzz
+          let key = (new Base64).encode("vvv" + id + "|||" + site.passkey + "|||sslzz");
+          url = `https://${site.host}/rssdd.php?par=${key}&ssl=yes`;
+        } else {
+          url = row.find("a.dl_a").attr("href");
+          if (url && url.substr(0, 4) !== "http") {
+            url = `${site.url}${url}`;
+          }
+        }
+
+        if (!url) {
+          continue;
+        }
 
         let subTitle = "";
         if (titleStrings.length > 0) {

@@ -166,6 +166,8 @@ export default class Controller {
       let URL = Filters.parseURL(data.url);
       let host = URL.host;
       let site = this.getSiteFromHost(host);
+      // 重新指定host内容，因为站点可能定义了多域名
+      host = site.host;
       let siteDefaultPath = this.getSiteDefaultPath(site);
       let siteClientConfig = this.siteDefaultClients[host];
       if (!siteClientConfig) {
@@ -282,7 +284,9 @@ export default class Controller {
    */
   public getSiteFromHost(host: string): Site {
     return this.options.sites.find((item: Site) => {
-      return item.host === host;
+      let cdn = item.cdn || [];
+      item.url && cdn.push(item.url);
+      return item.host == host || cdn.join("").indexOf(host) > -1;
     });
   }
 
@@ -758,5 +762,38 @@ export default class Controller {
 
   public abortGetUserInfo(site: Site): Promise<any> {
     return this.userService.abortGetUserInfo(site);
+  }
+
+  /**
+   * 根据指定的图片地址获取Base64信息
+   * @param url 图片地址
+   */
+  public getBase64FromImageUrl(url: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let file = new FileDownloader({
+        url,
+        getDataOnly: true,
+        timeout: this.service.options.connectClientTimeout
+      });
+
+      file.onCompleted = () => {
+        console.log("getBase64FromImageUrl.completed", url);
+        if (file.content && /image/gi.test(file.content.type)) {
+          var reader = new FileReader();
+          reader.onloadend = function() {
+            resolve(reader.result);
+          };
+          reader.readAsDataURL(file.content);
+        } else {
+          reject(APP.createErrorMessage("无效的图片文件"));
+        }
+      };
+
+      file.onError = (e: any) => {
+        reject(APP.createErrorMessage(e));
+      };
+
+      file.start();
+    });
   }
 }

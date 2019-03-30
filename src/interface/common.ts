@@ -91,6 +91,10 @@ export interface Options {
   autoRefreshUserDataFailedRetryInterval?: number;
   // 最近搜索的关键字
   lastSearchKey?: string;
+  // 显示的用名名称
+  displayUserName?: string;
+  // 分享寄语
+  shareMessage?: string;
 }
 
 export interface Plugin {
@@ -138,6 +142,8 @@ export interface Site {
   id?: string;
   name: string;
   url?: string;
+  // 运行时配置，当定义了cdn时，获取第一个地址，没有时使用url
+  activeURL?: string;
   cdn?: string[];
   icon?: string;
   schema?: any;

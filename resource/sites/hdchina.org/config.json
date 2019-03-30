@@ -350,9 +350,6 @@
           "filters": ["query.parent().text().match(/共计([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         }
       }
-    },
-    "userSeedingTorrents": {
-      "disabled": true
     }
   }
 }

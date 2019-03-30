@@ -489,26 +489,29 @@ export default class PTPlugin {
    * @param host
    * @param name
    */
-  public getSiteSelector(host: string, name: string): Dictionary<any> | null {
+  public getSiteSelector(
+    hostOrSite: string | Site,
+    name: string
+  ): Dictionary<any> | null {
+    let host = typeof hostOrSite == "string" ? hostOrSite : hostOrSite.host;
+    let system = this.clone(this.options.system);
+
     // 由于选择器可能会更新，所以需要从系统配置中加载
-    let site: Site =
-      this.options.system &&
-      this.options.system.sites &&
-      this.options.system.sites.find((item: Site) => {
-        return item.host === host;
-      });
+    let site: Site | undefined = system.sites.find((item: Site) => {
+      return item.host === host;
+    });
 
     if (!site) {
-      return null;
+      if (typeof hostOrSite == "string") {
+        return null;
+      }
+      site = hostOrSite;
     }
 
     let result = site.selectors && site.selectors[name];
-    let schema: SiteSchema =
-      this.options.system &&
-      this.options.system.schemas &&
-      this.options.system.schemas.find((item: SiteSchema) => {
-        return item.name === site.schema;
-      });
+    let schema: SiteSchema = system.schemas.find((item: SiteSchema) => {
+      return site != null && item.name === site.schema;
+    });
     if (!result) {
       if (schema && schema.selectors) {
         result = schema.selectors[name];
@@ -530,5 +533,13 @@ export default class PTPlugin {
       }
     }
     return result;
+  }
+
+  /**
+   * 用JSON对象模拟对象克隆
+   * @param source
+   */
+  public clone(source: any) {
+    return JSON.parse(JSON.stringify(source));
   }
 }

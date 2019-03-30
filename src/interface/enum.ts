@@ -124,7 +124,9 @@ export enum EAction {
   // 获取已清理过的配置
   getClearedOptions = "getClearedOptions",
   // 重置运行时配置
-  resetRunTimeOptions = "resetRunTimeOptions"
+  resetRunTimeOptions = "resetRunTimeOptions",
+  // 根据指定的图片地址获取Base64信息
+  getBase64FromImageUrl = "getBase64FromImageUrl"
 }
 
 /**

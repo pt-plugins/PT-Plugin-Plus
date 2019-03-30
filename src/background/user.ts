@@ -57,6 +57,14 @@ export class User {
     this.service.userData.update(site, userInfo);
   }
 
+  private getSiteURL(site: Site) {
+    if (site.cdn && site.cdn.length > 0) {
+      return site.cdn[0];
+    }
+
+    return site.url;
+  }
+
   /**
    * 获取指定站点的用户信息
    * @param site
@@ -76,10 +84,7 @@ export class User {
       let userInfo: UserInfo =
         this.service.userData.get(site.host as string) || {};
 
-      let rule = this.service.getSiteSelector(
-        site.host as string,
-        "userBaseInfo"
-      );
+      let rule = this.service.getSiteSelector(site, "userBaseInfo");
       if (!rule) {
         userInfo.lastUpdateStatus = EUserDataRequestStatus.notSupported;
         this.updateStatus(site, userInfo);
@@ -93,7 +98,7 @@ export class User {
         return;
       }
 
-      let url: string = `${site.url}${rule.page}`;
+      let url: string = `${this.getSiteURL(site)}${rule.page}`;
       let host = site.host as string;
       // 上次请求未完成时，直接返回最近的数据
       if (this.checkQueue(host, url)) {
@@ -104,7 +109,11 @@ export class User {
       // 获取用户基本信息（用户名、ID、是否登录等）
       this.getInfos(host, url, rule)
         .then((result: any) => {
+          console.log("userBaseInfo", host, result);
           userInfo = Object.assign({}, result);
+          if (userInfo.name || userInfo.id) {
+            userInfo.isLogged = true;
+          }
 
           if (!userInfo.isLogged) {
             userInfo.lastUpdateStatus = EUserDataRequestStatus.needLogin;
@@ -119,10 +128,7 @@ export class User {
             return;
           }
 
-          rule = this.service.getSiteSelector(
-            site.host as string,
-            "userExtendInfo"
-          );
+          rule = this.service.getSiteSelector(site, "userExtendInfo");
 
           if (!rule) {
             this.updateStatus(site, userInfo);
@@ -131,7 +137,7 @@ export class User {
           }
 
           if (userInfo.name || userInfo.id) {
-            let url = `${site.url}${rule.page
+            let url = `${this.getSiteURL(site)}${rule.page
               .replace("$user.id$", userInfo.id)
               .replace("$user.name$", userInfo.name)}`;
             // 上次请求未完成时，直接返回最近的数据
@@ -169,7 +175,6 @@ export class User {
         .catch((error: any) => {
           userInfo.lastUpdateStatus = EUserDataRequestStatus.unknown;
           this.updateStatus(site, userInfo);
-          delete this.requestQueue[`${site.host}-base`];
           rejectFN(APP.createErrorMessage(error));
         });
     });
@@ -187,15 +192,30 @@ export class User {
 
       selectors.forEach((name: string) => {
         let host = site.host as string;
-        let rule = this.service.getSiteSelector(host, name);
+        let rule = this.service.getSiteSelector(site, name);
 
         if (rule) {
-          let url = `${site.url}${rule.page
+          let url = `${this.getSiteURL(site)}${rule.page
             .replace("$user.id$", userInfo.id)
             .replace("$user.name$", userInfo.name)}`;
           // 上次请求未完成时，跳过
           if (this.checkQueue(host, url)) {
             return;
+          }
+
+          // 执行该规则的前提条件（条件表达式）
+          if (rule.prerequisites) {
+            // user 用于条件中执行的内容
+            const user = userInfo;
+            try {
+              let result = eval(rule.prerequisites);
+              if (result !== true) {
+                return;
+              }
+            } catch (error) {
+              console.log(error);
+              return;
+            }
           }
 
           requests.push(this.getInfos(host, url, rule));
@@ -250,12 +270,18 @@ export class User {
           this.removeQueue(host, url);
           PPF.updateBadge(--this.requestQueueCount);
           let content: any;
-          if (rule.dataType !== ERequestResultType.JSON) {
-            let doc = new DOMParser().parseFromString(result, "text/html");
-            // 构造 jQuery 对象
-            content = $(doc).find("body");
-          } else {
-            content = JSON.parse(result);
+          try {
+            if (rule.dataType !== ERequestResultType.JSON) {
+              let doc = new DOMParser().parseFromString(result, "text/html");
+              // 构造 jQuery 对象
+              content = $(doc).find("body");
+            } else {
+              content = JSON.parse(result);
+            }
+          } catch (error) {
+            this.service.debug(error);
+            reject(error);
+            return;
           }
 
           if (content && rule) {
