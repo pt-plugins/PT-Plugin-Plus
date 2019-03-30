@@ -1,0 +1,9 @@
+{
+  "name": "LzTr",
+  "description": "music",
+  "url": "https://lztr.me/",
+  "icon": "https://lztr.me/favicon.ico",
+  "tags": ["音乐"],
+  "schema": "Gazelle",
+  "host": "lztr.me"
+}
