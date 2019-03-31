@@ -5,5 +5,13 @@
   "description": "高清剧集",
   "icon": "https://hdstreet.club/favicon.ico",
   "host": "hdstreet.club",
-  "collaborator": "wyl219"
+  "collaborator": "wyl219",
+  "searchEntry": [{
+    "entry": "/torrents.php?search=$key$&notnewword=1",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "/sites/yingk.com/getSearchResult.js",
+    "resultSelector": "table.torrents:last > tbody > tr",
+    "enabled": true
+  }]
 }
