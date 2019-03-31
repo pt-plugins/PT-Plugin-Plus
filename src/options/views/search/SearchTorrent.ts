@@ -1111,6 +1111,20 @@ export default Vue.extend({
     showAllContentMenus(event: any) {
       let clients: any[] = [];
       let menus: any[] = [];
+      let _this = this;
+
+      function addMenu(item: any) {
+        let title = `下载到：${item.client.name} -> ${item.client.address}`;
+        if (item.path) {
+          title += ` -> ${item.path}`;
+        }
+        menus.push({
+          title: title,
+          fn: () => {
+            _this.sendSelectedToClient(undefined, 0, item);
+          }
+        });
+      }
 
       if (this.clientContentMenus.length == 0) {
         this.options.clients.forEach((client: DownloadClient) => {
@@ -1121,34 +1135,25 @@ export default Vue.extend({
         });
         clients.forEach((item: any) => {
           if (item.client && item.client.name) {
-            menus.push({
-              title: `下载到：${item.client.name} -> ${item.client.address}`,
-              fn: () => {
-                this.sendSelectedToClient(undefined, 0, item);
-              }
-            });
+            addMenu(item);
 
-            // 添加适用于所有站点的目录
-            let publicPaths = item.client.paths[ECommonKey.allSite];
-            if (publicPaths) {
-              publicPaths.forEach((path: string) => {
-                // 去除带关键字的目录
-                if (
-                  path.indexOf("$site.name$") == -1 &&
-                  path.indexOf("$site.host$") == -1 &&
-                  path.indexOf("<...>") == -1
-                ) {
-                  item.path = path;
-                  menus.push({
-                    title: `下载到：${item.client.name} -> ${
-                      item.client.address
-                    } -> ${path}`,
-                    fn: () => {
-                      this.sendSelectedToClient(undefined, 0, item);
-                    }
-                  });
-                }
-              });
+            if (item.client.paths) {
+              // 添加适用于所有站点的目录
+              let publicPaths = item.client.paths[ECommonKey.allSite];
+              if (publicPaths) {
+                publicPaths.forEach((path: string) => {
+                  // 去除带关键字的目录
+                  if (
+                    path.indexOf("$site.name$") == -1 &&
+                    path.indexOf("$site.host$") == -1 &&
+                    path.indexOf("<...>") == -1
+                  ) {
+                    let _item = this.clone(item);
+                    _item.path = path;
+                    addMenu(_item);
+                  }
+                });
+              }
             }
           } else {
             menus.push({});
