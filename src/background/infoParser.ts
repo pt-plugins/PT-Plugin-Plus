@@ -1,5 +1,5 @@
 import { Dictionary, ERequestResultType } from "@/interface/common";
-import moment from "moment";
+import dayjs from "dayjs";
 import PTPlugin from "./service";
 type Service = PTPlugin;
 export class InfoParser {
@@ -82,7 +82,7 @@ export class InfoParser {
 
     let result = null;
     // 该变量 dateTime 用于 eval 内部执行，不可删除或改名
-    let dateTime = moment;
+    let dateTime = dayjs;
     let _self = this;
     if (query != null) {
       if (config.attribute || config.filters) {

@@ -4,7 +4,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import { filters } from "@/service/filters";
-import moment from "moment";
+import dayjs from "dayjs";
 
 (function main() {
   Vue.config.productionTip = false;
@@ -23,8 +23,8 @@ import moment from "moment";
     if (!val) {
       return "";
     }
-    if (moment(val).isValid()) {
-      return moment(val).format(format);
+    if (dayjs(val).isValid()) {
+      return dayjs(val).format(format);
     }
     return val;
   });

@@ -22,7 +22,7 @@ import {
   ECommonKey
 } from "@/interface/common";
 import { filters } from "@/service/filters";
-import moment from "moment";
+import dayjs from "dayjs";
 import { Downloader, downloadFile } from "@/service/downloader";
 import * as basicContext from "basiccontext";
 import { PathHandler } from "@/service/pathHandler";
@@ -369,7 +369,7 @@ export default Vue.extend({
       }
 
       this.searchSiteCount = sites.length;
-      this.beginTime = moment();
+      this.beginTime = dayjs();
       this.writeLog({
         event: `SearchTorrent.Search.Start`,
         msg: `准备开始搜索，共需搜索 ${sites.length} 个站点`,
@@ -537,11 +537,7 @@ export default Vue.extend({
         if (this.searchQueue.length == 0) {
           this.searchMsg = `搜索完成，共找到 ${
             this.datas.length
-          } 条结果，耗时：${moment().diff(
-            this.beginTime,
-            "seconds",
-            true
-          )} 秒。`;
+          } 条结果，耗时：${dayjs().diff(this.beginTime, "second", true)} 秒。`;
           this.loading = false;
           this.writeLog({
             event: `SearchTorrent.Search.Finished`,
@@ -570,9 +566,9 @@ export default Vue.extend({
           return;
         }
 
-        if (moment(item.time).isValid()) {
+        if (dayjs(item.time).isValid()) {
           // 转成整数是为了排序
-          item.time = moment(item.time).valueOf();
+          item.time = dayjs(item.time).valueOf();
         } else if (typeof item.time == "string") {
           let time = filters.timeAgoToNumber(item.time);
           if (time > 0) {
@@ -1191,7 +1187,7 @@ export default Vue.extend({
 
       this.searchResult.failedSites = [];
 
-      this.beginTime = moment();
+      this.beginTime = dayjs();
       this.writeLog({
         event: `SearchTorrent.Search.Start`,
         msg: `准备开始搜索，共需搜索 ${sites.length} 个站点`,
