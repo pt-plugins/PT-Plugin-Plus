@@ -1,0 +1,9 @@
+{
+  "name": "BTN",
+  "description": "著名剧集站点，又被戏称为鼻涕妞",
+  "url": "http://broadcasthe.net/",
+  "icon": "http://broadcasthe.net/favicon.ico",
+  "tags": ["剧集", "0day"],
+  "schema": "Gazelle",
+  "host": "broadcasthe.net"
+}
