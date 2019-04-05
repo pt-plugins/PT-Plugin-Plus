@@ -1,0 +1,153 @@
+{
+  "name": "CCFBits",
+  "description": "",
+  "url": "http://ccfbits.org/",
+  "icon": "http://ccfbits.org/favicon.ico",
+  "tags": [
+    "影视",
+    "剧集",
+    "综合"
+  ],
+  "host": "ccfbits.org",
+  "plugins": [
+    {
+      "name": "种子详情页面",
+      "pages": [
+        "^/t/(\\d+)/$",
+        "/details.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/site/totheglory.im/details.js"
+      ]
+    },
+    {
+      "name": "种子列表",
+      "pages": [
+        "/browse.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/site/totheglory.im/browse.js"
+      ]
+    }
+  ],
+  "collaborator": "Rhilip",
+  "searchEntry": [
+    {
+      "entry": "browse.php?search=$key$&notnewword=1",
+      "name": "全站",
+      "resultType": "html",
+      "parseScriptFile": "getSearchResult.js",
+      "enabled": true
+    }
+  ],
+  "torrentTagSelectors": [
+    {
+      "name": "Free",
+      "selector": "font[color=\"#C20603\"]:contains('免费')",
+      "color": "blue"
+    },
+    {
+      "name": "30%",
+      "selector": "font[color=\"#C20603\"]:contains('0.3x')",
+      "color": "indigo"
+    },
+    {
+      "name": "50%",
+      "selector": "font[color=\"#C20603\"]:contains('0.5x')",
+      "color": "orange"
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": "a[href*='userdetails.php']:first",
+          "attribute": "href",
+          "filters": [
+            "query ? query.getQueryString('id'):''"
+          ]
+        },
+        "name": {
+          "selector": "a[href*='userdetails.php']:first"
+        },
+        "isLogged": {
+          "selector": [
+            "a[href*='logout.php']"
+          ],
+          "filters": [
+            "query.length>0"
+          ]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": [
+            "td.rowhead:contains('上传量') + td",
+            "td.rowhead:contains('上傳量') + td"
+          ],
+          "filters": [
+            "query.eq(0)",
+            "query.text().sizeToNumber()"
+          ]
+        },
+        "downloaded": {
+          "selector": [
+            "td.rowhead:contains('下载量') + td",
+            "td.rowhead:contains('下載量') + td"
+          ],
+          "filters": [
+            "query.eq(0)",
+            "query.text().sizeToNumber()"
+          ]
+        },
+        "levelName": {
+          "selector": [
+            "td.rowhead:contains('等级') + td",
+            "td.rowhead:contains('等級') + td"
+          ]
+        },
+        "bonus": {
+          "selector": [
+            "td.rowhead:contains('积分') + td",
+            "td.rowhead:contains('積分') + td"
+          ],
+          "filters": [
+            "parseFloat(query.text())"
+          ]
+        },
+        "joinTime": {
+          "selector": [
+            "td.rowhead:contains('注册日期') + td",
+            "td.rowhead:contains('註冊日期') + td"
+          ],
+          "filters": [
+            "dateTime(query.text()).isValid()?dateTime(query.text()).valueOf():query.text()"
+          ]
+        },
+        "seeding": {
+          "selector": [
+            "div#ka1 tr:not(:eq(0))"
+          ],
+          "filters": [
+            "query.length"
+          ]
+        },
+        "seedingSize": {
+          "selector": [
+            "div#ka1 tr:not(:eq(0))"
+          ],
+          "filters": [
+            "jQuery.map(query.find('td:eq(3)'), (item)=>{return $(item).text();})",
+            "_self.getTotalSize(query)"
+          ]
+        }
+      }
+    }
+  }
+}
