@@ -88,7 +88,7 @@
           "filters": ["query.next().find('img').attr('title')"]
         },
         "bonus": {
-          "selector": ["td.rowhead:contains('魔力值') + td", "td.rowhead:contains('UCoin') + td", "td.rowhead:contains('猫粮') + td", "td.rowfollow:contains('魔力值')"],
+          "selector": ["td.rowhead:contains('魔力') + td", "td.rowhead:contains('UCoin') + td", "td.rowhead:contains('猫粮') + td", "td.rowfollow:contains('魔力值')"],
           "filters": ["query.is(\":contains('魔力值:')\")?query.text().replace(/,/g,'').match(/魔力值.+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')", "parseFloat(query)"]
         },
         "joinTime": {
