@@ -2,7 +2,11 @@
   <v-footer app fixed>
     <span class="pl-2 grey--text text--darken-1">
       &copy; 栽培者 2019, 版本 {{version}}
-      <v-chip label outline color="orange" disabled small v-if="isDebugMode">{{ words.isDebugMode }}</v-chip>
+      <span
+        v-if="isDevelopmentMode"
+        class="deep-orange--text"
+      >{{ words.developmentMode }}</span>
+      <v-chip label outline color="orange" disabled small v-if="isDebugMode">{{ words.debugMode }}</v-chip>
       <v-btn
         outline
         color="success"
@@ -20,15 +24,18 @@
 <script lang="ts">
 import { APP, API } from "@/service/api";
 import Vue from "vue";
+import { EInstallType } from "@/interface/enum";
 export default Vue.extend({
   data() {
     return {
       words: {
-        isDebugMode: APP.debugMode ? "当前处于调试模式" : "",
-        newReleases: "有更新可用"
+        debugMode: "当前处于调试模式",
+        newReleases: "有更新可用",
+        developmentMode: "zip"
       },
       version: "",
       isDebugMode: APP.debugMode,
+      isDevelopmentMode: true,
       newReleases: false,
       releasesVersion: ""
     };
@@ -41,6 +48,12 @@ export default Vue.extend({
       this.version = "localVersion";
     }
     this.checkUpdate();
+    APP.getInstallType().then(result => {
+      console.log(result, EInstallType.development);
+      if (result == EInstallType.development) {
+        this.isDevelopmentMode = true;
+      }
+    });
   },
   methods: {
     checkUpdate() {

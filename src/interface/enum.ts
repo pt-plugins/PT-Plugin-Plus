@@ -208,3 +208,11 @@ export enum EUserDataRequestStatus {
 export enum ECommonKey {
   allSite = "__allSite__"
 }
+
+/**
+ * 插件安装方式
+ */
+export enum EInstallType {
+  development = "development",
+  normal = "normal"
+}

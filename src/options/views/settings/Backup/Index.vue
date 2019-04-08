@@ -13,37 +13,39 @@
           <span class="ml-1">{{ words.restore }}</span>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn
-          color="success"
-          @click="backupToGoogle"
-          :loading="status.backupToGoogle"
-          :disabled="status.backupToGoogle"
-          :title="words.backupToGoogle"
-        >
-          <v-icon>backup</v-icon>
-          <span class="ml-1">{{ words.backupToGoogle }}</span>
-        </v-btn>
-        <v-btn
-          color="info"
-          @click="restoreFromGoogle"
-          :loading="status.restoreFromGoogle"
-          :disabled="status.restoreFromGoogle"
-          :title="words.restoreFromGoogle"
-        >
-          <v-icon>cloud_download</v-icon>
-          <span class="ml-1">{{ words.restoreFromGoogle }}</span>
-        </v-btn>
+        <div v-if="!isDevelopmentMode">
+          <v-btn
+            color="success"
+            @click="backupToGoogle"
+            :loading="status.backupToGoogle"
+            :disabled="status.backupToGoogle"
+            :title="words.backupToGoogle"
+          >
+            <v-icon>backup</v-icon>
+            <span class="ml-1">{{ words.backupToGoogle }}</span>
+          </v-btn>
+          <v-btn
+            color="info"
+            @click="restoreFromGoogle"
+            :loading="status.restoreFromGoogle"
+            :disabled="status.restoreFromGoogle"
+            :title="words.restoreFromGoogle"
+          >
+            <v-icon>cloud_download</v-icon>
+            <span class="ml-1">{{ words.restoreFromGoogle }}</span>
+          </v-btn>
 
-        <v-btn
-          color="error"
-          @click="clearFromGoogle"
-          :loading="status.clearFromGoogle"
-          :disabled="status.clearFromGoogle"
-          :title="words.clearFromGoogleTip"
-        >
-          <v-icon>delete_sweep</v-icon>
-          <span class="ml-1">{{ words.clearFromGoogle }}</span>
-        </v-btn>
+          <v-btn
+            color="error"
+            @click="clearFromGoogle"
+            :loading="status.clearFromGoogle"
+            :disabled="status.clearFromGoogle"
+            :title="words.clearFromGoogleTip"
+          >
+            <v-icon>delete_sweep</v-icon>
+            <span class="ml-1">{{ words.clearFromGoogle }}</span>
+          </v-btn>
+        </div>
       </v-card-actions>
     </v-card>
     <v-alert :value="true" color="grey">{{words.subTitle}}</v-alert>
@@ -93,7 +95,8 @@ export default Vue.extend({
         backupToGoogle: false,
         restoreFromGoogle: false,
         clearFromGoogle: false
-      }
+      },
+      isDevelopmentMode: false
     };
   },
   mounted() {
@@ -102,6 +105,16 @@ export default Vue.extend({
   },
   beforeDestroy() {
     this.fileInput.removeEventListener("change", this.restoreFile);
+  },
+  created() {
+    if (chrome && chrome.management) {
+      chrome.management.getSelf(result => {
+        // 安装于开发者模式
+        if (result.installType == "development") {
+          this.isDevelopmentMode = true;
+        }
+      });
+    }
   },
   methods: {
     backup() {

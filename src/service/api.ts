@@ -17,6 +17,7 @@ try {
   if (!rootPath) {
     rootPath = `chrome-extension://${chrome.runtime.id}`;
   }
+
   console.log("is extension mode.");
 } catch (error) {
   console.log("is not extension mode.");
@@ -252,6 +253,17 @@ export const APP = {
     setTimeout(() => {
       chrome.notifications.clear(id, () => {});
     }, 3000);
+  },
+  getInstallType(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (chrome && chrome.management) {
+        chrome.management.getSelf(result => {
+          resolve(result.installType);
+        });
+      } else {
+        reject();
+      }
+    });
   }
 };
 
