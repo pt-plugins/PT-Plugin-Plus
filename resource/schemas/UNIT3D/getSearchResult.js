@@ -74,35 +74,35 @@
         }
 
         // 发布时间
-        if (cell.find("a[href*='created_at']").length) {
+        if (cell.find("a[href*='created_at']").length || cell.find("i.fa-clock").length) {
           fieldIndex.time = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 大小
-        if (cell.find("a[href*='size']").length) {
+        if (cell.find("a[href*='size']").length || cell.find("i.fa-file").length) {
           fieldIndex.size = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 种子数
-        if (cell.find("a[href*='seed']").length) {
+        if (cell.find("a[href*='seed']").length || cell.find("i.fa-arrow-circle-up").length) {
           fieldIndex.seeders = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 下载数
-        if (cell.find("a[href*='leech']").length) {
+        if (cell.find("a[href*='leech']").length || cell.find("i.fa-arrow-circle-down").length) {
           fieldIndex.leechers = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 完成数
-        if (cell.find("a[href*='complete']").length) {
+        if (cell.find("a[href*='complete']").length || cell.find("i.fa-check-square").length) {
           fieldIndex.completed = index;
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;

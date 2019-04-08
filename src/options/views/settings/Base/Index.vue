@@ -216,7 +216,7 @@ export default Vue.extend({
         clearCacheConfirm:
           "确认要清除缓存吗？清除完成后，下次将会从官网中重新下载系统配置信息。",
         needConfirmWhenExceedSize:
-          "当要下载的种子总体积超过以下大小时需要确认。",
+          "当批量下载的种子总体积超过以下大小时需要确认。",
         exceedSize: "大小",
         searchResultRows: "搜索时每站点返回结果数量",
         saveDownloadHistory: "记录每次一键发送的种子信息，以供导出备份",

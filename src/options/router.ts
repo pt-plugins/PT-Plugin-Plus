@@ -107,6 +107,11 @@ export default new Router({
       path: "/dev-team",
       name: "dev-team",
       component: () => import("./views/Teams.vue")
+    },
+    {
+      path: "/user-data-timeline",
+      name: "user-data-timeline",
+      component: () => import("./views/UserDataTimeline.vue")
     }
   ]
 });

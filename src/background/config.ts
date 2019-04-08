@@ -101,7 +101,8 @@ class Config {
             "selectors",
             "patterns",
             "torrentTagSelectors",
-            "icon"
+            "icon",
+            "activeURL"
           ].forEach((key: string) => {
             let _item = item as any;
             if (_item[key]) {
@@ -261,6 +262,15 @@ class Config {
           this.options.sites[index] = _site;
         }
       });
+
+    // 设置当前需要使用的URL地址
+    this.options.sites.forEach((site: Site) => {
+      if (site.cdn && site.cdn.length > 0) {
+        site.activeURL = site.cdn[0];
+      } else {
+        site.activeURL = site.url;
+      }
+    });
 
     // 升级不存在的配置项
     this.options.clients &&

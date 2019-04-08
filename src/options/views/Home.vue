@@ -32,6 +32,9 @@
           <v-icon class="mr-2">cached</v-icon>
           {{words.getInfos}}
         </v-btn>
+        <v-btn to="/user-data-timeline" color="success">
+          <v-icon class="mr-2">timeline</v-icon>
+        </v-btn>
         <v-switch
           v-model="isSecret"
           class="ml-2 mt-4"
@@ -58,20 +61,21 @@
         :pagination.sync="pagination"
         item-key="host"
         class="elevation-1"
+        ref="userDataTable"
       >
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
           <td class="center">
+            <v-avatar size="18" @click.stop="getSiteUserInfo(props.item)">
+              <img :src="props.item.icon">
+            </v-avatar>
+            <br>
             <a
-              :href="props.item.url"
+              :href="props.item.activeURL"
               target="_blank"
               rel="noopener noreferrer nofollow"
               class="nodecoration"
             >
-              <v-avatar size="18" @click.stop="getSiteUserInfo(props.item)">
-                <img :src="props.item.icon">
-              </v-avatar>
-              <br>
               <span class="caption">{{ props.item.name }}</span>
             </a>
           </td>
@@ -127,7 +131,9 @@ import {
   Site,
   LogItem,
   EModule,
-  EUserDataRequestStatus
+  EUserDataRequestStatus,
+  Options,
+  UserInfo
 } from "@/interface/common";
 import moment from "moment";
 
@@ -181,7 +187,8 @@ export default Vue.extend({
   },
 
   methods: {
-    init() {
+    resetSites() {
+      this.sites = [];
       this.options.sites.forEach((site: Site) => {
         if (site.allowGetUserInfo) {
           if (!site.user) {
@@ -191,10 +198,22 @@ export default Vue.extend({
               isLogged: false,
               isLoading: false
             };
+          } else {
+            this.formatUserInfo(site.user);
           }
-          this.sites.push(Object.assign({}, site));
+          this.sites.push(site);
         }
       });
+    },
+
+    init() {
+      extension
+        .sendRequest(EAction.readConfig)
+        .then((options: Options) => {
+          this.options = this.clone(options);
+          this.resetSites();
+        })
+        .catch();
     },
     getInfos() {
       this.loading = true;
@@ -237,6 +256,7 @@ export default Vue.extend({
       let index = this.requestQueue.findIndex((item: any) => {
         return item.host === site.host;
       });
+      (site.user as any).isLoading = false;
       if (index !== -1) {
         this.requestQueue.splice(index, 1);
         if (this.requestQueue.length == 0) {
@@ -250,10 +270,26 @@ export default Vue.extend({
             event: `Home.getUserInfo.Finished`,
             msg: this.requestMsg
           });
+          // 重置站点信息，因为有时候加载完成后，某些行还显示正在加载，暂时未明是哪里问题
+          this.sites = this.clone(this.sites);
         }
       }
     },
-
+    /**
+     * 格式化一些用户信息
+     */
+    formatUserInfo(user: UserInfo) {
+      let downloaded = user.downloaded as number;
+      let uploaded = user.uploaded as number;
+      // 没有下载量时设置分享率为无限
+      if (downloaded == 0 && uploaded > 0) {
+        user.ratio = -1;
+      }
+      // 没有分享率时，重新以 上传量 / 下载量计算
+      else if (downloaded > 0 && !user.ratio) {
+        user.ratio = uploaded / downloaded;
+      }
+    },
     /**
      * 获取站点用户信息
      */
@@ -273,16 +309,7 @@ export default Vue.extend({
           console.log(result);
           if (result && result.name) {
             user = Object.assign(user, result);
-            let downloaded = user.downloaded as number;
-            let uploaded = user.uploaded as number;
-            // 没有下载量时设置分享率为无限
-            if (downloaded == 0 && uploaded > 0) {
-              user.ratio = -1;
-            }
-            // 没有分享率时，重新以 上传量 / 下载量计算
-            else if (downloaded > 0 && !user.ratio) {
-              user.ratio = uploaded / downloaded;
-            }
+            this.formatUserInfo(user);
           }
         })
         .catch(result => {
@@ -294,7 +321,6 @@ export default Vue.extend({
           }
         })
         .finally(() => {
-          user.isLoading = false;
           this.removeQueue(site);
         });
     },
@@ -315,6 +341,14 @@ export default Vue.extend({
           });
           this.removeQueue(site);
         });
+    },
+
+    /**
+     * 用JSON对象模拟对象克隆
+     * @param source
+     */
+    clone(source: any) {
+      return JSON.parse(JSON.stringify(source));
     }
   },
 
@@ -323,7 +357,11 @@ export default Vue.extend({
       if (v > 10000 || v == -1) {
         return "∞";
       }
-      return v;
+      let number = parseFloat(v);
+      if (isNaN(number)) {
+        return "-";
+      }
+      return number.toFixed(2);
     }
   }
 });

@@ -381,7 +381,11 @@ String.prototype.getQueryString = function (name, split) {
       }
       let results = [];
       let clients = [];
-      let host = urlParser.host;
+      let site = PTService.getSiteFromHost(urlParser.host);
+      if (!site) {
+        return [];
+      }
+      let host = site.host;
 
       if (this.siteContentMenus[host]) {
         return this.siteContentMenus[host];
