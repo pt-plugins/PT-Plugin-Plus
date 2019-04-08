@@ -19,11 +19,12 @@ import {
   SearchEntry,
   DownloadClient,
   DownloadOptions,
-  ECommonKey
+  ECommonKey,
+  ERequsetType
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import dayjs from "dayjs";
-import { Downloader, downloadFile } from "@/service/downloader";
+import { Downloader, downloadFile, FileDownloader } from "@/service/downloader";
 import * as basicContext from "basiccontext";
 import { PathHandler } from "@/service/pathHandler";
 
@@ -876,7 +877,8 @@ export default Vue.extend({
         item.url &&
           files.push({
             url: item.url,
-            fileName: `[${item.site.name}][${item.title}].torrent`
+            fileName: `[${item.site.name}][${item.title}].torrent`,
+            method: item.site.downloadMethod
           });
       });
       console.log(files);
@@ -906,6 +908,25 @@ export default Vue.extend({
           }
         });
       }
+    },
+    /**
+     * 保存当前行的种子文件
+     * @param item
+     */
+    saveTorrentFile(item: SearchResultItem) {
+      let requestType = ERequsetType.GET;
+      if (item.site) {
+        requestType = item.site.downloadMethod || ERequsetType.GET;
+      }
+      let url = item.url + "";
+      let file = new FileDownloader({
+        url,
+        timeout: this.options.connectClientTimeout,
+        fileName: `[${item.site.name}][${item.title}].torrent`
+      });
+
+      file.requsetType = requestType;
+      file.start();
     },
     /**
      * 发送已选择的种子到下载服务器

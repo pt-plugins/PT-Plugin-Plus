@@ -6,6 +6,7 @@ export type downloadFile = {
   fileName?: string;
   getDataOnly?: boolean;
   timeout?: number;
+  method?: ERequsetType;
 };
 
 export type downloadOptions = {
@@ -92,6 +93,7 @@ export class FileDownloader {
     this.url = options.url;
     this.getDataOnly = options.getDataOnly || false;
     this.timeout = options.timeout || 0;
+    this.requsetType = options.method || ERequsetType.GET;
   }
 
   public start() {
@@ -191,7 +193,7 @@ export class FileDownloader {
       let item = items[index];
       let tmp = item.replace(" ", "").split("=");
       if (tmp.length == 2) {
-        fields[tmp[0]] = tmp[1];
+        fields[tmp[0]] = tmp[1].trim();
       }
     }
     let fileName;

@@ -381,7 +381,7 @@
                   :key="index"
                 >{{ tag.name }}</span>
               </span>
-              
+
               <span v-if="props.item.subTitle">{{props.item.subTitle}}</span>
             </div>
           </td>
@@ -418,7 +418,16 @@
               :title="words.sendToClient"
             >cloud_download</v-icon>
 
+            <v-icon
+              @click.stop="saveTorrentFile(props.item)"
+              small
+              class="mr-2"
+              :title="words.save"
+              v-if="props.item.site.downloadMethod=='POST'"
+            >get_app</v-icon>
+
             <a
+              v-else
               :href="props.item.url"
               target="_blank"
               rel="noopener noreferrer nofollow"
