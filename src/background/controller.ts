@@ -46,6 +46,8 @@ export default class Controller {
 
   public contentPages: any[] = [];
 
+  private imageBase64Cache: Dictionary<any> = {};
+
   constructor(public service: Service) {}
 
   public init(options: Options) {
@@ -770,6 +772,11 @@ export default class Controller {
    */
   public getBase64FromImageUrl(url: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      let data = this.imageBase64Cache[url];
+      if (data) {
+        resolve(data);
+        return;
+      }
       let file = new FileDownloader({
         url,
         getDataOnly: true,
@@ -780,7 +787,8 @@ export default class Controller {
         console.log("getBase64FromImageUrl.completed", url);
         if (file.content && /image/gi.test(file.content.type)) {
           var reader = new FileReader();
-          reader.onloadend = function() {
+          reader.onloadend = () => {
+            this.imageBase64Cache[url] = reader.result;
             resolve(reader.result);
           };
           reader.readAsDataURL(file.content);

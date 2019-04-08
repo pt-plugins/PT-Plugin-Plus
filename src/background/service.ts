@@ -69,7 +69,8 @@ export default class PTPlugin {
           EAction.saveConfig,
           EAction.saveUIOptions,
           EAction.openOptions,
-          EAction.getClearedOptions
+          EAction.getClearedOptions,
+          EAction.getBase64FromImageUrl
         ].includes(request.action)
       ) {
         this.logger.add({

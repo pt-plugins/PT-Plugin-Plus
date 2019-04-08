@@ -19,6 +19,9 @@
           <v-btn flat icon class="white--text" @click="share" v-if="!shareing" :title="words.share">
             <v-icon>share</v-icon>
           </v-btn>
+          <v-btn flat icon class="white--text" to="/home" v-if="!shareing" :title="words.close">
+            <v-icon>close</v-icon>
+          </v-btn>
           <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="shareing"></v-progress-circular>
         </v-card-actions>
 
@@ -52,10 +55,10 @@
               </template>
               <template v-slot:opposite>
                 <div class="headline font-weight-bold">{{ site.user.joinTime | timeAgo }}</div>
-                <div
-                  class="caption"
-                  v-if="showUserName"
-                >{{ site.user.name }} &lt;{{ site.user.levelName }}&gt;</div>
+                <div class="caption">
+                  <span v-if="showUserName" class="mr-2">{{ site.user.name }}</span>
+                  <span v-if="showUserLevel">&lt;{{ site.user.levelName }}&gt;</span>
+                </div>
               </template>
               <div>
                 <v-divider v-if="i>0" class="mb-2"></v-divider>
@@ -79,8 +82,9 @@
     </div>
 
     <div class="toolbar">
-      <v-switch color="success" v-model="showUserName" :label="words.userName" class="my-0"></v-switch>
       <v-switch color="success" v-model="showSiteName" :label="words.siteName" class="my-0"></v-switch>
+      <v-switch color="success" v-model="showUserName" :label="words.userName" class="my-0"></v-switch>
+      <v-switch color="success" v-model="showUserLevel" :label="words.userLevel" class="my-0"></v-switch>
     </div>
   </div>
 </template>
@@ -99,7 +103,9 @@ export default Vue.extend({
       words: {
         share: "生成分享图片",
         siteName: "网站名称",
-        userName: "用户名称"
+        userName: "用户名称",
+        userLevel: "用户等级",
+        close: "关闭"
       },
       shareMessage: "这些年走过的路",
       displayUserName: "",
@@ -133,7 +139,9 @@ export default Vue.extend({
       shareTime: new Date(),
       shareing: false,
       showUserName: true,
-      showSiteName: true
+      showSiteName: true,
+      showUserLevel: true,
+      iconCache: {} as Dictionary<any>
     };
   },
   created() {
@@ -166,6 +174,13 @@ export default Vue.extend({
     formatData() {
       let userNames: Dictionary<any> = {};
       let result = this.infos;
+      result.total = {
+        uploaded: 0,
+        downloaded: 0,
+        seedingSize: 0,
+        ratio: -1,
+        seeding: 0
+      };
 
       let sites: Site[] = [];
       this.sites.forEach((site: Site) => {
@@ -246,7 +261,7 @@ export default Vue.extend({
       this.infos.total.ratio = this.getRatio(this.infos.total);
       setTimeout(() => {
         this.replaceImageToBase64();
-      }, 1000);
+      }, 200);
     },
     getRatio(info: any): number {
       let downloaded = info.downloaded as number;
@@ -271,14 +286,17 @@ export default Vue.extend({
       let div = this.$refs.userDataCard as HTMLDivElement;
       this.shareing = true;
       this.shareTime = new Date();
-      html2canvas(div, {}).then(canvas => {
-        canvas.toBlob((blob: any) => {
-          if (blob) {
-            FileSaver.saveAs(blob, "PT-Plugin-Plus-UserData.png");
-          }
-          this.shareing = false;
+      this.formatData();
+      setTimeout(() => {
+        html2canvas(div, {}).then(canvas => {
+          canvas.toBlob((blob: any) => {
+            if (blob) {
+              FileSaver.saveAs(blob, "PT-Plugin-Plus-UserData.png");
+            }
+            this.shareing = false;
+          });
         });
-      });
+      }, 500);
     },
 
     /**
@@ -291,9 +309,14 @@ export default Vue.extend({
       imgs.each((index, el) => {
         let src = $(el).attr("src") + "";
         if (src.indexOf("http") > -1) {
+          if (this.iconCache[src]) {
+            $(el).attr("src", this.iconCache[src]);
+            return;
+          }
           extension
             .sendRequest(EAction.getBase64FromImageUrl, null, src)
             .then(result => {
+              this.iconCache[src] = result;
               $(el).attr("src", result);
             })
             .catch(e => {
