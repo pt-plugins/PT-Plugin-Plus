@@ -12,57 +12,7 @@
        * 初始化按钮列表
        */
       initButtons() {
-        // 添加下载按钮
-        PTService.addButton({
-          title: `将当前页面所有种子下载到[${this.defaultClientOptions.name}]`,
-          icon: "get_app",
-          label: "下载所有",
-          click: (success, error) => {
-            if (!PTService.site.passkey) {
-              error("请先设置站点密钥（Passkey）。");
-              return;
-            }
-
-            if (!this.confirmSize($("#torrent_table").find("td[align='center']:contains('MB'),td[align='center']:contains('GB'),td[align='center']:contains('TB')"))) {
-              error("容量超限，已取消");
-              return;
-            }
-
-            let urls = this.getDownloadURLs();
-
-            this.downloadURLs(urls, urls.length, (msg) => {
-              success({
-                msg
-              });
-            });
-
-          }
-        });
-
-        // 复制下载链接
-        PTService.addButton({
-          title: "复制下载链接到剪切板",
-          icon: "file_copy",
-          label: "复制链接",
-          click: (success, error) => {
-            if (!PTService.site.passkey) {
-              error("请先设置站点密钥（Passkey）。");
-              return;
-            }
-
-            let urls = this.getDownloadURLs();
-
-            PTService.call(
-              PTService.action.copyTextToClipboard,
-              urls.join("\n")
-            ).then((result) => {
-              console.log("命令执行完成", result);
-              success();
-            }).catch(() => {
-              error()
-            });
-          }
-        })
+        this.initListButtons(true);
       }
 
       /**
@@ -74,6 +24,10 @@
           let id = $(item).attr("tid");
           return this.getDownloadURL(id);
         });
+
+        if (links.length == 0) {
+          return "获取下载链接失败，未能正确定位到链接";
+        }
 
         return urls;
       }
@@ -138,6 +92,13 @@
         }).catch((result) => {
           callback(result);
         });
+      }
+
+      /**
+       * 确认大小是否超限
+       */
+      confirmWhenExceedSize() {
+        return this.confirmSize($("#torrent_table").find("td[align='center']:contains('MB'),td[align='center']:contains('GB'),td[align='center']:contains('TB')"));
       }
     }
     (new App()).init();
