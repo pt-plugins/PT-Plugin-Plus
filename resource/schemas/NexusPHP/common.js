@@ -12,6 +12,7 @@ String.prototype.getQueryString = function (name, split) {
   class Common {
     constructor() {
       this.siteContentMenus = {};
+      this.clientContentMenus = [];
       this.defaultPath = PTService.getSiteDefaultPath();
       this.downloadClientType = PTService.downloadClientType;
       this.defaultClientOptions = PTService.getClientOptions();
@@ -61,6 +62,65 @@ String.prototype.getQueryString = function (name, split) {
       this.addCopyTextToClipboardButton();
 
       this.initFreeSpaceButton();
+    }
+
+    /**
+     * 初始化种子列表页面按钮
+     */
+    initListButtons() {
+      // 添加下载按钮
+      this.defaultClientOptions && PTService.addButton({
+        title: `将当前页面所有种子下载到[${this.defaultClientOptions.name}]`,
+        icon: "get_app",
+        label: "下载所有",
+        click: (success, error) => {
+          this.startDownloadURLs(success, error);
+        }
+      });
+
+      // 添加下载到按钮
+      PTService.addButton({
+        title: `将当前页面所有种子下载到指定服务器`,
+        icon: "save_alt",
+        type: PTService.buttonType.popup,
+        label: "下载到…",
+        /**
+         * 单击事件
+         * @param success 成功回调事件
+         * @param error 失败回调事件
+         * @param event 当前按钮事件
+         * 
+         * 两个事件必需执行一个，可以传递一个参数
+         */
+        click: (success, error, event) => {
+          this.showAllContentMenus(event.originalEvent, success, error);
+        }
+      });
+
+      // 复制下载链接
+      PTService.addButton({
+        title: "复制下载链接到剪切板",
+        icon: "file_copy",
+        label: "复制链接",
+        click: (success, error) => {
+          let urls = this.getDownloadURLs();
+
+          if (!urls.length) {
+            error(urls);
+            return;
+          }
+
+          PTService.call(
+            PTService.action.copyTextToClipboard,
+            urls.join("\n")
+          ).then((result) => {
+            console.log("命令执行完成", result);
+            success();
+          }).catch(() => {
+            error()
+          });
+        }
+      });
     }
 
     /**
@@ -582,7 +642,46 @@ String.prototype.getQueryString = function (name, split) {
       return true;
     }
 
-    downloadURLs(urls, count, callback) {
+    /**
+     * 准备开始批量下载
+     * @param {*} success 
+     * @param {*} error 
+     * @param {*} downloadOptions 
+     */
+    startDownloadURLs(success, error, downloadOptions) {
+      if (this.confirmWhenExceedSize) {
+        if (!this.confirmWhenExceedSize()) {
+          error("容量超限，已取消");
+          return;
+        }
+      }
+
+      if (!this.getDownloadURLs) {
+        error("getDownloadURLs 方法未定义");
+        return;
+      }
+
+      let urls = this.getDownloadURLs();
+      if (!urls.length) {
+        error(urls);
+        return;
+      }
+
+      this.downloadURLs(urls, urls.length, (msg) => {
+        success({
+          msg
+        });
+      }, downloadOptions);
+    }
+
+    /**
+     * 批量下载指定的URL
+     * @param {*} urls 
+     * @param {*} count 
+     * @param {*} callback 
+     * @param {*} downloadOptions 下载选项，如不指定，则发送至默认下载服务器
+     */
+    downloadURLs(urls, count, callback, downloadOptions) {
       let index = count - urls.length;
       let url = urls.shift();
       if (!url) {
@@ -592,11 +691,26 @@ String.prototype.getQueryString = function (name, split) {
         return;
       }
       this.showStatusMessage("正在发送：" + (url.replace(PTService.site.passkey, "***")) + "(" + (count - index) + "/" + count + ")", 0);
-      this.sendTorrentToDefaultClient(url, false).then((result) => {
-        this.downloadURLs(urls, count, callback);
-      }).catch((result) => {
-        this.downloadURLs(urls, count, callback);
-      });
+
+      if (!downloadOptions) {
+        this.sendTorrentToDefaultClient(url, false).then((result) => {
+          this.downloadURLs(urls, count, callback);
+        }).catch((result) => {
+          this.downloadURLs(urls, count, callback);
+        });
+      } else {
+        this.sendTorrentToClient({
+          clientId: downloadOptions.client.id,
+          url: url,
+          title: "",
+          savePath: downloadOptions.path,
+          autoStart: downloadOptions.client.autoStart
+        }, false).then((result) => {
+          this.downloadURLs(urls, count, callback, downloadOptions);
+        }).catch((result) => {
+          this.downloadURLs(urls, count, callback, downloadOptions);
+        });
+      }
     }
 
     showStatusMessage(msg) {
@@ -610,6 +724,82 @@ String.prototype.getQueryString = function (name, split) {
       } else {
         this.statusBar.find(".noticejs-content").html(msg);
       }
+    }
+
+    /**
+     * 用JSON对象模拟对象克隆
+     * @param source
+     */
+    clone(source) {
+      return JSON.parse(JSON.stringify(source));
+    }
+
+    /**
+     * 显示批量下载时可用下载服务器菜单
+     * @param event
+     */
+    showAllContentMenus(event, success, error) {
+      let clients = [];
+      let menus = [];
+      let _this = this;
+
+      function addMenu(item) {
+        let title = `下载到：${item.client.name} -> ${item.client.address}`;
+        if (item.path) {
+          title += ` -> ${item.path}`;
+        }
+        menus.push({
+          title: title,
+          fn: () => {
+            console.log(item);
+            _this.startDownloadURLs(success, error, item);
+          }
+        });
+      }
+
+      if (this.clientContentMenus.length == 0) {
+        PTService.options.clients.forEach((client) => {
+          clients.push({
+            client: client,
+            path: ""
+          });
+        });
+        clients.forEach((item) => {
+          if (item.client && item.client.name) {
+            addMenu(item);
+
+            if (item.client.paths) {
+              // 添加适用于所有站点的目录
+              let publicPaths = item.client.paths[PTService.allSiteKey];
+              if (publicPaths) {
+                publicPaths.forEach((path) => {
+                  // 去除带关键字的目录
+                  if (
+                    path.indexOf("$site.name$") == -1 &&
+                    path.indexOf("$site.host$") == -1 &&
+                    path.indexOf("<...>") == -1
+                  ) {
+                    let _item = this.clone(item);
+                    _item.path = path;
+                    addMenu(_item);
+                  }
+                });
+              }
+            }
+          } else {
+            menus.push({});
+          }
+        });
+        this.clientContentMenus = menus;
+      } else {
+        menus = this.clientContentMenus;
+      }
+
+      basicContext.show(menus, event);
+      $(".basicContext").css({
+        left: "-=20px",
+        top: "+=10px"
+      });
     }
   }
 

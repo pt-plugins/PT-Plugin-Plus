@@ -2,7 +2,6 @@
   console.log("this is torrent.js");
   class App extends window.NexusPHPCommon {
       init() {
-        // super();
         this.initButtons();
         this.initFreeSpaceButton();
         // 设置当前页面
@@ -13,70 +12,7 @@
        * 初始化按钮列表
        */
       initButtons() {
-        // 添加下载按钮
-        this.defaultClientOptions && PTService.addButton({
-          title: `将当前页面所有种子下载到[${this.defaultClientOptions.name}]`,
-          icon: "get_app",
-          label: "下载所有",
-          click: (success, error) => {
-            if (!this.confirmSize($(".torrents").find("td:contains('MB'),td:contains('GB'),td:contains('TB')"))) {
-              error("容量超限，已取消");
-              return;
-            }
-
-            let urls = this.getDownloadURLs();
-            if (!urls.length) {
-              error(urls);
-              return;
-            }
-
-            // if (!PTService.site.passkey) {
-            //   if (!confirm("该站点未设置密钥，可能无法正常下载，是否继续？")) {
-            //     error("操作已取消");
-            //     return;
-            //   }
-            // }
-
-            this.downloadURLs(urls, urls.length, (msg) => {
-              success({
-                msg
-              });
-            });
-
-          }
-        });
-
-        // 复制下载链接
-        PTService.addButton({
-          title: "复制下载链接到剪切板",
-          icon: "file_copy",
-          label: "复制链接",
-          click: (success, error) => {
-            let urls = this.getDownloadURLs();
-
-            if (!urls.length) {
-              error(urls);
-              return;
-            }
-
-            // if (!PTService.site.passkey) {
-            //   if (!confirm("该站点未设置密钥，请在复制链接后手工添加密钥，是否继续？")) {
-            //     error("操作已取消");
-            //     return;
-            //   }
-            // }
-
-            PTService.call(
-              PTService.action.copyTextToClipboard,
-              urls.join("\n")
-            ).then((result) => {
-              console.log("命令执行完成", result);
-              success();
-            }).catch(() => {
-              error()
-            });
-          }
-        })
+        this.initListButtons();
       }
 
       /**
@@ -114,6 +50,13 @@
         });
 
         return urls;
+      }
+
+      /**
+       * 确认大小是否超限
+       */
+      confirmWhenExceedSize() {
+        return this.confirmSize($(".torrents").find("td:contains('MB'),td:contains('GB'),td:contains('TB')"));
       }
     }
     (new App()).init();
