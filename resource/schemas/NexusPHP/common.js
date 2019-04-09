@@ -67,13 +67,17 @@ String.prototype.getQueryString = function (name, split) {
     /**
      * 初始化种子列表页面按钮
      */
-    initListButtons() {
+    initListButtons(checkPasskey = false) {
       // 添加下载按钮
       this.defaultClientOptions && PTService.addButton({
         title: `将当前页面所有种子下载到[${this.defaultClientOptions.name}]`,
         icon: "get_app",
         label: "下载所有",
         click: (success, error) => {
+          if (checkPasskey && !PTService.site.passkey) {
+            error("请先设置站点密钥（Passkey）。");
+            return;
+          }
           this.startDownloadURLs(success, error);
         }
       });
@@ -93,6 +97,10 @@ String.prototype.getQueryString = function (name, split) {
          * 两个事件必需执行一个，可以传递一个参数
          */
         click: (success, error, event) => {
+          if (checkPasskey && !PTService.site.passkey) {
+            error("请先设置站点密钥（Passkey）。");
+            return;
+          }
           this.showAllContentMenus(event.originalEvent, success, error);
         }
       });
@@ -103,6 +111,10 @@ String.prototype.getQueryString = function (name, split) {
         icon: "file_copy",
         label: "复制链接",
         click: (success, error) => {
+          if (checkPasskey && !PTService.site.passkey) {
+            error("请先设置站点密钥（Passkey）。");
+            return;
+          }
           let urls = this.getDownloadURLs();
 
           if (!urls.length) {
@@ -746,12 +758,13 @@ String.prototype.getQueryString = function (name, split) {
       function addMenu(item) {
         let title = `下载到：${item.client.name} -> ${item.client.address}`;
         if (item.path) {
-          title += ` -> ${item.path}`;
+          title += ` -> ${PTService.pathHandler.replacePathKey(item.path, PTService.site)}`;
         }
         menus.push({
           title: title,
           fn: () => {
             console.log(item);
+            item.path = PTService.pathHandler.getSavePath(item.path, PTService.site);
             _this.startDownloadURLs(success, error, item);
           }
         });
@@ -773,16 +786,9 @@ String.prototype.getQueryString = function (name, split) {
               let publicPaths = item.client.paths[PTService.allSiteKey];
               if (publicPaths) {
                 publicPaths.forEach((path) => {
-                  // 去除带关键字的目录
-                  if (
-                    path.indexOf("$site.name$") == -1 &&
-                    path.indexOf("$site.host$") == -1 &&
-                    path.indexOf("<...>") == -1
-                  ) {
-                    let _item = this.clone(item);
-                    _item.path = path;
-                    addMenu(_item);
-                  }
+                  let _item = this.clone(item);
+                  _item.path = path;
+                  addMenu(_item);
                 });
               }
             }
