@@ -6,5 +6,13 @@
   "icon": "https://www.ptdream.net/favicon.ico",
   "tags": ["剧集", "电影", "综合"],
   "host": "www.ptdream.net",
-  "collaborator": "iceyuamao0510"
+  "collaborator": "iceyuamao0510",
+  "searchEntry": [{
+    "entry": "/torrents.php?search=$key$&notnewword=1",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "/sites/yingk.com/getSearchResult.js",
+    "resultSelector": "table.torrents:last > tbody > tr",
+    "enabled": true
+  }]
 }
