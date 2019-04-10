@@ -37,7 +37,7 @@
                 </v-autocomplete>
               </v-flex>
 
-              <v-flex xs4>
+              <v-flex xs5>
                 <v-text-field
                   v-model="options.search.rows"
                   type="number"
@@ -48,9 +48,9 @@
               <v-flex xs1>
                 <v-slider v-model="options.search.rows" :max="200" :min="1"></v-slider>
               </v-flex>
-              <v-flex xs7></v-flex>
+              <v-flex xs6></v-flex>
 
-              <v-flex xs4>
+              <v-flex xs5>
                 <v-text-field
                   v-model="options.connectClientTimeout"
                   :label="words.connectClientTimeout"
@@ -143,6 +143,12 @@
 
                 <v-switch
                   color="success"
+                  v-model="options.searchResultOrderBySitePriority"
+                  :label="words.searchResultOrderBySitePriority"
+                ></v-switch>
+
+                <v-switch
+                  color="success"
                   v-model="options.needConfirmWhenExceedSize"
                   :label="words.needConfirmWhenExceedSize"
                 ></v-switch>
@@ -231,7 +237,9 @@ export default Vue.extend({
           "自动刷新（如果浏览器在这个时间之后打开，则在浏览器打开时自动刷新）",
         autoRefreshUserDataTip3: "失败后重试",
         autoRefreshUserDataTip4: "次，每次间隔",
-        autoRefreshUserDataTip5: "分钟"
+        autoRefreshUserDataTip5: "分钟",
+        searchResultOrderBySitePriority:
+          "搜索结果点击站点表头时，按站点优先级别排序（保存后需刷新页面后生效）"
       },
       valid: false,
       rules: {

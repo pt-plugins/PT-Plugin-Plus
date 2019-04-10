@@ -95,6 +95,8 @@ export interface Options {
   displayUserName?: string;
   // 分享寄语
   shareMessage?: string;
+  // 搜索结果点击站点时，按站点优先级别排序
+  searchResultOrderBySitePriority?: boolean;
 }
 
 export interface Plugin {
@@ -166,6 +168,8 @@ export interface Site {
   user?: UserInfo;
   selectors?: Dictionary<any>;
   allowGetUserInfo?: boolean;
+  // 站点优先级
+  priority?: number;
 }
 
 export interface Request {

@@ -270,6 +270,10 @@ class Config {
       } else {
         site.activeURL = site.url;
       }
+
+      if (site.priority == null) {
+        site.priority = 100;
+      }
     });
 
     // 升级不存在的配置项

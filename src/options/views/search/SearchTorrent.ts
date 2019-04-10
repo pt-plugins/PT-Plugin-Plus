@@ -78,7 +78,14 @@ export default Vue.extend({
       },
       loading: false,
       headers: [
-        { text: "站点", align: "center", value: "site.host", width: "100px" },
+        {
+          text: "站点",
+          align: "center",
+          value: this.$store.state.options.searchResultOrderBySitePriority
+            ? "site.priority"
+            : "site.host",
+          width: "100px"
+        },
         { text: "标题", align: "left", value: "title" },
         {
           text: "分类/入口",

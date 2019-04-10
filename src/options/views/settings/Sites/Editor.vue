@@ -81,6 +81,13 @@
           :disabled="!custom"
         ></v-text-field>
 
+        <v-text-field
+          v-model="site.priority"
+          :label="words.priority"
+          :placeholder="words.priorityTip"
+          type="number"
+        ></v-text-field>
+
         <v-textarea v-model="cdn" :label="words.cdn" value :hint="words.cdnTip"></v-textarea>
 
         <v-text-field v-model="site.description" :label="words.description"></v-text-field>
@@ -161,7 +168,9 @@ export default Vue.extend({
         allowGetUserInfo: "允许获取用户信息（Beta）",
         cdn: "站点CDN列表",
         cdnTip:
-          "如您使用的网址和系统定义的不同，可在此填写当前使用的网站地址，每行填写一个地址，第一个将做为搜索时使用的地址"
+          "如您使用的网址和系统定义的不同，可在此填写当前使用的网站地址，每行填写一个地址，第一个将做为搜索时使用的地址",
+        priority: "优先级",
+        priorityTip: "可用于搜索排序"
       },
       showPasskey: false,
       rules: {
