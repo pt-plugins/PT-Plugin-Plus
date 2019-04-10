@@ -30,12 +30,24 @@
           <td style="width:20px;">
             <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
           </td>
+          <!-- 站点 -->
+          <td style="text-align: center;">
+            <v-avatar size="18">
+              <img :src="props.item.site.icon">
+            </v-avatar>
+            <br>
+            <span class="captionText">{{ props.item.site.name }}</span>
+          </td>
           <td>
             {{ props.item.data.title }}
             <br>
             <span
               class="sub-title"
-            >[ {{ getClientName(props.item.clientId) }} ] -> {{ props.item.data.savePath || '默认目录' }}</span>
+            >[ {{ getClientName(props.item.data.clientId||props.item.clientId) }} ] -> {{ props.item.data.savePath || '默认目录' }}</span>
+          </td>
+          <td>
+            <v-icon v-if="props.item.success===false" color="error" :title="words.fail">close</v-icon>
+            <v-icon v-else color="success" :title="words.success">done</v-icon>
           </td>
           <td>{{ props.item.time | formatDate }}</td>
           <td>
@@ -80,7 +92,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { EAction, DownloadOptions } from "@/interface/common";
+import { EAction, DownloadOptions, Site, Dictionary } from "@/interface/common";
 import Extension from "@/service/extension";
 
 const extension = new Extension();
@@ -96,25 +108,32 @@ export default Vue.extend({
         clearConfirm: "确认要删除所有下载记录吗？",
         ok: "确认",
         cancel: "取消",
-        download: "下载"
+        download: "下载",
+        fail: "失败",
+        success: "成功"
       },
       selected: [],
       selectedItem: {} as any,
       pagination: {
-        rowsPerPage: 10
+        rowsPerPage: 10,
+        sortBy: "time",
+        descending: true
       },
       headers: [
+        { text: "来源", align: "left", value: "data.host" },
         { text: "标题", align: "left", value: "data.title" },
+        { text: "状态", align: "left", value: "data.success" },
         { text: "下载时间", align: "left", value: "time" },
         { text: "操作", value: "name", sortable: false }
       ],
-      items: [],
+      items: [] as any[],
       dialogRemoveConfirm: false,
       options: this.$store.state.options,
       errorMsg: "",
       haveError: false,
       haveSuccess: false,
-      successMsg: ""
+      successMsg: "",
+      siteCache: {} as Dictionary<any>
     };
   },
 
@@ -146,7 +165,20 @@ export default Vue.extend({
     getDownloadHistory() {
       extension.sendRequest(EAction.getDownloadHistory).then((result: any) => {
         console.log("downloadHistory", result);
-        this.items = result;
+        this.items = [];
+        result.forEach((item: any) => {
+          let site = this.siteCache[item.host];
+          if (!site) {
+            site = this.options.sites.find((site: Site) => {
+              return site.host === item.host;
+            });
+            this.siteCache[item.host] = site;
+          }
+
+          item.site = site;
+
+          this.items.push(item);
+        });
       });
     },
 
@@ -165,13 +197,13 @@ export default Vue.extend({
       this.haveSuccess = true;
       this.successMsg = "正在发送种子到下载服务器……";
 
+      let data = Object.assign({}, options.data);
+      if (!data.clientId) {
+        data.clientId = options.clientId;
+      }
+
       extension
-        .sendRequest(EAction.sendTorrentToClient, null, {
-          clientId: options.clientId,
-          url: options.data.url,
-          savePath: options.data.savePath,
-          autoStart: options.data.autoStart
-        })
+        .sendRequest(EAction.sendTorrentToClient, null, data)
         .then((result: any) => {
           console.log("命令执行完成", result);
 

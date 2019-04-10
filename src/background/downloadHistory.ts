@@ -30,11 +30,17 @@ export class DownloadHistory {
    * @param host 站点域名
    * @param clientId 下载客户端ID
    */
-  public add(data: any, host: string = "", clientId: string = "") {
+  public add(
+    data: any,
+    host: string = "",
+    clientId: string = "",
+    success: boolean = true
+  ) {
     let saveData = {
       data,
       clientId,
       host,
+      success,
       time: new Date().getTime()
     };
     if (!this.items) {

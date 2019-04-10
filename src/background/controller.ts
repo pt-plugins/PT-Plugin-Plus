@@ -99,11 +99,12 @@ export default class Controller {
   private saveDownloadHistory(
     data: any,
     host: string = "",
-    clientId: string = ""
+    clientId: string = "",
+    success: boolean = true
   ) {
     // 是否保存历史记录
     if (this.options.saveDownloadHistory) {
-      this.downloadHistory.add(data, host, clientId);
+      this.downloadHistory.add(data, host, clientId, success);
     }
   }
 
@@ -147,9 +148,8 @@ export default class Controller {
       }
 
       this.getClient(clientConfig).then((result: any) => {
-        this.doDownload(result, data, data.savePath)
+        this.doDownload(result, data, data.savePath, host)
           .then((result: any) => {
-            this.saveDownloadHistory(data, host, clientConfig.id);
             resolve(result);
           })
           .catch((result: any) => {
@@ -176,13 +176,8 @@ export default class Controller {
         this.initSiteDefaultClient(host).then((siteClientConfig: any) => {
           this.siteDefaultClients[host] = siteClientConfig;
 
-          this.doDownload(siteClientConfig, data, siteDefaultPath)
+          this.doDownload(siteClientConfig, data, siteDefaultPath, host)
             .then((result: any) => {
-              this.saveDownloadHistory(
-                data,
-                site.host,
-                siteClientConfig.options.id
-              );
               resolve(result);
             })
             .catch((result: any) => {
@@ -190,13 +185,8 @@ export default class Controller {
             });
         });
       } else {
-        this.doDownload(siteClientConfig, data, siteDefaultPath)
+        this.doDownload(siteClientConfig, data, siteDefaultPath, host)
           .then((result: any) => {
-            this.saveDownloadHistory(
-              data,
-              site.host,
-              siteClientConfig.options.id
-            );
             resolve(result);
           })
           .catch((result: any) => {
@@ -215,7 +205,8 @@ export default class Controller {
   private doDownload(
     clientConfig: any,
     data: DownloadOptions,
-    siteDefaultPath: string = ""
+    siteDefaultPath: string = "",
+    host: string = ""
   ): Promise<any> {
     return new Promise((resolve?: any, reject?: any) => {
       clientConfig.client
@@ -255,8 +246,11 @@ export default class Controller {
                 break;
             }
 
+            this.saveDownloadHistory(data, host, clientConfig.client.id, false);
             return;
           }
+
+          this.saveDownloadHistory(data, host, clientConfig.client.id, true);
 
           this.formatSendResult(result, clientConfig.options, siteDefaultPath)
             .then((result: any) => {
@@ -275,6 +269,7 @@ export default class Controller {
             }]命令失败`,
             data: result
           });
+          this.saveDownloadHistory(data, host, clientConfig.client.id, false);
           reject(result);
         });
     });
