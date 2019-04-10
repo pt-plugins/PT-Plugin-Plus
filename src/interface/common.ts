@@ -193,11 +193,14 @@ export interface CacheType {
  * 下载参数
  */
 export interface DownloadOptions {
+  // 下载地址
   url: string;
   title?: string;
   savePath?: string;
   autoStart?: boolean;
   clientId?: string;
+  // 来源链接地址
+  link?: string;
 }
 
 /**

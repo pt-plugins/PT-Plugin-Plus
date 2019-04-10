@@ -16,6 +16,7 @@ String.prototype.getQueryString = function (name, split) {
       this.defaultPath = PTService.getSiteDefaultPath();
       this.downloadClientType = PTService.downloadClientType;
       this.defaultClientOptions = PTService.getClientOptions();
+      this.currentURL = location.href;
     }
 
     /**
@@ -168,7 +169,8 @@ String.prototype.getQueryString = function (name, split) {
             url: option.url,
             title: option.title,
             savePath: savePath,
-            autoStart: this.defaultClientOptions.autoStart
+            autoStart: this.defaultClientOptions.autoStart,
+            link: option.link
           }
         ).then(result => {
           notice && notice.hide();
@@ -247,7 +249,8 @@ String.prototype.getQueryString = function (name, split) {
       if (typeof data === "string") {
         data = {
           url: data,
-          title: ""
+          title: "",
+          link: data
         };
       }
 
@@ -347,11 +350,14 @@ String.prototype.getQueryString = function (name, split) {
 
           if (this.getTitle) {
             title = this.getTitle();
+          } else {
+            title = document.title;
           }
 
           this.showContentMenusForUrl({
             url,
-            title
+            title,
+            link: this.currentURL
           }, event.originalEvent, success, error);
         }
       });
@@ -391,11 +397,14 @@ String.prototype.getQueryString = function (name, split) {
 
           if (this.getTitle) {
             title = this.getTitle();
+          } else {
+            title = document.title;
           }
 
           this.sendTorrentToDefaultClient({
             url,
-            title
+            title,
+            link: this.currentURL
           }).then(() => {
             success();
           }).catch((result) => {
@@ -543,7 +552,8 @@ String.prototype.getQueryString = function (name, split) {
                   url: options.url,
                   title: options.title,
                   savePath: item.path,
-                  autoStart: item.client.autoStart
+                  autoStart: item.client.autoStart,
+                  link: options.link
                 }).then((result) => {
                   success();
                 }).catch((result) => {

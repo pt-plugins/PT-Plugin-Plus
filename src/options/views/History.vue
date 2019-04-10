@@ -39,7 +39,14 @@
             <span class="captionText">{{ props.item.site.name }}</span>
           </td>
           <td>
-            {{ props.item.data.title }}
+            <a
+              v-if="props.item.data.link"
+              :href="props.item.data.link"
+              target="_blank"
+              :title="props.item.title"
+              rel="noopener noreferrer nofollow"
+            >{{ props.item.data.title || props.item.data.link }}</a>
+            <span v-else>{{ props.item.data.title }}</span>
             <br>
             <span
               class="sub-title"
@@ -108,7 +115,7 @@ export default Vue.extend({
         clearConfirm: "确认要删除所有下载记录吗？",
         ok: "确认",
         cancel: "取消",
-        download: "下载",
+        download: "重新下载",
         fail: "失败",
         success: "成功"
       },
@@ -120,7 +127,7 @@ export default Vue.extend({
         descending: true
       },
       headers: [
-        { text: "来源", align: "left", value: "data.host" },
+        { text: "来源", align: "center", value: "data.host", width: "140px" },
         { text: "标题", align: "left", value: "data.title" },
         { text: "状态", align: "left", value: "data.success" },
         { text: "下载时间", align: "left", value: "time" },

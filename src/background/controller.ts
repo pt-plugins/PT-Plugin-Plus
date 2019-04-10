@@ -246,11 +246,16 @@ export default class Controller {
                 break;
             }
 
-            this.saveDownloadHistory(data, host, clientConfig.client.id, false);
+            this.saveDownloadHistory(
+              data,
+              host,
+              clientConfig.options.id,
+              false
+            );
             return;
           }
 
-          this.saveDownloadHistory(data, host, clientConfig.client.id, true);
+          this.saveDownloadHistory(data, host, clientConfig.options.id, true);
 
           this.formatSendResult(result, clientConfig.options, siteDefaultPath)
             .then((result: any) => {
@@ -269,7 +274,7 @@ export default class Controller {
             }]命令失败`,
             data: result
           });
-          this.saveDownloadHistory(data, host, clientConfig.client.id, false);
+          this.saveDownloadHistory(data, host, clientConfig.options.id, false);
           reject(result);
         });
     });

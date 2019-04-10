@@ -761,7 +761,13 @@ export default Vue.extend({
      * @param url
      * @param title
      */
-    sendToClient(url: string, title?: string, options?: any, callback?: any) {
+    sendToClient(
+      url: string,
+      title?: string,
+      options?: any,
+      callback?: any,
+      link: string = ""
+    ) {
       console.log(url);
       this.clearMessage();
       let host = filters.parseURL(url).host;
@@ -794,7 +800,8 @@ export default Vue.extend({
         title,
         savePath: savePath,
         autoStart: defaultClientOptions.autoStart,
-        clientId: defaultClientOptions.id
+        clientId: defaultClientOptions.id,
+        link
       };
       this.writeLog({
         event: "SearchTorrent.sendTorrentClient",
@@ -958,19 +965,25 @@ export default Vue.extend({
         return;
       }
       let data: SearchResultItem = datas.shift() as SearchResultItem;
-      this.sendToClient(data.url as string, data.title, downloadOptions, () => {
-        this.sending.completed++;
-        this.sending.progress =
-          (this.sending.completed / this.sending.count) * 100;
+      this.sendToClient(
+        data.url as string,
+        data.title,
+        downloadOptions,
+        () => {
+          this.sending.completed++;
+          this.sending.progress =
+            (this.sending.completed / this.sending.count) * 100;
 
-        // 是否已完成
-        if (this.sending.completed >= this.sending.count) {
-          this.sending.count = 0;
-          this.selected = [];
-          return;
-        }
-        this.sendSelectedToClient(datas, count, downloadOptions);
-      });
+          // 是否已完成
+          if (this.sending.completed >= this.sending.count) {
+            this.sending.count = 0;
+            this.selected = [];
+            return;
+          }
+          this.sendSelectedToClient(datas, count, downloadOptions);
+        },
+        data.link
+      );
     },
     /**
      * 复制当前链接到剪切板
@@ -1110,7 +1123,12 @@ export default Vue.extend({
             fn: () => {
               if (options.url) {
                 // console.log(options, item);
-                this.sendToClient(options.url, options.title, item);
+                this.sendToClient(
+                  options.url,
+                  options.title,
+                  item,
+                  options.link
+                );
               }
             }
           });
