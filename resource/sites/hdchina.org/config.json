@@ -350,6 +350,26 @@
           "filters": ["query.parent().text().match(/共计([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         }
       }
+    },
+    "userSeedingTorrents": {
+      "prerequisites": "!user.seeding",
+      "page": "/ajax_getusertorrentlist.php",
+      "dataType": "json",
+      "requestMethod": "POST",
+      "requestData": {
+        "userid": "$user.id$",
+        "type": "seeding"
+      },
+      "fields": {
+        "seeding": {
+          "selector": ["message"],
+          "filters": ["jQuery('<div/>').html(query).find('tr:not(:eq(0))').length"]
+        },
+        "seedingSize": {
+          "selector": ["message"],
+          "filters": ["jQuery('<div/>').html(query).find('tr:not(:eq(0))')", "jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
     }
   }
 }

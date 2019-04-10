@@ -4,7 +4,8 @@ import {
   EModule,
   UserInfo,
   EUserDataRequestStatus,
-  ERequestResultType
+  ERequestResultType,
+  ERequestMethod
 } from "@/interface/common";
 import PTPlugin from "./service";
 import { InfoParser } from "./infoParser";
@@ -218,7 +219,7 @@ export class User {
             }
           }
 
-          requests.push(this.getInfos(host, url, rule));
+          requests.push(this.getInfos(host, url, rule, userInfo));
         }
       });
       if (requests.length) {
@@ -249,7 +250,8 @@ export class User {
   public getInfos(
     host: string,
     url: string,
-    rule: Dictionary<any>
+    rule: Dictionary<any>,
+    userInfo?: UserInfo
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       url = url
@@ -257,10 +259,22 @@ export class User {
         .replace(/\/\//g, "/")
         .replace("****", "://");
       PPF.updateBadge(++this.requestQueueCount);
+      let requestData = rule.requestData;
+      if (requestData && userInfo) {
+        for (const key in requestData) {
+          if (requestData.hasOwnProperty(key)) {
+            const value = requestData[key];
+            requestData[key] = value
+              .replace("$user.id$", userInfo.id)
+              .replace("$user.name$", userInfo.name);
+          }
+        }
+      }
       let request = $.ajax({
         url,
+        method: rule.requestMethod || ERequestMethod.GET,
         dataType: "text",
-        contentType: "text/plain",
+        data: requestData,
         timeout:
           (this.service.options.search &&
             this.service.options.search.timeout) ||
