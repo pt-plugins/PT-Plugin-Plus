@@ -28,6 +28,13 @@
 
       return url;
     }
+
+    /**
+     * 获取当前种子标题
+     */
+    getTitle() {
+      return $("a[href*='download.php']:first").text().trim();
+    }
   };
   (new App()).init();
 })(jQuery, window);
