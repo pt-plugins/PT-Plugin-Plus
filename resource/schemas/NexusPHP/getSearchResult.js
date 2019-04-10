@@ -143,7 +143,7 @@ if (!"".getQueryString) {
 
           let title = row.find("a[href*='hit'][title]").first();
           if (title.length == 0) {
-            title = row.find("a[href*='hit']").first();
+            title = row.find("a[href*='hit']:has(b)").first();
           }
 
           // 没有获取标题时，继续下一个
