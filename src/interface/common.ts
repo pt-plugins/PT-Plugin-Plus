@@ -3,7 +3,7 @@ import {
   ERequestResultType,
   ESizeUnit,
   EButtonType,
-  ERequsetType,
+  ERequestMethod,
   EAction,
   EDataResultType,
   EUserDataRequestStatus
@@ -162,7 +162,7 @@ export interface Site {
   checker?: Dictionary<any>;
   torrentTagSelectors?: any[];
   categories?: SiteCategories[];
-  downloadMethod?: ERequsetType;
+  downloadMethod?: ERequestMethod;
   user?: UserInfo;
   selectors?: Dictionary<any>;
   allowGetUserInfo?: boolean;

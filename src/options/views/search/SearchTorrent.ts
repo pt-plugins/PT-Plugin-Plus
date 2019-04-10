@@ -20,7 +20,7 @@ import {
   DownloadClient,
   DownloadOptions,
   ECommonKey,
-  ERequsetType
+  ERequestMethod
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import dayjs from "dayjs";
@@ -914,9 +914,9 @@ export default Vue.extend({
      * @param item
      */
     saveTorrentFile(item: SearchResultItem) {
-      let requestType = ERequsetType.GET;
+      let requestMethod = ERequestMethod.GET;
       if (item.site) {
-        requestType = item.site.downloadMethod || ERequsetType.GET;
+        requestMethod = item.site.downloadMethod || ERequestMethod.GET;
       }
       let url = item.url + "";
       let file = new FileDownloader({
@@ -925,7 +925,7 @@ export default Vue.extend({
         fileName: `[${item.site.name}][${item.title}].torrent`
       });
 
-      file.requsetType = requestType;
+      file.requestMethod = requestMethod;
       file.start();
     },
     /**

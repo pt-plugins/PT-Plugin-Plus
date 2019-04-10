@@ -11,7 +11,7 @@ import {
   EDataResultType,
   Request,
   EModule,
-  ERequsetType,
+  ERequestMethod,
   UserInfo
 } from "@/interface/common";
 import { filters as Filters } from "@/service/filters";
@@ -668,9 +668,9 @@ export default class Controller {
   public getTorrentDataFromURL(url: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let site = this.getSiteOptionsFromURL(url);
-      let requestType = ERequsetType.GET;
+      let requestMethod = ERequestMethod.GET;
       if (site) {
-        requestType = site.downloadMethod || ERequsetType.GET;
+        requestMethod = site.downloadMethod || ERequestMethod.GET;
       }
       let file = new FileDownloader({
         url,
@@ -678,7 +678,7 @@ export default class Controller {
         timeout: this.service.options.connectClientTimeout
       });
 
-      file.requsetType = requestType;
+      file.requestMethod = requestMethod;
       file.onCompleted = () => {
         console.log("getTorrentDataFromURL.completed", url);
         if (

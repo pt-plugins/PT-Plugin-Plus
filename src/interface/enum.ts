@@ -44,7 +44,7 @@ export enum EButtonType {
 /**
  * 请求类型
  */
-export enum ERequsetType {
+export enum ERequestMethod {
   POST = "POST",
   GET = "GET"
 }
