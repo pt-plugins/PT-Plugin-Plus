@@ -16,6 +16,7 @@ import { Logger } from "@/service/logger";
 import { ContextMenus } from "./contextMenus";
 import { UserData } from "./userData";
 import { PPF } from "@/service/public";
+import { OmniBox } from "./omnibox";
 /**
  * PT 助手后台服务类
  */
@@ -36,6 +37,7 @@ export default class PTPlugin {
   public contentMenus: ContextMenus = new ContextMenus(this);
   // 用户数据处理
   public userData: UserData = new UserData(this);
+  public omniBox: OmniBox = new OmniBox(this);
 
   private reloadCount: number = 0;
   private autoRefreshUserDataTimer: number = 0;

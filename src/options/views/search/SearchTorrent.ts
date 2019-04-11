@@ -286,6 +286,13 @@ export default Vue.extend({
       }
 
       this.options = this.$store.state.options;
+      let searchSolutionId = this.options.defaultSearchSolutionId;
+
+      // 指定搜索方案id
+      if (/^[a-z0-9]{32}$/.test(this.host)) {
+        searchSolutionId = this.host;
+        this.host = "";
+      }
 
       // 是否指定了站点
       if (this.host) {
@@ -297,9 +304,9 @@ export default Vue.extend({
         }
       } else if (
         // 指定了搜索方案
-        this.options.defaultSearchSolutionId &&
+        searchSolutionId &&
         this.options.searchSolutions &&
-        this.options.defaultSearchSolutionId != "all"
+        searchSolutionId != "all"
       ) {
         let _sites: Site[] = [];
         this.options.sites.forEach((item: Site) => {
@@ -310,7 +317,7 @@ export default Vue.extend({
           | SearchSolution
           | undefined = this.options.searchSolutions.find(
           (solution: SearchSolution) => {
-            return solution.id === this.options.defaultSearchSolutionId;
+            return solution.id === searchSolutionId;
           }
         );
 
