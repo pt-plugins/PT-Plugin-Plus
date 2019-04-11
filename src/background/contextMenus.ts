@@ -78,9 +78,26 @@ export class ContextMenus {
     // 清除原来的菜单
     this.clear();
     // 创建关键字搜索菜单，所有页面可用
-    this.createSearchMenu();
+    this.createSearchMenus();
     // 创建下载客户端上下文菜单，所有页面可用
     this.createClientMenus();
+    // 创建插件图标右键菜单
+    this.createPageActionMenus();
+  }
+
+  /**
+   * 创建插件图标右键菜单
+   */
+  public createPageActionMenus() {
+    this.add({
+      title: "查看日志",
+      contexts: ["browser_action"],
+      onclick: () => {
+        chrome.tabs.create({
+          url: "index.html#/system-logs"
+        });
+      }
+    });
   }
 
   /**
@@ -398,7 +415,7 @@ export class ContextMenus {
   /**
    * 创建关键字搜索菜单，所有页面可用
    */
-  private createSearchMenu() {
+  private createSearchMenus() {
     // 是否启用选择内容时搜索
     if (this.options.allowSelectionTextSearch) {
       // 选中内容进行搜索
@@ -492,7 +509,14 @@ export class ContextMenus {
    * @param callback 回调
    */
   private remove(id: string, callback?: (() => void) | undefined) {
-    chrome.contextMenus.remove(id, callback);
+    try {
+      chrome.contextMenus.remove(id, callback);
+      if (chrome.runtime.lastError) {
+        console.log(chrome.runtime.lastError);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   /**
