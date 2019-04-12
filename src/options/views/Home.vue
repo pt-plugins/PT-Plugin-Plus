@@ -35,13 +35,29 @@
         <v-btn to="/user-data-timeline" color="success">
           <v-icon class="mr-2">timeline</v-icon>
         </v-btn>
+
         <v-switch
-          v-model="isSecret"
-          class="ml-2 mt-4"
           color="success"
-          :label="words.secret"
-          style="width: 100px;flex:none;"
+          v-model="showSiteName"
+          :label="words.siteName"
+          class="mx-2 mt-4"
+          style="flex:none;"
         ></v-switch>
+        <v-switch
+          color="success"
+          v-model="showUserName"
+          :label="words.userName"
+          class="ml-2 mt-4"
+          style="flex:none;"
+        ></v-switch>
+        <v-switch
+          color="success"
+          v-model="showUserLevel"
+          :label="words.userLevel"
+          class="ml-2 mt-4"
+          style="flex:none;"
+        ></v-switch>
+
         <v-spacer></v-spacer>
 
         <v-text-field
@@ -66,7 +82,7 @@
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
           <td class="center">
-            <v-avatar size="18" @click.stop="getSiteUserInfo(props.item)">
+            <v-avatar :size="showSiteName ? 18 : 24" @click.stop="getSiteUserInfo(props.item)">
               <img :src="props.item.icon">
             </v-avatar>
             <br>
@@ -75,12 +91,13 @@
               target="_blank"
               rel="noopener noreferrer nofollow"
               class="nodecoration"
+              v-if="showSiteName"
             >
               <span class="caption">{{ props.item.name }}</span>
             </a>
           </td>
-          <td>{{ isSecret ? "****" : props.item.user.name }}</td>
-          <td>{{ isSecret ? "****" : props.item.user.levelName }}</td>
+          <td>{{ showUserName ? props.item.user.name : "****" }}</td>
+          <td>{{ showUserLevel ? props.item.user.levelName : "****" }}</td>
           <td class="number">
             <div>
               {{ props.item.user.uploaded | formatSize }}
@@ -146,7 +163,10 @@ export default Vue.extend({
         getInfos: "手动刷新用户数据",
         cancelRequest: "取消请求",
         requesting: "正在请求",
-        secret: "密"
+        secret: "密",
+        siteName: "网站名称",
+        userName: "用户名称",
+        userLevel: "用户等级"
       },
       loading: false,
       items: [] as any[],
@@ -179,7 +199,10 @@ export default Vue.extend({
       requestMsg: "",
       sites: [] as any[],
       filterKey: "",
-      isSecret: false
+      isSecret: false,
+      showUserName: true,
+      showSiteName: true,
+      showUserLevel: true
     };
   },
   created() {
