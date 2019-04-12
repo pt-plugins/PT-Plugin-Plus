@@ -97,6 +97,8 @@ export interface Options {
   shareMessage?: string;
   // 搜索结果点击站点时，按站点优先级别排序
   searchResultOrderBySitePriority?: boolean;
+  // 导航栏是否已打开
+  navBarIsOpen?: boolean;
 }
 
 export interface Plugin {

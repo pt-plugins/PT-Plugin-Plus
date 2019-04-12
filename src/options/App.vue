@@ -31,9 +31,17 @@ export default {
   data() {
     return {
       baseColor: "amber",
-      drawer: true
+      drawer: this.$store.state.options.navBarIsOpen
     };
   },
-  created() {}
+  watch: {
+    drawer() {
+      if (this.$store.state.options.navBarIsOpen != this.drawer) {
+        this.$store.dispatch("saveConfig", {
+          navBarIsOpen: this.drawer
+        });
+      }
+    }
+  }
 };
 </script>

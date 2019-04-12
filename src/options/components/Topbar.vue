@@ -1,6 +1,6 @@
 <template>
   <v-toolbar :color="baseColor" app fixed clipped-left>
-    <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+    <v-toolbar-side-icon @click.stop="drawer = !drawer" :title="words.navBarTip"></v-toolbar-side-icon>
     <v-toolbar-title style="width: 220px;" class="hidden-sm-and-down">
       <span>{{ words.title }}</span>
     </v-toolbar-title>
@@ -49,7 +49,7 @@
       class="grey--text text--darken-2 hidden-sm-and-down"
     >
       <v-icon>fiber_new</v-icon>
-      <span class="ml-2">查看最新种子</span>
+      <span class="ml-2">{{ words.showNewTorrents }}</span>
     </v-btn>
 
     <v-spacer></v-spacer>
@@ -62,7 +62,7 @@
         rel="noopener noreferrer nofollow"
       >
         <v-icon>home</v-icon>
-        <span class="ml-2">访问 Github</span>
+        <span class="ml-2">{{ words.github }}</span>
       </v-btn>
       <v-btn
         flat
@@ -72,7 +72,7 @@
         rel="noopener noreferrer nofollow"
       >
         <v-icon>help</v-icon>
-        <span class="ml-2">使用帮助</span>
+        <span class="ml-2">{{ words.help }}</span>
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>
@@ -100,13 +100,18 @@ export default Vue.extend({
     return {
       words: {
         title: "PT 助手",
-        searchTip: "",
+        searchTip: "输入种子关键字，按回车进行搜索。",
         default: "<默认>",
         defaultTip: "仅搜索已允许的站点",
         all: "<所有站点>",
-        noSearchSolution: "暂无方案，请添加"
+        noSearchSolution: "暂无方案，请添加",
+        navBarTip: "点击显示/隐藏导航栏",
+        help: "使用帮助",
+        github: "访问 Github",
+        noAllowSearchSites: "暂未配置允许搜索的站点，请先配置",
+        showNewTorrents: "查看最新种子"
       },
-      drawer: true,
+      drawer: this.$store.state.options.navBarIsOpen,
       baseColor: "amber",
       searchKey: "",
       options: this.$store.state.options as Options,
@@ -175,10 +180,8 @@ export default Vue.extend({
           count++;
         }
       });
-      if (count > 0) {
-        this.words.searchTip = `输入种子关键字，按回车进行搜索。`;
-      } else {
-        this.words.searchTip = "暂未配置允许搜索的站点，请先配置";
+      if (count == 0) {
+        this.words.searchTip = this.words.noAllowSearchSites;
       }
     }
     this.searchKey = this.options.lastSearchKey || "";

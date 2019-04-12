@@ -64,7 +64,8 @@ class Config {
       200,
       { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }
     ],
-    searchSolutions: []
+    searchSolutions: [],
+    navBarIsOpen: true
   };
 
   public uiOptions: UIOptions = {};

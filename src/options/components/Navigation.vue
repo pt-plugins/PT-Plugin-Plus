@@ -41,7 +41,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      drawer: true,
+      drawer: this.$store.state.options.navBarIsOpen,
       navs: [
         {
           title: "概览",
