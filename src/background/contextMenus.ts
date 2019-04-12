@@ -66,6 +66,12 @@ export class ContextMenus {
         }
       }
     );
+
+    // 图标单击事件
+    // 暂时取消弹出内容，直接转到配置页
+    chrome.browserAction.onClicked.addListener(() => {
+      this.service.controller.openOptions();
+    });
   }
   /**
    * 初始化上下文菜单

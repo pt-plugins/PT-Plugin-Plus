@@ -9,8 +9,7 @@
 	"homepage_url": "https://github.com/ronggang/PT-Plugin-Plus",
 	"browser_action": {
 		"default_icon": "assets/icon-19.png",
-		"default_title": "__MSG_manifest_appName__",
-		"default_popup": "popup.html"
+		"default_title": "__MSG_manifest_appName__"
 	},
 	"permissions": [
 		"activeTab",
