@@ -149,6 +149,12 @@
 
                 <v-switch
                   color="success"
+                  v-model="options.search.saveKey"
+                  :label="words.saveSearchKey"
+                ></v-switch>
+
+                <v-switch
+                  color="success"
                   v-model="options.needConfirmWhenExceedSize"
                   :label="words.needConfirmWhenExceedSize"
                 ></v-switch>
@@ -239,7 +245,8 @@ export default Vue.extend({
         autoRefreshUserDataTip4: "次，每次间隔",
         autoRefreshUserDataTip5: "分钟",
         searchResultOrderBySitePriority:
-          "搜索结果点击站点表头时，按站点优先级别排序（保存后需刷新页面后生效）"
+          "搜索结果点击站点表头时，按站点优先级别排序（保存后需刷新页面后生效）",
+        saveSearchKey: "保存搜索关键字"
       },
       valid: false,
       rules: {
@@ -247,7 +254,9 @@ export default Vue.extend({
       },
       options: {
         defaultClientId: "",
-        search: {},
+        search: {
+          saveKey: true
+        },
         needConfirmWhenExceedSize: false,
         autoRefreshUserData: false,
         autoRefreshUserDataHours: "00",

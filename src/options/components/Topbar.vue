@@ -14,6 +14,7 @@
       v-model="searchKey"
       @change="searchTorrent"
       clearable
+      @click:clear="clearSearchKey"
     >
       <v-menu slot="append" offset-y class="search-solution">
         <v-btn slot="activator" flat small color="grey lighten-2">{{selectedSearchSolutionName}}</v-btn>
@@ -151,6 +152,11 @@ export default Vue.extend({
       this.$store.dispatch("saveConfig", {
         defaultSearchSolutionId: defaultSearchSolutionId
       });
+    },
+    clearSearchKey() {
+      this.$store.dispatch("saveConfig", {
+        lastSearchKey: ""
+      });
     }
   },
   created() {
@@ -184,7 +190,9 @@ export default Vue.extend({
         this.words.searchTip = this.words.noAllowSearchSites;
       }
     }
-    this.searchKey = this.options.lastSearchKey || "";
+    if (this.options.search && this.options.search.saveKey) {
+      this.searchKey = this.options.lastSearchKey || "";
+    }
   }
 });
 </script>
