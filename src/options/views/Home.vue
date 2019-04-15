@@ -165,7 +165,7 @@ import {
   UserInfo,
   EViewKey
 } from "@/interface/common";
-import moment from "moment";
+import dayjs from "dayjs";
 
 const extension = new Extension();
 export default Vue.extend({
@@ -263,7 +263,7 @@ export default Vue.extend({
     },
     getInfos() {
       this.loading = true;
-      this.beginTime = moment();
+      this.beginTime = dayjs();
       this.writeLog({
         event: `Home.getUserInfo.Start`,
         msg: `准备开始获取个人数据`
@@ -306,9 +306,9 @@ export default Vue.extend({
       if (index !== -1) {
         this.requestQueue.splice(index, 1);
         if (this.requestQueue.length == 0) {
-          this.requestMsg = `请求完成，耗时：${moment().diff(
+          this.requestMsg = `请求完成，耗时：${dayjs().diff(
             this.beginTime,
-            "seconds",
+            "second",
             true
           )} 秒。`;
           this.loading = false;
