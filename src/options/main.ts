@@ -33,7 +33,7 @@ import dayjs from "dayjs";
    * 将时间格式化为 xxx 前
    * 修改自 NexusPHP
    */
-  Vue.filter("timeAgo", (source: any) => {
+  Vue.filter("timeAgo", (source: any, weekOnly: boolean = false) => {
     if (!source) {
       return "";
     }
@@ -42,7 +42,8 @@ import dayjs from "dayjs";
       month: "月",
       day: "日",
       hour: "时",
-      mins: "分"
+      mins: "分",
+      week: "周"
     };
 
     let now = new Date().getTime();
@@ -52,6 +53,15 @@ import dayjs from "dayjs";
     mins -= hours * 60;
     let days = Math.floor(hours / 24);
     hours -= days * 24;
+
+    if (weekOnly) {
+      let week = Math.floor(days / 7);
+      if (week < 1) {
+        return "不满一周";
+      }
+      return `${week}${unit.week}`;
+    }
+
     let months = Math.floor(days / 30);
     let days2 = days - months * 30;
     let years = Math.floor(days / 365);

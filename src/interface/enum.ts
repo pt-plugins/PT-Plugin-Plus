@@ -183,6 +183,10 @@ export enum EPaginationKey {
   searchTorrent = "searchTorrent"
 }
 
+export enum EViewKey {
+  home = "home"
+}
+
 /**
  * 用户数据范围
  */

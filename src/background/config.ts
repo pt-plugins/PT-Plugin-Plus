@@ -52,7 +52,8 @@ class Config {
     search: {
       rows: 10,
       // 搜索超时
-      timeout: 30000
+      timeout: 30000,
+      saveKey: true
     },
     // 连接下载服务器超时时间（毫秒）
     connectClientTimeout: 5000,

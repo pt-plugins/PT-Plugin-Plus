@@ -377,6 +377,24 @@ export default new Vuex.Store({
     },
 
     /**
+     * 更新视图相关参数
+     * @param param0
+     * @param data
+     */
+    updateViewOptions({ commit, state }, data: any) {
+      let views = state.uiOptions.views || {};
+
+      views[data.key] = data.options;
+      state.uiOptions.views = views;
+      extension
+        .sendRequest(EAction.saveUIOptions, null, state.uiOptions)
+        .then(() => {
+          commit("updateUIOptions", state.uiOptions);
+        })
+        .catch();
+    },
+
+    /**
      * 添加/更新搜索方案
      * @param state
      * @param options
@@ -604,6 +622,13 @@ export default new Vuex.Store({
     pagination: state => (key: string, defalutValue: any) => {
       if (state.uiOptions && state.uiOptions.paginations) {
         return state.uiOptions.paginations[key] || defalutValue;
+      }
+      return defalutValue;
+    },
+
+    viewsOptions: state => (key: string, defalutValue: any) => {
+      if (state.uiOptions && state.uiOptions.views) {
+        return state.uiOptions.views[key] || defalutValue;
       }
       return defalutValue;
     }

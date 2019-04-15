@@ -42,6 +42,7 @@
           :label="words.siteName"
           class="mx-2 mt-4"
           style="flex:none;"
+          @click.stop="updateViewOptions"
         ></v-switch>
         <v-switch
           color="success"
@@ -49,6 +50,7 @@
           :label="words.userName"
           class="ml-2 mt-4"
           style="flex:none;"
+          @click.stop="updateViewOptions"
         ></v-switch>
         <v-switch
           color="success"
@@ -56,6 +58,16 @@
           :label="words.userLevel"
           class="ml-2 mt-4"
           style="flex:none;"
+          @click.stop="updateViewOptions"
+        ></v-switch>
+
+        <v-switch
+          color="success"
+          v-model="showWeek"
+          :label="words.week"
+          class="ml-2 mt-4"
+          style="flex:none;"
+          @click.stop="updateViewOptions"
         ></v-switch>
 
         <v-spacer></v-spacer>
@@ -112,7 +124,7 @@
           <td class="number">{{ props.item.user.seeding }}</td>
           <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>
           <td class="number">{{ props.item.user.bonus | formatNumber }}</td>
-          <td class="number">{{ props.item.user.joinTime | timeAgo }}</td>
+          <td class="number">{{ props.item.user.joinTime | timeAgo(showWeek) }}</td>
           <td
             class="number"
           >{{ props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</td>
@@ -150,7 +162,8 @@ import {
   EModule,
   EUserDataRequestStatus,
   Options,
-  UserInfo
+  UserInfo,
+  EViewKey
 } from "@/interface/common";
 import moment from "moment";
 
@@ -166,7 +179,8 @@ export default Vue.extend({
         secret: "密",
         siteName: "网站名称",
         userName: "用户名称",
-        userLevel: "用户等级"
+        userLevel: "用户等级",
+        week: "时间显示为周数"
       },
       loading: false,
       items: [] as any[],
@@ -202,7 +216,8 @@ export default Vue.extend({
       isSecret: false,
       showUserName: true,
       showSiteName: true,
-      showUserLevel: true
+      showUserLevel: true,
+      showWeek: false
     };
   },
   created() {
@@ -237,6 +252,14 @@ export default Vue.extend({
           this.resetSites();
         })
         .catch();
+
+      let viewOptions = this.$store.getters.viewsOptions(EViewKey.home, {
+        showUserName: true,
+        showSiteName: true,
+        showUserLevel: true,
+        showWeek: false
+      });
+      Object.assign(this, viewOptions);
     },
     getInfos() {
       this.loading = true;
@@ -372,6 +395,18 @@ export default Vue.extend({
      */
     clone(source: any) {
       return JSON.parse(JSON.stringify(source));
+    },
+
+    updateViewOptions() {
+      this.$store.dispatch("updateViewOptions", {
+        key: EViewKey.home,
+        options: {
+          showUserName: this.showUserName,
+          showSiteName: this.showSiteName,
+          showUserLevel: this.showUserLevel,
+          showWeek: this.showWeek
+        }
+      });
     }
   },
 

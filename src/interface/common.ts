@@ -54,6 +54,7 @@ export interface SearchOptions {
   key?: string;
   tags?: string[];
   timeout?: number;
+  saveKey?: boolean;
 }
 
 /**
@@ -279,6 +280,7 @@ export interface SearchEntry {
 
 export interface UIOptions {
   paginations?: Dictionary<any>;
+  views?: Dictionary<any>;
 }
 
 // 搜索方案
