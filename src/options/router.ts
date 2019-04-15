@@ -112,6 +112,11 @@ export default new Router({
       path: "/user-data-timeline",
       name: "user-data-timeline",
       component: () => import("./views/UserDataTimeline.vue")
+    },
+    {
+      path: "/statistic/:host?",
+      name: "statistic",
+      component: () => import("./views/statisticCharts/SiteBase.vue")
     }
   ]
 });

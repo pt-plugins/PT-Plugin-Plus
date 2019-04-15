@@ -126,7 +126,9 @@ export enum EAction {
   // 重置运行时配置
   resetRunTimeOptions = "resetRunTimeOptions",
   // 根据指定的图片地址获取Base64信息
-  getBase64FromImageUrl = "getBase64FromImageUrl"
+  getBase64FromImageUrl = "getBase64FromImageUrl",
+  // 获取用户历史数据
+  getUserHistoryData = "getUserHistoryData"
 }
 
 /**

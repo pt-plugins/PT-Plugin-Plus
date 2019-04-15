@@ -12,7 +12,8 @@ import {
   Request,
   EModule,
   ERequestMethod,
-  UserInfo
+  UserInfo,
+  EUserDataRange
 } from "@/interface/common";
 import { filters as Filters } from "@/service/filters";
 import { ClientController } from "@/service/clientController";
@@ -802,6 +803,13 @@ export default class Controller {
       };
 
       file.start();
+    });
+  }
+
+  public getUserHistoryData(host: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let data = this.service.userData.get(host, EUserDataRange.all);
+      resolve(data);
     });
   }
 }

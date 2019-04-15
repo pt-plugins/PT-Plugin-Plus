@@ -1,6 +1,6 @@
 interface IFilter {
-  formatNumber: (source: number, format: string) => string;
-  formatSize: (bytes: any, zeroToEmpty: boolean, type: string) => string;
+  formatNumber: (source: number, format?: string) => string;
+  formatSize: (bytes: any, zeroToEmpty?: boolean, type?: string) => string;
   formatSpeed: (bytes: any, zeroToEmpty: boolean) => string;
   parseURL: (url: string) => any;
   timeAgoToNumber: (source: string) => number;

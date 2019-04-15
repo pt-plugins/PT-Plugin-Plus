@@ -21,6 +21,8 @@
     "dayjs": "^1.8.11",
     "extend": "^3.0.2",
     "file-saver": "^2.0.0",
+    "highcharts": "^7.1.1",
+    "highcharts-vue": "^1.2.0",
     "html2canvas": "^1.0.0-alpha.12",
     "url-parse": "^1.4.4",
     "vue": "^2.5.17",

@@ -125,9 +125,13 @@
           <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>
           <td class="number">{{ props.item.user.bonus | formatNumber }}</td>
           <td class="number">{{ props.item.user.joinTime | timeAgo(showWeek) }}</td>
-          <td
-            class="number"
-          >{{ props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</td>
+          <td class="number">
+            <v-btn
+              depressed
+              small
+              :to="`statistic/${props.item.host}`"
+            >{{ props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</v-btn>
+          </td>
           <td class="center">
             <v-progress-circular
               indeterminate
