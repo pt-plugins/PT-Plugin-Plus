@@ -27,6 +27,7 @@ import dayjs from "dayjs";
 import { Downloader, downloadFile, FileDownloader } from "@/service/downloader";
 import * as basicContext from "basiccontext";
 import { PathHandler } from "@/service/pathHandler";
+import DoubanMovie from "@/options/components/DoubanMovie.vue";
 
 type searchResult = {
   sites: Dictionary<any>;
@@ -39,6 +40,9 @@ type searchResult = {
 const extension = new Extension();
 
 export default Vue.extend({
+  components: {
+    DoubanMovie
+  },
   data() {
     return {
       words: {
@@ -144,7 +148,8 @@ export default Vue.extend({
       filterKey: "",
       showFailedSites: false,
       showNoResultsSites: false,
-      pathHandler: new PathHandler()
+      pathHandler: new PathHandler(),
+      IMDbId: ""
     };
   },
   created() {
@@ -395,6 +400,11 @@ export default Vue.extend({
 
       this.pagination.page = 1;
       this.doSearchTorrentWithQueue(sites);
+      if (/^(tt\d+)$/.test(this.key)) {
+        this.IMDbId = this.key;
+      } else {
+        this.IMDbId = "";
+      }
     },
 
     /**

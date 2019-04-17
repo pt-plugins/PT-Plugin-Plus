@@ -78,9 +78,11 @@
         <v-divider v-if="index + 1 < searchQueue.length" :key="'line'+item.site.host+index"></v-divider>
       </template>
     </v-list>
+
     <!-- 搜索结果列表 -->
     <v-card>
       <v-card-title style="padding: 0 10px 0 3px;">
+        <DoubanMovie :IMDbId="IMDbId" class="ma-2"/>
         <v-flex xs12>
           <!-- 站点返回的搜索结果 -->
           <div v-if="searchSiteCount>1">

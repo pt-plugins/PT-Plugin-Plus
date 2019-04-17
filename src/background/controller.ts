@@ -24,6 +24,7 @@ import { FileDownloader } from "@/service/downloader";
 import { APP } from "@/service/api";
 import URLParse from "url-parse";
 import { User } from "./user";
+import { DoubanService } from "@/service/douban";
 
 type Service = PTPlugin;
 export default class Controller {
@@ -40,6 +41,7 @@ export default class Controller {
   public clients: any = {};
   public searcher: Searcher = new Searcher(this.service);
   public userService: User = new User(this.service);
+  public doubanService = new DoubanService();
 
   public clientController: ClientController = new ClientController();
   public isInitialized: boolean = false;
@@ -827,5 +829,9 @@ export default class Controller {
       let data = this.service.userData.get(host, EUserDataRange.all);
       resolve(data);
     });
+  }
+
+  public getMovieInfoFromDouban(key: string): Promise<any> {
+    return this.doubanService.getInfos(key);
   }
 }

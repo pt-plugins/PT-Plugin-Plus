@@ -128,7 +128,9 @@ export enum EAction {
   // 根据指定的图片地址获取Base64信息
   getBase64FromImageUrl = "getBase64FromImageUrl",
   // 获取用户历史数据
-  getUserHistoryData = "getUserHistoryData"
+  getUserHistoryData = "getUserHistoryData",
+  // 从豆瓣获取电影信息
+  getMovieInfoFromDouban = "getMovieInfoFromDouban"
 }
 
 /**
