@@ -40,6 +40,11 @@ export class UserData {
     if (!this.items) {
       return null;
     }
+
+    if (!host) {
+      return this.items;
+    }
+
     let datas: Dictionary<any> = this.items[host];
     if (!datas) {
       return null;

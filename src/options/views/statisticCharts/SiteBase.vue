@@ -1,8 +1,8 @@
 <template>
-  <div id="container" class="container">
+  <div class="container">
     <v-autocomplete
       v-model="selectedSite"
-      :items="options.sites"
+      :items="sites"
       :label="words.selectSite"
       persistent-hint
       single-line
@@ -12,13 +12,13 @@
       @input="init(selectedSite.host)"
     >
       <template slot="selection" slot-scope="{ item }">
-        <v-list-tile-avatar>
+        <v-list-tile-avatar v-if="item.icon">
           <img :src="item.icon">
         </v-list-tile-avatar>
         <span v-text="item.name"></span>
       </template>
-      <template slot="item" slot-scope="data" style>
-        <v-list-tile-avatar>
+      <template slot="item" slot-scope="data">
+        <v-list-tile-avatar v-if="data.item.icon">
           <img :src="data.item.icon">
         </v-list-tile-avatar>
         <v-list-tile-content>
@@ -31,6 +31,15 @@
       </template>
     </v-autocomplete>
 
+    <v-layout row wrap>
+      <v-btn depressed small to="/home">{{ words.goback }}</v-btn>
+      <v-spacer></v-spacer>
+      <v-btn flat icon small @click="share" :title="words.share" v-if="!shareing">
+        <v-icon small>share</v-icon>
+      </v-btn>
+      <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="shareing"></v-progress-circular>
+    </v-layout>
+
     <div ref="charts">
       <highcharts :options="chartBaseData"/>
       <highcharts :options="chartExtData" class="mt-4"/>
@@ -42,14 +51,11 @@
       </v-card-actions>
     </div>
 
-    <v-layout row wrap>
-      <v-btn depressed small to="/home">{{ words.goback }}</v-btn>
-      <v-spacer></v-spacer>
-      <v-btn depressed small @click="share" :title="words.share" v-if="!shareing">
-        <v-icon>share</v-icon>
-      </v-btn>
-      <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="shareing"></v-progress-circular>
-    </v-layout>
+    <v-alert :value="true" type="info" color="grey">
+      注：
+      <br>1. 图表历史数据来自概览页，手动刷新或自动更新均会记录；
+      <br>2. 助手从 v1.0.1 版开始正式记录每次刷新的数据，每个站每天仅保存一条；
+    </v-alert>
   </div>
 </template>
 
@@ -64,7 +70,9 @@ import {
   EUserDataRange,
   Site,
   DownloadClient,
-  EDataResultType
+  EDataResultType,
+  Dictionary,
+  ECommonKey
 } from "@/interface/common";
 import html2canvas from "html2canvas";
 import FileSaver from "file-saver";
@@ -77,7 +85,6 @@ function formatBonus(v: any) {
   switch (true) {
     case v >= 1000000000:
       return "∞";
-      break;
 
     case v >= 100000000:
       unit = "亿";
@@ -106,7 +113,6 @@ function formatBonus(v: any) {
 
     default:
       return v;
-      break;
   }
 
   return parseFloat(result.toString()).toFixed(2) + " " + unit;
@@ -130,7 +136,9 @@ export default Vue.extend({
       selectedSite: {} as Site,
       shareing: false,
       shareTime: new Date(),
-      version: ""
+      version: "",
+      userName: "",
+      sites: [] as Site[]
     };
   },
 
@@ -144,15 +152,29 @@ export default Vue.extend({
       let manifest = chrome.runtime.getManifest();
       this.version = "v" + (manifest.version_name || manifest.version);
     }
+
+    // 插入到第一个位置
+    this.sites.push({
+      name: "<所有站点>",
+      host: ECommonKey.allSite,
+      icon: "",
+      url: "",
+      tags: []
+    });
+
+    this.options.sites.forEach((site: Site) => {
+      if (site.allowGetUserInfo) {
+        this.sites.push(JSON.parse(JSON.stringify(site)));
+      }
+    });
   },
 
   methods: {
     initEvents() {},
-    init(host: string) {
-      if (!host) {
-        return;
+    init(host: string = "") {
+      if (host == ECommonKey.allSite) {
+        host = "";
       }
-
       this.host = host;
 
       this.selectedSite = this.options.sites.find((item: Site) => {
@@ -166,9 +188,112 @@ export default Vue.extend({
           this.resetData(data);
         });
     },
+    /**
+     * 获取合计数据
+     */
+    getTotalData(source: any) {
+      let result: Dictionary<any> = {};
+      let nameInfo = { name: "", maxCount: 0 };
+      let userNames: Dictionary<any> = {};
+      let days: any[] = [];
+
+      for (const host in source) {
+        if (source.hasOwnProperty(host)) {
+          const siteData = source[host];
+          let site: Site = this.options.sites.find((item: Site) => {
+            return item.host == host;
+          });
+
+          if (!site) {
+            continue;
+          }
+
+          if (!site.allowGetUserInfo) {
+            continue;
+          }
+
+          for (const date in siteData) {
+            if (siteData.hasOwnProperty(date)) {
+              const data = siteData[date];
+
+              if (data.lastUpdateStatus != EDataResultType.success) {
+                continue;
+              }
+
+              let item = result[date];
+              if (!item) {
+                item = {
+                  uploaded: 0,
+                  downloaded: 0,
+                  seedingSize: 0,
+                  seeding: 0,
+                  bonus: 0,
+                  name: "",
+                  lastUpdateStatus: EDataResultType.success
+                };
+              }
+
+              if (data.uploaded && data.uploaded > 0) {
+                item.uploaded += parseFloat(data.uploaded);
+              }
+
+              if (data.downloaded && data.downloaded > 0) {
+                item.downloaded += parseFloat(data.downloaded);
+              }
+
+              if (data.seeding && data.seeding > 0) {
+                item.seeding += Math.round(data.seeding);
+              }
+
+              if (data.seedingSize && data.seedingSize > 0) {
+                item.seedingSize += parseFloat(data.seedingSize);
+              }
+
+              if (data.bonus && data.bonus > 0) {
+                item.bonus += parseFloat(data.bonus);
+              }
+
+              if (!userNames[data.name]) {
+                userNames[data.name] = 0;
+              }
+              userNames[data.name]++;
+
+              // 获取使用最多的用户名
+              if (userNames[data.name] > nameInfo.maxCount) {
+                nameInfo.name = data.name;
+                nameInfo.maxCount = userNames[data.name];
+              }
+
+              result[date] = item;
+
+              if (!days.includes(date)) {
+                days.push(date);
+              }
+            }
+          }
+        }
+      }
+
+      let datas: Dictionary<any> = {};
+      days.sort().forEach(day => {
+        datas[day] = result[day];
+      });
+
+      this.userName = nameInfo.name;
+
+      return datas;
+    },
     resetData(result: any) {
-      this.resetBaseData(result);
-      this.resetExtData(result);
+      if (this.host) {
+        this.resetBaseData(result);
+        this.resetExtData(result);
+      } else {
+        let data = this.getTotalData(result);
+        console.log(data);
+        this.selectedSite = { name: "<所有站点>", host: ECommonKey.allSite };
+        this.resetBaseData(data);
+        this.resetExtData(data);
+      }
     },
     /**
      * 基础数据
@@ -253,7 +378,9 @@ export default Vue.extend({
           )}，积分：${filters.formatNumber(latest.bonus)}`
         },
         title: {
-          text: `[${latest.name}@${this.selectedSite.name}] 基本数据`
+          text: `[${latest.name || this.userName}@${
+            this.selectedSite.name
+          }] 基本数据`
         },
         xAxis: {
           categories: categories,
@@ -373,7 +500,9 @@ export default Vue.extend({
           } 个`
         },
         title: {
-          text: `[${latest.name}@${this.selectedSite.name}] 保种情况`
+          text: `[${latest.name || this.userName}@${
+            this.selectedSite.name
+          }] 保种情况`
         },
         xAxis: {
           categories: categories,
@@ -454,7 +583,7 @@ export default Vue.extend({
 <style lang="scss"  scoped>
 .container {
   width: 900px;
-  text-align: center;
+  padding: 0;
 
   .chart {
     min-width: 320px;
