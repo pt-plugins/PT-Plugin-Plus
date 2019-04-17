@@ -11,83 +11,52 @@
   "schema": "NexusPHP",
   "host": "hdcmct.org",
   "searchEntry": [{
-      "entry": "/torrents.php?search=$key$&notnewword=1",
       "name": "全部",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": true
     },
     {
-      "entry": "/torrents.php?cat501=1&search=$key$&notnewword=1",
+      "queryString": "cat501=1",
       "name": "Movies(电影)",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat502=1&search=$key$&notnewword=1",
+      "queryString": "cat502=1",
       "name": "TV Series(剧集)",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat503=1&search=$key$&notnewword=1",
+      "queryString": "cat503=1",
       "name": "Docs(纪录)",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat504=1&search=$key$&notnewword=1",
+      "queryString": "cat504=1",
       "name": "Animations(动画)",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat505=1&search=$key$&notnewword=1",
+      "queryString": "cat505=1",
       "name": "TV Shows(综艺)",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat506=1&search=$key$&notnewword=1",
+      "queryString": "cat506=1",
       "name": "Sports(体育)",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat507=1&search=$key$&notnewword=1",
+      "queryString": "cat507=1",
       "name": "MV(音乐视频)",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat508=1&search=$key$&notnewword=1",
+      "queryString": "cat508=1",
       "name": "Music(音乐)",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat509=1&search=$key$&notnewword=1",
+      "queryString": "cat509=1",
       "name": "Others(其他)",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     }
   ],

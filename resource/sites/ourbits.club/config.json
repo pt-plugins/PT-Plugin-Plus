@@ -12,154 +12,113 @@
   "schema": "NexusPHP",
   "host": "ourbits.club",
   "collaborator": "Rhilip",
-  "searchEntry": [
-    {
-      "entry": "/torrents.php?search=$key$&notnewword=1",
+  "searchEntry": [{
       "name": "全站",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": true
     },
     {
-      "entry": "/torrents.php?cat401=1&search=$key$&notnewword=1",
+      "queryString": "cat401=1",
       "name": "Movies",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat402=1&search=$key$&notnewword=1",
+      "queryString": "cat402=1",
       "name": "Movies-3D",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat419=1&search=$key$&notnewword=1",
+      "queryString": "cat419=1",
       "name": "Concert",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat412=1&search=$key$&notnewword=1",
+      "queryString": "cat412=1",
       "name": "TV-Episode",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat405=1&search=$key$&notnewword=1",
+      "queryString": "cat405=1",
       "name": "TV-Pack",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat413=1&search=$key$&notnewword=1",
+      "queryString": "cat413=1",
       "name": "TV-Show",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat410=1&search=$key$&notnewword=1",
+      "queryString": "cat410=1",
       "name": "Documentary",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat411=1&search=$key$&notnewword=1",
+      "queryString": "cat411=1",
       "name": "Animation",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat415=1&search=$key$&notnewword=1",
+      "queryString": "cat415=1",
       "name": "Sports",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat414=1&search=$key$&notnewword=1",
+      "queryString": "cat414=1",
       "name": "Music-Video",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat416=1&search=$key$&notnewword=1",
+      "queryString": "cat416=1",
       "name": "Music",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     }
   ],
-  "categories": [
-    {
-      "entry": "*",
-      "result": "&cat$id$=1",
-      "category": [
-        {
-          "id": 401,
-          "name": "Movies"
-        },
-        {
-          "id": 402,
-          "name": "Movies-3D"
-        },
-        {
-          "id": 419,
-          "name": "Concert"
-        },
-        {
-          "id": 412,
-          "name": "TV-Episode"
-        },
-        {
-          "id": 405,
-          "name": "TV-Pack"
-        },
-        {
-          "id": 413,
-          "name": "TV-Show"
-        },
-        {
-          "id": 410,
-          "name": "Documentary"
-        },
-        {
-          "id": 411,
-          "name": "Animation"
-        },
-        {
-          "id": 415,
-          "name": "Sports"
-        },
-        {
-          "id": 414,
-          "name": "Music-Video"
-        },
-        {
-          "id": 416,
-          "name": "Music"
-        }
-      ]
-    }
-  ]
+  "categories": [{
+    "entry": "*",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "Movies"
+      },
+      {
+        "id": 402,
+        "name": "Movies-3D"
+      },
+      {
+        "id": 419,
+        "name": "Concert"
+      },
+      {
+        "id": 412,
+        "name": "TV-Episode"
+      },
+      {
+        "id": 405,
+        "name": "TV-Pack"
+      },
+      {
+        "id": 413,
+        "name": "TV-Show"
+      },
+      {
+        "id": 410,
+        "name": "Documentary"
+      },
+      {
+        "id": 411,
+        "name": "Animation"
+      },
+      {
+        "id": 415,
+        "name": "Sports"
+      },
+      {
+        "id": 414,
+        "name": "Music-Video"
+      },
+      {
+        "id": 416,
+        "name": "Music"
+      }
+    ]
+  }]
 }

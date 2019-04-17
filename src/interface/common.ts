@@ -117,6 +117,7 @@ export interface SiteSchema {
   plugins?: Plugin[] | any;
   siteOnly?: boolean;
   securityKeyFields?: string[];
+  searchEntryConfig?: SearchEntryConfig;
   searchEntry?: SearchEntry[];
   parser?: Dictionary<any>;
   patterns?: Dictionary<any>;
@@ -161,6 +162,7 @@ export interface Site {
   plugins?: any[];
   allowSearch?: boolean;
   securityKeys?: object;
+  searchEntryConfig?: SearchEntryConfig;
   searchEntry?: SearchEntry[];
   parser?: Dictionary<any>;
   patterns?: Dictionary<any>;
@@ -260,6 +262,23 @@ export interface SearchResultItem {
   tags?: SearchResultItemTag[];
   entryName?: string;
   category?: SearchResultItemCategory;
+}
+
+export interface SearchEntryConfigArea {
+  name: string;
+  appendQueryString?: string;
+  keyAutoMatch?: string;
+}
+
+export interface SearchEntryConfig {
+  page: string;
+  entry?: string;
+  resultType?: ERequestResultType;
+  queryString?: string;
+  parseScriptFile?: string;
+  parseScript?: string;
+  resultSelector?: string;
+  area?: SearchEntryConfigArea[];
 }
 
 export interface SearchEntry {

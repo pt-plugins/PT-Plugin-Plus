@@ -11,91 +11,57 @@
   "schema": "NexusPHP",
   "host": "hdsky.me",
   "searchEntry": [{
-      "entry": "/torrents.php?search=$key$&notnewword=1",
       "name": "全部",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last",
       "enabled": true
     },
     {
-      "entry": "/torrents.php?cat401=1&search=$key$&notnewword=1",
+      "queryString": "cat401=1",
       "name": "Movies/电影",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat404=1&search=$key$&notnewword=1",
+      "queryString": "cat404=1",
       "name": "Documentaries/纪录片",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat410=1&search=$key$&notnewword=1",
+      "queryString": "cat410=1",
       "name": "iPad/iPad影视",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat405=1&search=$key$&notnewword=1",
+      "queryString": "cat405=1",
       "name": "Animations/动漫",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat402=1&search=$key$&notnewword=1",
+      "queryString": "cat402=1",
       "name": "TV Series/剧集",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat403=1&search=$key$&notnewword=1",
+      "queryString": "cat403=1",
       "name": "TV Shows/综艺",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat406=1&search=$key$&notnewword=1",
+      "queryString": "cat406=1",
       "name": "Music Videos/音乐MV",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat407=1&search=$key$&notnewword=1",
+      "queryString": "cat407=1",
       "name": "Sports/体育",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat408=1&search=$key$&notnewword=1",
+      "queryString": "cat408=1",
       "name": "HQ Audio/无损音乐",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     },
     {
-      "entry": "/torrents.php?cat409=1&search=$key$&notnewword=1",
+      "queryString": "cat409=1",
       "name": "Misc/其他",
-      "resultType": "html",
-      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
       "enabled": false
     }
   ],

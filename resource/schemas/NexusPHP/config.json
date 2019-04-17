@@ -11,12 +11,26 @@
     "scripts": ["common.js", "torrents.js"]
   }],
   "securityKeyFields": ["passkey"],
-  "searchEntry": [{
-    "entry": "/torrents.php?search=$key$&notnewword=1",
-    "name": "全部",
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "queryString": "search=$key$&notnewword=1",
+    "area": [{
+      "name": "标题",
+      "appendQueryString": "&search_area=0"
+    }, {
+      "name": "简介",
+      "appendQueryString": "&search_area=1"
+    }, {
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "appendQueryString": "&search_area=4"
+    }],
     "resultType": "html",
     "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-    "resultSelector": "table.torrents:last",
+    "resultSelector": "table.torrents:last"
+  },
+  "searchEntry": [{
+    "name": "全部",
     "enabled": true
   }],
   "checker": {

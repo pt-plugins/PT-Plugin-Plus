@@ -13,32 +13,19 @@
     "styles": ["/libs/album/style.css"]
   }],
   "searchEntry": [{
-    "entry": "/torrents.php?search=$key$&notnewword=1",
     "name": "综合",
-    "resultType": "html",
-    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr",
     "enabled": true
   }, {
     "entry": "/movie.php?search=$key$&notnewword=1",
     "name": "电影",
-    "resultType": "html",
-    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr",
     "enabled": true
   }, {
     "entry": "/music.php?search=$key$&notnewword=1",
     "name": "音乐",
-    "resultType": "html",
-    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr",
     "enabled": true
   }, {
     "entry": "/adult.php?search=$key$&notnewword=1",
     "name": "adult",
-    "resultType": "html",
-    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr",
     "enabled": true
   }],
   "categories": [{

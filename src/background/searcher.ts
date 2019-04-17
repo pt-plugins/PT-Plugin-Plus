@@ -7,11 +7,14 @@ import {
   EDataResultType,
   SearchEntry,
   EModule,
-  ERequestResultType
+  ERequestResultType,
+  SearchEntryConfigArea,
+  SearchEntryConfig
 } from "@/interface/common";
 import { APP } from "@/service/api";
 import { SiteService } from "./site";
 import PTPlugin from "./service";
+import extend from "extend";
 
 export type SearchConfig = {
   site?: Site;
@@ -53,6 +56,15 @@ export class Searcher {
       let searchConfig: SearchConfig = {};
       let schema = this.getSiteSchema(site);
       let host = site.host as string;
+      // 当前站点默认搜索页
+      let siteSearchPage = "";
+      // 当前站点默认搜索配置信息
+      let searchEntryConfig: SearchEntryConfig | undefined = extend(
+        true,
+        {},
+        schema.searchEntryConfig,
+        siteServce.options.searchEntryConfig
+      );
 
       if (siteServce.options.searchEntry) {
         searchConfig.rootPath = `sites/${host}/`;
@@ -77,6 +89,27 @@ export class Searcher {
         return;
       }
 
+      // 是否有搜索入口配置项
+      if (searchEntryConfig && searchEntryConfig.page) {
+        siteSearchPage =
+          searchEntryConfig.page + "?" + searchEntryConfig.queryString;
+
+        // 搜索区域
+        if (searchEntryConfig.area) {
+          searchEntryConfig.area.some((area: SearchEntryConfigArea) => {
+            // 是否有自动匹配关键字的正则
+            if (
+              area.keyAutoMatch &&
+              new RegExp(area.keyAutoMatch, "").test(key)
+            ) {
+              siteSearchPage += area.appendQueryString;
+              return true;
+            }
+            return false;
+          });
+        }
+      }
+
       this.searchConfigs[host] = searchConfig;
 
       let results: any[] = [];
@@ -84,8 +117,17 @@ export class Searcher {
       let doneCount = 0;
 
       searchConfig.entry.forEach((entry: SearchEntry) => {
+        let searchPage = entry.entry || siteSearchPage;
+        if (searchEntryConfig) {
+          entry.parseScriptFile =
+            entry.parseScriptFile || searchEntryConfig.parseScriptFile;
+          entry.resultType = entry.resultType || searchEntryConfig.resultType;
+          entry.resultSelector =
+            entry.resultSelector || searchEntryConfig.resultSelector;
+        }
+
         // 判断是否指定了搜索页和用于获取搜索结果的脚本
-        if (entry.entry && entry.parseScriptFile && entry.enabled !== false) {
+        if (searchPage && entry.parseScriptFile && entry.enabled !== false) {
           let rows: number =
             this.options.search && this.options.search.rows
               ? this.options.search.rows
@@ -100,12 +142,12 @@ export class Searcher {
           if ((site.url + "").substr(-1) != "/") {
             site.url += "/";
           }
-          if ((entry.entry + "").substr(0, 1) == "/") {
-            entry.entry = (entry.entry + "").substr(1);
+          if ((searchPage + "").substr(0, 1) == "/") {
+            searchPage = (searchPage + "").substr(1);
           }
           let url: string =
             site.url +
-            entry.entry +
+            searchPage +
             (entry.queryString ? `&${entry.queryString}` : "");
 
           url = this.replaceKeys(url, {
