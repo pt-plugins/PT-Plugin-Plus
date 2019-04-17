@@ -1,74 +1,57 @@
 <template>
   <div class="home">
     <v-alert :value="true" type="info">{{ words.title }}</v-alert>
-
-    <!-- 请求队列-->
-    <!-- <v-list small v-if="requestQueue && requestQueue.length">
-      <template v-for="(item, index) in requestQueue">
-        <v-list-tile :key="item.site.host">
-          <v-list-tile-action>
-            <v-progress-circular :size="18" :width="2" indeterminate color="primary"></v-progress-circular>
-          </v-list-tile-action>
-
-          <v-list-tile-content>
-            <v-list-tile-title>
-              <v-avatar size="18" class="mr-2">
-                <img :src="item.site.icon">
-              </v-avatar>
-              {{item.site.name}} {{ words.requesting }}
-            </v-list-tile-title>
-          </v-list-tile-content>
-
-          <v-list-tile-action class="mr-5">
-            <v-icon @click="abortRequest(item.site)" color="red" :title="words.cancelRequest">cancel</v-icon>
-          </v-list-tile-action>
-        </v-list-tile>
-        <v-divider v-if="index + 1 < requestQueue.length" :key="'line'+item.site.host+index"></v-divider>
-      </template>
-    </v-list>-->
     <v-card>
       <v-card-title>
-        <v-btn color="success" @click="getInfos" :loading="loading">
+        <v-btn color="success" @click="getInfos" :loading="loading" :title="words.getInfos">
           <v-icon class="mr-2">cached</v-icon>
           {{words.getInfos}}
         </v-btn>
-        <v-btn to="/user-data-timeline" color="success">
-          <v-icon class="mr-2">timeline</v-icon>
+        <v-btn to="/user-data-timeline" color="success" :title="words.timeline">
+          <v-icon>timeline</v-icon>
         </v-btn>
 
-        <v-switch
-          color="success"
-          v-model="showSiteName"
-          :label="words.siteName"
-          class="mx-2 mt-4"
-          style="flex:none;"
-          @click.stop="updateViewOptions"
-        ></v-switch>
-        <v-switch
-          color="success"
-          v-model="showUserName"
-          :label="words.userName"
-          class="ml-2 mt-4"
-          style="flex:none;"
-          @click.stop="updateViewOptions"
-        ></v-switch>
-        <v-switch
-          color="success"
-          v-model="showUserLevel"
-          :label="words.userLevel"
-          class="ml-2 mt-4"
-          style="flex:none;"
-          @click.stop="updateViewOptions"
-        ></v-switch>
+        <v-btn to="/statistic" color="success" :title="words.statistic">
+          <v-icon>equalizer</v-icon>
+        </v-btn>
 
-        <v-switch
-          color="success"
-          v-model="showWeek"
-          :label="words.week"
-          class="ml-2 mt-4"
-          style="flex:none;"
-          @click.stop="updateViewOptions"
-        ></v-switch>
+        <v-menu :close-on-content-click="false" offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn color="blue" dark v-on="on" :title="words.settings">
+              <v-icon>settings</v-icon>
+            </v-btn>
+          </template>
+
+          <v-card>
+            <v-container grid-list-xs>
+              <v-switch
+                color="success"
+                v-model="showSiteName"
+                :label="words.siteName"
+                @change="updateViewOptions"
+              ></v-switch>
+              <v-switch
+                color="success"
+                v-model="showUserName"
+                :label="words.userName"
+                @change="updateViewOptions"
+              ></v-switch>
+              <v-switch
+                color="success"
+                v-model="showUserLevel"
+                :label="words.userLevel"
+                @change="updateViewOptions"
+              ></v-switch>
+
+              <v-switch
+                color="success"
+                v-model="showWeek"
+                :label="words.week"
+                @change="updateViewOptions"
+              ></v-switch>
+            </v-container>
+          </v-card>
+        </v-menu>
 
         <v-spacer></v-spacer>
 
@@ -130,6 +113,7 @@
               depressed
               small
               :to="`statistic/${props.item.host}`"
+              :title="words.statistic"
             >{{ props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</v-btn>
           </td>
           <td class="center">
@@ -177,14 +161,17 @@ export default Vue.extend({
     return {
       words: {
         title: "概览（Beta）",
-        getInfos: "手动刷新用户数据",
+        getInfos: "刷新用户数据",
         cancelRequest: "取消请求",
         requesting: "正在请求",
         secret: "密",
         siteName: "网站名称",
         userName: "用户名称",
         userLevel: "用户等级",
-        week: "时间显示为周数"
+        week: "时间显示为周数",
+        timeline: "时间轴",
+        settings: "参数",
+        statistic: "数据图表"
       },
       loading: false,
       items: [] as any[],
