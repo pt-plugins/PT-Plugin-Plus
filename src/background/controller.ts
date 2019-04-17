@@ -23,7 +23,6 @@ import PTPlugin from "./service";
 import { FileDownloader } from "@/service/downloader";
 import { APP } from "@/service/api";
 import URLParse from "url-parse";
-import { InfoParser } from "./infoParser";
 import { User } from "./user";
 
 type Service = PTPlugin;
@@ -149,7 +148,7 @@ export default class Controller {
       }
 
       this.getClient(clientConfig).then((result: any) => {
-        this.doDownload(result, data, data.savePath, host)
+        this.doDownload(result, data, host)
           .then((result: any) => {
             resolve(result);
           })
@@ -162,22 +161,27 @@ export default class Controller {
 
   /**
    * 发送下载链接地址到默认服务器（客户端）
-   * @param data 链接地址
+   * @param downloadOptions 下载选项
    */
-  public sendTorrentToDefaultClient(data: DownloadOptions): Promise<any> {
+  public sendTorrentToDefaultClient(
+    downloadOptions: DownloadOptions
+  ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      let URL = Filters.parseURL(data.url);
+      let URL = Filters.parseURL(downloadOptions.url);
       let host = URL.host;
       let site = this.getSiteFromHost(host);
       // 重新指定host内容，因为站点可能定义了多域名
       host = site.host;
       let siteDefaultPath = this.getSiteDefaultPath(site);
       let siteClientConfig = this.siteDefaultClients[host];
+      if (siteDefaultPath) {
+        downloadOptions.savePath = siteDefaultPath;
+      }
       if (!siteClientConfig) {
         this.initSiteDefaultClient(host).then((siteClientConfig: any) => {
           this.siteDefaultClients[host] = siteClientConfig;
 
-          this.doDownload(siteClientConfig, data, siteDefaultPath, host)
+          this.doDownload(siteClientConfig, downloadOptions, host)
             .then((result: any) => {
               resolve(result);
             })
@@ -186,7 +190,7 @@ export default class Controller {
             });
         });
       } else {
-        this.doDownload(siteClientConfig, data, siteDefaultPath, host)
+        this.doDownload(siteClientConfig, downloadOptions, host)
           .then((result: any) => {
             resolve(result);
           })
@@ -200,21 +204,20 @@ export default class Controller {
   /**
    * 执行下载操作
    * @param clientConfig
-   * @param data
-   * @param siteDefaultPath
+   * @param downloadOptions
+   * @param host
    */
   private doDownload(
     clientConfig: any,
-    data: DownloadOptions,
-    siteDefaultPath: string = "",
+    downloadOptions: DownloadOptions,
     host: string = ""
   ): Promise<any> {
     return new Promise((resolve?: any, reject?: any) => {
       clientConfig.client
         .call(EAction.addTorrentFromURL, {
-          url: data.url,
-          savePath: data.savePath,
-          autoStart: data.autoStart
+          url: downloadOptions.url,
+          savePath: downloadOptions.savePath,
+          autoStart: downloadOptions.autoStart
         })
         .then((result: any) => {
           this.service.logger.add({
@@ -248,7 +251,7 @@ export default class Controller {
             }
 
             this.saveDownloadHistory(
-              data,
+              downloadOptions,
               host,
               clientConfig.options.id,
               false
@@ -256,9 +259,14 @@ export default class Controller {
             return;
           }
 
-          this.saveDownloadHistory(data, host, clientConfig.options.id, true);
+          this.saveDownloadHistory(
+            downloadOptions,
+            host,
+            clientConfig.options.id,
+            true
+          );
 
-          this.formatSendResult(result, clientConfig.options, siteDefaultPath)
+          this.formatSendResult(result, clientConfig.options, downloadOptions)
             .then((result: any) => {
               resolve(result);
             })
@@ -275,7 +283,12 @@ export default class Controller {
             }]命令失败`,
             data: result
           });
-          this.saveDownloadHistory(data, host, clientConfig.options.id, false);
+          this.saveDownloadHistory(
+            downloadOptions,
+            host,
+            clientConfig.options.id,
+            false
+          );
           reject(result);
         });
     });
@@ -323,17 +336,21 @@ export default class Controller {
    * 格式化发送结果
    * @param data
    * @param clientOptions
-   * @param siteDefaultPath
+   * @param downloadOptions
    */
   private formatSendResult(
     data: any,
     clientOptions: any,
-    siteDefaultPath: string
+    downloadOptions: DownloadOptions
   ): Promise<any> {
     return new Promise((resolve?: any, reject?: any) => {
       let result: DataResult = {
         type: EDataResultType.success,
-        msg: "种子已添加",
+        msg:
+          `${downloadOptions.title || ""} 种子已添加完成。` +
+          (downloadOptions.savePath
+            ? `<br/>保存至 ${downloadOptions.savePath}`
+            : ""),
         success: true,
         data: data
       };
@@ -343,9 +360,8 @@ export default class Controller {
         case EDownloadClientType.transmission:
           if (data.id != undefined) {
             result.msg = data.name + " 已发送至 Transmission，编号：" + data.id;
-            if (!siteDefaultPath) {
-              result.type = EDataResultType.info;
-              result.msg += "；但站点默认目录未配置，建议配置。";
+            if (downloadOptions.savePath) {
+              result.msg += `<br/>保存至 ${downloadOptions.savePath} `;
             }
           } else if (data.status) {
             switch (data.status) {
