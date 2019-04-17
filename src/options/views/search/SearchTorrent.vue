@@ -440,8 +440,12 @@
       </v-data-table>
     </v-card>
 
-    <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
-    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{ successMsg }}</v-snackbar>
+    <v-snackbar v-model="haveError" top :timeout="3000" multi-line color="error">
+      <div v-html="errorMsg"></div>
+    </v-snackbar>
+    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" multi-line color="success">
+      <div v-html="successMsg"></div>
+    </v-snackbar>
   </div>
 </template>
 <script lang="ts" src="./SearchTorrent.ts"></script>

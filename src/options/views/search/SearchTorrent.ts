@@ -1134,6 +1134,7 @@ export default Vue.extend({
                   options.url,
                   options.title,
                   item,
+                  null,
                   options.link
                 );
               }
