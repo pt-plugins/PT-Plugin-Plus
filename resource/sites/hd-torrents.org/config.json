@@ -15,12 +15,26 @@
     "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
   }],
   "host": "hd-torrents.org",
-  "searchEntry": [{
-    "entry": "/torrents.php?search=$key$&active=1&options=0",
-    "name": "全部",
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "queryString": "search=$key$",
+    "area": [{
+      "name": "标题",
+      "appendQueryString": "&options=0"
+    }, {
+      "name": "标题和简介",
+      "appendQueryString": "&options=1"
+    }, {
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "appendQueryString": "&options=2"
+    }],
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "table.mainblockcontenttt:last > tbody > tr",
+    "resultSelector": "table.mainblockcontenttt:last > tbody > tr"
+  },
+  "searchEntry": [{
+    "name": "全部",
     "enabled": true
   }],
   "torrentTagSelectors": [{

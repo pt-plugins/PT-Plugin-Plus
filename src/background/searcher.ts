@@ -62,7 +62,7 @@ export class Searcher {
       let searchEntryConfig: SearchEntryConfig | undefined = extend(
         true,
         {},
-        schema.searchEntryConfig,
+        schema && schema.searchEntryConfig ? schema.searchEntryConfig : {},
         siteServce.options.searchEntryConfig
       );
 
