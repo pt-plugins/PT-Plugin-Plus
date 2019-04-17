@@ -88,19 +88,44 @@ export class ContextMenus {
     // 创建下载客户端上下文菜单，所有页面可用
     this.createClientMenus();
     // 创建插件图标右键菜单
-    this.createPageActionMenus();
+    this.createPluginIconPopupMenus();
   }
 
   /**
    * 创建插件图标右键菜单
    */
-  public createPageActionMenus() {
+  public createPluginIconPopupMenus() {
     this.add({
-      title: "查看日志",
+      title: "查看下载历史",
+      contexts: ["browser_action"],
+      onclick: () => {
+        chrome.tabs.create({
+          url: "index.html#/history"
+        });
+      }
+    });
+
+    this.add({
+      title: "查看助手日志",
       contexts: ["browser_action"],
       onclick: () => {
         chrome.tabs.create({
           url: "index.html#/system-logs"
+        });
+      }
+    });
+
+    this.add({
+      type: "separator",
+      contexts: ["browser_action"]
+    });
+
+    this.add({
+      title: "使用问题反馈",
+      contexts: ["browser_action"],
+      onclick: () => {
+        chrome.tabs.create({
+          url: "https://github.com/ronggang/PT-Plugin-Plus/issues/new"
         });
       }
     });
