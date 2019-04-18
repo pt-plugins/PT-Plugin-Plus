@@ -90,7 +90,17 @@ class PTPContent {
    * @param host
    */
   public getSiteFromHost(host: string) {
-    let site = this.options.sites.find((item: Site) => {
+    console.log("getSiteFromHost", host);
+    let sites: Site[] = [];
+    if (this.options.sites) {
+      sites.push(...this.options.sites);
+    }
+
+    if (this.options.system && this.options.system.publicSites) {
+      sites.push(...this.options.system.publicSites);
+    }
+
+    let site = sites.find((item: Site) => {
       let cdn = item.cdn || [];
       item.url && cdn.push(item.url);
       return item.host == host || cdn.join("").indexOf(host) > -1;
@@ -107,18 +117,12 @@ class PTPContent {
    * 初始化符合条件的附加页面
    */
   private initPages() {
-    // 站点未定义时
-    if (!this.options.sites) {
-      return;
-    }
     // 判断当前页面的所属站点是否已经被定义
-    if (this.options.sites.length) {
-      this.site = this.getSiteFromHost(window.location.hostname);
+    this.site = this.getSiteFromHost(window.location.hostname);
 
-      if (this.site) {
-        // 适应多域名
-        this.site.url = window.location.origin + "/";
-      }
+    if (this.site) {
+      // 适应多域名
+      this.site.url = window.location.origin + "/";
     }
 
     // 如果当前站点未定义，则不再继续操作
@@ -195,7 +199,7 @@ class PTPContent {
 
     if (!this.site.plugins) {
       this.site.plugins = [];
-    } else {
+    } else if (this.site.schema !== "publicSite") {
       for (let index = this.site.plugins.length - 1; index >= 0; index--) {
         const item = this.site.plugins[index];
         // 删除非自定义的插件，从系统定义中重新获取
@@ -211,6 +215,14 @@ class PTPContent {
 
     // 网站指定的脚本
     if (this.site.plugins) {
+      let siteConfigPath =
+        this.site.schema == "publicSite" ? "publicSites" : "sites";
+
+      if (this.site.path) {
+        siteConfigPath += `/${this.site.path}`;
+      } else {
+        siteConfigPath += `/${this.site.host}`;
+      }
       this.site.plugins.forEach((plugin: Plugin) => {
         let index = plugin.pages.findIndex((page: string) => {
           let path = window.location.pathname;
@@ -228,7 +240,7 @@ class PTPContent {
               let path = script;
               // 判断是否为相对路径
               if (path.substr(0, 1) !== "/") {
-                path = `sites/${this.site.host}/${script}`;
+                path = `${siteConfigPath}/${script}`;
               }
               // 文件
               this.scripts.push({
@@ -249,7 +261,7 @@ class PTPContent {
             plugin.styles.forEach((style: string) => {
               let path = style;
               if (path.substr(0, 1) !== "/") {
-                path = `sites/${this.site.host}/${style}`;
+                path = `${siteConfigPath}/${style}`;
               }
               this.styles.push({
                 type: "file",

@@ -6,7 +6,7 @@ import * as PATH from "path";
  */
 export class BuildPlugin {
   public resourcePath: string = "";
-  private resourceMap = ["sites", "schemas", "clients"];
+  private resourceMap = ["sites", "schemas", "clients", "publicSites"];
 
   constructor(rootPaht: string = "../../dist/resource") {
     this.resourcePath = PATH.resolve(__dirname, rootPaht);

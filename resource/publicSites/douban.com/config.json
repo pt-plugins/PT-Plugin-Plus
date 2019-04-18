@@ -1,0 +1,16 @@
+{
+  "name": "豆瓣",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "电影详情页",
+    "pages": ["\/subject\/\\d+\/"],
+    "scripts": ["subject.js"]
+  }, {
+    "name": "top250",
+    "pages": ["/top250"],
+    "scripts": ["top250.js"]
+  }],
+  "schema": "publicSite",
+  "host": "movie.douban.com",
+  "path": "douban.com"
+}
