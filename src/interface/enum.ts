@@ -129,8 +129,10 @@ export enum EAction {
   getBase64FromImageUrl = "getBase64FromImageUrl",
   // 获取用户历史数据
   getUserHistoryData = "getUserHistoryData",
-  // 从豆瓣获取电影信息
-  getMovieInfoFromDouban = "getMovieInfoFromDouban"
+  // 获取电影信息
+  getMovieInfos = "getMovieInfos",
+  // 获取电影评分信息
+  getMovieRatings = "getMovieRatings"
 }
 
 /**

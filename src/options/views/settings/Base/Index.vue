@@ -155,6 +155,12 @@
 
                 <v-switch
                   color="success"
+                  v-model="options.showMoiveInfoCardOnSearch"
+                  :label="words.showMoiveInfoCardOnSearch"
+                ></v-switch>
+
+                <v-switch
+                  color="success"
                   v-model="options.needConfirmWhenExceedSize"
                   :label="words.needConfirmWhenExceedSize"
                 ></v-switch>
@@ -246,7 +252,8 @@ export default Vue.extend({
         autoRefreshUserDataTip5: "分钟",
         searchResultOrderBySitePriority:
           "搜索结果点击站点表头时，按站点优先级别排序（保存后需刷新页面后生效）",
-        saveSearchKey: "保存搜索关键字"
+        saveSearchKey: "保存搜索关键字",
+        showMoiveInfoCardOnSearch: "当以 IMDb 编号搜索时显示电影及评分信息"
       },
       valid: false,
       rules: {

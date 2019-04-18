@@ -23,6 +23,7 @@ class Config {
   public schemas: any[] = [];
   public sites: any[] = [];
   public clients: any[] = [];
+  public publicSites: any[] = [];
   public requestCount: number = 0;
 
   constructor() {
@@ -66,7 +67,8 @@ class Config {
       { text: "$vuetify.dataIterator.rowsPerPageAll", value: -1 }
     ],
     searchSolutions: [],
-    navBarIsOpen: true
+    navBarIsOpen: true,
+    showMoiveInfoCardOnSearch: true
   };
 
   public uiOptions: UIOptions = {};
@@ -201,7 +203,8 @@ class Config {
     this.options.system = {
       schemas: this.schemas,
       sites: this.sites,
-      clients: this.clients
+      clients: this.clients,
+      publicSites: this.publicSites
     };
 
     // 升级不存在的配置项
@@ -325,11 +328,13 @@ class Config {
     this.schemas = [];
     this.sites = [];
     this.clients = [];
+    this.publicSites = [];
     this.getContentFromApi(`${API.systemConfig}`).then((result: any) => {
       if (result) {
         this.schemas = result.schemas;
         this.sites = result.sites;
         this.clients = result.clients;
+        this.publicSites = result.publicSites;
       }
     });
   }

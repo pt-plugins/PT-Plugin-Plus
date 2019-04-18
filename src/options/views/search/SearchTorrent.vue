@@ -82,7 +82,7 @@
     <!-- 搜索结果列表 -->
     <v-card>
       <v-card-title style="padding: 0 10px 0 3px;">
-        <DoubanMovie :IMDbId="IMDbId" class="ma-2"/>
+        <MovieInfoCard :IMDbId="IMDbId" class="ma-2" v-if="!!options.showMoiveInfoCardOnSearch"/>
         <v-flex xs12>
           <!-- 站点返回的搜索结果 -->
           <div v-if="searchSiteCount>1">

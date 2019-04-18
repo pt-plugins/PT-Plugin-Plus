@@ -24,7 +24,7 @@ import { FileDownloader } from "@/service/downloader";
 import { APP } from "@/service/api";
 import URLParse from "url-parse";
 import { User } from "./user";
-import { DoubanService } from "@/service/douban";
+import { MovieInfoService } from "@/service/movieInfoService";
 
 type Service = PTPlugin;
 export default class Controller {
@@ -41,7 +41,7 @@ export default class Controller {
   public clients: any = {};
   public searcher: Searcher = new Searcher(this.service);
   public userService: User = new User(this.service);
-  public doubanService = new DoubanService();
+  public movieInfoService = new MovieInfoService();
 
   public clientController: ClientController = new ClientController();
   public isInitialized: boolean = false;
@@ -642,10 +642,14 @@ export default class Controller {
     sender: chrome.runtime.MessageSender
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      if (sender.tab) {
-        this.contentPages.push(sender.tab.id);
+      try {
+        if (sender.tab) {
+          this.contentPages.push(sender.tab.id);
+        }
+        resolve();
+      } catch (error) {
+        reject(error);
       }
-      resolve();
     });
   }
 
@@ -831,7 +835,19 @@ export default class Controller {
     });
   }
 
-  public getMovieInfoFromDouban(key: string): Promise<any> {
-    return this.doubanService.getInfos(key);
+  /**
+   * 根据指定的关键字获取电影信息
+   * @param key
+   */
+  public getMovieInfos(key: string): Promise<any> {
+    return this.movieInfoService.getInfos(key);
+  }
+
+  /**
+   * 根据指定的 IMDbId 获取评分信息
+   * @param IMDbId
+   */
+  public getMovieRatings(IMDbId: string): Promise<any> {
+    return this.movieInfoService.getRatings(IMDbId);
   }
 }

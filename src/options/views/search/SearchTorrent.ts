@@ -27,7 +27,7 @@ import dayjs from "dayjs";
 import { Downloader, downloadFile, FileDownloader } from "@/service/downloader";
 import * as basicContext from "basiccontext";
 import { PathHandler } from "@/service/pathHandler";
-import DoubanMovie from "@/options/components/DoubanMovie.vue";
+import MovieInfoCard from "@/options/components/MovieInfoCard.vue";
 
 type searchResult = {
   sites: Dictionary<any>;
@@ -41,7 +41,7 @@ const extension = new Extension();
 
 export default Vue.extend({
   components: {
-    DoubanMovie
+    MovieInfoCard
   },
   data() {
     return {

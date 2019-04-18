@@ -46,6 +46,7 @@ export interface SystemOptions {
   sites?: any[];
   schemas?: any[];
   clients?: any[];
+  publicSites?: any[];
 }
 
 export type Dictionary<T> = { [key: string]: T };
@@ -100,6 +101,8 @@ export interface Options {
   searchResultOrderBySitePriority?: boolean;
   // 导航栏是否已打开
   navBarIsOpen?: boolean;
+  // 在搜索时显示电影信息（搜索IMDb时有效）
+  showMoiveInfoCardOnSearch?: boolean;
 }
 
 export interface Plugin {
@@ -175,6 +178,7 @@ export interface Site {
   allowGetUserInfo?: boolean;
   // 站点优先级
   priority?: number;
+  path?: string;
 }
 
 export interface Request {
