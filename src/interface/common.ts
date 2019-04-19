@@ -268,10 +268,14 @@ export interface SearchResultItem {
   category?: SearchResultItemCategory;
 }
 
+/**
+ * 搜索区域
+ */
 export interface SearchEntryConfigArea {
   name: string;
   appendQueryString?: string;
   keyAutoMatch?: string;
+  replaceKey?: string[];
 }
 
 export interface SearchEntryConfig {

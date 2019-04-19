@@ -102,7 +102,14 @@ export class Searcher {
               area.keyAutoMatch &&
               new RegExp(area.keyAutoMatch, "").test(key)
             ) {
-              siteSearchPage += area.appendQueryString;
+              if (area.appendQueryString) {
+                siteSearchPage += area.appendQueryString;
+              }
+
+              if (area.replaceKey) {
+                key = key.replace(area.replaceKey[0], area.replaceKey[1]);
+              }
+
               return true;
             }
             return false;

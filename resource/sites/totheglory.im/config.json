@@ -20,7 +20,14 @@
     "queryString": "search_field=$key$",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "table#torrent_table:last > tbody > tr"
+    "resultSelector": "table#torrent_table:last > tbody > tr",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "replaceKey": [
+        "tt", "IMDB"
+      ]
+    }]
   },
   "searchEntry": [{
     "queryString": "c=M",
