@@ -5,5 +5,6 @@
   "icon": "https://lztr.me/favicon.ico",
   "tags": ["音乐"],
   "schema": "Gazelle",
-  "host": "lztr.me"
+  "host": "lztr.me",
+  "collaborator": "ylxb2016"
 }
