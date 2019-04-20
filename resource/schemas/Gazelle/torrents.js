@@ -27,6 +27,10 @@
         }
 
         if (links.length == 0) {
+          links = $(("a[href*='torrents.php?action=download']")).toArray();
+        }
+
+        if (links.length == 0) {
           return "获取下载链接失败，未能正确定位到链接";
         }
 

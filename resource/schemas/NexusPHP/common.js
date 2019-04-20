@@ -684,7 +684,7 @@ String.prototype.getQueryString = function (name, split) {
       }
 
       let urls = this.getDownloadURLs();
-      if (!urls.length) {
+      if (!urls.length || typeof (urls) == "string") {
         error(urls);
         return;
       }
