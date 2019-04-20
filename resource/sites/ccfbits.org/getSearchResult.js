@@ -35,10 +35,10 @@
 
             // 用于定位每个字段所列的位置
             let fieldIndex = {
-                time: 4,  // 时间
-                seeders: 7,  // 上传人数
-                leechers: 8,   // 下载人数
-                author: 9,  // 发布人
+                time: 4, // 时间
+                seeders: 7, // 上传人数
+                leechers: 8, // 下载人数
+                author: 9, // 发布人
                 category: 0
             };
 
@@ -66,14 +66,22 @@
 
                 let link = main_title_cell.attr("href");
                 if (link && link.substr(0, 4) !== "http") {
-                    link = `${site.url}${link}`;
+                    if (link.substr(0, 1) == "/") {
+                        link = `${site.url}${link}`;
+                    } else {
+                        link = `${site.url}${link}`;
+                    }
                 }
 
                 let url_cell = cells.eq(2).find('a[href^="download.php"]');
                 let url = url_cell.attr('href');
 
                 if (url && url.substr(0, 4) !== "http") {
-                    url = `${site.url}${url}`;
+                    if (url.substr(0, 1) == "/") {
+                        url = `${site.url}${url}`;
+                    } else {
+                        url = `${site.url}/${url}`;
+                    }
                 }
 
                 if (!url) {
@@ -82,10 +90,10 @@
 
                 let size_completed_cell = cells.eq(6);
                 let _size = (size_completed_cell.text().match(size_regex) || [0])[0];
-                let _completed = (size_completed_cell.text().match(/(\d+) 次/) || [0,0])[1];
+                let _completed = (size_completed_cell.text().match(/(\d+) 次/) || [0, 0])[1];
 
                 let comments_cell = cells.eq(3);
-                let _comments = (comments_cell.text().match(/(\d+) 评论/) || [0,0])[1];
+                let _comments = (comments_cell.text().match(/(\d+) 评论/) || [0, 0])[1];
 
 
 
