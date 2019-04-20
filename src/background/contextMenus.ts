@@ -461,6 +461,24 @@ export class ContextMenus {
         }
       });
     }
+
+    // 搜索IMDb相关种子
+    this.add({
+      title: "搜索当前IMDb相关种子",
+      contexts: ["link"],
+      targetUrlPatterns: ["*://www.imdb.com/title/tt*"],
+      onclick: (
+        info: chrome.contextMenus.OnClickData,
+        tab: chrome.tabs.Tab
+      ) => {
+        if (info.linkUrl) {
+          let link = info.linkUrl.match(/(tt\d+)/);
+          if (link && link.length >= 2) {
+            this.service.controller.searchTorrent(link[1]);
+          }
+        }
+      }
+    });
   }
 
   /**

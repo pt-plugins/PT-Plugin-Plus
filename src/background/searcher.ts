@@ -91,8 +91,8 @@ export class Searcher {
 
       // 是否有搜索入口配置项
       if (searchEntryConfig && searchEntryConfig.page) {
-        siteSearchPage =
-          searchEntryConfig.page + "?" + searchEntryConfig.queryString;
+        let searchPage = searchEntryConfig.page + "?";
+        siteSearchPage = searchPage + searchEntryConfig.queryString;
 
         // 搜索区域
         if (searchEntryConfig.area) {
@@ -102,10 +102,17 @@ export class Searcher {
               area.keyAutoMatch &&
               new RegExp(area.keyAutoMatch, "").test(key)
             ) {
+              // 如果有定义查询字符串，则替换默认的查询字符串
+              if (area.queryString) {
+                siteSearchPage = searchPage + area.queryString;
+              }
+
+              // 追加查询字符串
               if (area.appendQueryString) {
                 siteSearchPage += area.appendQueryString;
               }
 
+              // 替换关键字
               if (area.replaceKey) {
                 key = key.replace(area.replaceKey[0], area.replaceKey[1]);
               }

@@ -10,12 +10,23 @@
     "pages": ["^/torrents$"],
     "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
   }],
-  "searchEntry": [{
-    "entry": "/filterTorrents?search=$key$",
-    "name": "全部",
+  "searchEntryConfig": {
+    "page": "/filterTorrents",
+    "queryString": "search=$key$",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "imdb=$key$",
+      "replaceKey": [
+        "tt", ""
+      ]
+    }],
     "resultType": "html",
     "parseScriptFile": "/schemas/UNIT3D/getSearchResult.js",
-    "resultSelector": "div.table-responsive > table:first",
+    "resultSelector": "div.table-responsive > table:first"
+  },
+  "searchEntry": [{
+    "name": "全部",
     "enabled": true
   }],
   "torrentTagSelectors": [{

@@ -273,6 +273,7 @@ export interface SearchResultItem {
  */
 export interface SearchEntryConfigArea {
   name: string;
+  queryString?: string;
   appendQueryString?: string;
   keyAutoMatch?: string;
   replaceKey?: string[];
