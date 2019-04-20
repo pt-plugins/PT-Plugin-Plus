@@ -9,7 +9,6 @@
   "schema": "NexusPHP",
   "host": "pt.keepfrds.com",
   "searchEntry": [{
-      "queryString": "search=$key$&notnewword=1",
       "name": "全站",
       "enabled": true
     },
