@@ -605,21 +605,36 @@ class PTPContent {
         try {
           let data = JSON.parse(e.dataTransfer.getData("text/plain"));
           if (data) {
-            if (data.url && this.pageApp) {
-              this.pageApp
-                .call(EAction.downloadFromDroper, data)
-                .then(() => {
-                  this.logo.removeClass("onLoading");
-                })
-                .catch(() => {
-                  this.logo.removeClass("onLoading");
+            if (data.url) {
+              // IMDb地址
+              let IMDbMatch = data.url.match(/imdb\.com\/title\/(tt\d+)/);
+              if (IMDbMatch && IMDbMatch.length > 1) {
+                this.extension.sendRequest(
+                  EAction.openOptions,
+                  null,
+                  `search-torrent/${IMDbMatch[1]}`
+                );
+                this.logo.removeClass("onLoading");
+                return;
+              }
+              if (this.pageApp) {
+                this.pageApp
+                  .call(EAction.downloadFromDroper, data)
+                  .then(() => {
+                    this.logo.removeClass("onLoading");
+                  })
+                  .catch(() => {
+                    this.logo.removeClass("onLoading");
+                  });
+              } else {
+                this.showNotice({
+                  type: EDataResultType.info,
+                  msg: "当前页面不支持此操作",
+                  timeout: 3
                 });
+                this.logo.removeClass("onLoading");
+              }
             } else {
-              this.showNotice({
-                type: EDataResultType.info,
-                msg: "当前页面不支持此操作",
-                timeout: 3
-              });
               this.logo.removeClass("onLoading");
             }
           }
