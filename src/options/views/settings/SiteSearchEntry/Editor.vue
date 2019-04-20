@@ -18,8 +18,6 @@
           v-model="data.entry"
           :label="words.entry"
           :placeholder="words.entry"
-          required
-          :rules="rules.require"
           :disabled="!data.isCustom"
         ></v-text-field>
 
@@ -80,7 +78,7 @@ export default Vue.extend({
     return {
       words: {
         name: "入口名称",
-        entry: "入口页面",
+        entry: "入口页面（如果不填写则默认为系统已定义的入口页面）",
         parseScript: "搜索结果解析脚本",
         parseScriptFile: "搜索结果解析脚本文件",
         resultSelector: "种子列表定位选择器",
