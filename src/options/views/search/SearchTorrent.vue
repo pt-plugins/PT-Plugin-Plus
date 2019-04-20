@@ -1,5 +1,6 @@
 <template>
   <div class="search-torrent">
+    <MovieInfoCard :IMDbId="IMDbId" v-if="!!options.showMoiveInfoCardOnSearch"/>
     <v-alert :value="true" type="info" style="padding:8px 16px;">
       {{ words.title }} [{{ key }}], {{searchMsg}} {{skipSites}}
       <v-btn
@@ -82,7 +83,6 @@
     <!-- 搜索结果列表 -->
     <v-card>
       <v-card-title style="padding: 0 10px 0 3px;">
-        <MovieInfoCard :IMDbId="IMDbId" class="ma-2" v-if="!!options.showMoiveInfoCardOnSearch"/>
         <v-flex xs12>
           <!-- 站点返回的搜索结果 -->
           <div v-if="searchSiteCount>1">
