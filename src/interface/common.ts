@@ -364,4 +364,6 @@ export interface UserInfo {
   isLoading?: boolean;
   // 最后错误信息
   lastErrorMsg?: string;
+  // 消息数量
+  messageCount?: number;
 }

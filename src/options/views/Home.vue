@@ -77,9 +77,17 @@
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
           <td class="center">
-            <v-avatar :size="showSiteName ? 18 : 24" @click.stop="getSiteUserInfo(props.item)">
-              <img :src="props.item.icon">
-            </v-avatar>
+            <v-badge color="red messageCount" overlap>
+              <template
+                v-slot:badge
+                v-if="props.item.user.messageCount>0"
+                :title="words.newMessage"
+              >{{ props.item.user.messageCount>10?"":props.item.user.messageCount }}</template>
+              <v-avatar :size="showSiteName ? 18 : 24" @click.stop="getSiteUserInfo(props.item)">
+                <img :src="props.item.icon">
+              </v-avatar>
+            </v-badge>
+
             <br>
             <a
               :href="props.item.activeURL"
@@ -171,7 +179,8 @@ export default Vue.extend({
         week: "时间显示为周数",
         timeline: "时间轴",
         settings: "参数",
-        statistic: "数据图表"
+        statistic: "数据图表",
+        newMessage: "新消息"
       },
       loading: false,
       items: [] as any[],
@@ -433,6 +442,14 @@ export default Vue.extend({
 
   .nodecoration {
     text-decoration: none;
+  }
+
+  .messageCount {
+    font-size: 9px;
+    height: 16px;
+    width: 16px;
+    top: -5px;
+    right: -16px;
   }
 }
 </style>

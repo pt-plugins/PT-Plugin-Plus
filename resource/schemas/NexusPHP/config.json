@@ -79,6 +79,10 @@
         "isLogged": {
           "selector": ["a[href*='logout.php']"],
           "filters": ["query.length>0"]
+        },
+        "messageCount": {
+          "selector": ["td[style*='background: red'] a[href*='messages.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         }
       }
     },
