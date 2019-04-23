@@ -319,6 +319,7 @@ export class ContextMenus {
    * @param options
    */
   private sendTorrentToClient(tabid: number = 0, options: DownloadOptions) {
+    console.log("sendTorrentToClient", options);
     let site = this.getSiteFromURL(options.url);
     if (site) {
       let savePath = this.pathHandler.getSavePath(options.savePath, site);
@@ -666,6 +667,9 @@ export class ContextMenus {
    */
   private getSiteFromURL(source: string) {
     let url = new URLParse(source);
+    if (!url.host) {
+      return null;
+    }
     let site: Site = this.options.sites.find((item: Site) => {
       let cdn = item.cdn || [];
       item.url && cdn.push(item.url);
