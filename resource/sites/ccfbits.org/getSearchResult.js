@@ -69,7 +69,7 @@
                     if (link.substr(0, 1) == "/") {
                         link = `${site.url}${link}`;
                     } else {
-                        link = `${site.url}${link}`;
+                        link = `${site.url}/${link}`;
                     }
                 }
 
