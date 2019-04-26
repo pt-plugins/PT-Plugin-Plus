@@ -4,11 +4,15 @@
   "plugins": [{
     "name": "电影详情页",
     "pages": ["\/subject\/\\d+\/"],
-    "scripts": ["subject.js"]
+    "scripts": ["common.js", "subject.js"]
   }, {
     "name": "top250",
     "pages": ["/top250"],
-    "scripts": ["top250.js"]
+    "scripts": ["common.js", "top250.js"]
+  }, {
+    "name": "explore",
+    "pages": ["/explore"],
+    "scripts": ["common.js", "explore.js"]
   }],
   "schema": "publicSite",
   "host": "movie.douban.com",
