@@ -850,4 +850,12 @@ export default class Controller {
   public getMovieRatings(IMDbId: string): Promise<any> {
     return this.movieInfoService.getRatings(IMDbId);
   }
+
+  /**
+   * 根据指定的 doubanId 获取 IMDbId
+   * @param doubanId
+   */
+  public getIMDbIdFromDouban(doubanId: number): Promise<any> {
+    return this.movieInfoService.getIMDbIdFromDouban(doubanId);
+  }
 }

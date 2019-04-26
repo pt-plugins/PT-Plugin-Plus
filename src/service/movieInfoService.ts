@@ -3,6 +3,7 @@ import { Dictionary } from "@/interface/common";
 export type MovieInfoCache = {
   base: Dictionary<any>;
   ratings: Dictionary<any>;
+  doubanToIMDb: Dictionary<any>;
 };
 
 /**
@@ -13,6 +14,8 @@ export class MovieInfoService {
   public doubanApiURL = "https://api.douban.com/v2";
   // 用于加载评分信息
   public omdbApiURL = "https://www.omdbapi.com";
+  // 用于获取IMDbID
+  public omitApiURL = "https://omit.mkrobot.org";
   // omdbapi 申请的Key列表
   // 每个 key 一天有1000次请求限制
   public omdbApiKeys = ["e0d3039d", "a67d9bce"];
@@ -20,7 +23,8 @@ export class MovieInfoService {
   // 信息缓存
   public cache: MovieInfoCache = {
     base: {},
-    ratings: {}
+    ratings: {},
+    doubanToIMDb: {}
   };
 
   public getInfos(key: string): Promise<any> {
@@ -113,6 +117,41 @@ export class MovieInfoService {
       } else {
         reject("error IMDbId");
       }
+    });
+  }
+
+  /**
+   * 根据指定的 doubanId 获取 IMDbId
+   * @param doubanId
+   */
+  public getIMDbIdFromDouban(doubanId: number): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let cache = this.cache.doubanToIMDb[doubanId];
+      if (cache) {
+        resolve(cache);
+        return;
+      }
+      let url = `${this.omitApiURL}/movie/${doubanId}/douban/imdb`;
+      fetch(url)
+        .then(result => {
+          result
+            .json()
+            .then(json => {
+              console.log("getIMDbIdFromDouban", json);
+              if (json.data) {
+                this.cache.doubanToIMDb[doubanId] = json.data;
+                resolve(json.data);
+              } else {
+                reject(json);
+              }
+            })
+            .catch(error => {
+              reject(error);
+            });
+        })
+        .catch(error => {
+          reject(error);
+        });
     });
   }
 }
