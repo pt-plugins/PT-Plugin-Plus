@@ -17,6 +17,10 @@
         let match = link.attr("href").match(/subject\/(\d+)/);
         if (match && match.length >= 2) {
           key = `douban${match[1]}`;
+          // 预转换
+          PTService.call(PTService.action.getIMDbIdFromDouban, match[1]).catch((error) => {
+            console.log(error);
+          });
         }
       }
       if (!key) {
