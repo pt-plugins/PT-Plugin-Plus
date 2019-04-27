@@ -1,0 +1,10 @@
+{
+  "name": "STSPT",
+  "schema": "NexusPHP",
+  "url": "https://www.sts.tw/",
+  "description": "STSPT",
+  "icon": "https://www.sts.tw/favicon.ico",
+  "tags": ["综合"],
+  "host": "sts.tw",
+  "collaborator": "middle2021"
+}

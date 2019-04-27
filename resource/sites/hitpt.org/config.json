@@ -1,0 +1,10 @@
+{
+  "name": "清影PT",
+  "schema": "NexusPHP",
+  "url": "https://hitpt.org/",
+  "description": "哈尔滨工业大学维护的PT站",
+  "icon": "https://hitpt.org/favicon.ico",
+  "tags": ["教育网", "影视", "综合"],
+  "host": "hitpt.org",
+  "collaborator": "bentleyxia"
+}
