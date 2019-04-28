@@ -44,6 +44,14 @@
           </template>
         </v-autocomplete>
 
+        <!-- 追加的查询字符串 -->
+        <v-text-field
+          v-model="data.queryString"
+          :label="words.queryString"
+          :placeholder="words.queryString"
+          :disabled="!data.isCustom"
+        ></v-text-field>
+
         <v-text-field
           v-model="data.parseScriptFile"
           :label="words.parseScriptFile"
@@ -82,7 +90,8 @@ export default Vue.extend({
         parseScript: "搜索结果解析脚本",
         parseScriptFile: "搜索结果解析脚本文件",
         resultSelector: "种子列表定位选择器",
-        category: "资源分类（不选表示所有）"
+        category: "资源分类（不选表示所有）",
+        queryString: "追加查询参数"
       },
       rules: {
         require: [(v: any) => !!v || "!"]

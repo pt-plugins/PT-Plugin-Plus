@@ -258,6 +258,19 @@ export default Vue.extend({
 
       if (this.loading || !this.key) return;
 
+      // 豆瓣ID
+      if (/(douban\d+)/.test(this.key)) {
+        this.getIMDbIdFromDouban(this.key)
+          .then(result => {
+            this.key = result;
+            this.search();
+          })
+          .catch(error => {
+            this.errorMsg = error;
+          });
+        return;
+      }
+
       if (!this.options.system) {
         if (this.reloadCount >= 10) {
           this.errorMsg =
@@ -1294,6 +1307,22 @@ export default Vue.extend({
         });
         return result;
       });
+    },
+
+    getIMDbIdFromDouban(doubanId: string) {
+      let match = doubanId.match(/douban(\d+)/);
+      if (match && match.length >= 2) {
+        this.searchMsg = "正在尝试转换豆瓣编号，请稍候……";
+        return extension.sendRequest(
+          EAction.getIMDbIdFromDouban,
+          null,
+          match[1]
+        );
+      } else {
+        return new Promise<any>((resolve?: any, reject?: any) => {
+          reject("无效的豆瓣ID");
+        });
+      }
     }
   }
 });

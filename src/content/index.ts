@@ -297,7 +297,9 @@ class PTPContent {
     }
 
     // 通知后台添加了一个新页面
-    this.extension.sendRequest(EAction.addContentPage);
+    this.extension.sendRequest(EAction.addContentPage).catch(error => {
+      console.log(error);
+    });
   }
 
   /**
@@ -329,6 +331,7 @@ class PTPContent {
           });
       } catch (error) {
         this.showNotice(`${action} 执行出错，可能后台服务不可用`);
+        reject(error);
       }
     });
   }

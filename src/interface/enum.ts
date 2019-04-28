@@ -132,7 +132,9 @@ export enum EAction {
   // 获取电影信息
   getMovieInfos = "getMovieInfos",
   // 获取电影评分信息
-  getMovieRatings = "getMovieRatings"
+  getMovieRatings = "getMovieRatings",
+  // 根据指定的 doubanId 获取 IMDbId
+  getIMDbIdFromDouban = "getIMDbIdFromDouban"
 }
 
 /**
