@@ -18,8 +18,8 @@
     let passkey = options.site.passkey;
     if (passkey) {
       let id = id_match[1];
-      // 格式：vvvid|||passkey|||sslzz
-      let key = (new Base64).encode("vvv" + id + "|||" + options.site.passkey + "|||sslzz");
+      // 格式：vvvid|||passkeyzz
+      let key = (new Base64).encode("vvv" + id + "|||" + options.site.passkey + "zz");
       options.result = `https://${options.site.host}/rssdd.php?par=${key}&ssl=yes`;
     } else {
       options.error = {
