@@ -35,7 +35,7 @@ export default Vue.extend({
       },
       version: "",
       isDebugMode: APP.debugMode,
-      isDevelopmentMode: true,
+      isDevelopmentMode: false,
       newReleases: false,
       releasesVersion: ""
     };
@@ -50,9 +50,7 @@ export default Vue.extend({
     this.checkUpdate();
     APP.getInstallType().then(result => {
       console.log(result, EInstallType.development);
-      if (result == EInstallType.development) {
-        this.isDevelopmentMode = true;
-      }
+      this.isDevelopmentMode = result == EInstallType.development;
     });
   },
   methods: {
