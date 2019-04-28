@@ -417,7 +417,7 @@ export default Vue.extend({
       }
       let number = parseFloat(v);
       if (isNaN(number)) {
-        return "-";
+        return "";
       }
       return number.toFixed(2);
     }

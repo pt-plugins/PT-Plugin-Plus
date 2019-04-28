@@ -128,7 +128,7 @@ export const filters: IFilter = {
     }
 
     if (bytes < 0) {
-      return "unknown";
+      return "N/A";
     }
 
     if (bytes === 0) {
