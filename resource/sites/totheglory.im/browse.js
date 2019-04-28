@@ -33,8 +33,8 @@
       }
 
       getDownloadURL(id) {
-        // 格式：vvvid|||passkey|||sslzz
-        let key = (new Base64).encode("vvv" + id + "|||" + PTService.site.passkey + "|||sslzz");
+        // 格式：vvvid|||passkeyzz
+        let key = (new Base64).encode("vvv" + id + "|||" + PTService.site.passkey + "zz");
         return `https://${PTService.site.host}/rssdd.php?par=${key}&ssl=yes`;
       }
 
@@ -59,8 +59,8 @@
 
       /**
        * 下载拖放的种子
-       * @param {*} data 
-       * @param {*} callback 
+       * @param {*} data
+       * @param {*} callback
        */
       downloadFromDroper(data, callback) {
         if (!PTService.site.passkey) {

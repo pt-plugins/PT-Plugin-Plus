@@ -75,8 +75,8 @@
         let url = "";
 
         if (site.passkey && id) {
-          // 格式：vvvid|||passkey|||sslzz
-          let key = (new Base64).encode("vvv" + id + "|||" + site.passkey + "|||sslzz");
+          // 格式：vvvid|||passkeyzz
+          let key = (new Base64).encode("vvv" + id + "|||" + site.passkey + "zz");
           url = `https://${site.host}/rssdd.php?par=${key}&ssl=yes`;
         } else {
           url = row.find("a.dl_a").attr("href");
@@ -144,8 +144,8 @@
 
     /**
      * 获取标签
-     * @param {*} row 
-     * @param {*} selectors 
+     * @param {*} row
+     * @param {*} selectors
      * @return array
      */
     getTags(row, selectors) {
