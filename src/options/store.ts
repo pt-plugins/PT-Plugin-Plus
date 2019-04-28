@@ -38,7 +38,8 @@ export default new Vuex.Store({
     } as Options,
     schemas: [],
     uiOptions: {} as UIOptions,
-    initialized: false
+    initialized: false,
+    searching: false
   },
 
   /**
@@ -273,6 +274,10 @@ export default new Vuex.Store({
 
     updateUIOptions(state, options: UIOptions) {
       state.uiOptions = options;
+    },
+
+    updateSearchStatus(state, searching: boolean) {
+      state.searching = searching;
     }
   },
   actions: {

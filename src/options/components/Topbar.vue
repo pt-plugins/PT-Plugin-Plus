@@ -15,6 +15,7 @@
       @change="searchTorrent"
       clearable
       @click:clear="clearSearchKey"
+      :loading="this.$store.state.searching"
     >
       <v-menu slot="append" offset-y class="search-solution">
         <v-btn slot="activator" flat small color="grey lighten-2">{{selectedSearchSolutionName}}</v-btn>

@@ -202,6 +202,9 @@ export default Vue.extend({
     "$store.state.options.defaultSearchSolutionId"() {
       this.doSearch();
       // console.log(this.options.defaultSearchSolutionId);
+    },
+    loading() {
+      this.$store.commit("updateSearchStatus", this.loading);
     }
   },
   methods: {
