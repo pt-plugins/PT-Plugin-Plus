@@ -32,25 +32,27 @@
           </td>
           <!-- 站点 -->
           <td style="text-align: center;">
-            <v-avatar size="18">
-              <img :src="props.item.site.icon">
-            </v-avatar>
-            <br>
-            <span class="captionText">{{ props.item.site.name }}</span>
+            <div v-if="!!props.item.site">
+              <v-avatar size="18">
+                <img :src="props.item.site.icon">
+              </v-avatar>
+              <br>
+              <span class="captionText">{{ props.item.site.name }}</span>
+            </div>
           </td>
           <td>
             <a
               v-if="props.item.data.link"
               :href="props.item.data.link"
               target="_blank"
-              :title="props.item.title"
+              :title="props.item.data.title"
               rel="noopener noreferrer nofollow"
-            >{{ props.item.data.title || props.item.data.link }}</a>
-            <span v-else>{{ props.item.data.title }}</span>
+            >{{ props.item.data.title || props.item.data.link}}</a>
+            <span v-else :title="props.item.data.url">{{ props.item.data.title || words.unknown }}</span>
             <br>
             <span
               class="sub-title"
-            >[ {{ getClientName(props.item.data.clientId||props.item.clientId) }} ] -> {{ props.item.data.savePath || '默认目录' }}</span>
+            >[ {{ getClientName(props.item.data.clientId||props.item.clientId) }} ] -> {{ props.item.data.savePath || words.defaultPath }}</span>
           </td>
           <td>
             <v-icon v-if="props.item.success===false" color="error" :title="words.fail">close</v-icon>
@@ -117,7 +119,9 @@ export default Vue.extend({
         cancel: "取消",
         download: "重新下载",
         fail: "失败",
-        success: "成功"
+        success: "成功",
+        unknown: "N/A",
+        defaultPath: "默认目录"
       },
       selected: [],
       selectedItem: {} as any,
