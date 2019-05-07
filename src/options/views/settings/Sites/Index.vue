@@ -260,7 +260,10 @@ export default Vue.extend({
             })
           : -1;
         if (index === -1) {
-          this.$store.commit("addSite", Object.assign({ valid: true }, site));
+          this.$store.commit(
+            "addSite",
+            Object.assign({ valid: true, activeURL: site.url }, site)
+          );
         }
       });
     },
