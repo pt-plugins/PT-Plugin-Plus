@@ -68,7 +68,7 @@ export default Vue.extend({
           title: "参数设置",
           items: [
             {
-              title: "基本设置",
+              title: "常规设置",
               icon: "settings",
               key: "/set-base"
             },
