@@ -261,19 +261,6 @@ export default Vue.extend({
 
       if (this.loading || !this.key) return;
 
-      // 豆瓣ID
-      if (/(douban\d+)/.test(this.key)) {
-        this.getIMDbIdFromDouban(this.key)
-          .then(result => {
-            this.key = result;
-            this.search();
-          })
-          .catch(error => {
-            this.errorMsg = error;
-          });
-        return;
-      }
-
       if (!this.options.system) {
         if (this.reloadCount >= 10) {
           this.errorMsg =
@@ -293,6 +280,44 @@ export default Vue.extend({
 
       if (!this.options.sites) {
         this.errorMsg = "请先设置站点";
+        return;
+      }
+
+      let searchKeys = {
+        id: "",
+        cn: "",
+        en: ""
+      };
+
+      // 当搜索关键字包含|时表示指定了多个内容，格式如下
+      // doubanid|中文名|英文名
+      // imdbid|中文名|英文名
+      if (this.key.indexOf("|")) {
+        let tmp = (this.key + "||").split("|");
+        searchKeys.id = tmp[0];
+        searchKeys.cn = tmp[1];
+        searchKeys.en = tmp[2];
+      }
+
+      // 豆瓣ID
+      if (/(douban\d+)/.test(this.key)) {
+        this.getIMDbIdFromDouban(this.key)
+          .then(result => {
+            if (typeof result == "string") {
+              this.key = result;
+              this.search();
+            } else {
+              if (searchKeys.cn) {
+                this.key = searchKeys.cn;
+                this.search();
+              } else {
+                this.errorMsg = "豆瓣ID转换失败";
+              }
+            }
+          })
+          .catch(error => {
+            this.errorMsg = error;
+          });
         return;
       }
 

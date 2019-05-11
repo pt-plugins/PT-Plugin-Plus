@@ -5,7 +5,8 @@ import {
   Site,
   DownloadClient,
   UIOptions,
-  SearchEntry
+  SearchEntry,
+  EBeforeSearchingItemSearchMode
 } from "@/interface/common";
 import { API, APP } from "@/service/api";
 import localStorage from "@/service/localStorage";
@@ -68,7 +69,12 @@ class Config {
     ],
     searchSolutions: [],
     navBarIsOpen: true,
-    showMoiveInfoCardOnSearch: true
+    showMoiveInfoCardOnSearch: true,
+    beforeSearchingOptions: {
+      getMovieInformation: true,
+      maxMovieInformationCount: 5,
+      searchModeForItem: EBeforeSearchingItemSearchMode.id
+    }
   };
 
   public uiOptions: UIOptions = {};

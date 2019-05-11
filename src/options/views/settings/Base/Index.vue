@@ -159,6 +159,43 @@
                   :label="words.showMoiveInfoCardOnSearch"
                 ></v-switch>
 
+                <!-- 在搜索之前一些选项配置 -->
+                <v-switch
+                  color="success"
+                  v-model="options.beforeSearchingOptions.getMovieInformation"
+                  :label="words.getMovieInformationBeforeSearching"
+                ></v-switch>
+                <v-flex xs12 v-if="options.beforeSearchingOptions.getMovieInformation">
+                  <div style="margin: -40px 0 10px 45px;">
+                    <span>{{ words.maxMovieInformationCount }}</span>
+                    <v-text-field
+                      v-model="options.beforeSearchingOptions.maxMovieInformationCount"
+                      class="ml-2 d-inline-flex"
+                      style="max-width: 100px;max-height: 30px;"
+                      type="number"
+                    ></v-text-field>
+                    <v-slider
+                      style="display:none;"
+                      v-model="options.beforeSearchingOptions.maxMovieInformationCount"
+                      :max="20"
+                      :min="1"
+                    ></v-slider>
+                  </div>
+                </v-flex>
+
+                <!-- 当点击预选条目时，搜索模式 -->
+                <v-flex xs12 v-if="options.beforeSearchingOptions.getMovieInformation">
+                  <div style="margin: -20px 0 10px 45px;">
+                    <span>{{ words.searchModeForItem }}</span>
+                    <v-select
+                      v-model="options.beforeSearchingOptions.searchModeForItem"
+                      :items="searchModes"
+                      class="mx-2 d-inline-flex"
+                      style="max-height: 30px;"
+                    ></v-select>
+                  </div>
+                </v-flex>
+
                 <v-switch
                   color="success"
                   v-model="options.needConfirmWhenExceedSize"
@@ -215,7 +252,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { APP } from "@/service/api";
-import { ESizeUnit, EAction, Options } from "@/interface/common";
+import {
+  ESizeUnit,
+  EAction,
+  Options,
+  EBeforeSearchingItemSearchMode
+} from "@/interface/common";
 import Extension from "@/service/extension";
 
 const extension = new Extension();
@@ -234,7 +276,7 @@ export default Vue.extend({
         clearCacheConfirm:
           "确认要清除缓存吗？清除完成后，下次将会从官网中重新下载系统配置信息。",
         needConfirmWhenExceedSize:
-          "当批量下载的种子总体积超过以下大小时需要确认。",
+          "当批量下载的种子总体积超过以下大小时需要确认",
         exceedSize: "大小",
         searchResultRows: "搜索时每站点返回结果数量",
         saveDownloadHistory: "记录每次一键发送的种子信息，以供导出备份",
@@ -253,8 +295,22 @@ export default Vue.extend({
         searchResultOrderBySitePriority:
           "搜索结果点击站点表头时，按站点优先级别排序（保存后需刷新页面后生效）",
         saveSearchKey: "保存搜索关键字",
-        showMoiveInfoCardOnSearch: "当以 IMDb 编号搜索时显示电影及评分信息"
+        showMoiveInfoCardOnSearch: "当以 IMDb 编号搜索时显示电影及评分信息",
+        getMovieInformationBeforeSearching:
+          "当输入搜索关键字时，从豆瓣加载相关信息以供预选",
+        maxMovieInformationCount: "最多显示条目（1-20）：",
+        searchModeForItem: "当点击预选条目时："
       },
+      searchModes: [
+        {
+          value: EBeforeSearchingItemSearchMode.id,
+          text: "以ID进行搜索，以获得较精确的内容，但转换ID时需要时间"
+        },
+        {
+          value: EBeforeSearchingItemSearchMode.name,
+          text: "以名称进行模糊搜索，以获得较多的内容"
+        }
+      ],
       valid: false,
       rules: {
         require: [(v: any) => !!v || "!"]
@@ -270,7 +326,12 @@ export default Vue.extend({
         autoRefreshUserDataMinutes: "00",
         autoRefreshUserDataFailedRetryCount: 3,
         autoRefreshUserDataFailedRetryInterval: 5,
-        connectClientTimeout: 10000
+        connectClientTimeout: 10000,
+        beforeSearchingOptions: {
+          getMovieInformation: true,
+          maxMovieInformationCount: 5,
+          searchModeForItem: EBeforeSearchingItemSearchMode.id
+        }
       } as Options,
       units: [] as any,
       hours: [] as any,

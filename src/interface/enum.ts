@@ -228,3 +228,9 @@ export enum EInstallType {
   development = "development",
   normal = "normal"
 }
+
+// 当点击预选条目时，搜索模式
+export enum EBeforeSearchingItemSearchMode {
+  id = "id",
+  name = "name"
+}

@@ -6,7 +6,8 @@ import {
   ERequestMethod,
   EAction,
   EDataResultType,
-  EUserDataRequestStatus
+  EUserDataRequestStatus,
+  EBeforeSearchingItemSearchMode
 } from "./enum";
 
 /**
@@ -103,6 +104,18 @@ export interface Options {
   navBarIsOpen?: boolean;
   // 在搜索时显示电影信息（搜索IMDb时有效）
   showMoiveInfoCardOnSearch?: boolean;
+  // 在搜索之前一些选项配置
+  beforeSearchingOptions?: BeforeSearching;
+}
+
+// 在搜索之前一些选项配置
+export interface BeforeSearching {
+  // 在输入搜索关键字时加载相关信息
+  getMovieInformation?: boolean;
+  // 最多返回条目
+  maxMovieInformationCount?: number;
+  // 当点击条目时，搜索模式
+  searchModeForItem?: EBeforeSearchingItemSearchMode;
 }
 
 export interface Plugin {
