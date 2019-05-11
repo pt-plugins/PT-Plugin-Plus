@@ -2,7 +2,8 @@
 import * as Express from "express";
 import * as cors from "cors";
 import * as BodyParser from "body-parser";
-import * as Path from "path";
+import * as PATH from "path";
+import * as FS from "fs";
 import { BuildPlugin } from "./BuildPlugin";
 
 /**
@@ -31,7 +32,7 @@ class App {
    * 使用一些模块
    */
   private useModules() {
-    const from = Path.join(__dirname, this.options.from);
+    const from = PATH.join(__dirname, this.options.from);
 
     this.express.use(cors());
     // 启用静态文件目录
@@ -48,30 +49,18 @@ class App {
       res.send(this.systemConfig);
     });
 
-    // //设置跨域访问
-    // this.express.all("*", (req, res, next) => {
-    //   console.log("all-----test");
-    //   res.header("Access-Control-Allow-Credentials", "true");
-    //   res.header("Access-Control-Allow-Origin", req.headers.origin);
-    //   res.header(
-    //     "Access-Control-Allow-Headers",
-    //     "Content-Type, Content-Length, Authorization, Accept, X-Requested-With"
-    //   );
-    //   res.header(
-    //     "Access-Control-Allow-Methods",
-    //     "PUT, POST, GET, DELETE, OPTIONS"
-    //   );
-    //   res.header("X-Powered-By", "z");
-    //   res.header("Content-Type", "application/json;charset=utf-8");
-    //   console.log(req);
-    //   // res.send("OK");
-    //   if (req.method === "OPTIONS") {
-    //     res.sendStatus(200);
-    //   } else {
-    //     next();
-    //   }
-    //   // next();
-    // });
+    this.express.get("/test/*.json", (req, res) => {
+      console.log(req.url);
+      let fileName = req.url.match(/test\/(.+\.json)/)[1];
+      let path = PATH.resolve(__dirname, "../data/");
+      let file = PATH.join(path, fileName);
+      if (FS.existsSync(file)) {
+        let content = FS.readFileSync(PATH.join(path, fileName), "utf-8");
+        res.send(JSON.parse(content));
+      } else {
+        res.send("no file.");
+      }
+    });
   }
 
   /**
