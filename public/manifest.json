@@ -1,8 +1,8 @@
 {
 	"name": "__MSG_manifest_appName__",
 	"short_name": "__MSG_manifest_shortName__",
-	"version": "1.0.5.1",
-	"version_name": "1.0.5.1",
+	"version": "1.0.6",
+	"version_name": "1.0.6",
 	"description": "__MSG_manifest_appDescription__",
 	"manifest_version": 2,
 	"default_locale": "zh_CN",
@@ -39,25 +39,27 @@
 			"js/background.js"
 		]
 	},
-	"content_scripts": [{
-		"matches": [
-			"*://*/*"
-		],
-		"css": [
-			"assets/base.css",
-			"libs/materialIcons/content_style.css",
-			"libs/notice/noticejs.css",
-			"libs/basicContext/basicContext.min.css",
-			"libs/basicContext/themes/default.min.css"
-		],
-		"js": [
-			"libs/jquery/jquery-3.3.1.min.js",
-			"libs/Base64.js",
-			"libs/notice/notice.js",
-			"libs/basicContext/basicContext.min.js",
-			"js/content.js"
-		]
-	}],
+	"content_scripts": [
+		{
+			"matches": [
+				"*://*/*"
+			],
+			"css": [
+				"assets/base.css",
+				"libs/materialIcons/content_style.css",
+				"libs/notice/noticejs.css",
+				"libs/basicContext/basicContext.min.css",
+				"libs/basicContext/themes/default.min.css"
+			],
+			"js": [
+				"libs/jquery/jquery-3.3.1.min.js",
+				"libs/Base64.js",
+				"libs/notice/notice.js",
+				"libs/basicContext/basicContext.min.js",
+				"js/content.js"
+			]
+		}
+	],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"web_accessible_resources": [
 		"libs/materialIcons/*.woff2",
