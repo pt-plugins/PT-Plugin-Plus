@@ -1,7 +1,11 @@
 (function ($, window) {
   class App extends window.DoubanCommon {
-    lastId = "";
-    status = 0;
+    constructor() {
+      super();
+      this.lastId = "";
+      this.status = 0;
+    }
+
     /**
      * 初始化按钮列表
      */
