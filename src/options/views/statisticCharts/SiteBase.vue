@@ -33,6 +33,7 @@
 
     <v-layout row wrap>
       <v-btn depressed small to="/home">{{ words.goback }}</v-btn>
+      <v-btn depressed small @click.stop="exportRawData">{{ words.exportRawData }}</v-btn>
       <v-spacer></v-spacer>
       <v-btn flat icon small @click="share" :title="words.share" v-if="!shareing">
         <v-icon small>share</v-icon>
@@ -127,7 +128,8 @@ export default Vue.extend({
       words: {
         selectSite: "选择需要统计的站点",
         goback: "返回",
-        share: "生成分享图片"
+        share: "生成分享图片",
+        exportRawData: "导出原数据"
       },
       chartBaseData: {},
       chartExtData: {},
@@ -138,7 +140,8 @@ export default Vue.extend({
       shareTime: new Date(),
       version: "",
       userName: "",
-      sites: [] as Site[]
+      sites: [] as Site[],
+      rawData: {} as Dictionary<any>
     };
   },
 
@@ -185,6 +188,7 @@ export default Vue.extend({
         .sendRequest(EAction.getUserHistoryData, null, this.host)
         .then((data: any) => {
           console.log(data);
+          this.rawData = data;
           this.resetData(data);
         });
     },
@@ -430,7 +434,37 @@ export default Vue.extend({
           }
         ],
         tooltip: {
-          shared: true
+          shared: true,
+          useHTML: true,
+          formatter: function(): any {
+            function createTipItem(text: string, color: string = "#000") {
+              return `<div style='color:${color};'>${text}</div>`;
+            }
+            let _this = this as any;
+            let tips: string[] = [];
+            tips.push(createTipItem(_this.x));
+            _this.points.forEach((point: any) => {
+              let value = point.y;
+              switch (point.series.name) {
+                case "上传":
+                case "下载":
+                  value = filters.formatSize(point.y);
+                  break;
+
+                case "积分":
+                  value = filters.formatNumber(point.y);
+                  break;
+              }
+
+              tips.push(
+                createTipItem(`${point.series.name}: ${value}`, point.color)
+              );
+            });
+
+            let result = `<div>${tips.join("")}</div>`;
+            console.log(result);
+            return result;
+          }
         }
       };
 
@@ -552,7 +586,32 @@ export default Vue.extend({
           }
         ],
         tooltip: {
-          shared: true
+          shared: true,
+          useHTML: true,
+          formatter: function(): any {
+            function createTipItem(text: string, color: string = "#000") {
+              return `<div style='color:${color};'>${text}</div>`;
+            }
+            let _this = this as any;
+            let tips: string[] = [];
+            tips.push(createTipItem(_this.x));
+            _this.points.forEach((point: any) => {
+              let value = point.y;
+              switch (point.series.name) {
+                case "做种体积":
+                  value = filters.formatSize(point.y);
+                  break;
+              }
+
+              tips.push(
+                createTipItem(`${point.series.name}: ${value}`, point.color)
+              );
+            });
+
+            let result = `<div>${tips.join("")}</div>`;
+            console.log(result);
+            return result;
+          }
         }
       };
 
@@ -576,6 +635,18 @@ export default Vue.extend({
           this.shareing = false;
         });
       });
+    },
+    /**
+     * 导出原始数据
+     */
+    exportRawData() {
+      const data = new Blob([JSON.stringify(this.rawData)], {
+        type: "text/plain"
+      });
+      FileSaver.saveAs(
+        data,
+        `PT-Plugin-Plus-Statistic-${this.selectedSite.host}.json`
+      );
     }
   }
 });
