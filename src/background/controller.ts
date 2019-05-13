@@ -858,4 +858,16 @@ export default class Controller {
   public getIMDbIdFromDouban(doubanId: number): Promise<any> {
     return this.movieInfoService.getIMDbIdFromDouban(doubanId);
   }
+
+  /**
+   * 从豆瓣查询影片信息
+   * @param key 需要查询的关键字
+   * @param count 要显示的条目数量
+   */
+  public queryMovieInfoFromDouban(options: any): Promise<any> {
+    return this.movieInfoService.queryMovieInfoFromDouban(
+      options.key,
+      options.count
+    );
+  }
 }

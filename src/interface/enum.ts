@@ -134,7 +134,9 @@ export enum EAction {
   // 获取电影评分信息
   getMovieRatings = "getMovieRatings",
   // 根据指定的 doubanId 获取 IMDbId
-  getIMDbIdFromDouban = "getIMDbIdFromDouban"
+  getIMDbIdFromDouban = "getIMDbIdFromDouban",
+  // 从豆瓣查询影片信息
+  queryMovieInfoFromDouban = "queryMovieInfoFromDouban"
 }
 
 /**

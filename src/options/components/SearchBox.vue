@@ -121,8 +121,14 @@ import {
   SearchSolution,
   Options,
   Site,
-  EBeforeSearchingItemSearchMode
+  EBeforeSearchingItemSearchMode,
+  EAction
 } from "@/interface/common";
+
+import Extension from "@/service/extension";
+
+const extension = new Extension();
+
 export default Vue.extend({
   data() {
     return {
@@ -199,31 +205,47 @@ export default Vue.extend({
       )
         return;
       if (this.isLoading || !key) return;
-      // @see https://github.com/xsbailong/douban-api/blob/master/movie.md
-      let api = `https://api.douban.com/v2/movie/search?q=${key}&count=${
-        this.$store.state.options.beforeSearchingOptions
-          .maxMovieInformationCount
-      }`;
-
-      if (window.location.hostname == "localhost") {
-        api = "http://localhost:8001/test/beforeSearching.json";
-      }
 
       this.isLoading = true;
       this.items = [];
-      $.ajax(api)
-        .done(result => {
-          console.log(result);
+
+      // 本地调试时
+      if (window.location.hostname == "localhost") {
+        $.ajax("http://localhost:8001/test/beforeSearching.json")
+          .done(result => {
+            console.log(result);
+            if (result && result.subjects) {
+              this.items = result.subjects;
+              this.isLoading = false;
+              this.showMenu = true;
+            }
+          })
+          .fail(err => {
+            console.log(err);
+          })
+          .always(() => (this.isLoading = false));
+        return;
+      }
+
+      extension
+        .sendRequest(EAction.queryMovieInfoFromDouban, null, {
+          key,
+          count: this.$store.state.options.beforeSearchingOptions
+            .maxMovieInformationCount
+        })
+        .then(result => {
           if (result && result.subjects) {
             this.items = result.subjects;
             this.isLoading = false;
             this.showMenu = true;
           }
         })
-        .fail(err => {
-          console.log(err);
+        .catch(error => {
+          console.log(error);
         })
-        .always(() => (this.isLoading = false));
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
 
     searchTorrent(key?: string) {
