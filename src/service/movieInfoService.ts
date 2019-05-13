@@ -18,7 +18,15 @@ export class MovieInfoService {
   public omitApiURL = "https://omit.mkrobot.org";
   // omdbapi 申请的Key列表
   // 每个 key 一天有1000次请求限制
-  public omdbApiKeys = ["e0d3039d", "a67d9bce"];
+  public omdbApiKeys = [
+    "e0d3039d",
+    "a67d9bce",
+    "6be019fc",
+    "4ee790e0",
+    "d82cb888",
+    "d58193b6",
+    "15c0aa3f"
+  ];
   // 豆瓣 apikey
   public doubanApiKeys = [
     "02646d3fb69a52ff072d47bf23cef8fd",
