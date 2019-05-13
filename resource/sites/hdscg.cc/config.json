@@ -1,0 +1,104 @@
+{
+  "name": "圣城家园PT",
+  "description": "hdscg，cnscg圣城家园PT站点",
+  "url": "https://www.hdscg.cc/",
+  "icon": "https://www.hdscg.cc/favicon.ico",
+  "tags": [
+    "影视",
+    "综合"
+  ],
+  "schema": "NexusPHP",
+  "host": "www.hdscg.cc",
+  "collaborator": "DXV5",
+  "searchEntry": [{
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat401=1",
+      "name": "电影",
+      "enabled": false
+    },
+    {
+      "queryString": "cat402=1",
+      "name": "剧集",
+      "enabled": false
+    },
+    {
+      "queryString": "cat403=1",
+      "name": "综艺",
+      "enabled": false
+    },
+    {
+      "queryString": "cat404=1",
+      "name": "记录",
+      "enabled": false
+    },
+    {
+      "queryString": "cat405=1",
+      "name": "动漫",
+      "enabled": false
+    },
+    {
+      "queryString": "cat406=1",
+      "name": "MV",
+      "enabled": false
+    },
+    {
+      "queryString": "cat407=1",
+      "name": "体育",
+      "enabled": false
+    },
+    {
+      "queryString": "cat408=1",
+      "name": "音乐",
+      "enabled": false
+    },
+    {
+      "queryString": "cat409=1",
+      "name": "其他",
+      "enabled": false
+	}
+  ],
+  "categories": [{
+    "entry": "torrents.php",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "电影"
+      },
+      {
+        "id": 402,
+        "name": "剧集"
+      },
+      {
+        "id": 403,
+        "name": "综艺"
+      },
+      {
+        "id": 404,
+        "name": "记录"
+      },
+      {
+        "id": 405,
+        "name": "动漫"
+      },
+      {
+        "id": 406,
+        "name": "MV"
+      },
+      {
+        "id": 407,
+        "name": "体育"
+      },
+      {
+        "id": 408,
+        "name": "音乐"
+      },
+      {
+        "id": 409,
+        "name": "其他"
+      }
+    ]
+  }]
+}
