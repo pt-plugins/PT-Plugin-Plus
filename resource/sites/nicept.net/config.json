@@ -1,0 +1,94 @@
+{
+  "name": "NicePT",
+  "description": "老师站，又称小馒头",
+  "url": "https://www.nicept.net/",
+  "icon": "https://www.nicept.net/favicon.ico",
+  "tags": [
+    "Adult"
+  ],
+  "schema": "NexusPHP",
+  "host": "www.nicept.net",
+  "collaborator": "DXV5",
+  "searchEntry": [{
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat401=1",
+      "name": "无码（限制级）",
+      "enabled": false
+    },
+    {
+      "queryString": "cat500=1",
+      "name": "有码（限制级）",
+      "enabled": false
+    },
+    {
+      "queryString": "cat402=1",
+      "name": "三级情色（限制级）",
+      "enabled": false
+    },
+    {
+      "queryString": "cat501=1",
+      "name": "其他（限制级）",
+      "enabled": false
+    },
+    {
+      "queryString": "cat403=1",
+      "name": "动漫（限制级）",
+      "enabled": false
+    },
+    {
+      "queryString": "cat503=1",
+      "name": "真人秀，自拍（限制级）",
+      "enabled": false
+    },
+    {
+      "queryString": "cat404=1",
+      "name": "套图（限制级）",
+      "enabled": false
+    },
+    {
+      "queryString": "cat504=1",
+      "name": "SM调教（限制级）",
+      "enabled": false
+    }
+  ],
+  "categories": [{
+    "entry": "torrents.php",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "无码（限制级）"
+      },
+      {
+        "id": 500,
+        "name": "有码（限制级）"
+      },
+      {
+        "id": 402,
+        "name": "三级情色（限制级）"
+      },
+      {
+        "id": 501,
+        "name": "其他（限制级）"
+      },
+      {
+        "id": 403,
+        "name": "动漫（限制级）"
+      },
+      {
+        "id": 503,
+        "name": "真人秀，自拍（限制级）"
+      },
+      {
+        "id": 404,
+        "name": "套图（限制级）"
+      },
+      {
+        "id": 504,
+        "name": "SM调教（限制级）"
+      }
+    ]
+  }]
+}
