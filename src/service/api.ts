@@ -4,7 +4,7 @@ import { EConfigKey, DataResult, EDataResultType } from "@/interface/common";
 
 let rootPath = "";
 let isExtensionMode = false;
-
+const isDebugMode = process.env.NODE_ENV === "development";
 // 检测浏览器当前状态和模式
 try {
   let runtime = chrome.runtime as any;
@@ -18,9 +18,9 @@ try {
     rootPath = `chrome-extension://${chrome.runtime.id}`;
   }
 
-  console.log("is extension mode.");
+  isDebugMode && console.log("is extension mode.");
 } catch (error) {
-  console.log("is not extension mode.");
+  isDebugMode && console.log("is not extension mode.");
 }
 
 // const isExtensionMode = !!(window["chrome"] && window.chrome.extension);
@@ -42,7 +42,7 @@ let RESOURCE_API = {
 };
 
 export const APP = {
-  debugMode: process.env.NODE_ENV === "development",
+  debugMode: isDebugMode,
   scriptQueues: [] as any,
   isExtensionMode: isExtensionMode,
   cache: {
@@ -52,7 +52,7 @@ export const APP = {
     // 1 天
     expires: 60 * 60 * 24 * 1,
     init(callback?: any) {
-      console.log("cache.init");
+      APP.debugMode && console.log("cache.init");
       this.localStorage.get(this.cacheKey, (result: any) => {
         if (result) {
           let expires = result["expires"];
@@ -111,7 +111,7 @@ export const APP = {
     }
   },
   addScript(script: any) {
-    console.log("addScript", script);
+    APP.debugMode && console.log("addScript", script);
     this.scriptQueues.push(script);
   },
   applyScripts() {
@@ -210,7 +210,7 @@ export const APP = {
    */
   getScriptContent(path: string): JQueryXHR {
     let url = `${API.host}/${path}`;
-    console.log("getScriptContent", url);
+    APP.debugMode && console.log("getScriptContent", url);
     return $.ajax({
       url: url.replace("resource//", "resource/"),
       dataType: "text"

@@ -90,7 +90,7 @@ class PTPContent {
    * @param host
    */
   public getSiteFromHost(host: string) {
-    console.log("getSiteFromHost", host);
+    APP.debugMode && console.log("getSiteFromHost", host);
     let sites: Site[] = [];
     if (this.options.sites) {
       sites.push(...this.options.sites);
@@ -476,7 +476,7 @@ class PTPContent {
    * @return DOM
    */
   public showNotice(options: NoticeOptions | string) {
-    console.log(options);
+    APP.debugMode && console.log(options);
     options = Object.assign(
       {
         type: "error",
@@ -665,7 +665,7 @@ class PTPContent {
         sender: chrome.runtime.MessageSender,
         callback: (response: any) => void
       ) => {
-        console.log("content.onMessage", message);
+        APP.debugMode && console.log("content.onMessage", message);
         switch (message.action) {
           case EAction.showMessage:
             let notice = this.showNotice(message.data);
@@ -685,7 +685,8 @@ class PTPContent {
    */
   public checkLocationURL() {
     if (location.href != this.locationURL) {
-      console.log(`地址变化：${this.locationURL} -> ${location.href}`);
+      APP.debugMode &&
+        console.log(`地址变化：${this.locationURL} -> ${location.href}`);
       this.locationURL = location.href;
       this.initPages();
     }
