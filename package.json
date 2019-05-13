@@ -1,20 +1,29 @@
 {
   "name": "pt-plugin-plus",
-  "version": "1.0.0",
-  "private": true,
+  "version": "1.0.6",
+  "author": {
+    "name": "ronggang",
+    "url": "https://github.com/ronggang"
+  },
+  "displayName": "PT 助手 Plus",
+  "homepage": "https://github.com/ronggang/PT-Plugin-Plus",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && webpack --config webpack/prod.js",
+    "build": "vue-cli-service build && webpack --config webpack/prod.js && cd test && yarn install && tsc && node ./dist/buildResource.js && cd .. && web-ext build -s ./dist -a ./releases -o",
     "lint": "vue-cli-service lint",
     "background": "webpack --config webpack/prod.js",
-    "dev-s": "cd test && yarn install && tsc && node ./dist/index.js",
-    "dev": "vue-cli-service build --mode=development && webpack --config webpack/dev.js"
+    "dev": "vue-cli-service build --mode=development && webpack --config webpack/dev.js && cd test && yarn install && tsc && node ./dist/buildResource.js",
+    "dev-s": "cd test && yarn install && tsc && node ./dist/index.js"
   },
   "dependencies": {
+    "basiccontext": "^3.5.1",
     "blueimp-md5": "^2.10.0",
+    "dayjs": "^1.8.11",
     "extend": "^3.0.2",
     "file-saver": "^2.0.0",
-    "moment": "^2.23.0",
+    "highcharts": "^7.1.1",
+    "highcharts-vue": "^1.2.0",
+    "html2canvas": "^1.0.0-alpha.12",
     "url-parse": "^1.4.4",
     "vue": "^2.5.17",
     "vue-class-component": "^6.3.2",
@@ -28,6 +37,7 @@
     "@types/chrome": "^0.0.75",
     "@types/extend": "^3.0.0",
     "@types/file-saver": "^2.0.0",
+    "@types/html2canvas": "^0.0.35",
     "@types/jquery": "^3.3.22",
     "@types/url-parse": "^1.4.2",
     "@vue/cli-plugin-babel": "^3.0.5",
@@ -36,6 +46,7 @@
     "@vue/cli-service": "^3.0.5",
     "@vue/eslint-config-typescript": "^3.2.0",
     "babel-eslint": "^10.0.1",
+    "copy-webpack-plugin": "^4.6.0",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
     "node-sass": "^4.10.0",
@@ -48,6 +59,7 @@
     "vue-cli-plugin-vuetify": "^0.4.6",
     "vue-template-compiler": "^2.5.17",
     "vuetify-loader": "^1.0.5",
+    "web-ext": "^3.0.0",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2",
     "webpack-merge": "^4.1.4"

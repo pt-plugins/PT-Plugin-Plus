@@ -5,5 +5,6 @@
   "icon": "http://broadcasthe.net/favicon.ico",
   "tags": ["剧集", "0day"],
   "schema": "Gazelle",
-  "host": "broadcasthe.net"
+  "host": "broadcasthe.net",
+  "collaborator": "ylxb2016"
 }

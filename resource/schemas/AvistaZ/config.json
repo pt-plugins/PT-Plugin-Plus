@@ -1,0 +1,88 @@
+{
+  "name": "AvistaZ",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["^/torrent/(.+)$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents"],
+    "styles": ["/libs/album/style.css"],
+    "scripts": ["/libs/album/album.js", "torrents.js"]
+  }],
+  "searchEntry": [{
+    "entry": "/torrents?in=1&search=$key$",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/AvistaZ/getSearchResult.js",
+    "resultSelector": "div.table-responsive > table:first",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "i.fa-star",
+    "color": "blue"
+  }, {
+    "name": "2xUp",
+    "selector": "i.fa-diamond",
+    "color": "lime"
+  }, {
+    "name": "50%",
+    "selector": "i.fa-star-half-o",
+    "color": "orange"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "name": {
+          "selector": ["a[href*='/profile/']:first"],
+          "filters": ["query.attr('href').match(/profile\\/(.+)/)", "(query && query.length>=2)?(query[1]):''"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='/logout']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/profile/$user.name$",
+      "fields": {
+        "id": {
+          "selector": ["td:contains('User ID') + td"]
+        },
+        "uploaded": {
+          "selector": ["td:contains('Uploaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td:contains('Downloaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "td:contains('Ratio') + td",
+          "filters": ["query.text().replace(/,/g,'')"]
+        },
+        "levelName": {
+          "selector": "td:contains('Rank') + td"
+        },
+        "bonus": {
+          "selector": ["td:contains('Bonus Points') + td"],
+          "filters": ["query.text().replace(/,/g,'')"]
+        },
+        "joinTime": {
+          "selector": "td:contains('Joined') + td",
+          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["li:contains('Seeding'):first", "li:contains('Seeds'):first"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d]+)/)", "(query && query.length>=2)?query[1]:''"]
+        },
+        "seedingSize": {
+          "value": -1
+        }
+      }
+    }
+  }
+}

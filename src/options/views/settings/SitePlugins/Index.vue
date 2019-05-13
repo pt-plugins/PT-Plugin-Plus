@@ -201,7 +201,7 @@ export default Vue.extend({
         if (typeof schema === "string") {
           let _schema = this.$store.state.options.system.schemas.find(
             (item: Site) => {
-              return (item.name = schema);
+              return item.name == schema;
             }
           );
           if (_schema) {

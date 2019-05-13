@@ -36,7 +36,13 @@
             <a @click="edit(props.item)">{{ props.item.name }}</a>
           </td>
           <td>{{ props.item.type }}</td>
-          <td>{{ props.item.address }}</td>
+          <td>
+            <a
+              :href="props.item.address"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+            >{{ props.item.address }}</a>
+          </td>
           <td>
             <v-icon small class="mr-2" @click="edit(props.item)">edit</v-icon>
             <v-icon small color="error" @click="removeConfirm(props.item)">delete</v-icon>

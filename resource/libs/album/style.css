@@ -68,7 +68,7 @@
 	cursor: pointer;
 	filter: alpha(opacity=60);
 	opacity: 0.6;
-	background-image: url("icons-32.png");
+	background-image: url("chrome-extension://__MSG_@@extension_id__/resource/libs/album/icons-32.png");
 	background-repeat: no-repeat;
 	overflow: hidden;
 }
@@ -172,7 +172,7 @@
 	border-radius: 0 0 0 50px;
 	filter: alpha(opacity=70);
 	opacity: 0.7;
-	background: #ccc url("close.png") no-repeat 15px 3px;
+	background: #ccc url("chrome-extension://__MSG_@@extension_id__/resource/libs/album/close.png") no-repeat 15px 3px;
 	/* background-position: right;
 	*/
 }
@@ -222,7 +222,7 @@
 	cursor: pointer;
 	filter: alpha(opacity=50);
 	opacity: 0.5;
-	background: url('icons.png') no-repeat scroll 0px 0px transparent;
+	background: url('chrome-extension://__MSG_@@extension_id__/resource/libs/album/icons.png') no-repeat scroll 0px 0px transparent;
 }
 
 .album .button-right {
@@ -234,7 +234,7 @@
 	top: 42%;
 	filter: alpha(opacity=50);
 	opacity: 0.5;
-	background: url('icons.png') no-repeat scroll 0px -48px transparent;
+	background: url('chrome-extension://__MSG_@@extension_id__/resource/libs/album/icons.png') no-repeat scroll 0px -48px transparent;
 }
 
 .album .button-zoom-in {
@@ -244,7 +244,7 @@
 	cursor: pointer;
 	right: 80px;
 	margin-top: -1px;
-	background: url('icons.png?v=2') no-repeat scroll 0px -112px transparent;
+	background: url('chrome-extension://__MSG_@@extension_id__/resource/libs/album/icons.png?v=2') no-repeat scroll 0px -112px transparent;
 }
 
 .album .button-zoom-out {
@@ -254,7 +254,7 @@
 	cursor: pointer;
 	right: 25px;
 	margin-top: -1px;
-	background: url('icons.png?v=2') no-repeat scroll -16px -112px transparent;
+	background: url('chrome-extension://__MSG_@@extension_id__/resource/libs/album/icons.png?v=2') no-repeat scroll -16px -112px transparent;
 }
 
 .album .custom-botton-bar {

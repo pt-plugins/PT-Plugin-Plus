@@ -6,11 +6,15 @@ import {
   DataResult,
   EDataResultType,
   SearchEntry,
-  EModule
+  EModule,
+  ERequestResultType,
+  SearchEntryConfigArea,
+  SearchEntryConfig
 } from "@/interface/common";
 import { APP } from "@/service/api";
 import { SiteService } from "./site";
 import PTPlugin from "./service";
+import extend from "extend";
 
 export type SearchConfig = {
   site?: Site;
@@ -25,6 +29,8 @@ export type SearchConfig = {
 export class Searcher {
   // 搜索入口定义缓存
   private searchConfigs: any = {};
+  // 解析文件内容缓存
+  private parseScriptCache: any = {};
   public options: Options = {
     sites: [],
     clients: []
@@ -40,6 +46,7 @@ export class Searcher {
    * @param key 需要搜索的关键字
    */
   public searchTorrent(site: Site, key: string = ""): Promise<any> {
+    console.log("searchTorrent: start");
     return new Promise<any>((resolve?: any, reject?: any) => {
       let result: DataResult = {
         success: false
@@ -48,9 +55,19 @@ export class Searcher {
       let siteServce: SiteService = new SiteService(site, this.options);
       let searchConfig: SearchConfig = {};
       let schema = this.getSiteSchema(site);
+      let host = site.host as string;
+      // 当前站点默认搜索页
+      let siteSearchPage = "";
+      // 当前站点默认搜索配置信息
+      let searchEntryConfig: SearchEntryConfig | undefined = extend(
+        true,
+        {},
+        schema && schema.searchEntryConfig ? schema.searchEntryConfig : {},
+        siteServce.options.searchEntryConfig
+      );
 
       if (siteServce.options.searchEntry) {
-        searchConfig.rootPath = `sites/${site.host}/`;
+        searchConfig.rootPath = `sites/${host}/`;
         searchConfig.entry = siteServce.options.searchEntry;
       } else if (schema && schema.searchEntry) {
         searchConfig.rootPath = `schemas/${schema.name}/`;
@@ -65,71 +82,154 @@ export class Searcher {
       }
 
       if (!searchConfig.entry) {
-        result.msg = "该站点未配置搜索页面，请先配置";
+        result.msg = `该站点[${site.name}]未配置搜索页面，请先配置`;
         result.type = EDataResultType.error;
         reject(result);
+        console.log("searchTorrent: tip");
         return;
       }
 
-      this.searchConfigs[site.host as string] = searchConfig;
+      // 是否有搜索入口配置项
+      if (searchEntryConfig && searchEntryConfig.page) {
+        let searchPage = searchEntryConfig.page + "?";
+        siteSearchPage = searchPage + searchEntryConfig.queryString;
+
+        // 搜索区域
+        if (searchEntryConfig.area) {
+          searchEntryConfig.area.some((area: SearchEntryConfigArea) => {
+            // 是否有自动匹配关键字的正则
+            if (
+              area.keyAutoMatch &&
+              new RegExp(area.keyAutoMatch, "").test(key)
+            ) {
+              // 如果有定义查询字符串，则替换默认的查询字符串
+              if (area.queryString) {
+                siteSearchPage = searchPage + area.queryString;
+              }
+
+              // 追加查询字符串
+              if (area.appendQueryString) {
+                siteSearchPage += area.appendQueryString;
+              }
+
+              // 替换关键字
+              if (area.replaceKey) {
+                key = key.replace(area.replaceKey[0], area.replaceKey[1]);
+              }
+
+              return true;
+            }
+            return false;
+          });
+        }
+      }
+
+      this.searchConfigs[host] = searchConfig;
 
       let results: any[] = [];
       let entryCount = 0;
       let doneCount = 0;
 
       searchConfig.entry.forEach((entry: SearchEntry) => {
+        let searchPage = entry.entry || siteSearchPage;
+        if (searchEntryConfig) {
+          entry.parseScriptFile =
+            entry.parseScriptFile || searchEntryConfig.parseScriptFile;
+          entry.resultType = entry.resultType || searchEntryConfig.resultType;
+          entry.resultSelector =
+            entry.resultSelector || searchEntryConfig.resultSelector;
+        }
+
         // 判断是否指定了搜索页和用于获取搜索结果的脚本
-        if (entry.entry && entry.parseScriptFile && entry.enabled !== false) {
+        if (searchPage && entry.parseScriptFile && entry.enabled !== false) {
           let rows: number =
             this.options.search && this.options.search.rows
               ? this.options.search.rows
               : 10;
-          let url: string = site.url + entry.entry;
+
+          // 如果有自定义地址，则使用自定义地址
+          if (site.cdn && site.cdn.length > 0) {
+            site.url = site.cdn[0];
+          }
+
+          // 组织搜索入口
+          if ((site.url + "").substr(-1) != "/") {
+            site.url += "/";
+          }
+          if ((searchPage + "").substr(0, 1) == "/") {
+            searchPage = (searchPage + "").substr(1);
+          }
+          let url: string =
+            site.url +
+            searchPage +
+            (entry.queryString ? `&${entry.queryString}` : "");
 
           url = this.replaceKeys(url, {
-            key: key,
+            key:
+              key +
+              (entry.appendToSearchKeyString
+                ? ` ${entry.appendToSearchKeyString}`
+                : ""),
             rows: rows,
             passkey: site.passkey ? site.passkey : ""
           });
 
           entryCount++;
 
+          let scriptPath = entry.parseScriptFile;
+          // 判断是否为相对路径
+          if (scriptPath.substr(0, 1) !== "/") {
+            scriptPath = `${searchConfig.rootPath}${scriptPath}`;
+          }
+
           if (!entry.parseScript) {
-            let scriptPath = entry.parseScriptFile;
-            // 判断是否为相对路径
-            if (scriptPath.substr(0, 1) !== "/") {
-              scriptPath = `${searchConfig.rootPath}${scriptPath}`;
-            }
-            APP.getScriptContent(scriptPath).done((script: string) => {
-              entry.parseScript = script;
-              this.getSearchResult(
-                url,
-                site,
-                entry,
-                searchConfig.torrentTagSelectors
-              )
-                .then((result: any) => {
-                  if (result && result.length) {
-                    results.push(...result);
-                  }
-                  doneCount++;
+            entry.parseScript = this.parseScriptCache[scriptPath];
+          }
 
-                  if (doneCount === entryCount || results.length >= rows) {
-                    resolve(results.slice(0, rows));
-                  }
-                })
-                .catch((result: any) => {
-                  doneCount++;
-
-                  if (doneCount === entryCount) {
-                    if (results.length > 0) {
-                      resolve(results.slice(0, rows));
-                    } else {
-                      reject(result);
+          if (!entry.parseScript) {
+            console.log("searchTorrent: getScriptContent", scriptPath);
+            APP.getScriptContent(scriptPath)
+              .done((script: string) => {
+                console.log("searchTorrent: getScriptContent done", scriptPath);
+                this.parseScriptCache[scriptPath] = script;
+                entry.parseScript = script;
+                this.getSearchResult(
+                  url,
+                  site,
+                  entry,
+                  searchConfig.torrentTagSelectors
+                )
+                  .then((result: any) => {
+                    console.log("searchTorrent: getSearchResult done", url);
+                    if (result && result.length) {
+                      results.push(...result);
                     }
-                  }
-                });
-            });
+                    doneCount++;
+
+                    if (doneCount === entryCount || results.length >= rows) {
+                      resolve(results.slice(0, rows));
+                    }
+                  })
+                  .catch((result: any) => {
+                    console.log(
+                      "searchTorrent: getSearchResult catch",
+                      url,
+                      result
+                    );
+                    doneCount++;
+
+                    if (doneCount === entryCount) {
+                      if (results.length > 0) {
+                        resolve(results.slice(0, rows));
+                      } else {
+                        reject(result);
+                      }
+                    }
+                  });
+              })
+              .fail(error => {
+                console.log("searchTorrent: getScriptContent fail", error);
+              });
           } else {
             this.getSearchResult(
               url,
@@ -161,6 +261,15 @@ export class Searcher {
           }
         }
       });
+
+      // 没有指定搜索入口
+      if (entryCount == 0) {
+        result.msg = `该站点[${site.name}]未指定搜索页面，请先指定一个搜索入口`;
+        result.type = EDataResultType.error;
+        reject(result);
+      }
+
+      console.log("searchTorrent: quene done");
     });
   }
 
@@ -177,20 +286,42 @@ export class Searcher {
     entry: SearchEntry,
     torrentTagSelectors?: any[]
   ): Promise<any> {
+    console.log("getSearchResult.start", url);
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.searchRequestQueue[url] = $.ajax({
         url: url,
+        dataType: "text",
+        contentType: "text/plain",
         timeout: (this.options.search && this.options.search.timeout) || 30000
       })
         .done((result: any) => {
+          console.log("getSearchResult.done", url);
           delete this.searchRequestQueue[url];
           if (
             (result && (typeof result == "string" && result.length > 100)) ||
             typeof result == "object"
           ) {
-            let doc = new DOMParser().parseFromString(result, "text/html");
-            // 构造 jQuery 对象
-            let page = $(doc).find("body");
+            let page: any;
+            let doc: any;
+            try {
+              switch (entry.resultType) {
+                case ERequestResultType.JSON:
+                  page = JSON.parse(result);
+                  break;
+
+                default:
+                  doc = new DOMParser().parseFromString(result, "text/html");
+                  // 构造 jQuery 对象
+                  page = $(doc).find("body");
+                  break;
+              }
+            } catch (error) {
+              reject({
+                success: false,
+                msg: `[${site.name}]数据解析失败！`
+              });
+              return;
+            }
 
             const options = {
               results: [],
@@ -200,7 +331,8 @@ export class Searcher {
               page,
               entry,
               torrentTagSelectors: torrentTagSelectors,
-              errorMsg: ""
+              errorMsg: "",
+              isLogged: false
             };
 
             // 执行获取结果的脚本
@@ -211,7 +343,11 @@ export class Searcher {
               if (options.errorMsg) {
                 reject({
                   success: false,
-                  msg: options.errorMsg
+                  msg: options.errorMsg,
+                  data: {
+                    site,
+                    isLogged: options.isLogged
+                  }
                 });
               } else {
                 resolve(options.results);
@@ -224,10 +360,14 @@ export class Searcher {
               });
             }
           } else {
-            reject();
+            reject({
+              success: false,
+              msg: `[${site.name}]没有返回预期的数据。`
+            });
           }
         })
         .fail((result: any) => {
+          console.log("getSearchResult.fail", url);
           delete this.searchRequestQueue[url];
           reject(result);
         });
@@ -257,6 +397,11 @@ export class Searcher {
         searchConfig.entry.forEach((entry: SearchEntry) => {
           // 判断是否指定了搜索页和用于获取搜索结果的脚本
           if (entry.entry && entry.parseScriptFile && entry.enabled !== false) {
+            // 如果有自定义地址，则使用自定义地址
+            if (site.cdn && site.cdn.length > 0) {
+              site.url = site.cdn[0];
+            }
+
             let rows: number =
               this.options.search && this.options.search.rows
                 ? this.options.search.rows

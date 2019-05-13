@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // 用于替换 @ 符号的路径
 function resolve(dir) {
@@ -33,5 +34,12 @@ module.exports = {
     alias: {
       '@': resolve('src')
     }
-  }
+  },
+  plugins: [
+    new CopyWebpackPlugin([{
+      from: resolve('/resource/'),
+      to: path.join(resolve('/dist/'), 'resource'),
+      ignore: [".DS_Store", "README.md", "testSearchData.json"]
+    }])
+  ]
 };

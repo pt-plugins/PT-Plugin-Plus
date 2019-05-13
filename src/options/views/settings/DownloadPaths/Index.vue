@@ -5,7 +5,7 @@
       <v-card-title>
         <v-autocomplete
           v-model="selectedClient"
-          :items="this.$store.state.options.clients"
+          :items="items"
           :label="words.selectedClient"
           :menu-props="{maxHeight:'auto'}"
           style="max-width: 500px;"
@@ -16,26 +16,30 @@
           item-value="id"
         >
           <template slot="selection" slot-scope="{ item }">
-            <span v-text="item.name"></span>
+            <span>{{ item.name }}</span>
           </template>
-          <template slot="item" slot-scope="data" style>
+          <template slot="item" slot-scope="data">
             <v-list-tile-content>
               <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
               <v-list-tile-sub-title v-html="data.item.address"></v-list-tile-sub-title>
             </v-list-tile-content>
             <v-list-tile-action>
-              <v-list-tile-action-text>{{ data.item.type }}</v-list-tile-action-text>
+              <v-list-tile-action-text>{{ data.item.allowCustomPath?data.item.type:words.notSupport }}</v-list-tile-action-text>
             </v-list-tile-action>
           </template>
         </v-autocomplete>
 
         <v-spacer></v-spacer>
 
-        <v-btn color="success" @click="add" :disabled="!selectedClient.id">
+        <v-btn
+          color="success"
+          @click="add"
+          :disabled="!selectedClient.id||!selectedClient.allowCustomPath"
+        >
           <v-icon class="mr-2">add</v-icon>
           {{ words.add }}
         </v-btn>
-        <v-btn color="error" :disabled="selected.length==0">
+        <v-btn color="error" :disabled="selected.length==0" @click.stop="removeSelected">
           <v-icon class="mr-2">remove</v-icon>
           {{ words.remove }}
         </v-btn>
@@ -69,9 +73,14 @@
     </v-card>
 
     <!-- 新增 -->
-    <AddItem v-model="showAddDialog" @save="addItem"/>
+    <AddItem v-model="showAddDialog" @save="addItem" :client="selectedClient"/>
     <!-- 编辑 -->
-    <EditItem v-model="showEditDialog" :option="selectedItem" @save="updateItem"/>
+    <EditItem
+      v-model="showEditDialog"
+      :option="selectedItem"
+      @save="updateItem"
+      :client="selectedClient"
+    />
 
     <!-- 删除确认 -->
     <v-dialog v-model="dialogRemoveConfirm" width="300">
@@ -104,6 +113,7 @@
 import Vue from "vue";
 import AddItem from "./Add.vue";
 import EditItem from "./Edit.vue";
+import { ECommonKey } from "@/interface/enum";
 export default Vue.extend({
   components: {
     AddItem,
@@ -118,11 +128,13 @@ export default Vue.extend({
         remove: "删除",
         clear: "清除",
         itemDuplicate: "该名称已存在",
-        removeConfirm: "确认要删除这个下载服务器吗？",
+        removeConfirm: "确认要删除这个保存目录吗？",
         removeConfirmTitle: "删除确认",
-        clearConfirm: "确认要删除所有下载服务器吗？",
+        removeSelectedConfirm: "确认要删除已选中的保存目录吗？",
         ok: "确认",
-        cancel: "取消"
+        cancel: "取消",
+        notSupport: "暂不支持该服务器类型",
+        allSite: "<所有站点>"
       },
       showAddDialog: false,
       showEditDialog: false,
@@ -143,7 +155,7 @@ export default Vue.extend({
     };
   },
   created() {
-    this.items = this.$store.state.options.system.clients;
+    this.items = this.$store.state.options.clients;
   },
   methods: {
     getPaths(paths: any) {
@@ -191,11 +203,37 @@ export default Vue.extend({
       let item = Object.assign({}, this.selectedClient);
       this.selectedClient = null;
       this.selectedClient = item;
+    },
+    removeSelected() {
+      if (confirm(this.words.removeSelectedConfirm)) {
+        console.log(this.selected);
+        this.selected.forEach((item: any) => {
+          this.$store.commit("removePathsOfClient", {
+            clientId: this.selectedClient.id,
+            site: item.site
+          });
+        });
+        this.selected = [];
+        this.reload();
+      }
     }
   },
   computed: {
     getClientPaths(): any {
+      if (!this.selectedClient.paths) {
+        return [];
+      }
       let result = [];
+
+      let allSite = this.selectedClient.paths[ECommonKey.allSite];
+      if (allSite) {
+        result.push({
+          name: this.words.allSite,
+          site: null,
+          paths: allSite
+        });
+      }
+
       for (const host in this.selectedClient.paths) {
         let site = this.$store.state.options.sites.find((item: any) => {
           return item.host == host;

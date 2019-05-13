@@ -6,6 +6,6 @@ const PTService = new PTPlugin();
 
 // 暴露到 window 对象
 Object.assign(window, {
-  PTSevriceFilters: filters,
+  PTServiceFilters: filters,
   PTBackgroundService: PTService
 });

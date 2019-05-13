@@ -3,25 +3,36 @@
   "ver": "0.0.1",
   "plugins": [{
     "name": "种子详情页面",
-    "pages": ["/details.php", "/plugin_details.php"],
+    "pages": ["/details.php", "/plugin_details.php", "\/t-\\d+"],
     "scripts": ["common.js", "details.js"]
   }, {
     "name": "种子列表",
-    "pages": ["/torrents.php", "/music.php", "/movie.php", "/adult.php"],
+    "pages": ["/torrents.php", "/music.php", "/movie.php", "/adult.php", "/pt"],
     "scripts": ["common.js", "torrents.js"]
   }],
   "securityKeyFields": ["passkey"],
-  "searchEntry": [{
-    "entry": "/torrents.php?search=$key$&notnewword=1",
-    "name": "全部",
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "queryString": "search=$key$&notnewword=1",
+    "area": [{
+      "name": "标题",
+      "appendQueryString": "&search_area=0"
+    }, {
+      "name": "简介",
+      "appendQueryString": "&search_area=1"
+    }, {
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "appendQueryString": "&search_area=4"
+    }],
     "resultType": "html",
-    "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr",
+    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+    "resultSelector": "table.torrents:last"
+  },
+  "searchEntry": [{
+    "name": "全部",
     "enabled": true
   }],
-  "parser": {
-    "downloadURL": "(function (options) {\n  if (options.url && options.url.query && options.url.href.getQueryString) {\n    let id = options.url.href.getQueryString(\"id\");\n    if (!id) {\n      options.error = {\n        success: false,\n        msg: \"无效的下载地址\"\n      }\n      return;\n    }\n    let passkey = options.site.passkey || options.url.href.getQueryString(\"passkey\");\n    if (passkey) {\n      options.result = options.url.origin + \"/download.php?id=\" + id + \"&passkey=\" + options.site.passkey + (options.site.disableHttps ? \"\" : \"&https=1\");\n    } else {\n      options.error = {\n        success: false,\n        msg: \"请先设置站点的passkey\"\n      }\n    }\n  }\n})(options)"
-  },
   "checker": {
     "isLogin": {
       "page": "/usercp.php",
@@ -30,27 +41,93 @@
   },
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "img.pro_free",
+    "selector": "img.pro_free, .free_bg, font.free",
     "color": "blue"
   }, {
     "name": "2xFree",
-    "selector": "img.pro_free2up",
+    "selector": "img.pro_free2up, .twoupfree_bg, font.twoupfree",
     "color": "green"
   }, {
     "name": "2xUp",
-    "selector": "img.pro_2up",
+    "selector": "img.pro_2up, .twoup_bg, font.twoup",
     "color": "lime"
   }, {
     "name": "2x50%",
-    "selector": "img.pro_50pctdown2up",
+    "selector": "img.pro_50pctdown2up, .twouphalfdown_bg, font.twouphalfdown",
     "color": "light-green"
   }, {
     "name": "30%",
-    "selector": "img.pro_30pctdown",
+    "selector": "img.pro_30pctdown, .thirtypercentdown_bg, font.thirtypercent",
     "color": "indigo"
   }, {
     "name": "50%",
-    "selector": "img.pro_50pctdown",
+    "selector": "img.pro_50pctdown, .halfdown_bg, font.halfdown",
     "color": "orange"
-  }]
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": ["a[href*='userdetails.php'][class*='Name']:first", "a[href*='userdetails.php']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["a[href*='userdetails.php'][class*='Name']:first", "a[href*='userdetails.php']:first"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        },
+        "messageCount": {
+          "selector": ["td[style*='background: red'] a[href*='messages.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/上[传傳]量.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/下[载載]量.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "td.rowfollow:contains('分享率')",
+          "filters": ["query.text().replace(/,/g,'').match(/分享率.+?([\\d.]+|无限)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "levelName": {
+          "selector": "td.rowhead:contains('等級'), td.rowhead:contains('等级')",
+          "filters": ["query.next().find('img').attr('title')"]
+        },
+        "bonus": {
+          "selector": ["td.rowhead:contains('魔力') + td", "td.rowhead:contains('UCoin') + td", "td.rowhead:contains('猫粮') + td", "td.rowfollow:contains('魔力值')"],
+          "filters": ["query.is(\":contains('魔力值:')\")?query.text().replace(/,/g,'').match(/魔力值.+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')", "parseFloat(query)"]
+        },
+        "joinTime": {
+          "selector": "td.rowhead:contains('加入日期')",
+          "filters": ["query.next().text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "prerequisites": "!user.seeding",
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["query.find('td.rowfollow:eq(2)').length"]
+        },
+        "seedingSize": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    }
+  }
 }

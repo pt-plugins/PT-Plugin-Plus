@@ -1,0 +1,90 @@
+{
+  "name": "UNIT3D",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["^/torrents/(.+)$", "^/torrent/(.+)$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["^/torrents$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "searchEntryConfig": {
+    "page": "/filterTorrents",
+    "queryString": "search=$key$",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "imdb=$key$",
+      "replaceKey": [
+        "tt", ""
+      ]
+    }],
+    "resultType": "html",
+    "parseScriptFile": "/schemas/UNIT3D/getSearchResult.js",
+    "resultSelector": "div.table-responsive > table:first"
+  },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "i.fa-star text-gold",
+    "color": "blue"
+  }, {
+    "name": "2xUp",
+    "selector": "i.fa-globe",
+    "color": "lime"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ["a[href*='mail/inbox']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["a[href*='mail/inbox']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('username'):''"]
+        },
+        "uploaded": {
+          "selector": ["div.ratio-bar i.fa-arrow-up"],
+          "filters": ["query.parent().text().trim().replace(/,/g,'').match(/:.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["div.ratio-bar i.fa-arrow-down"],
+          "filters": ["query.parent().text().trim().replace(/,/g,'').match(/:.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "bonus": {
+          "selector": ["div.ratio-bar i.fa-arrow-down"],
+          "filters": ["query.parent().text().trim().replace(/,/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+        },
+        "seeding": {
+          "selector": ["div.ratio-bar i.fa-upload"],
+          "filters": ["query.parent().text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/$user.name$.$user.id$",
+      "fields": {
+        "seedingSize": {
+          "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Seeding Size') + td"],
+          "filters": ["query.text().trim().sizeToNumber()"]
+        },
+        "levelName": {
+          "selector": "div.content span.badge-user"
+        },
+        "joinTime": {
+          "selector": "div.content h4:contains('Registration date')",
+          "filters": ["query.text().trim().replace('Registration date ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    }
+  }
+}

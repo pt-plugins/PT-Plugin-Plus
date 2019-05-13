@@ -13,5 +13,54 @@
     "parseScriptFile": "getSearchResult.js",
     "resultSelector": "table.torrent_table:last > tbody > tr",
     "enabled": true
-  }]
+  }],
+  "categories": [{
+    "entry": "*",
+    "result": "&filter_cat[$id$]=1",
+    "category": [{
+      "id": 1,
+      "name": "Album"
+    }, {
+      "id": 2,
+      "name": "Single"
+    }, {
+      "id": 3,
+      "name": "PV"
+    }, {
+      "id": 4,
+      "name": "DVD"
+    }, {
+      "id": 5,
+      "name": "TV-Music"
+    }, {
+      "id": 6,
+      "name": "TV-Variety"
+    }, {
+      "id": 7,
+      "name": "TV-Drama"
+    }, {
+      "id": 8,
+      "name": "Fansubs"
+    }, {
+      "id": 9,
+      "name": "Pictures"
+    }, {
+      "id": 10,
+      "name": "Misc"
+    }]
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "seeding": {
+          "selector": "div:contains('Community') + ul.stats > li:contains('Seeding:')",
+          "filters": ["query.text().match(/Seeding.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "seedingSize": {
+          "value": -1
+        }
+      }
+    }
+  }
 }

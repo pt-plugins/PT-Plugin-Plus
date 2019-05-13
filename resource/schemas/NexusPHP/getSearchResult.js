@@ -18,6 +18,9 @@ if (!"".getQueryString) {
         options.errorMsg = `[${options.site.name}]需要登录后再搜索`;
         return;
       }
+
+      options.isLogged = true;
+
       if (/没有种子|No [Tt]orrents?|Your search did not match anything|用准确的关键字重试/.test(options.responseText)) {
         options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
         return;
@@ -34,26 +37,43 @@ if (!"".getQueryString) {
         return [];
       }
       let site = options.site;
+      let site_url_help = PTServiceFilters.parseURL(site.url);
+      let selector = options.resultSelector || "table.torrents:last";
+      selector = selector.replace("> tbody > tr", "");
+      let table = options.page.find(selector);
       // 获取种子列表行
-      let rows = options.page.find(options.resultSelector || "table.torrents:last > tbody > tr");
+      let rows = table.find("> tbody > tr");
       if (rows.length == 0) {
         options.errorMsg = `[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
         return [];
       }
       let results = [];
       // 获取表头
-      let header = rows.eq(0).find("th,td");
+      let header = table.find("> thead > tr > th");
+      let beginRowIndex = 0;
+      if (header.length == 0) {
+        beginRowIndex = 1;
+        header = rows.eq(0).find("th,td");
+      }
 
       // 用于定位每个字段所列的位置
       let fieldIndex = {
+        // 发布时间
         time: -1,
+        // 大小
         size: -1,
+        // 上传数量
         seeders: -1,
+        // 下载数量
         leechers: -1,
+        // 完成数量
         completed: -1,
+        // 评论数量
         comments: -1,
-        // 最后一栏确定为发布人
-        author: header.length - 1
+        // 发布人
+        author: header.length - 1,
+        // 分类
+        category: -1
       };
 
       if (site.url.lastIndexOf("/") != site.url.length - 1) {
@@ -62,7 +82,8 @@ if (!"".getQueryString) {
 
       // 获取字段所在的列
       for (let index = 0; index < header.length; index++) {
-        const cell = header.eq(index);
+        let cell = header.eq(index);
+        let text = cell.text();
 
         // 评论数
         if (cell.find("img.comments").length) {
@@ -105,20 +126,34 @@ if (!"".getQueryString) {
           fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
+
+        // 分类
+        if (/(cat|类型|類型|分类|分類|Тип)/gi.test(text)) {
+          fieldIndex.category = index;
+          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          continue;
+        }
       }
 
       try {
         // 遍历数据行
-        for (let index = 1; index < rows.length; index++) {
+        for (let index = beginRowIndex; index < rows.length; index++) {
           const row = rows.eq(index);
           let cells = row.find(">td");
 
           let title = row.find("a[href*='hit'][title]").first();
           if (title.length == 0) {
-            title = row.find("a[href*='hit']").first();
+            title = row.find("a[href*='hit']:has(b)").first();
+          }
+
+          // 没有获取标题时，继续下一个
+          if (title.length == 0) {
+            continue;
           }
           let link = title.attr("href");
-          if (link.substr(0, 4) !== "http") {
+          if (link && link.substr(0, 2) === '//') { // 适配HUDBT、WHU这样以相对链接开头
+            link = `${site_url_help.protocol}://${link}`;
+          } else if (link && link.substr(0, 4) !== "http") {
             link = `${site.url}${link}`;
           }
 
@@ -137,24 +172,34 @@ if (!"".getQueryString) {
             url = `download.php?id=${id}`;
           }
 
-          if (url.substr(0, 4) !== "http") {
+          if (url && url.substr(0, 2) === '//') { // 适配HUDBT、WHU这样以相对链接开头
+            url = `${site_url_help.protocol}://${url}`;
+          } else if (url && url.substr(0, 4) !== "http") {
             url = `${site.url}${url}`;
           }
+
+          if (!url) {
+            continue;
+          }
+
+          url = url + (site && site.passkey ? "&passkey=" + site.passkey : "") + "&https=1";
 
           let data = {
             title: title.attr("title") || title.text(),
             subTitle: this.getSubTitle(title, row),
             link,
-            url: url + (site && site.passkey ? "&passkey=" + site.passkey : ""),
+            url,
             size: cells.eq(fieldIndex.size).html() || 0,
-            time: fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).find("span[title],time[title]").attr("title") || cells.eq(fieldIndex.time).text() || "",
+            time: fieldIndex.time == -1 ? "" : this.getTime(cells.eq(fieldIndex.time)),
             author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",
             seeders: fieldIndex.seeders == -1 ? "" : cells.eq(fieldIndex.seeders).text() || 0,
             leechers: fieldIndex.leechers == -1 ? "" : cells.eq(fieldIndex.leechers).text() || 0,
             completed: fieldIndex.completed == -1 ? "" : cells.eq(fieldIndex.completed).text() || 0,
             comments: fieldIndex.comments == -1 ? "" : cells.eq(fieldIndex.comments).text() || 0,
             site: site,
-            tags: this.getTags(row, options.torrentTagSelectors)
+            tags: this.getTags(row, options.torrentTagSelectors),
+            entryName: options.entry.name,
+            category: fieldIndex.category == -1 ? null : this.getCategory(cells.eq(fieldIndex.category))
           };
           results.push(data);
         }
@@ -163,6 +208,18 @@ if (!"".getQueryString) {
       }
 
       return results;
+    }
+
+    /**
+     * 获取时间
+     * @param {*} cell 
+     */
+    getTime(cell) {
+      let time = cell.find("span[title],time[title]").attr("title");
+      if (!time) {
+        time = $("<span>").html(cell.html().replace("<br>", " ")).text();
+      }
+      return time || "";
     }
 
     /**
@@ -195,32 +252,67 @@ if (!"".getQueryString) {
      * @param {*} row 
      */
     getSubTitle(title, row) {
-      let subTitle = title.parent().html().split("<br>");
-      if (subTitle && subTitle.length > 1) {
-        subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
-      } else {
-        // 特殊情况处理
-        switch (options.site.host) {
-          case "hdchina.org":
-            if (title.parent().next().is("h4")) {
-              subTitle = title.parent().next().text();
+      try {
+        let subTitle = title.parent().html().split("<br>");
+        if (subTitle && subTitle.length > 1) {
+          subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
+        } else {
+          // 特殊情况处理
+          switch (options.site.host) {
+            case "hdchina.org":
+              if (title.parent().next().is("h4")) {
+                subTitle = title.parent().next().text();
+                break;
+              }
+
+            case "tp.m-team.cc":
+              title = row.find("a[href*='hit'][title]").last();
+              subTitle = title.parent().html().split("<br>");
+              subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
               break;
-            }
 
-          case "tp.m-team.cc":
-            title = row.find("a[href*='hit'][title]").last();
-            subTitle = title.parent().html().split("<br>");
-            subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
-            break;
+            case "u2.dmhy.org":
+              subTitle = $('.torrentname > tbody > tr:eq(1)', row).find('.tooltip').text();
+              break;
 
-          default:
-            subTitle = "";
-            break;
+            default:
+              subTitle = "";
+              break;
 
+          }
+        }
+
+        return subTitle || "";
+      } catch (error) {
+        return "";
+      }
+    }
+
+    /**
+     * 获取分类
+     * @param {*} cell 当前列
+     */
+    getCategory(cell) {
+      let result = {
+        name: "",
+        link: ""
+      };
+      let link = cell.find("a:first");
+      let img = link.find("img:first");
+
+      if (link.length) {
+        result.link = link.attr("href");
+        if (result.link.substr(0, 4) !== "http") {
+          result.link = options.site.url + result.link;
         }
       }
 
-      return subTitle || "";
+      if (img.length) {
+        result.name = img.attr("title") || img.attr('alt');
+      } else {
+        result.name = link.text();
+      }
+      return result;
     }
   }
 

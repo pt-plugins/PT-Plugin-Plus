@@ -1,0 +1,9 @@
+{
+  "name": "AsianCinema",
+  "description": "综合",
+  "url": "https://asiancinema.me/",
+  "icon": "https://asiancinema.me/favicon.ico",
+  "tags": ["综合"],
+  "schema": "UNIT3D",
+  "host": "asiancinema.me"
+}

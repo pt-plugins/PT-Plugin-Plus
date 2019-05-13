@@ -80,6 +80,16 @@
           :rules="rules.require"
           :disabled="!custom"
         ></v-text-field>
+
+        <v-text-field
+          v-model="site.priority"
+          :label="words.priority"
+          :placeholder="words.priorityTip"
+          type="number"
+        ></v-text-field>
+
+        <v-textarea v-model="cdn" :label="words.cdn" value :hint="words.cdnTip"></v-textarea>
+
         <v-text-field v-model="site.description" :label="words.description"></v-text-field>
 
         <v-autocomplete
@@ -105,11 +115,14 @@
           </template>
         </v-autocomplete>
 
+        <!-- 允许获取用户信息 -->
+        <v-switch :label="words.allowGetUserInfo" v-model="site.allowGetUserInfo"></v-switch>
+
         <!-- 允许搜索 -->
         <v-switch :label="words.allowSearch" v-model="site.allowSearch"></v-switch>
 
         <!-- 搜索入口设置 v-if="site.allowSearch"  -->
-        <template>
+        <template v-if="site.allowSearch">
           <v-container fluid class="ma-0 pa-0 ml-4">
             <v-layout row wrap class="ma-0 pa-0">
               <v-flex
@@ -134,12 +147,13 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { Site } from "../../../../interface/common";
+import { Site } from "@/interface/common";
 export default Vue.extend({
   data() {
     return {
       words: {
-        defaultClient: "默认下载服务器",
+        defaultClient:
+          "指定下载服务器（如不选择则以基本设置的默认下载服务器为准）",
         name: "站点名称",
         tags: "站点标签",
         inputTags: "标签输入完成后按回车添加，可添加多个",
@@ -149,28 +163,57 @@ export default Vue.extend({
         url: "网站地址",
         urlTip: "网站完整地址，如：https://open.cd/",
         passkey: "密钥",
-        passkeyTip: "密钥用于聚合搜索、生成下载链接等操作",
-        allowSearch: "允许搜索"
+        passkeyTip: "密钥仅用于复制下载地址操作，如果不需要用到此功能，请留空",
+        allowSearch: "允许搜索",
+        allowGetUserInfo: "允许获取用户信息（Beta）",
+        cdn: "站点CDN列表",
+        cdnTip:
+          "如您使用的网址和系统定义的不同，可在此填写当前使用的网站地址，每行填写一个地址，第一个将做为搜索时使用的地址",
+        priority: "优先级",
+        priorityTip: "可用于搜索排序"
       },
       showPasskey: false,
       rules: {
         require: [(v: any) => !!v || "!"]
-      }
+      },
+      cdn: ""
     };
   },
   props: {
     site: Object,
     custom: Boolean
   },
-  computed: {
-    selectedTags(): string {
-      let site = this.site;
-      let tags = "";
-      if (site.tags !== undefined) {
-        tags = site.tags.join(",");
+  watch: {
+    site() {
+      if (this.site.cdn) {
+        this.cdn = this.site.cdn.join("\n");
+      } else {
+        this.cdn = "";
       }
-      return tags;
     },
+    cdn() {
+      let items = this.cdn.split("\n");
+      let result: string[] = [];
+      items.forEach(cdn => {
+        if (
+          /(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/.test(
+            cdn
+          )
+        ) {
+          result.push(cdn);
+        }
+      });
+
+      if (result.length > 0) {
+        this.site.activeURL = result[0];
+      } else {
+        this.site.activeURL = this.site.url;
+      }
+
+      this.site.cdn = result;
+    }
+  },
+  computed: {
     getSchema(): string {
       let result: string = "";
       if (typeof this.site.schema === "string") {

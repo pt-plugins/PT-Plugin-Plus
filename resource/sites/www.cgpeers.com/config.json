@@ -1,0 +1,9 @@
+{
+  "name":"CGPeers",
+  "schema":"Gazelle",
+  "url": "https://www.cgpeers.com/",
+  "icon":"https://www.cgpeers.com/favicon.ico",
+  "tags":["设计","素材"],
+  "host":"www.cgpeers.com",
+  "collaborator": "bimzcy"
+}

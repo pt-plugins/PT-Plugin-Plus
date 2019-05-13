@@ -1,0 +1,162 @@
+{
+  "name": "百川PT",
+  "description": "校内10兆高速下载，优质高清资源共享！",
+  "url": "https://pt.ghtt.net/",
+  "icon": "https://pt.ghtt.net/favicon.ico",
+  "tags": [
+    "教育网",
+    "影视",
+    "综合"
+  ],
+  "schema": "NexusPHP",
+  "host": "pt.ghtt.net",
+  "collaborator": "tongyifan",
+  "searchEntry": [{
+      "entry": "/torrents.php?search=$key$&notnewword=1",
+      "name": "影视",
+      "enabled": true
+    },
+    {
+      "entry": "/music.php?search=$key$&notnewword=1",
+      "name": "综合",
+      "enabled": true
+    },
+    {
+      "entry": "/torrents.php?cat401=1&search=$key$&notnewword=1",
+      "name": "高清电影",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat402=1&search=$key$&notnewword=1",
+      "name": "高清剧集",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat403=1&search=$key$&notnewword=1",
+      "name": "抢鲜或标清",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat405=1&search=$key$&notnewword=1",
+      "name": "动漫",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat407=1&search=$key$&notnewword=1",
+      "name": "体育",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat413=1&search=$key$&notnewword=1",
+      "name": "纪录片",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat416=1&search=$key$&notnewword=1",
+      "name": "综艺",
+      "enabled": false
+    },
+    {
+      "entry": "/torrents.php?cat415=1&search=$key$&notnewword=1",
+      "name": "MV",
+      "enabled": false
+    },
+    {
+      "entry": "/music.php?cat411=1&search=$key$&notnewword=1",
+      "name": "电子文档",
+      "enabled": false
+    },
+    {
+      "entry": "/music.php?cat406=1&search=$key$&notnewword=1",
+      "name": "音乐",
+      "enabled": false
+    },
+    {
+      "entry": "/music.php?cat408=1&search=$key$&notnewword=1",
+      "name": "工程软件",
+      "enabled": false
+    },
+    {
+      "entry": "/music.php?cat404=1&search=$key$&notnewword=1",
+      "name": "教学视频",
+      "enabled": false
+    },
+    {
+      "entry": "/music.php?cat410=1&search=$key$&notnewword=1",
+      "name": "游戏",
+      "enabled": false
+    },
+    {
+      "entry": "/music.php?cat409=1&search=$key$&notnewword=1",
+      "name": "其他",
+      "enabled": false
+    }
+  ],
+  "categories": [{
+      "entry": "torrents.php",
+      "result": "&cat$id$=1",
+      "category": [{
+          "id": 401,
+          "name": "高清电影"
+        },
+        {
+          "id": 402,
+          "name": "高清剧集"
+        },
+        {
+          "id": 403,
+          "name": "抢鲜或标清"
+        },
+        {
+          "id": 405,
+          "name": "动漫"
+        },
+        {
+          "id": 407,
+          "name": "体育"
+        },
+        {
+          "id": 413,
+          "name": "纪录片"
+        },
+        {
+          "id": 416,
+          "name": "综艺"
+        },
+        {
+          "id": 415,
+          "name": "MV"
+        }
+      ]
+    },
+    {
+      "entry": "music.php",
+      "result": "&cat$id$=1",
+      "category": [{
+          "id": 411,
+          "name": "电子文档"
+        },
+        {
+          "id": 406,
+          "name": "音乐"
+        },
+        {
+          "id": 408,
+          "name": "工程软件"
+        },
+        {
+          "id": 404,
+          "name": "教学视频"
+        },
+        {
+          "id": 410,
+          "name": "游戏"
+        },
+        {
+          "id": 409,
+          "name": "其他"
+        }
+      ]
+    }
+  ]
+}

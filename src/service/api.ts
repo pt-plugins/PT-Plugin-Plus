@@ -1,45 +1,56 @@
 import localStorage from "./localStorage";
 import md5 from "blueimp-md5";
-import { EConfigKey } from "@/interface/common";
+import { EConfigKey, DataResult, EDataResultType } from "@/interface/common";
 
-const API_RAW_URL =
-  "https://raw.githubusercontent.com/ronggang/PT-Plugin-Plus/master/resource";
-const API_URL =
-  "https://api.github.com/repos/ronggang/PT-Plugin-Plus/contents/resource";
+let rootPath = "";
+let isExtensionMode = false;
 
-const TEST_API_URL = "http://localhost:8001";
+// 检测浏览器当前状态和模式
+try {
+  let runtime = chrome.runtime as any;
+  isExtensionMode = true;
+  rootPath = runtime.getManifest().options_ui.page.replace("index.html", "");
+  if (rootPath && rootPath.substr(-1) == "/") {
+    rootPath = rootPath.substr(0, rootPath.length - 1);
+  }
 
+  if (!rootPath) {
+    rootPath = `chrome-extension://${chrome.runtime.id}`;
+  }
+
+  console.log("is extension mode.");
+} catch (error) {
+  console.log("is not extension mode.");
+}
+
+// const isExtensionMode = !!(window["chrome"] && window.chrome.extension);
+const isLocalhost = window.location.hostname === "localhost";
+const RESOURCE_URL = isLocalhost
+  ? "http://localhost:8001"
+  : (isExtensionMode ? rootPath : "") + "/resource";
 // 调试信息
-let developmentAPI = {
-  host: TEST_API_URL,
-  schemas: `${TEST_API_URL}/schema.json`,
-  schemaConfig: `${TEST_API_URL}/schemas/{$schema}/config.json`,
-  sites: `${TEST_API_URL}/sites.json`,
-  siteConfig: `${TEST_API_URL}/sites/{$site}/config.json`,
-  clients: `${TEST_API_URL}/clients.json`,
-  clientConfig: `${TEST_API_URL}/clients/{$client}/config.json`
-};
-
-let productAPI = {
-  host: API_RAW_URL,
-  schemas: `${API_URL}/schemas`,
-  schemaConfig: `${API_RAW_URL}/schemas/{$schema}/config.json`,
-  sites: `${API_URL}/sites`,
-  siteConfig: `${API_RAW_URL}/sites/{$site}/config.json`,
-  clients: `${API_URL}/clients`,
-  clientConfig: `${API_RAW_URL}/clients/{$client}/config.json`
+let RESOURCE_API = {
+  host: RESOURCE_URL,
+  schemas: `${RESOURCE_URL}/schemas.json`,
+  schemaConfig: `${RESOURCE_URL}/schemas/{$schema}/config.json`,
+  sites: `${RESOURCE_URL}/sites.json`,
+  siteConfig: `${RESOURCE_URL}/sites/{$site}/config.json`,
+  clients: `${RESOURCE_URL}/clients.json`,
+  clientConfig: `${RESOURCE_URL}/clients/{$client}/config.json`,
+  latestReleases: `https://api.github.com/repos/ronggang/PT-Plugin-Plus/releases/latest`,
+  systemConfig: `${RESOURCE_URL}/systemConfig.json`
 };
 
 export const APP = {
   debugMode: process.env.NODE_ENV === "development",
   scriptQueues: [] as any,
-  isExtensionMode: window["chrome"] && window.chrome.extension ? true : false,
+  isExtensionMode: isExtensionMode,
   cache: {
     localStorage: new localStorage(),
     cacheKey: EConfigKey.cache,
     contents: {} as any,
-    // 10 天
-    expires: 60 * 60 * 24 * 10,
+    // 1 天
+    expires: 60 * 60 * 24 * 1,
     init(callback?: any) {
       console.log("cache.init");
       this.localStorage.get(this.cacheKey, (result: any) => {
@@ -100,6 +111,7 @@ export const APP = {
     }
   },
   addScript(script: any) {
+    console.log("addScript", script);
     this.scriptQueues.push(script);
   },
   applyScripts() {
@@ -193,21 +205,68 @@ export const APP = {
     });
   },
   /**
-   * 同步获取脚本内容
+   * 异步获取脚本内容
    * @param path 路径
    */
   getScriptContent(path: string): JQueryXHR {
+    let url = `${API.host}/${path}`;
+    console.log("getScriptContent", url);
     return $.ajax({
-      url: `${API.host}/${path}`,
+      url: url.replace("resource//", "resource/"),
       dataType: "text"
+    });
+  },
+  /**
+   * 创建错误信息，用于函数返回
+   * @param msg
+   */
+  createErrorMessage(msg: any): DataResult {
+    return {
+      type: EDataResultType.error,
+      msg,
+      success: false
+    };
+  },
+
+  /**
+   * 显示系统提示信息
+   * @param options
+   */
+  showNotifications(options: chrome.notifications.NotificationOptions) {
+    options = Object.assign(
+      {
+        type: "basic",
+        iconUrl: "assets/icon-128.png",
+        title: "PT 助手 Plus",
+        priority: 0,
+        message: ""
+      },
+      options
+    );
+
+    let id = Math.floor(Math.random() * 99999) + "";
+
+    chrome.notifications.create(id, options, function(myId) {
+      id = myId;
+    });
+
+    setTimeout(() => {
+      chrome.notifications.clear(id, () => {});
+    }, 3000);
+  },
+  getInstallType(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (chrome && chrome.management) {
+        chrome.management.getSelf(result => {
+          resolve(result.installType);
+        });
+      } else {
+        reject();
+      }
     });
   }
 };
 
-if (APP.debugMode) {
-  productAPI = developmentAPI;
-}
-
 APP.cache.init();
 
-export const API = productAPI;
+export const API = RESOURCE_API;

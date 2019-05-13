@@ -37,7 +37,7 @@
           <v-switch
             :label="words.autoStart"
             v-model="option.autoStart"
-            v-if="option.type==='transmission'"
+            v-if="['transmission', 'qbittorrent'].includes(option.type)"
           ></v-switch>
 
           <v-text-field :value="option.type" :label="words.type" disabled></v-text-field>
@@ -52,13 +52,13 @@
         <v-btn
           flat
           block
-          color="info"
+          :color="testButtonColor"
           :loading="testing"
-          :disabled="testing"
+          :disabled="testing || !option.valid"
           @click="testClientConnectivity"
         >
-          <v-icon class="mr-2">compass_calibration</v-icon>
-          {{ words.test }}
+          <v-icon class="mr-2">{{ testButtonIcon }}</v-icon>
+          {{ successMsg || errorMsg || words.test }}
         </v-btn>
         <v-alert :value="true" color="info" v-if="option.description">{{ option.description }}</v-alert>
         <v-alert :value="true" color="warning" v-if="option.warning">{{ option.warning }}</v-alert>
@@ -79,7 +79,7 @@
 import md5 from "blueimp-md5";
 import Vue from "vue";
 import Extension from "@/service/extension";
-import { EAction, DataResult } from "@/interface/common";
+import { EAction, DataResult, Dictionary } from "@/interface/common";
 const extension = new Extension();
 export default Vue.extend({
   data() {
@@ -94,7 +94,13 @@ export default Vue.extend({
         id: "ID",
         autoStart: "发送种子时自动开始下载",
         autoCreate: "<保存后自动生成>",
-        test: "测试服务器是否可连接"
+        test: "测试服务器是否可连接",
+        testSuccess: "服务器可连接",
+        testConnectionError: "网络连接错误",
+        testError: "服务器连接失败",
+        testUnknownError: "未知错误",
+        testOtherError: "其他错误，服务返回的代码为: $code$",
+        testAddressError: "服务器地址错误"
       },
       showPassword: false,
       rules: {
@@ -104,7 +110,23 @@ export default Vue.extend({
       haveError: false,
       haveSuccess: false,
       successMsg: "",
-      errorMsg: ""
+      errorMsg: "",
+      testButtonIcon: "compass_calibration",
+      testButtonColor: "info",
+      testButtonStatus: {
+        success: "success",
+        error: "error"
+      },
+      buttonColor: {
+        default: "info",
+        success: "success",
+        error: "error"
+      } as Dictionary<any>,
+      buttonIcon: {
+        default: "compass_calibration",
+        success: "done",
+        error: "close"
+      } as Dictionary<any>
     };
   },
   props: {
@@ -120,34 +142,62 @@ export default Vue.extend({
   },
   methods: {
     testClientConnectivity() {
-      let options = Object.assign({}, this.option);
-      this.testing = true;
       this.successMsg = "";
       this.errorMsg = "";
+      let options = Object.assign({}, this.option);
+      if (!options.address) {
+        this.errorMsg = this.words.testAddressError;
+        return;
+      }
+      this.testing = true;
 
       extension
         .sendRequest(EAction.testClientConnectivity, null, options)
         .then((result: DataResult) => {
           console.log(result);
           if (result.success) {
-            this.successMsg = "服务器可连接";
-          } else if (result.data && result.data) {
+            this.successMsg = this.words.testSuccess;
+            this.setTestButtonStatus(this.testButtonStatus.success);
+          } else if (result && result.data) {
             if (result.data.msg) {
               this.errorMsg = result.data.msg;
             } else if (result.data.code === 0) {
-              this.errorMsg = "网络连接错误";
+              this.errorMsg = this.words.testConnectionError;
             } else {
-              this.errorMsg = "其他错误，服务返回的代码为:" + result.data.code;
+              this.errorMsg = this.words.testOtherError.replace(
+                "$code$",
+                result.data.code
+              );
             }
           } else {
-            this.errorMsg = "未知错误";
+            this.errorMsg = this.words.testUnknownError;
           }
+          this.errorMsg &&
+            this.setTestButtonStatus(this.testButtonStatus.error);
           this.testing = false;
         })
         .catch((result: DataResult) => {
-          this.errorMsg = "服务器连接失败";
+          console.log(result);
+          if (result && result.data && result.data.msg) {
+            this.errorMsg = result.data.msg;
+          } else {
+            this.errorMsg = this.words.testError;
+          }
+
+          this.setTestButtonStatus(this.testButtonStatus.error);
           this.testing = false;
         });
+    },
+
+    setTestButtonStatus(status: string) {
+      this.testButtonIcon = this.buttonIcon[status];
+      this.testButtonColor = this.buttonColor[status];
+      window.setTimeout(() => {
+        this.testButtonIcon = this.buttonIcon.default;
+        this.testButtonColor = this.buttonColor.default;
+        this.successMsg = "";
+        this.errorMsg = "";
+      }, 3000);
     }
   }
 });

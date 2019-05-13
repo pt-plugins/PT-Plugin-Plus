@@ -1,3 +1,6 @@
+/**
+ * @see https://github.com/bittorrent/webui/blob/master/webui.js
+ */
 (function ($, window) {
   class uTorrent {
     /**
@@ -18,8 +21,23 @@
       }
 
       if (this.options.address.indexOf("gui") == -1) {
-        let url = PTSevriceFilters.parseURL(this.options.address);
-        this.options.address = `${url.protocol}://${url.host}:${url.port}/gui/`;
+        let url = PTServiceFilters.parseURL(this.options.address);
+        let address = [
+          url.protocol,
+          "://",
+          url.host
+        ];
+        if (url.port) {
+          address.push(`:${url.port}`)
+        }
+
+        address.push(url.path);
+        if (url.path.substr(-1) != "/") {
+          address.push("/");
+        }
+
+        address.push("gui/");
+        this.options.address = address.join("");
       }
       console.log("uTorrent.init", this.options.address);
     }
@@ -35,7 +53,7 @@
       return new Promise((resolve, reject) => {
         switch (action) {
           case "addTorrentFromURL":
-            this.addTorrentFromUrl(data.url, result => {
+            this.addTorrentFromUrl(data, result => {
               resolve(result);
             });
             break;
@@ -77,13 +95,17 @@
           })
           .fail((jqXHR, textStatus) => {
             let result = {
-              status: "error",
+              status: textStatus || "error",
               code: jqXHR.status,
-              msg: "未知错误"
+              msg: textStatus === "timeout" ? "连接超时" : "未知错误"
             };
             switch (jqXHR.status) {
               case 401:
                 result.msg = "身份验证失败";
+                break;
+
+              case 404:
+                result.msg = "指定的地址未找到，服务器返回了 404";
                 break;
             }
             reject(result);
@@ -108,12 +130,28 @@
       }
       var data = {};
 
-      $.extend(data, options);
+      var _settings = $.extend({
+        method: "GET",
+        processData: undefined,
+        contentType: undefined,
+        queryString: ""
+      }, options.settings);
+
+      if (options.settings) {
+        delete options.settings;
+      }
+      if (options.formData) {
+        data = options.formData;
+      } else {
+        $.extend(data, options);
+      }
 
       var settings = {
-        type: "GET",
-        url: this.options.address + "?token=" + this.token,
+        type: _settings.method,
+        url: this.options.address + "?token=" + this.token + _settings.queryString,
         dataType: "json",
+        processData: _settings.processData,
+        contentType: _settings.contentType,
         data: data,
         timeout: PTBackgroundService.options.connectClientTimeout,
         success: (resultData, textStatus) => {
@@ -135,21 +173,49 @@
     }
 
     // 添加种子
-    addTorrentFromUrl(url, callback) {
+    addTorrentFromUrl(data, callback) {
+      let url = data.url;
       // 磁性连接（代码来自原版WEBUI）
       if (url.match(/^[0-9a-f]{40}$/i)) {
         url = "magnet:?xt=urn:btih:" + url;
-      }
-      this.exec({
+        this.addTorrent({
           action: "add-url",
-          s: url
-        },
+          s: url,
+          download_dir: 0,
+          path: data.savePath ? data.savePath : ""
+        }, callback);
+        return;
+      }
+
+      PTBackgroundService.requestMessage({
+          action: "getTorrentDataFromURL",
+          data: url
+        })
+        .then((result) => {
+          let formData = new FormData();
+          formData.append("torrent_file", result, "file.torrent")
+
+          this.addTorrent({
+            settings: {
+              method: "POST",
+              processData: false,
+              contentType: false,
+              queryString: `&action=add-file&download_dir=0&path=` + (data.savePath ? data.savePath : "")
+            },
+            formData
+          }, callback);
+        })
+        .catch((result) => {
+          callback && callback(result);
+        });
+
+    }
+
+    addTorrent(options, callback) {
+      this.exec(options,
         resultData => {
           if (callback) {
-            var result = {
-              status: "",
-              msg: ""
-            };
+            var result = resultData;
             if (resultData.build) {
               result.status = "success";
               result.msg = "URL已添加至 µTorrent 。";

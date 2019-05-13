@@ -1,9 +1,9 @@
 {
 	"manifest_appName": {
-		"message": "PT 助手 Plus"
+		"message": "PT Plugin Plus"
 	},
 	"manifest_shortName": {
-		"message": "PT 助手 Plus"
+		"message": "PT Plugin Plus"
 	},
 	"manifest_appDescription": {
 		"message": "适用于各PT站，可使下载种子等各项操作变化更简单、快捷。配合下载服务器（如Transmission、µTorrent等），可一键下载指定的种子。"
@@ -124,7 +124,7 @@
 	},
 	"options_text_table_head_action": {
 		"message": "操作"
-	},	
+	},
 	"popup_search_torrent": {
 		"message": "搜索种子"
 	},

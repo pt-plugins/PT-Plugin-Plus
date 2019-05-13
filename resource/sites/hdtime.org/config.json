@@ -3,7 +3,137 @@
   "description": "HDTime, time to forever!",
   "url": "https://hdtime.org/",
   "icon": "https://hdtime.org/favicon.ico",
-  "tags": ["影视", "综合"],
+  "tags": [
+    "影视",
+    "综合"
+  ],
   "schema": "NexusPHP",
-  "host": "hdtime.org"
+  "host": "hdtime.org",
+  "searchEntry": [{
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat401=1",
+      "name": "电影",
+      "enabled": false
+    },
+    {
+      "queryString": "cat424=1",
+      "name": "Blu-Ray原盘",
+      "enabled": false
+    },
+    {
+      "queryString": "cat402=1",
+      "name": "剧集",
+      "enabled": false
+    },
+    {
+      "queryString": "cat403=1",
+      "name": "综艺",
+      "enabled": false
+    },
+    {
+      "queryString": "cat405=1",
+      "name": "动漫",
+      "enabled": false
+    },
+    {
+      "queryString": "cat414=1",
+      "name": "软件",
+      "enabled": false
+    },
+    {
+      "queryString": "cat407=1",
+      "name": "体育",
+      "enabled": false
+    },
+    {
+      "queryString": "cat404=1",
+      "name": "纪录片",
+      "enabled": false
+    },
+    {
+      "queryString": "cat406=1",
+      "name": "MV",
+      "enabled": false
+    },
+    {
+      "queryString": "cat408=1",
+      "name": "音乐",
+      "enabled": false
+    },
+    {
+      "queryString": "cat410=1",
+      "name": "游戏",
+      "enabled": false
+    },
+    {
+      "queryString": "cat411=1",
+      "name": "文档",
+      "enabled": false
+    },
+    {
+      "queryString": "cat409=1",
+      "name": "其他",
+      "enabled": false
+    }
+  ],
+  "categories": [{
+    "entry": "torrents.php",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "电影"
+      },
+      {
+        "id": 424,
+        "name": "Blu-Ray原盘"
+      },
+      {
+        "id": 402,
+        "name": "剧集"
+      },
+      {
+        "id": 403,
+        "name": "综艺"
+      },
+      {
+        "id": 405,
+        "name": "动漫"
+      },
+      {
+        "id": 414,
+        "name": "软件"
+      },
+      {
+        "id": 407,
+        "name": "体育"
+      },
+      {
+        "id": 404,
+        "name": "纪录片"
+      },
+      {
+        "id": 406,
+        "name": "MV"
+      },
+      {
+        "id": 408,
+        "name": "音乐"
+      },
+      {
+        "id": 410,
+        "name": "游戏"
+      },
+      {
+        "id": 411,
+        "name": "文档"
+      },
+      {
+        "id": 409,
+        "name": "其他"
+      }
+    ]
+  }]
 }

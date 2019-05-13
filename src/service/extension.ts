@@ -1,15 +1,21 @@
 /**
  * 导入这个是为了本地测试，对于 Chrome 插件实际运行时不起作用
  */
-import PTPlugin from "../background/service";
-import { EAction } from "../interface/common";
+import PTPlugin from "@/background/service";
+import { EAction, EDataResultType } from "@/interface/common";
+import { APP } from "./api";
 
 export default class Extension {
   public isExtensionMode: boolean = false;
   constructor() {
-    if (window["chrome"] && window.chrome.extension) {
-      this.isExtensionMode = true;
+    try {
+      this.isExtensionMode = !!(chrome.runtime && chrome.extension);
+    } catch (error) {
+      console.log("is not extension mode.", error);
     }
+    // if (window["chrome"] && window.chrome.extension) {
+    //   this.isExtensionMode = true;
+    // }
   }
 
   /**
@@ -32,8 +38,36 @@ export default class Extension {
               data
             },
             (result: any) => {
+              if (chrome.runtime.lastError) {
+                let message = chrome.runtime.lastError.message || "";
+                console.log(
+                  "Extension.sendRequest.runtime",
+                  action,
+                  data,
+                  chrome.runtime.lastError.message
+                );
+                if (/Could not establish connection/.test(message)) {
+                  APP.showNotifications({
+                    message: "插件状态未知，当前操作可能失败，请刷新页面后再试"
+                  });
+                  reject(chrome.runtime.lastError);
+                  return;
+                }
+
+                if (
+                  !/The message port closed before a response was received/.test(
+                    message
+                  )
+                ) {
+                  reject(chrome.runtime.lastError);
+                  return;
+                }
+              }
               callback && callback(result);
-              if (result && result.status === "error") {
+              if (
+                result &&
+                (result.status === "error" || result.success === false)
+              ) {
                 reject(result);
               } else {
                 resolve(result);
@@ -41,7 +75,23 @@ export default class Extension {
             }
           );
         } catch (error) {
-          reject(error);
+          // @see https://groups.google.com/a/chromium.org/forum/#!topic/chromium-extensions/QLC4gNlYjbA
+          if (
+            /Invocation of form runtime\.connect|doesn't match definition runtime\.connect|Extension context invalidated/.test(
+              error.message
+            )
+          ) {
+            // console.error(
+            //   "Chrome extension, Actson has been reloaded. Please refresh the page"
+            // );
+            reject({
+              type: EDataResultType.error,
+              msg: "插件状态未知，当前操作可能失败，请刷新页面后再试",
+              success: false
+            });
+          } else {
+            reject(error);
+          }
         }
 
         return;
@@ -51,10 +101,14 @@ export default class Extension {
       PTService.requestMessage({
         action,
         data
-      }).then((result: any) => {
-        callback && callback.call(this, result);
-        resolve(result);
-      });
+      })
+        .then((result: any) => {
+          callback && callback.call(this, result);
+          resolve(result);
+        })
+        .catch((error: any) => {
+          reject(error);
+        });
     });
   }
 }

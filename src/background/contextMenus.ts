@@ -6,10 +6,14 @@ import {
   SiteSchema,
   EAction,
   EDataResultType,
-  DownloadOptions
+  DownloadOptions,
+  EModule,
+  ECommonKey
 } from "@/interface/common";
 import PTPlugin from "./service";
 import URLParse from "url-parse";
+import { APP } from "@/service/api";
+import { PathHandler } from "@/service/pathHandler";
 
 type Service = PTPlugin;
 
@@ -23,6 +27,7 @@ export class ContextMenus {
   private currentTabId = 0;
 
   private siteMenus: string[] = [];
+  private pathHandler: PathHandler = new PathHandler();
 
   constructor(public service: Service) {
     chrome && chrome.tabs && this.initBrowserEvent();
@@ -36,7 +41,6 @@ export class ContextMenus {
     chrome.tabs.onActivated.addListener(
       (actionInfo: chrome.tabs.TabActiveInfo) => {
         chrome.tabs.get(actionInfo.tabId, (tab: chrome.tabs.Tab) => {
-          console.log("onActivated", tab);
           this.clearSiteMenus();
           if (tab.url) {
             let host = new URLParse(tab.url).host;
@@ -54,7 +58,6 @@ export class ContextMenus {
         changeInfo: chrome.tabs.TabChangeInfo,
         tab: chrome.tabs.Tab
       ) => {
-        console.log("onUpdated", tab);
         this.clearSiteMenus();
         if (tab.url) {
           let host = new URLParse(tab.url).host;
@@ -63,6 +66,12 @@ export class ContextMenus {
         }
       }
     );
+
+    // 图标单击事件
+    // 暂时取消弹出内容，直接转到配置页
+    chrome.browserAction.onClicked.addListener(() => {
+      this.service.controller.openOptions();
+    });
   }
   /**
    * 初始化上下文菜单
@@ -75,16 +84,58 @@ export class ContextMenus {
     // 清除原来的菜单
     this.clear();
     // 创建关键字搜索菜单，所有页面可用
-    this.createSearchMenu();
+    this.createSearchMenus();
     // 创建下载客户端上下文菜单，所有页面可用
     this.createClientMenus();
+    // 创建插件图标右键菜单
+    this.createPluginIconPopupMenus();
+  }
+
+  /**
+   * 创建插件图标右键菜单
+   */
+  public createPluginIconPopupMenus() {
+    this.add({
+      title: "查看下载历史",
+      contexts: ["browser_action"],
+      onclick: () => {
+        chrome.tabs.create({
+          url: "index.html#/history"
+        });
+      }
+    });
+
+    this.add({
+      title: "查看助手日志",
+      contexts: ["browser_action"],
+      onclick: () => {
+        chrome.tabs.create({
+          url: "index.html#/system-logs"
+        });
+      }
+    });
+
+    this.add({
+      type: "separator",
+      contexts: ["browser_action"]
+    });
+
+    this.add({
+      title: "使用问题反馈",
+      contexts: ["browser_action"],
+      onclick: () => {
+        chrome.tabs.create({
+          url: "https://github.com/ronggang/PT-Plugin-Plus/issues/new"
+        });
+      }
+    });
   }
 
   /**
    * 清除菜单
    */
   public clear() {
-    chrome.contextMenus.removeAll();
+    chrome && chrome.contextMenus.removeAll();
   }
 
   /**
@@ -99,6 +150,59 @@ export class ContextMenus {
   }
 
   /**
+   * 获取指定站点的URL匹配规则
+   * @param site
+   */
+  private getSiteDocumentUrlPatterns(site: Site): string[] {
+    let documentUrlPatterns: string[] = [`*://${site.host}/*`, `${site.url}`];
+
+    if (site.cdn && site.cdn.length > 0) {
+      documentUrlPatterns.push(...site.cdn);
+    }
+
+    return documentUrlPatterns;
+  }
+
+  /**
+   * 根据指定的目录信息创建菜单
+   * @param paths
+   * @param site
+   * @param client
+   * @param parentId
+   */
+  private createPathMenus(
+    paths: string[],
+    site: Site,
+    client: DownloadClient,
+    parentId: string
+  ) {
+    paths.forEach((path: string) => {
+      let id = `${client.id}**${site.host}**${path}`;
+      this.add({
+        id,
+        title: this.pathHandler.replacePathKey(path, site),
+        parentId: parentId,
+        contexts: ["link"],
+        documentUrlPatterns: this.getSiteDocumentUrlPatterns(site),
+        targetUrlPatterns: this.getSiteUrlPatterns(site),
+        onclick: (
+          info: chrome.contextMenus.OnClickData,
+          tab: chrome.tabs.Tab
+        ) => {
+          let data = info.menuItemId.split("**");
+          let options: DownloadOptions = {
+            clientId: data[0],
+            url: info.linkUrl as string,
+            savePath: data[2]
+          };
+
+          this.sendTorrentToClient(tab.id, options);
+        }
+      });
+    });
+  }
+
+  /**
    * 创建站点上下文菜单
    */
   public createSiteMenus(host: string) {
@@ -109,6 +213,26 @@ export class ContextMenus {
     if (!site) {
       return;
     }
+
+    // 是否启用选择内容时搜索
+    if (this.options.allowSelectionTextSearch) {
+      let menuId: string = site.host as string;
+      this.siteMenus.push(menuId);
+      // 选中内容进行搜索
+      this.add({
+        id: menuId,
+        title: '仅搜索本站 "%s" 相关的种子',
+        contexts: ["selection"],
+        documentUrlPatterns: this.getSiteDocumentUrlPatterns(site),
+        onclick: (
+          info: chrome.contextMenus.OnClickData,
+          tab: chrome.tabs.Tab
+        ) => {
+          this.service.controller.searchTorrent(info.selectionText, host);
+        }
+      });
+    }
+
     this.options.clients.forEach((client: DownloadClient) => {
       if (client.paths) {
         let parentId = `${client.id}-path`;
@@ -120,7 +244,7 @@ export class ContextMenus {
           id: parentId,
           title: `${client.name} -> 指定目录`,
           contexts: ["link"],
-          documentUrlPatterns: [`*://${site.host}/*`],
+          documentUrlPatterns: this.getSiteDocumentUrlPatterns(site),
           targetUrlPatterns: this.getSiteUrlPatterns(site)
         });
 
@@ -133,30 +257,14 @@ export class ContextMenus {
           }
 
           count++;
-          paths.forEach((path: string) => {
-            let id = `${client.id}-${host}-${path}`;
-            this.add({
-              id,
-              title: path,
-              parentId: parentId,
-              contexts: ["link"],
-              documentUrlPatterns: [`*://${host}/*`],
-              targetUrlPatterns: this.getSiteUrlPatterns(site),
-              onclick: (
-                info: chrome.contextMenus.OnClickData,
-                tab: chrome.tabs.Tab
-              ) => {
-                let data = info.menuItemId.split("-");
-                let options: DownloadOptions = {
-                  clientId: data[0],
-                  url: info.linkUrl as string,
-                  savePath: data[2]
-                };
+          this.createPathMenus(paths, site, client, parentId);
+        }
 
-                this.sendTorrentToClient(tab.id, options);
-              }
-            });
-          });
+        // 最后添加当前客户端适用于所有站点的目录
+        let publicPaths = client.paths[ECommonKey.allSite];
+        if (publicPaths) {
+          count++;
+          this.createPathMenus(publicPaths, site, client, parentId);
         }
 
         if (count > 0) {
@@ -211,20 +319,61 @@ export class ContextMenus {
    * @param options
    */
   private sendTorrentToClient(tabid: number = 0, options: DownloadOptions) {
-    let notice: any;
-    chrome.tabs.sendMessage(
-      tabid,
-      {
-        action: EAction.showMessage,
-        data: {
-          type: EDataResultType.info,
-          msg: "正在发送链接至下载服务器 "
-        }
-      },
-      (result: any) => {
-        notice = result;
+    console.log("sendTorrentToClient", options);
+    let site = this.getSiteFromURL(options.url);
+    if (site) {
+      let savePath = this.pathHandler.getSavePath(options.savePath, site);
+      if (savePath === false) {
+        APP.showNotifications({
+          message: "用户已取消"
+        });
+        return;
       }
-    );
+
+      options.savePath = savePath;
+    }
+
+    let notice: any;
+    try {
+      chrome.tabs.sendMessage(
+        tabid,
+        {
+          action: EAction.showMessage,
+          data: {
+            type: EDataResultType.info,
+            msg: "正在发送链接至下载服务器 "
+          }
+        },
+        (result: any) => {
+          if (chrome.runtime.lastError) {
+            let message = chrome.runtime.lastError.message || "";
+            if (message.match(/Could not establish connection/)) {
+              APP.showNotifications({
+                message: "插件状态未知，当前操作可能失败，请刷新页面后再试"
+              });
+            } else {
+              APP.showNotifications({
+                message: chrome.runtime.lastError.message
+              });
+            }
+            return;
+          }
+          notice = result;
+        }
+      );
+    } catch (error) {
+      APP.showNotifications({
+        message: error
+      });
+      return;
+    }
+
+    this.service.logger.add({
+      module: EModule.background,
+      event: "contextMenus.sendTorrentToClient.begin",
+      msg: "正在发送链接至下载服务器",
+      data: options
+    });
 
     let client = this.options.clients.find((item: DownloadClient) => {
       return item.id === options.clientId;
@@ -237,6 +386,13 @@ export class ContextMenus {
           type: EDataResultType.error,
           msg: "获取下载服务器失败。"
         }
+      });
+
+      this.service.logger.add({
+        module: EModule.background,
+        event: "contextMenus.sendTorrentToClient.getClientError",
+        msg: "获取下载服务器失败。",
+        data: options
       });
       return;
     }
@@ -260,12 +416,24 @@ export class ContextMenus {
     this.service.controller
       .sendTorrentToClient(options)
       .then((result: any) => {
+        this.service.logger.add({
+          module: EModule.background,
+          event: "contextMenus.sendTorrentToClient.done",
+          msg: "下载链接发送完成。",
+          data: result
+        });
         chrome.tabs.sendMessage(tabid, {
           action: EAction.showMessage,
           data: result
         });
       })
       .catch((result: any) => {
+        this.service.logger.add({
+          module: EModule.background,
+          event: "contextMenus.sendTorrentToClient.error",
+          msg: "下载链接发送失败！",
+          data: result
+        });
         chrome.tabs.sendMessage(tabid, {
           action: EAction.showMessage,
           data: result
@@ -279,7 +447,7 @@ export class ContextMenus {
   /**
    * 创建关键字搜索菜单，所有页面可用
    */
-  private createSearchMenu() {
+  private createSearchMenus() {
     // 是否启用选择内容时搜索
     if (this.options.allowSelectionTextSearch) {
       // 选中内容进行搜索
@@ -290,10 +458,28 @@ export class ContextMenus {
           info: chrome.contextMenus.OnClickData,
           tab: chrome.tabs.Tab
         ) => {
-          this.service.controller.openOptions(info.selectionText);
+          this.service.controller.searchTorrent(info.selectionText);
         }
       });
     }
+
+    // 搜索IMDb相关种子
+    this.add({
+      title: "搜索当前IMDb相关种子",
+      contexts: ["link"],
+      targetUrlPatterns: ["*://www.imdb.com/title/tt*"],
+      onclick: (
+        info: chrome.contextMenus.OnClickData,
+        tab: chrome.tabs.Tab
+      ) => {
+        if (info.linkUrl) {
+          let link = info.linkUrl.match(/(tt\d+)/);
+          if (link && link.length >= 2) {
+            this.service.controller.searchTorrent(link[1]);
+          }
+        }
+      }
+    });
   }
 
   /**
@@ -373,7 +559,14 @@ export class ContextMenus {
    * @param callback 回调
    */
   private remove(id: string, callback?: (() => void) | undefined) {
-    chrome.contextMenus.remove(id, callback);
+    try {
+      chrome.contextMenus.remove(id, callback);
+      if (chrome.runtime.lastError) {
+        console.log(chrome.runtime.lastError);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   /**
@@ -405,9 +598,7 @@ export class ContextMenus {
    */
   private getParsedURL(source: string | any): string | DataResult {
     let url = new URLParse(source);
-    let site: Site = this.options.sites.find((item: Site) => {
-      return item.host === url.hostname;
-    });
+    let site: Site | null = this.getSiteFromURL(source);
 
     if (!site) {
       return source;
@@ -463,8 +654,31 @@ export class ContextMenus {
           return item.name === site.schema;
         });
 
-      result = schema.parser && schema.parser[name];
+      if (schema && schema.parser) {
+        result = schema.parser[name];
+      }
     }
     return result;
+  }
+
+  /**
+   * 根据指定的URL获取站点信息
+   * @param source
+   */
+  private getSiteFromURL(source: string) {
+    let url = new URLParse(source);
+    if (!url.host) {
+      return null;
+    }
+    let site: Site = this.options.sites.find((item: Site) => {
+      let cdn = item.cdn || [];
+      item.url && cdn.push(item.url);
+      return item.host == url.host || cdn.join("").indexOf(url.host) > -1;
+    });
+
+    if (!site) {
+      return null;
+    }
+    return site;
   }
 }

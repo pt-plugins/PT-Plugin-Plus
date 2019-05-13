@@ -1,8 +1,9 @@
 interface IFilter {
-  formatNumber: (source: number, format: string) => string;
-  formatSize: (bytes: any, zeroToEmpty: boolean, type: string) => string;
+  formatNumber: (source: number, format?: string) => string;
+  formatSize: (bytes: any, zeroToEmpty?: boolean, type?: string) => string;
   formatSpeed: (bytes: any, zeroToEmpty: boolean) => string;
   parseURL: (url: string) => any;
+  timeAgoToNumber: (source: string) => number;
   [key: string]: any;
 }
 
@@ -15,7 +16,7 @@ export const filters: IFilter = {
    * @param source 数字来源
    * @param format 格式化格式
    */
-  formatNumber(source: number, format: string = ""): string {
+  formatNumber(source: number, format: string = "###,###,###,###.00"): string {
     const fStr = (sNumber: string, fmt?: any, p?: any) => {
       if (sNumber === "" || sNumber === undefined) {
         if (fmt === "" || fmt === undefined) {
@@ -117,11 +118,19 @@ export const filters: IFilter = {
    * @param type 类型，可指定为 `speed` 为速度，会在后面加上 /s
    */
   formatSize(
-    bytes: any,
+    sourceBytes: any,
     zeroToEmpty: boolean = false,
     type: string = ""
   ): string {
-    bytes = parseFloat(bytes);
+    let bytes = parseFloat(sourceBytes);
+    if (isNaN(bytes)) {
+      return "";
+    }
+
+    if (bytes < 0) {
+      return "N/A";
+    }
+
     if (bytes === 0) {
       if (zeroToEmpty === true) {
         return "";
@@ -220,5 +229,56 @@ export const filters: IFilter = {
       path: a.pathname.replace(/^([^/])/, "/$1"),
       segments: a.pathname.replace(/^\//, "").split("/")
     };
+  },
+
+  /**
+   * 将多少时间之前的格式转为时间数字（大概时间）
+   * @param source
+   */
+  timeAgoToNumber(source: string): number {
+    // 有部分站点连 ago 都没有
+    let rule = /^([\d.]+).+?((year|month|week|day|hour|min|minute)s?)( +ago)?$/i;
+
+    let matchs = source.trim().match(rule);
+    if (!matchs) {
+      return 0;
+    }
+
+    let now = new Date();
+    let interval = matchs[3];
+    let number = Math.round(parseFloat(matchs[1]));
+    let result: Date = new Date();
+
+    switch (interval.toLowerCase()) {
+      // 年份
+      case "year":
+        result = new Date(now.setFullYear(now.getFullYear() - number));
+        break;
+
+      // 月
+      case "month":
+        result = new Date(now.setMonth(now.getMonth() - number));
+        break;
+
+      // 日期
+      case "day":
+        result = new Date(now.setDate(now.getDate() - number));
+        break;
+
+      case "week":
+        result = new Date(now.setDate(now.getDate() - 7 * number));
+        break;
+
+      case "hour":
+        result = new Date(now.setHours(now.getHours() - number));
+        break;
+
+      case "min":
+      case "minute":
+        result = new Date(now.setMinutes(now.getMinutes() - number));
+        break;
+    }
+
+    return result.getTime();
   }
 };

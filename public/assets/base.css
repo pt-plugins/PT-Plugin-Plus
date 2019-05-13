@@ -9,6 +9,7 @@
   top: 50%;
   bottom: 50%;
   opacity: .3;
+  z-index: 100;
 }
 
 .pt-plugin-body:hover,
@@ -33,6 +34,13 @@
   cursor: pointer;
 }
 
+@-moz-document url-prefix() {
+  .pt-plugin-body .logo {
+    background-image: url('moz-extension://__MSG_@@extension_id__/assets/icon-64.png');
+  }
+}
+
+
 .pt-plugin-body .droper {
   height: 45px;
   width: 100%;
@@ -43,7 +51,7 @@
   z-index: 100;
 }
 
-.pt-plugin-body .button {
+.pt-plugin-body .pt-plugin-button {
   height: 50px;
   display: flex;
   justify-content: center;
@@ -52,16 +60,16 @@
   text-decoration: none;
 }
 
-.pt-plugin-body a.button {
+.pt-plugin-body a.pt-plugin-button {
   cursor: pointer;
   text-decoration: none;
 }
 
-.pt-plugin-body a.button:hover {
+.pt-plugin-body a.pt-plugin-button:hover {
   background-color: rgba(77, 154, 231, 0.226)
 }
 
-.pt-plugin-body .button .inner {
+.pt-plugin-body .pt-plugin-button .inner {
   text-align: center;
 }
 

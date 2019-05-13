@@ -1,22 +1,21 @@
 <template>
   <v-toolbar :color="baseColor" app fixed clipped-left>
-    <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-    <v-toolbar-title style="width: 220px;">
-      <span>PT 助手</span>
+    <v-toolbar-side-icon @click.stop="drawer = !drawer" :title="words.navBarTip"></v-toolbar-side-icon>
+    <v-toolbar-title style="width: 220px;" class="hidden-sm-and-down">
+      <span>{{ words.title }}</span>
     </v-toolbar-title>
-
-    <v-text-field
+    <SearchBox/>
+    <v-btn
       flat
-      solo-inverted
-      prepend-icon="search"
-      label="搜索种子"
-      class="hidden-sm-and-down mt-2"
-      v-model="searchKey"
-      @change="searchTorrent"
-    ></v-text-field>
+      to="/search-torrent/__LatestTorrents__"
+      class="grey--text text--darken-2 hidden-sm-and-down"
+    >
+      <v-icon>fiber_new</v-icon>
+      <span class="ml-2">{{ words.showNewTorrents }}</span>
+    </v-btn>
 
     <v-spacer></v-spacer>
-    <v-toolbar-items>
+    <v-toolbar-items class="hidden-sm-and-down">
       <v-btn
         flat
         href="https://github.com/ronggang/PT-Plugin-Plus"
@@ -25,7 +24,7 @@
         rel="noopener noreferrer nofollow"
       >
         <v-icon>home</v-icon>
-        <span class="ml-2">访问 Github</span>
+        <span class="ml-2">{{ words.github }}</span>
       </v-btn>
       <v-btn
         flat
@@ -35,16 +34,20 @@
         rel="noopener noreferrer nofollow"
       >
         <v-icon>help</v-icon>
-        <span class="ml-2">使用帮助</span>
+        <span class="ml-2">{{ words.help }}</span>
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>
 <script lang="ts">
 import Vue from "vue";
+import SearchBox from "./SearchBox.vue";
 export default Vue.extend({
   props: {
     value: Boolean
+  },
+  components: {
+    SearchBox
   },
   model: {
     prop: "value",
@@ -60,23 +63,16 @@ export default Vue.extend({
   },
   data() {
     return {
-      drawer: true,
-      baseColor: "amber",
-      searchKey: ""
+      words: {
+        title: "PT 助手",
+        navBarTip: "点击显示/隐藏导航栏",
+        help: "使用帮助",
+        github: "访问 Github",
+        showNewTorrents: "查看最新种子"
+      },
+      drawer: this.$store.state.options.navBarIsOpen,
+      baseColor: "amber"
     };
-  },
-  methods: {
-    searchTorrent() {
-      if (!this.searchKey) {
-        return;
-      }
-      this.$router.push({
-        name: "search-torrent",
-        params: {
-          key: this.searchKey
-        }
-      });
-    }
   }
 });
 </script>

@@ -6,5 +6,7 @@
   "scripts": [
     "init.js"
   ],
-  "description": "由于 µTorrent Web API 接口不统一，当前仅支持 µTorrent Windows 版本，Mac 版本测试不可用，其他系统未知。"
+  "description": "由于 µTorrent Web API 接口不统一，当前仅支持 µTorrent Windows 版本，Mac 版本测试不可用，其他系统未知。使用前请确认 WebUI 已安装并开启",
+  "allowCustomPath": true,
+  "pathDescription": "注：目录功能仅支持 µTorrent 3.x.x 及以上版本；<br/><br/>1. 在 µTorrent 的 设置 -> 高级 -> 网页界面 添加一个下载目录，如：D:\\download\\ <br/>2. 在助手里添加目录列表（仅支持相对路径），如：music\\ <br/>3. 最终数据的保存目录为：D:\\download\\music\\"
 }

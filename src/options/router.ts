@@ -62,9 +62,9 @@ export default new Router({
       component: () => import("./views/settings/Language/Index.vue")
     },
     {
-      path: "/set-search",
-      name: "set-search",
-      component: () => import("./views/settings/Search/Index.vue")
+      path: "/set-search-solution",
+      name: "set-search-solution",
+      component: () => import("./views/settings/SearchSolution/Index.vue")
     },
     {
       path: "/donate",
@@ -78,10 +78,14 @@ export default new Router({
       props: true
     },
     {
-      path: "/search-torrent/:key",
+      path: "/search-torrent/:key?/:host?",
       name: "search-torrent",
-      component: () => import("./views/SearchTorrent.vue"),
-      props: true
+      component: () => import("./views/search/SearchTorrent.vue"),
+      props: true,
+      meta: {
+        // 需要被缓存
+        keepAlive: true
+      }
     },
     {
       path: "/history",
@@ -92,6 +96,27 @@ export default new Router({
       path: "/system-logs",
       name: "system-logs",
       component: () => import("./views/SystemLogs.vue")
+    },
+    {
+      path: "/set-site-search-entry/:host",
+      name: "set-site-search-entry",
+      component: () => import("./views/settings/SiteSearchEntry/Index.vue"),
+      props: true
+    },
+    {
+      path: "/dev-team",
+      name: "dev-team",
+      component: () => import("./views/Teams.vue")
+    },
+    {
+      path: "/user-data-timeline",
+      name: "user-data-timeline",
+      component: () => import("./views/UserDataTimeline.vue")
+    },
+    {
+      path: "/statistic/:host?",
+      name: "statistic",
+      component: () => import("./views/statisticCharts/SiteBase.vue")
     }
   ]
 });

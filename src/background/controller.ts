@@ -10,13 +10,22 @@ import {
   DataResult,
   EDataResultType,
   Request,
-  EModule
+  EModule,
+  ERequestMethod,
+  UserInfo,
+  EUserDataRange
 } from "@/interface/common";
 import { filters as Filters } from "@/service/filters";
 import { ClientController } from "@/service/clientController";
 import { DownloadHistory } from "./downloadHistory";
 import { Searcher } from "./searcher";
 import PTPlugin from "./service";
+import { FileDownloader } from "@/service/downloader";
+import { APP } from "@/service/api";
+import URLParse from "url-parse";
+import { User } from "./user";
+import { MovieInfoService } from "@/service/movieInfoService";
+
 type Service = PTPlugin;
 export default class Controller {
   public options: Options = {
@@ -31,11 +40,15 @@ export default class Controller {
   public downloadHistory: DownloadHistory = new DownloadHistory();
   public clients: any = {};
   public searcher: Searcher = new Searcher(this.service);
+  public userService: User = new User(this.service);
+  public movieInfoService = new MovieInfoService();
 
   public clientController: ClientController = new ClientController();
   public isInitialized: boolean = false;
 
   public contentPages: any[] = [];
+
+  private imageBase64Cache: Dictionary<any> = {};
 
   constructor(public service: Service) {}
 
@@ -53,6 +66,7 @@ export default class Controller {
     this.clientController.init(options);
     this.searcher.options = options;
     this.initDefaultClient();
+    this.siteDefaultClients = {};
   }
 
   /**
@@ -87,11 +101,12 @@ export default class Controller {
   private saveDownloadHistory(
     data: any,
     host: string = "",
-    clientId: string = ""
+    clientId: string = "",
+    success: boolean = true
   ) {
     // 是否保存历史记录
     if (this.options.saveDownloadHistory) {
-      this.downloadHistory.add(data, host, clientId);
+      this.downloadHistory.add(data, host, clientId, success);
     }
   }
 
@@ -135,9 +150,8 @@ export default class Controller {
       }
 
       this.getClient(clientConfig).then((result: any) => {
-        this.doDownload(result, data, data.savePath)
+        this.doDownload(result, data, host)
           .then((result: any) => {
-            this.saveDownloadHistory(data, host, clientConfig.id);
             resolve(result);
           })
           .catch((result: any) => {
@@ -149,26 +163,28 @@ export default class Controller {
 
   /**
    * 发送下载链接地址到默认服务器（客户端）
-   * @param data 链接地址
+   * @param downloadOptions 下载选项
    */
-  public sendTorrentToDefaultClient(data: DownloadOptions): Promise<any> {
+  public sendTorrentToDefaultClient(
+    downloadOptions: DownloadOptions
+  ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      let URL = Filters.parseURL(data.url);
+      let URL = Filters.parseURL(downloadOptions.url);
       let host = URL.host;
       let site = this.getSiteFromHost(host);
+      // 重新指定host内容，因为站点可能定义了多域名
+      host = site.host;
       let siteDefaultPath = this.getSiteDefaultPath(site);
       let siteClientConfig = this.siteDefaultClients[host];
+      if (siteDefaultPath) {
+        downloadOptions.savePath = siteDefaultPath;
+      }
       if (!siteClientConfig) {
         this.initSiteDefaultClient(host).then((siteClientConfig: any) => {
           this.siteDefaultClients[host] = siteClientConfig;
 
-          this.doDownload(siteClientConfig, data, siteDefaultPath)
+          this.doDownload(siteClientConfig, downloadOptions, host)
             .then((result: any) => {
-              this.saveDownloadHistory(
-                data,
-                site.host,
-                siteClientConfig.options.id
-              );
               resolve(result);
             })
             .catch((result: any) => {
@@ -176,13 +192,8 @@ export default class Controller {
             });
         });
       } else {
-        this.doDownload(siteClientConfig, data, siteDefaultPath)
+        this.doDownload(siteClientConfig, downloadOptions, host)
           .then((result: any) => {
-            this.saveDownloadHistory(
-              data,
-              site.host,
-              siteClientConfig.options.id
-            );
             resolve(result);
           })
           .catch((result: any) => {
@@ -195,20 +206,20 @@ export default class Controller {
   /**
    * 执行下载操作
    * @param clientConfig
-   * @param data
-   * @param siteDefaultPath
+   * @param downloadOptions
+   * @param host
    */
   private doDownload(
     clientConfig: any,
-    data: DownloadOptions,
-    siteDefaultPath: string = ""
+    downloadOptions: DownloadOptions,
+    host: string = ""
   ): Promise<any> {
     return new Promise((resolve?: any, reject?: any) => {
       clientConfig.client
         .call(EAction.addTorrentFromURL, {
-          url: data.url,
-          savePath: data.savePath,
-          autoStart: data.autoStart
+          url: downloadOptions.url,
+          savePath: downloadOptions.savePath,
+          autoStart: downloadOptions.autoStart
         })
         .then((result: any) => {
           this.service.logger.add({
@@ -220,16 +231,44 @@ export default class Controller {
             data: result
           });
 
-          // 连接超时
-          if (result && result.code === 0 && result.msg === "timeout") {
-            reject({
-              success: false,
-              msg: "连接下载服务器超时，请检查网络设置或调整服务器超时时间！"
-            });
+          if (result && result.code === 0) {
+            switch (result.msg) {
+              // 连接超时
+              case "timeout":
+                reject({
+                  success: false,
+                  msg:
+                    "连接下载服务器超时，请检查网络设置或调整服务器超时时间！",
+                  status: "error"
+                });
+                break;
+
+              default:
+                reject({
+                  success: false,
+                  msg: result.msg,
+                  status: "error"
+                });
+                break;
+            }
+
+            this.saveDownloadHistory(
+              downloadOptions,
+              host,
+              clientConfig.options.id,
+              false
+            );
             return;
           }
 
-          this.formatSendResult(result, clientConfig.options, siteDefaultPath)
+          this.saveDownloadHistory(
+            downloadOptions,
+            host,
+            clientConfig.options.id,
+            true
+          );
+
+          this.formatSendResult(result, clientConfig.options, downloadOptions)
             .then((result: any) => {
               resolve(result);
             })
@@ -246,6 +285,12 @@ export default class Controller {
             }]命令失败`,
             data: result
           });
+          this.saveDownloadHistory(
+            downloadOptions,
+            host,
+            clientConfig.options.id,
+            false
+          );
           reject(result);
         });
     });
@@ -257,7 +302,9 @@ export default class Controller {
    */
   public getSiteFromHost(host: string): Site {
     return this.options.sites.find((item: Site) => {
-      return item.host === host;
+      let cdn = item.cdn || [];
+      item.url && cdn.push(item.url);
+      return item.host == host || cdn.join("").indexOf(host) > -1;
     });
   }
 
@@ -291,17 +338,21 @@ export default class Controller {
    * 格式化发送结果
    * @param data
    * @param clientOptions
-   * @param siteDefaultPath
+   * @param downloadOptions
    */
   private formatSendResult(
     data: any,
     clientOptions: any,
-    siteDefaultPath: string
+    downloadOptions: DownloadOptions
   ): Promise<any> {
     return new Promise((resolve?: any, reject?: any) => {
       let result: DataResult = {
         type: EDataResultType.success,
-        msg: "种子已添加",
+        msg:
+          `${downloadOptions.title || ""} 种子已添加完成。` +
+          (downloadOptions.savePath
+            ? `<br/>保存至 ${downloadOptions.savePath}`
+            : ""),
         success: true,
         data: data
       };
@@ -311,9 +362,8 @@ export default class Controller {
         case EDownloadClientType.transmission:
           if (data.id != undefined) {
             result.msg = data.name + " 已发送至 Transmission，编号：" + data.id;
-            if (!siteDefaultPath) {
-              result.type = EDataResultType.info;
-              result.msg += "；但站点默认目录未配置，建议配置。";
+            if (downloadOptions.savePath) {
+              result.msg += `<br/>保存至 ${downloadOptions.savePath} `;
             }
           } else if (data.status) {
             switch (data.status) {
@@ -459,30 +509,60 @@ export default class Controller {
     this.optionsTabId = id;
   }
 
-  public openOptions(searchKey: string = "", path: string = "") {
+  /**
+   * 打开搜索种子页面
+   * @param key 关键字
+   * @param host 指定站点，默认搜索所有站
+   */
+  public searchTorrent(key: string = "", host: string = "") {
+    let url = "";
+    if (key) {
+      url = `search-torrent/${key}`;
+    }
+
+    if (host) {
+      url += `/${host}`;
+    }
+
+    this.openOptions(url);
+  }
+
+  /**
+   * 打开配置页
+   * @param path 要跳转的路径
+   */
+  public openOptions(path: string = "") {
+    let url = "/";
+    if (path) {
+      url += path;
+    }
+
     if (this.optionsTabId == 0) {
-      this.createOptionTab(searchKey, path);
+      this.createOptionTab(url);
     } else {
       chrome.tabs.get(this.optionsTabId as number, tab => {
         if (!chrome.runtime.lastError && tab) {
-          let url = "index.html";
-          if (searchKey) {
-            url = `index.html#/search-torrent/${searchKey}`;
-          }
-          chrome.tabs.update(tab.id as number, { selected: true, url: url });
+          chrome.tabs.update(tab.id as number, {
+            active: true,
+            url: "index.html#" + url
+          });
         } else {
-          this.createOptionTab(searchKey, path);
+          this.createOptionTab(url);
         }
       });
     }
   }
 
-  private createOptionTab(searchKey: string = "", path: string = "") {
-    let url = "index.html";
-    if (searchKey) {
-      url = `index.html#/search-torrent/${searchKey}`;
-    } else if (path) {
-      url = `index.html#/${path}`;
+  /**
+   * 创建配置页面选项卡
+   * @param url
+   */
+  private createOptionTab(url: string = "") {
+    if (!url) {
+      return;
+    }
+    if (url.substr(0, 1) === "/") {
+      url = "index.html#" + url;
     }
     chrome.tabs.create(
       {
@@ -546,6 +626,7 @@ export default class Controller {
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let service: any = this;
+      console.log("contorller.call", request.action);
       service[request.action](request.data, sender)
         .then((result: any) => {
           resolve(result);
@@ -561,10 +642,220 @@ export default class Controller {
     sender: chrome.runtime.MessageSender
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      if (sender.tab) {
-        this.contentPages.push(sender.tab.id);
+      try {
+        if (sender.tab) {
+          this.contentPages.push(sender.tab.id);
+        }
+        resolve();
+      } catch (error) {
+        reject(error);
       }
+    });
+  }
+
+  /**
+   * 备份系统参数至Google
+   */
+  public backupToGoogle(): Promise<any> {
+    return this.service.config.backupToGoogle();
+  }
+
+  /**
+   * 从Google恢复系统参数
+   */
+  public restoreFromGoogle(): Promise<any> {
+    return this.service.config.restoreFromGoogle();
+  }
+
+  /**
+   * 从Google中清除已备份的参数
+   */
+  public clearFromGoogle(): Promise<any> {
+    return this.service.config.syncStorage.clear();
+  }
+
+  /**
+   * 重新从网络中加载配置文件
+   */
+  public reloadConfig(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.service.config.reload();
       resolve();
     });
+  }
+
+  /**
+   * 从指定的链接获取种子文件内容
+   * @param url
+   */
+  public getTorrentDataFromURL(url: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let site = this.getSiteOptionsFromURL(url);
+      let requestMethod = ERequestMethod.GET;
+      if (site) {
+        requestMethod = site.downloadMethod || ERequestMethod.GET;
+      }
+      let file = new FileDownloader({
+        url,
+        getDataOnly: true,
+        timeout: this.service.options.connectClientTimeout
+      });
+
+      file.requestMethod = requestMethod;
+      file.onCompleted = () => {
+        console.log("getTorrentDataFromURL.completed", url);
+        if (
+          file.content &&
+          /octet-stream|x-bittorrent/gi.test(file.content.type)
+        ) {
+          resolve(file.content);
+        } else {
+          reject(APP.createErrorMessage("无效的种子文件"));
+        }
+      };
+
+      file.onError = (e: any) => {
+        reject(APP.createErrorMessage(e));
+      };
+
+      file.start();
+    });
+  }
+
+  /**
+   * 根据指定URL获取站点配置信息
+   * @param url
+   */
+  public getSiteOptionsFromURL(url: string): Site | undefined {
+    let host = new URLParse(url).host;
+    let site: Site =
+      this.options.system &&
+      this.options.system.sites &&
+      this.options.system.sites.find((item: Site) => {
+        return item.host == host;
+      });
+
+    return site;
+  }
+
+  public getUserInfoForAllSite(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let count = 0;
+      let completed = 0;
+      let results: any[] = [];
+      this.options.sites.forEach((site: Site) => {
+        if (site.allowGetUserInfo) {
+          count++;
+
+          this.getUserInfo(site)
+            .then((result: any) => {
+              if (result) {
+                results.push({
+                  site,
+                  user: result
+                });
+              }
+
+              completed++;
+              if (completed >= count) {
+                resolve(results);
+              }
+            })
+            .catch(() => {
+              completed++;
+              if (completed >= count) {
+                resolve(results);
+              }
+            });
+        }
+      });
+
+      if (completed == count && completed == 0) {
+        reject("没有站点需要获取用户信息");
+      }
+    });
+  }
+
+  /**
+   * 获取指定站点的用户信息
+   * @param site
+   * @param callback
+   */
+  public getUserInfo(site: Site): Promise<any> {
+    return this.userService.getUserInfo(site);
+  }
+
+  public abortGetUserInfo(site: Site): Promise<any> {
+    return this.userService.abortGetUserInfo(site);
+  }
+
+  /**
+   * 根据指定的图片地址获取Base64信息
+   * @param url 图片地址
+   */
+  public getBase64FromImageUrl(url: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let data = this.imageBase64Cache[url];
+      if (data) {
+        resolve(data);
+        return;
+      }
+      let file = new FileDownloader({
+        url,
+        getDataOnly: true,
+        timeout: this.service.options.connectClientTimeout
+      });
+
+      file.onCompleted = () => {
+        console.log("getBase64FromImageUrl.completed", url);
+        if (file.content && /image/gi.test(file.content.type)) {
+          var reader = new FileReader();
+          reader.onloadend = () => {
+            this.imageBase64Cache[url] = reader.result;
+            resolve(reader.result);
+          };
+          reader.readAsDataURL(file.content);
+        } else {
+          reject(APP.createErrorMessage("无效的图片文件"));
+        }
+      };
+
+      file.onError = (e: any) => {
+        reject(APP.createErrorMessage(e));
+      };
+
+      file.start();
+    });
+  }
+
+  public getUserHistoryData(host: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let data = this.service.userData.get(host, EUserDataRange.all);
+      resolve(data);
+    });
+  }
+
+  /**
+   * 根据指定的关键字获取电影信息
+   * @param key
+   */
+  public getMovieInfos(key: string): Promise<any> {
+    return this.movieInfoService.getInfos(key);
+  }
+
+  /**
+   * 根据指定的 IMDbId 获取评分信息
+   * @param IMDbId
+   */
+  public getMovieRatings(IMDbId: string): Promise<any> {
+    return this.movieInfoService.getRatings(IMDbId);
+  }
+
+  /**
+   * 根据指定的 doubanId 获取 IMDbId
+   * @param doubanId
+   */
+  public getIMDbIdFromDouban(doubanId: number): Promise<any> {
+    return this.movieInfoService.getIMDbIdFromDouban(doubanId);
   }
 }

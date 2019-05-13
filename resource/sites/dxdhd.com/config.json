@@ -1,0 +1,44 @@
+{
+  "name": "DXDHD",
+  "description": "综合",
+  "url": "https://dxdhd.com/",
+  "icon": "https://dxdhd.com/favicon.ico",
+  "tags": ["综合"],
+  "schema": "UNIT3D",
+  "host": "dxdhd.com",
+  "categories": [{
+    "entry": "*",
+    "result": "&categories[]=$id$",
+    "category": [{
+      "id": 1,
+      "name": "Movies"
+    }, {
+      "id": 2,
+      "name": "TV"
+    }, {
+      "id": 3,
+      "name": "Music"
+    }, {
+      "id": 4,
+      "name": "Anime"
+    }, {
+      "id": 5,
+      "name": "Software & Apps"
+    }, {
+      "id": 6,
+      "name": "e-books"
+    }, {
+      "id": 7,
+      "name": "Games"
+    }, {
+      "id": 8,
+      "name": "Sports"
+    }, {
+      "id": 9,
+      "name": "Others"
+    }, {
+      "id": 10,
+      "name": "XXX"
+    }]
+  }]
+}

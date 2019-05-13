@@ -1,8 +1,102 @@
 {
   "name": "keepfrds",
-  "url": "http://pt.keepfrds.com/",
-  "icon": "http://pt.keepfrds.com/favicon.ico",
-  "tags": ["影视", "综合"],
+  "url": "https://pt.keepfrds.com/",
+  "icon": "https://pt.keepfrds.com/static/favicon.ico",
+  "tags": [
+    "影视",
+    "综合"
+  ],
   "schema": "NexusPHP",
-  "host": "pt.keepfrds.com"
+  "host": "pt.keepfrds.com",
+  "searchEntry": [{
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat401=1",
+      "name": "Movies",
+      "enabled": false
+    },
+    {
+      "queryString": "cat404=1",
+      "name": "Documentaries",
+      "enabled": false
+    },
+    {
+      "queryString": "cat405=1",
+      "name": "Animations",
+      "enabled": false
+    },
+    {
+      "queryString": "cat402=1",
+      "name": "TV Series",
+      "enabled": false
+    },
+    {
+      "queryString": "cat403=1",
+      "name": "TV Shows",
+      "enabled": false
+    },
+    {
+      "queryString": "cat406=1",
+      "name": "Music Videos",
+      "enabled": false
+    },
+    {
+      "queryString": "cat407=1",
+      "name": "Sports",
+      "enabled": false
+    },
+    {
+      "queryString": "cat409=1",
+      "name": "Misc",
+      "enabled": false
+    },
+    {
+      "queryString": "cat408=1",
+      "name": "HQ Audio",
+      "enabled": false
+    }
+  ],
+  "categories": [{
+    "entry": "*",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "Movies"
+      },
+      {
+        "id": 404,
+        "name": "Documentaries"
+      },
+      {
+        "id": 405,
+        "name": "Animations"
+      },
+      {
+        "id": 402,
+        "name": "TV Series"
+      },
+      {
+        "id": 403,
+        "name": "TV Shows"
+      },
+      {
+        "id": 406,
+        "name": "Music Videos"
+      },
+      {
+        "id": 407,
+        "name": "Sports"
+      },
+      {
+        "id": 409,
+        "name": "Misc"
+      },
+      {
+        "id": 408,
+        "name": "HQ Audio"
+      }
+    ]
+  }]
 }

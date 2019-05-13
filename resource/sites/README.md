@@ -6,10 +6,13 @@
 
 ```
 --目录名
+----parser
+-------xxxx.js
 ----config.json
 ----xxxx.js
 ```
 
+- parser : （可选）解析器目录，会在打包时自动将该目录下的所有 js 文件内容生成到 config.js 文件中的 `parser` 字段中
 - config.json : 网站的定义
 - xxxx.js : （可选）页面对应的脚本文件
 
@@ -46,7 +49,26 @@
   },
   "parser": {
     "downloadURL": "解析脚本内容"
-  }
+  },
+  "torrentTagSelectors": [
+    {
+      "name": "Free",
+      "selector": "img.pro_free",
+      "color": "blue"
+    }
+  ],
+  "categories": [
+    {
+      "entry": "*",
+      "result": "cat$id$=1",
+      "category": [
+        {
+          "id": 20,
+          "name": "原盘(Full BD)"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -71,8 +93,18 @@
   - `resultSelector` : 定位种子列表的 `jQuery` 查询表达式
 - `patterns` : （可选）页面匹配规则
   - `torrentLinks` : 用于匹配有效的种子链接，作用于右键菜单，如果不指定，则匹配所有链接；
-- `parser` : （可选）解析器
+- `parser` : （可选）解析器，打包时根据 parser 目录生成
   - `downloadURL` : 解析下载链接，用于解析和生成点击右键下载时的链接
+- `torrentTagSelectors` : （可选）种子标签选择器，数组
+  - `name` : 标签名称
+  - `selector` : 选择器
+  - `color` : 标签颜色
+- `categories` : 站点对应搜索入口的种子分类信息，数组
+  - `entry` : 需要匹配的入口，`*` 表示适用于所有入口；`torrents.php` 表示只适用于 `torrents.php` 的入口页面
+  - `result` : 分类配置返回信息 `$id$` 会被替换为具体的分类编号，最终会拼接到入口地址后面，如：`&cat10=1&cat11=1`
+  - `category` : 分类信息，数组
+    - `id` : 分类编号
+    - `name` : 分类名称
 
 ### 脚本及脚本文件定义
 
@@ -100,6 +132,7 @@
    - 最后在 `github` 仓库中发起一个 `PR(pull request)` 即可；
 
 2. 加入开发交流 QQ 群：773500545，把你的配置文件分享给我们吧；
+3. 通过 [该主题](https://github.com/ronggang/PT-Plugin-Plus/issues/30) 留言，按格式提交已测试可用的站点信息；
 
 ## PR 参考资料
 

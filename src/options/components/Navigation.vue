@@ -1,7 +1,7 @@
 <template>
   <!-- 导航栏 -->
   <v-navigation-drawer clipped fixed v-model="drawer" app>
-    <v-list v-for="(group,index) in navs" :key="index">
+    <v-list v-for="(group,index) in navs" :key="index" dense>
       <v-subheader v-if="group.title" class="grey--text text--darken-1">{{group.title}}</v-subheader>
       <v-list-tile
         :to="item.key"
@@ -41,7 +41,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      drawer: true,
+      drawer: this.$store.state.options.navBarIsOpen,
       navs: [
         {
           title: "概览",
@@ -51,6 +51,11 @@ export default Vue.extend({
               title: "概览",
               icon: "dashboard",
               key: "/home"
+            },
+            {
+              title: "搜索结果",
+              icon: "search",
+              key: "/search-torrent"
             },
             {
               title: "下载历史",
@@ -63,7 +68,7 @@ export default Vue.extend({
           title: "参数设置",
           items: [
             {
-              title: "基本设置",
+              title: "常规设置",
               icon: "settings",
               key: "/set-base"
             },
@@ -87,11 +92,11 @@ export default Vue.extend({
               icon: "folder_open",
               key: "/set-download-paths"
             },
-            // {
-            //   title: "搜索设置",
-            //   icon: "search",
-            //   key: "/set-search"
-            // },
+            {
+              title: "搜索方案",
+              icon: "widgets",
+              key: "/set-search-solution"
+            },
             {
               title: "参数备份与恢复",
               icon: "restore",
@@ -108,12 +113,12 @@ export default Vue.extend({
           title: "鸣谢",
           items: [
             {
-              title: "特别感谢",
+              title: "项目参考与引用",
               icon: "developer_board",
               key: "/technology-stack"
             },
             {
-              title: "项目参与人员",
+              title: "特别感谢",
               icon: "people",
               key: "/dev-team"
             }

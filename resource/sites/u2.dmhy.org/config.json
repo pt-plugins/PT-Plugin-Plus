@@ -3,7 +3,184 @@
   "description": "动漫花园分享园",
   "url": "https://u2.dmhy.org/",
   "icon": "https://u2.dmhy.org/favicon.ico",
-  "tags": ["影视", "动漫"],
+  "tags": [
+    "影视",
+    "动漫"
+  ],
   "schema": "NexusPHP",
-  "host": "u2.dmhy.org"
+  "host": "u2.dmhy.org",
+  "searchEntry": [{
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat9=1",
+      "name": "U2-Rip",
+      "enabled": false
+    },
+    {
+      "queryString": "cat411=1",
+      "name": "U2-RBD",
+      "enabled": false
+    },
+    {
+      "queryString": "cat10=1",
+      "name": "R3TRAW",
+      "enabled": false
+    },
+    {
+      "queryString": "cat11=1",
+      "name": "R2JRAW",
+      "enabled": false
+    },
+    {
+      "queryString": "cat12=1",
+      "name": "BDRip",
+      "enabled": false
+    },
+    {
+      "queryString": "cat13=1",
+      "name": "DVDRip",
+      "enabled": false
+    },
+    {
+      "queryString": "cat14=1",
+      "name": "HDTVRip",
+      "enabled": false
+    },
+    {
+      "queryString": "cat15=1",
+      "name": "DVDISO",
+      "enabled": false
+    },
+    {
+      "queryString": "cat16=1",
+      "name": "BDMV",
+      "enabled": false
+    },
+    {
+      "queryString": "cat17=1",
+      "name": "LQRip",
+      "enabled": false
+    },
+    {
+      "queryString": "cat410=1",
+      "name": "外挂结构",
+      "enabled": false
+    },
+    {
+      "queryString": "cat412=1",
+      "name": "加流重灌",
+      "enabled": false
+    },
+    {
+      "queryString": "cat21=1",
+      "name": "Raw Books",
+      "enabled": false
+    },
+    {
+      "queryString": "cat22=1",
+      "name": "港译漫画",
+      "enabled": false
+    },
+    {
+      "queryString": "cat23=1",
+      "name": "台译漫画",
+      "enabled": false
+    },
+    {
+      "queryString": "cat30=1",
+      "name": "Lossless Music",
+      "enabled": false
+    },
+    {
+      "queryString": "cat40=1",
+      "name": "Others",
+      "enabled": false
+    }
+  ],
+  "categories": [{
+    "entry": "*",
+    "result": "cat$id$=1",
+    "category": [{
+        "id": 9,
+        "name": "U2-Rip"
+      },
+      {
+        "id": 411,
+        "name": "U2-RBD"
+      },
+      {
+        "id": 10,
+        "name": "R3TRAW"
+      },
+      {
+        "id": 11,
+        "name": "R2JRAW"
+      },
+      {
+        "id": 12,
+        "name": "BDRip"
+      },
+      {
+        "id": 13,
+        "name": "DVDRip"
+      },
+      {
+        "id": 14,
+        "name": "HDTVRip"
+      },
+      {
+        "id": 15,
+        "name": "DVDISO"
+      },
+      {
+        "id": 16,
+        "name": "BDMV"
+      },
+      {
+        "id": 17,
+        "name": "LQRip"
+      },
+      {
+        "id": 410,
+        "name": "外挂结构"
+      },
+      {
+        "id": 412,
+        "name": "加流重灌"
+      },
+      {
+        "id": 21,
+        "name": "Raw Books"
+      },
+      {
+        "id": 22,
+        "name": "港译漫画"
+      },
+      {
+        "id": 23,
+        "name": "台译漫画"
+      },
+      {
+        "id": 30,
+        "name": "Lossless Music"
+      },
+      {
+        "id": 40,
+        "name": "Others"
+      }
+    ]
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowhead:contains('UCoin') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/\\(([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+        }
+      }
+    }
+  }
 }

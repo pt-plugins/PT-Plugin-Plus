@@ -3,15 +3,294 @@
   "description": "高清影音人士分享乐园",
   "url": "https://hdchina.org/",
   "icon": "https://hdchina.org/favicon.ico",
-  "tags": ["影视", "音乐", "纪录片", "综合"],
+  "tags": [
+    "影视",
+    "音乐",
+    "纪录片",
+    "综合"
+  ],
   "schema": "NexusPHP",
   "host": "hdchina.org",
+  "searchEntryConfig": {
+    "resultSelector": "table.torrent_list:last > tbody > tr"
+  },
   "searchEntry": [{
-    "entry": "/torrents.php?search=$key$&notnewword=1",
-    "name": "全部",
-    "resultType": "html",
-    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-    "resultSelector": "table.torrent_list:last > tbody > tr",
-    "enabled": true
-  }]
+      "name": "全部",
+      "enabled": true
+    },
+    {
+      "queryString": "cat20=1",
+      "name": "原盘(Full BD)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat17=1",
+      "name": "电影Movie(1080p)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat16=1",
+      "name": "电影Movie(1080i)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat9=1",
+      "name": "电影Movie(720p)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat13=1",
+      "name": "欧美剧(EU/US TV series)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat25=1",
+      "name": "中港台剧集(Chinese TV series)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat26=1",
+      "name": "韩剧(Kor Drama)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat24=1",
+      "name": "日剧(Jpn Drama)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat21=1",
+      "name": "欧美剧集包(EU/US TV series pack)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat22=1",
+      "name": "中港台剧集包(Chinese TV series pack)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat23=1",
+      "name": "日韩剧集包(JPN/KOR drama pack)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat27=1",
+      "name": "iPad视频(iPad Video)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat5=1",
+      "name": "纪录片(Documentary)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat15=1",
+      "name": "体育节目(Sports)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat14=1",
+      "name": "动画片(Animation)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat401=1",
+      "name": "综艺(TV Shows)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat402=1",
+      "name": "演唱会(Vocal Concert)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat406=1",
+      "name": "MV(Music Video)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat408=1",
+      "name": "音乐(Music)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat19=1",
+      "name": "补充音轨(Audio Track)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat405=1",
+      "name": "戏剧(Drama)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat404=1",
+      "name": "书籍(Book)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat409=1",
+      "name": "其他(Other)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat410=1",
+      "name": "4K UltraHD",
+      "enabled": false
+    },
+    {
+      "queryString": "cat411=1",
+      "name": "旅游(Travel)",
+      "enabled": false
+    },
+    {
+      "queryString": "cat412=1",
+      "name": "饮食(Food)",
+      "enabled": false
+    }
+  ],
+  "categories": [{
+    "entry": "*",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 20,
+        "name": "原盘(Full BD)"
+      },
+      {
+        "id": 17,
+        "name": "电影Movie(1080p)"
+      },
+      {
+        "id": 16,
+        "name": "电影Movie(1080i)"
+      },
+      {
+        "id": 9,
+        "name": "电影Movie(720p)"
+      },
+      {
+        "id": 13,
+        "name": "欧美剧(EU/US TV series)"
+      },
+      {
+        "id": 25,
+        "name": "中港台剧集(Chinese TV series)"
+      },
+      {
+        "id": 26,
+        "name": "韩剧(Kor Drama)"
+      },
+      {
+        "id": 24,
+        "name": "日剧(Jpn Drama)"
+      },
+      {
+        "id": 21,
+        "name": "欧美剧集包(EU/US TV series pack)"
+      },
+      {
+        "id": 22,
+        "name": "中港台剧集包(Chinese TV series pack)"
+      },
+      {
+        "id": 23,
+        "name": "日韩剧集包(JPN/KOR drama pack)"
+      },
+      {
+        "id": 27,
+        "name": "iPad视频(iPad Video)"
+      },
+      {
+        "id": 5,
+        "name": "纪录片(Documentary)"
+      },
+      {
+        "id": 15,
+        "name": "体育节目(Sports)"
+      },
+      {
+        "id": 14,
+        "name": "动画片(Animation)"
+      },
+      {
+        "id": 401,
+        "name": "综艺(TV Shows)"
+      },
+      {
+        "id": 402,
+        "name": "演唱会(Vocal Concert)"
+      },
+      {
+        "id": 406,
+        "name": "MV(Music Video)"
+      },
+      {
+        "id": 408,
+        "name": "音乐(Music)"
+      },
+      {
+        "id": 19,
+        "name": "补充音轨(Audio Track)"
+      },
+      {
+        "id": 405,
+        "name": "戏剧(Drama)"
+      },
+      {
+        "id": 404,
+        "name": "书籍(Book)"
+      },
+      {
+        "id": 409,
+        "name": "其他(Other)"
+      },
+      {
+        "id": 410,
+        "name": "4K UltraHD"
+      },
+      {
+        "id": 411,
+        "name": "旅游(Travel)"
+      },
+      {
+        "id": 412,
+        "name": "饮食(Food)"
+      }
+    ]
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "seeding": {
+          "selector": ["div#ka1"],
+          "filters": ["query.parent().text().match(/\\(([\\d.]+)个种子/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "seedingSize": {
+          "selector": ["div#ka1"],
+          "filters": ["query.parent().text().match(/共计([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "prerequisites": "!user.seeding",
+      "page": "/ajax_getusertorrentlist.php",
+      "dataType": "json",
+      "requestMethod": "POST",
+      "requestData": {
+        "userid": "$user.id$",
+        "type": "seeding"
+      },
+      "fields": {
+        "seeding": {
+          "selector": ["message"],
+          "filters": ["jQuery('<div/>').html(query).find('tr:not(:eq(0))').length"]
+        },
+        "seedingSize": {
+          "selector": ["message"],
+          "filters": ["jQuery('<div/>').html(query).find('tr:not(:eq(0))')", "jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    }
+  }
 }

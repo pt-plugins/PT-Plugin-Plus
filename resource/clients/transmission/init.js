@@ -19,8 +19,25 @@
       }
 
       if (this.options.address.indexOf("rpc") == -1) {
-        let url = PTSevriceFilters.parseURL(this.options.address);
-        this.options.address = `${url.protocol}://${url.host}:${url.port}/transmission/rpc`;
+        let url = PTServiceFilters.parseURL(this.options.address);
+
+        let address = [
+          url.protocol,
+          "://",
+          url.host
+        ];
+        if (url.port) {
+          address.push(`:${url.port}`)
+        }
+
+        address.push(url.path);
+        if (url.path.substr(-1) != "/") {
+          address.push("/");
+        }
+
+        address.push("transmission/rpc");
+
+        this.options.address = address.join("");
       }
       console.log("transmission.init", this.options.address);
     }
@@ -157,10 +174,6 @@
      * @param function callback 回调
      */
     addTorrentFromUrl(url, savePath, autoStart, callback) {
-      // 磁性连接（代码来自原版WEBUI）
-      if (url.match(/^[0-9a-f]{40}$/i)) {
-        url = 'magnet:?xt=urn:btih:' + url;
-      }
       var options = {
         method: "torrent-add",
         arguments: {
@@ -172,6 +185,56 @@
       if (savePath) {
         options.arguments["download-dir"] = savePath;
       }
+
+      let magnet = "";
+
+      // 磁性连接（代码来自原版WEBUI）
+      if (url.match(/^[0-9a-f]{40}$/i)) {
+        magnet = 'magnet:?xt=urn:btih:' + url;
+      } else if (/^magnet:\?xt=urn:btih:/.test(url)) {
+        magnet = url;
+      }
+
+      // 是否为磁性连接
+      if (magnet) {
+        options.arguments["filename"] = magnet;
+        this.addTorrent(options, callback)
+      } else {
+        PTBackgroundService.requestMessage({
+            action: "getTorrentDataFromURL",
+            data: url
+          })
+          .then((result) => {
+            var fileReader = new FileReader();
+
+            fileReader.onload = (e) => {
+              var contents = e.target.result;
+              var key = "base64,";
+              var index = contents.indexOf(key);
+              if (index == -1) {
+                return;
+              }
+              var metainfo = contents.substring(index + key.length);
+
+              delete options.arguments["filename"];
+              options.arguments["metainfo"] = metainfo;
+
+              this.addTorrent(options, callback);
+            }
+            fileReader.readAsDataURL(result);
+          })
+          .catch((result) => {
+            callback && callback(result);
+          });
+      }
+    }
+
+    /**
+     * 添加种子
+     * @param {*} options 
+     * @param {*} callback 
+     */
+    addTorrent(options, callback) {
       this.exec(options).then((data) => {
         switch (data.result) {
           // 添加成功
@@ -203,6 +266,7 @@
         callback && callback(result);
       });
     }
+
 
     /**
      * 獲取指定目錄的大小

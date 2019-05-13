@@ -1,0 +1,225 @@
+{
+  "name": "蝴蝶-HUDBT",
+  "description": "HUDBT,教育网高速IPv6BT下载站。",
+  "url": "https://hudbt.hust.edu.cn/",
+  "icon": "https://hudbt.hust.edu.cn/favicon.ico",
+  "tags": [
+    "教育网",
+    "影视",
+    "综合"
+  ],
+  "schema": "NexusPHP",
+  "host": "hudbt.hust.edu.cn",
+  "collaborator": "Rhilip",
+  "searchEntry": [{
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat1=1&cat401=1&cat413=1&cat414=1&cat415=1&cat430=1",
+      "name": "电影",
+      "enabled": false
+    },
+    {
+      "queryString": "cat2=1&cat402=1&cat417=1&cat416=1&cat418=1",
+      "name": "剧集",
+      "enabled": false
+    },
+    {
+      "queryString": "cat3=1&cat405=1&cat427=1&cat428=1&cat429=1",
+      "name": "动漫",
+      "enabled": false
+    },
+    {
+      "queryString": "cat4=1&cat410=1&cat431=1",
+      "name": "游戏",
+      "enabled": false
+    },
+    {
+      "queryString": "cat5=1&cat403=1&cat419=1&cat420=1&cat421=1",
+      "name": "综艺",
+      "enabled": false
+    },
+    {
+      "queryString": "cat6=1&cat409=1&cat412=1",
+      "name": "资料",
+      "enabled": false
+    },
+    {
+      "queryString": "cat7=1&cat407=1",
+      "name": "体育",
+      "enabled": false
+    },
+    {
+      "queryString": "cat8=1&cat408=1&cat422=1&cat423=1&cat424=1&cat425=1",
+      "name": "音乐",
+      "enabled": false
+    },
+    {
+      "queryString": "cat9=1&cat404=1",
+      "name": "纪录片",
+      "enabled": false
+    },
+    {
+      "queryString": "cat10=1&cat411=1&cat426=1",
+      "name": "软件",
+      "enabled": false
+    },
+    {
+      "queryString": "cat11=1&cat406=1",
+      "name": "MV",
+      "enabled": false
+    },
+    {
+      "queryString": "cat12=1&cat432=1",
+      "name": "电子书",
+      "enabled": false
+    },
+    {
+      "queryString": "cat13=1&cat1037=1",
+      "name": "华中科技大学",
+      "enabled": false
+    }
+  ],
+  "categories": [{
+    "entry": "torrents.php",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "大陆电影"
+      },
+      {
+        "id": 413,
+        "name": "港台电影"
+      },
+      {
+        "id": 414,
+        "name": "亚洲电影"
+      },
+      {
+        "id": 415,
+        "name": "欧美电影"
+      },
+      {
+        "id": 430,
+        "name": "iPad"
+      },
+      {
+        "id": 433,
+        "name": "抢先视频"
+      },
+      {
+        "id": 402,
+        "name": "大陆剧集"
+      },
+      {
+        "id": 417,
+        "name": "港台剧集"
+      },
+      {
+        "id": 416,
+        "name": "亚洲剧集"
+      },
+      {
+        "id": 418,
+        "name": "欧美剧集"
+      },
+      {
+        "id": 404,
+        "name": "纪录片"
+      },
+      {
+        "id": 407,
+        "name": "体育"
+      },
+      {
+        "id": 403,
+        "name": "大陆综艺"
+      },
+      {
+        "id": 419,
+        "name": "港台综艺"
+      },
+      {
+        "id": 420,
+        "name": "亚洲综艺"
+      },
+      {
+        "id": 421,
+        "name": "欧美综艺"
+      },
+      {
+        "id": 408,
+        "name": "华语音乐"
+      },
+      {
+        "id": 422,
+        "name": "日韩音乐"
+      },
+      {
+        "id": 423,
+        "name": "欧美音乐"
+      },
+      {
+        "id": 424,
+        "name": "古典音乐"
+      },
+      {
+        "id": 425,
+        "name": "原声音乐"
+      },
+      {
+        "id": 406,
+        "name": "音乐MV"
+      },
+      {
+        "id": 409,
+        "name": "其他"
+      },
+      {
+        "id": 432,
+        "name": "电子书"
+      },
+      {
+        "id": 405,
+        "name": "完结动漫"
+      },
+      {
+        "id": 427,
+        "name": "连载动漫"
+      },
+      {
+        "id": 428,
+        "name": "剧场OVA"
+      },
+      {
+        "id": 429,
+        "name": "动漫周边"
+      },
+      {
+        "id": 410,
+        "name": "游戏"
+      },
+      {
+        "id": 431,
+        "name": "游戏视频"
+      },
+      {
+        "id": 411,
+        "name": "软件"
+      },
+      {
+        "id": 412,
+        "name": "学习"
+      },
+      {
+        "id": 426,
+        "name": "MAC"
+      },
+      {
+        "id": 1037,
+        "name": "HUST"
+      }
+    ]
+  }]
+}

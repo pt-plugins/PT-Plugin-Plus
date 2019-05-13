@@ -10,10 +10,13 @@ import {
   EDownloadClientType,
   ESizeUnit,
   EDataResultType,
-  Request
-} from "../interface/common";
-import { APP } from "../service/api";
-import { filters } from "../service/filters";
+  Request,
+  EButtonType,
+  ECommonKey
+} from "@/interface/common";
+import { APP } from "@/service/api";
+import { filters } from "@/service/filters";
+import { PathHandler } from "@/service/pathHandler";
 
 /**
  * 插件背景脚本，会插入到每个页面
@@ -33,6 +36,8 @@ class PTPContent {
   public defaultClient: any;
   public downloadClientType = EDownloadClientType;
   public sizeUnit = ESizeUnit;
+  public buttonType = EButtonType;
+  public allSiteKey = ECommonKey.allSite;
 
   public schema: SiteSchema = {};
 
@@ -50,6 +55,10 @@ class PTPContent {
 
   // 用于接收页面程序
   public pageApp: any;
+  // 当前页面地址
+  public locationURL: string = location.href;
+  // 保存路径处理器
+  public pathHandler: PathHandler = new PathHandler();
 
   constructor() {
     this.extension = new Extension();
@@ -68,21 +77,52 @@ class PTPContent {
 
   private init() {
     this.initPages();
+
+    // 由于无法直接绑定 window 相关事件，故使用定时器来监听地址变化
+    // 主要用于单页面站点，地址栏由 history.pushState 等方法来变更后可以重新创建插件图标
+    setInterval(() => {
+      this.checkLocationURL();
+    }, 1000);
+  }
+
+  /**
+   * 根据指定的host获取已定义的站点信息
+   * @param host
+   */
+  public getSiteFromHost(host: string) {
+    console.log("getSiteFromHost", host);
+    let sites: Site[] = [];
+    if (this.options.sites) {
+      sites.push(...this.options.sites);
+    }
+
+    if (this.options.system && this.options.system.publicSites) {
+      sites.push(...this.options.system.publicSites);
+    }
+
+    let site = sites.find((item: Site) => {
+      let cdn = item.cdn || [];
+      item.url && cdn.push(item.url);
+      return item.host == host || cdn.join("").indexOf(host) > -1;
+    });
+
+    if (site) {
+      return JSON.parse(JSON.stringify(site));
+    }
+
+    return null;
   }
 
   /**
    * 初始化符合条件的附加页面
    */
   private initPages() {
-    // 站点未定义时
-    if (!this.options.sites) {
-      return;
-    }
     // 判断当前页面的所属站点是否已经被定义
-    if (this.options.sites.length) {
-      this.site = this.options.sites.find((item: any) => {
-        return item.host == window.location.hostname;
-      });
+    this.site = this.getSiteFromHost(window.location.hostname);
+
+    if (this.site) {
+      // 适应多域名
+      this.site.url = window.location.origin + "/";
     }
 
     // 如果当前站点未定义，则不再继续操作
@@ -109,6 +149,9 @@ class PTPContent {
     } else {
       return;
     }
+
+    this.scripts = [];
+    this.styles = [];
 
     // 初始化插件按钮列表
     this.initButtonBar();
@@ -156,7 +199,7 @@ class PTPContent {
 
     if (!this.site.plugins) {
       this.site.plugins = [];
-    } else {
+    } else if (this.site.schema !== "publicSite") {
       for (let index = this.site.plugins.length - 1; index >= 0; index--) {
         const item = this.site.plugins[index];
         // 删除非自定义的插件，从系统定义中重新获取
@@ -172,6 +215,14 @@ class PTPContent {
 
     // 网站指定的脚本
     if (this.site.plugins) {
+      let siteConfigPath =
+        this.site.schema == "publicSite" ? "publicSites" : "sites";
+
+      if (this.site.path) {
+        siteConfigPath += `/${this.site.path}`;
+      } else {
+        siteConfigPath += `/${this.site.host}`;
+      }
       this.site.plugins.forEach((plugin: Plugin) => {
         let index = plugin.pages.findIndex((page: string) => {
           let path = window.location.pathname;
@@ -189,7 +240,7 @@ class PTPContent {
               let path = script;
               // 判断是否为相对路径
               if (path.substr(0, 1) !== "/") {
-                path = `sites/${this.site.host}/${script}`;
+                path = `${siteConfigPath}/${script}`;
               }
               // 文件
               this.scripts.push({
@@ -210,7 +261,7 @@ class PTPContent {
             plugin.styles.forEach((style: string) => {
               let path = style;
               if (path.substr(0, 1) !== "/") {
-                path = `sites/${this.site.host}/${style}`;
+                path = `${siteConfigPath}/${style}`;
               }
               this.styles.push({
                 type: "file",
@@ -246,7 +297,9 @@ class PTPContent {
     }
 
     // 通知后台添加了一个新页面
-    this.extension.sendRequest(EAction.addContentPage);
+    this.extension.sendRequest(EAction.addContentPage).catch(error => {
+      console.log(error);
+    });
   }
 
   /**
@@ -278,6 +331,7 @@ class PTPContent {
           });
       } catch (error) {
         this.showNotice(`${action} 执行出错，可能后台服务不可用`);
+        reject(error);
       }
     });
   }
@@ -286,6 +340,10 @@ class PTPContent {
    * 初始化按钮栏
    */
   private initButtonBar() {
+    // 删除之前已创建的插件按钮栏
+    if ($(".pt-plugin-body").length) {
+      $(".pt-plugin-body").remove();
+    }
     this.buttonBar = $("<div class='pt-plugin-body'/>").appendTo(document.body);
     this.logo = $(
       "<div class='logo' title='PT助手 - 点击打开配置页'/>"
@@ -303,12 +361,24 @@ class PTPContent {
    * @param options 按钮参数
    */
   public addButton(options: ButtonOption) {
+    options = Object.assign(
+      {
+        type: EButtonType.normal
+      },
+      options
+    );
+
     let line = $("<hr/>").appendTo(this.buttonBar);
-    let buttonType = "<a class='button'/>";
-    if (!options.click) {
-      buttonType = "<span class='button'/>";
+    let buttonType = "<a class='pt-plugin-button'/>";
+    if (!options.click || options.type == EButtonType.label) {
+      buttonType = "<span class='pt-plugin-button'/>";
     }
-    let button = $(buttonType).attr("title", options.title);
+    let button = $(buttonType)
+      .attr({
+        title: options.title,
+        key: options.key
+      })
+      .data("line", line);
     let inner = $("<div class='inner'/>").appendTo(button);
     let loading = $("<div class='loading'/>").appendTo(button);
     let success = $("<div class='action-success'/>")
@@ -324,14 +394,20 @@ class PTPContent {
       .appendTo(inner);
 
     if (options.click) {
-      button.click(() => {
-        inner.hide();
-        loading.show();
-        // success.show();
-        // console.log((<any>options).click);
+      button.click(event => {
+        if (options.type == EButtonType.normal) {
+          inner.hide();
+          loading.show();
+        }
+
         (<any>options).click(
           (result: any) => {
-            loading.hide();
+            if (options.type == EButtonType.normal) {
+              loading.hide();
+            } else {
+              inner.hide();
+            }
+
             success.show();
             if (result && result.msg) {
               if (!result.type) {
@@ -345,18 +421,15 @@ class PTPContent {
             }, 2000);
           },
           (error: any) => {
-            loading.hide();
+            if (options.type == EButtonType.normal) {
+              loading.hide();
+            }
             inner.show();
             this.showNotice({
               msg: error || `${options.label} 发生错误，请重试。`
             });
-            // new (<any>window)["NoticeJs"]({
-            //   type: "error",
-            //   text: error || `${options.label} 发生错误，请重试。`,
-            //   position: "bottomRight",
-            //   timeout: 50
-            // }).show();
-          }
+          },
+          event
         );
       });
     }
@@ -373,11 +446,37 @@ class PTPContent {
   }
 
   /**
+   * 删除指定Key的按钮
+   * @param key
+   */
+  public removeButton(key: string) {
+    let index = this.buttons.findIndex((button: JQuery) => {
+      return button.attr("key") == key;
+    });
+
+    if (index != -1) {
+      let button = this.buttons[index];
+
+      let offset = <any>button.outerHeight(true);
+      this.buttonBarHeight -= offset;
+      let line = button.data("line");
+      if (line) {
+        this.buttonBarHeight -= <any>line.outerHeight(true);
+        line.remove();
+      }
+      button.remove();
+      this.buttons.splice(index, 1);
+      this.buttonBar.height(this.buttonBarHeight).show();
+    }
+  }
+
+  /**
    * 显示消息提示
    * @param options 需要显示的消息选项
    * @return DOM
    */
   public showNotice(options: NoticeOptions | string) {
+    console.log(options);
     options = Object.assign(
       {
         type: "error",
@@ -386,7 +485,11 @@ class PTPContent {
         progressBar: true,
         width: 320
       },
-      typeof options === "string" ? { msg: options } : options
+      typeof options === "string"
+        ? { msg: options }
+        : typeof options.msg === "object"
+        ? options.msg
+        : options
     );
 
     options.text = options.text || options.msg;
@@ -505,21 +608,36 @@ class PTPContent {
         try {
           let data = JSON.parse(e.dataTransfer.getData("text/plain"));
           if (data) {
-            if (data.url && this.pageApp) {
-              this.pageApp
-                .call(EAction.downloadFromDroper, data)
-                .then(() => {
-                  this.logo.removeClass("onLoading");
-                })
-                .catch(() => {
-                  this.logo.removeClass("onLoading");
+            if (data.url) {
+              // IMDb地址
+              let IMDbMatch = data.url.match(/imdb\.com\/title\/(tt\d+)/);
+              if (IMDbMatch && IMDbMatch.length > 1) {
+                this.extension.sendRequest(
+                  EAction.openOptions,
+                  null,
+                  `search-torrent/${IMDbMatch[1]}`
+                );
+                this.logo.removeClass("onLoading");
+                return;
+              }
+              if (this.pageApp) {
+                this.pageApp
+                  .call(EAction.downloadFromDroper, data)
+                  .then(() => {
+                    this.logo.removeClass("onLoading");
+                  })
+                  .catch(() => {
+                    this.logo.removeClass("onLoading");
+                  });
+              } else {
+                this.showNotice({
+                  type: EDataResultType.info,
+                  msg: "当前页面不支持此操作",
+                  timeout: 3
                 });
+                this.logo.removeClass("onLoading");
+              }
             } else {
-              this.showNotice({
-                type: EDataResultType.info,
-                msg: "当前页面不支持此操作",
-                timeout: 3
-              });
               this.logo.removeClass("onLoading");
             }
           }
@@ -561,9 +679,20 @@ class PTPContent {
       }
     );
   }
+
+  /**
+   * 验证地址栏变化后重新创建插件图标
+   */
+  public checkLocationURL() {
+    if (location.href != this.locationURL) {
+      console.log(`地址变化：${this.locationURL} -> ${location.href}`);
+      this.locationURL = location.href;
+      this.initPages();
+    }
+  }
 }
 
 // 暴露到 window 对象
 Object.assign(window, {
-  PTSevrice: new PTPContent()
+  PTService: new PTPContent()
 });

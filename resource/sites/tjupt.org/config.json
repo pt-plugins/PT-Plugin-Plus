@@ -3,32 +3,125 @@
   "description": "北洋园PT",
   "url": "https://tjupt.org/",
   "icon": "https://tjupt.org/favicon.ico",
-  "tags": ["影视", "综合"],
+  "tags": [
+    "教育网",
+    "影视",
+    "综合"
+  ],
   "schema": "NexusPHP",
   "host": "tjupt.org",
-  "torrentTagSelectors": [{
-    "name": "Free",
-    "selector": "font.free",
-    "color": "blue"
-  }, {
-    "name": "2xFree",
-    "selector": "font.twoupfree",
-    "color": "green"
-  }, {
-    "name": "2xUp",
-    "selector": "font.twoup",
-    "color": "lime"
-  }, {
-    "name": "2x50%",
-    "selector": "font.twouphalfdown",
-    "color": "light-green"
-  }, {
-    "name": "30%",
-    "selector": "font.thirtypercent",
-    "color": "indigo"
-  }, {
-    "name": "50%",
-    "selector": "font.halfdown",
-    "color": "orange"
+  "collaborator": "tongyifan",
+  "searchEntry": [{
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat401=1",
+      "name": "电影",
+      "enabled": false
+    },
+    {
+      "queryString": "cat403=1",
+      "name": "综艺",
+      "enabled": false
+    },
+    {
+      "queryString": "cat404=1",
+      "name": "资料",
+      "enabled": false
+    },
+    {
+      "queryString": "cat405=1",
+      "name": "动漫",
+      "enabled": false
+    },
+    {
+      "queryString": "cat406=1",
+      "name": "音乐",
+      "enabled": false
+    },
+    {
+      "queryString": "cat407=1",
+      "name": "音乐",
+      "enabled": false
+    },
+    {
+      "queryString": "cat408=1",
+      "name": "软件",
+      "enabled": false
+    },
+    {
+      "queryString": "cat409=1",
+      "name": "游戏",
+      "enabled": false
+    },
+    {
+      "queryString": "cat411=1",
+      "name": "纪录片",
+      "enabled": false
+    },
+    {
+      "queryString": "cat412=1",
+      "name": "移动视频",
+      "enabled": false
+    },
+    {
+      "queryString": "cat410=1",
+      "name": "其他",
+      "enabled": false
+    }
+  ],
+  "categories": [{
+    "entry": "*",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "电影"
+      },
+      {
+        "id": 402,
+        "name": "剧集"
+      },
+      {
+        "id": 403,
+        "name": "综艺"
+      },
+      {
+        "id": 404,
+        "name": "资料"
+      },
+      {
+        "id": 405,
+        "name": "动漫"
+      },
+      {
+        "id": 406,
+        "name": "音乐"
+      },
+      {
+        "id": 407,
+        "name": "体育"
+      },
+      {
+        "id": 408,
+        "name": "软件"
+      },
+      {
+        "id": 409,
+        "name": "游戏"
+      },
+      {
+        "id": 411,
+        "name": "纪录片"
+      },
+      {
+        "id": 412,
+        "name": "移动视频"
+      },
+      {
+        "id": 410,
+        "name": "其他"
+      }
+    ]
   }]
 }

@@ -3,7 +3,122 @@
   "description": "综合性网站，有分享率要求",
   "url": "https://ourbits.club/",
   "icon": "https://ourbits.club/favicon.ico",
-  "tags": ["影视", "动漫", "纪录片", "综艺"],
+  "tags": [
+    "影视",
+    "动漫",
+    "纪录片",
+    "综艺"
+  ],
   "schema": "NexusPHP",
-  "host": "ourbits.club"
+  "host": "ourbits.club",
+  "collaborator": "Rhilip",
+  "searchEntry": [{
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat401=1",
+      "name": "Movies",
+      "enabled": false
+    },
+    {
+      "queryString": "cat402=1",
+      "name": "Movies-3D",
+      "enabled": false
+    },
+    {
+      "queryString": "cat419=1",
+      "name": "Concert",
+      "enabled": false
+    },
+    {
+      "queryString": "cat412=1",
+      "name": "TV-Episode",
+      "enabled": false
+    },
+    {
+      "queryString": "cat405=1",
+      "name": "TV-Pack",
+      "enabled": false
+    },
+    {
+      "queryString": "cat413=1",
+      "name": "TV-Show",
+      "enabled": false
+    },
+    {
+      "queryString": "cat410=1",
+      "name": "Documentary",
+      "enabled": false
+    },
+    {
+      "queryString": "cat411=1",
+      "name": "Animation",
+      "enabled": false
+    },
+    {
+      "queryString": "cat415=1",
+      "name": "Sports",
+      "enabled": false
+    },
+    {
+      "queryString": "cat414=1",
+      "name": "Music-Video",
+      "enabled": false
+    },
+    {
+      "queryString": "cat416=1",
+      "name": "Music",
+      "enabled": false
+    }
+  ],
+  "categories": [{
+    "entry": "*",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "Movies"
+      },
+      {
+        "id": 402,
+        "name": "Movies-3D"
+      },
+      {
+        "id": 419,
+        "name": "Concert"
+      },
+      {
+        "id": 412,
+        "name": "TV-Episode"
+      },
+      {
+        "id": 405,
+        "name": "TV-Pack"
+      },
+      {
+        "id": 413,
+        "name": "TV-Show"
+      },
+      {
+        "id": 410,
+        "name": "Documentary"
+      },
+      {
+        "id": 411,
+        "name": "Animation"
+      },
+      {
+        "id": 415,
+        "name": "Sports"
+      },
+      {
+        "id": 414,
+        "name": "Music-Video"
+      },
+      {
+        "id": 416,
+        "name": "Music"
+      }
+    ]
+  }]
 }

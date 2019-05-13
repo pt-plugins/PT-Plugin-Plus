@@ -1,0 +1,135 @@
+.search-torrent {
+  .torrent {
+
+    table.v-table thead tr:not(.v-datatable__progress) th,
+    table.v-table tbody tr td {
+      padding: 10px 8px !important;
+      font-size: 12px;
+    }
+
+    table.v-table thead th:first-child:not([role]) {
+      width: 35px;
+    }
+
+    table.v-table tbody tr:nth-child(even) {
+      background-color: #f1f1f1;
+    }
+
+    table.v-table tbody tr:nth-child(odd) {
+      background-color: #fff;
+    }
+  }
+
+  .titleCell {
+    max-width: 35vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 6px 0 !important;
+  }
+
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #008c00;
+  }
+
+  .sub-title {
+    word-break: break-all;
+    margin-top: 2px;
+    color: #8c8c8c !important;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  .size {
+    text-align: right;
+  }
+
+  .tag {
+    font-size: 9px;
+    margin: 0 1px;
+    border-radius: 2px;
+    color: #fff;
+    padding: 1px 3px;
+  }
+
+  .captionText {
+    font-size: 12px;
+    color: #aaaaaa;
+  }
+
+  .category {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+
+  .theme--dark.v-table thead th {
+    background-color: #424242;
+  }
+
+  .theme--light.v-table thead th {
+    background-color: #ffffff;
+  }
+
+  .fixed-table {
+    max-height: 68vh;
+    backface-visibility: hidden;
+  }
+
+  .fixed-header {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    table {
+      table-layout: fixed;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    }
+
+    tr.v-datatable__progress th {
+      height: 1px;
+    }
+
+    .v-table__overflow {
+      flex-grow: 1;
+      flex-shrink: 1;
+      overflow-x: auto;
+      overflow-y: auto;
+    }
+
+    .v-datatable.v-table {
+      flex-grow: 0;
+      flex-shrink: 1;
+
+      .v-datatable__actions {
+        flex-wrap: nowrap;
+
+        .v-datatable__actions__pagination {
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}

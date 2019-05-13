@@ -1,9 +1,0 @@
-[{
-  "name": "NexusPHP",
-  "path": "schema/NexusPHP",
-  "type": "dir"
-}, {
-  "name": "Gazelle",
-  "path": "schema/Gazelle",
-  "type": "dir"
-}]

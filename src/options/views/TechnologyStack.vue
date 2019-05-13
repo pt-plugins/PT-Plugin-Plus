@@ -101,6 +101,21 @@ export default Vue.extend({
           name: "PT-Plugin Rhilip修改版",
           ver: "0.0.9",
           url: "https://github.com/Rhilip/PT-Plugin"
+        },
+        {
+          name: "Jackett",
+          ver: "latest",
+          url: "https://github.com/Jackett/Jackett"
+        },
+        {
+          name: "html2canvas",
+          ver: "latest",
+          url: "https://github.com/niklasvh/html2canvas/"
+        },
+        {
+          name: "Highcharts",
+          ver: "7.1.1",
+          url: "https://www.highcharts.com"
         }
       ]
     };

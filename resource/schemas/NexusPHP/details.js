@@ -2,75 +2,39 @@
   console.log("this is details.js");
   class App extends window.NexusPHPCommon {
     init() {
-      this.initButtons()
-      this.initFreeSpaceButton()
+      this.initButtons();
       // 设置当前页面
-      PTSevrice.pageApp = this;
+      PTService.pageApp = this;
     }
     /**
      * 初始化按钮列表
      */
     initButtons() {
-      // 添加下载按钮
-      PTSevrice.addButton({
-        title: `将当前种子下载到[${this.defaultClientOptions.name}]` + (this.defaultPath ? "\n" + this.defaultPath : ""),
-        icon: "get_app",
-        label: "一键下载",
-        /**
-         * 单击事件
-         * @param success 成功回调事件
-         * @param error 失败回调事件
-         * 
-         * 两个事件必需执行一个，可以传递一个参数
-         */
-        click: (success, error) => {
-          let url = this.getDownloadURL();
-          let title = this.getTitle();
+      this.initDetailButtons();
 
-          if (url) {
-            this.sendTorrentToDefaultClient({
-              url,
-              title
-            }).then(() => {
-              success();
-            }).catch(() => {
-              success();
-            });
-          }
-        }
-      });
-
-      // 复制下载链接
-      PTSevrice.addButton({
-        title: "复制下载链接到剪切板",
-        icon: "file_copy",
-        label: "复制链接",
-        click: (success, error) => {
-          console.log(PTSevrice.site, this.defaultPath);
-          PTSevrice.call(
-            PTSevrice.action.copyTextToClipboard,
-            this.getDownloadURL()
-          ).then((result) => {
-            console.log("命令执行完成", result);
+      let sayThanksButton = $("input#saythanks:not(:disabled)");
+      if (sayThanksButton.length) {
+        // 说谢谢
+        PTService.addButton({
+          title: "对当前种子说谢谢",
+          icon: "thumb_up",
+          label: "感谢发布者",
+          key: "sayThanks",
+          click: (success, error) => {
+            sayThanksButton.click();
             success();
-          }).catch(() => {
-            error()
-          });
-        }
-      });
+            setTimeout(() => {
+              PTService.removeButton("sayThanks")
+            }, 1000)
+          }
+        });
+      }
     }
 
     /**
      * 获取下载链接
      */
     getDownloadURL() {
-      if (PTSevrice.site.passkey) {
-        let id = location.href.getQueryString("id");
-        if (id) {
-          // 如果站点没有配置禁用https，则默认添加https链接
-          return location.origin + "/download.php?id=" + id + "&passkey=" + PTSevrice.site.passkey + (PTSevrice.site.disableHttps ? "" : "&https=1");
-        }
-      }
       let query = $("a[href*='passkey'][href*='https']");
       let url = "";
       if (query.length > 0) {
@@ -79,14 +43,31 @@
         query = $("a[href*='passkey']");
         if (query.length > 0) {
           url = query.attr("href");
-        } else {
-          url = $(":contains('passkey'):last").text();
         }
       }
 
-      if (url && url.substr(0, 1) === "/") {
+      if (!url) {
+        url = $("a[href*='download'][href*='?id']:first").attr("href") || $("a[href*='download.php?']:first").attr("href");
+      }
+
+      // 如果还是没有获取到下载链接地址，则尝试 passkey 来生成下载链接
+      if (!url && PTService.site.passkey) {
+        let id = location.href.getQueryString("id");
+        if (id) {
+          // 如果站点没有配置禁用https，则默认添加https链接
+          return location.origin + "/download.php?id=" + id + "&passkey=" + PTService.site.passkey + (PTService.site.disableHttps ? "" : "&https=1");
+        }
+      }
+
+      if (!url) {
+        return "";
+      }
+
+      if (url.substr(0, 2) === '//') { // 首先尝试适配HUDBT、WHU这样以相对链接开头
+        url = `${location.protocol}${url}`;
+      } else if (url.substr(0, 1) === "/") {
         url = `${location.origin}${url}`;
-      } else if (url && url.substr(0, 4) !== "http") {
+      } else if (url.substr(0, 4) !== "http") {
         url = `${location.origin}/${url}`;
       }
 
@@ -97,8 +78,16 @@
       return url;
     }
 
+    /**
+     * 获取当前种子标题
+     */
     getTitle() {
-      return /\"(.*?)\"/.exec($("title").text())[1];
+      let title = $("title").text();
+      let datas = /\"(.*?)\"/.exec(title);
+      if (datas && datas.length > 1) {
+        return datas[1] || title;
+      }
+      return title;
     }
   };
   (new App()).init();

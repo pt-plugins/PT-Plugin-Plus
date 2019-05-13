@@ -1,0 +1,12 @@
+{
+  "name": "MINE.pt",
+  "description": "MINE（又称地雷站、矿站），国内首个使用meanTorrent架构站点",
+  "url": "https://mine.pt/",
+  "icon": "https://mine.pt/favicon.ico",
+  "tags": [
+    "影视",
+    "综合"
+  ],
+  "schema": "meanTorrent",
+  "host": "mine.pt"
+}

@@ -8,9 +8,8 @@
           <v-form v-model="valid">
             <v-autocomplete
               v-model="selectedSite"
-              :items="$store.state.options.sites"
-              label="选择一个站点"
-              :menu-props="{maxHeight:'auto'}"
+              :items="getSites()"
+              :label="words.selectSite"
               persistent-hint
               single-line
               item-text="name"
@@ -44,6 +43,10 @@
               :hint="words.pathTip"
               :rules="rules.require"
             ></v-textarea>
+            <v-alert :value="true" color="info" icon="info" outline v-if="client.pathDescription">
+              <div v-html="client.pathDescription"></div>
+              <KeyDescription/>
+            </v-alert>
           </v-form>
         </v-card-text>
 
@@ -65,9 +68,14 @@
   </div>
 </template>
 <script lang="ts">
-import { Site } from "../../../../interface/common";
+import { Site, DownloadClient } from "@/interface/common";
 import Vue from "vue";
+import KeyDescription from "./KeyDescription.vue";
+
 export default Vue.extend({
+  components: {
+    KeyDescription
+  },
   data() {
     return {
       words: {
@@ -75,7 +83,8 @@ export default Vue.extend({
         path: "目录列表",
         pathTip: "多个目录按回车分隔，第一个为默认目录",
         ok: "确认",
-        cancel: "取消"
+        cancel: "取消",
+        selectSite: "选择一个站点（不选表示所有站点都可用）"
       },
       rules: {
         require: [(v: any) => !!v || "!"]
@@ -87,7 +96,8 @@ export default Vue.extend({
     };
   },
   props: {
-    value: Boolean
+    value: Boolean,
+    client: Object
   },
   model: {
     prop: "value",
@@ -121,6 +131,27 @@ export default Vue.extend({
         return tags.join(", ");
       }
       return "";
+    },
+    getSites(): Site[] {
+      let clients = this.$store.state.options.clients;
+      let sites = this.$store.state.options.sites;
+      let result: Site[] = [];
+      if (clients && clients.length) {
+        let client: DownloadClient = clients.find((item: DownloadClient) => {
+          return item.id === this.client.id;
+        });
+        if (client && client.paths) {
+          sites.forEach((site: Site) => {
+            if (!client.paths.hasOwnProperty(site.host)) {
+              result.push(site);
+            }
+          });
+        } else {
+          result = sites;
+        }
+        return result;
+      }
+      return sites;
     }
   },
   computed: {},

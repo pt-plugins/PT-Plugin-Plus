@@ -7,10 +7,24 @@ import {
   EAction,
   Site,
   UIOptions,
-  EModule
-} from "../interface/common";
-import Extension from "../service/extension";
-const extension = new Extension();
+  EModule,
+  SearchSolution,
+  SearchEntry,
+  ECommonKey
+} from "@/interface/common";
+import Extension from "@/service/extension";
+
+class ExtensionWorker extends Extension {
+  constructor() {
+    super();
+  }
+
+  save(options: Options) {
+    return this.sendRequest(EAction.saveConfig, null, options);
+  }
+}
+
+const extension = new ExtensionWorker();
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -23,7 +37,9 @@ export default new Vuex.Store({
       clients: []
     } as Options,
     schemas: [],
-    uiOptions: {} as UIOptions
+    uiOptions: {} as UIOptions,
+    initialized: false,
+    searching: false
   },
 
   /**
@@ -145,45 +161,49 @@ export default new Vuex.Store({
       extension.sendRequest(EAction.saveConfig, null, state.options);
     },
 
-    addPathToClient(state, options) {
-      // let client = state.options.clients.find(data => {
-      //   return options.clientId === data.id;
-      // });
-      // if (client) {
-      //   if (!client.paths) {
-      //     client.paths = {};
-      //   }
-      //   if (!options.site) {
-      //     options.site = "__default__";
-      //   }
-      //   client.paths[options.site] = options.paths;
-      //   extension.sendRequest(EAction.saveConfig, null, state.options);
-      // }
-    },
-
+    /**
+     * 更新指定客户端的保存目录信息
+     * @param state
+     * @param options
+     */
     updatePathsOfClient(state, options) {
       let client = state.options.clients.find(data => {
         return options.clientId === data.id;
       });
-      if (client && options.site) {
+      if (client) {
         if (!client.paths) {
           client.paths = {};
         }
 
-        client.paths[options.site.host] = options.paths;
+        if (options.site && options.site.host) {
+          client.paths[options.site.host] = options.paths;
+        } else {
+          // 如果未指定网站，则用于所有站点
+          client.paths[ECommonKey.allSite] = options.paths;
+        }
+
         extension.sendRequest(EAction.saveConfig, null, state.options);
       }
     },
 
+    /**
+     * 移除下载服务器已配置的保存目录
+     * @param state
+     * @param options
+     */
     removePathsOfClient(state, options) {
       let client = state.options.clients.find(data => {
         return options.clientId === data.id;
       });
-      if (client && options.site) {
-        if (client.paths) {
-          delete client.paths[options.site.host];
-          extension.sendRequest(EAction.saveConfig, null, state.options);
+      if (client && client.paths) {
+        let key = "";
+        if (options.site) {
+          key = options.site.host;
+        } else {
+          key = ECommonKey.allSite;
         }
+        delete client.paths[key];
+        extension.sendRequest(EAction.saveConfig, null, state.options);
       }
     },
 
@@ -254,45 +274,98 @@ export default new Vuex.Store({
 
     updateUIOptions(state, options: UIOptions) {
       state.uiOptions = options;
+    },
+
+    updateSearchStatus(state, searching: boolean) {
+      state.searching = searching;
     }
   },
   actions: {
-    readConfig({ commit }) {
+    /**
+     * 重置运行时配置
+     * @param param0
+     */
+    resetRunTimeOptions({ commit, state }, options: Options) {
+      extension
+        .sendRequest(EAction.resetRunTimeOptions, null, options)
+        .then(result => {
+          commit("updateOptions", result);
+        })
+        .catch(error => {
+          console.log("store.resetRunTimeOptions.error", error);
+        });
+    },
+
+    readConfig({ commit, state }) {
       extension.sendRequest(EAction.writeLog, null, {
         module: EModule.options,
         event: "Options.readConfig",
         msg: "开始加载配置信息"
       });
-      extension.sendRequest(EAction.readConfig).then((options: Options) => {
-        commit("updateOptions", options);
-        extension.sendRequest(EAction.writeLog, null, {
-          module: EModule.options,
-          event: "Options.readConfig.Finished",
-          msg: "配置加载完成"
-        });
-      });
+      extension
+        .sendRequest(EAction.readConfig)
+        .then((options: Options) => {
+          commit("updateOptions", options);
+          if (!options.system) {
+            extension.sendRequest(EAction.writeLog, null, {
+              module: EModule.options,
+              event: "Options.readConfig.Error",
+              msg: "配置信息加载失败，没有获取到系统定义信息"
+            });
+            return;
+          }
+
+          if (!options.system.clients || !options.system.schemas) {
+            extension.sendRequest(EAction.writeLog, null, {
+              module: EModule.options,
+              event: "Options.readConfig.Error",
+              msg: "配置信息加载失败，没有获取到下载服务器或站点架构信息"
+            });
+            return;
+          }
+
+          extension.sendRequest(EAction.writeLog, null, {
+            module: EModule.options,
+            event: "Options.readConfig.Finished",
+            msg: "配置加载完成"
+          });
+
+          state.initialized = true;
+        })
+        .catch();
     },
 
     saveConfig({ commit, state }, options: Options) {
       let _options: Options = Object.assign({}, state.options);
       Object.assign(_options, options);
-      extension.sendRequest(EAction.saveConfig, null, _options).then(() => {
-        commit("updateOptions", _options);
-      });
+
+      extension
+        .sendRequest(EAction.saveConfig, null, _options)
+        .then(() => {
+          commit("updateOptions", _options);
+        })
+        .catch(error => {
+          console.log("store.saveConfig.error", error);
+        });
     },
 
     readUIOptions({ commit }) {
-      extension.sendRequest(EAction.readUIOptions, (options: UIOptions) => {
-        commit("updateUIOptions", options);
-      });
+      extension
+        .sendRequest(EAction.readUIOptions, (options: UIOptions) => {
+          commit("updateUIOptions", options);
+        })
+        .catch();
     },
 
     saveUIOptions({ commit, state }, options: UIOptions) {
       let _options: UIOptions = Object.assign({}, state.uiOptions);
       Object.assign(_options, options);
-      extension.sendRequest(EAction.saveUIOptions, null, _options).then(() => {
-        commit("updateUIOptions", _options);
-      });
+      extension
+        .sendRequest(EAction.saveUIOptions, null, _options)
+        .then(() => {
+          commit("updateUIOptions", _options);
+        })
+        .catch();
     },
 
     updatePagination({ commit, state }, data: any) {
@@ -304,7 +377,164 @@ export default new Vuex.Store({
         .sendRequest(EAction.saveUIOptions, null, state.uiOptions)
         .then(() => {
           commit("updateUIOptions", state.uiOptions);
+        })
+        .catch();
+    },
+
+    /**
+     * 更新视图相关参数
+     * @param param0
+     * @param data
+     */
+    updateViewOptions({ commit, state }, data: any) {
+      let views = state.uiOptions.views || {};
+
+      views[data.key] = data.options;
+      state.uiOptions.views = views;
+      extension
+        .sendRequest(EAction.saveUIOptions, null, state.uiOptions)
+        .then(() => {
+          commit("updateUIOptions", state.uiOptions);
+        })
+        .catch();
+    },
+
+    /**
+     * 添加/更新搜索方案
+     * @param state
+     * @param options
+     */
+    updateSearchSolution({ commit, state }, options: SearchSolution) {
+      let index: number = -1;
+      if (state.options.searchSolutions) {
+        index = state.options.searchSolutions.findIndex((e: SearchSolution) => {
+          return e.id === options.id;
         });
+      }
+
+      let _options: Options = Object.assign({}, state.options);
+
+      if (!_options.searchSolutions) {
+        _options.searchSolutions = [];
+      }
+      if (index == -1) {
+        options.id = md5(new Date().toString());
+        _options.searchSolutions.push(options);
+      } else {
+        _options.searchSolutions[index] = options;
+      }
+
+      extension
+        .save(_options)
+        .then(() => {
+          commit("updateOptions", _options);
+        })
+        .catch();
+    },
+
+    /**
+     * 删除搜索方案
+     * @param state
+     * @param options
+     */
+    removeSearchSolution({ commit, state }, options) {
+      let index: number = -1;
+      if (state.options.searchSolutions) {
+        index = state.options.searchSolutions.findIndex((e: SearchSolution) => {
+          return e.id === options.id;
+        });
+      }
+
+      let _options: Options = Object.assign({}, state.options);
+
+      if (!_options.searchSolutions) {
+        return;
+      }
+
+      if (index > -1) {
+        if (_options.defaultSearchSolutionId == options.id) {
+          _options.defaultSearchSolutionId = "";
+        }
+        _options.searchSolutions.splice(index, 1);
+        extension
+          .save(_options)
+          .then(() => {
+            commit("updateOptions", _options);
+          })
+          .catch();
+      }
+    },
+
+    /**
+     * 添加搜索入口
+     * @param state
+     * @param options
+     */
+    addSiteSearchEntry({ commit, state }, options) {
+      let _options: Options = Object.assign({}, state.options);
+
+      let site: any = _options.sites.find((item: any) => {
+        return item.host === options.host;
+      });
+
+      if (site) {
+        if (!site.searchEntry) {
+          site.searchEntry = [];
+        }
+        options.item.id = md5(new Date().toString());
+        site.searchEntry.push(options.item);
+
+        commit("updateOptions", _options);
+        extension.save(_options);
+      }
+    },
+
+    /**
+     * 更新插件
+     * @param state
+     * @param options
+     */
+    updateSiteSearchEntry({ commit, state }, options) {
+      let _options: Options = Object.assign({}, state.options);
+
+      let site: any = _options.sites.find((item: any) => {
+        return item.host === options.host;
+      });
+
+      if (site) {
+        let index: any = site.searchEntry.findIndex((item: SearchEntry) => {
+          return item.isCustom && item.id === options.item.id;
+        });
+        if (index !== -1) {
+          site.searchEntry[index] = options.item;
+
+          commit("updateOptions", _options);
+          extension.save(_options);
+        }
+      }
+    },
+
+    /**
+     * 删除插件
+     * @param state
+     * @param options
+     */
+    removeSiteSearchEntry({ commit, state }, options) {
+      let _options: Options = Object.assign({}, state.options);
+
+      let site: any = _options.sites.find((item: any) => {
+        return item.host === options.host;
+      });
+      if (site) {
+        let index: any = site.searchEntry.findIndex((item: any) => {
+          return item.isCustom && item.id === options.item.id;
+        });
+        if (index !== -1) {
+          site.searchEntry.splice(index, 1);
+          commit("updateOptions", _options);
+          extension.save(_options);
+        }
+      }
     }
   },
   getters: {
@@ -397,6 +627,13 @@ export default new Vuex.Store({
     pagination: state => (key: string, defalutValue: any) => {
       if (state.uiOptions && state.uiOptions.paginations) {
         return state.uiOptions.paginations[key] || defalutValue;
+      }
+      return defalutValue;
+    },
+
+    viewsOptions: state => (key: string, defalutValue: any) => {
+      if (state.uiOptions && state.uiOptions.views) {
+        return state.uiOptions.views[key] || defalutValue;
       }
       return defalutValue;
     }

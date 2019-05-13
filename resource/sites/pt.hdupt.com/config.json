@@ -3,7 +3,110 @@
   "description": "HDU",
   "url": "https://pt.hdupt.com/",
   "icon": "https://pt.hdupt.com/favicon.ico",
-  "tags": ["影视", "综合"],
+  "tags": [
+    "影视",
+    "综合"
+  ],
   "schema": "NexusPHP",
-  "host": "pt.hdupt.com"
+  "host": "pt.hdupt.com",
+  "searchEntry": [{
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat401=1",
+      "name": "Movies/电影",
+      "enabled": false
+    },
+    {
+      "queryString": "cat402=1",
+      "name": "TV Series/电视剧",
+      "enabled": false
+    },
+    {
+      "queryString": "cat403=1",
+      "name": "TV Shows/综艺",
+      "enabled": false
+    },
+    {
+      "queryString": "cat404=1",
+      "name": "Documentaries/纪录片",
+      "enabled": false
+    },
+    {
+      "queryString": "cat405=1",
+      "name": "Animations/动画",
+      "enabled": false
+    },
+    {
+      "queryString": "cat406=1",
+      "name": "Music Videos/音乐 MV",
+      "enabled": false
+    },
+    {
+      "queryString": "cat407=1",
+      "name": "Sports/体育",
+      "enabled": false
+    },
+    {
+      "queryString": "cat408=1",
+      "name": "HQ Audio/无损音乐",
+      "enabled": false
+    },
+    {
+      "queryString": "cat411=1",
+      "name": "Misc/其他",
+      "enabled": false
+    },
+    {
+      "queryString": "cat410=1",
+      "name": "Games/游戏",
+      "enabled": false
+    }
+  ],
+  "categories": [{
+    "entry": "*",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "Movies/电影"
+      },
+      {
+        "id": 402,
+        "name": "TV Series/电视剧"
+      },
+      {
+        "id": 403,
+        "name": "TV Shows/综艺"
+      },
+      {
+        "id": 404,
+        "name": "Documentaries/纪录片"
+      },
+      {
+        "id": 405,
+        "name": "Animations/动画"
+      },
+      {
+        "id": 406,
+        "name": "Music Videos/音乐 MV"
+      },
+      {
+        "id": 407,
+        "name": "Sports/体育"
+      },
+      {
+        "id": 408,
+        "name": "HQ Audio/无损音乐"
+      },
+      {
+        "id": 411,
+        "name": "Misc/其他"
+      },
+      {
+        "id": 410,
+        "name": "Games/游戏"
+      }
+    ]
+  }]
 }

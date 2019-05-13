@@ -1,3 +1,6 @@
+/**
+ * @see https://deluge.readthedocs.io/en/develop/reference/index.html
+ */
 (function ($) {
   //Deluge
   // id:1,method:auth.login,params:[url,null]
@@ -16,8 +19,23 @@
       this.requestCount = -1;
 
       if (this.options.address.indexOf("/json") == -1) {
-        let url = PTSevriceFilters.parseURL(this.options.address);
-        this.options.address = `${url.protocol}://${url.host}:${url.port}/json`;
+        let url = PTServiceFilters.parseURL(this.options.address);
+        let address = [
+          url.protocol,
+          "://",
+          url.host
+        ];
+        if (url.port) {
+          address.push(`:${url.port}`)
+        }
+
+        address.push(url.path);
+        if (url.path.substr(-1) != "/") {
+          address.push("/");
+        }
+
+        address.push("json");
+        this.options.address = address.join("");
       }
       console.log("Deluge.init", this.options.address);
     }
@@ -33,7 +51,7 @@
       return new Promise((resolve, reject) => {
         switch (action) {
           case "addTorrentFromURL":
-            this.addTorrentFromUrl(data.url, (result) => {
+            this.addTorrentFromUrl(data, (result) => {
               resolve(result);
             });
             break;
@@ -79,13 +97,17 @@
           resolve(this.token);
         }).fail((jqXHR, textStatus) => {
           let result = {
-            status: "error",
+            status: textStatus || "error",
             code: jqXHR.status,
-            msg: "未知错误"
+            msg: textStatus === "timeout" ? "连接超时" : "未知错误"
           };
           switch (jqXHR.status) {
             case 401:
               result.msg = "身份验证失败";
+              break;
+
+            case 404:
+              result.msg = "指定的地址未找到，服务器返回了 404";
               break;
           }
           reject(result);
@@ -113,6 +135,15 @@
         contentType: "application/json",
         timeout: PTBackgroundService.options.connectClientTimeout,
         success: (resultData, textStatus) => {
+          // 未认证
+          if (resultData && resultData.error && resultData.error.code == 1) {
+            this.getSessionId().then(() => {
+              this.exec(options, callback, tags);
+            }).catch((result) => {
+              callback && callback(result)
+            });
+            return;
+          }
           if (callback) {
             callback(resultData, tags);
           }
@@ -134,20 +165,53 @@
      * @param {*} url 
      * @param {*} callback 
      */
-    addTorrentFromUrl(url, callback) {
+    addTorrentFromUrl(data, callback) {
+      let url = data.url;
       // 磁性连接（代码来自原版WEBUI）
       if (url.match(/^[0-9a-f]{40}$/i)) {
         url = 'magnet:?xt=urn:btih:' + url;
+        this.addTorrent({
+          method: "core.add_torrent_url",
+          params: [url, {
+            "download_location": data.savePath
+          }]
+        }, callback);
+        return;
       }
-      this.exec({
-        method: "core.add_torrent_url",
-        params: [url, null]
-      }, (resultData) => {
-        if (callback) {
-          var result = {
-            status: "",
-            msg: ""
+      PTBackgroundService.requestMessage({
+          action: "getTorrentDataFromURL",
+          data: url
+        })
+        .then((result) => {
+          var fileReader = new FileReader();
+
+          fileReader.onload = (e) => {
+            var contents = e.target.result;
+            var key = "base64,";
+            var index = contents.indexOf(key);
+            if (index == -1) {
+              return;
+            }
+            var metainfo = contents.substring(index + key.length);
+
+            this.addTorrent({
+              method: "core.add_torrent_file",
+              params: ["", metainfo, {
+                "download_location": data.savePath
+              }]
+            }, callback);
           }
+          fileReader.readAsDataURL(result);
+        })
+        .catch((result) => {
+          callback && callback(result);
+        });
+    }
+
+    addTorrent(options, callback) {
+      this.exec(options, (resultData) => {
+        if (callback) {
+          var result = resultData;
           if (!resultData.error && resultData.result) {
             result.status = "success";
             result.msg = "URL已添加至 Deluge 。";

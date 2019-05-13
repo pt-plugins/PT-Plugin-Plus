@@ -28,6 +28,10 @@
       };
       this.api = {};
 
+      if (this.options.address.substr(-1) == "/") {
+        this.options.address = this.options.address.substr(0, this.options.address.length - 1);
+      }
+
       if (this.options.apiVer) {
         this.api = this.apiVer[this.options.apiVer];
       }
@@ -46,7 +50,7 @@
       return new Promise((resolve, reject) => {
         switch (action) {
           case "addTorrentFromURL":
-            this.addTorrentFromUrl(data.url, (result) => {
+            this.addTorrentFromUrl(data, (result) => {
               if (result.status === "success") {
                 resolve(result);
               } else {
@@ -112,6 +116,9 @@
     exec(options, callback, tags) {
       var settings = {
         type: "POST",
+        processData: false,
+        contentType: false,
+        method: "POST",
         url: this.options.address + options.method,
         data: options.params,
         timeout: PTBackgroundService.options.connectClientTimeout,
@@ -121,6 +128,19 @@
           }
         },
         error: (jqXHR, textStatus, errorThrown) => {
+          switch (jqXHR.status) {
+            // Unsupported Media Type
+            case 415:
+              callback({
+                status: "error",
+                code: jqXHR.status,
+                msg: "种子文件有误"
+              })
+              return;
+
+            default:
+              break;
+          }
           console.log(jqXHR);
           this.getSessionId().then(() => {
             this.exec(options, callback, tags);
@@ -141,20 +161,53 @@
      * @param {*} url 
      * @param {*} callback 
      */
-    addTorrentFromUrl(url, callback) {
+    addTorrentFromUrl(data, callback) {
+      let url = data.url;
       // 磁性连接（代码来自原版WEBUI）
       if (url.match(/^[0-9a-f]{40}$/i)) {
         url = 'magnet:?xt=urn:btih:' + url;
+        this.addTorrent({
+          urls: url,
+          savepath: data.savePath,
+          paused: !data.autoStart
+        }, callback)
+        return;
       }
+
+      PTBackgroundService.requestMessage({
+          action: "getTorrentDataFromURL",
+          data: url
+        })
+        .then((result) => {
+          let formData = new FormData();
+          if (data.savePath) {
+            formData.append("savepath", data.savePath)
+          }
+
+          if (data.autoStart != undefined) {
+            formData.append("paused", !data.autoStart)
+          }
+
+          formData.append("torrents", result, "file.torrent")
+
+          this.addTorrent(formData, callback);
+        })
+        .catch((result) => {
+          callback && callback(result);
+        });
+    }
+
+    addTorrent(params, callback) {
       this.exec({
         method: this.api.add,
-        params: {
-          urls: url
-        }
+        params: params
       }, (resultData) => {
         if (callback) {
-          var result = resultData;
-          if (!resultData.error && resultData.result) {
+          var result = Object.assign({
+            status: "",
+            msg: ""
+          }, resultData);
+          if (!resultData.error && resultData.result || resultData == "Ok.") {
             result.status = "success";
             result.msg = "URL已添加至 qBittorrent 。";
           }
