@@ -266,7 +266,7 @@ export default Vue.extend({
   data() {
     return {
       words: {
-        title: "基本设置",
+        title: "常规设置",
         defaultClient: "默认下载服务器",
         autoUpdate: "自动更新官方数据",
         save: "保存",
@@ -279,7 +279,7 @@ export default Vue.extend({
           "当批量下载的种子总体积超过以下大小时需要确认",
         exceedSize: "大小",
         searchResultRows: "搜索时每站点返回结果数量",
-        saveDownloadHistory: "记录每次一键发送的种子信息，以供导出备份",
+        saveDownloadHistory: "启用下载历史，以记录每次一键发送的种子信息",
         connectClientTimeout:
           "连接下载服务器超时时间（毫秒，1000毫秒=1秒），超出后将中断连接",
         noClient: "尚未配置下载服务器，请配置下载服务后再选择",
