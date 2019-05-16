@@ -11,7 +11,7 @@
     "scripts": ["common.js", "top250.js"]
   }, {
     "name": "explore",
-    "pages": ["/explore"],
+    "pages": ["/explore", "/tv/"],
     "scripts": ["common.js", "explore.js"]
   }],
   "schema": "publicSite",

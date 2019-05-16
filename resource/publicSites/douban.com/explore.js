@@ -25,6 +25,7 @@
       let key = "";
       if (link.length > 0) {
         let match = link.attr("href").match(/subject\/(\d+)/);
+        let title = link.text().split(" ")[0];
         if (match && match.length >= 2) {
           let id = match[1];
           key = `douban${id}`;
@@ -35,6 +36,7 @@
               console.log(error);
             });
           }
+          key += "|" + title;
         }
       }
       if (!key) {
@@ -43,7 +45,7 @@
       }
       let buttonId = "pt-plugin-search-button";
       $("#" + buttonId, parent).remove();
-      $("<a href='javascript:void(0);' id='" + buttonId + "'/>").html("用 PT 助手搜索").on("click", (event) => {
+      $("<a href='javascript:void(0);' id='" + buttonId + "' title='用 PT 助手搜索'/>").html("助手搜索").on("click", (event) => {
         this.search(key, $(event.target));
       }).appendTo($(".collect-area", parent));
       this.status = 0;
