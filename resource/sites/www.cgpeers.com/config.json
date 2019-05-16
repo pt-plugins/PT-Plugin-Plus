@@ -1,9 +1,23 @@
 {
-  "name":"CGPeers",
-  "schema":"Gazelle",
+  "name": "CGPeers",
+  "schema": "Gazelle",
   "url": "https://www.cgpeers.com/",
-  "icon":"https://www.cgpeers.com/favicon.ico",
-  "tags":["设计","素材"],
-  "host":"www.cgpeers.com",
-  "collaborator": "bimzcy"
+  "icon": "https://www.cgpeers.com/favicon.ico",
+  "tags": ["设计", "素材"],
+  "host": "www.cgpeers.com",
+  "collaborator": "bimzcy",
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "seeding": {
+          "selector": "div:contains('Community') + ul.stats > li:contains('Seeding:')",
+          "filters": ["query.text().match(/Seeding.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "seedingSize": {
+          "value": -1
+        }
+      }
+    }
+  }
 }
