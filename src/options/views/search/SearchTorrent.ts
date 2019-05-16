@@ -312,6 +312,8 @@ export default Vue.extend({
                 this.search();
               } else {
                 this.errorMsg = "豆瓣ID转换失败";
+                this.searchMsg = this.errorMsg;
+                this.loading = false;
               }
             }
           })

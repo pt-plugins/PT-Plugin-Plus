@@ -67,6 +67,9 @@ export default class Controller {
     this.searcher.options = options;
     this.initDefaultClient();
     this.siteDefaultClients = {};
+    if (options.connectClientTimeout) {
+      this.movieInfoService.timeout = options.connectClientTimeout;
+    }
   }
 
   /**

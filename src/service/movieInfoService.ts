@@ -50,6 +50,11 @@ export class MovieInfoService {
     doubanToIMDb: {}
   };
 
+  // 链接超时时间
+  public timeout = 3000;
+
+  private requsetQueue: Dictionary<any> = {};
+
   public getInfos(key: string): Promise<any> {
     if (/^(tt\d+)$/.test(key)) {
       return this.getInfoFromIMDb(key);
@@ -83,19 +88,16 @@ export class MovieInfoService {
         let url = `${
           this.doubanApiURL
         }/movie/imdb/${IMDbId}?apikey=${this.getDoubanApiKey()}`;
-        fetch(url)
-          .then(result => {
-            result
-              .json()
-              .then(json => {
-                this.cache.base[IMDbId] = json;
-                resolve(json);
-              })
-              .catch(error => {
-                reject(error);
-              });
+
+        $.ajax({
+          url: url,
+          timeout: this.timeout
+        })
+          .done(json => {
+            this.cache.base[IMDbId] = json;
+            resolve(json);
           })
-          .catch(error => {
+          .fail(error => {
             reject(error);
           });
       } else {
@@ -124,19 +126,15 @@ export class MovieInfoService {
         let url = `${
           this.omdbApiURL
         }/?i=${IMDbId}&apikey=${apikey}&tomatoes=true`;
-        fetch(url)
-          .then(result => {
-            result
-              .json()
-              .then(json => {
-                this.cache.ratings[IMDbId] = json;
-                resolve(json);
-              })
-              .catch(error => {
-                reject(error);
-              });
+        $.ajax({
+          url: url,
+          timeout: this.timeout
+        })
+          .done(json => {
+            this.cache.ratings[IMDbId] = json;
+            resolve(json);
           })
-          .catch(error => {
+          .fail(error => {
             reject(error);
           });
       } else {
@@ -177,25 +175,32 @@ export class MovieInfoService {
         return;
       }
       let url = `${this.omitApiURL}/movie/${doubanId}/douban/imdb`;
-      fetch(url)
-        .then(result => {
-          result
-            .json()
-            .then(json => {
-              console.log("getIMDbIdFromDouban", json);
-              if (json.data) {
-                this.cache.doubanToIMDb[doubanId] = json.data;
-                resolve(json.data);
-              } else {
-                reject(json);
-              }
-            })
-            .catch(error => {
-              reject(error);
-            });
+
+      if (this.requsetQueue[url]) {
+        reject();
+        return;
+      }
+
+      this.requsetQueue[url] = true;
+
+      $.ajax({
+        url: url,
+        timeout: this.timeout
+      })
+        .done(json => {
+          console.log("getIMDbIdFromDouban", json);
+          if (json.data) {
+            this.cache.doubanToIMDb[doubanId] = json.data;
+            resolve(json.data);
+          } else {
+            reject(json);
+          }
         })
-        .catch(error => {
+        .fail(error => {
           reject(error);
+        })
+        .always(() => {
+          delete this.requsetQueue[url];
         });
     });
   }
@@ -213,23 +218,19 @@ export class MovieInfoService {
       let url = `${
         this.doubanApiURL
       }/movie/search?q=${key}&count=${count}&apikey=${this.getDoubanEntApiKey()}`;
-      fetch(url)
-        .then(result => {
-          result
-            .json()
-            .then(json => {
-              console.log("query", json);
-              if (json.subjects) {
-                resolve(json);
-              } else {
-                reject(json);
-              }
-            })
-            .catch(error => {
-              reject(error);
-            });
+      $.ajax({
+        url: url,
+        timeout: this.timeout
+      })
+        .done((result: any) => {
+          console.log("query", result);
+          if (result.subjects) {
+            resolve(result);
+          } else {
+            reject(result);
+          }
         })
-        .catch(error => {
+        .fail(error => {
           reject(error);
         });
     });
