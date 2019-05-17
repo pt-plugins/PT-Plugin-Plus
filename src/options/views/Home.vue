@@ -373,7 +373,7 @@ export default Vue.extend({
 
     abortRequest(site: Site) {
       extension
-        .sendRequest(EAction.abortSearch, null, site)
+        .sendRequest(EAction.abortGetUserInfo, null, site)
         .then(() => {
           this.writeLog({
             event: `Home.getUserInfo.Abort`,
