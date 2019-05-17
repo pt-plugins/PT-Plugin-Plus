@@ -14,10 +14,11 @@
           {{words.remove}}
         </v-btn>
         <v-divider class="mx-3 mt-0" inset vertical></v-divider>
-        <v-btn color="info" @click="importAll">
+        <v-btn color="info" @click="importAll" :loading="importing">
           <v-icon class="mr-2">save_alt</v-icon>
           {{words.importAll}}
         </v-btn>
+        <span v-if="importing">{{ words.importedText }} {{importedCount}}</span>
         <v-spacer></v-spacer>
         <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-card-title>
@@ -147,13 +148,15 @@ export default Vue.extend({
         add: "新增",
         remove: "删除",
         edit: "编辑",
-        importAll: "导入所有",
-        importAllConfirm: "确认要导入所有站点吗？此操作会导入未添加过的站点。",
+        importAll: "一键导入站点",
+        importAllConfirm:
+          "确认要进行导入站点操作吗？此操作会导入已在浏览器上登录过但未添加的站点。",
         removeSelectedConfirm: "确认要删除已选中的站点吗？",
         plugins: "插件",
         title: "站点设置",
         subTitle: "只有配置过的站点才会显示插件图标及相应的功能。",
-        searchEntry: "搜索入口"
+        searchEntry: "搜索入口",
+        importedText: "已成功导入"
       },
       selected: [],
       pagination: {
@@ -174,7 +177,10 @@ export default Vue.extend({
       sites: [] as Site[],
       selectedSite: {},
       dialogRemoveConfirm: false,
-      options: this.$store.state.options
+      options: this.$store.state.options,
+      importing: false,
+      importingCount: 0,
+      importedCount: 0
     };
   },
   methods: {
@@ -253,6 +259,11 @@ export default Vue.extend({
       if (!confirm(this.words.importAllConfirm)) {
         return;
       }
+      if (this.importing) {
+        return;
+      }
+      this.importing = true;
+      this.importedCount = 0;
       this.$store.state.options.system.sites.forEach((site: any) => {
         let index = this.$store.state.options.sites
           ? this.$store.state.options.sites.findIndex((item: any) => {
@@ -260,10 +271,7 @@ export default Vue.extend({
             })
           : -1;
         if (index === -1) {
-          this.$store.commit(
-            "addSite",
-            Object.assign({ valid: true, activeURL: site.url }, site)
-          );
+          this.checkAndAddSite(site);
         }
       });
     },
@@ -290,6 +298,33 @@ export default Vue.extend({
           host: item.host as string
         }
       });
+    },
+    /**
+     * 验证并添加站点
+     */
+    checkAndAddSite(site: Site) {
+      this.importingCount++;
+      extension
+        .sendRequest(EAction.getUserInfo, null, site)
+        .then((result: any) => {
+          console.log(result);
+          if (result && result.name) {
+            this.$store.commit(
+              "addSite",
+              Object.assign({ valid: true, activeURL: site.url }, site)
+            );
+            this.importedCount++;
+          }
+        })
+        .catch(result => {
+          console.log("error", result);
+        })
+        .finally(() => {
+          this.importingCount--;
+          if (this.importingCount == 0) {
+            this.importing = false;
+          }
+        });
     }
   },
   created() {
