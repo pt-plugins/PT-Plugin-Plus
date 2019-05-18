@@ -1,14 +1,17 @@
 {
   "name": "圣城家园PT",
   "description": "hdscg，cnscg圣城家园PT站点",
-  "url": "https://www.hdscg.cc/",
-  "icon": "https://www.hdscg.cc/favicon.ico",
+  "url": "https://www.cnscg.club/",
+  "icon": "https://www.cnscg.club/favicon.ico",
   "tags": [
     "影视",
     "综合"
   ],
   "schema": "NexusPHP",
-  "host": "www.hdscg.cc",
+  "host": "www.cnscg.club",
+  "formerHosts": [
+    "www.hdscg.cc"
+  ],
   "collaborator": "DXV5",
   "searchEntry": [{
       "name": "全站",
@@ -58,7 +61,7 @@
       "queryString": "cat409=1",
       "name": "其他",
       "enabled": false
-	}
+    }
   ],
   "categories": [{
     "entry": "torrents.php",
