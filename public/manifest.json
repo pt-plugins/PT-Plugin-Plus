@@ -13,14 +13,13 @@
 	},
 	"permissions": [
 		"activeTab",
-		"tabs",
 		"clipboardRead",
 		"clipboardWrite",
 		"storage",
 		"contextMenus",
-		"notifications",
-		"*://*/*"
+		"notifications"
 	],
+	"optional_permissions": ["tabs", "*://*/*"],
 	"icons": {
 		"16": "assets/icon.png",
 		"19": "assets/icon-19.png",
@@ -39,27 +38,25 @@
 			"js/background.js"
 		]
 	},
-	"content_scripts": [
-		{
-			"matches": [
-				"*://*/*"
-			],
-			"css": [
-				"assets/base.css",
-				"libs/materialIcons/content_style.css",
-				"libs/notice/noticejs.css",
-				"libs/basicContext/basicContext.min.css",
-				"libs/basicContext/themes/default.min.css"
-			],
-			"js": [
-				"libs/jquery/jquery-3.3.1.min.js",
-				"libs/Base64.js",
-				"libs/notice/notice.js",
-				"libs/basicContext/basicContext.min.js",
-				"js/content.js"
-			]
-		}
-	],
+	"content_scripts": [{
+		"matches": [
+			"*://*/*"
+		],
+		"css": [
+			"assets/base.css",
+			"libs/materialIcons/content_style.css",
+			"libs/notice/noticejs.css",
+			"libs/basicContext/basicContext.min.css",
+			"libs/basicContext/themes/default.min.css"
+		],
+		"js": [
+			"libs/jquery/jquery-3.3.1.min.js",
+			"libs/Base64.js",
+			"libs/notice/notice.js",
+			"libs/basicContext/basicContext.min.js",
+			"js/content.js"
+		]
+	}],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"web_accessible_resources": [
 		"libs/materialIcons/*.woff2",
