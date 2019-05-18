@@ -6,7 +6,9 @@ import {
   DownloadClient,
   UIOptions,
   SearchEntry,
-  EBeforeSearchingItemSearchMode
+  EBeforeSearchingItemSearchMode,
+  SearchSolution,
+  SearchSolutionRange
 } from "@/interface/common";
 import { API, APP } from "@/service/api";
 import localStorage from "@/service/localStorage";
@@ -303,7 +305,76 @@ class Config {
         }
       });
 
+    this.upgradeSites();
     console.log(this.options);
+  }
+
+  /**
+   * 升级网站信息
+   */
+  public upgradeSites() {
+    this.sites.forEach((systemSite: Site) => {
+      if (!systemSite.host) {
+        return;
+      }
+      let formerHosts = systemSite.formerHosts;
+      let newHost = systemSite.host;
+      if (formerHosts && formerHosts.length > 0) {
+        formerHosts.forEach((host: string) => {
+          let site: Site = this.options.sites.find((site: Site) => {
+            return site.host === host;
+          });
+
+          // 更新站点基本信息
+          if (site) {
+            console.log("upgradeSites.site", site, newHost);
+            site.host = newHost;
+            site.url = systemSite.url;
+            site.icon = systemSite.icon;
+          }
+
+          // 更新搜索方案
+          if (this.options.searchSolutions) {
+            this.options.searchSolutions.forEach(
+              (soluteion: SearchSolution) => {
+                soluteion.range.forEach((range: SearchSolutionRange) => {
+                  if (range.host == host) {
+                    console.log(
+                      "upgradeSites.searchSolutions",
+                      range.host,
+                      newHost
+                    );
+                    range.host = newHost;
+                  }
+                });
+              }
+            );
+          }
+
+          // 更新下载服务器路径信息
+          if (this.options.clients && this.options.clients.length > 0) {
+            this.options.clients.forEach((client: DownloadClient) => {
+              let paths = client.paths;
+              if (paths) {
+                for (const key in paths) {
+                  if (key == host && paths.hasOwnProperty(key)) {
+                    console.log(
+                      "upgradeSites.client.paths",
+                      client.name,
+                      key,
+                      newHost
+                    );
+                    const element = paths[key];
+                    paths[newHost] = Object.assign([], element);
+                    delete paths[key];
+                  }
+                }
+              }
+            });
+          }
+        });
+      }
+    });
   }
 
   public readUIOptions(): Promise<any> {

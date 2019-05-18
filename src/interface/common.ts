@@ -192,6 +192,8 @@ export interface Site {
   // 站点优先级
   priority?: number;
   path?: string;
+  // 曾用域名列表，用于数据升级
+  formerHosts?: string[];
 }
 
 export interface Request {

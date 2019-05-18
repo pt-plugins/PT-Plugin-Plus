@@ -436,10 +436,13 @@ export default class PTPlugin {
     if (window.chrome === undefined) {
       return;
     }
+    if (!chrome.runtime) {
+      return;
+    }
+
     console.log("service.initBrowserEvent");
     // 监听由活动页面发来的消息事件
-    chrome.runtime &&
-      chrome.runtime.onMessage &&
+    chrome.runtime.onMessage &&
       chrome.runtime.onMessage.addListener(
         (message: any, sender: chrome.runtime.MessageSender, callback) => {
           this.requestMessage(message, sender)
@@ -453,6 +456,17 @@ export default class PTPlugin {
           return true;
         }
       );
+
+    // 当扩展程序第一次安装、更新至新版本或 Chrome 浏览器更新至新版本时产生。
+    chrome.runtime.onInstalled.addListener(details => {
+      console.log("chrome.runtime.onInstalled", details);
+      // 版本更新时
+      if (details.reason == "update") {
+        setTimeout(() => {
+          this.userData.upgrade();
+        }, 1000);
+      }
+    });
   }
 
   /**

@@ -102,4 +102,51 @@ export class UserData {
       resolve(this.items);
     });
   }
+
+  /**
+   * 升级站点数据
+   */
+  public upgrade(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (
+        this.service.options &&
+        this.service.options.system &&
+        this.service.options.system.sites
+      ) {
+        let sites = this.service.options.system.sites;
+
+        this.load().then(datas => {
+          if (datas) {
+            sites.forEach((systemSite: Site) => {
+              if (!systemSite.host) {
+                return;
+              }
+              let formerHosts = systemSite.formerHosts;
+              let newHost = systemSite.host;
+              if (formerHosts && formerHosts.length > 0) {
+                formerHosts.forEach((host: string) => {
+                  for (const key in datas) {
+                    if (key == host && datas.hasOwnProperty(key)) {
+                      const element = datas[key];
+                      datas[newHost] = Object.assign({}, element);
+                      delete datas[key];
+                    }
+                  }
+                });
+              }
+            });
+
+            this.items = datas;
+            this.storage.set(this.configKey, datas);
+            this.service.saveUserData();
+            resolve(datas);
+          } else {
+            reject(null);
+          }
+        });
+      } else {
+        reject(null);
+      }
+    });
+  }
 }
