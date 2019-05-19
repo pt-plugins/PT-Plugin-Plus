@@ -45,7 +45,10 @@ export default class PTPlugin {
   private autoRefreshUserDataFailedCount: number = 0;
 
   constructor(localMode: boolean = false) {
-    this.initBrowserEvent();
+    if (!localMode) {
+      this.initBrowserEvent();
+    }
+
     this.logger.add({
       module: EModule.background,
       event: ELogEvent.init
