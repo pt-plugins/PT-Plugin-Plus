@@ -330,6 +330,19 @@
                 :value="downloading.progress"
                 color="primary"
               >{{ downloading.progress.toFixed(0) }}%</v-progress-circular>
+
+              <!-- 下载失败的种子 -->
+              <v-btn
+                v-if="downloadFailedTorrents.length>0"
+                class="error"
+                @click="reDownloadFailedTorrents"
+                small
+                :title="words.downloadFailed"
+                :loading="downloading.count>0"
+              >
+                <v-icon class="mr-2" small>get_app</v-icon>
+                {{ words.downloadFailed }} ({{downloadFailedTorrents.length}})
+              </v-btn>
             </div>
           </v-layout>
         </v-flex>

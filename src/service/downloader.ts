@@ -13,6 +13,7 @@ export type downloadOptions = {
   files?: downloadFile[];
   autoStart?: boolean;
   onCompleted?: Function;
+  onError?: Function;
 };
 
 export class Downloader {
@@ -45,6 +46,14 @@ export class Downloader {
     };
     file.onStart = () => {
       this.downloadingCount++;
+    };
+    file.onError = (e: any) => {
+      this.downloadingCount--;
+      this.completedCount++;
+      if (this.options.onError) {
+        this.options.onError.call(this, file, e);
+      }
+      delete this.files[file.url];
     };
     // file.id = String.getRandomString(16);
     this.files[file.url] = file;

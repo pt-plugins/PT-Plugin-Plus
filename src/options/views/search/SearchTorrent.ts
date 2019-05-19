@@ -48,6 +48,7 @@ export default Vue.extend({
       words: {
         title: "搜索结果",
         download: "下载",
+        downloadFailed: "重下失败",
         sendToClient: "服务器下载",
         sendToClientTip: "发送到下载服务器",
         save: "下载种子文件到本地",
@@ -149,7 +150,9 @@ export default Vue.extend({
       showFailedSites: false,
       showNoResultsSites: false,
       pathHandler: new PathHandler(),
-      IMDbId: ""
+      IMDbId: "",
+      // 下载失败的种子列表
+      downloadFailedTorrents: [] as FileDownloader[]
     };
   },
   created() {
@@ -952,7 +955,8 @@ export default Vue.extend({
           files.push({
             url: item.url,
             fileName: `[${item.site.name}][${item.title}].torrent`,
-            method: item.site.downloadMethod
+            method: item.site.downloadMethod,
+            timeout: this.options.connectClientTimeout
           });
       });
       console.log(files);
@@ -962,27 +966,75 @@ export default Vue.extend({
             return;
           }
         }
-        this.downloading.count = files.length;
-        this.downloading.completed = 0;
-        this.downloading.speed = 0;
-        this.downloading.progress = 0;
-        new Downloader({
-          files: files,
-          autoStart: true,
-          onCompleted: () => {
-            this.downloading.completed++;
-            this.downloading.progress =
-              (this.downloading.completed / this.downloading.count) * 100;
 
-            // 是否已完成
-            if (this.downloading.completed >= this.downloading.count) {
-              this.downloading.count = 0;
-              this.selected = [];
-            }
-          }
-        });
+        this.downloadTorrentFiles(files);
       }
     },
+    /**
+     * 批量下载指定的种子文件
+     * @param files 需要下载的文件列表
+     */
+    downloadTorrentFiles(files: downloadFile[]) {
+      this.downloading.count = files.length;
+      this.downloading.completed = 0;
+      this.downloading.speed = 0;
+      this.downloading.progress = 0;
+      new Downloader({
+        files: files,
+        autoStart: true,
+        onCompleted: (file: FileDownloader) => {
+          this.downloadTorrentFilesCompleted(file);
+        },
+        onError: (file: FileDownloader, e: any) => {
+          this.downloadTorrentFilesCompleted();
+          this.writeLog({
+            event: "SearchTorrent.downloadSelected.Error",
+            msg: "下载种子文件失败: " + file.fileName,
+            data: e
+          });
+          let index = this.downloadFailedTorrents.findIndex(
+            (item: FileDownloader) => {
+              return item.url == file.url;
+            }
+          );
+          if (index == -1) {
+            this.downloadFailedTorrents.push(file);
+          }
+        }
+      });
+    },
+
+    /**
+     * 批量下载指定的种子文件完成
+     * @param file
+     */
+    downloadTorrentFilesCompleted(file?: FileDownloader) {
+      this.downloading.completed++;
+      this.downloading.progress =
+        (this.downloading.completed / this.downloading.count) * 100;
+
+      // 是否已完成
+      if (this.downloading.completed >= this.downloading.count) {
+        this.downloading.count = 0;
+        this.selected = [];
+      }
+
+      if (file) {
+        // 从失败列表中删除已完成的种子
+        for (
+          let index = 0;
+          index < this.downloadFailedTorrents.length;
+          index++
+        ) {
+          const element = this.downloadFailedTorrents[index];
+          if (element.url == file.url) {
+            this.downloadFailedTorrents.splice(index, 1);
+            break;
+          }
+        }
+      }
+    },
+
     /**
      * 保存当前行的种子文件
      * @param item
@@ -1000,6 +1052,7 @@ export default Vue.extend({
       });
 
       file.requestMethod = requestMethod;
+      file.onError = (error: any) => {};
       file.start();
     },
     /**
@@ -1353,6 +1406,13 @@ export default Vue.extend({
           reject("无效的豆瓣ID");
         });
       }
+    },
+
+    /**
+     * 重新下载失败的种子文件
+     */
+    reDownloadFailedTorrents() {
+      this.downloadTorrentFiles(this.downloadFailedTorrents);
     }
   }
 });
