@@ -101,6 +101,11 @@ export default Vue.extend({
               title: "参数备份与恢复",
               icon: "restore",
               key: "/set-backup"
+            },
+            {
+              title: "权限设置",
+              icon: "verified_user",
+              key: "set-permissions"
             }
             // {
             //   title: "语言",

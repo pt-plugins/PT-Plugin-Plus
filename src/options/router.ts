@@ -117,6 +117,11 @@ export default new Router({
       path: "/statistic/:host?",
       name: "statistic",
       component: () => import("./views/statisticCharts/SiteBase.vue")
+    },
+    {
+      path: "/set-permissions",
+      name: "set-permissions",
+      component: () => import("./components/Permissions.vue")
     }
   ]
 });
