@@ -9,7 +9,7 @@
     "name": "种子列表",
     "pages": ["/torrents"],
     "styles": ["/libs/album/style.css"],
-    "scripts": ["/libs/album/album.js", "torrents.js"]
+    "scripts": ["/schemas/NexusPHP/common.js", "/libs/album/album.js", "torrents.js"]
   }],
   "searchEntry": [{
     "entry": "/torrents?in=1&search=$key$",
