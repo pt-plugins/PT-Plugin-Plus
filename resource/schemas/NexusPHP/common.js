@@ -134,6 +134,75 @@ String.prototype.getQueryString = function (name, split) {
           });
         }
       });
+
+      // 检查是否有下载管理权限
+      this.checkPermissions(["downloads"]).then(() => {
+        this.addSaveAllTorrentFilesButton(checkPasskey);
+      }).catch(() => {
+        PTService.addButton({
+          title: "下载所有种子文件功能需要权限，点击前往授权",
+          icon: "verified_user",
+          key: "requestPermissions",
+          label: "需要授权",
+          click: (success, error) => {
+            PTService.call(PTService.action.openOptions, "set-permissions");
+            success();
+          }
+        });
+      })
+    }
+
+    /**
+     * 添加下载所有种子文件按钮
+     * @param {*} checkPasskey 
+     */
+    addSaveAllTorrentFilesButton(checkPasskey) {
+      // 批量下载当前页种子文件
+      PTService.addButton({
+        title: "下载所有种子文件",
+        icon: "save",
+        label: "所有种子",
+        click: (success, error) => {
+          if (checkPasskey && !PTService.site.passkey) {
+            error("请先设置站点密钥（Passkey）。");
+            return;
+          }
+          let urls = this.getDownloadURLs();
+
+          if (!urls.length) {
+            error(urls);
+            return;
+          }
+
+          let downloads = [];
+          urls.forEach(url => {
+            downloads.push({
+              url,
+              method: PTService.site.downloadMethod
+            })
+          });
+
+          console.log(downloads);
+
+          PTService.call(
+            PTService.action.addBrowserDownloads,
+            downloads
+          ).then((result) => {
+            console.log("命令执行完成", result);
+            success();
+          }).catch((e) => {
+            console.log(e);
+            error(e)
+          });
+        }
+      });
+    }
+
+    checkPermissions(permissions) {
+      return PTService.call(
+        PTService.action.checkPermissions,
+        permissions
+      );
     }
 
     /**

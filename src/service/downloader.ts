@@ -14,6 +14,7 @@ export type downloadOptions = {
   autoStart?: boolean;
   onCompleted?: Function;
   onError?: Function;
+  onProgress?: Function;
 };
 
 export class Downloader {
@@ -54,6 +55,11 @@ export class Downloader {
         this.options.onError.call(this, file, e);
       }
       delete this.files[file.url];
+    };
+    file.onProgress = (loaded: number, total: number, speed: number) => {
+      if (this.options.onProgress) {
+        this.options.onProgress.call(this, file, loaded, total, speed);
+      }
     };
     // file.id = String.getRandomString(16);
     this.files[file.url] = file;

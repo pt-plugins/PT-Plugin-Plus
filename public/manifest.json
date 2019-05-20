@@ -19,7 +19,7 @@
 		"contextMenus",
 		"notifications"
 	],
-	"optional_permissions": ["tabs", "*://*/*"],
+	"optional_permissions": ["tabs", "*://*/*", "downloads"],
 	"icons": {
 		"16": "assets/icon.png",
 		"19": "assets/icon-19.png",

@@ -873,4 +873,37 @@ export default class Controller {
       options.count
     );
   }
+
+  /**
+   * 添加浏览器原生下载请求
+   * @param options
+   */
+  public addBrowserDownloads(options: any): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.service
+        .checkPermissions(["downloads"])
+        .then(() => {
+          let items = [];
+          if (Array.isArray(options)) {
+            items = options;
+          } else {
+            items.push(options);
+          }
+
+          items.forEach(item => {
+            chrome.downloads.download(item, function(downloadId) {
+              console.log(downloadId);
+            });
+          });
+
+          resolve(items.length);
+        })
+        .catch(() => {
+          reject({
+            success: false,
+            msg: "无权限，请前往用户授权"
+          });
+        });
+    });
+  }
 }
