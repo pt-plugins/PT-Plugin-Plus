@@ -141,6 +141,9 @@
             </v-layout>
           </v-container>
         </template>
+
+        <!-- 站点已离线（停机/关闭） -->
+        <v-switch :label="words.offline" v-model="site.offline"></v-switch>
       </v-form>
     </v-card-text>
   </v-card>
@@ -170,7 +173,8 @@ export default Vue.extend({
         cdnTip:
           "如您使用的网址和系统定义的不同，可在此填写当前使用的网站地址，每行填写一个地址，第一个将做为搜索时使用的地址",
         priority: "优先级",
-        priorityTip: "可用于搜索排序"
+        priorityTip: "可用于搜索排序",
+        offline: "站点已离线（停机/关闭）"
       },
       showPasskey: false,
       rules: {

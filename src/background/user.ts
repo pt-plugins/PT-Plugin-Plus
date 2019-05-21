@@ -28,7 +28,7 @@ export class User {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let requests: any[] = [];
       this.service.options.sites.forEach((site: Site) => {
-        if (!site.allowGetUserInfo) {
+        if (!site.allowGetUserInfo || site.offline) {
           return false;
         }
 

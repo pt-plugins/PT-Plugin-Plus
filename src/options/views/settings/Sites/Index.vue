@@ -63,6 +63,15 @@
             ></v-switch>
           </td>
           <td>
+            <v-switch
+              true-value="true"
+              false-value="false"
+              :input-value="props.item.offline?'true':'false'"
+              hide-details
+              @click.stop="updateOfflineStatus(props.item)"
+            ></v-switch>
+          </td>
+          <td>
             <a
               :href="props.item.activeURL"
               target="_blank"
@@ -121,7 +130,9 @@
       </v-card>
     </v-dialog>
 
-    <v-alert :value="true" color="grey">{{ words.subTitle }}</v-alert>
+    <v-alert :value="true" color="grey">
+      <div v-html="words.subTitle"></div>
+    </v-alert>
 
     <v-snackbar v-model="siteDuplicate" top :timeout="3000" color="error">{{ siteDuplicateText }}</v-snackbar>
   </div>
@@ -154,7 +165,8 @@ export default Vue.extend({
         removeSelectedConfirm: "确认要删除已选中的站点吗？",
         plugins: "插件",
         title: "站点设置",
-        subTitle: "只有配置过的站点才会显示插件图标及相应的功能。",
+        subTitle:
+          "只有配置过的站点才会显示插件图标及相应的功能；<br/>已离线的站点的不再参与搜索和信息获取；",
         searchEntry: "搜索入口",
         importedText: "已成功导入"
       },
@@ -171,6 +183,7 @@ export default Vue.extend({
         { text: "标签", align: "left", value: "tags" },
         { text: "允许搜索", align: "left", value: "allowSearch" },
         { text: "个人信息(Beta)", align: "left", value: "allowGetUserInfo" },
+        { text: "已离线", align: "left", value: "offline" },
         { text: "URL", align: "left", value: "activeURL" },
         { text: "操作", value: "name", sortable: false }
       ],
@@ -222,6 +235,12 @@ export default Vue.extend({
     },
     updateAllowGetUserInfo(item: any) {
       item.allowGetUserInfo = !(<boolean>item.allowGetUserInfo);
+      this.$store.commit("updateSite", item);
+      this.pagination.rowsPerPage = 0;
+      this.pagination.rowsPerPage = -1;
+    },
+    updateOfflineStatus(item: any) {
+      item.offline = !(<boolean>item.offline);
       this.$store.commit("updateSite", item);
       this.pagination.rowsPerPage = 0;
       this.pagination.rowsPerPage = -1;

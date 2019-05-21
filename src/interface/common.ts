@@ -194,6 +194,9 @@ export interface Site {
   path?: string;
   // 曾用域名列表，用于数据升级
   formerHosts?: string[];
+  // 离线，设置为true时，不再进行搜索和个人信息获取，保存原数据统计
+  // todo: 后续可根据站点返回的状态码自动设置为离线
+  offline?: boolean;
 }
 
 export interface Request {

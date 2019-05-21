@@ -348,7 +348,7 @@ export default Vue.extend({
       // 是否指定了站点
       if (this.host) {
         let site = this.options.sites.find((item: Site) => {
-          return item.host === this.host;
+          return item.host === this.host && !item.offline;
         });
         if (site) {
           sites.push(this.clone(site));
@@ -361,6 +361,7 @@ export default Vue.extend({
       ) {
         let _sites: Site[] = [];
         this.options.sites.forEach((item: Site) => {
+          if (item.offline) return false;
           _sites.push(this.clone(item));
         });
 
@@ -404,6 +405,8 @@ export default Vue.extend({
         }
       } else {
         this.options.sites.forEach((item: Site) => {
+          if (item.offline) return false;
+
           if (
             item.allowSearch ||
             this.options.defaultSearchSolutionId == "all"
