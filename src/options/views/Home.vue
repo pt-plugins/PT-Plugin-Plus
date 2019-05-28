@@ -83,9 +83,17 @@
                 v-if="props.item.user.messageCount>0"
                 :title="words.newMessage"
               >{{ props.item.user.messageCount>10?"":props.item.user.messageCount }}</template>
-              <v-avatar :size="showSiteName ? 18 : 24" @click.stop="getSiteUserInfo(props.item)">
-                <img :src="props.item.icon">
-              </v-avatar>
+              <v-btn
+                flat
+                icon
+                style="margin:0;"
+                :title="words.getInfos"
+                @click.stop="getSiteUserInfo(props.item)"
+              >
+                <v-avatar :size="showSiteName ? 18 : 24">
+                  <img :src="props.item.icon">
+                </v-avatar>
+              </v-btn>
             </v-badge>
 
             <br>
@@ -211,7 +219,7 @@ export default Vue.extend({
       requestQueue: [] as any[],
       requestTimer: 0,
       requestMsg: "",
-      sites: [] as any[],
+      sites: [] as Site[],
       filterKey: "",
       isSecret: false,
       showUserName: true,
@@ -448,8 +456,8 @@ export default Vue.extend({
     font-size: 9px;
     height: 16px;
     width: 16px;
-    top: -5px;
-    right: -16px;
+    top: -2px;
+    right: -8px;
   }
 }
 </style>
