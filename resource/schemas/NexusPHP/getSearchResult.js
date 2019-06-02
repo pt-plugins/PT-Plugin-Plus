@@ -141,10 +141,7 @@ if (!"".getQueryString) {
           const row = rows.eq(index);
           let cells = row.find(">td");
 
-          let title = row.find("a[href*='hit'][title]").first();
-          if (title.length == 0) {
-            title = row.find("a[href*='hit']:has(b)").first();
-          }
+          let title = this.getTitle(row);
 
           // 没有获取标题时，继续下一个
           if (title.length == 0) {
@@ -247,6 +244,27 @@ if (!"".getQueryString) {
     }
 
     /**
+     * 获取标题
+     */
+    getTitle(row) {
+      let title = row.find("a[href*='hit'][title]").first();
+      if (title.length == 0) {
+        title = row.find("a[href*='hit']:has(b)").first();
+      }
+
+      if (title.length == 0) {
+        // 特殊情况处理
+        switch (options.site.host) {
+          case "u2.dmhy.org":
+            title = row.find("a.tooltip[href*='hit']").first();
+            break;
+        }
+      }
+
+      return title;
+    }
+
+    /**
      * 获取副标题
      * @param {*} title 
      * @param {*} row 
@@ -265,19 +283,19 @@ if (!"".getQueryString) {
                 break;
               }
 
-            case "tp.m-team.cc":
-              title = row.find("a[href*='hit'][title]").last();
-              subTitle = title.parent().html().split("<br>");
-              subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
-              break;
+              case "tp.m-team.cc":
+                title = row.find("a[href*='hit'][title]").last();
+                subTitle = title.parent().html().split("<br>");
+                subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
+                break;
 
-            case "u2.dmhy.org":
-              subTitle = $('.torrentname > tbody > tr:eq(1)', row).find('.tooltip').text();
-              break;
+              case "u2.dmhy.org":
+                subTitle = $('.torrentname > tbody > tr:eq(1)', row).find('.tooltip').text();
+                break;
 
-            default:
-              subTitle = "";
-              break;
+              default:
+                subTitle = "";
+                break;
 
           }
         }
