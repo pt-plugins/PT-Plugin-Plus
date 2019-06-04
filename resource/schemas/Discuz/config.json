@@ -1,0 +1,84 @@
+{
+  "name": "Discuz",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/forum.php?mod=viewthread"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/forum.php?mod=torrents"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "searchEntryConfig": {
+    "page": "/forum.php",
+    "queryString": "mod=torrents&search=$key$",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/Discuz/getSearchResult.js",
+    "resultSelector": "table.torrents:last"
+  },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "img.sp_4",
+    "color": "blue"
+  }, {
+    "name": "35%",
+    "selector": "img.sp_3",
+    "color": "indigo"
+  }, {
+    "name": "50%",
+    "selector": "img.sp_2",
+    "color": "orange"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": [".vwmy a"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('uid'):''"]
+        },
+        "name": {
+          "selector": [".vwmy a"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/home.php?mod=space&uid=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["#psts li:contains('上传量')"],
+          "filters": ["query.text().replace(/,/g,'').match(/上传量+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["#psts li:contains('下载量')"],
+          "filters": ["query.text().replace(/,/g,'').match(/下载量+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "levelName": {
+          "selector": "a[href='home.php?mod=spacecp&ac=usergroup']",
+          "filters": ["query.text().replace('用户组: ', '').trim()"]
+        },
+        "bonus": {
+          "selector": ["#ratio"],
+          "filters": ["query.text().replace('论坛积分:', '').replace(/,/g,'').trim()", "parseFloat(query)"]
+        },
+        "joinTime": {
+          "selector": "#pbbs > li:contains('注册时间')",
+          "filters": ["query.text().replace('注册时间', '').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["#psts li:contains('即时保种数')"],
+          "filters": ["query.text().replace('即时保种数', '').replace(/,/g,'').trim()", "parseFloat(query)"]
+        },
+        "seedingSize": {
+          "value": -1
+        }
+      }
+    }
+  }
+}

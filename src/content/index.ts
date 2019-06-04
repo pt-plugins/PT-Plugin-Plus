@@ -164,8 +164,9 @@ class PTPContent {
       // 获取符合当前网站所需要的附加脚本
       this.schema.plugins.forEach((plugin: Plugin) => {
         let index = plugin.pages.findIndex((page: string) => {
+          let fullpath = window.location.href;
           let path = window.location.pathname;
-          let indexOf = path.indexOf(page);
+          let indexOf = fullpath.indexOf(page);
           // 如果页面不包含，则使用正则尝试
           if (indexOf === -1) {
             return new RegExp(page, "").test(path);
