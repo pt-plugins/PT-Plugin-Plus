@@ -106,6 +106,8 @@ export interface Options {
   showMoiveInfoCardOnSearch?: boolean;
   // 在搜索之前一些选项配置
   beforeSearchingOptions?: BeforeSearching;
+  // 在页面中显示工具栏
+  showToolbarOnContentPage?: boolean;
 }
 
 // 在搜索之前一些选项配置

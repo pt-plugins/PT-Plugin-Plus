@@ -117,6 +117,9 @@ class PTPContent {
    * 初始化符合条件的附加页面
    */
   private initPages() {
+    if (!this.options.showToolbarOnContentPage) {
+      return;
+    }
     // 判断当前页面的所属站点是否已经被定义
     this.site = this.getSiteFromHost(window.location.hostname);
 

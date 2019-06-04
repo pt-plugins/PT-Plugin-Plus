@@ -76,7 +76,8 @@ class Config {
       getMovieInformation: true,
       maxMovieInformationCount: 5,
       searchModeForItem: EBeforeSearchingItemSearchMode.id
-    }
+    },
+    showToolbarOnContentPage: true
   };
 
   public uiOptions: UIOptions = {};

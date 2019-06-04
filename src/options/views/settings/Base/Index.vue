@@ -131,8 +131,16 @@
 
                 <v-switch
                   color="success"
+                  v-model="options.showToolbarOnContentPage"
+                  :label="words.showToolbarOnContentPage"
+                ></v-switch>
+
+                <v-switch
+                  color="success"
+                  v-if="options.showToolbarOnContentPage"
                   v-model="options.allowDropToSend"
                   :label="words.allowDropToSend"
+                  class="ml-5"
                 ></v-switch>
 
                 <v-switch
@@ -267,11 +275,11 @@ export default Vue.extend({
     return {
       words: {
         title: "常规设置",
-        defaultClient: "默认下载服务器",
+        defaultClient: "默认下载服务器（必选）",
         autoUpdate: "自动更新官方数据",
         save: "保存",
         allowSelectionTextSearch: "启用页面内容选择搜索",
-        allowDropToSend: "启用拖放链接到插件图标时，直接发送链接到下载服务器",
+        allowDropToSend: "启用拖放链接到助手图标时，直接发送链接到下载服务器",
         clearCache: "清除缓存",
         clearCacheConfirm:
           "确认要清除缓存吗？清除完成后，下次将会从官网中重新下载系统配置信息。",
@@ -281,7 +289,7 @@ export default Vue.extend({
         searchResultRows: "搜索时每站点返回结果数量",
         saveDownloadHistory: "启用下载历史，以记录每次一键发送的种子信息",
         connectClientTimeout:
-          "连接下载服务器超时时间（毫秒，1000毫秒=1秒），超出后将中断连接",
+          "全局超时时间（毫秒，1000毫秒=1秒），作用于连接下载服务器、下载种子文件等操作",
         noClient: "尚未配置下载服务器，请配置下载服务后再选择",
         cacheIsCleared: "缓存已清除，如需立即生效，请重新打开页面",
         saved: "参数已保存",
@@ -299,7 +307,8 @@ export default Vue.extend({
         getMovieInformationBeforeSearching:
           "当输入搜索关键字时，从豆瓣加载相关信息以供预选",
         maxMovieInformationCount: "最多显示条目（1-20）：",
-        searchModeForItem: "当点击预选条目时："
+        searchModeForItem: "当点击预选条目时：",
+        showToolbarOnContentPage: "启用站点页面助手图标和工具栏（如一键下载等）"
       },
       searchModes: [
         {
@@ -331,7 +340,8 @@ export default Vue.extend({
           getMovieInformation: true,
           maxMovieInformationCount: 5,
           searchModeForItem: EBeforeSearchingItemSearchMode.id
-        }
+        },
+        showToolbarOnContentPage: true
       } as Options,
       units: [] as any,
       hours: [] as any,
