@@ -86,7 +86,7 @@
               <v-btn
                 flat
                 icon
-                style="margin:0;"
+                class="siteIcon"
                 :title="words.getInfos"
                 @click.stop="getSiteUserInfo(props.item)"
               >
@@ -458,6 +458,12 @@ export default Vue.extend({
     width: 16px;
     top: -2px;
     right: -8px;
+  }
+
+  .siteIcon {
+    margin: 0;
+    height: 30px;
+    width: 30px;
   }
 }
 </style>
