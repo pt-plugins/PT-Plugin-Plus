@@ -1,9 +1,0 @@
-{
-  "name": "BTSCHOOL",
-  "description": "汇聚每一个人的影响力",
-  "url": "https://pt.btschool.net/",
-  "icon": "https://pt.btschool.net/favicon.ico",
-  "tags": ["影视", "综合"],
-  "schema": "NexusPHP",
-  "host": "pt.btschool.net"
-}

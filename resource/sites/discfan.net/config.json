@@ -1,11 +1,14 @@
 {
-  "name": "港知堂",
-  "description": "港片爱好者之家",
-  "url": "https://pt.gztown.net/",
-  "icon": "https://pt.gztown.net/favicon.ico",
+  "name": "DiscFan",
+  "description": "DiscFan",
+  "url": "https://discfan.net/",
+  "icon": "https://discfan.net/favicon.ico",
   "tags": ["影视", "港片"],
   "schema": "NexusPHP",
-  "host": "pt.gztown.net",
+  "host": "discfan.net",
+  "formerHosts": [
+    "pt.gztown.net"
+  ],
   "categories": [{
     "entry": "*",
     "result": "&cat$id$=1",
