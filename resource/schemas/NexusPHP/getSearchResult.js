@@ -280,23 +280,22 @@ if (!"".getQueryString) {
             case "hdchina.org":
               if (title.parent().next().is("h4")) {
                 subTitle = title.parent().next().text();
-                break;
               }
+              break;
 
-              case "tp.m-team.cc":
-                title = row.find("a[href*='hit'][title]").last();
-                subTitle = title.parent().html().split("<br>");
-                subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
-                break;
+            case "tp.m-team.cc":
+              title = row.find("a[href*='hit'][title]").last();
+              subTitle = title.parent().html().split("<br>");
+              subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
+              break;
 
-              case "u2.dmhy.org":
-                subTitle = $('.torrentname > tbody > tr:eq(1)', row).find('.tooltip').text();
-                break;
+            case "u2.dmhy.org":
+              subTitle = $('.torrentname > tbody > tr:eq(1)', row).find('.tooltip').text();
+              break;
 
-              default:
-                subTitle = "";
-                break;
-
+            default:
+              subTitle = "";
+              break;
           }
         }
 
