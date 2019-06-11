@@ -41,8 +41,10 @@ PT 助手 Plus，是一款 Google Chrome 和 Firefox 浏览器插件（Web Exten
 - 根据当前站点显示专属功能，如：
   - 封面模式浏览种子页面；
 - 保存下载历史记录（默认关闭）；
-- 多语言支持（计划中）；
+- `豆瓣` 电影页面、[Top250](https://movie.douban.com/top250)、[选电影](https://movie.douban.com/explore) 一键搜索 PT 种子支持；
+- `IMDb` 电影页面、[Top250](https://www.imdb.com/chart/top?ref_=nv_mv_250) 一键搜索 PT 种子支持；
 
 ## 安装及使用
 
-- 参考 [Wiki](https://github.com/ronggang/PT-Plugin-Plus/wiki) 的详细说明
+- 如何安装和使用，请参考 [Wiki](https://github.com/ronggang/PT-Plugin-Plus/wiki) 的详细说明；
+- 常见问题可 [点这里](https://github.com/ronggang/PT-Plugin-Plus/wiki/frequently-asked-questions) 找到答案；
