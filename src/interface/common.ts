@@ -308,6 +308,7 @@ export interface SearchEntryConfig {
   parseScript?: string;
   resultSelector?: string;
   area?: SearchEntryConfigArea[];
+  headers?: Dictionary<any>;
 }
 
 export interface SearchEntry {
@@ -324,6 +325,7 @@ export interface SearchEntry {
   queryString?: string;
   categories?: string[];
   appendToSearchKeyString?: string;
+  headers?: Dictionary<any>;
 }
 
 export interface UIOptions {

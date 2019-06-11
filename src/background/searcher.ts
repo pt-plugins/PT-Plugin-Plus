@@ -138,6 +138,7 @@ export class Searcher {
           entry.resultType = entry.resultType || searchEntryConfig.resultType;
           entry.resultSelector =
             entry.resultSelector || searchEntryConfig.resultSelector;
+          entry.headers = entry.headers || searchEntryConfig.headers;
         }
 
         // 判断是否指定了搜索页和用于获取搜索结果的脚本
@@ -292,7 +293,8 @@ export class Searcher {
         url: url,
         dataType: "text",
         contentType: "text/plain",
-        timeout: (this.options.search && this.options.search.timeout) || 30000
+        timeout: (this.options.search && this.options.search.timeout) || 30000,
+        headers: entry.headers
       })
         .done((result: any) => {
           console.log("getSearchResult.done", url);

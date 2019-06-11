@@ -115,7 +115,8 @@ class Config {
             "patterns",
             "torrentTagSelectors",
             "icon",
-            "activeURL"
+            "activeURL",
+            "searchEntryConfig"
           ].forEach((key: string) => {
             let _item = item as any;
             if (_item[key]) {
