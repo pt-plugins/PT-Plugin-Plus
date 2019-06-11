@@ -66,7 +66,8 @@ export default Vue.extend({
         filterSearchResults: "过滤搜索结果",
         noResultsSites: "无结果站点：",
         failedSites: "失败站点：",
-        reSearchFailedSites: "重试失败的站点"
+        reSearchFailedSites: "重试失败的站点",
+        failUrl: "链接无效"
       },
       key: "",
       // 指定站点搜索
@@ -690,10 +691,12 @@ export default Vue.extend({
           .replace(/\/\//g, "/")
           .replace("****", "://");
 
-        item.url = (item.url as string)
-          .replace("://", "****")
-          .replace(/\/\//g, "/")
-          .replace("****", "://");
+        if (item.url) {
+          item.url = item.url
+            .replace("://", "****")
+            .replace(/\/\//g, "/")
+            .replace("****", "://");
+        }
 
         this.datas.push(item);
         this.getLinks.push(item.link);

@@ -418,38 +418,41 @@
           <!-- <td>{{ props.item.author }}</td> -->
           <td>{{ props.item.time | formatDate }}</td>
           <td>
-            <v-icon
-              small
-              class="mr-2"
-              @click="copyLinkToClipboard(props.item.url)"
-              :title="words.copyToClipboardTip"
-            >file_copy</v-icon>
+            <template v-if="!!props.item.url">
+              <v-icon
+                small
+                class="mr-2"
+                @click="copyLinkToClipboard(props.item.url)"
+                :title="words.copyToClipboardTip"
+              >file_copy</v-icon>
 
-            <!-- 服务端下载 -->
-            <v-icon
-              @click.stop="showSiteContentMenus(props.item, $event)"
-              small
-              class="mr-2"
-              :title="words.sendToClient"
-            >cloud_download</v-icon>
+              <!-- 服务端下载 -->
+              <v-icon
+                @click.stop="showSiteContentMenus(props.item, $event)"
+                small
+                class="mr-2"
+                :title="words.sendToClient"
+              >cloud_download</v-icon>
 
-            <v-icon
-              @click.stop="saveTorrentFile(props.item)"
-              small
-              class="mr-2"
-              :title="words.save"
-              v-if="props.item.site.downloadMethod=='POST'"
-            >get_app</v-icon>
+              <v-icon
+                @click.stop="saveTorrentFile(props.item)"
+                small
+                class="mr-2"
+                :title="words.save"
+                v-if="props.item.site.downloadMethod=='POST'"
+              >get_app</v-icon>
 
-            <a
-              v-else
-              :href="props.item.url"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              :title="words.save"
-            >
-              <v-icon small class="mr-2">get_app</v-icon>
-            </a>
+              <a
+                v-else
+                :href="props.item.url"
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                :title="words.save"
+              >
+                <v-icon small class="mr-2">get_app</v-icon>
+              </a>
+            </template>
+            <span v-else>{{ words.failUrl }}</span>
           </td>
         </template>
       </v-data-table>
