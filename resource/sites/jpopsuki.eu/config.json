@@ -59,6 +59,10 @@
         },
         "seedingSize": {
           "value": -1
+        },
+        "messageCount": {
+          "selector": ["#alerts > .alertbar > a[href='notice.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         }
       }
     }
