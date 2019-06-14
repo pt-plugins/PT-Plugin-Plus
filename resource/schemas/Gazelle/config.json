@@ -38,15 +38,15 @@
       "fields": {
         "uploaded": {
           "selector": "div:contains('Stats') + ul.stats > li:contains('Uploaded')",
-          "filters": ["query.text().match(/Uploaded.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/Uploaded.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "downloaded": {
           "selector": "div:contains('Stats') + ul.stats > li:contains('Downloaded')",
-          "filters": ["query.text().match(/Downloaded.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/Downloaded.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "ratio": {
           "selector": "div:contains('Stats') + ul.stats > li:contains('Ratio:')",
-          "filters": ["query.text().match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+          "filters": ["query.text().replace(/,/g,'').match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
         },
         "levelName": {
           "selector": "div:contains('Personal') + ul.stats > li:contains('Class:')",
