@@ -64,6 +64,15 @@
         if (title.length == 0) {
           continue;
         }
+
+        // 对title进行处理，防止出现cf的email protect
+        if (title.find('span.__cf_email__')) {
+          let constructor = this.constructor;
+          title.find('span.__cf_email__').each(function () {
+            $(this).replaceWith(constructor.cfDecodeEmail($(this).data('cfemail')));
+          })
+        }
+
         let titleStrings = title.html().split("<br>");
         let link = title.attr("href");
         if (link && link.substr(0, 4) !== "http") {
@@ -119,6 +128,18 @@
       }
 
       return results;
+    }
+
+
+    // cloudflare Email 解码方法，来自 https://usamaejaz.com/cloudflare-email-decoding/
+    // TODO 以后视情况将其改成公用方法
+    static cfDecodeEmail(encodedString) {
+      var email = "", r = parseInt(encodedString.substr(0, 2), 16), n, i;
+      for (n = 2; encodedString.length - n; n += 2){
+        i = parseInt(encodedString.substr(n, 2), 16) ^ r;
+        email += String.fromCharCode(i);
+      }
+      return email;
     }
 
     /**
