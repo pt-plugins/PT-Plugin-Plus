@@ -13,6 +13,7 @@ class App {
   public express = Express();
   public options;
   public systemConfig;
+  public i18n;
 
   constructor(options) {
     this.options = options || {
@@ -23,6 +24,7 @@ class App {
 
     let buildPlugin = new BuildPlugin("../../resource");
     this.systemConfig = JSON.stringify(buildPlugin.getSystemConfig());
+    this.i18n = JSON.stringify(buildPlugin.geti18n());
 
     this.useModules();
     this.mountRoutes();
@@ -47,6 +49,10 @@ class App {
   private mountRoutes(): void {
     this.express.get("/systemConfig.json", (req, res) => {
       res.send(this.systemConfig);
+    });
+
+    this.express.get("/i18n.json", (req, res) => {
+      res.send(this.i18n);
     });
 
     this.express.get("/test/*.json", (req, res) => {

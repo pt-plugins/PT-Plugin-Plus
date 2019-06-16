@@ -1,16 +1,16 @@
 <template>
   <div>
-    <v-alert :value="true" type="info">{{ words.title }}</v-alert>
+    <v-alert :value="true" type="info">{{ $t('settings.backup.title') }}</v-alert>
     <v-card>
       <v-card-actions class="pa-3">
         <input type="file" ref="fileRestore" style="display:none;">
         <v-btn color="success" @click="backup">
           <v-icon>save</v-icon>
-          <span class="ml-1">{{ words.backup }}</span>
+          <span class="ml-1">{{ $t('settings.backup.backup') }}</span>
         </v-btn>
         <v-btn color="info" @click="restore">
           <v-icon>restore</v-icon>
-          <span class="ml-1">{{ words.restore }}</span>
+          <span class="ml-1">{{ $t('settings.backup.restore') }}</span>
         </v-btn>
         <v-spacer></v-spacer>
         <div v-if="!isDevelopmentMode">
@@ -19,20 +19,20 @@
             @click="backupToGoogle"
             :loading="status.backupToGoogle"
             :disabled="status.backupToGoogle"
-            :title="words.backupToGoogle"
+            :title="$t('settings.backup.backupToGoogle')"
           >
             <v-icon>backup</v-icon>
-            <span class="ml-1">{{ words.backupToGoogle }}</span>
+            <span class="ml-1">{{ $t('settings.backup.backupToGoogle') }}</span>
           </v-btn>
           <v-btn
             color="info"
             @click="restoreFromGoogle"
             :loading="status.restoreFromGoogle"
             :disabled="status.restoreFromGoogle"
-            :title="words.restoreFromGoogle"
+            :title="$t('settings.backup.restoreFromGoogle')"
           >
             <v-icon>cloud_download</v-icon>
-            <span class="ml-1">{{ words.restoreFromGoogle }}</span>
+            <span class="ml-1">{{ $t('settings.backup.restoreFromGoogle') }}</span>
           </v-btn>
 
           <v-btn
@@ -40,15 +40,15 @@
             @click="clearFromGoogle"
             :loading="status.clearFromGoogle"
             :disabled="status.clearFromGoogle"
-            :title="words.clearFromGoogleTip"
+            :title="$t('settings.backup.clearFromGoogleTip')"
           >
             <v-icon>delete_sweep</v-icon>
-            <span class="ml-1">{{ words.clearFromGoogle }}</span>
+            <span class="ml-1">{{ $t('settings.backup.clearFromGoogle') }}</span>
           </v-btn>
         </div>
       </v-card-actions>
     </v-card>
-    <v-alert :value="true" color="grey">{{words.subTitle}}</v-alert>
+    <v-alert :value="true" color="grey">{{ $t('settings.backup.subTitle') }}</v-alert>
     <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
     <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{ successMsg }}</v-snackbar>
   </div>
@@ -62,29 +62,6 @@ const extension = new Extension();
 export default Vue.extend({
   data() {
     return {
-      words: {
-        title: "参数备份与恢复",
-        subTitle: "注：备份文件为明文，其中可能包含个人信息，请注意保管。",
-        backup: "备份",
-        restore: "恢复",
-        backupToGoogle: "备份到Google",
-        restoreFromGoogle: "从Google恢复",
-        restoreConfirm:
-          "确认要从备份数据中恢复配置吗？这将覆盖当前所有设置信息。",
-        restoreSuccess: "参数已恢复",
-        restoreError: "参数恢复失败！",
-        loadError: "配置信息加载失败",
-        backupDone: "备份完成",
-        backupError: "备份参数失败！",
-        errorMessage: {
-          QUOTA_BYTES_PER_ITEM: "要保存的内容大小超出了Google限制（8K）"
-        },
-        clearFromGoogle: "清除",
-        clearFromGoogleTip: "从Google中清除已备份的参数",
-        clearFromGoogleConfirm: "是否要从Google中清除已备份的参数？",
-        clearFromGoogleError: "清除失败！",
-        clearFromGoogleSuccess: "内容已清除"
-      },
       fileName: "PT-plugin-plus-config.json",
       fileInput: null as any,
       errorMsg: "",
@@ -128,10 +105,10 @@ export default Vue.extend({
             type: "text/plain"
           });
           FileSaver.saveAs(data, this.fileName);
-          this.successMsg = this.words.backupDone;
+          this.successMsg = this.$t("settings.backup.backupDone").toString();
         })
         .catch(() => {
-          this.errorMsg = this.words.backupError;
+          this.errorMsg = this.$t("settings.backup.backupError").toString();
         });
     },
     restore() {
@@ -146,20 +123,24 @@ export default Vue.extend({
       ) {
         var r = new FileReader();
         r.onload = (e: any) => {
-          if (confirm(this.words.restoreConfirm)) {
+          if (confirm(this.$t("settings.backup.restoreConfirm").toString())) {
             try {
               let result = JSON.parse(e.target.result);
               this.$store.dispatch("resetRunTimeOptions", result);
               // let system = this.$store.state.options.system;
               console.log(result);
-              this.successMsg = this.words.restoreSuccess;
+              this.successMsg = this.$t(
+                "settings.backup.restoreSuccess"
+              ).toString();
             } catch (error) {
-              this.errorMsg = this.words.restoreError;
+              this.errorMsg = this.$t(
+                "settings.backup.restoreError"
+              ).toString();
             }
           }
         };
         r.onerror = () => {
-          this.errorMsg = this.words.loadError;
+          this.errorMsg = this.$t("settings.backup.loadError").toString();
         };
         r.readAsText(restoreFile.files[0]);
         restoreFile.value = "";
@@ -171,27 +152,31 @@ export default Vue.extend({
       extension
         .sendRequest(EAction.backupToGoogle)
         .then(() => {
-          this.successMsg = this.words.backupDone;
+          this.successMsg = this.$t("settings.backup.backupDone").toString();
         })
         .catch((error: any) => {
           console.log(error.msg);
           if (error.msg && error.msg.message) {
             switch (true) {
               case error.msg.message.indexOf("QUOTA_BYTES_PER_ITEM") != -1:
-                this.errorMsg = this.words.errorMessage.QUOTA_BYTES_PER_ITEM;
+                this.errorMsg = this.$t(
+                  "settings.backup.errorMessage.QUOTA_BYTES_PER_ITEM"
+                ).toString();
                 break;
 
               default:
-                this.errorMsg = this.words.backupError;
+                this.errorMsg = this.$t(
+                  "settings.backup.backupError"
+                ).toString();
                 break;
             }
           } else {
-            this.errorMsg = this.words.backupError;
+            this.errorMsg = this.$t("settings.backup.backupError").toString();
           }
           extension.sendRequest(EAction.writeLog, null, {
             module: EModule.options,
             event: "backupToGoogle",
-            msg: this.words.backupError,
+            msg: this.$t("settings.backup.backupError").toString(),
             data: error
           });
         })
@@ -200,7 +185,7 @@ export default Vue.extend({
         });
     },
     restoreFromGoogle() {
-      if (!confirm(this.words.restoreConfirm)) {
+      if (!confirm(this.$t("settings.backup.restoreConfirm").toString())) {
         return;
       }
       this.clearMessage();
@@ -208,15 +193,17 @@ export default Vue.extend({
       extension
         .sendRequest(EAction.restoreFromGoogle)
         .then((options: Options) => {
-          this.successMsg = this.words.restoreSuccess;
+          this.successMsg = this.$t(
+            "settings.backup.restoreSuccess"
+          ).toString();
           this.$store.commit("updateOptions", options);
         })
         .catch((error: any) => {
-          this.errorMsg = this.words.restoreError;
+          this.errorMsg = this.$t("settings.backup.restoreError").toString();
           extension.sendRequest(EAction.writeLog, null, {
             module: EModule.options,
             event: "restoreFromGoogle",
-            msg: this.words.restoreError,
+            msg: this.$t("settings.backup.restoreError").toString(),
             data: error
           });
         })
@@ -229,7 +216,9 @@ export default Vue.extend({
       this.errorMsg = "";
     },
     clearFromGoogle() {
-      if (!confirm(this.words.clearFromGoogleConfirm)) {
+      if (
+        !confirm(this.$t("settings.backup.clearFromGoogleConfirm").toString())
+      ) {
         return;
       }
       this.clearMessage();
@@ -237,14 +226,18 @@ export default Vue.extend({
       extension
         .sendRequest(EAction.clearFromGoogle)
         .then((options: Options) => {
-          this.successMsg = this.words.clearFromGoogleSuccess;
+          this.successMsg = this.$t(
+            "settings.backup.clearFromGoogleSuccess"
+          ).toString();
         })
         .catch((error: any) => {
-          this.errorMsg = this.words.clearFromGoogleError;
+          this.errorMsg = this.$t(
+            "settings.backup.clearFromGoogleError"
+          ).toString();
           extension.sendRequest(EAction.writeLog, null, {
             module: EModule.options,
             event: "clearFromGoogle",
-            msg: this.words.clearFromGoogleError,
+            msg: this.$t("settings.backup.clearFromGoogleError").toString(),
             data: error
           });
         })

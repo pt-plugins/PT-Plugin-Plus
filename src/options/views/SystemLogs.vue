@@ -1,21 +1,21 @@
 <template>
   <div class="system-logs">
-    <v-alert :value="true" type="info">{{ words.title }}</v-alert>
+    <v-alert :value="true" type="info">{{ $t('systemLog.title') }}</v-alert>
     <v-card>
       <v-card-title>
         <v-btn color="error" :disabled="selected.length==0">
           <v-icon class="mr-2">remove</v-icon>
-          {{ words.remove }}
+          {{ $t('common.remove') }}
         </v-btn>
 
         <v-btn color="error" @click="clear" :disabled="items.length==0">
           <v-icon class="mr-2">clear</v-icon>
-          {{ words.clear }}
+          {{ $t('common.clear') }}
         </v-btn>
 
         <v-btn color="success" @click="save">
           <v-icon>save</v-icon>
-          <span class="ml-1">{{ words.save }}</span>
+          <span class="ml-1">{{ $t('systemLog.save') }}</span>
         </v-btn>
         <v-spacer></v-spacer>
 
@@ -66,9 +66,9 @@
     <!-- 删除确认 -->
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
-        <v-card-title class="headline red lighten-2">{{ words.removeConfirmTitle }}</v-card-title>
+        <v-card-title class="headline red lighten-2">{{ $t('common.removeConfirmTitle') }}</v-card-title>
 
-        <v-card-text>{{ words.removeConfirm }}</v-card-text>
+        <v-card-text>{{ $t('common.removeConfirm') }}</v-card-text>
 
         <v-divider></v-divider>
 
@@ -76,11 +76,11 @@
           <v-spacer></v-spacer>
           <v-btn flat color="info" @click="dialogRemoveConfirm=false">
             <v-icon>cancel</v-icon>
-            <span class="ml-1">{{ words.cancel }}</span>
+            <span class="ml-1">{{ $t('common.cancel') }}</span>
           </v-btn>
           <v-btn color="error" flat @click="remove">
             <v-icon>check_circle_outline</v-icon>
-            <span class="ml-1">{{ words.ok }}</span>
+            <span class="ml-1">{{ $t('common.ok') }}</span>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -100,17 +100,6 @@ const extension = new Extension();
 export default Vue.extend({
   data() {
     return {
-      words: {
-        title: "系统日志",
-        remove: "删除",
-        clear: "清除",
-        removeConfirm: "确认要删除这条记录吗？",
-        removeConfirmTitle: "删除确认",
-        clearConfirm: "确认要删除所有记录吗？",
-        ok: "确认",
-        cancel: "取消",
-        save: "保存日志"
-      },
       selected: [],
       selectedItem: {} as any,
       pagination: {
@@ -118,13 +107,6 @@ export default Vue.extend({
         sortBy: "time",
         descending: true
       },
-      headers: [
-        { text: "模块", align: "left", value: "module" },
-        { text: "事件", align: "left", value: "event" },
-        { text: "时间", align: "left", value: "time" },
-        { text: "描述", align: "left", value: "msg" },
-        { text: "操作", value: "name", sortable: false }
-      ],
       items: [],
       dialogRemoveConfirm: false,
       options: this.$store.state.options,
@@ -138,7 +120,7 @@ export default Vue.extend({
 
   methods: {
     clear() {
-      if (confirm(this.words.clearConfirm)) {
+      if (confirm(this.$t("common.clearConfirm").toString())) {
         extension.sendRequest(EAction.clearSystemLogs).then((result: any) => {
           this.items = result;
         });
@@ -200,6 +182,34 @@ export default Vue.extend({
         descending: true
       }
     );
+  },
+
+  computed: {
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("systemLog.headers.module"),
+          align: "left",
+          value: "module"
+        },
+        {
+          text: this.$t("systemLog.headers.event"),
+          align: "left",
+          value: "event"
+        },
+        {
+          text: this.$t("systemLog.headers.time"),
+          align: "left",
+          value: "time"
+        },
+        { text: this.$t("systemLog.headers.msg"), align: "left", value: "msg" },
+        {
+          text: this.$t("systemLog.headers.action"),
+          value: "name",
+          sortable: false
+        }
+      ];
+    }
   }
 });
 </script>

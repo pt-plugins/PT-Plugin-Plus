@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="show" max-width="800">
     <v-card>
-      <v-card-title class="headline blue-grey darken-2" style="color:white">{{ words.title }}</v-card-title>
+      <v-card-title
+        class="headline blue-grey darken-2"
+        style="color:white"
+      >{{ $t('settings.downloadClients.edit.title') }}</v-card-title>
 
       <v-card-text>
         <Editor :option="defaultItem"/>
@@ -13,11 +16,11 @@
         <v-spacer></v-spacer>
         <v-btn flat color="error" @click="cancel">
           <v-icon>cancel</v-icon>
-          <span class="ml-1">{{ words.cancel }}</span>
+          <span class="ml-1">{{ $t('settings.downloadClients.edit.cancel') }}</span>
         </v-btn>
         <v-btn flat color="success" @click="save" :disabled="!defaultItem.valid">
           <v-icon>check_circle_outline</v-icon>
-          <span class="ml-1">{{ words.ok }}</span>
+          <span class="ml-1">{{ $t('settings.downloadClients.edit.ok') }}</span>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -32,11 +35,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      words: {
-        title: "编辑下载服务器",
-        ok: "确认",
-        cancel: "取消"
-      },
       show: false,
       defaultItem: {
         name: ""

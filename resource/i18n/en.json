@@ -1,0 +1,411 @@
+{
+  "name": "English",
+  "code": "en",
+  "authors": [
+    "ronggang"
+  ],
+  "words": {
+    "app": {
+      "initError": "The configuration information failed to be loaded. The system definition information was not obtained. Please try to refresh the current page.",
+      "initializing": "The program is preparing some data, please wait...",
+      "author": "ronggang",
+      "name": "PT Plugin Plus"
+    },
+    "common": {
+      "debugMode": "Debug mode active",
+      "changeLanguage": "Switch language",
+      "version": "Version",
+      "systemLog": "System Log",
+      "haveNewReleases": "Update available",
+      "ok": "OK",
+      "cancel": "Cancel",
+      "remove": "Remove",
+      "clear": "Clear",
+      "removeConfirm": "Are you sure you want to delete this record?",
+      "removeConfirmTitle": "Delete confirmation",
+      "clearConfirm": "Are you sure you want to delete all records?"
+    },
+    "topbar": {
+      "title": "@:(app.name)",
+      "navBarTip": "Click to show\/hide the navigation bar",
+      "help": "Wiki",
+      "github": "Github",
+      "showNewTorrents": "Get the first page of each station",
+      "showNewTorrentsTip": "Search the first page torrents of each station according to the current solution"
+    },
+    "navigation": {
+      "dashboard": {
+        "title": "Overview",
+        "searchResults": "Search Results",
+        "history": "Download History"
+      },
+      "settings": {
+        "title": "Settings",
+        "base": "General",
+        "sites": "Sites",
+        "downloadClients": "Download Server",
+        "downloadPaths": "Download Paths",
+        "searchSolution": "Search Solution",
+        "backup": "Backup & Restore",
+        "permissions": "Permissions"
+      },
+      "thanks": {
+        "title": "Thanks",
+        "reference": "Project Reference",
+        "specialThanksTo": "Special Thanks"
+      },
+      "support": {
+        "title": "Support This Project",
+        "bugReport": "Bug Reoprt",
+        "donate": "Donate"
+      }
+    },
+    "permissions": {
+      "title": "Thank you for choosing PT Plugin Plus",
+      "subtitle": "Please authorize the required features to avoid affecting normal use.",
+      "authorize": "Authorization",
+      "cancel": "Cancel",
+      "cancelled": "Bye!",
+      "details": {
+        "allSites": "Access to all websites for searching and get torrent data;",
+        "tabs": "Read permission of the activity tab to display the PT Plugin Plus icon;",
+        "downloads": "Download permission for batch download of torrent files"
+      }
+    },
+    "searchBox": {
+      "searchTip": "Input keyword, IMDb number, press Enter to search",
+      "default": "<Default>",
+      "defaultTip": "Search only allowed sites",
+      "all": "<All Sites>",
+      "noSearchSolution": "No Search Solution, please add",
+      "noAllowSearchSites": "The site that allows search is not configured yet. Please configure it first.",
+      "searchThisKey": "Search “{key}”",
+      "doubanTip": "The above data comes from the Douban Movie API v2 query interface; if you do not want to display these results for pre-selection, you can close it in the General Settings",
+      "toDouban": "View in Douban"
+    },
+    "donate": {
+      "title": "Thanks for the support"
+    },
+    "history": {
+      "title": "Download history",
+      "remove": "Remove",
+      "clear": "Clear",
+      "removeConfirm": "Are you sure you want to delete this record?",
+      "removeConfirmTitle": "Delete confirmation",
+      "clearConfirm": "Are you sure you want to delete all downloads?",
+      "ok": "@:(common.ok)",
+      "cancel": "@:(common.cancel)",
+      "download": "Download again",
+      "fail": "failure",
+      "success": "Success",
+      "unknown": "N/A",
+      "defaultPath": "Default directory",
+      "seedingTorrent": "Sending torrent to download server..."
+    },
+    "home": {
+      "title": "Overview",
+      "getInfos": "Refresh user data",
+      "cancelRequest": "Cancel request",
+      "requesting": "Requesting",
+      "siteName": "Site name",
+      "userName": "User name",
+      "userLevel": "User level",
+      "week": "Expressed in weeks",
+      "timeline": "Time line",
+      "settings": "Settings",
+      "statistic": "Statistic",
+      "newMessage": "New message",
+      "startGetting": "Getting...",
+      "gettingForSite": "Getting {siteName} data",
+      "requestCompleted": "Request completed, time: {second} seconds.",
+      "getUserInfoError": "An error occurred",
+      "getUserInfoAbort": "Get user profile request has been canceled. ({siteName})",
+      "getUserInfoAbortError": "Failed to get user profile request cancellation. ({siteName})",
+      "headers": {
+        "site": "Site",
+        "userName": "User name",
+        "levelName": "Level",
+        "activitiyData": "Activitiy data",
+        "ratio": "Ratio",
+        "seeding": "Seeding",
+        "seedingSize": "Seeding size",
+        "bonus": "Bonus",
+        "joinTime": "Join time",
+        "lastUpdateTime": "Update at",
+        "status": "Status"
+      }
+    },
+    "systemLog": {
+      "title": "System Log",
+      "save": "Save log",
+      "headers": {
+        "module": "Module",
+        "event": "Events",
+        "time": "Time",
+        "msg": "Description",
+        "action": "Action"
+      }
+    },
+    "reference": {
+      "title": "This project uses or references the following items",
+      "thanks": "The birth of PT Plugin Plus is based on these projects. Thanks to all the participants of the project, thank you for their contribution!",
+      "headers": {
+        "name": "Name",
+        "ver": "Ver",
+        "url": "URL"
+      }
+    },
+    "team": {
+      "title": "Alphabetical Order",
+      "contributors": "Contributors:",
+      "issues": "Users:"
+    },
+    "timeline": {
+      "share": "Generate a share image",
+      "siteName": "Site name",
+      "userName": "User name",
+      "userLevel": "User level",
+      "close": "Close",
+      "shareMessage": "Growth process",
+      "total": {
+        "uploaded": "Total upload: ",
+        "downloaded": "Total download: ",
+        "seedingSize": "Seeding size: ",
+        "ratio": "Total ratio: ",
+        "years": "Ｐ age：≈ {year} year(s)"
+      },
+      "updateat": "Update at: ",
+      "user": {
+        "uploaded": "Uploaded: ",
+        "downloaded": "Downloaded: ",
+        "seedingSize": "Seeding size: ",
+        "ratio": "Ratio: ",
+        "bonus": "Bonus: "
+      },
+      "inputDisplayName": "Please enter a name to display:",
+      "inputShareMessage": "Please enter a message to display:"
+    },
+    "searchTorrent": {
+      "title": "Search Result",
+      "download": "Download",
+      "downloadFailed": "Re-download failed",
+      "sendToClient": "Send to server",
+      "sendToClientTip": "Send torrent to download server",
+      "save": "Save torrent file",
+      "searching": "Searching, please wait...",
+      "cancelSearch": "Cancel search",
+      "showCheckbox": "Multiple selection",
+      "noTag": "No tag",
+      "allSites": "All Sites",
+      "multiDownloadConfirm": "The number of torrents currently downloaded exceeds one, and the browser may prompt to save multiple times. Do you want to continue?",
+      "copyToClipboard": "Copy Link",
+      "copyToClipboardTip": "Copy download link to clipboard",
+      "reSearch": "Re-search",
+      "showCategory": "Category",
+      "filterSearchResults": "Filter search results",
+      "noResultsSites": "No results site:",
+      "failedSites": "Failed site:",
+      "reSearchFailedSites": "Re-search failed site",
+      "failUrl": "Invalid link",
+      "headers": {
+        "site": "Site",
+        "title": "Title",
+        "category": "Category\/Entrance",
+        "size": "Size",
+        "seeders": "Seeders",
+        "leechers": "Leechers",
+        "completed": "Completed",
+        "time": "Time(≈)",
+        "action": "Action"
+      },
+      "optionsIsMissing": "System parameter is missing",
+      "sitesIsMissing": "Please set up the site first",
+      "optionsIsMissingErrorMsg": "System parameters are lost, please re-open this page",
+      "doubanIdConversionFailed": "Douban ID Conversion Failed",
+      "skipSites": "Sites that do not support search at this time:",
+      "noAllowSearchSites": "You have not configured a site that allows search. Please go to [Site Settings] to configure.",
+      "searchStartMsg": "Ready to start searching, a total of {count} sites",
+      "siteIsSearching": "[{siteName}] is searching.",
+      "siteIsSearchDone": "{siteName} Search completed with {count} results.",
+      "siteSearchAbort": "{host} Search request canceled",
+      "siteSearchAbortError": "{host} Search request cancellation failed",
+      "siteSearchTimeout": "{host} Connection timed out",
+      "siteSearchError": "{host} Network or other error",
+      "notLogged": "Not logged",
+      "searchFinished": "Search completed, found {count} results, time: {second} seconds.",
+      "searchProgress": "{count} results have been received, search is still in progress...",
+      "seedingTorrent": "Sending torrent to download server...",
+      "userCanceled": "User Canceled",
+      "sendTorrentToClient": "Send torrent to the download server",
+      "sendTorrentToClientSuccess": "Send torrent to download server successfully",
+      "sendTorrentToClientError": "Send torrent to download server failed",
+      "downloadSelectedError": "Failed to download torrent file: {name}",
+      "copyLinkToClipboardSuccess": "Download link has been copied to the clipboard",
+      "copyLinkToClipboardError": "Copying the download link failed!",
+      "copySelectedToClipboardSuccess": "{count} download links have been copied to the clipboard",
+      "downloadTo": "Download to: {path}",
+      "noReSearchSites": "No sites that need to be re-searched",
+      "doubanIdConverting": "Trying to convert the douban id, please wait...",
+      "invalidDoubanId": "Invalid douban id"
+    },
+    "settings": {
+      "backup": {
+        "title": "Parameter backup and recovery",
+        "subTitle": "Note: The backup file is in plain text and may contain personal information. Please take care of it.",
+        "backup": "Backup",
+        "restore": "Restore",
+        "backupToGoogle": "Backup To Google",
+        "restoreFromGoogle": "Restore From Google",
+        "restoreConfirm": "Are you sure you want to restore the settings from the backup data? This will overwrite all current settings.",
+        "restoreSuccess": "Parameter has been restored",
+        "restoreError": "Parameter recovery failed!",
+        "loadError": "Configuration information failed to load",
+        "backupDone": "Backup completed",
+        "backupError": "Backup parameters failed!",
+        "errorMessage": {
+          "QUOTA_BYTES_PER_ITEM": "The size of the content to be saved exceeds the Google limit (8K)"
+        },
+        "clearFromGoogle": "Clear",
+        "clearFromGoogleTip": "Clear backed up parameters from Google",
+        "clearFromGoogleConfirm": "Do you want to clear the backed up parameters from Google?",
+        "clearFromGoogleError": "Clear failed!",
+        "clearFromGoogleSuccess": "Content cleared"
+      },
+      "base": {
+        "title": "General",
+        "defaultClient": "Default download server (required)",
+        "autoUpdate": "Automatically update official data",
+        "save": "Save",
+        "allowSelectionTextSearch": "Enable page content selection search",
+        "allowDropToSend": "Send a link to the download server when dragging and dropping links to the plugin icon",
+        "clearCache": "Clear cache",
+        "clearCacheConfirm": "Are you sure you want to clear the cache? After the cleaning is completed, the system configuration information will be re-downloaded from the official website next time.",
+        "needConfirmWhenExceedSize": "Confirmation when the total volume of torrent downloaded in batches exceeds the following size",
+        "exceedSize": "Size",
+        "searchResultRows": "Number of results returned per site at the time of search",
+        "saveDownloadHistory": "Enable download history to record torrent information sent with one click at a time",
+        "connectClientTimeout": "Global timeout (milliseconds, 1000 milliseconds = 1 second), acting on the connection download server, downloading the torrent file, etc.",
+        "noClient": "The download server has not been configured. Please configure the download service before selecting",
+        "cacheIsCleared": "The cache has been cleared. If it needs to take effect immediately, please reopen the page.",
+        "saved": "Parameter saved",
+        "autoRefreshUserData": "Automatically refresh user data when the browser is open (Beta)",
+        "autoRefreshUserDataTip1": "Automatically refreshes at",
+        "autoRefreshUserDataTip2": "every day (if the browser opens after this time, it will be automatically refreshed when the browser is opened)",
+        "autoRefreshUserDataTip3": "Retry",
+        "autoRefreshUserDataTip4": "times after failure,",
+        "autoRefreshUserDataTip5": "minute apart",
+        "searchResultOrderBySitePriority": "When the search results are clicked on the site header, they are sorted by site priority (effective after refreshing the page after saving)",
+        "saveSearchKey": "Save search keywords",
+        "showMoiveInfoCardOnSearch": "Show movie and rating information when searching by IMDb number",
+        "getMovieInformationBeforeSearching": "When entering a search keyword, load relevant information from Douban for pre-selection",
+        "maxMovieInformationCount": "Display the maximum number of entries (1-20):",
+        "searchModeForItem": "When clicking on a pre-selected item:",
+        "showToolbarOnContentPage": "Enable site page plugin icons and toolbars (such as one-click downloads, etc.)",
+        "lastUpdate": " (last updated on {time})",
+        "lastUpdateUnknown": " (Update time is unknown)",
+        "lastUpdateFailed": " (Update time acquisition failed)",
+        "autoRefreshUserDataLastUpdate": " (last updated on {time})",
+        "beforeSearchingItemSearchMode": {
+          "id": "Search by ID to get more accurate content, but it takes time to convert ID",
+          "name": "Fuzzy search by name to get more content"
+        }
+      },
+      "downloadClients": {
+        "add": {
+          "title": "Add download server",
+          "titleStep1": "Select server type",
+          "titleStep2": "Detailed configuration",
+          "validMsg": "Please select a server type",
+          "helpMsg": "Can't find the server type you want? ",
+          "nextStep": "Next",
+          "prevStep": "Previous",
+          "cancel": "Cancel"
+        },
+        "edit": {
+          "title": "Edit download server",
+          "ok": "OK",
+          "cancel": "Cancel"
+        },
+        "editor": {
+          "name": "Name of server",
+          "type": "Server type",
+          "address": "Server address",
+          "addressTip": "The server address contains the port, such as: http:\/\/192.168.1.1:5000\/",
+          "loginName": "log-in name",
+          "loginPwd": "login password",
+          "id": "ID",
+          "autoStart": "Automatically start downloading when sending a torrent",
+          "autoCreate": "<Automatically generated after saving>",
+          "test": "Test if the server can connect",
+          "testSuccess": "Server can be connected",
+          "testConnectionError": "Network connection error",
+          "testError": "Server connection failed",
+          "testUnknownError": "unknown mistake",
+          "testOtherError": "Other errors, the code returned by the server is: {code}",
+          "testAddressError": "Server address error"
+        },
+        "index": {
+          "title": "Download server configuration",
+          "add": "New",
+          "remove": "Remove",
+          "clear": "Clear",
+          "itemDuplicate": "The name already exists",
+          "removeConfirm": "Are you sure you want to delete this download server?",
+          "removeConfirmTitle": "Delete confirmation",
+          "clearConfirm": "Are you sure you want to delete all download servers?",
+          "removeSelectedConfirm": "Are you sure you want to delete the selected download server?",
+          "ok": "OK",
+          "cancel": "Cancel",
+          "headers": {
+            "name": "Name",
+            "type": "Type",
+            "address": "Address",
+            "action": "Action"
+          }
+        }
+      },
+      "downloadPaths": {
+        "add": {
+          "title": "Add download directory definition",
+          "path": "Directory list",
+          "pathTip": "Press Enter multiple directories separated first as the default directory",
+          "ok": "OK",
+          "cancel": "Cancel",
+          "selectSite": "Select a site (not selected means all sites are available)"
+        },
+        "edit": {
+          "title": "Edit download directory definition",
+          "site": "Site"
+        },
+        "index": {
+          "title": "Download directory settings",
+          "selectedClient": "Servers need to be set",
+          "add": "New",
+          "remove": "Remove",
+          "clear": "Clear",
+          "itemDuplicate": "The name already exists",
+          "removeConfirm": "Are you sure you want to delete this save directory?",
+          "removeConfirmTitle": "Delete confirmation",
+          "removeSelectedConfirm": "Are you sure you want to delete the selected save directory?",
+          "ok": "OK",
+          "cancel": "Cancel",
+          "notSupport": "This server type is not supported at this time",
+          "allSite": "<All Sites>",
+          "headers": {
+            "name": "Site",
+            "path": "Save directory",
+            "action": "Action"
+          }
+        },
+        "keyDescription": {
+          "allowKeys": "The following keywords can be included in the path:",
+          "siteName": "Will be replaced with the current site name;",
+          "siteHost": "Will be replaced with the current site domain name;",
+          "example": "Example: ",
+          "dynamic": "An input box will pop up where the user enters the {key} part of the path;",
+          "dynamicExample": "Example: \/volume1\/<...> ，input: test，result: \/volume1\/test"
+        }
+      }
+    }
+  }
+}

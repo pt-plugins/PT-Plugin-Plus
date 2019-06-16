@@ -9,11 +9,11 @@
   "homepage": "https://github.com/ronggang/PT-Plugin-Plus",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && webpack --config webpack/prod.js && cd test && yarn install && tsc && node ./dist/buildResource.js && cd .. && web-ext build -s ./dist -a ./releases -o",
+    "build": "vue-cli-service build && webpack --config webpack/prod.js && cd debug && yarn install && tsc && node ./dist/buildResource.js && cd .. && web-ext build -s ./dist -a ./releases -o",
     "lint": "vue-cli-service lint",
     "background": "webpack --config webpack/prod.js",
-    "dev": "vue-cli-service build --mode=development && webpack --config webpack/dev.js && cd test && yarn install && tsc && node ./dist/buildResource.js",
-    "dev-s": "cd test && yarn install && tsc && node ./dist/index.js"
+    "dev": "vue-cli-service build --mode=development && webpack --config webpack/dev.js && cd debug && yarn install && tsc && node ./dist/buildResource.js",
+    "dev-s": "cd debug && yarn install && tsc && node ./dist/index.js"
   },
   "dependencies": {
     "basiccontext": "^3.5.1",
@@ -27,6 +27,7 @@
     "url-parse": "^1.4.4",
     "vue": "^2.5.17",
     "vue-class-component": "^6.3.2",
+    "vue-i18n": "^8.11.2",
     "vue-property-decorator": "^7.0.0",
     "vue-router": "^3.0.1",
     "vuetify": "^1.3.0",

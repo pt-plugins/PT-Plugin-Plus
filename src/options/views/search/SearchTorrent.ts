@@ -45,30 +45,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      words: {
-        title: "搜索结果",
-        download: "下载",
-        downloadFailed: "重下失败",
-        sendToClient: "服务器下载",
-        sendToClientTip: "发送到下载服务器",
-        save: "下载种子文件到本地",
-        searching: "正在搜索中，请稍候……",
-        cancelSearch: "取消搜索",
-        showCheckbox: "多选",
-        noTag: "无标签",
-        allSites: "全部站点",
-        multiDownloadConfirm:
-          "当前下载的种子数量超过一个，浏览器可能会多次提示保存，是否继续？",
-        copyToClipboard: "复制链接",
-        copyToClipboardTip: "复制下载链接到剪切板",
-        reSearch: "重新再搜索",
-        showCategory: "分类",
-        filterSearchResults: "过滤搜索结果",
-        noResultsSites: "无结果站点：",
-        failedSites: "失败站点：",
-        reSearchFailedSites: "重试失败的站点",
-        failUrl: "链接无效"
-      },
+      allSitesKey: "allSites",
       key: "",
       // 指定站点搜索
       host: "",
@@ -83,31 +60,6 @@ export default Vue.extend({
         rowsPerPage: 100
       },
       loading: false,
-      headers: [
-        {
-          text: "站点",
-          align: "center",
-          value: this.$store.state.options.searchResultOrderBySitePriority
-            ? "site.priority"
-            : "site.host",
-          width: "100px"
-        },
-        { text: "标题", align: "left", value: "title" },
-        {
-          text: "分类/入口",
-          align: "center",
-          value: "category.name",
-          width: "150px"
-        },
-        { text: "大小", align: "right", value: "size", width: "100px" },
-        // { text: "评论", align: "center", value: "comments" },
-        { text: "上传", align: "right", value: "seeders", width: "60px" },
-        { text: "下载", align: "right", value: "leechers", width: "60px" },
-        { text: "完成", align: "right", value: "completed", width: "60px" },
-        // { text: "发布者", align: "left", value: "author" },
-        { text: "发布于(≈)", align: "left", value: "time", width: "130px" },
-        { text: "操作", sortable: false, width: "100px" }
-      ],
       errorMsg: "",
       haveError: false,
       haveSuccess: false,
@@ -160,7 +112,7 @@ export default Vue.extend({
     if (!this.options.system) {
       this.writeLog({
         event: `SearchTorrent.init`,
-        msg: "系统参数丢失"
+        msg: this.$t("searchTorrent.optionsIsMissing").toString()
       });
     }
     this.pagination = this.$store.getters.pagination(
@@ -267,8 +219,9 @@ export default Vue.extend({
 
       if (!this.options.system) {
         if (this.reloadCount >= 10) {
-          this.errorMsg =
-            "系统参数丢失，多次尝试等待后无效，请重新打开配置页再试";
+          this.errorMsg = this.$t(
+            "searchTorrent.optionsIsMissingErrorMsg"
+          ).toString();
           this.writeLog({
             event: `SearchTorrent.init`,
             msg: this.errorMsg
@@ -283,7 +236,7 @@ export default Vue.extend({
       }
 
       if (!this.options.sites) {
-        this.errorMsg = "请先设置站点";
+        this.errorMsg = this.$t("searchTorrent.sitesIsMissing").toString();
         return;
       }
 
@@ -315,7 +268,9 @@ export default Vue.extend({
                 this.key = searchKeys.cn;
                 this.search();
               } else {
-                this.errorMsg = "豆瓣ID转换失败";
+                this.errorMsg = this.$t(
+                  "searchTorrent.doubanIdConversionFailed"
+                ).toString();
                 this.searchMsg = this.errorMsg;
                 this.loading = false;
               }
@@ -429,12 +384,12 @@ export default Vue.extend({
       }
 
       if (skipSites.length > 0) {
-        this.skipSites = " 暂不支持搜索的站点：" + skipSites.join(",");
+        this.skipSites =
+          this.$t("searchTorrent.skipSites").toString() + skipSites.join(",");
       }
 
       if (sites.length === 0) {
-        this.errorMsg =
-          "您还没有配置允许搜索的站点，请先前往【站点设置】进行配置";
+        this.errorMsg = this.$t("searchTorrent.noAllowSearchSites").toString();
         return;
       }
 
@@ -442,7 +397,9 @@ export default Vue.extend({
       this.beginTime = dayjs();
       this.writeLog({
         event: `SearchTorrent.Search.Start`,
-        msg: `准备开始搜索，共需搜索 ${sites.length} 个站点`,
+        msg: this.$t("searchTorrent.noAllowSearchSites", {
+          count: sites.length
+        }).toString(),
         data: {
           key: this.key
         }
@@ -462,7 +419,7 @@ export default Vue.extend({
      */
     doSearchTorrentWithQueue(sites: Site[]) {
       this.loading = true;
-      this.searchMsg = "正在搜索……";
+      this.searchMsg = this.$t("searchTorrent.searching").toString();
       sites.forEach((site: Site, index: number) => {
         this.searchQueue.push({
           site,
@@ -471,7 +428,9 @@ export default Vue.extend({
 
         this.writeLog({
           event: `SearchTorrent.Search.Processing`,
-          msg: "正在搜索 [" + site.name + "]",
+          msg: this.$t("searchTorrent.noAllowSearchSites", {
+            siteName: site.name
+          }).toString(),
           data: {
             host: site.host,
             name: site.name,
@@ -497,7 +456,10 @@ export default Vue.extend({
           if (result && result.length) {
             this.writeLog({
               event: `SearchTorrent.Search.Done[${site.name}]`,
-              msg: `[${site.name}] 搜索完成，共有 ${result.length} 条结果`,
+              msg: this.$t("searchTorrent.noAllowSearchSites", {
+                siteName: site.name,
+                count: result.length
+              }).toString(),
               data: {
                 host: site.host,
                 name: site.name,
@@ -519,12 +481,18 @@ export default Vue.extend({
             this.errorMsg = result.msg;
           } else {
             if (result && result.statusText == "abort") {
-              this.errorMsg = `${site.host} 搜索请求已取消`;
+              this.errorMsg = this.$t("searchTorrent.siteSearchAbort", {
+                host: site.host
+              }).toString();
             } else {
               if (result && result.statusText == "timeout") {
-                this.errorMsg = `${site.host} 连接超时`;
+                this.errorMsg = this.$t("searchTorrent.siteSearchTimeout", {
+                  host: site.host
+                }).toString();
               } else {
-                this.errorMsg = `${site.host} 发生网络或其他错误`;
+                this.errorMsg = this.$t("searchTorrent.siteSearchError", {
+                  host: site.host
+                }).toString();
               }
 
               this.writeLog({
@@ -560,7 +528,7 @@ export default Vue.extend({
             this.searchResult.failedSites.push({
               site: site,
               url: site.url,
-              msg: "未登录",
+              msg: this.$t("searchTorrent.notLogged").toString(),
               color: "grey"
             });
           } else {
@@ -588,13 +556,17 @@ export default Vue.extend({
         .then(() => {
           this.writeLog({
             event: `SearchTorrent.Search.Abort`,
-            msg: `${site.name} 搜索已取消`
+            msg: this.$t("searchTorrent.siteSearchAbort", {
+              host: site.name
+            }).toString()
           });
         })
         .catch(() => {
           this.writeLog({
             event: `SearchTorrent.Search.Abort.Error`,
-            msg: `${site.name} 搜索取消失败`
+            msg: this.$t("searchTorrent.siteSearchAbortError", {
+              host: site.name
+            }).toString()
           });
           this.removeQueue(site);
         });
@@ -610,9 +582,10 @@ export default Vue.extend({
       if (index !== -1) {
         this.searchQueue.splice(index, 1);
         if (this.searchQueue.length == 0) {
-          this.searchMsg = `搜索完成，共找到 ${
-            this.datas.length
-          } 条结果，耗时：${dayjs().diff(this.beginTime, "second", true)} 秒。`;
+          this.searchMsg = this.$t("searchTorrent.searchFinished", {
+            count: this.datas.length,
+            second: dayjs().diff(this.beginTime, "second", true)
+          }).toString();
           this.loading = false;
           this.writeLog({
             event: `SearchTorrent.Search.Finished`,
@@ -628,7 +601,7 @@ export default Vue.extend({
      * 添加搜索结果，并组织字段格式
      */
     addSearchResult(result: any[]) {
-      let allSites = this.words.allSites;
+      let allSites = this.allSitesKey;
 
       if (!this.searchResult.sites[allSites]) {
         this.searchResult.sites[allSites] = [];
@@ -701,7 +674,9 @@ export default Vue.extend({
         this.datas.push(item);
         this.getLinks.push(item.link);
 
-        this.searchMsg = `已接收 ${this.datas.length} 条结果，搜索仍在进行……`;
+        this.searchMsg = this.$t("searchTorrent.searchProgress", {
+          count: this.datas.length
+        }).toString();
 
         let siteName = item.site.name;
         if (!this.searchResult.sites[siteName]) {
@@ -720,7 +695,7 @@ export default Vue.extend({
      * @param item
      */
     addTagResult(item: SearchResultItem) {
-      let noTag = this.words.noTag;
+      let noTag = this.$t("searchTorrent.noTag").toString();
 
       if (!this.searchResult.tags[noTag]) {
         this.searchResult.tags[noTag] = {
@@ -857,12 +832,12 @@ export default Vue.extend({
       let savePath = this.pathHandler.getSavePath(defaultPath, site);
       // 取消
       if (savePath === false) {
-        this.errorMsg = "用户已取消";
+        this.errorMsg = this.$t("searchTorrent.userCanceled").toString();
         return;
       }
 
       this.haveSuccess = true;
-      this.successMsg = "正在发送种子到下载服务器……";
+      this.successMsg = this.$t("searchTorrent.seedingTorrent").toString();
 
       let data: DownloadOptions = {
         url,
@@ -873,8 +848,8 @@ export default Vue.extend({
         link
       };
       this.writeLog({
-        event: "SearchTorrent.sendTorrentClient",
-        msg: "发送种子到下载服务器",
+        event: "SearchTorrent.sendTorrentToClient",
+        msg: this.$t("searchTorrent.sendTorrentToClient").toString(),
         data
       });
       extension
@@ -886,14 +861,16 @@ export default Vue.extend({
             this.successMsg = result.msg;
             this.writeLog({
               event: "SearchTorrent.sendTorrentToClient.Success",
-              msg: "发送种子到下载服务器成功",
+              msg: this.$t(
+                "searchTorrent.sendTorrentToClientSuccess"
+              ).toString(),
               data: result
             });
           } else {
             this.errorMsg = result.msg;
             this.writeLog({
               event: "SearchTorrent.sendTorrentToClient.Error",
-              msg: "发送种子到下载服务器失败",
+              msg: this.$t("searchTorrent.sendTorrentToClientError").toString(),
               data: result
             });
           }
@@ -902,7 +879,7 @@ export default Vue.extend({
         .catch((result: any) => {
           this.writeLog({
             event: "SearchTorrent.sendTorrentToClient.Error",
-            msg: "发送种子到下载服务器失败",
+            msg: this.$t("searchTorrent.sendTorrentToClientError").toString(),
             data: result
           });
           this.errorMsg = result.msg;
@@ -968,7 +945,9 @@ export default Vue.extend({
       console.log(files);
       if (files.length) {
         if (files.length > 1) {
-          if (!confirm(this.words.multiDownloadConfirm)) {
+          if (
+            !confirm(this.$t("searchTorrent.multiDownloadConfirm").toString())
+          ) {
             return;
           }
         }
@@ -995,7 +974,9 @@ export default Vue.extend({
           this.downloadTorrentFilesCompleted();
           this.writeLog({
             event: "SearchTorrent.downloadSelected.Error",
-            msg: "下载种子文件失败: " + file.fileName,
+            msg: this.$t("searchTorrent.downloadSelectedError", {
+              name: file.fileName
+            }).toString(),
             data: e
           });
           let index = this.downloadFailedTorrents.findIndex(
@@ -1114,10 +1095,14 @@ export default Vue.extend({
       extension
         .sendRequest(EAction.copyTextToClipboard, null, url)
         .then(result => {
-          this.successMsg = `下载链接已复制到剪切板`;
+          this.successMsg = this.$t(
+            "searchTorrent.copyLinkToClipboardSuccess"
+          ).toString();
         })
         .catch(() => {
-          this.errorMsg = "复制下载链接失败！";
+          this.errorMsg = this.$t(
+            "searchTorrent.copyLinkToClipboardError"
+          ).toString();
         });
     },
     /**
@@ -1132,11 +1117,18 @@ export default Vue.extend({
       extension
         .sendRequest(EAction.copyTextToClipboard, null, urls.join("\n"))
         .then(result => {
-          this.successMsg = `${urls.length} 条下载链接已复制到剪切板`;
+          this.successMsg = this.$t(
+            "searchTorrent.copySelectedToClipboardSuccess",
+            {
+              count: urls.length
+            }
+          ).toString();
           this.selected = [];
         })
         .catch(() => {
-          this.errorMsg = "复制下载链接失败！";
+          this.errorMsg = this.$t(
+            "searchTorrent.copyLinkToClipboardError"
+          ).toString();
         });
     },
     clearMessage() {
@@ -1231,14 +1223,16 @@ export default Vue.extend({
       items.forEach((item: any) => {
         if (item.client && item.client.name) {
           menus.push({
-            title:
-              `下载到：${item.client.name} -> ${item.client.address}` +
-              (item.path
-                ? ` -> ${this.pathHandler.replacePathKey(
-                    item.path,
-                    options.site
-                  )}`
-                : ""),
+            title: this.$t("searchTorrent.downloadTo", {
+              path:
+                `${item.client.name} -> ${item.client.address}` +
+                (item.path
+                  ? ` -> ${this.pathHandler.replacePathKey(
+                      item.path,
+                      options.site
+                    )}`
+                  : "")
+            }).toString(),
             fn: () => {
               if (options.url) {
                 // console.log(options, item);
@@ -1276,7 +1270,11 @@ export default Vue.extend({
       let _this = this;
 
       function addMenu(item: any) {
-        let title = `下载到：${item.client.name} -> ${item.client.address}`;
+        let title = _this
+          .$t("searchTorrent.downloadTo", {
+            path: `${item.client.name} -> ${item.client.address}`
+          })
+          .toString();
         if (item.path) {
           title += ` -> ${item.path}`;
         }
@@ -1347,7 +1345,7 @@ export default Vue.extend({
       });
 
       if (sites.length === 0) {
-        this.errorMsg = "没有需要重新搜索的站点";
+        this.errorMsg = this.$t("searchTorrent.noReSearchSites").toString();
         return;
       }
 
@@ -1356,7 +1354,9 @@ export default Vue.extend({
       this.beginTime = dayjs();
       this.writeLog({
         event: `SearchTorrent.Search.Start`,
-        msg: `准备开始搜索，共需搜索 ${sites.length} 个站点`,
+        msg: this.$t("searchTorrent.searchStartMsg", {
+          count: sites.length
+        }).toString(),
         data: {
           key: this.key
         }
@@ -1401,7 +1401,7 @@ export default Vue.extend({
     getIMDbIdFromDouban(doubanId: string) {
       let match = doubanId.match(/douban(\d+)/);
       if (match && match.length >= 2) {
-        this.searchMsg = "正在尝试转换豆瓣编号，请稍候……";
+        this.searchMsg = this.$t("searchTorrent.doubanIdConverting").toString();
         return extension.sendRequest(
           EAction.getIMDbIdFromDouban,
           null,
@@ -1409,7 +1409,7 @@ export default Vue.extend({
         );
       } else {
         return new Promise<any>((resolve?: any, reject?: any) => {
-          reject("无效的豆瓣ID");
+          reject(this.$t("searchTorrent.invalidDoubanId").toString());
         });
       }
     },
@@ -1419,6 +1419,68 @@ export default Vue.extend({
      */
     reDownloadFailedTorrents() {
       this.downloadTorrentFiles(this.downloadFailedTorrents);
+    }
+  },
+  computed: {
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("searchTorrent.headers.site"),
+          align: "center",
+          value: this.$store.state.options.searchResultOrderBySitePriority
+            ? "site.priority"
+            : "site.host",
+          width: "100px"
+        },
+        {
+          text: this.$t("searchTorrent.headers.title"),
+          align: "left",
+          value: "title"
+        },
+        {
+          text: this.$t("searchTorrent.headers.category"),
+          align: "center",
+          value: "category.name",
+          width: "150px"
+        },
+        {
+          text: this.$t("searchTorrent.headers.size"),
+          align: "right",
+          value: "size",
+          width: "100px"
+        },
+        // { text: "评论", align: "center", value: "comments" },
+        {
+          text: this.$t("searchTorrent.headers.seeders"),
+          align: "right",
+          value: "seeders",
+          width: "60px"
+        },
+        {
+          text: this.$t("searchTorrent.headers.leechers"),
+          align: "right",
+          value: "leechers",
+          width: "60px"
+        },
+        {
+          text: this.$t("searchTorrent.headers.completed"),
+          align: "right",
+          value: "completed",
+          width: "60px"
+        },
+        // { text: "发布者", align: "left", value: "author" },
+        {
+          text: this.$t("searchTorrent.headers.time"),
+          align: "left",
+          value: "time",
+          width: "130px"
+        },
+        {
+          text: this.$t("searchTorrent.headers.action"),
+          sortable: false,
+          width: "100px"
+        }
+      ];
     }
   }
 });

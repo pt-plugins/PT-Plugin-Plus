@@ -1,20 +1,16 @@
 <template>
   <div class="set-download-clients">
-    <v-alert :value="true" type="info">{{ words.title }}</v-alert>
+    <v-alert :value="true" type="info">{{ $t('settings.downloadClients.index.title') }}</v-alert>
     <v-card>
       <v-card-title>
         <v-btn color="success" @click="add">
           <v-icon class="mr-2">add</v-icon>
-          {{ words.add }}
+          {{ $t('settings.downloadClients.index.add') }}
         </v-btn>
         <v-btn color="error" :disabled="selected.length==0" @click="removeSelected">
           <v-icon class="mr-2">remove</v-icon>
-          {{ words.remove }}
+          {{ $t('settings.downloadClients.index.remove') }}
         </v-btn>
-        <!-- <v-btn color="error" @click="clear" :disabled="this.$store.state.options.clients.length==0">
-          <v-icon class="mr-2">clear</v-icon>
-          {{ words.clear }}
-        </v-btn>-->
         <v-spacer></v-spacer>
         <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-card-title>
@@ -59,9 +55,11 @@
     <!-- 删除确认 -->
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
-        <v-card-title class="headline red lighten-2">{{ words.removeConfirmTitle }}</v-card-title>
+        <v-card-title
+          class="headline red lighten-2"
+        >{{ $t('settings.downloadClients.index.removeConfirmTitle') }}</v-card-title>
 
-        <v-card-text>{{ words.removeConfirm }}</v-card-text>
+        <v-card-text>{{ $t('settings.downloadClients.index.removeConfirm') }}</v-card-text>
 
         <v-divider></v-divider>
 
@@ -69,17 +67,22 @@
           <v-spacer></v-spacer>
           <v-btn flat color="info" @click="dialogRemoveConfirm=false">
             <v-icon>cancel</v-icon>
-            <span class="ml-1">{{ words.cancel }}</span>
+            <span class="ml-1">{{ $t('settings.downloadClients.index.cancel') }}</span>
           </v-btn>
           <v-btn color="error" flat @click="remove">
             <v-icon>check_circle_outline</v-icon>
-            <span class="ml-1">{{ words.ok }}</span>
+            <span class="ml-1">{{ $t('settings.downloadClients.index.ok') }}</span>
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <v-snackbar v-model="itemDuplicate" top :timeout="3000" color="error">{{ words.itemDuplicate }}</v-snackbar>
+    <v-snackbar
+      v-model="itemDuplicate"
+      top
+      :timeout="3000"
+      color="error"
+    >{{ $t('settings.downloadClients.index.itemDuplicate') }}</v-snackbar>
   </div>
 </template>
 
@@ -94,19 +97,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      words: {
-        title: "下载服务器配置",
-        add: "新增",
-        remove: "删除",
-        clear: "清除",
-        itemDuplicate: "该名称已存在",
-        removeConfirm: "确认要删除这个下载服务器吗？",
-        removeConfirmTitle: "删除确认",
-        clearConfirm: "确认要删除所有下载服务器吗？",
-        removeSelectedConfirm: "确认要删除已选中的下载服务器吗？",
-        ok: "确认",
-        cancel: "取消"
-      },
       showAddDialog: false,
       showEditDialog: false,
       itemDuplicate: false,
@@ -115,12 +105,6 @@ export default Vue.extend({
       pagination: {
         rowsPerPage: -1
       },
-      headers: [
-        { text: "名称", align: "left", value: "name" },
-        { text: "类型", align: "left", value: "type" },
-        { text: "服务器地址", align: "left", value: "address" },
-        { text: "操作", value: "name", sortable: false }
-      ],
       items: [],
       dialogRemoveConfirm: false
     };
@@ -167,12 +151,22 @@ export default Vue.extend({
       this.dialogRemoveConfirm = true;
     },
     clear() {
-      if (confirm(this.words.clearConfirm)) {
+      if (
+        confirm(
+          this.$t("settings.downloadClients.index.clearConfirm").toString()
+        )
+      ) {
         this.$store.commit("clearClients");
       }
     },
     removeSelected() {
-      if (confirm(this.words.removeSelectedConfirm)) {
+      if (
+        confirm(
+          this.$t(
+            "settings.downloadClients.index.removeSelectedConfirm"
+          ).toString()
+        )
+      ) {
         console.log(this.selected);
         this.selected.forEach((item: any) => {
           this.$store.commit("removeClient", item);
@@ -181,7 +175,32 @@ export default Vue.extend({
       }
     }
   },
-  computed: {}
+  computed: {
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("settings.downloadClients.index.headers.name"),
+          align: "left",
+          value: "name"
+        },
+        {
+          text: this.$t("settings.downloadClients.index.headers.type"),
+          align: "left",
+          value: "type"
+        },
+        {
+          text: this.$t("settings.downloadClients.index.headers.address"),
+          align: "left",
+          value: "address"
+        },
+        {
+          text: this.$t("settings.downloadClients.index.headers.action"),
+          value: "name",
+          sortable: false
+        }
+      ];
+    }
+  }
 });
 </script>
 

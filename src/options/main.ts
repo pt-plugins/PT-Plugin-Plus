@@ -5,6 +5,7 @@ import router from "./router";
 import store from "./store";
 import { filters } from "@/service/filters";
 import dayjs from "dayjs";
+import { i18nService } from "./i18n";
 
 (function main() {
   Vue.config.productionTip = false;
@@ -104,12 +105,27 @@ import dayjs from "dayjs";
   store.dispatch("readConfig");
   store.dispatch("readUIOptions");
 
-  // 延时加载界面
-  setTimeout(() => {
+  let i18n = new i18nService();
+
+  // 设置语言信息
+  i18n.init("zh-CN").then((i18n: any) => {
     new Vue({
       router,
       store,
+      i18n,
       render: h => h(App)
     }).$mount("#app");
-  }, 100);
+  });
+
+  // 全局挂载 i18nService 对象
+  window.i18nService = i18n;
 })();
+
+/**
+ * 定义 window 中需要挂载的对象
+ */
+declare global {
+  interface Window {
+    i18nService: i18nService;
+  }
+}

@@ -1,8 +1,8 @@
 <template>
   <v-app id="inspire">
-    <v-alert :value="initializing" type="info">{{ words.initializing }}</v-alert>
+    <v-alert :value="initializing" type="info">{{ $t("app.initializing") }}</v-alert>
     <template v-if="!initializing">
-      <v-alert :value="!$store.state.initialized" type="error">{{ words.error }}</v-alert>
+      <v-alert :value="!$store.state.initialized" type="error">{{ $t("app.initError") }}</v-alert>
       <template v-if="$store.state.initialized && havePermissions">
         <!-- 导航栏 -->
         <Navigation v-model="drawer"></Navigation>
@@ -36,10 +36,6 @@ export default {
   },
   data() {
     return {
-      words: {
-        error: "配置信息加载失败，没有获取到系统定义信息，请尝试刷新当前页面",
-        initializing: "程序正在准备一些数据，请稍候……"
-      },
       baseColor: "amber",
       drawer: this.$store.state.options.navBarIsOpen,
       havePermissions: false,
@@ -60,7 +56,7 @@ export default {
         }
       );
     } else {
-      this.havePermissions = false;
+      this.havePermissions = true;
       this.initializing = false;
     }
   },

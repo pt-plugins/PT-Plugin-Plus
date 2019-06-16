@@ -19,7 +19,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-test/dist
+debug/dist
 
 # Chrome 插件文件
 *.crx
