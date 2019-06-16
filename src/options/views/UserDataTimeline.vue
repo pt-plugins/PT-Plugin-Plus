@@ -16,10 +16,24 @@
             <div class="title">{{ displayUserName || infos.nameInfo.name }}</div>
           </v-chip>
           <v-spacer></v-spacer>
-          <v-btn flat icon class="white--text" @click="share" v-if="!shareing" :title="words.share">
+          <v-btn
+            flat
+            icon
+            class="white--text"
+            @click="share"
+            v-if="!shareing"
+            :title="$t('timeline.share')"
+          >
             <v-icon>share</v-icon>
           </v-btn>
-          <v-btn flat icon class="white--text" to="/home" v-if="!shareing" :title="words.close">
+          <v-btn
+            flat
+            icon
+            class="white--text"
+            to="/home"
+            v-if="!shareing"
+            :title="$t('timeline.close')"
+          >
             <v-icon>close</v-icon>
           </v-btn>
           <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="shareing"></v-progress-circular>
@@ -27,11 +41,11 @@
 
         <v-card-title primary-title>
           <div class="headline font-weight-bold">
-            <div>上传总量：{{ infos.total.uploaded | formatSize }}</div>
-            <div>下载总量：{{ infos.total.downloaded | formatSize }}</div>
-            <div>做种总量：{{ infos.total.seedingSize | formatSize }} ({{ infos.total.seeding }})</div>
-            <div>总分享率：{{ infos.total.ratio | formatRatio }}</div>
-            <div>．．Ｐ龄：≈ {{ infos.joinTimeInfo.years }} 年</div>
+            <div>{{ $t('timeline.total.uploaded') }}{{ infos.total.uploaded | formatSize }}</div>
+            <div>{{ $t('timeline.total.downloaded') }}{{ infos.total.downloaded | formatSize }}</div>
+            <div>{{ $t('timeline.total.seedingSize') }}{{ infos.total.seedingSize | formatSize }} ({{ infos.total.seeding }})</div>
+            <div>{{ $t('timeline.total.ratio') }}{{ infos.total.ratio | formatRatio }}</div>
+            <div>{{ $t('timeline.total.years', {year: infos.joinTimeInfo.years}) }}</div>
           </div>
         </v-card-title>
         <v-card-text>
@@ -43,7 +57,7 @@
             >... {{ shareMessage }} ...</div>
             <div
               style="color:#b5b5b5;"
-            >(数据更新于：{{ options.autoRefreshUserDataLastTime | formatDate('YYYY-MM-DD HH:mm:ss') }})</div>
+            >({{ $t('timeline.updateat') }}{{ options.autoRefreshUserDataLastTime | formatDate('YYYY-MM-DD HH:mm:ss') }})</div>
           </div>
 
           <v-timeline class="my-2">
@@ -63,11 +77,11 @@
               <div>
                 <v-divider v-if="i>0" class="mb-2"></v-divider>
                 <div class="headline font-weight-light mb-2" v-if="showSiteName">{{ site.name }}</div>
-                <div>上传量：{{ site.user.uploaded | formatSize }}</div>
-                <div>下载量：{{ site.user.downloaded | formatSize }}</div>
-                <div>分享率：{{ site.user.ratio | formatRatio }}</div>
-                <div>做种量：{{ site.user.seedingSize | formatSize }} ({{ site.user.seeding }})</div>
-                <div>积分值：{{ site.user.bonus | formatNumber }}</div>
+                <div>{{ $t('timeline.user.uploaded') }}{{ site.user.uploaded | formatSize }}</div>
+                <div>{{ $t('timeline.user.downloaded') }}{{ site.user.downloaded | formatSize }}</div>
+                <div>{{ $t('timeline.user.ratio') }}{{ site.user.ratio | formatRatio }}</div>
+                <div>{{ $t('timeline.user.seedingSize') }}{{ site.user.seedingSize | formatSize }} ({{ site.user.seeding }})</div>
+                <div>{{ $t('timeline.user.bonus') }}{{ site.user.bonus | formatNumber }}</div>
               </div>
             </v-timeline-item>
           </v-timeline>
@@ -82,9 +96,24 @@
     </div>
 
     <div class="toolbar">
-      <v-switch color="success" v-model="showSiteName" :label="words.siteName" class="my-0"></v-switch>
-      <v-switch color="success" v-model="showUserName" :label="words.userName" class="my-0"></v-switch>
-      <v-switch color="success" v-model="showUserLevel" :label="words.userLevel" class="my-0"></v-switch>
+      <v-switch
+        color="success"
+        v-model="showSiteName"
+        :label="$t('timeline.siteName')"
+        class="my-0"
+      ></v-switch>
+      <v-switch
+        color="success"
+        v-model="showUserName"
+        :label="$t('timeline.userName')"
+        class="my-0"
+      ></v-switch>
+      <v-switch
+        color="success"
+        v-model="showUserLevel"
+        :label="$t('timeline.userLevel')"
+        class="my-0"
+      ></v-switch>
     </div>
   </div>
 </template>
@@ -100,14 +129,7 @@ const extension = new Extension();
 export default Vue.extend({
   data() {
     return {
-      words: {
-        share: "生成分享图片",
-        siteName: "网站名称",
-        userName: "用户名称",
-        userLevel: "用户等级",
-        close: "关闭"
-      },
-      shareMessage: "这些年走过的路",
+      shareMessage: this.$t("timeline.shareMessage").toString(),
       displayUserName: "",
       sites: [] as Site[],
       infos: {
@@ -330,7 +352,10 @@ export default Vue.extend({
      * 修改需要显示的用户名
      */
     changeDisplayUserName() {
-      let result = prompt("请输入需要显示的名称：", this.displayUserName);
+      let result = prompt(
+        this.$t("timeline.inputDisplayName").toString(),
+        this.displayUserName
+      );
       if (result != null) {
         this.displayUserName = result;
         this.$store.dispatch("saveConfig", {
@@ -343,7 +368,10 @@ export default Vue.extend({
      * 修复需要分享的寄语
      */
     changeShareMessage() {
-      let result = prompt("请输入需要显示的信息：", this.shareMessage);
+      let result = prompt(
+        this.$t("timeline.inputShareMessage").toString(),
+        this.shareMessage
+      );
       if (result != null) {
         this.shareMessage = result;
         this.$store.dispatch("saveConfig", {

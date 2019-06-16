@@ -1,12 +1,12 @@
 <template>
   <div class="set-download-clients">
-    <v-alert :value="true" type="info">{{ words.title }}</v-alert>
+    <v-alert :value="true" type="info">{{ $t('settings.downloadPaths.index.title') }}</v-alert>
     <v-card>
       <v-card-title>
         <v-autocomplete
           v-model="selectedClient"
           :items="items"
-          :label="words.selectedClient"
+          :label="$t('settings.downloadPaths.index.selectedClient')"
           :menu-props="{maxHeight:'auto'}"
           style="max-width: 500px;"
           :hint="selectedClient.address"
@@ -24,7 +24,7 @@
               <v-list-tile-sub-title v-html="data.item.address"></v-list-tile-sub-title>
             </v-list-tile-content>
             <v-list-tile-action>
-              <v-list-tile-action-text>{{ data.item.allowCustomPath?data.item.type:words.notSupport }}</v-list-tile-action-text>
+              <v-list-tile-action-text>{{ data.item.allowCustomPath?data.item.type:$t('settings.downloadPaths.index.notSupport') }}</v-list-tile-action-text>
             </v-list-tile-action>
           </template>
         </v-autocomplete>
@@ -37,11 +37,11 @@
           :disabled="!selectedClient.id||!selectedClient.allowCustomPath"
         >
           <v-icon class="mr-2">add</v-icon>
-          {{ words.add }}
+          {{ $t('settings.downloadPaths.index.add') }}
         </v-btn>
         <v-btn color="error" :disabled="selected.length==0" @click.stop="removeSelected">
           <v-icon class="mr-2">remove</v-icon>
-          {{ words.remove }}
+          {{ $t('settings.downloadPaths.index.remove') }}
         </v-btn>
       </v-card-title>
 
@@ -85,9 +85,11 @@
     <!-- 删除确认 -->
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
-        <v-card-title class="headline red lighten-2">{{ words.removeConfirmTitle }}</v-card-title>
+        <v-card-title
+          class="headline red lighten-2"
+        >{{ $t('settings.downloadPaths.index.removeConfirmTitle') }}</v-card-title>
 
-        <v-card-text>{{ words.removeConfirm }}</v-card-text>
+        <v-card-text>{{ $t('settings.downloadPaths.index.removeConfirm') }}</v-card-text>
 
         <v-divider></v-divider>
 
@@ -95,17 +97,22 @@
           <v-spacer></v-spacer>
           <v-btn flat color="info" @click="dialogRemoveConfirm=false">
             <v-icon>cancel</v-icon>
-            <span class="ml-1">{{ words.cancel }}</span>
+            <span class="ml-1">{{ $t('settings.downloadPaths.index.cancel') }}</span>
           </v-btn>
           <v-btn color="error" flat @click="remove">
             <v-icon>check_circle_outline</v-icon>
-            <span class="ml-1">{{ words.ok }}</span>
+            <span class="ml-1">{{ $t('settings.downloadPaths.index.ok') }}</span>
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <v-snackbar v-model="itemDuplicate" top :timeout="3000" color="error">{{ words.itemDuplicate }}</v-snackbar>
+    <v-snackbar
+      v-model="itemDuplicate"
+      top
+      :timeout="3000"
+      color="error"
+    >{{ $t('settings.downloadPaths.index.itemDuplicate') }}</v-snackbar>
   </div>
 </template>
 
@@ -121,21 +128,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      words: {
-        title: "下载目录设置",
-        selectedClient: "需要设置的服务器",
-        add: "新增",
-        remove: "删除",
-        clear: "清除",
-        itemDuplicate: "该名称已存在",
-        removeConfirm: "确认要删除这个保存目录吗？",
-        removeConfirmTitle: "删除确认",
-        removeSelectedConfirm: "确认要删除已选中的保存目录吗？",
-        ok: "确认",
-        cancel: "取消",
-        notSupport: "暂不支持该服务器类型",
-        allSite: "<所有站点>"
-      },
       showAddDialog: false,
       showEditDialog: false,
       itemDuplicate: false,
@@ -144,11 +136,6 @@ export default Vue.extend({
       pagination: {
         rowsPerPage: -1
       },
-      headers: [
-        { text: "站点", align: "left", value: "name" },
-        { text: "保存目录", align: "left", value: "type" },
-        { text: "操作", value: "name", sortable: false }
-      ],
       items: [],
       dialogRemoveConfirm: false,
       selectedClient: {} as any
@@ -205,7 +192,13 @@ export default Vue.extend({
       this.selectedClient = item;
     },
     removeSelected() {
-      if (confirm(this.words.removeSelectedConfirm)) {
+      if (
+        confirm(
+          this.$t(
+            "settings.downloadPaths.index.removeSelectedConfirm"
+          ).toString()
+        )
+      ) {
         console.log(this.selected);
         this.selected.forEach((item: any) => {
           this.$store.commit("removePathsOfClient", {
@@ -228,7 +221,7 @@ export default Vue.extend({
       let allSite = this.selectedClient.paths[ECommonKey.allSite];
       if (allSite) {
         result.push({
-          name: this.words.allSite,
+          name: this.$t("settings.downloadPaths.index.allSite").toString(),
           site: null,
           paths: allSite
         });
@@ -247,6 +240,25 @@ export default Vue.extend({
         }
       }
       return result;
+    },
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("settings.downloadPaths.index.headers.name"),
+          align: "left",
+          value: "name"
+        },
+        {
+          text: this.$t("settings.downloadPaths.index.headers.path"),
+          align: "left",
+          sortable: false
+        },
+        {
+          text: this.$t("settings.downloadPaths.index.headers.action"),
+          value: "name",
+          sortable: false
+        }
+      ];
     }
   }
 });

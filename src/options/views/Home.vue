@@ -1,23 +1,23 @@
 <template>
   <div class="home">
-    <v-alert :value="true" type="info">{{ words.title }}</v-alert>
+    <v-alert :value="true" type="info">{{ $t('home.title') }}</v-alert>
     <v-card>
       <v-card-title>
-        <v-btn color="success" @click="getInfos" :loading="loading" :title="words.getInfos">
+        <v-btn color="success" @click="getInfos" :loading="loading" :title="$t('home.getInfos')">
           <v-icon class="mr-2">cached</v-icon>
-          {{words.getInfos}}
+          {{$t('home.getInfos')}}
         </v-btn>
-        <v-btn to="/user-data-timeline" color="success" :title="words.timeline">
+        <v-btn to="/user-data-timeline" color="success" :title="$t('home.timeline')">
           <v-icon>timeline</v-icon>
         </v-btn>
 
-        <v-btn to="/statistic" color="success" :title="words.statistic">
+        <v-btn to="/statistic" color="success" :title="$t('home.statistic')">
           <v-icon>equalizer</v-icon>
         </v-btn>
 
         <v-menu :close-on-content-click="false" offset-y>
           <template v-slot:activator="{ on }">
-            <v-btn color="blue" dark v-on="on" :title="words.settings">
+            <v-btn color="blue" dark v-on="on" :title="$t('home.settings')">
               <v-icon>settings</v-icon>
             </v-btn>
           </template>
@@ -27,26 +27,26 @@
               <v-switch
                 color="success"
                 v-model="showSiteName"
-                :label="words.siteName"
+                :label="$t('home.siteName')"
                 @change="updateViewOptions"
               ></v-switch>
               <v-switch
                 color="success"
                 v-model="showUserName"
-                :label="words.userName"
+                :label="$t('home.userName')"
                 @change="updateViewOptions"
               ></v-switch>
               <v-switch
                 color="success"
                 v-model="showUserLevel"
-                :label="words.userLevel"
+                :label="$t('home.userLevel')"
                 @change="updateViewOptions"
               ></v-switch>
 
               <v-switch
                 color="success"
                 v-model="showWeek"
-                :label="words.week"
+                :label="$t('home.week')"
                 @change="updateViewOptions"
               ></v-switch>
             </v-container>
@@ -81,13 +81,13 @@
               <template
                 v-slot:badge
                 v-if="props.item.user.messageCount>0"
-                :title="words.newMessage"
+                :title="$t('home.newMessage')"
               >{{ props.item.user.messageCount>10?"":props.item.user.messageCount }}</template>
               <v-btn
                 flat
                 icon
                 class="siteIcon"
-                :title="words.getInfos"
+                :title="$t('home.getInfos')"
                 @click.stop="getSiteUserInfo(props.item)"
               >
                 <v-avatar :size="showSiteName ? 18 : 24">
@@ -129,7 +129,7 @@
               depressed
               small
               :to="`statistic/${props.item.host}`"
-              :title="words.statistic"
+              :title="$t('home.statistic')"
             >{{ props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</v-btn>
           </td>
           <td class="center">
@@ -145,7 +145,7 @@
                 @click="abortRequest(props.item)"
                 color="red"
                 small
-                :title="words.cancelRequest"
+                :title="$t('home.cancelRequest')"
               >cancel</v-icon>
             </v-progress-circular>
             <span v-else>{{ props.item.user.lastErrorMsg }}</span>
@@ -175,44 +175,11 @@ const extension = new Extension();
 export default Vue.extend({
   data() {
     return {
-      words: {
-        title: "概览（Beta）",
-        getInfos: "刷新用户数据",
-        cancelRequest: "取消请求",
-        requesting: "正在请求",
-        secret: "密",
-        siteName: "网站名称",
-        userName: "用户名称",
-        userLevel: "用户等级",
-        week: "时间显示为周数",
-        timeline: "时间轴",
-        settings: "参数",
-        statistic: "数据图表",
-        newMessage: "新消息"
-      },
       loading: false,
       items: [] as any[],
       pagination: {
         rowsPerPage: -1
       },
-      headers: [
-        { text: "站点", align: "center", value: "name", width: "110px" },
-        { text: "用户名", align: "left", value: "user.name" },
-        { text: "等级", align: "left", value: "user.levelName" },
-        {
-          text: "数据量",
-          align: "right",
-          value: "user.uploaded",
-          width: "120px"
-        },
-        { text: "分享率", align: "right", value: "user.ratio" },
-        { text: "做种数", align: "right", value: "user.seeding" },
-        { text: "做种体积", align: "right", value: "user.seedingSize" },
-        { text: "魔力值/积分", align: "right", value: "user.bonus" },
-        { text: "入站时间", align: "right", value: "user.joinTime" },
-        { text: "数据更新于", align: "right", value: "user.lastUpdateTime" },
-        { text: "状态", align: "center", value: "" }
-      ],
       options: this.$store.state.options,
       beginTime: null as any,
       reloadCount: 0,
@@ -274,13 +241,15 @@ export default Vue.extend({
       this.beginTime = dayjs();
       this.writeLog({
         event: `Home.getUserInfo.Start`,
-        msg: `准备开始获取个人数据`
+        msg: this.$t("home.startGetting").toString()
       });
 
       this.sites.forEach((site: Site, index: number) => {
         this.writeLog({
           event: `Home.getUserInfo.Processing`,
-          msg: "正在获取 [" + site.name + "] 个人数据",
+          msg: this.$t("home.gettingForSite", {
+            siteName: site.name
+          }).toString(),
           data: {
             host: site.host,
             name: site.name
@@ -314,11 +283,9 @@ export default Vue.extend({
       if (index !== -1) {
         this.requestQueue.splice(index, 1);
         if (this.requestQueue.length == 0) {
-          this.requestMsg = `请求完成，耗时：${dayjs().diff(
-            this.beginTime,
-            "second",
-            true
-          )} 秒。`;
+          this.requestMsg = this.$t("home.requestCompleted", {
+            second: dayjs().diff(this.beginTime, "second", true)
+          }).toString();
           this.loading = false;
           this.writeLog({
             event: `Home.getUserInfo.Finished`,
@@ -371,7 +338,7 @@ export default Vue.extend({
           if (result.msg && result.msg.status) {
             user.lastErrorMsg = result.msg.msg;
           } else {
-            user.lastErrorMsg = "发生错误";
+            user.lastErrorMsg = this.$t("home.getUserInfoError").toString();
           }
         })
         .finally(() => {
@@ -385,13 +352,17 @@ export default Vue.extend({
         .then(() => {
           this.writeLog({
             event: `Home.getUserInfo.Abort`,
-            msg: `${site.name} 获取用户资料请求已取消`
+            msg: this.$t("home.getUserInfoAbort", {
+              siteName: site.name
+            }).toString()
           });
         })
         .catch(() => {
           this.writeLog({
             event: `Home.getUserInfo.Abort.Error`,
-            msg: `${site.name} 获取用户资料请求取消失败`
+            msg: this.$t("home.getUserInfoAbortError", {
+              siteName: site.name
+            }).toString()
           });
           this.removeQueue(site);
         });
@@ -428,6 +399,66 @@ export default Vue.extend({
         return "";
       }
       return number.toFixed(2);
+    }
+  },
+
+  computed: {
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("home.headers.site"),
+          align: "center",
+          value: "name",
+          width: "110px"
+        },
+        {
+          text: this.$t("home.headers.userName"),
+          align: "left",
+          value: "user.name"
+        },
+        {
+          text: this.$t("home.headers.levelName"),
+          align: "left",
+          value: "user.levelName"
+        },
+        {
+          text: this.$t("home.headers.activitiyData"),
+          align: "right",
+          value: "user.uploaded",
+          width: "120px"
+        },
+        {
+          text: this.$t("home.headers.ratio"),
+          align: "right",
+          value: "user.ratio"
+        },
+        {
+          text: this.$t("home.headers.seeding"),
+          align: "right",
+          value: "user.seeding"
+        },
+        {
+          text: this.$t("home.headers.seedingSize"),
+          align: "right",
+          value: "user.seedingSize"
+        },
+        {
+          text: this.$t("home.headers.bonus"),
+          align: "right",
+          value: "user.bonus"
+        },
+        {
+          text: this.$t("home.headers.joinTime"),
+          align: "right",
+          value: "user.joinTime"
+        },
+        {
+          text: this.$t("home.headers.lastUpdateTime"),
+          align: "right",
+          value: "user.lastUpdateTime"
+        },
+        { text: this.$t("home.headers.status"), align: "center", value: "" }
+      ];
     }
   }
 });

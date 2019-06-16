@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-alert :value="true" type="info">{{ words.title }}</v-alert>
+    <v-alert :value="true" type="info">{{ $t('settings.base.title') }}</v-alert>
     <v-card color>
       <v-card-text>
         <v-form v-model="valid">
@@ -10,7 +10,7 @@
                 <v-autocomplete
                   v-model="options.defaultClientId"
                   :items="this.$store.state.options.clients"
-                  :label="words.defaultClient"
+                  :label="$t('settings.base.defaultClient')"
                   :menu-props="{maxHeight:'auto'}"
                   :hint="getClientAddress"
                   persistent-hint
@@ -32,7 +32,7 @@
                     </v-list-tile-action>
                   </template>
                   <template slot="no-data">
-                    <span class="ma-2">{{ words.noClient }}</span>
+                    <span class="ma-2">{{ $t('settings.base.noClient') }}</span>
                   </template>
                 </v-autocomplete>
               </v-flex>
@@ -41,8 +41,8 @@
                 <v-text-field
                   v-model="options.search.rows"
                   type="number"
-                  :label="words.searchResultRows"
-                  :placeholder="words.searchResultRows"
+                  :label="$t('settings.base.searchResultRows')"
+                  :placeholder="$t('settings.base.searchResultRows')"
                 ></v-text-field>
               </v-flex>
               <v-flex xs1>
@@ -53,8 +53,8 @@
               <v-flex xs5>
                 <v-text-field
                   v-model="options.connectClientTimeout"
-                  :label="words.connectClientTimeout"
-                  :placeholder="words.connectClientTimeout"
+                  :label="$t('settings.base.connectClientTimeout')"
+                  :placeholder="$t('settings.base.connectClientTimeout')"
                   type="number"
                 ></v-text-field>
               </v-flex>
@@ -68,22 +68,17 @@
               </v-flex>
 
               <v-flex xs12>
-                <!-- <v-switch
-                  color="success"
-                  v-model="options.autoUpdate"
-                  :label="words.autoUpdate+lastUpdate"
-                ></v-switch>-->
                 <!-- 自动刷新用户数据 -->
                 <v-switch
                   color="success"
                   v-model="options.autoRefreshUserData"
-                  :label="words.autoRefreshUserData+autoRefreshUserDataLastUpdate"
+                  :label="$t('settings.base.autoRefreshUserData')+autoRefreshUserDataLastUpdate"
                 ></v-switch>
 
                 <!-- 自动刷新用户数据时间 -->
                 <v-flex xs12 v-if="options.autoRefreshUserData">
                   <div style="margin: -40px 0 10px 45px;">
-                    <span>{{ words.autoRefreshUserDataTip1 }}</span>
+                    <span>{{ $t('settings.base.autoRefreshUserDataTip1') }}</span>
                     <v-select
                       v-model="options.autoRefreshUserDataHours"
                       :items="hours"
@@ -97,28 +92,28 @@
                       class="mx-2 d-inline-flex"
                       style="max-width: 50px;max-height: 30px;"
                     ></v-select>
-                    <span>{{ words.autoRefreshUserDataTip2 }}</span>
+                    <span>{{ $t('settings.base.autoRefreshUserDataTip2') }}</span>
                   </div>
                 </v-flex>
 
                 <!-- 失败重试 -->
                 <v-flex xs12 v-if="options.autoRefreshUserData">
                   <div style="margin: -20px 0 10px 45px;">
-                    <span>{{ words.autoRefreshUserDataTip3 }}</span>
+                    <span>{{ $t('settings.base.autoRefreshUserDataTip3') }}</span>
                     <v-select
                       v-model="options.autoRefreshUserDataFailedRetryCount"
                       :items="[1,2,3,4,5]"
                       class="mx-2 d-inline-flex"
                       style="max-width: 50px;max-height: 30px;"
                     ></v-select>
-                    <span>{{ words.autoRefreshUserDataTip4 }}</span>
+                    <span>{{ $t('settings.base.autoRefreshUserDataTip4') }}</span>
                     <v-select
                       v-model="options.autoRefreshUserDataFailedRetryInterval"
                       :items="[1,2,3,4,5]"
                       class="mx-2 d-inline-flex"
                       style="max-width: 50px;max-height: 30px;"
                     ></v-select>
-                    <span>{{ words.autoRefreshUserDataTip5 }}</span>
+                    <span>{{ $t('settings.base.autoRefreshUserDataTip5') }}</span>
                   </div>
                 </v-flex>
 
@@ -126,56 +121,56 @@
                 <v-switch
                   color="success"
                   v-model="options.allowSelectionTextSearch"
-                  :label="words.allowSelectionTextSearch"
+                  :label="$t('settings.base.allowSelectionTextSearch')"
                 ></v-switch>
 
                 <v-switch
                   color="success"
                   v-model="options.showToolbarOnContentPage"
-                  :label="words.showToolbarOnContentPage"
+                  :label="$t('settings.base.showToolbarOnContentPage')"
                 ></v-switch>
 
                 <v-switch
                   color="success"
                   v-if="options.showToolbarOnContentPage"
                   v-model="options.allowDropToSend"
-                  :label="words.allowDropToSend"
+                  :label="$t('settings.base.allowDropToSend')"
                   class="ml-5"
                 ></v-switch>
 
                 <v-switch
                   color="success"
                   v-model="options.saveDownloadHistory"
-                  :label="words.saveDownloadHistory"
+                  :label="$t('settings.base.saveDownloadHistory')"
                 ></v-switch>
 
                 <v-switch
                   color="success"
                   v-model="options.searchResultOrderBySitePriority"
-                  :label="words.searchResultOrderBySitePriority"
+                  :label="$t('settings.base.searchResultOrderBySitePriority')"
                 ></v-switch>
 
                 <v-switch
                   color="success"
                   v-model="options.search.saveKey"
-                  :label="words.saveSearchKey"
+                  :label="$t('settings.base.saveSearchKey')"
                 ></v-switch>
 
                 <v-switch
                   color="success"
                   v-model="options.showMoiveInfoCardOnSearch"
-                  :label="words.showMoiveInfoCardOnSearch"
+                  :label="$t('settings.base.showMoiveInfoCardOnSearch')"
                 ></v-switch>
 
                 <!-- 在搜索之前一些选项配置 -->
                 <v-switch
                   color="success"
                   v-model="options.beforeSearchingOptions.getMovieInformation"
-                  :label="words.getMovieInformationBeforeSearching"
+                  :label="$t('settings.base.getMovieInformationBeforeSearching')"
                 ></v-switch>
                 <v-flex xs12 v-if="options.beforeSearchingOptions.getMovieInformation">
                   <div style="margin: -40px 0 10px 45px;">
-                    <span>{{ words.maxMovieInformationCount }}</span>
+                    <span>{{ $t('settings.base.maxMovieInformationCount') }}</span>
                     <v-text-field
                       v-model="options.beforeSearchingOptions.maxMovieInformationCount"
                       class="ml-2 d-inline-flex"
@@ -194,7 +189,7 @@
                 <!-- 当点击预选条目时，搜索模式 -->
                 <v-flex xs12 v-if="options.beforeSearchingOptions.getMovieInformation">
                   <div style="margin: -20px 0 10px 45px;">
-                    <span>{{ words.searchModeForItem }}</span>
+                    <span>{{ $t('settings.base.searchModeForItem') }}</span>
                     <v-select
                       v-model="options.beforeSearchingOptions.searchModeForItem"
                       :items="searchModes"
@@ -207,14 +202,14 @@
                 <v-switch
                   color="success"
                   v-model="options.needConfirmWhenExceedSize"
-                  :label="words.needConfirmWhenExceedSize"
+                  :label="$t('settings.base.needConfirmWhenExceedSize')"
                 ></v-switch>
 
                 <v-flex xs12 v-if="options.needConfirmWhenExceedSize">
                   <div style="margin: -40px 0 0 40px;">
                     <v-text-field
                       v-model="options.exceedSize"
-                      :placeholder="words.exceedSize"
+                      :placeholder="$t('settings.base.exceedSize')"
                       class="ml-2 d-inline-flex"
                       style="max-width: 100px;max-height: 30px;"
                     ></v-text-field>
@@ -237,13 +232,9 @@
       <v-card-actions class="pa-3">
         <v-btn color="success" @click="save" :disabled="!valid">
           <v-icon>check_circle_outline</v-icon>
-          <span class="ml-1">{{ words.save }}</span>
+          <span class="ml-1">{{ $t('settings.base.save') }}</span>
         </v-btn>
         <v-spacer></v-spacer>
-        <!-- <v-btn color="warning" @click="clearCache">
-          <v-icon>settings_backup_restore</v-icon>
-          <span class="ml-1">{{ words.clearCache }}</span>
-        </v-btn>-->
       </v-card-actions>
     </v-card>
     <v-snackbar v-model="haveError" absolute top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
@@ -273,53 +264,6 @@ const extension = new Extension();
 export default Vue.extend({
   data() {
     return {
-      words: {
-        title: "常规设置",
-        defaultClient: "默认下载服务器（必选）",
-        autoUpdate: "自动更新官方数据",
-        save: "保存",
-        allowSelectionTextSearch: "启用页面内容选择搜索",
-        allowDropToSend: "启用拖放链接到助手图标时，直接发送链接到下载服务器",
-        clearCache: "清除缓存",
-        clearCacheConfirm:
-          "确认要清除缓存吗？清除完成后，下次将会从官网中重新下载系统配置信息。",
-        needConfirmWhenExceedSize:
-          "当批量下载的种子总体积超过以下大小时需要确认",
-        exceedSize: "大小",
-        searchResultRows: "搜索时每站点返回结果数量",
-        saveDownloadHistory: "启用下载历史，以记录每次一键发送的种子信息",
-        connectClientTimeout:
-          "全局超时时间（毫秒，1000毫秒=1秒），作用于连接下载服务器、下载种子文件等操作",
-        noClient: "尚未配置下载服务器，请配置下载服务后再选择",
-        cacheIsCleared: "缓存已清除，如需立即生效，请重新打开页面",
-        saved: "参数已保存",
-        autoRefreshUserData: "在浏览器打开的情况下自动刷新用户数据（Beta）",
-        autoRefreshUserDataTip1: "每天于",
-        autoRefreshUserDataTip2:
-          "自动刷新（如果浏览器在这个时间之后打开，则在浏览器打开时自动刷新）",
-        autoRefreshUserDataTip3: "失败后重试",
-        autoRefreshUserDataTip4: "次，每次间隔",
-        autoRefreshUserDataTip5: "分钟",
-        searchResultOrderBySitePriority:
-          "搜索结果点击站点表头时，按站点优先级别排序（保存后需刷新页面后生效）",
-        saveSearchKey: "保存搜索关键字",
-        showMoiveInfoCardOnSearch: "当以 IMDb 编号搜索时显示电影及评分信息",
-        getMovieInformationBeforeSearching:
-          "当输入搜索关键字时，从豆瓣加载相关信息以供预选",
-        maxMovieInformationCount: "最多显示条目（1-20）：",
-        searchModeForItem: "当点击预选条目时：",
-        showToolbarOnContentPage: "启用站点页面助手图标和工具栏（如一键下载等）"
-      },
-      searchModes: [
-        {
-          value: EBeforeSearchingItemSearchMode.id,
-          text: "以ID进行搜索，以获得较精确的内容，但转换ID时需要时间"
-        },
-        {
-          value: EBeforeSearchingItemSearchMode.name,
-          text: "以名称进行模糊搜索，以获得较多的内容"
-        }
-      ],
       valid: false,
       rules: {
         require: [(v: any) => !!v || "!"]
@@ -359,17 +303,19 @@ export default Vue.extend({
     save() {
       console.log(this.options);
       this.$store.dispatch("saveConfig", this.options);
-      this.successMsg = this.words.saved;
+      this.successMsg = this.$t("settings.base.saved").toString();
     },
     clearCache() {
-      if (confirm(this.words.clearCacheConfirm)) {
+      if (confirm(this.$t("settings.base.clearCacheConfirm").toString())) {
         APP.cache.clear();
 
         setTimeout(() => {
           extension
             .sendRequest(EAction.reloadConfig)
             .then(() => {
-              this.successMsg = this.words.cacheIsCleared;
+              this.successMsg = this.$t(
+                "settings.base.cacheIsCleared"
+              ).toString();
             })
             .catch();
         }, 200);
@@ -399,19 +345,28 @@ export default Vue.extend({
       .getLastUpdateTime()
       .then((time: number) => {
         if (time > 0) {
-          this.lastUpdate = `（最后更新于 ${new Date(time).toLocaleString()}）`;
+          this.lastUpdate = this.$t("settings.base.lastUpdate", {
+            time: new Date(time).toLocaleString()
+          }).toString();
         } else {
-          this.lastUpdate = " （更新时间未知）";
+          this.lastUpdate = this.$t(
+            "settings.base.lastUpdateUnknown"
+          ).toString();
         }
       })
       .catch(() => {
-        this.lastUpdate = " （更新时间获取失败）";
+        this.lastUpdate = this.$t("settings.base.lastUpdateFailed").toString();
       });
 
     if (this.options.autoRefreshUserDataLastTime) {
-      this.autoRefreshUserDataLastUpdate = `（最后更新于 ${new Date(
-        this.options.autoRefreshUserDataLastTime
-      ).toLocaleString()}）`;
+      this.autoRefreshUserDataLastUpdate = this.$t(
+        "settings.base.autoRefreshUserDataLastUpdate",
+        {
+          time: new Date(
+            this.options.autoRefreshUserDataLastTime
+          ).toLocaleString()
+        }
+      ).toString();
     }
   },
   watch: {
@@ -435,6 +390,22 @@ export default Vue.extend({
         return client.address;
       }
       return "";
+    },
+    searchModes(): Array<any> {
+      return [
+        {
+          value: EBeforeSearchingItemSearchMode.id,
+          text: this.$t(
+            "settings.base.beforeSearchingItemSearchMode.id"
+          ).toString()
+        },
+        {
+          value: EBeforeSearchingItemSearchMode.name,
+          text: this.$t(
+            "settings.base.beforeSearchingItemSearchMode.name"
+          ).toString()
+        }
+      ];
     }
   }
 });

@@ -2,7 +2,7 @@
   <!-- 导航栏 -->
   <v-navigation-drawer clipped fixed v-model="drawer" app>
     <v-list v-for="(group,index) in navs" :key="index" dense>
-      <v-subheader v-if="group.title" class="grey--text text--darken-1">{{group.title}}</v-subheader>
+      <v-subheader v-if="group.title" class="grey--text text--darken-1">{{ $t(group.title) }}</v-subheader>
       <v-list-tile
         :to="item.key"
         v-for="(item, index) in group.items"
@@ -15,7 +15,7 @@
           <v-icon>{{item.icon}}</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>{{item.title}}</v-list-tile-title>
+          <v-list-tile-title>{{ $t(item.title) }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
@@ -44,102 +44,92 @@ export default Vue.extend({
       drawer: this.$store.state.options.navBarIsOpen,
       navs: [
         {
-          title: "概览",
+          title: "navigation.dashboard.title",
           key: "group-",
           items: [
             {
-              title: "概览",
+              title: "navigation.dashboard.title",
               icon: "dashboard",
               key: "/home"
             },
             {
-              title: "搜索结果",
+              title: "navigation.dashboard.searchResults",
               icon: "search",
               key: "/search-torrent"
             },
             {
-              title: "下载历史",
+              title: "navigation.dashboard.history",
               icon: "history",
               key: "/history"
             }
           ]
         },
         {
-          title: "参数设置",
+          title: "navigation.settings.title",
           items: [
             {
-              title: "常规设置",
+              title: "navigation.settings.base",
               icon: "settings",
               key: "/set-base"
             },
-            // {
-            //   title: "已支持的站点架构",
-            //   icon: "ballot",
-            //   key: "set-support-schema"
-            // },
             {
-              title: "站点设置",
+              title: "navigation.settings.sites",
               icon: "public",
               key: "/set-sites"
             },
             {
-              title: "下载服务器",
+              title: "navigation.settings.downloadClients",
               icon: "cloud_download",
               key: "/set-download-clients"
             },
             {
-              title: "下载目录设置",
+              title: "navigation.settings.downloadPaths",
               icon: "folder_open",
               key: "/set-download-paths"
             },
             {
-              title: "搜索方案",
+              title: "navigation.settings.searchSolution",
               icon: "widgets",
               key: "/set-search-solution"
             },
             {
-              title: "参数备份与恢复",
+              title: "navigation.settings.backup",
               icon: "restore",
               key: "/set-backup"
             },
             {
-              title: "权限设置",
+              title: "navigation.settings.permissions",
               icon: "verified_user",
               key: "set-permissions"
             }
-            // {
-            //   title: "语言",
-            //   icon: "language",
-            //   key: "/set-language"
-            // }
           ]
         },
         {
-          title: "鸣谢",
+          title: "navigation.thanks.title",
           items: [
             {
-              title: "项目参考与引用",
+              title: "navigation.thanks.reference",
               icon: "developer_board",
               key: "/technology-stack"
             },
             {
-              title: "特别感谢",
+              title: "navigation.thanks.specialThanksTo",
               icon: "people",
               key: "/dev-team"
             }
           ]
         },
         {
-          title: "支持本项目",
+          title: "navigation.support.title",
           items: [
             {
-              title: "Bug反馈",
+              title: "navigation.support.bugReport",
               icon: "bug_report",
               key: "",
               url: "https://github.com/ronggang/PT-Plugin-Plus/issues"
             },
             {
-              title: "捐助",
+              title: "navigation.support.donate",
               icon: "favorite",
               key: "/donate"
             }

@@ -1,17 +1,18 @@
 <template>
   <v-toolbar :color="baseColor" app fixed clipped-left>
-    <v-toolbar-side-icon @click.stop="drawer = !drawer" :title="words.navBarTip"></v-toolbar-side-icon>
+    <v-toolbar-side-icon @click.stop="drawer = !drawer" :title="$t('topbar.navBarTip')"></v-toolbar-side-icon>
     <v-toolbar-title style="width: 220px;" class="hidden-sm-and-down">
-      <span>{{ words.title }}</span>
+      <span>{{ $t("topbar.title") }}</span>
     </v-toolbar-title>
     <SearchBox/>
     <v-btn
       flat
       to="/search-torrent/__LatestTorrents__"
       class="grey--text text--darken-2 hidden-sm-and-down"
+      :title="$t('topbar.showNewTorrentsTip')"
     >
       <v-icon>fiber_new</v-icon>
-      <span class="ml-2">{{ words.showNewTorrents }}</span>
+      <span class="ml-2">{{ $t("topbar.showNewTorrents") }}</span>
     </v-btn>
 
     <v-spacer></v-spacer>
@@ -24,7 +25,7 @@
         rel="noopener noreferrer nofollow"
       >
         <v-icon>home</v-icon>
-        <span class="ml-2">{{ words.github }}</span>
+        <span class="ml-2">{{ $t("topbar.github") }}</span>
       </v-btn>
       <v-btn
         flat
@@ -34,7 +35,7 @@
         rel="noopener noreferrer nofollow"
       >
         <v-icon>help</v-icon>
-        <span class="ml-2">{{ words.help }}</span>
+        <span class="ml-2">{{ $t("topbar.help") }}</span>
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>
@@ -68,7 +69,8 @@ export default Vue.extend({
         navBarTip: "点击显示/隐藏导航栏",
         help: "使用帮助",
         github: "访问 Github",
-        showNewTorrents: "查看最新种子"
+        showNewTorrents: "浏览各站首页种子",
+        showNewTorrentsTip: "根据当前方案，搜索各站的首页种子"
       },
       drawer: this.$store.state.options.navBarIsOpen,
       baseColor: "amber"

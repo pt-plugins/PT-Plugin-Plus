@@ -1,0 +1,411 @@
+{
+  "name": "Chinese (简体中文)",
+  "code": "zh-CN",
+  "authors": [
+    "栽培者"
+  ],
+  "words": {
+    "app": {
+      "initError": "配置信息加载失败，没有获取到系统定义信息，请尝试刷新当前页面",
+      "initializing": "程序正在准备一些数据，请稍候……",
+      "author": "栽培者",
+      "name": "PT 助手 Plus"
+    },
+    "common": {
+      "debugMode": "当前处于调试模式",
+      "changeLanguage": "切换语言",
+      "version": "版本",
+      "systemLog": "系统日志",
+      "haveNewReleases": "有更新可用",
+      "ok": "确认",
+      "cancel": "取消",
+      "remove": "删除",
+      "clear": "清除",
+      "removeConfirm": "确认要删除这条记录吗？",
+      "removeConfirmTitle": "删除确认",
+      "clearConfirm": "确认要删除所有记录吗？"
+    },
+    "topbar": {
+      "title": "@:(app.name)",
+      "navBarTip": "点击显示\/隐藏导航栏",
+      "help": "使用帮助",
+      "github": "访问 Github",
+      "showNewTorrents": "获取各站第一页种子",
+      "showNewTorrentsTip": "根据当前方案，搜索各站的第一页种子"
+    },
+    "navigation": {
+      "dashboard": {
+        "title": "概览",
+        "searchResults": "搜索结果",
+        "history": "下载历史"
+      },
+      "settings": {
+        "title": "参数设置",
+        "base": "常规设置",
+        "sites": "站点设置",
+        "downloadClients": "下载服务器",
+        "downloadPaths": "下载目录设置",
+        "searchSolution": "搜索方案",
+        "backup": "参数备份与恢复",
+        "permissions": "权限设置"
+      },
+      "thanks": {
+        "title": "鸣谢",
+        "reference": "项目参考与引用",
+        "specialThanksTo": "特别感谢"
+      },
+      "support": {
+        "title": "支持本项目",
+        "bugReport": "Bug反馈",
+        "donate": "捐助"
+      }
+    },
+    "permissions": {
+      "title": "感谢您选择 PT 助手",
+      "subtitle": "为了不影响正常使用，请对需要的功能进行授权：",
+      "authorize": "授权",
+      "cancel": "我不用了",
+      "cancelled": "世界如此之大，期待有缘再相会！",
+      "details": {
+        "allSites": "所有网站的访问权限，用于搜索和读取做种数据；",
+        "tabs": "活动选项卡的读取权限，用于显示助手图标；",
+        "downloads": "下载权限，用于批量下载种子文件"
+      }
+    },
+    "searchBox": {
+      "searchTip": "输入种子关键字、IMDb编号，按回车进行搜索",
+      "default": "<默认>",
+      "defaultTip": "仅搜索已允许的站点",
+      "all": "<所有站点>",
+      "noSearchSolution": "暂无方案，请添加",
+      "noAllowSearchSites": "暂未配置允许搜索的站点，请先配置",
+      "searchThisKey": "搜索 “{key}”",
+      "doubanTip": "以上数据来自©豆瓣电影 API v2 查询接口；如不想显示这些结果进行预选，可在“常规设置”中进行关闭",
+      "toDouban": "在豆瓣进行查看"
+    },
+    "donate": {
+      "title": "感谢您的关注和支持"
+    },
+    "history": {
+      "title": "下载历史",
+      "remove": "@:(common.remove)",
+      "clear": "@:(common.clear)",
+      "removeConfirm": "确认要删除这条记录吗？",
+      "removeConfirmTitle": "删除确认",
+      "clearConfirm": "确认要删除所有下载记录吗？",
+      "ok": "@:(common.ok)",
+      "cancel": "@:(common.cancel)",
+      "download": "重新下载",
+      "fail": "失败",
+      "success": "成功",
+      "unknown": "N/A",
+      "defaultPath": "默认目录",
+      "seedingTorrent": "正在发送种子到下载服务器……"
+    },
+    "home": {
+      "title": "概览",
+      "getInfos": "刷新用户数据",
+      "cancelRequest": "取消请求",
+      "requesting": "正在请求",
+      "siteName": "网站名称",
+      "userName": "用户名称",
+      "userLevel": "用户等级",
+      "week": "时间显示为周数",
+      "timeline": "时间轴",
+      "settings": "参数",
+      "statistic": "数据图表",
+      "newMessage": "新消息",
+      "startGetting": "准备开始获取个人数据",
+      "gettingForSite": "正在获取 {siteName} 个人数据",
+      "requestCompleted": "请求完成，耗时：{second} 秒。",
+      "getUserInfoError": "发生错误",
+      "getUserInfoAbort": "{siteName} 获取用户资料请求已取消",
+      "getUserInfoAbortError": "{siteName} 获取用户资料请求取消失败",
+      "headers": {
+        "site": "站点",
+        "userName": "用户名",
+        "levelName": "等级",
+        "activitiyData": "数据量",
+        "ratio": "分享率",
+        "seeding": "做种数",
+        "seedingSize": "做种体积",
+        "bonus": "魔力值\/积分",
+        "joinTime": "入站时间",
+        "lastUpdateTime": "数据更新于",
+        "status": "状态"
+      }
+    },
+    "systemLog": {
+      "title": "系统日志",
+      "save": "保存日志",
+      "headers": {
+        "module": "模块",
+        "event": "事件",
+        "time": "时间",
+        "msg": "描述",
+        "action": "操作"
+      }
+    },
+    "reference": {
+      "title": "本项目使用或参考了以下项目",
+      "thanks": "PT 助手的诞生是建立在这些项目基础之上，在此感谢所有项目的参与人员，感谢他们的付出！",
+      "headers": {
+        "name": "名称",
+        "ver": "版本",
+        "url": "网址"
+      }
+    },
+    "team": {
+      "title": "列表按字母排序",
+      "contributors": "协作者们:",
+      "issues": "反馈者们:"
+    },
+    "timeline": {
+      "share": "生成分享图片",
+      "siteName": "网站名称",
+      "userName": "用户名称",
+      "userLevel": "用户等级",
+      "close": "关闭",
+      "shareMessage": "这些年走过的路",
+      "total": {
+        "uploaded": "上传总量：",
+        "downloaded": "下载总量：",
+        "seedingSize": "做种总量：",
+        "ratio": "总分享率：",
+        "years": "．．Ｐ龄：≈ {year} 年"
+      },
+      "updateat": "数据更新于：",
+      "user": {
+        "uploaded": "上传量：",
+        "downloaded": "下载量：",
+        "seedingSize": "做种量：",
+        "ratio": "分享率：",
+        "bonus": "积分值："
+      },
+      "inputDisplayName": "请输入需要显示的名称：",
+      "inputShareMessage": "请输入需要显示的信息："
+    },
+    "searchTorrent": {
+      "title": "搜索结果",
+      "download": "下载",
+      "downloadFailed": "重下失败",
+      "sendToClient": "服务器下载",
+      "sendToClientTip": "发送到下载服务器",
+      "save": "下载种子文件到本地",
+      "searching": "正在搜索中，请稍候……",
+      "cancelSearch": "取消搜索",
+      "showCheckbox": "多选",
+      "noTag": "无标签",
+      "allSites": "全部站点",
+      "multiDownloadConfirm": "当前下载的种子数量超过一个，浏览器可能会多次提示保存，是否继续？",
+      "copyToClipboard": "复制链接",
+      "copyToClipboardTip": "复制下载链接到剪切板",
+      "reSearch": "重新再搜索",
+      "showCategory": "分类",
+      "filterSearchResults": "过滤搜索结果",
+      "noResultsSites": "无结果站点：",
+      "failedSites": "失败站点：",
+      "reSearchFailedSites": "重试失败的站点",
+      "failUrl": "链接无效",
+      "headers": {
+        "site": "站点",
+        "title": "标题",
+        "category": "分类\/入口",
+        "size": "大小",
+        "seeders": "上传",
+        "leechers": "下载",
+        "completed": "完成",
+        "time": "发布于(≈)",
+        "action": "操作"
+      },
+      "optionsIsMissing": "系统参数丢失",
+      "sitesIsMissing": "请先设置站点",
+      "optionsIsMissingErrorMsg": "系统参数丢失，多次尝试等待后无效，请重新打开配置页再试",
+      "doubanIdConversionFailed": "豆瓣ID转换失败",
+      "skipSites": "暂不支持搜索的站点：",
+      "noAllowSearchSites": "您还没有配置允许搜索的站点，请先前往【站点设置】进行配置",
+      "searchStartMsg": "准备开始搜索，共需搜索 {count} 个站点",
+      "siteIsSearching": "正在搜索 [{siteName}]",
+      "siteIsSearchDone": "{siteName} 搜索完成，共有 {count} 条结果",
+      "siteSearchAbort": "{host} 搜索请求已取消",
+      "siteSearchAbortError": "{host} 搜索请求取消失败",
+      "siteSearchTimeout": "{host} 连接超时",
+      "siteSearchError": "{host} 发生网络或其他错误",
+      "notLogged": "未登录",
+      "searchFinished": "搜索完成，共找到 {count} 条结果，耗时：{second} 秒。",
+      "searchProgress": "已接收 {count} 条结果，搜索仍在进行……",
+      "seedingTorrent": "正在发送种子到下载服务器……",
+      "userCanceled": "用户已取消",
+      "sendTorrentToClient": "发送种子到下载服务器",
+      "sendTorrentToClientSuccess": "发送种子到下载服务器成功",
+      "sendTorrentToClientError": "发送种子到下载服务器失败",
+      "downloadSelectedError": "下载种子文件失败：{name}",
+      "copyLinkToClipboardSuccess": "下载链接已复制到剪切板",
+      "copyLinkToClipboardError": "复制下载链接失败！",
+      "copySelectedToClipboardSuccess": "{count} 条下载链接已复制到剪切板",
+      "downloadTo": "下载到：{path}",
+      "noReSearchSites": "没有需要重新搜索的站点",
+      "doubanIdConverting": "正在尝试转换豆瓣编号，请稍候……",
+      "invalidDoubanId": "无效的豆瓣ID"
+    },
+    "settings": {
+      "backup": {
+        "title": "参数备份与恢复",
+        "subTitle": "注：备份文件为明文，其中可能包含个人信息，请注意保管。",
+        "backup": "备份",
+        "restore": "恢复",
+        "backupToGoogle": "备份到Google",
+        "restoreFromGoogle": "从Google恢复",
+        "restoreConfirm": "确认要从备份数据中恢复配置吗？这将覆盖当前所有设置信息。",
+        "restoreSuccess": "参数已恢复",
+        "restoreError": "参数恢复失败！",
+        "loadError": "配置信息加载失败",
+        "backupDone": "备份完成",
+        "backupError": "备份参数失败！",
+        "errorMessage": {
+          "QUOTA_BYTES_PER_ITEM": "要保存的内容大小超出了Google限制（8K）"
+        },
+        "clearFromGoogle": "清除",
+        "clearFromGoogleTip": "从Google中清除已备份的参数",
+        "clearFromGoogleConfirm": "是否要从Google中清除已备份的参数？",
+        "clearFromGoogleError": "清除失败！",
+        "clearFromGoogleSuccess": "内容已清除"
+      },
+      "base": {
+        "title": "常规设置",
+        "defaultClient": "默认下载服务器（必选）",
+        "autoUpdate": "自动更新官方数据",
+        "save": "保存",
+        "allowSelectionTextSearch": "启用页面内容选择搜索",
+        "allowDropToSend": "启用拖放链接到助手图标时，直接发送链接到下载服务器",
+        "clearCache": "清除缓存",
+        "clearCacheConfirm": "确认要清除缓存吗？清除完成后，下次将会从官网中重新下载系统配置信息。",
+        "needConfirmWhenExceedSize": "当批量下载的种子总体积超过以下大小时需要确认",
+        "exceedSize": "大小",
+        "searchResultRows": "搜索时每站点返回结果数量",
+        "saveDownloadHistory": "启用下载历史，以记录每次一键发送的种子信息",
+        "connectClientTimeout": "全局超时时间（毫秒，1000毫秒=1秒），作用于连接下载服务器、下载种子文件等操作",
+        "noClient": "尚未配置下载服务器，请配置下载服务后再选择",
+        "cacheIsCleared": "缓存已清除，如需立即生效，请重新打开页面",
+        "saved": "参数已保存",
+        "autoRefreshUserData": "在浏览器打开的情况下自动刷新用户数据（Beta）",
+        "autoRefreshUserDataTip1": "每天于",
+        "autoRefreshUserDataTip2": "自动刷新（如果浏览器在这个时间之后打开，则在浏览器打开时自动刷新）",
+        "autoRefreshUserDataTip3": "失败后重试",
+        "autoRefreshUserDataTip4": "次，每次间隔",
+        "autoRefreshUserDataTip5": "分钟",
+        "searchResultOrderBySitePriority": "搜索结果点击站点表头时，按站点优先级别排序（保存后需刷新页面后生效）",
+        "saveSearchKey": "保存搜索关键字",
+        "showMoiveInfoCardOnSearch": "当以 IMDb 编号搜索时显示电影及评分信息",
+        "getMovieInformationBeforeSearching": "当输入搜索关键字时，从豆瓣加载相关信息以供预选",
+        "maxMovieInformationCount": "最多显示条目（1-20）：",
+        "searchModeForItem": "当点击预选条目时：",
+        "showToolbarOnContentPage": "启用站点页面助手图标和工具栏（如一键下载等）",
+        "lastUpdate": "（最后更新于 {time}）",
+        "lastUpdateUnknown": "（更新时间未知）",
+        "lastUpdateFailed": "（更新时间获取失败）",
+        "autoRefreshUserDataLastUpdate": "（最后更新于 {time}）",
+        "beforeSearchingItemSearchMode": {
+          "id": "以ID进行搜索，以获得较精确的内容，但转换ID时需要时间",
+          "name": "以名称进行模糊搜索，以获得较多的内容"
+        }
+      },
+      "downloadClients": {
+        "add": {
+          "title": "新增下载服务器",
+          "titleStep1": "选择服务器类型",
+          "titleStep2": "详细配置",
+          "validMsg": "请选择一个服务器类型",
+          "helpMsg": "找不到想要的服务器类型？来这里添加吧！",
+          "nextStep": "下一步",
+          "prevStep": "上一步",
+          "cancel": "取消"
+        },
+        "edit": {
+          "title": "编辑下载服务器",
+          "ok": "确认",
+          "cancel": "取消"
+        },
+        "editor": {
+          "name": "服务器名称",
+          "type": "服务器类型",
+          "address": "服务器地址",
+          "addressTip": "服务器地址包含端口，如：http:\/\/192.168.1.1:5000\/",
+          "loginName": "登录名",
+          "loginPwd": "登录密码",
+          "id": "ID",
+          "autoStart": "发送种子时自动开始下载",
+          "autoCreate": "<保存后自动生成>",
+          "test": "测试服务器是否可连接",
+          "testSuccess": "服务器可连接",
+          "testConnectionError": "网络连接错误",
+          "testError": "服务器连接失败",
+          "testUnknownError": "未知错误",
+          "testOtherError": "其他错误，服务器返回的代码为: {code}",
+          "testAddressError": "服务器地址错误"
+        },
+        "index": {
+          "title": "下载服务器配置",
+          "add": "新增",
+          "remove": "删除",
+          "clear": "清除",
+          "itemDuplicate": "该名称已存在",
+          "removeConfirm": "确认要删除这个下载服务器吗？",
+          "removeConfirmTitle": "删除确认",
+          "clearConfirm": "确认要删除所有下载服务器吗？",
+          "removeSelectedConfirm": "确认要删除已选中的下载服务器吗？",
+          "ok": "确认",
+          "cancel": "取消",
+          "headers": {
+            "name": "名称",
+            "type": "类型",
+            "address": "服务器地址",
+            "action": "操作"
+          }
+        }
+      },
+      "downloadPaths": {
+        "add": {
+          "title": "新增下载目录定义",
+          "path": "目录列表",
+          "pathTip": "多个目录按回车分隔，第一个为默认目录",
+          "ok": "确认",
+          "cancel": "取消",
+          "selectSite": "选择一个站点（不选表示所有站点都可用）"
+        },
+        "edit": {
+          "title": "编辑下载目录定义",
+          "site": "站点"
+        },
+        "index": {
+          "title": "下载目录设置",
+          "selectedClient": "需要设置的服务器",
+          "add": "新增",
+          "remove": "删除",
+          "clear": "清除",
+          "itemDuplicate": "该名称已存在",
+          "removeConfirm": "确认要删除这个保存目录吗？",
+          "removeConfirmTitle": "删除确认",
+          "removeSelectedConfirm": "确认要删除已选中的保存目录吗？",
+          "ok": "确认",
+          "cancel": "取消",
+          "notSupport": "暂不支持该服务器类型",
+          "allSite": "<所有站点>",
+          "headers": {
+            "name": "站点",
+            "path": "保存目录",
+            "action": "操作"
+          }
+        },
+        "keyDescription": {
+          "allowKeys": "路径中可包含以下关键字：",
+          "siteName": "将被替换为当前站点名称；",
+          "siteHost": "将被替换为当前站点域名；",
+          "example": "例：",
+          "dynamic": "将会弹出输入框，由用户输入路径中 {key} 部分内容；",
+          "dynamicExample": "例：\/volume1\/<...> ，输入：test，结果 \/volume1\/test"
+        }
+      }
+    }
+  }
+}

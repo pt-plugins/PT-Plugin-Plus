@@ -5,7 +5,7 @@
         flat
         solo-inverted
         prepend-icon="search"
-        :label="words.searchTip"
+        :label="$t('searchBox.searchTip')"
         class="mt-2 mb-0"
         v-model="searchKey"
         clearable
@@ -17,8 +17,8 @@
         <v-menu slot="append" offset-y class="search-solution">
           <v-btn slot="activator" flat small color="grey lighten-2">{{selectedSearchSolutionName}}</v-btn>
           <v-list dense>
-            <v-list-tile @click="changeSearchSolution(null)" :title="words.defaultTip">
-              <v-list-tile-title>{{ words.default }}</v-list-tile-title>
+            <v-list-tile @click="changeSearchSolution(null)" :title="$t('searchBox.defaultTip')">
+              <v-list-tile-title>{{ $t('searchBox.default') }}</v-list-tile-title>
             </v-list-tile>
             <v-divider></v-divider>
             <template
@@ -32,11 +32,11 @@
                 <v-list-tile-title>{{ item.name }}</v-list-tile-title>
               </v-list-tile>
             </template>
-            <v-btn flat small v-else to="/set-search-solution">{{words.noSearchSolution}}</v-btn>
+            <v-btn flat small v-else to="/set-search-solution">{{$t('searchBox.noSearchSolution')}}</v-btn>
 
             <v-divider></v-divider>
             <v-list-tile @click="changeSearchSolution(allSite)">
-              <v-list-tile-title>{{ words.all }}</v-list-tile-title>
+              <v-list-tile-title>{{ $t('searchBox.all') }}</v-list-tile-title>
             </v-list-tile>
           </v-list>
         </v-menu>
@@ -48,7 +48,7 @@
           <v-list-tile-content>
             <v-list-tile-title>
               <v-icon>search</v-icon>
-              <span class="title ml-1">{{ words.searchThisKey.replace('$key$', this.searchKey) }}</span>
+              <span class="title ml-1">{{ $t('searchBox.searchThisKey', { key: this.searchKey }) }}</span>
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
@@ -61,7 +61,7 @@
           <v-list-tile
             :key="index"
             @click.stop="itemClick(item)"
-            :title="words.searchThisKey.replace('$key$', item.title)"
+            :title="$t('searchBox.searchThisKey', { key: item.title })"
           >
             <v-list-tile-avatar class="album" :size="75">
               <img :src="item.images.small">
@@ -84,7 +84,7 @@
                 :href="item.alt"
                 rel="noopener noreferrer nofollow"
                 target="_blank"
-                :title="words.toDouban"
+                :title="$t('searchBox.toDouban')"
                 @click.stop
               >
                 <img src="https://img3.doubanio.com/favicon.ico" width="16">
@@ -108,7 +108,9 @@
       <v-list class="py-0">
         <v-list-tile>
           <v-list-tile-content>
-            <v-list-tile-title class="grey--text text--darken-1 caption">{{ words.doubanTip }}</v-list-tile-title>
+            <v-list-tile-title
+              class="grey--text text--darken-1 caption"
+            >{{ $t("searchBox.doubanTip") }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -273,7 +275,9 @@ export default Vue.extend({
         this.selectedSearchSolutionName = solution.name;
         defaultSearchSolutionId = solution.id;
       } else {
-        this.selectedSearchSolutionName = this.words.default;
+        this.selectedSearchSolutionName = this.$t(
+          "searchBox.default"
+        ).toString();
       }
 
       this.$store.dispatch("saveConfig", {

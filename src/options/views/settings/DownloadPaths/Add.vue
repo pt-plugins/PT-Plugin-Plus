@@ -2,14 +2,17 @@
   <div>
     <v-dialog v-model="show" max-width="800">
       <v-card>
-        <v-card-title class="headline blue-grey darken-2" style="color:white">{{ words.title }}</v-card-title>
+        <v-card-title
+          class="headline blue-grey darken-2"
+          style="color:white"
+        >{{ $t('settings.downloadPaths.add.title') }}</v-card-title>
 
         <v-card-text>
           <v-form v-model="valid">
             <v-autocomplete
               v-model="selectedSite"
               :items="getSites()"
-              :label="words.selectSite"
+              :label="$t('settings.downloadPaths.add.selectSite')"
               persistent-hint
               single-line
               item-text="name"
@@ -38,9 +41,9 @@
             </v-autocomplete>
             <v-textarea
               v-model="paths"
-              :label="words.path"
+              :label="$t('settings.downloadPaths.add.path')"
               value
-              :hint="words.pathTip"
+              :hint="$t('settings.downloadPaths.add.pathTip')"
               :rules="rules.require"
             ></v-textarea>
             <v-alert :value="true" color="info" icon="info" outline v-if="client.pathDescription">
@@ -56,11 +59,11 @@
           <v-spacer></v-spacer>
           <v-btn flat color="error" @click="cancel">
             <v-icon>cancel</v-icon>
-            <span class="ml-1">{{ words.cancel }}</span>
+            <span class="ml-1">{{ $t('settings.downloadPaths.add.cancel') }}</span>
           </v-btn>
           <v-btn flat color="success" @click="save" :disabled="!valid">
             <v-icon>check_circle_outline</v-icon>
-            <span class="ml-1">{{ words.ok }}</span>
+            <span class="ml-1">{{ $t('settings.downloadPaths.add.ok') }}</span>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -78,14 +81,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      words: {
-        title: "新增下载目录定义",
-        path: "目录列表",
-        pathTip: "多个目录按回车分隔，第一个为默认目录",
-        ok: "确认",
-        cancel: "取消",
-        selectSite: "选择一个站点（不选表示所有站点都可用）"
-      },
       rules: {
         require: [(v: any) => !!v || "!"]
       },

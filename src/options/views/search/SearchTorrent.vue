@@ -2,14 +2,14 @@
   <div class="search-torrent">
     <MovieInfoCard :IMDbId="IMDbId" v-if="!!options.showMoiveInfoCardOnSearch"/>
     <v-alert :value="true" type="info" style="padding:8px 16px;">
-      {{ words.title }} [{{ key }}], {{searchMsg}} {{skipSites}}
+      {{ $t('searchTorrent.title') }} [{{ key }}], {{searchMsg}} {{skipSites}}
       <v-btn
         flat
         icon
         small
         color="white"
         @click.stop="doSearch"
-        :title="words.reSearch"
+        :title="$t('searchTorrent.reSearch')"
         v-if="!loading && key!=''"
       >
         <v-icon>cached</v-icon>
@@ -25,7 +25,7 @@
         @click.stop="showNoResultsSites=!showNoResultsSites"
       >
         <v-icon small class="mr-1" color="grey darken-2">face</v-icon>
-        {{ words.noResultsSites }}
+        {{ $t('searchTorrent.noResultsSites') }}
         {{ searchResult.noResultsSites.length }}
       </v-btn>
 
@@ -39,7 +39,7 @@
         @click.stop="showFailedSites=!showFailedSites"
       >
         <v-icon small class="mr-1" color="orange">warning</v-icon>
-        {{ words.failedSites }}
+        {{ $t('searchTorrent.failedSites') }}
         {{ searchResult.failedSites.length }}
       </v-btn>
 
@@ -52,7 +52,7 @@
         @click.stop="reSearchFailedSites"
       >
         <v-icon small class="mr-1">autorenew</v-icon>
-        {{ words.reSearchFailedSites }}
+        {{ $t('searchTorrent.reSearchFailedSites') }}
       </v-btn>
     </v-alert>
     <!-- 搜索队列-->
@@ -68,12 +68,16 @@
               <v-avatar size="18" class="mr-2">
                 <img :src="item.site.icon">
               </v-avatar>
-              {{item.site.name}} {{ words.searching }}
+              {{item.site.name}} {{ $t('searchTorrent.searching') }}
             </v-list-tile-title>
           </v-list-tile-content>
 
           <v-list-tile-action class="mr-5">
-            <v-icon @click="abortSearch(item.site)" color="red" :title="words.cancelSearch">cancel</v-icon>
+            <v-icon
+              @click="abortSearch(item.site)"
+              color="red"
+              :title="$t('searchTorrent.cancelSearch')"
+            >cancel</v-icon>
           </v-list-tile-action>
         </v-list-tile>
         <v-divider v-if="index + 1 < searchQueue.length" :key="'line'+item.site.host+index"></v-divider>
@@ -97,7 +101,7 @@
                 @click.stop="resetDatas(item)"
                 :disabled="!item.length"
               >
-                <v-icon class="mr-1" left v-if="key===words.allSites">public</v-icon>
+                <v-icon class="mr-1" left v-if="key===allSitesKey">public</v-icon>
                 <template v-else>
                   <v-avatar class="mr-1" v-if="item.length>0">
                     <img :src="item[0].site.icon" style="width:60%;height:60%;">
@@ -106,7 +110,7 @@
                     <img :src="item.site.icon" style="width:60%;height:60%;">
                   </v-avatar>
                 </template>
-                <span>{{ key }}</span>
+                <span>{{ key===allSitesKey?$t("searchTorrent.allSites"):key }}</span>
                 <v-chip
                   label
                   :color="item.length?'blue-grey':'grey'"
@@ -256,7 +260,7 @@
             <v-text-field
               v-model="filterKey"
               append-icon="search"
-              :label="words.filterSearchResults"
+              :label="$t('searchTorrent.filterSearchResults')"
               single-line
               hide-details
             ></v-text-field>
@@ -266,13 +270,13 @@
               <v-switch
                 color="success"
                 v-model="checkBox"
-                :label="words.showCheckbox"
+                :label="$t('searchTorrent.showCheckbox')"
                 style="width: 100px;flex:none;float:right;"
               ></v-switch>
               <v-switch
                 color="success"
                 v-model="showCategory"
-                :label="words.showCategory"
+                :label="$t('searchTorrent.showCategory')"
                 style="width: 100px;flex:none;float:right;"
               ></v-switch>
             </div>
@@ -283,22 +287,22 @@
                 :disabled="selected.length==0"
                 color="success"
                 small
-                :title="words.copyToClipboardTip"
+                :title="$t('searchTorrent.copyToClipboardTip')"
                 @click="copySelectedToClipboard()"
               >
                 <v-icon class="mr-2" small>file_copy</v-icon>
-                {{words.copyToClipboard}} ({{selected.length}})
+                {{$t('searchTorrent.copyToClipboard')}} ({{selected.length}})
               </v-btn>
               <!-- 发送到下载服务器 -->
               <v-btn
                 :disabled="selected.length==0"
                 color="success"
                 small
-                :title="words.sendToClientTip"
+                :title="$t('searchTorrent.sendToClientTip')"
                 @click.stop="showAllContentMenus($event)"
               >
                 <v-icon class="mr-2" small>cloud_download</v-icon>
-                {{words.sendToClient}} ({{selected.length}})
+                {{$t('searchTorrent.sendToClient')}} ({{selected.length}})
               </v-btn>
 
               <!-- 文件发送进度 -->
@@ -316,10 +320,10 @@
                 @click="downloadSelected"
                 color="success"
                 small
-                :title="words.save"
+                :title="$t('searchTorrent.save')"
               >
                 <v-icon class="mr-2" small>get_app</v-icon>
-                {{words.download}} ({{selected.length}})
+                {{$t('searchTorrent.download')}} ({{selected.length}})
               </v-btn>
               <!-- 文件下载进度 -->
               <v-progress-circular
@@ -337,11 +341,11 @@
                 class="error"
                 @click="reDownloadFailedTorrents"
                 small
-                :title="words.downloadFailed"
+                :title="$t('searchTorrent.downloadFailed')"
                 :loading="downloading.count>0"
               >
                 <v-icon class="mr-2" small>get_app</v-icon>
-                {{ words.downloadFailed }} ({{downloadFailedTorrents.length}})
+                {{ $t('searchTorrent.downloadFailed') }} ({{downloadFailedTorrents.length}})
               </v-btn>
             </div>
           </v-layout>
@@ -423,7 +427,7 @@
                 small
                 class="mr-2"
                 @click="copyLinkToClipboard(props.item.url)"
-                :title="words.copyToClipboardTip"
+                :title="$t('searchTorrent.copyToClipboardTip')"
               >file_copy</v-icon>
 
               <!-- 服务端下载 -->
@@ -431,14 +435,14 @@
                 @click.stop="showSiteContentMenus(props.item, $event)"
                 small
                 class="mr-2"
-                :title="words.sendToClient"
+                :title="$t('searchTorrent.sendToClient')"
               >cloud_download</v-icon>
 
               <v-icon
                 @click.stop="saveTorrentFile(props.item)"
                 small
                 class="mr-2"
-                :title="words.save"
+                :title="$t('searchTorrent.save')"
                 v-if="props.item.site.downloadMethod=='POST'"
               >get_app</v-icon>
 
@@ -447,12 +451,12 @@
                 :href="props.item.url"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                :title="words.save"
+                :title="$t('searchTorrent.save')"
               >
                 <v-icon small class="mr-2">get_app</v-icon>
               </a>
             </template>
-            <span v-else>{{ words.failUrl }}</span>
+            <span v-else>{{ $t('searchTorrent.failUrl') }}</span>
           </td>
         </template>
       </v-data-table>

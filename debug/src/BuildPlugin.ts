@@ -19,6 +19,8 @@ export class BuildPlugin {
   public buildResource() {
     let fileName = PATH.join(this.resourcePath, `systemConfig.json`);
     FS.writeFileSync(fileName, JSON.stringify(this.getSystemConfig()));
+    fileName = PATH.join(this.resourcePath, `i18n.json`);
+    FS.writeFileSync(fileName, JSON.stringify(this.geti18n()));
   }
 
   /**
@@ -162,5 +164,32 @@ export class BuildPlugin {
     }
 
     // console.log(results);
+  }
+
+  /**
+   * 获取语言配置信息
+   */
+  public geti18n() {
+    let parentFolder = PATH.join(this.resourcePath, "i18n");
+
+    let list = FS.readdirSync(parentFolder);
+    let results: Array<any> = [];
+
+    list.forEach((path: string) => {
+      let file = PATH.join(parentFolder, path);
+      var stat = FS.statSync(file);
+      // 获取语言配置文件
+      if (stat && stat.isFile() && PATH.extname(file) == ".json") {
+        let content = JSON.parse(FS.readFileSync(file, "utf-8"));
+        if (content && content.code && content.name) {
+          console.log(path, content.name);
+          results.push({
+            name: content.name,
+            code: content.code
+          });
+        }
+      }
+    });
+    return results;
   }
 }

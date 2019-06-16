@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-alert :value="true" type="info">{{ words.title }}</v-alert>
+    <v-alert :value="true" type="info">{{ $t('team.title') }}</v-alert>
     <v-card>
       <div v-for="(item, index) in peoples" :key="index">
         <v-avatar>
@@ -14,13 +14,15 @@
       在项目的开发和测试中，他们给予了很多帮助和支持（或开发，或测试，或发💊，或建议，或鼓励，或鞭策），在此表示感谢。
       <br>列表中未能一一列出所有给予帮助的同学，也对他们表示感谢，如有遗漏敬请谅解。
       <br>同时一并感谢这些
-      <br>协作者们:
+      <br>
+      {{ $t('team.contributors') }}
       <a
         target="_blank"
         rel="noopener noreferrer nofollow"
         href="https://github.com/ronggang/PT-Plugin-Plus/graphs/contributors"
       >https://github.com/ronggang/PT-Plugin-Plus/graphs/contributors</a>
-      <br>反馈者们:
+      <br>
+      {{ $t('team.issues') }}
       <a
         target="_blank"
         rel="noopener noreferrer nofollow"
@@ -34,9 +36,6 @@ import Vue from "vue";
 export default Vue.extend({
   data() {
     return {
-      words: {
-        title: "列表按字母排序"
-      },
       items: [
         "Rhilip (R酱)",
         "bimzcy (白鸽男孩)",

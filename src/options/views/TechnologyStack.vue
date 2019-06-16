@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-alert :value="true" type="info">{{ words.title }}</v-alert>
+    <v-alert :value="true" type="info">{{ $t('reference.title') }}</v-alert>
     <v-card>
       <v-data-table
         :headers="headers"
@@ -8,6 +8,7 @@
         :pagination.sync="pagination"
         item-key="name"
         class="elevation-1"
+        hide-actions
       >
         <template slot="items" slot-scope="props">
           <td>{{ props.item.name }}</td>
@@ -22,7 +23,7 @@
         </template>
       </v-data-table>
     </v-card>
-    <v-alert :value="true" color="grey">PT 助手的诞生是建立在这些项目基础之上，在此感谢所有项目的参与人员，感谢他们的付出！</v-alert>
+    <v-alert :value="true" color="grey">{{ $t("reference.thanks") }}</v-alert>
   </div>
 </template>
 <script lang="ts">
@@ -30,14 +31,6 @@ import Vue from "vue";
 export default Vue.extend({
   data() {
     return {
-      words: {
-        title: "本项目使用或参考了以下项目"
-      },
-      headers: [
-        { text: "名称", align: "left", value: "name" },
-        { text: "版本", align: "left", value: "type" },
-        { text: "网址", align: "left", value: "url" }
-      ],
       pagination: {
         rowsPerPage: -1
       },
@@ -119,6 +112,20 @@ export default Vue.extend({
         }
       ]
     };
+  },
+
+  computed: {
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("reference.headers.name"),
+          align: "left",
+          value: "name"
+        },
+        { text: this.$t("reference.headers.ver"), align: "left", value: "ver" },
+        { text: this.$t("reference.headers.url"), align: "left", value: "url" }
+      ];
+    }
   }
 });
 </script>
