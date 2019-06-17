@@ -9,10 +9,10 @@
   "homepage": "https://github.com/ronggang/PT-Plugin-Plus",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && webpack --config webpack/prod.js && cd debug && yarn install && tsc && node ./dist/buildResource.js && cd .. && web-ext build -s ./dist -a ./releases -o",
+    "build": "yarn install && vue-cli-service build && webpack --config webpack/prod.js && cd debug && yarn install && tsc && node ./dist/buildResource.js && cd .. && web-ext build -s ./dist -a ./releases -o",
     "lint": "vue-cli-service lint",
     "background": "webpack --config webpack/prod.js",
-    "dev": "vue-cli-service build --mode=development && webpack --config webpack/dev.js && cd debug && yarn install && tsc && node ./dist/buildResource.js",
+    "dev": "yarn install && vue-cli-service build --mode=development && webpack --config webpack/dev.js && cd debug && yarn install && tsc && node ./dist/buildResource.js",
     "dev-s": "cd debug && yarn install && tsc && node ./dist/index.js"
   },
   "dependencies": {
