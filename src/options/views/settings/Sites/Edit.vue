@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="show" max-width="800">
     <v-card>
-      <v-card-title class="headline blue-grey darken-2" style="color:white">编辑站点</v-card-title>
+      <v-card-title
+        class="headline blue-grey darken-2"
+        style="color:white"
+      >{{ $t('settings.sites.edit.title') }}</v-card-title>
 
       <v-card-text>
         <SiteEditor :site="defaultSite"/>
@@ -13,11 +16,11 @@
         <v-spacer></v-spacer>
         <v-btn flat color="error" @click="cancel">
           <v-icon>cancel</v-icon>
-          <span class="ml-1">取消</span>
+          <span class="ml-1">{{ $t('common.cancel') }}</span>
         </v-btn>
         <v-btn flat color="success" @click="save" :disabled="!defaultSite.valid">
           <v-icon>check_circle_outline</v-icon>
-          <span class="ml-1">确认</span>
+          <span class="ml-1">{{ $t('common.ok') }}</span>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -63,16 +66,6 @@ export default Vue.extend({
     cancel() {
       this.show = false;
     }
-  },
-  created() {
-    console.log("EditSite.created");
-  },
-  mounted() {
-    console.log("EditSite.mounted");
-  },
-  updated() {
-    console.log("EditSite.updated");
-    // this.defaultSite = this.site;
   }
 });
 </script>

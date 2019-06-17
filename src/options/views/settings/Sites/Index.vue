@@ -1,24 +1,24 @@
 <template>
   <div class="set-sites">
     <v-alert :value="true" type="info">
-      <div>{{ words.title }}</div>
+      <div>{{ $t('settings.sites.index.title') }}</div>
     </v-alert>
     <v-card>
       <v-card-title>
         <v-btn color="success" @click="add">
           <v-icon class="mr-2">add</v-icon>
-          {{words.add}}
+          {{$t('common.add')}}
         </v-btn>
         <v-btn color="error" :disabled="selected.length==0" @click="removeSelected">
           <v-icon class="mr-2">remove</v-icon>
-          {{words.remove}}
+          {{$t('common.remove')}}
         </v-btn>
         <v-divider class="mx-3 mt-0" inset vertical></v-divider>
         <v-btn color="info" @click="importAll" :loading="importing">
           <v-icon class="mr-2">save_alt</v-icon>
-          {{words.importAll}}
+          {{$t('settings.sites.index.importAll')}}
         </v-btn>
-        <span v-if="importing">{{ words.importedText }} {{importedCount}}</span>
+        <span v-if="importing">{{ $t('settings.sites.index.importedText') }} {{importedCount}}</span>
         <v-spacer></v-spacer>
         <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-card-title>
@@ -79,24 +79,24 @@
             >{{ props.item.activeURL }}</a>
           </td>
           <td>
-            <v-icon small class="mr-2" @click="edit(props.item)" :title="words.edit">edit</v-icon>
+            <v-icon small class="mr-2" @click="edit(props.item)" :title="$t('common.edit')">edit</v-icon>
             <v-icon
               small
               class="mr-2"
               @click="editPlugins(props.item)"
-              :title="words.plugins"
+              :title="$t('settings.sites.index.plugins')"
             >assistant</v-icon>
             <v-icon
               small
               class="mr-2"
               @click="editSearchEntry(props.item)"
-              :title="words.searchEntry"
+              :title="$t('settings.sites.index.searchEntry')"
             >search</v-icon>
             <v-icon
               small
               color="error"
               @click="removeConfirm(props.item)"
-              :title="words.remove"
+              :title="$t('common.remove')"
             >delete</v-icon>
           </td>
         </template>
@@ -110,9 +110,9 @@
 
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
-        <v-card-title class="headline red lighten-2">删除确认</v-card-title>
+        <v-card-title class="headline red lighten-2">{{ $t('settings.sites.index.removeTitle') }}</v-card-title>
 
-        <v-card-text>确认要删除这个站点吗？</v-card-text>
+        <v-card-text>{{ $t('settings.sites.index.removeConfirm') }}</v-card-text>
 
         <v-divider></v-divider>
 
@@ -120,21 +120,26 @@
           <v-spacer></v-spacer>
           <v-btn flat color="info" @click="dialogRemoveConfirm=false">
             <v-icon>cancel</v-icon>
-            <span class="ml-1">取消</span>
+            <span class="ml-1">{{ $t('common.cancel') }}</span>
           </v-btn>
           <v-btn color="error" flat @click="remove">
             <v-icon>check_circle_outline</v-icon>
-            <span class="ml-1">确认</span>
+            <span class="ml-1">{{ $t('common.ok') }}</span>
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
     <v-alert :value="true" color="grey">
-      <div v-html="words.subTitle"></div>
+      <div v-html="$t('settings.sites.index.subTitle')"></div>
     </v-alert>
 
-    <v-snackbar v-model="siteDuplicate" top :timeout="3000" color="error">{{ siteDuplicateText }}</v-snackbar>
+    <v-snackbar
+      v-model="siteDuplicate"
+      top
+      :timeout="3000"
+      color="error"
+    >{{ $t('settings.sites.index.siteDuplicateText') }}</v-snackbar>
   </div>
 </template>
 
@@ -155,21 +160,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      words: {
-        add: "新增",
-        remove: "删除",
-        edit: "编辑",
-        importAll: "一键导入站点",
-        importAllConfirm:
-          "确认要进行导入站点操作吗？此操作会导入已在浏览器上登录过但未添加的站点。",
-        removeSelectedConfirm: "确认要删除已选中的站点吗？",
-        plugins: "插件",
-        title: "站点设置",
-        subTitle:
-          "只有配置过的站点才会显示插件图标及相应的功能；<br/>已离线的站点的不再参与搜索和信息获取；",
-        searchEntry: "搜索入口",
-        importedText: "已成功导入"
-      },
       selected: [],
       pagination: {
         rowsPerPage: -1
@@ -177,16 +167,6 @@ export default Vue.extend({
       showAddDialog: false,
       showEditDialog: false,
       siteDuplicate: false,
-      siteDuplicateText: "该站点已存在",
-      headers: [
-        { text: "名称", align: "left", value: "name" },
-        { text: "标签", align: "left", value: "tags" },
-        { text: "允许搜索", align: "left", value: "allowSearch" },
-        { text: "个人信息(Beta)", align: "left", value: "allowGetUserInfo" },
-        { text: "已离线", align: "left", value: "offline" },
-        { text: "URL", align: "left", value: "activeURL" },
-        { text: "操作", value: "name", sortable: false }
-      ],
       sites: [] as Site[],
       selectedSite: {},
       dialogRemoveConfirm: false,
@@ -220,7 +200,11 @@ export default Vue.extend({
       this.selectedSite = {};
     },
     removeSelected() {
-      if (confirm(this.words.removeSelectedConfirm)) {
+      if (
+        confirm(
+          this.$t("settings.sites.index.removeSelectedConfirm").toString()
+        )
+      ) {
         this.selected.forEach((item: any) => {
           this.$store.commit("removeSite", item);
         });
@@ -275,7 +259,9 @@ export default Vue.extend({
       }
     },
     importAll() {
-      if (!confirm(this.words.importAllConfirm)) {
+      if (
+        !confirm(this.$t("settings.sites.index.importAllConfirm").toString())
+      ) {
         return;
       }
       if (this.importing) {
@@ -361,6 +347,47 @@ export default Vue.extend({
       });
     }
     // this.sites = this.$store.state.options.sites;
+  },
+  computed: {
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("settings.sites.index.headers.name"),
+          align: "left",
+          value: "name"
+        },
+        {
+          text: this.$t("settings.sites.index.headers.tags"),
+          align: "left",
+          value: "tags"
+        },
+        {
+          text: this.$t("settings.sites.index.headers.allowSearch"),
+          align: "left",
+          value: "allowSearch"
+        },
+        {
+          text: this.$t("settings.sites.index.headers.allowGetUserInfo"),
+          align: "left",
+          value: "allowGetUserInfo"
+        },
+        {
+          text: this.$t("settings.sites.index.headers.offline"),
+          align: "left",
+          value: "offline"
+        },
+        {
+          text: this.$t("settings.sites.index.headers.activeURL"),
+          align: "left",
+          value: "activeURL"
+        },
+        {
+          text: this.$t("settings.sites.index.headers.action"),
+          value: "name",
+          sortable: false
+        }
+      ];
+    }
   }
 });
 </script>

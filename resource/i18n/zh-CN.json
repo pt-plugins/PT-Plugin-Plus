@@ -17,13 +17,17 @@
       "version": "版本",
       "systemLog": "系统日志",
       "haveNewReleases": "有更新可用",
+      "add": "新增",
+      "edit": "编辑",
+      "copy": "复制",
       "ok": "确认",
       "cancel": "取消",
       "remove": "删除",
       "clear": "清除",
       "removeConfirm": "确认要删除这条记录吗？",
       "removeConfirmTitle": "删除确认",
-      "clearConfirm": "确认要删除所有记录吗？"
+      "clearConfirm": "确认要删除所有记录吗？",
+      "id": "ID"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -70,6 +74,10 @@
         "allSites": "所有网站的访问权限，用于搜索和读取做种数据；",
         "tabs": "活动选项卡的读取权限，用于显示助手图标；",
         "downloads": "下载权限，用于批量下载种子文件"
+      },
+      "headers": {
+        "title": "权限描述",
+        "enabled": "已授权"
       }
     },
     "searchBox": {
@@ -100,7 +108,14 @@
       "success": "成功",
       "unknown": "N/A",
       "defaultPath": "默认目录",
-      "seedingTorrent": "正在发送种子到下载服务器……"
+      "seedingTorrent": "正在发送种子到下载服务器……",
+      "headers": {
+        "site": "来源",
+        "title": "标题",
+        "status": "状态",
+        "time": "下载时间",
+        "action": "操作"
+      }
     },
     "home": {
       "title": "概览",
@@ -405,7 +420,172 @@
           "dynamic": "将会弹出输入框，由用户输入路径中 {key} 部分内容；",
           "dynamicExample": "例：\/volume1\/<...> ，输入：test，结果 \/volume1\/test"
         }
+      },
+      "searchSolution": {
+        "edit": {
+          "title": "搜索方案定义"
+        },
+        "editor": {
+          "name": "方案名称",
+          "range": "搜索范围",
+          "headers": {
+            "name": "站点"
+          }
+        },
+        "index": {
+          "title": "搜索方案定义",
+          "itemDuplicate": "该名称已存在",
+          "removeConfirm": "确认要删除这个搜索方案吗？",
+          "removeConfirmTitle": "删除确认",
+          "removeSelectedConfirm": "确认要删除已选中的搜索方案吗？",
+          "help": "如何使用？",
+          "headers": {
+            "name": "名称",
+            "range": "范围",
+            "action": "操作"
+          }
+        }
+      },
+      "sitePlugins": {
+        "add": {
+          "title": "新增插件"
+        },
+        "edit": {
+          "title": "编辑插件"
+        },
+        "editor": {
+          "defaultClient": "默认下载服务器",
+          "name": "插件名称",
+          "pages": "适用页面",
+          "pagesTip": "页面以'\/'开始表示网站根目录，输入完成后按回车添加，可添加多个，可以是正则表达式",
+          "scripts": "附加脚本文件",
+          "scriptsTip": "\/ 表示从资源目录根加载脚本，可添加多个",
+          "script": "JS脚本",
+          "style": "附加样式",
+          "styles": "附加样式文件",
+          "stylesTip": "\/ 表示从资源目录根加载脚本，可添加多个"
+        },
+        "index": {
+          "title": "站点插件配置",
+          "importAll": "导入所有",
+          "removeSelectedConfirm": "确认要删除已选中的插件吗？",
+          "removeConfirm": "确认要删除这个插件吗？",
+          "removeTitle": "删除确认",
+          "headers": {
+            "name": "名称",
+            "pages": "适用页面",
+            "enable": "启用",
+            "action": "操作"
+          }
+        }
+      },
+      "sites": {
+        "add": {
+          "title": "新增站点",
+          "next": "下一步",
+          "prev": "上一步",
+          "help": "找不到想要的站点？来这里添加吧！",
+          "validMsg": "请选择一个站点（支持搜索）",
+          "custom": "自定义",
+          "step1": "选择站点",
+          "step2": "确认站点配置"
+        },
+        "edit": {
+          "title": "编辑站点"
+        },
+        "editor": {
+          "defaultClient": "指定下载服务器（如不选择则以基本设置的默认下载服务器为准）",
+          "name": "站点名称",
+          "tags": "站点标签",
+          "inputTags": "标签输入完成后按回车添加，可添加多个",
+          "schema": "网站架构",
+          "description": "网站描述",
+          "host": "域名",
+          "url": "网站地址",
+          "urlTip": "网站完整地址，如：https:\/\/www.github.com\/",
+          "passkey": "密钥",
+          "passkeyTip": "密钥仅用于复制下载地址操作，如果不需要用到此功能，请留空",
+          "allowSearch": "允许搜索",
+          "allowGetUserInfo": "允许获取用户信息（Beta）",
+          "cdn": "站点CDN列表",
+          "cdnTip": "如您使用的网址和系统定义的不同，可在此填写当前使用的网站地址，每行填写一个地址，第一个将做为搜索时使用的地址",
+          "priority": "优先级",
+          "priorityTip": "可用于搜索排序",
+          "offline": "站点已离线（停机\/关闭）"
+        },
+        "index": {
+          "importAll": "一键导入站点",
+          "importAllConfirm": "确认要进行导入站点操作吗？此操作会导入已在浏览器上登录过但未添加的站点。",
+          "removeSelectedConfirm": "确认要删除已选中的站点吗？",
+          "removeConfirm": "确认要删除这个站点吗？",
+          "removeTitle": "删除确认",
+          "plugins": "插件",
+          "title": "站点设置",
+          "subTitle": "只有配置过的站点才会显示插件图标及相应的功能；<br/>已离线的站点的不再参与搜索和信息获取；",
+          "searchEntry": "搜索入口",
+          "importedText": "已成功导入",
+          "siteDuplicateText": "该站点已存在",
+          "headers": {
+            "name": "名称",
+            "tags": "标签",
+            "allowSearch": "允许搜索",
+            "allowGetUserInfo": "个人信息",
+            "offline": "已离线",
+            "activeURL": "URL",
+            "action": "操作"
+          }
+        }
+      },
+      "siteSearchEntry": {
+        "add": {
+          "title": "新增搜索入口"
+        },
+        "edit": {
+          "title": "编辑搜索入口"
+        },
+        "editor": {
+          "name": "入口名称",
+          "entry": "入口页面（如果不填写则默认为系统已定义的入口页面）",
+          "parseScript": "搜索结果解析脚本",
+          "parseScriptFile": "搜索结果解析脚本文件",
+          "resultSelector": "种子列表定位选择器",
+          "category": "资源分类（不选表示所有）",
+          "queryString": "追加查询参数"
+        },
+        "index": {
+          "title": "站点搜索入口配置",
+          "removeSelectedConfirm": "确认要删除已选中的搜索入口吗？",
+          "removeConfirm": "确认要删除这个搜索入口吗？",
+          "removeTitle": "删除确认",
+          "help": "如何使用？",
+          "headers": {
+            "name": "名称",
+            "categories": "已选择分类",
+            "enable": "启用",
+            "action": "操作"
+          }
+        }
       }
+    },
+    "statistic": {
+      "selectSite": "选择需要统计的站点",
+      "goback": "返回",
+      "share": "生成分享图片",
+      "exportRawData": "导出原数据",
+      "allSite": "<所有站点>",
+      "upload": "上传",
+      "download": "下载",
+      "bonus": "积分",
+      "baseDataTitle": "[{userName}@{site}] 基本数据",
+      "baseDataSubTitle": "上传：{uploaded}, 下载：{downloaded}，积分：{bonus}",
+      "data": "数据",
+      "seedingDataTitle": "[{userName}@{site}] 保种情况",
+      "seedingDataSubTitle": "做种体积：{seedingSize}, 数量：{count} 个",
+      "seedingSize": "做种体积",
+      "seedingCount": "做种数",
+      "size": "体积",
+      "count": "数量",
+      "note": "注：<br>1. 图表历史数据来自概览页，手动刷新或自动更新均会记录；<br>2. 助手从 v1.0.1 版开始正式记录每次刷新的数据，每个站每天仅保存一条；"
     }
   }
 }

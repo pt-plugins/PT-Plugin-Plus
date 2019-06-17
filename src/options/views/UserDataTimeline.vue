@@ -90,7 +90,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <span>{{ shareTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</span>
-          <span class="ml-1">Created By PT 助手 Plus {{ version }}</span>
+          <span class="ml-1">Created By {{ $t('app.name') }} {{ version }}</span>
         </v-card-actions>
       </v-card>
     </div>

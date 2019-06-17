@@ -65,17 +65,22 @@ export default Vue.extend({
   },
   created() {
     this.languages = window.i18nService.config;
-    if (APP.isExtensionMode && chrome.runtime) {
+    if (APP.isExtensionMode && chrome.runtime && chrome.runtime.getManifest) {
       let manifest = chrome.runtime.getManifest();
       this.version = "v" + (manifest.version_name || manifest.version);
     } else {
       this.version = "localVersion";
     }
-    this.checkUpdate();
-    APP.getInstallType().then(result => {
-      console.log(result, EInstallType.development);
-      this.isDevelopmentMode = result == EInstallType.development;
-    });
+    if (this.version != "localVersion") {
+      this.checkUpdate();
+    }
+
+    APP.getInstallType()
+      .then(result => {
+        console.log(result, EInstallType.development);
+        this.isDevelopmentMode = result == EInstallType.development;
+      })
+      .catch(() => {});
   },
   methods: {
     checkUpdate() {

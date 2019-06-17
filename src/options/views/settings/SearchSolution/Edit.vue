@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="show" fullscreen>
     <v-card>
-      <v-card-title class="headline blue-grey darken-2" style="color:white">{{ words.title }}</v-card-title>
+      <v-card-title
+        class="headline blue-grey darken-2"
+        style="color:white"
+      >{{ $t("settings.searchSolution.edit.title") }}</v-card-title>
 
       <v-card-text class="body">
         <Editor :option="defaultItem" :initSites="sites" @change="change"/>
@@ -13,11 +16,11 @@
         <v-spacer></v-spacer>
         <v-btn flat color="error" @click="cancel">
           <v-icon>cancel</v-icon>
-          <span class="ml-1">{{ words.cancel }}</span>
+          <span class="ml-1">{{ $t("common.cancel") }}</span>
         </v-btn>
         <v-btn flat color="success" @click="save" :disabled="!valid">
           <v-icon>check_circle_outline</v-icon>
-          <span class="ml-1">{{ words.ok }}</span>
+          <span class="ml-1">{{ $t("common.ok") }}</span>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -38,11 +41,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      words: {
-        title: "搜索方案定义",
-        ok: "确认",
-        cancel: "取消"
-      },
       show: false,
       valid: false,
       sites: [] as Site[],

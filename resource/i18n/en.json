@@ -17,13 +17,17 @@
       "version": "Version",
       "systemLog": "System Log",
       "haveNewReleases": "Update available",
+      "add": "New",
+      "edit": "Edit",
+      "copy": "Copy",
       "ok": "OK",
       "cancel": "Cancel",
       "remove": "Remove",
       "clear": "Clear",
       "removeConfirm": "Are you sure you want to delete this record?",
       "removeConfirmTitle": "Delete confirmation",
-      "clearConfirm": "Are you sure you want to delete all records?"
+      "clearConfirm": "Are you sure you want to delete all records?",
+      "id": "ID"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -70,6 +74,10 @@
         "allSites": "Access to all websites for searching and get torrent data;",
         "tabs": "Read permission of the activity tab to display the PT Plugin Plus icon;",
         "downloads": "Download permission for batch download of torrent files"
+      },
+      "headers": {
+        "title": "Permission description",
+        "enabled": "Authorized"
       }
     },
     "searchBox": {
@@ -100,7 +108,14 @@
       "success": "Success",
       "unknown": "N/A",
       "defaultPath": "Default directory",
-      "seedingTorrent": "Sending torrent to download server..."
+      "seedingTorrent": "Sending torrent to download server...",
+      "headers": {
+        "site": "Source",
+        "title": "Title",
+        "status": "Status",
+        "time": "Time",
+        "action": "Action"
+      }
     },
     "home": {
       "title": "Overview",
@@ -405,7 +420,172 @@
           "dynamic": "An input box will pop up where the user enters the {key} part of the path;",
           "dynamicExample": "Example: \/volume1\/<...> ，input: test，result: \/volume1\/test"
         }
+      },
+      "searchSolution": {
+        "edit": {
+          "title": "Search Solution Definition"
+        },
+        "editor": {
+          "name": "Solution Name",
+          "range": "Search range",
+          "headers": {
+            "name": "Site"
+          }
+        },
+        "index": {
+          "title": "Search Solution Definition",
+          "itemDuplicate": "The name already exists",
+          "removeConfirm": "Are you sure you want to delete this search solution?",
+          "removeConfirmTitle": "Delete confirmation",
+          "removeSelectedConfirm": "Are you sure you want to delete the selected search solution?",
+          "help": "How to use?",
+          "headers": {
+            "name": "Name",
+            "range": "Range",
+            "action": "Action"
+          }
+        }
+      },
+      "sitePlugins": {
+        "add": {
+          "title": "Add new plugin"
+        },
+        "edit": {
+          "title": "Edit plugin"
+        },
+        "editor": {
+          "defaultClient": "Default download server",
+          "name": "Plugin name",
+          "pages": "Applicable page",
+          "pagesTip": "The page starts with '\/' to indicate the root directory of the website. After inputting, press Enter to add multiple, which can be a regular expression.",
+          "scripts": "Script files",
+          "scriptsTip": "\/ means to load the script from the resource directory root, you can add multiple",
+          "script": "Javascript",
+          "style": "Style",
+          "styles": "Style files",
+          "stylesTip": "\/ means to load the script from the resource directory root, you can add multiple"
+        },
+        "index": {
+          "title": "Site plugin configuration",
+          "importAll": "Import all",
+          "removeSelectedConfirm": "Are you sure you want to delete the selected plugin?",
+          "removeConfirm": "Are you sure you want to delete this plugin?",
+          "removeTitle": "Delete confirmation",
+          "headers": {
+            "name": "Name",
+            "pages": "Applicable page",
+            "enable": "Enable",
+            "action": "Action"
+          }
+        }
+      },
+      "sites": {
+        "add": {
+          "title": "Add Site",
+          "next": "Next",
+          "prev": "Previous",
+          "help": "Can't find the site you want?",
+          "validMsg": "Please select a site (support search)",
+          "custom": "Custom",
+          "step1": "Select site",
+          "step2": "Confirm site configuration"
+        },
+        "edit": {
+          "title": "Edit Site"
+        },
+        "editor": {
+          "defaultClient": "Download server (if not selected, the default download server of the basic settings will prevail)",
+          "name": "Site name",
+          "tags": "Tags",
+          "inputTags": "press Enter to add multiple",
+          "schema": "Site schema",
+          "description": "Site description",
+          "host": "Host",
+          "url": "Full url",
+          "urlTip": "The full address of the website, such as: https:\/\/www.github.com\/",
+          "passkey": "Passkey",
+          "passkeyTip": "The key is only used to copy the download address operation. If you do not need this function, please leave it blank.",
+          "allowSearch": "Allow Search",
+          "allowGetUserInfo": "Allow access to user information (Beta)",
+          "cdn": "Site CDN list",
+          "cdnTip": "If you use a different URL than the system definition, you can fill in the currently used website address, fill in one address per line, the first one will be used as the address used for the search.",
+          "priority": "Priority",
+          "priorityTip": "Can be used for search sorting",
+          "offline": "Site is offline (downtime\/shutdown)"
+        },
+        "index": {
+          "importAll": "One-click import site",
+          "importAllConfirm": "Are you sure you want to import site operations? This will import sites that have been logged in to the browser but have not been added.",
+          "removeSelectedConfirm": "Are you sure you want to delete the selected site?",
+          "removeConfirm": "Are you sure you want to delete this site?",
+          "removeTitle": "Delete confirmation",
+          "plugins": "Plugins",
+          "title": "Site settings",
+          "subTitle": "Only the configured site will display the plugin icon and the corresponding function; the offline site will no longer participate in the search and information acquisition;",
+          "searchEntry": "Search Entry",
+          "importedText": "Imported successfully",
+          "siteDuplicateText": "The site already exists",
+          "headers": {
+            "name": "Name",
+            "tags": "Tags",
+            "allowSearch": "Allow Search",
+            "allowGetUserInfo": "User Info",
+            "offline": "Offline",
+            "activeURL": "URL",
+            "action": "Action"
+          }
+        }
+      },
+      "siteSearchEntry": {
+        "add": {
+          "title": "New Search Entry"
+        },
+        "edit": {
+          "title": "Edit Search Entry"
+        },
+        "editor": {
+          "name": "Entry name",
+          "entry": "Entry page (defaults to the system's defined entry page if not filled)",
+          "parseScript": "Search result parsing script",
+          "parseScriptFile": "Search result parsing script file",
+          "resultSelector": "Torrent list selector",
+          "category": "Category (not selected for all)",
+          "queryString": "Append query parameters"
+        },
+        "index": {
+          "title": "Site search entry configuration",
+          "removeSelectedConfirm": "Are you sure you want to delete the selected search entry?",
+          "removeConfirm": "Are you sure you want to delete this search entry?",
+          "removeTitle": "Delete confirmation",
+          "help": "how to use?",
+          "headers": {
+            "name": "Name",
+            "categories": "Categories",
+            "enable": "Enable",
+            "action": "Action"
+          }
+        }
       }
+    },
+    "statistic": {
+      "selectSite": "Select sites that need statistics",
+      "goback": "Back",
+      "share": "Generate a share image",
+      "exportRawData": "Export original data",
+      "allSite": "(All Sites)",
+      "upload": "Upload",
+      "download": "Download",
+      "bonus": "Bonus",
+      "baseDataTitle": "[{userName}@{site}] Basic Data",
+      "baseDataSubTitle": "Uploaded: {uploaded}, Downloaded: {downloaded}, Bonus: {bonus}",
+      "data": "Data",
+      "seedingDataTitle": "[{userName}@{site}] Seeding",
+      "seedingDataSubTitle": "Seeding size: {seedingSize}, count: {count}",
+      "seedingSize": "Seeding size",
+      "seedingCount": "Seeding count",
+      "size": "Size",
+      "count": "Count",
+      "note": "Note: <br>1. Chart history data comes from the overview page, manual or automatic update will be recorded; <br>2. Each station only saves one per day;"
     }
   }
 }

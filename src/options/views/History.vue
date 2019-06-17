@@ -122,13 +122,6 @@ export default Vue.extend({
         sortBy: "time",
         descending: true
       },
-      headers: [
-        { text: "来源", align: "center", value: "data.host", width: "140px" },
-        { text: "标题", align: "left", value: "data.title" },
-        { text: "状态", align: "left", value: "data.success" },
-        { text: "下载时间", align: "left", value: "time" },
-        { text: "操作", value: "name", sortable: false }
-      ],
       items: [] as any[],
       dialogRemoveConfirm: false,
       options: this.$store.state.options,
@@ -223,6 +216,35 @@ export default Vue.extend({
 
   created() {
     this.getDownloadHistory();
+  },
+
+  computed: {
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("history.headers.site"),
+          align: "center",
+          value: "data.host",
+          width: "140px"
+        },
+        {
+          text: this.$t("history.headers.title"),
+          align: "left",
+          value: "data.title"
+        },
+        {
+          text: this.$t("history.headers.status"),
+          align: "left",
+          value: "data.success"
+        },
+        { text: this.$t("history.headers.time"), align: "left", value: "time" },
+        {
+          text: this.$t("history.headers.action"),
+          value: "name",
+          sortable: false
+        }
+      ];
+    }
   }
 });
 </script>

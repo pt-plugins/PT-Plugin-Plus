@@ -1,18 +1,26 @@
 <template>
   <div>
-    <v-snackbar v-model="valid" top :timeout="3000" color="error">{{ words.validMsg }}</v-snackbar>
+    <v-snackbar
+      v-model="valid"
+      top
+      :timeout="3000"
+      color="error"
+    >{{ $t('settings.sites.add.validMsg') }}</v-snackbar>
     <v-dialog v-model="show" max-width="800">
       <v-card>
-        <v-card-title class="headline blue-grey darken-2" style="color:white">{{ words.title }}</v-card-title>
+        <v-card-title
+          class="headline blue-grey darken-2"
+          style="color:white"
+        >{{ $t('settings.sites.add.title') }}</v-card-title>
 
         <v-card-text>
           <v-stepper v-model="step">
             <v-stepper-header>
-              <v-stepper-step :complete="step > 1" step="1">{{ words.step1 }}</v-stepper-step>
+              <v-stepper-step :complete="step > 1" step="1">{{ $t('settings.sites.add.step1') }}</v-stepper-step>
 
               <v-divider></v-divider>
 
-              <v-stepper-step step="2">{{ words.step2 }}</v-stepper-step>
+              <v-stepper-step step="2">{{ $t('settings.sites.add.step2') }}</v-stepper-step>
             </v-stepper-header>
 
             <v-stepper-items>
@@ -21,7 +29,7 @@
                 <v-autocomplete
                   v-model="selectedSite"
                   :items="$store.getters.sites"
-                  :label="words.validMsg"
+                  :label="$t('settings.sites.add.validMsg')"
                   :hint="selectedSiteDescription"
                   :filter="filterSite"
                   persistent-hint
@@ -71,23 +79,23 @@
             rel="noopener noreferrer nofollow"
           >
             <v-icon>help</v-icon>
-            <span class="ml-1">{{ words.help }}</span>
+            <span class="ml-1">{{ $t('settings.sites.add.help') }}</span>
           </v-btn>
           <v-btn flat @click="custom" v-show="step<stepCount">
             <v-icon>add_circle_outline</v-icon>
-            <span class="ml-1">{{ words.custom }}</span>
+            <span class="ml-1">{{ $t('settings.sites.add.custom') }}</span>
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn flat color="error" @click="cancel">
             <v-icon>cancel</v-icon>
-            <span class="ml-1">{{ words.cancel }}</span>
+            <span class="ml-1">{{ $t('common.cancel') }}</span>
           </v-btn>
           <v-btn flat color="grey darken-1" @click="step--" :disabled="step===1">
             <v-icon>navigate_before</v-icon>
-            <span>{{ words.prev }}</span>
+            <span>{{ $t('settings.sites.add.prev') }}</span>
           </v-btn>
           <v-btn flat color="blue" @click="next(step)" v-show="step<stepCount">
-            <span>{{ words.next }}</span>
+            <span>{{ $t('settings.sites.add.next') }}</span>
             <v-icon>navigate_next</v-icon>
           </v-btn>
           <v-btn
@@ -114,17 +122,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      words: {
-        title: "新增站点",
-        next: "下一步",
-        prev: "上一步",
-        help: "找不到想要的站点？来这里添加吧！",
-        validMsg: "请选择一个站点（支持搜索）",
-        custom: "自定义",
-        step1: "选择站点",
-        step2: "确认站点配置",
-        cancel: "取消"
-      },
       step: 1,
       show: false,
       stepCount: 2,

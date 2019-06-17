@@ -1,5 +1,5 @@
 import Vue from "vue";
-import "./plugins/vuetify";
+import vuetifyService from "./plugins/vuetify";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -103,24 +103,47 @@ import { Options } from "@/interface/common";
     return result + "前";
   });
 
+  let vm: any;
+
   // 读取配置信息
   store.dispatch("readConfig").then((result: Options) => {
     let i18n = new i18nService();
+
     i18n.onChanged = (locale: string) => {
       options.locale = locale;
       store.dispatch("saveConfig", {
         locale
       });
+      if (!vm) {
+        return;
+      }
+
+      // 非简体中文时，暂时切换到英文
+      // TODO 考虑添加其他语言动态支持
+      if (locale != "zh-CN") {
+        vm.$vuetify.lang.current = "en";
+      } else {
+        vm.$vuetify.lang.current = "zh-Hans";
+      }
     };
+
     options = result;
+
+    if (options.locale != "zh-CN") {
+      vuetifyService.init("en");
+    } else {
+      vuetifyService.init("zh-Hans");
+    }
+
     // 设置语言信息
     i18n.init(options.locale || "zh-CN").then((i18n: any) => {
-      new Vue({
+      vm = new Vue({
         router,
         store,
         i18n,
         render: h => h(App)
-      }).$mount("#app");
+      });
+      vm.$mount("#app");
     });
 
     // 全局挂载 i18nService 对象

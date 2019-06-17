@@ -66,15 +66,6 @@ export default Vue.extend({
         { key: "downloads", title: "permissions.details.downloads" }
       ],
       selected: [] as any,
-      headers: [
-        {
-          text: "权限描述",
-          align: "left",
-          sortable: false,
-          value: "title"
-        },
-        { text: "已授权", align: "left", value: "enabled", sortable: false }
-      ],
       cancelled: false,
       items: [] as any
     };
@@ -154,6 +145,24 @@ export default Vue.extend({
         this.items.push(Object.assign({ enabled: result }, item));
       });
     });
+  },
+  computed: {
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("permissions.headers.title"),
+          align: "left",
+          sortable: false,
+          value: "title"
+        },
+        {
+          text: this.$t("permissions.headers.enabled"),
+          align: "left",
+          value: "enabled",
+          sortable: false
+        }
+      ];
+    }
   }
 });
 </script>

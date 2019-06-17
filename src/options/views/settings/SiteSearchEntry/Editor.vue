@@ -6,8 +6,8 @@
         <v-text-field
           ref="name"
           v-model="data.name"
-          :label="words.name"
-          :placeholder="words.name"
+          :label="$t('settings.siteSearchEntry.editor.name')"
+          :placeholder="$t('settings.siteSearchEntry.editor.name')"
           required
           :rules="rules.require"
           :disabled="!data.isCustom"
@@ -16,8 +16,8 @@
         <!-- 入口页面 -->
         <v-text-field
           v-model="data.entry"
-          :label="words.entry"
-          :placeholder="words.entry"
+          :label="$t('settings.siteSearchEntry.editor.entry')"
+          :placeholder="$t('settings.siteSearchEntry.editor.entry')"
           :disabled="!data.isCustom"
         ></v-text-field>
 
@@ -26,7 +26,7 @@
           v-if="category && category.length"
           v-model="data.categories"
           :items="category"
-          :label="words.category"
+          :label="$t('settings.siteSearchEntry.editor.category')"
           item-text="name"
           item-value="id"
           chips
@@ -47,22 +47,22 @@
         <!-- 追加的查询字符串 -->
         <v-text-field
           v-model="data.queryString"
-          :label="words.queryString"
-          :placeholder="words.queryString"
+          :label="$t('settings.siteSearchEntry.editor.queryString')"
+          :placeholder="$t('settings.siteSearchEntry.editor.queryString')"
           :disabled="!data.isCustom"
         ></v-text-field>
 
         <v-text-field
           v-model="data.parseScriptFile"
-          :label="words.parseScriptFile"
-          :placeholder="words.parseScriptFile"
+          :label="$t('settings.siteSearchEntry.editor.parseScriptFile')"
+          :placeholder="$t('settings.siteSearchEntry.editor.parseScriptFile')"
           :disabled="!data.isCustom"
         ></v-text-field>
 
         <!-- 脚本 -->
         <v-textarea
           v-model="data.parseScript"
-          :label="words.parseScript"
+          :label="$t('settings.siteSearchEntry.editor.parseScript')"
           height="200"
           :disabled="!data.isCustom"
         ></v-textarea>
@@ -70,7 +70,7 @@
         <!-- 种子列表定位选择器 -->
         <v-textarea
           v-model="data.resultSelector"
-          :label="words.resultSelector"
+          :label="$t('settings.siteSearchEntry.editor.resultSelector')"
           height="80"
           :disabled="!data.isCustom"
         ></v-textarea>
@@ -84,15 +84,6 @@ import { Site, SiteCategories, SiteCategory } from "@/interface/common";
 export default Vue.extend({
   data() {
     return {
-      words: {
-        name: "入口名称",
-        entry: "入口页面（如果不填写则默认为系统已定义的入口页面）",
-        parseScript: "搜索结果解析脚本",
-        parseScriptFile: "搜索结果解析脚本文件",
-        resultSelector: "种子列表定位选择器",
-        category: "资源分类（不选表示所有）",
-        queryString: "追加查询参数"
-      },
       rules: {
         require: [(v: any) => !!v || "!"]
       },

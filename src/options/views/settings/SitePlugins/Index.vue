@@ -1,15 +1,18 @@
 <template>
   <div class="site-plugins">
-    <v-alert :value="true" type="info">{{ words.title }} [{{ site.name }}]</v-alert>
+    <v-alert
+      :value="true"
+      type="info"
+    >{{ $t('settings.sitePlugins.index.title') }} [{{ site.name }}]</v-alert>
     <v-card>
       <v-card-title>
         <v-btn color="success" @click="add">
           <v-icon class="mr-2">add</v-icon>
-          {{words.add}}
+          {{$t('common.add')}}
         </v-btn>
         <v-btn color="error" :disabled="selected.length==0" @click="removeSelected">
           <v-icon class="mr-2">remove</v-icon>
-          {{words.remove}}
+          {{$t('common.remove')}}
         </v-btn>
         <v-spacer></v-spacer>
         <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
@@ -67,9 +70,11 @@
 
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
-        <v-card-title class="headline red lighten-2">{{ words.removeTitle }}</v-card-title>
+        <v-card-title
+          class="headline red lighten-2"
+        >{{ $t('settings.sitePlugins.index.removeTitle') }}</v-card-title>
 
-        <v-card-text>{{ words.removeConfirm }}</v-card-text>
+        <v-card-text>{{ $t('settings.sitePlugins.index.removeConfirm') }}</v-card-text>
 
         <v-divider></v-divider>
 
@@ -77,11 +82,11 @@
           <v-spacer></v-spacer>
           <v-btn flat color="info" @click="dialogRemoveConfirm=false">
             <v-icon>cancel</v-icon>
-            <span class="ml-1">{{ words.cancel }}</span>
+            <span class="ml-1">{{ $t('common.cancel') }}</span>
           </v-btn>
           <v-btn color="error" flat @click="remove">
             <v-icon>check_circle_outline</v-icon>
-            <span class="ml-1">{{ words.ok }}</span>
+            <span class="ml-1">{{ $t('common.ok') }}</span>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -91,7 +96,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Site } from "../../../../interface/common";
+import { Site } from "@/interface/common";
 import AddItem from "./Add.vue";
 import EditItem from "./Edit.vue";
 
@@ -103,31 +108,12 @@ export default Vue.extend({
   },
   data() {
     return {
-      words: {
-        title: "站点插件配置",
-        add: "新增",
-        remove: "删除",
-        importAll: "导入所有",
-        removeSelectedConfirm: "确认要删除已选中的站点吗？",
-        removeConfirm: "确认要删除这个插件吗？",
-        removeTitle: "删除确认",
-        ok: "确认",
-        cancel: "取消"
-      },
       selected: [],
       pagination: {
         rowsPerPage: -1
       },
       showAddDialog: false,
       showEditDialog: false,
-      siteDuplicate: false,
-      siteDuplicateText: "该站点已存在",
-      headers: [
-        { text: "名称", align: "left", value: "name" },
-        { text: "适用页面", align: "left", value: "pages" },
-        { text: "启用", align: "left", value: "enable" },
-        { text: "操作", value: "name", sortable: false }
-      ],
       site: {} as Site,
       selectedItem: {},
       dialogRemoveConfirm: false,
@@ -161,7 +147,11 @@ export default Vue.extend({
       this.reloadPlugins(this.site.host);
     },
     removeSelected() {
-      if (confirm(this.words.removeSelectedConfirm)) {
+      if (
+        confirm(
+          this.$t("settings.sitePlugins.index.removeSelectedConfirm").toString()
+        )
+      ) {
         this.selected.forEach((item: any) => {
           this.$store.commit("removePlugin", {
             host: this.site.host,
@@ -231,6 +221,32 @@ export default Vue.extend({
     console.log("create", this.$route.params);
     if (host) {
       this.reloadPlugins(host);
+    }
+  },
+  computed: {
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("settings.sitePlugins.index.headers.name"),
+          align: "left",
+          value: "name"
+        },
+        {
+          text: this.$t("settings.sitePlugins.index.headers.pages"),
+          align: "left",
+          value: "pages"
+        },
+        {
+          text: this.$t("settings.sitePlugins.index.headers.enable"),
+          align: "left",
+          value: "enable"
+        },
+        {
+          text: this.$t("settings.sitePlugins.index.headers.action"),
+          value: "name",
+          sortable: false
+        }
+      ];
     }
   }
 });

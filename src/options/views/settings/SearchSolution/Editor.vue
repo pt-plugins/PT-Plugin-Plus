@@ -5,13 +5,13 @@
         <v-form v-model="isValid" class="content">
           <v-layout row>
             <v-flex xs3>
-              <v-subheader>{{words.name}}</v-subheader>
+              <v-subheader>{{ $t('settings.searchSolution.editor.name') }}</v-subheader>
             </v-flex>
             <v-flex xs9>
               <v-text-field
                 v-model="option.name"
-                :label="words.name"
-                :placeholder="words.name"
+                :label="$t('settings.searchSolution.editor.name')"
+                :placeholder="$t('settings.searchSolution.editor.name')"
                 required
                 :rules="rules.require"
                 @change="change(true)"
@@ -20,7 +20,7 @@
           </v-layout>
           <v-layout row>
             <v-flex xs3>
-              <v-subheader>{{words.range}}</v-subheader>
+              <v-subheader>{{$t('settings.searchSolution.editor.range')}}</v-subheader>
             </v-flex>
             <v-flex xs9>
               <div class="list">
@@ -110,21 +110,12 @@ const extension = new Extension();
 export default Vue.extend({
   data() {
     return {
-      words: {
-        name: "方案名称",
-        range: "搜索范围",
-        id: "ID",
-        ok: "确认",
-        cancel: "取消",
-        selectAll: "全选/取消全选"
-      },
       rules: {
         require: [(v: any) => !!v || "!"]
       },
       pagination: {
         rowsPerPage: -1
       },
-      headers: [{ text: "站点", align: "left", value: "name" }],
       haveError: false,
       haveSuccess: false,
       successMsg: "",
@@ -254,6 +245,15 @@ export default Vue.extend({
       if (this.selectedAll) return "check_box";
       if (this.selectedSome) return "indeterminate_check_box";
       return "check_box_outline_blank";
+    },
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("settings.searchSolution.editor.headers.name"),
+          align: "left",
+          value: "name"
+        }
+      ];
     }
   }
 });

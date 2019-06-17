@@ -6,7 +6,7 @@ Vue.use(VueI18n);
 
 export const i18n = new VueI18n({
   locale: "",
-  fallbackLocale: "zh-CN"
+  fallbackLocale: "en"
 });
 
 export class i18nService {
@@ -17,7 +17,12 @@ export class i18nService {
 
   public onChanged: Function = () => {};
 
-  constructor() {}
+  private initialized = false;
+
+  constructor() {
+    // 加载英文内容
+    this.reset("en");
+  }
 
   /**
    * 初始化语言环境
@@ -29,6 +34,7 @@ export class i18nService {
         .then(() => {
           this.reset(langCode)
             .then(() => {
+              this.initialized = true;
               resolve(i18n);
             })
             .catch(() => {
@@ -72,7 +78,7 @@ export class i18nService {
               i18n.setLocaleMessage(langCode, result.words);
               this.loadedLanguages.push(langCode);
               i18n.locale = langCode;
-              this.onChanged.call(this, langCode);
+              this.initialized && this.onChanged.call(this, langCode);
               resolve(langCode);
             })
             .fail(e => {
@@ -81,6 +87,7 @@ export class i18nService {
           return;
         }
         i18n.locale = langCode;
+        this.initialized && this.onChanged.call(this, langCode);
       }
       resolve(langCode);
     });
