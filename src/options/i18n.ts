@@ -15,6 +15,8 @@ export class i18nService {
   // 已支持的语言文件列表
   public config: Array<any> = [];
 
+  public onChanged: Function = () => {};
+
   constructor() {}
 
   /**
@@ -70,6 +72,7 @@ export class i18nService {
               i18n.setLocaleMessage(langCode, result.words);
               this.loadedLanguages.push(langCode);
               i18n.locale = langCode;
+              this.onChanged.call(this, langCode);
               resolve(langCode);
             })
             .fail(e => {

@@ -209,6 +209,11 @@ class Config {
       this.options = Object.assign(defaultOptions, options);
     }
 
+    // 如果未指定语言，则以当前浏览器默认语言为准
+    if (!this.options.locale) {
+      this.options.locale = navigator.language || "zh-CN";
+    }
+
     // 覆盖站点架构
     this.options.system = {
       schemas: this.schemas,

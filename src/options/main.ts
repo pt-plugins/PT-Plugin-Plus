@@ -6,8 +6,10 @@ import store from "./store";
 import { filters } from "@/service/filters";
 import dayjs from "dayjs";
 import { i18nService } from "./i18n";
+import { Options } from "@/interface/common";
 
 (function main() {
+  let options: Options;
   Vue.config.productionTip = false;
 
   // 初始化全局过滤器
@@ -102,23 +104,29 @@ import { i18nService } from "./i18n";
   });
 
   // 读取配置信息
-  store.dispatch("readConfig");
-  store.dispatch("readUIOptions");
+  store.dispatch("readConfig").then((result: Options) => {
+    let i18n = new i18nService();
+    i18n.onChanged = (locale: string) => {
+      options.locale = locale;
+      store.dispatch("saveConfig", {
+        locale
+      });
+    };
+    options = result;
+    // 设置语言信息
+    i18n.init(options.locale || "zh-CN").then((i18n: any) => {
+      new Vue({
+        router,
+        store,
+        i18n,
+        render: h => h(App)
+      }).$mount("#app");
+    });
 
-  let i18n = new i18nService();
-
-  // 设置语言信息
-  i18n.init("zh-CN").then((i18n: any) => {
-    new Vue({
-      router,
-      store,
-      i18n,
-      render: h => h(App)
-    }).$mount("#app");
+    // 全局挂载 i18nService 对象
+    window.i18nService = i18n;
   });
-
-  // 全局挂载 i18nService 对象
-  window.i18nService = i18n;
+  store.dispatch("readUIOptions");
 })();
 
 /**

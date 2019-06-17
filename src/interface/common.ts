@@ -108,6 +108,8 @@ export interface Options {
   beforeSearchingOptions?: BeforeSearching;
   // 在页面中显示工具栏
   showToolbarOnContentPage?: boolean;
+  // 当前语言
+  locale?: string;
 }
 
 // 在搜索之前一些选项配置

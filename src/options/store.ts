@@ -296,43 +296,50 @@ export default new Vuex.Store({
         });
     },
 
-    readConfig({ commit, state }) {
-      extension.sendRequest(EAction.writeLog, null, {
-        module: EModule.options,
-        event: "Options.readConfig",
-        msg: "开始加载配置信息"
-      });
-      extension
-        .sendRequest(EAction.readConfig)
-        .then((options: Options) => {
-          commit("updateOptions", options);
-          if (!options.system) {
+    readConfig({ commit, state }): Promise<any> {
+      return new Promise<any>((resolve?: any, reject?: any) => {
+        extension.sendRequest(EAction.writeLog, null, {
+          module: EModule.options,
+          event: "Options.readConfig",
+          msg: "开始加载配置信息"
+        });
+        extension
+          .sendRequest(EAction.readConfig)
+          .then((options: Options) => {
+            commit("updateOptions", options);
+            if (!options.system) {
+              extension.sendRequest(EAction.writeLog, null, {
+                module: EModule.options,
+                event: "Options.readConfig.Error",
+                msg: "配置信息加载失败，没有获取到系统定义信息"
+              });
+              reject("Options.readConfig.Error");
+              return;
+            }
+
+            if (!options.system.clients || !options.system.schemas) {
+              extension.sendRequest(EAction.writeLog, null, {
+                module: EModule.options,
+                event: "Options.readConfig.Error",
+                msg: "配置信息加载失败，没有获取到下载服务器或站点架构信息"
+              });
+              reject("Options.readConfig.Error");
+              return;
+            }
+
             extension.sendRequest(EAction.writeLog, null, {
               module: EModule.options,
-              event: "Options.readConfig.Error",
-              msg: "配置信息加载失败，没有获取到系统定义信息"
+              event: "Options.readConfig.Finished",
+              msg: "配置加载完成"
             });
-            return;
-          }
 
-          if (!options.system.clients || !options.system.schemas) {
-            extension.sendRequest(EAction.writeLog, null, {
-              module: EModule.options,
-              event: "Options.readConfig.Error",
-              msg: "配置信息加载失败，没有获取到下载服务器或站点架构信息"
-            });
-            return;
-          }
-
-          extension.sendRequest(EAction.writeLog, null, {
-            module: EModule.options,
-            event: "Options.readConfig.Finished",
-            msg: "配置加载完成"
+            state.initialized = true;
+            resolve(options);
+          })
+          .catch(e => {
+            reject(e);
           });
-
-          state.initialized = true;
-        })
-        .catch();
+      });
     },
 
     saveConfig({ commit, state }, options: Options) {
