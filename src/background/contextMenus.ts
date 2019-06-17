@@ -135,7 +135,7 @@ export class ContextMenus {
    * 清除菜单
    */
   public clear() {
-    chrome && chrome.contextMenus.removeAll();
+    chrome && chrome.contextMenus && chrome.contextMenus.removeAll();
   }
 
   /**
@@ -550,7 +550,9 @@ export class ContextMenus {
     if (!options.id) {
       options.id = this.getRandomString();
     }
-    chrome.contextMenus.create(options, callback);
+    chrome &&
+      chrome.contextMenus &&
+      chrome.contextMenus.create(options, callback);
   }
 
   /**
