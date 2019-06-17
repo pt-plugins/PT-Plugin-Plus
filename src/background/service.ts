@@ -17,6 +17,7 @@ import { ContextMenus } from "./contextMenus";
 import { UserData } from "./userData";
 import { PPF } from "@/service/public";
 import { OmniBox } from "./omnibox";
+import { i18nService } from "./i18n";
 /**
  * PT 助手后台服务类
  */
@@ -38,6 +39,7 @@ export default class PTPlugin {
   // 用户数据处理
   public userData: UserData = new UserData(this);
   public omniBox: OmniBox = new OmniBox(this);
+  public i18n: i18nService = new i18nService(this);
 
   private reloadCount: number = 0;
   private autoRefreshUserDataTimer: number = 0;
@@ -75,7 +77,8 @@ export default class PTPlugin {
           EAction.saveUIOptions,
           EAction.openOptions,
           EAction.getClearedOptions,
-          EAction.getBase64FromImageUrl
+          EAction.getBase64FromImageUrl,
+          EAction.changeLanguage
         ].includes(request.action)
       ) {
         this.logger.add({
@@ -100,12 +103,20 @@ export default class PTPlugin {
 
           // 保存参数
           case EAction.saveConfig:
+            if (
+              request.data.locale &&
+              request.data.locale != this.options.locale
+            ) {
+              this.i18n.reset(request.data.locale);
+            }
             this.config.save(request.data);
             this.options = request.data;
             if (this.controller.isInitialized) {
               this.controller.reset(this.options);
             }
-            this.contentMenus.init(this.options);
+            setTimeout(() => {
+              this.contentMenus.init(this.options);
+            }, 100);
             this.resetAutoRefreshUserDataTimer();
             resolve(this.options);
             break;
@@ -228,6 +239,10 @@ export default class PTPlugin {
               });
             break;
 
+          case EAction.changeLanguage:
+            return this.i18n.reset(request.data);
+            break;
+
           // 如果没有特殊的情况默认使用处理器来处理
           default:
             if ((this as any)[request.action]) {
@@ -273,8 +288,23 @@ export default class PTPlugin {
     }
 
     this.readConfig().then(() => {
-      this.init();
+      this.initI18n();
     });
+  }
+
+  /**
+   * 初始化多语言环境
+   */
+  private initI18n() {
+    this.i18n
+      .init()
+      .then(() => {
+        console.log("app.name", this.i18n.t("app.name"));
+        this.init();
+      })
+      .catch(() => {
+        console.debug("i18n init error");
+      });
   }
 
   /**

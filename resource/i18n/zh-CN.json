@@ -586,6 +586,34 @@
       "size": "体积",
       "count": "数量",
       "note": "注：<br>1. 图表历史数据来自概览页，手动刷新或自动更新均会记录；<br>2. 助手从 v1.0.1 版开始正式记录每次刷新的数据，每个站每天仅保存一条；"
+    },
+    "service": {
+      "contextMenus": {
+        "history": "查看下载历史",
+        "systemLog": "查看助手日志",
+        "issues": "使用问题反馈",
+        "searchSelectionText": "搜索 \"%s\" 相关的种子",
+        "searchSelectionTextOnThisSite": "仅搜索本站 \"%s\" 相关的种子",
+        "searchByIMDb": "搜索当前IMDb相关种子",
+        "downloadClientPath": "{clientName} -> 指定目录",
+        "userCanceled": "用户已取消",
+        "pluginStatusIsUnknown": "插件状态未知，当前操作可能失败，请刷新页面后再试",
+        "sendingLink": "正在发送链接至下载服务器",
+        "downloadClientGetFailed": "获取下载服务器失败。",
+        "sendTorrentToClientDone": "下载链接发送完成。",
+        "sendTorrentToClientError": "下载链接发送失败！",
+        "sendTorrentToDefaultClient": "发送到默认服务器 {client.name} -> {- client.address}",
+        "sendTorrentToClient": "发送到其他服务器"
+      },
+      "searcher": {
+        "siteSearchConfigEntryIsEmpty": "该站点[{site.name}]未配置搜索页面，请先配置",
+        "siteSearchEntryIsEmpty": "该站点[{site.name}]未指定搜索入口，请先指定一个搜索入口",
+        "siteSearchResultParseFailed": "[{site.name}]数据解析失败！",
+        "siteEvalScriptFailed": "[{site.name}]脚本执行出错！",
+        "siteSearchResultError": "[{site.name}]没有返回预期的数据。",
+        "siteAbortSearch": "正在取消[{site.host}]的搜索请求",
+        "siteAbortSearchError": "[{site.host}]取消搜索请求失败！"
+      }
     }
   }
 }

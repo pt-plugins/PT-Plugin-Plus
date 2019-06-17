@@ -586,6 +586,34 @@
       "size": "Size",
       "count": "Count",
       "note": "Note: <br>1. Chart history data comes from the overview page, manual or automatic update will be recorded; <br>2. Each station only saves one per day;"
+    },
+    "service": {
+      "contextMenus": {
+        "history": "View download history",
+        "systemLog": "View plugin log",
+        "issues": "Use question feedback",
+        "searchSelectionText": "Search for \"%s\" related torrents",
+        "searchSelectionTextOnThisSite": "Search only for this site \"%s\" related torrents",
+        "searchByIMDb": "Search current IMDb related torrents",
+        "downloadClientPath": "{clientName} -> Specified directory",
+        "userCanceled": "User canceled",
+        "pluginStatusIsUnknown": "The status of the plugin is unknown. The current operation may fail. Please refresh the page and try again.",
+        "sendingLink": "Sending a link to download server",
+        "downloadClientGetFailed": "Failed to get the download server.",
+        "sendTorrentToClientDone": "The download link is sent.",
+        "sendTorrentToClientError": "Download link failed to send!",
+        "sendTorrentToDefaultClient": "Sent to the default server {client.name} -> {- client.address}",
+        "sendTorrentToClient": "Send to other servers"
+      },
+      "searcher": {
+        "siteSearchConfigEntryIsEmpty": "The site [{site.name}] is not configured with a search page. Please configure it first.",
+        "siteSearchEntryIsEmpty": "The site [{site.name}] does not specify a search entry. Please specify a search entry first.",
+        "siteSearchResultParseFailed": "[{site.name}] data parsing failed!",
+        "siteEvalScriptFailed": "[{site.name}] Script execution error!",
+        "siteSearchResultError": "[{site.name}] No expected data was returned.",
+        "siteAbortSearch": "Deactivating search request for [{site.host}]",
+        "siteAbortSearchError": "[{site.host}] Failed to cancel search request!"
+      }
     }
   }
 }

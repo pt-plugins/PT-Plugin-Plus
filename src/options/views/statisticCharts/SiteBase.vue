@@ -529,8 +529,8 @@ export default Vue.extend({
         },
         subtitle: {
           text: this.$t("statistic.seedingDataSubTitle", {
-            uploaded: filters.formatSize(latest.seedingSize),
-            downloaded: latest.seeding
+            seedingSize: filters.formatSize(latest.seedingSize),
+            count: latest.seeding
           }).toString()
         },
         title: {

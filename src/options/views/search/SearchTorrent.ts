@@ -397,7 +397,7 @@ export default Vue.extend({
       this.beginTime = dayjs();
       this.writeLog({
         event: `SearchTorrent.Search.Start`,
-        msg: this.$t("searchTorrent.noAllowSearchSites", {
+        msg: this.$t("searchTorrent.searchStartMsg", {
           count: sites.length
         }).toString(),
         data: {
@@ -428,7 +428,7 @@ export default Vue.extend({
 
         this.writeLog({
           event: `SearchTorrent.Search.Processing`,
-          msg: this.$t("searchTorrent.noAllowSearchSites", {
+          msg: this.$t("searchTorrent.siteIsSearching", {
             siteName: site.name
           }).toString(),
           data: {
@@ -456,7 +456,7 @@ export default Vue.extend({
           if (result && result.length) {
             this.writeLog({
               event: `SearchTorrent.Search.Done[${site.name}]`,
-              msg: this.$t("searchTorrent.noAllowSearchSites", {
+              msg: this.$t("searchTorrent.siteIsSearchDone", {
                 siteName: site.name,
                 count: result.length
               }).toString(),

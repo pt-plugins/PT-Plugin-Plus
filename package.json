@@ -24,6 +24,7 @@
     "highcharts": "^7.1.1",
     "highcharts-vue": "^1.2.0",
     "html2canvas": "^1.0.0-alpha.12",
+    "i18next": "^17.0.3",
     "url-parse": "^1.4.4",
     "vue": "^2.5.17",
     "vue-class-component": "^6.3.2",

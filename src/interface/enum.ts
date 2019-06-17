@@ -142,7 +142,9 @@ export enum EAction {
   // 验证权限
   checkPermissions = "checkPermissions",
   // 请求用户授权
-  requestPermissions = "requestPermissions"
+  requestPermissions = "requestPermissions",
+  // 更改语言
+  changeLanguage = "changeLanguage"
 }
 
 /**
