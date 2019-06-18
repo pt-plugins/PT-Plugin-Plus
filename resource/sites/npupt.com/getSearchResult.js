@@ -1,19 +1,19 @@
 /**
  * @see https://github.com/Rhilip/PT-help/blob/master/docs/js/ptsearch.user.js
  */
-(function (options) {
+(function(options) {
   class Parser {
     constructor() {
       this.haveData = false;
       if (/login|未登录/.test(options.responseText)) {
-        options.errorMsg = `[${options.site.name}]需要登录后再搜索`;
+        options.status = ESearchResultParseStatus.needLogin; //`[${options.site.name}]需要登录后再搜索`;
         return;
       }
 
       options.isLogged = true;
 
       if (/找到0条结果/.test(options.responseText)) {
-        options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
+        options.status = ESearchResultParseStatus.noTorrents; //`[${options.site.name}]没有搜索到相关的种子`;
         return;
       }
 
@@ -32,33 +32,44 @@
       let results = [];
 
       // 以下解析方法修改自 ： https://github.com/Rhilip/PT-help/blob/master/docs/js/ptsearch.user.js#L216_L241
-      let tr_list = options.page.find('#torrents_table > tbody > tr:gt(0)');
-      for (let i = 0; i < tr_list.length; i ++) {
+      let tr_list = options.page.find("#torrents_table > tbody > tr:gt(0)");
+      for (let i = 0; i < tr_list.length; i++) {
         let torrent_data_raw = tr_list.eq(i);
 
         // 标题信息
         let _title_tag = torrent_data_raw.find("a[href*='hit']:eq(0)");
         let _title = _title_tag.attr("title") || _title_tag.text();
 
-        let _sub_title_tag = _title_tag.siblings('span');
-        let _sub_title = _sub_title_tag ? (_sub_title_tag.attr('title') || _sub_title_tag.text()) : '';
+        let _sub_title_tag = _title_tag.siblings("span");
+        let _sub_title = _sub_title_tag
+          ? _sub_title_tag.attr("title") || _sub_title_tag.text()
+          : "";
 
         // 下载链接 （该站搜索页点击下载按钮是一个JavaScript事件）
         let details_tag = torrent_data_raw.find('a[href^="details"]');
-        let details_link = details_tag.attr('href');
-        let _download_url = site.url + details_link.replace('details','download') + "&trackerssl=1";
+        let details_link = details_tag.attr("href");
+        let _download_url =
+          site.url +
+          details_link.replace("details", "download") +
+          "&trackerssl=1";
 
         // 定位种子大小，做种和优惠tag
-        let _size_peer_block = torrent_data_raw.find('.rowfollow.vcenter.nowrap');
-        let _size_tag = _size_peer_block.find('center');
+        let _size_peer_block = torrent_data_raw.find(
+          ".rowfollow.vcenter.nowrap"
+        );
+        let _size_tag = _size_peer_block.find("center");
         let _seeders_tag = _size_peer_block.find("span.badge").eq(0);
         let _leechers_tag = _size_peer_block.find("span.badge").eq(1);
-        let _completed_tag = torrent_data_raw.find("a[href^='viewsnatches.php?id=']");
-        let _buff_tag = _title_tag.parent('td.embedded');   // 转交给 this.getTags() 处理
+        let _completed_tag = torrent_data_raw.find(
+          "a[href^='viewsnatches.php?id=']"
+        );
+        let _buff_tag = _title_tag.parent("td.embedded"); // 转交给 this.getTags() 处理
 
         // 发布时间
-        let _date_tag = torrent_data_raw.find("div.small").filter(function () {
-          return /(\d{4}-\d{2}-\d{2}[^\d]+?\d{2}:\d{2}:\d{2})/.test($(this).html());
+        let _date_tag = torrent_data_raw.find("div.small").filter(function() {
+          return /(\d{4}-\d{2}-\d{2}[^\d]+?\d{2}:\d{2}:\d{2})/.test(
+            $(this).html()
+          );
         });
         let _date = _date_tag.text().trim();
 
@@ -67,10 +78,17 @@
 
         let _comments = 0;
         if (_tag_comments) {
-          _comments = _tag_comments.text().trim().replace(',', '') || 0;
+          _comments =
+            _tag_comments
+              .text()
+              .trim()
+              .replace(",", "") || 0;
         }
 
-        let _category = torrent_data_raw.find('div.category_text').text().trim();
+        let _category = torrent_data_raw
+          .find("div.category_text")
+          .text()
+          .trim();
 
         let data = {
           title: _title,
@@ -80,9 +98,11 @@
           size: _size_tag.text() || 0,
           time: _date,
           // author,  // 该站种子列表无author信息
-          seeders: _seeders_tag.text().replace(',', '') || 0,
-          leechers: _leechers_tag.text().replace(',', '') || 0,
-          completed: _completed_tag ? _completed_tag.text().replace(',', '') : 0,
+          seeders: _seeders_tag.text().replace(",", "") || 0,
+          leechers: _leechers_tag.text().replace(",", "") || 0,
+          completed: _completed_tag
+            ? _completed_tag.text().replace(",", "")
+            : 0,
           comments: _comments,
           site: site,
           tags: this.getTags(_buff_tag, options.torrentTagSelectors),
@@ -97,8 +117,8 @@
 
     /**
      * 获取标签
-     * @param {*} row 
-     * @param {*} selectors 
+     * @param {*} row
+     * @param {*} selectors
      * @return array
      */
     getTags(row, selectors) {
@@ -107,7 +127,7 @@
         // 使用 some 避免错误的背景类名返回多个标签
         selectors.some(item => {
           if (item.selector) {
-            let result = row.find(item.selector)
+            let result = row.find(item.selector);
             if (result.length) {
               tags.push({
                 name: item.name,
@@ -122,9 +142,7 @@
     }
   }
 
-
-  let parser = new Parser(options)
-  options.results = parser.getResult()
+  let parser = new Parser(options);
+  options.results = parser.getResult();
   console.log(options.results);
-
-})(options)
+})(options);

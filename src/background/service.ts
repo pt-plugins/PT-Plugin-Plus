@@ -172,7 +172,9 @@ export default class PTPlugin {
                 this.logger.add({
                   module: EModule.background,
                   event: `${EAction.testClientConnectivity}`,
-                  msg: `测试客户连接失败[${request.data.address}]`,
+                  msg: this.i18n.t("service.testClientConnectivityFailed", {
+                    address: request.data.address
+                  }), // `测试客户连接失败[${request.data.address}]`,
                   data: result
                 });
                 reject(result);
@@ -299,7 +301,6 @@ export default class PTPlugin {
     this.i18n
       .init()
       .then(() => {
-        console.log("app.name", this.i18n.t("app.name"));
         this.init();
       })
       .catch(() => {

@@ -24,6 +24,21 @@ export type SearchConfig = {
 };
 
 /**
+ * 搜索结果解析状态
+ */
+export enum ESearchResultParseStatus {
+  success = "success",
+  needLogin = "needLogin",
+  noTorrents = "noTorrents",
+  torrentTableIsEmpty = "torrentTableIsEmpty",
+  parseError = "parseError"
+}
+
+Object.assign(window, {
+  ESearchResultParseStatus
+});
+
+/**
  * 搜索类
  */
 export class Searcher {
@@ -349,7 +364,8 @@ export class Searcher {
               entry,
               torrentTagSelectors: torrentTagSelectors,
               errorMsg: "",
-              isLogged: false
+              isLogged: false,
+              status: ESearchResultParseStatus.success
             };
 
             // 执行获取结果的脚本
@@ -357,10 +373,17 @@ export class Searcher {
               if (entry.parseScript) {
                 eval(entry.parseScript);
               }
-              if (options.errorMsg) {
+              if (
+                options.errorMsg ||
+                options.status != ESearchResultParseStatus.success
+              ) {
                 reject({
                   success: false,
-                  msg: options.errorMsg,
+                  msg: this.getErrorMessage(
+                    site,
+                    options.status,
+                    options.errorMsg
+                  ),
                   data: {
                     site,
                     isLogged: options.isLogged
@@ -399,6 +422,24 @@ export class Searcher {
           reject(result);
         });
     });
+  }
+
+  /**
+   * 根据错误代码获取错误信息
+   * @param code
+   */
+  public getErrorMessage(
+    site: Site,
+    status: ESearchResultParseStatus = ESearchResultParseStatus.success,
+    msg: string = ""
+  ): string {
+    if (status != ESearchResultParseStatus.success) {
+      return this.service.i18n.t(`contentPage.search.${status}`, {
+        siteName: site.name,
+        msg
+      });
+    }
+    return msg;
   }
 
   /**

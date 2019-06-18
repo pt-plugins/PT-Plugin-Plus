@@ -1,19 +1,23 @@
 /**
  * @see https://github.com/Rhilip/PT-help/blob/master/docs/js/ptsearch.user.js
  */
-(function (options) {
+(function(options) {
   class Parser {
     constructor() {
       this.haveData = false;
       if (/login/.test(options.responseText)) {
-        options.errorMsg = `[${options.site.name}]需要登录后再搜索`;
+        options.status = ESearchResultParseStatus.needLogin; //`[${options.site.name}]需要登录后再搜索`;
         return;
       }
 
       options.isLogged = true;
 
-      if (/没有种子|No [Tt]orrents?|Your search did not match anything|用准确的关键字重试/.test(options.responseText)) {
-        options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
+      if (
+        /没有种子|No [Tt]orrents?|Your search did not match anything|用准确的关键字重试/.test(
+          options.responseText
+        )
+      ) {
+        options.status = ESearchResultParseStatus.noTorrents; //`[${options.site.name}]没有搜索到相关的种子`;
         return;
       }
 
@@ -33,39 +37,45 @@
       let results = [];
 
       // 首先移除搜索表单，因为里面含有我们使用的selector
-      options.page.find('form').remove();
+      options.page.find("form").remove();
 
-      let tr_list = options.page.find('div.text, div.text_alt');
-      for (let i = 0; i < tr_list.length; i ++) {
+      let tr_list = options.page.find("div.text, div.text_alt");
+      for (let i = 0; i < tr_list.length; i++) {
         let torrent_data_raw = tr_list.eq(i);
 
-        let _name_tag = torrent_data_raw.find('a.torname');
+        let _name_tag = torrent_data_raw.find("a.torname");
 
         // 主标题 应该是英文名吧，被包裹在一个 <span style="color:#777"> 中
         let _title = torrent_data_raw.find("span[style='color:#777']").text();
 
         // 下载链接
-        let download_tag = torrent_data_raw.find('a[href^=download]');
-        let url = `${site.url}${download_tag.attr('href')}` + "&https=1";
+        let download_tag = torrent_data_raw.find("a[href^=download]");
+        let url = `${site.url}${download_tag.attr("href")}` + "&https=1";
 
         // 定位种子大小和优惠tag
-        let _size_buff_tag = torrent_data_raw.find('> table > tbody > tr > td:nth-child(7)');
-        let _size_tag = _size_buff_tag.find('nobr:nth-child(1)');
-        let _buff_tag = _size_buff_tag.find('nobr:nth-child(3)');   // 转交给 this.getTags() 处理
+        let _size_buff_tag = torrent_data_raw.find(
+          "> table > tbody > tr > td:nth-child(7)"
+        );
+        let _size_tag = _size_buff_tag.find("nobr:nth-child(1)");
+        let _buff_tag = _size_buff_tag.find("nobr:nth-child(3)"); // 转交给 this.getTags() 处理
 
         // 发布时间
-        let _date_tag = torrent_data_raw.find(' > table > tbody > tr > td:nth-child(8)');
+        let _date_tag = torrent_data_raw.find(
+          " > table > tbody > tr > td:nth-child(8)"
+        );
         let _date = _date_tag.text();
 
         // 做种，评论信息
         let _tag_seeders = torrent_data_raw.find("a[href$='#seeders']");
         let _tag_leechers = torrent_data_raw.find("a[href$='#leechers']");
-        let _tag_completed = torrent_data_raw.find("a[href^='viewsnatches']:first");
+        let _tag_completed = torrent_data_raw.find(
+          "a[href^='viewsnatches']:first"
+        );
         let _tag_comments = torrent_data_raw.find("a[href$='#startcomments']");
 
         let _comments = 0;
         if (_tag_comments) {
-          _comments = _tag_comments.text().replace(',', '') || 0;
+          _comments = _tag_comments.text().replace(",", "") || 0;
         }
 
         let data = {
@@ -76,9 +86,9 @@
           size: _size_tag.text() || 0,
           time: _date,
           // author,  // 该站种子列表无author信息
-          seeders: _tag_seeders.text().replace(',', '') || 0,
-          leechers: _tag_leechers.text().replace(',', '') || 0,
-          completed: _tag_completed.text().replace(',', '') || 0,
+          seeders: _tag_seeders.text().replace(",", "") || 0,
+          leechers: _tag_leechers.text().replace(",", "") || 0,
+          completed: _tag_completed.text().replace(",", "") || 0,
           comments: _comments,
           site: site,
           tags: this.getTags(_buff_tag, options.torrentTagSelectors),
@@ -93,8 +103,8 @@
 
     /**
      * 获取标签
-     * @param {*} row 
-     * @param {*} selectors 
+     * @param {*} row
+     * @param {*} selectors
      * @return array
      */
     getTags(row, selectors) {
@@ -103,7 +113,7 @@
         // 使用 some 避免错误的背景类名返回多个标签
         selectors.some(item => {
           if (item.selector) {
-            let result = row.find(item.selector)
+            let result = row.find(item.selector);
             if (result.length) {
               tags.push({
                 name: item.name,
@@ -135,7 +145,7 @@
       }
 
       if (img.length) {
-        result.name = img.attr("title") || img.attr('alt');
+        result.name = img.attr("title") || img.attr("alt");
       } else {
         result.name = link.text();
       }
@@ -143,9 +153,7 @@
     }
   }
 
-
-  let parser = new Parser(options)
-  options.results = parser.getResult()
+  let parser = new Parser(options);
+  options.results = parser.getResult();
   console.log(options.results);
-
-})(options)
+})(options);

@@ -588,6 +588,7 @@
       "note": "Note: <br>1. Chart history data comes from the overview page, manual or automatic update will be recorded; <br>2. Each station only saves one per day;"
     },
     "service": {
+      "testClientConnectivityFailed": "Test client connection failed[{address}]",
       "contextMenus": {
         "history": "View download history",
         "systemLog": "View plugin log",
@@ -613,6 +614,82 @@
         "siteSearchResultError": "[{site.name}] No expected data was returned.",
         "siteAbortSearch": "Deactivating search request for [{site.host}]",
         "siteAbortSearchError": "[{site.host}] Failed to cancel search request!"
+      },
+      "controller": {
+        "invalidAddress": "Invalid Address",
+        "invalidDownloadServer": "Invalid Download Server",
+        "downloadTimeout": "The download server connection timed out, please check the network settings or adjust the server timeout!",
+        "downloadFinished": "Download server {name} handles [{action}] command completion",
+        "downloadError": "Download server {name} processing [{action}] command failed!",
+        "torrentAdded": "{title} The torrent has been added.",
+        "torrentSavePath": "<br/>Save to {path}",
+        "transmissionSuccess": "{data.name} has been sent to Transmission, ID: {data.id}",
+        "transmissionDuplicate": "The {name} torrent already exists! ID: {id}",
+        "transmissionError": "The link failed to send. Please check if the download server is available.",
+        "invalidTorrent": "Invalid Torrent",
+        "getUserInfoSiteIsEmpty": "No site needs to get user information",
+        "invalidImage": "Invalid Image",
+        "noPermission": "No permission, please go to user authorization"
+      },
+      "omnibox": {
+        "search": "Search for the relevant seed for \"{text}\" in the ({solutionName}) solution"
+      },
+      "user": {
+        "notSupported": "Not Supported",
+        "notLogged": "Not logged",
+        "getUserInfoFailed": "Failed to get username and id",
+        "abortGetUserInfoFailed": "Cancel request to get user information failed"
+      }
+    },
+    "contentPage": {
+      "backgroundServiceIsStoped": "Please refresh the page and try again",
+      "actionExecutionFailed": "{action} Execution failed, maybe background service is unavailable",
+      "pluginTitle": "PT Plugin Plus - Click to open the configuration page",
+      "callbackFailed": "{label} An error has occurred. Please try again.",
+      "notSupported": "This operation is not supported on the current page",
+      "buttons": {
+        "downloadAll": "Download All",
+        "downloadAllTip": "Download all torrent from the current page to [{name}]",
+        "downloadAllTo": "Download to",
+        "downloadAllToTip": "Download all torrent from the current page to the specified server",
+        "copyAllToClipboard": "Copy Link",
+        "copyAllToClipboardTip": "Copy download link to clipboard",
+        "needAuthorization": "Authorize",
+        "needAuthorizationTip": "Download all torrent file features require permission, click to go to authorization",
+        "saveAllTorrent": "All torrents",
+        "saveAllTorrentTip": "Download all torrent files",
+        "freeSpaceTip": "Default server free space\n{path}",
+        "downloadTo": "Download to",
+        "downloadToTip": "Download the current torrent to the specified server",
+        "downloadToDefault": "Download",
+        "downloadToDefaultTip": "Download the current torrent to [{name}]",
+        "copyToClipboard": "Copy Link",
+        "copyToClipboardTip": "Copy download link to clipboard",
+        "menuDownloadTo": "Download to: {server}",
+        "sayThanks": "Say Thanks",
+        "sayThanksTip": "Say thanks to the current torrent",
+        "cover": "Cover",
+        "coverTip": "View by cover"
+      },
+      "needPasskey": "Please set the site key (Passkey) first.",
+      "userCanceled": "User Canceled",
+      "sendingTorrent": "Sending a torrent to the server, please wait...",
+      "invalidDownloadServer": "Invalid Download Server",
+      "invalidURL": "Invalid URL",
+      "dropInvalidURL": "Invalid URL, please drag and drop download link",
+      "getDownloadURLisUndefined": "'getDownloadURL' is undefined",
+      "getDownloadURLsisUndefined": "'getDownloadURLs' is undefined",
+      "getDownloadURLFailed": "Failed to get download link",
+      "getDownloadURLsFailed": "Failed to get the download link, failed to correctly locate the link",
+      "exceedSizeConfirm": "The current page seed size is {size} has exceeded {exceedSize} {exceedSizeUnit}, is it sent?",
+      "exceedSizeCanceled": "Oversized has been cancelled",
+      "downloadURLsFinished": "{count} links have been sent.",
+      "downloadURLsTip": "Sending: {text}",
+      "search": {
+        "needLogin": "[{siteName}] needs to log in and search again",
+        "noTorrents": "[{siteName}] did not find the relevant torrent",
+        "torrentTableIsEmpty": "[{siteName}] is not targeting the torrent list, or there is no related torrent",
+        "parseError": "[{siteName}] Error getting seed information: {error}"
       }
     }
   }

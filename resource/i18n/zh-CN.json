@@ -588,6 +588,7 @@
       "note": "注：<br>1. 图表历史数据来自概览页，手动刷新或自动更新均会记录；<br>2. 助手从 v1.0.1 版开始正式记录每次刷新的数据，每个站每天仅保存一条；"
     },
     "service": {
+      "testClientConnectivityFailed": "测试客户连接失败[{address}]",
       "contextMenus": {
         "history": "查看下载历史",
         "systemLog": "查看助手日志",
@@ -613,6 +614,82 @@
         "siteSearchResultError": "[{site.name}]没有返回预期的数据。",
         "siteAbortSearch": "正在取消[{site.host}]的搜索请求",
         "siteAbortSearchError": "[{site.host}]取消搜索请求失败！"
+      },
+      "controller": {
+        "invalidAddress": "无效的地址",
+        "invalidDownloadServer": "无效的下载服务器",
+        "downloadTimeout": "连接下载服务器超时，请检查网络设置或调整服务器超时时间！",
+        "downloadFinished": "下载服务器{name}处理[{action}]命令完成",
+        "downloadError": "下载服务器{name}处理[{action}]命令失败！",
+        "torrentAdded": "{title} 种子已添加完成。",
+        "torrentSavePath": "<br/>保存至 {path}",
+        "transmissionSuccess": "{data.name}已发送至 Transmission，编号：{data.id}",
+        "transmissionDuplicate": "{name}种子已存在！编号：{id}",
+        "transmissionError": "链接发送失败，请检查下载服务器是否可用。",
+        "invalidTorrent": "无效的种子文件",
+        "getUserInfoSiteIsEmpty": "没有站点需要获取用户信息",
+        "invalidImage": "无效的图片文件",
+        "noPermission": "无权限，请前往用户授权"
+      },
+      "omnibox": {
+        "search": "在「{solutionName}」方案中搜索 “{text}” 的相关种子"
+      },
+      "user": {
+        "notSupported": "暂不支持",
+        "notLogged": "未登录",
+        "getUserInfoFailed": "获取用户名和编号失败",
+        "abortGetUserInfoFailed": "取消获取用户信息请求失败"
+      }
+    },
+    "contentPage": {
+      "backgroundServiceIsStoped": "插件已被禁用或重启过，请刷新页面后再重试",
+      "actionExecutionFailed": "{action} 执行出错，可能后台服务不可用",
+      "pluginTitle": "PT助手 - 点击打开配置页",
+      "callbackFailed": "{label} 发生错误，请重试。",
+      "notSupported": "当前页面不支持此操作",
+      "buttons": {
+        "downloadAll": "下载所有",
+        "downloadAllTip": "将当前页面所有种子下载到[{name}]",
+        "downloadAllTo": "下载到…",
+        "downloadAllToTip": "将当前页面所有种子下载到指定服务器",
+        "copyAllToClipboard": "复制链接",
+        "copyAllToClipboardTip": "复制下载链接到剪切板",
+        "needAuthorization": "需要授权",
+        "needAuthorizationTip": "下载所有种子文件功能需要权限，点击前往授权",
+        "saveAllTorrent": "所有种子",
+        "saveAllTorrentTip": "下载所有种子文件",
+        "freeSpaceTip": "默认服务器剩余空间\n{path}",
+        "downloadTo": "下载到…",
+        "downloadToTip": "将当前种子下载到指定的服务器",
+        "downloadToDefault": "一键下载",
+        "downloadToDefaultTip": "将当前种子下载到[{name}]",
+        "copyToClipboard": "复制链接",
+        "copyToClipboardTip": "复制下载链接到剪切板",
+        "menuDownloadTo": "下载到：{server}",
+        "sayThanks": "感谢发布者",
+        "sayThanksTip": "对当前种子说谢谢",
+        "cover": "封面模式",
+        "coverTip": "以封面的方式进行查看"
+      },
+      "needPasskey": "请先设置站点密钥（Passkey）。",
+      "userCanceled": "用户取消操作",
+      "sendingTorrent": "正在发送下载链接到服务器，请稍候……",
+      "invalidDownloadServer": "无效的下载服务器",
+      "invalidURL": "无效的链接",
+      "dropInvalidURL": "无效的链接，请拖放下载链接",
+      "getDownloadURLisUndefined": "getDownloadURL 方法未定义",
+      "getDownloadURLsisUndefined": "getDownloadURLs 方法未定义",
+      "getDownloadURLFailed": "获取下载链接失败",
+      "getDownloadURLsFailed": "获取下载链接失败，未能正确定位到链接",
+      "exceedSizeConfirm": "当前页面种子容量为 {size} 已超过 {exceedSize} {exceedSizeUnit}，是否发送？",
+      "exceedSizeCanceled": "容量超限，已取消",
+      "downloadURLsFinished": "{count}条链接已发送完成。",
+      "downloadURLsTip": "正在发送：{text}",
+      "search": {
+        "needLogin": "[{siteName}]需要登录后再搜索",
+        "noTorrents": "[{siteName}]没有搜索到相关的种子",
+        "torrentTableIsEmpty": "[{siteName}]没有定位到种子列表，或没有相关的种子",
+        "parseError": "[{siteName}]获取种子信息出错: {error}"
       }
     }
   }

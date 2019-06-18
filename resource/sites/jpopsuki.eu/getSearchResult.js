@@ -1,5 +1,5 @@
 if (!"".getQueryString) {
-  String.prototype.getQueryString = function (name, split) {
+  String.prototype.getQueryString = function(name, split) {
     if (split == undefined) split = "&";
     var reg = new RegExp(
         "(^|" + split + "|\\?)" + name + "=([^" + split + "]*)(" + split + "|$)"
@@ -10,20 +10,23 @@ if (!"".getQueryString) {
   };
 }
 
-(function (options) {
-
+(function(options) {
   class Parser {
     constructor() {
       this.haveData = false;
       if (/auth_form/.test(options.responseText)) {
-        options.errorMsg = `[${options.site.name}]需要登录后再搜索`;
+        options.status = ESearchResultParseStatus.needLogin; //`[${options.site.name}]需要登录后再搜索`;
         return;
       }
 
       options.isLogged = true;
 
-      if (/没有种子|No [Tt]orrents?|Your search did not match anything|用准确的关键字重试/.test(options.responseText)) {
-        options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
+      if (
+        /没有种子|No [Tt]orrents?|Your search did not match anything|用准确的关键字重试/.test(
+          options.responseText
+        )
+      ) {
+        options.status = ESearchResultParseStatus.noTorrents; //`[${options.site.name}]没有搜索到相关的种子`;
         return;
       }
 
@@ -43,7 +46,7 @@ if (!"".getQueryString) {
       // 获取种子列表行
       let rows = options.page.find(options.resultSelector);
       if (rows.length == 0) {
-        options.errorMsg = `[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
+        options.status = ESearchResultParseStatus.torrentTableIsEmpty; //`[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
         return results;
       }
       // 获取表头
@@ -118,7 +121,9 @@ if (!"".getQueryString) {
           }
 
           // 获取下载链接
-          let url = row.find("a[href*='torrents.php?action=download'][title='Download']").first();
+          let url = row
+            .find("a[href*='torrents.php?action=download'][title='Download']")
+            .first();
 
           if (url.length == 0) {
             continue;
@@ -130,9 +135,14 @@ if (!"".getQueryString) {
             url = `${site.url}${url}`;
           }
 
-          title = title.parent()
+          title = title.parent();
           title.find(">span, div.tags").remove();
-          let time = fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).attr("title") || cells.eq(fieldIndex.time).text() || "";
+          let time =
+            fieldIndex.time == -1
+              ? ""
+              : cells.eq(fieldIndex.time).attr("title") ||
+                cells.eq(fieldIndex.time).text() ||
+                "";
           if (time) {
             time += ":00";
           }
@@ -143,19 +153,38 @@ if (!"".getQueryString) {
             url: url,
             size: cells.eq(fieldIndex.size).html() || 0,
             time: time,
-            author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",
-            seeders: fieldIndex.seeders == -1 ? "" : cells.eq(fieldIndex.seeders).text() || 0,
-            leechers: fieldIndex.leechers == -1 ? "" : cells.eq(fieldIndex.leechers).text() || 0,
-            completed: fieldIndex.completed == -1 ? "" : cells.eq(fieldIndex.completed).text() || 0,
-            comments: fieldIndex.comments == -1 ? "" : cells.eq(fieldIndex.comments).text() || 0,
+            author:
+              fieldIndex.author == -1
+                ? ""
+                : cells.eq(fieldIndex.author).text() || "",
+            seeders:
+              fieldIndex.seeders == -1
+                ? ""
+                : cells.eq(fieldIndex.seeders).text() || 0,
+            leechers:
+              fieldIndex.leechers == -1
+                ? ""
+                : cells.eq(fieldIndex.leechers).text() || 0,
+            completed:
+              fieldIndex.completed == -1
+                ? ""
+                : cells.eq(fieldIndex.completed).text() || 0,
+            comments:
+              fieldIndex.comments == -1
+                ? ""
+                : cells.eq(fieldIndex.comments).text() || 0,
             site: site,
-            category: fieldIndex.category == -1 ? null : this.getCategory(cells.eq(fieldIndex.category))
+            category:
+              fieldIndex.category == -1
+                ? null
+                : this.getCategory(cells.eq(fieldIndex.category))
           };
           results.push(data);
         }
       } catch (error) {
-        console.error(error)
-        options.errorMsg = `[${options.site.name}]获取种子信息出错: ${error.message}`;
+        console.error(error);
+        options.status = ESearchResultParseStatus.parseError;
+        options.errorMsg = error.stack; //`[${options.site.name}]获取种子信息出错: ${error.message}`;
       }
 
       return results;
@@ -187,7 +216,7 @@ if (!"".getQueryString) {
     }
   }
 
-  let parser = new Parser(options)
-  options.results = parser.getResult()
+  let parser = new Parser(options);
+  options.results = parser.getResult();
   console.log(options.results);
-})(options)
+})(options);

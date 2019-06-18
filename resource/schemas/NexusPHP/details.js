@@ -1,4 +1,4 @@
-(function ($, window) {
+(function($, window) {
   console.log("this is details.js");
   class App extends window.NexusPHPCommon {
     init() {
@@ -16,16 +16,16 @@
       if (sayThanksButton.length) {
         // 说谢谢
         PTService.addButton({
-          title: "对当前种子说谢谢",
+          title: this.t("buttons.sayThanksTip"), // "对当前种子说谢谢",
           icon: "thumb_up",
-          label: "感谢发布者",
+          label: this.t("buttons.sayThanks"), //"感谢发布者",
           key: "sayThanks",
           click: (success, error) => {
             sayThanksButton.click();
             success();
             setTimeout(() => {
-              PTService.removeButton("sayThanks")
-            }, 1000)
+              PTService.removeButton("sayThanks");
+            }, 1000);
           }
         });
       }
@@ -47,7 +47,9 @@
       }
 
       if (!url) {
-        url = $("a[href*='download'][href*='?id']:first").attr("href") || $("a[href*='download.php?']:first").attr("href");
+        url =
+          $("a[href*='download'][href*='?id']:first").attr("href") ||
+          $("a[href*='download.php?']:first").attr("href");
       }
 
       // 如果还是没有获取到下载链接地址，则尝试 passkey 来生成下载链接
@@ -55,7 +57,14 @@
         let id = location.href.getQueryString("id");
         if (id) {
           // 如果站点没有配置禁用https，则默认添加https链接
-          return location.origin + "/download.php?id=" + id + "&passkey=" + PTService.site.passkey + (PTService.site.disableHttps ? "" : "&https=1");
+          return (
+            location.origin +
+            "/download.php?id=" +
+            id +
+            "&passkey=" +
+            PTService.site.passkey +
+            (PTService.site.disableHttps ? "" : "&https=1")
+          );
         }
       }
 
@@ -63,7 +72,8 @@
         return "";
       }
 
-      if (url.substr(0, 2) === '//') { // 首先尝试适配HUDBT、WHU这样以相对链接开头
+      if (url.substr(0, 2) === "//") {
+        // 首先尝试适配HUDBT、WHU这样以相对链接开头
         url = `${location.protocol}${url}`;
       } else if (url.substr(0, 1) === "/") {
         url = `${location.origin}${url}`;
@@ -72,7 +82,7 @@
       }
 
       if (url.indexOf("https=1") === -1) {
-        url += "&https=1"
+        url += "&https=1";
       }
 
       return url;
@@ -89,6 +99,6 @@
       }
       return title;
     }
-  };
-  (new App()).init();
+  }
+  new App().init();
 })(jQuery, window);

@@ -1,9 +1,9 @@
-(function (options) {
+(function(options) {
   class Parser {
     constructor() {
       this.haveData = false;
       if (/\/User is not authorized/.test(options.responseText)) {
-        options.errorMsg = `[${options.site.name}]需要登录后再搜索`;
+        options.status = ESearchResultParseStatus.needLogin; //`[${options.site.name}]需要登录后再搜索`;
         return;
       }
 
@@ -23,11 +23,10 @@
       // 获取种子列表行
       let rows = options.page.rows;
       if (rows.length == 0) {
-        options.errorMsg = `[${options.site.name}]没有找到相关的种子`;
+        options.status = ESearchResultParseStatus.noTorrents; //`[${options.site.name}]没有找到相关的种子`;
         return [];
       }
       let results = [];
-
 
       try {
         // 遍历数据行
@@ -56,18 +55,19 @@
         }
 
         if (results.length == 0) {
-          options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
+          options.status = ESearchResultParseStatus.noTorrents; //`[${options.site.name}]没有搜索到相关的种子`;
         }
       } catch (error) {
         console.log(error);
-        options.errorMsg = `[${options.site.name}]获取种子信息出错: ${error.stack}`;
+        options.status = ESearchResultParseStatus.parseError;
+        options.errorMsg = error.stack; //`[${options.site.name}]获取种子信息出错: ${error.stack}`;
       }
 
       return results;
     }
   }
 
-  let parser = new Parser(options)
-  options.results = parser.getResult()
+  let parser = new Parser(options);
+  options.results = parser.getResult();
   console.log(options.results);
-})(options)
+})(options);

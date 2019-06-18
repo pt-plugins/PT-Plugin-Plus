@@ -1,9 +1,9 @@
-(function ($, window) {
+(function($, window) {
   // 添加封面模式
   PTService.addButton({
-    title: "以封面的方式进行查看",
+    title: PTService.i18n.t("buttons.coverTip"), //"以封面的方式进行查看",
     icon: "photo",
-    label: "封面模式",
+    label: PTService.i18n.t("buttons.cover"), //"封面模式",
     click: (success, error) => {
       // 获取目标表格
       let tables = $("table.torrentname");
@@ -19,7 +19,7 @@
           title: title, //img.parent().attr("title"),
           link: img.parent().attr("href")
         });
-      })
+      });
 
       // 创建预览
       new album({
@@ -28,8 +28,8 @@
           PTService.buttonBar.show();
         }
       });
-      success()
+      success();
       PTService.buttonBar.hide();
     }
-  })
-})(jQuery, window)
+  });
+})(jQuery, window);

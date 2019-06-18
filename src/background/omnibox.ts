@@ -25,9 +25,13 @@ export class OmniBox {
             (solution: SearchSolution) => {
               result.push({
                 content: `${solution.name}${this.splitString}${text}`,
-                description: `在《${
-                  solution.name
-                }》方案中搜索 “${text}” 的相关种子`
+                description: this.service.i18n.t("service.omnibox.search", {
+                  solutionName: solution.name,
+                  text
+                })
+                //  `在《${
+                //   solution.name
+                // }》方案中搜索 “${text}” 的相关种子`
               });
             }
           );

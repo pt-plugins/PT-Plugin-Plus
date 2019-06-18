@@ -136,7 +136,7 @@ export default class Controller {
     return new Promise<any>((resolve?: any, reject?: any) => {
       if (!data.url) {
         reject({
-          msg: "无效的地址"
+          msg: this.service.i18n.t("service.controller.invalidAddress") //"无效的地址"
         });
         return;
       }
@@ -147,7 +147,7 @@ export default class Controller {
       });
       if (!clientConfig) {
         reject({
-          msg: "无效的下载服务器"
+          msg: this.service.i18n.t("service.controller.invalidDownloadServer") //"无效的下载服务器"
         });
         return;
       }
@@ -228,9 +228,10 @@ export default class Controller {
           this.service.logger.add({
             module: EModule.background,
             event: "service.controller.doDownload.finished",
-            msg: `下载服务器${clientConfig.options.name}处理[${
-              EAction.addTorrentFromURL
-            }]命令完成`,
+            msg: this.service.i18n.t("service.controller.downloadFinished", {
+              name: clientConfig.options.name,
+              action: EAction.addTorrentFromURL
+            }), // `下载服务器${clientConfig.options.name}处理[${ EAction.addTorrentFromURL}]命令完成`,
             data: result
           });
 
@@ -240,8 +241,9 @@ export default class Controller {
               case "timeout":
                 reject({
                   success: false,
-                  msg:
-                    "连接下载服务器超时，请检查网络设置或调整服务器超时时间！",
+                  msg: this.service.i18n.t(
+                    "service.controller.downloadTimeout"
+                  ), //"连接下载服务器超时，请检查网络设置或调整服务器超时时间！",
                   status: "error"
                 });
                 break;
@@ -283,9 +285,10 @@ export default class Controller {
           this.service.logger.add({
             module: EModule.background,
             event: "service.controller.doDownload.error",
-            msg: `下载服务器${clientConfig.options.name}处理[${
-              EAction.addTorrentFromURL
-            }]命令失败`,
+            msg: this.service.i18n.t("service.controller.downloadError", {
+              name: clientConfig.options.name,
+              action: EAction.addTorrentFromURL
+            }), // `下载服务器${clientConfig.options.name}处理[${EAction.addTorrentFromURL}]命令失败`,
             data: result
           });
           this.saveDownloadHistory(
@@ -352,10 +355,17 @@ export default class Controller {
       let result: DataResult = {
         type: EDataResultType.success,
         msg:
-          `${downloadOptions.title || ""} 种子已添加完成。` +
+          this.service.i18n.t("service.controller.torrentAdded", {
+            name: downloadOptions.title
+          }) +
           (downloadOptions.savePath
-            ? `<br/>保存至 ${downloadOptions.savePath}`
-            : ""),
+            ? this.service.i18n.t("service.controller.torrentSavePath", {
+                path: downloadOptions.savePath
+              })
+            : ""), //`${downloadOptions.title || ""} 种子已添加完成。` +
+        // (downloadOptions.savePath
+        //   ? `<br/>保存至 ${downloadOptions.savePath}`
+        //   : ""),
         success: true,
         data: data
       };
@@ -364,9 +374,19 @@ export default class Controller {
         // transmission
         case EDownloadClientType.transmission:
           if (data.id != undefined) {
-            result.msg = data.name + " 已发送至 Transmission，编号：" + data.id;
+            result.msg = this.service.i18n.t(
+              "service.controller.transmissionSuccess",
+              {
+                data
+              }
+            ); //data.name + " 已发送至 Transmission，编号：" + data.id;
             if (downloadOptions.savePath) {
-              result.msg += `<br/>保存至 ${downloadOptions.savePath} `;
+              result.msg += this.service.i18n.t(
+                "service.controller.torrentSavePath",
+                {
+                  path: downloadOptions.savePath
+                }
+              ); //`<br/>保存至 ${downloadOptions.savePath} `;
             }
           } else if (data.status) {
             switch (data.status) {
@@ -374,14 +394,22 @@ export default class Controller {
               case "duplicate":
                 result.type = EDataResultType.error;
                 result.success = false;
-                result.msg =
-                  data.torrent.name + " 种子已存在！编号：" + data.torrent.id;
+                result.msg = this.service.i18n.t(
+                  "service.controller.transmissionDuplicate",
+                  {
+                    name: data.torrent.name,
+                    id: data.torrent.id
+                  }
+                );
+                //data.torrent.name + " 种子已存在！编号：" + data.torrent.id;
                 break;
 
               case "error":
                 result.type = EDataResultType.error;
                 result.success = false;
-                result.msg = "链接发送失败，请检查下载服务器是否可用。";
+                result.msg = this.service.i18n.t(
+                  "service.controller.transmissionError"
+                ); //"链接发送失败，请检查下载服务器是否可用。";
                 break;
               default:
                 result.msg = data.msg;
@@ -713,7 +741,12 @@ export default class Controller {
         ) {
           resolve(file.content);
         } else {
-          reject(APP.createErrorMessage("无效的种子文件"));
+          // "无效的种子文件"
+          reject(
+            APP.createErrorMessage(
+              this.service.i18n.t("service.controller.invalidTorrent")
+            )
+          );
         }
       };
 
@@ -774,7 +807,10 @@ export default class Controller {
       });
 
       if (completed == count && completed == 0) {
-        reject("没有站点需要获取用户信息");
+        // "没有站点需要获取用户信息"
+        reject(
+          this.service.i18n.t("service.controller.getUserInfoSiteIsEmpty")
+        );
       }
     });
   }
@@ -819,7 +855,12 @@ export default class Controller {
           };
           reader.readAsDataURL(file.content);
         } else {
-          reject(APP.createErrorMessage("无效的图片文件"));
+          // "无效的图片文件"
+          reject(
+            APP.createErrorMessage(
+              this.service.i18n.t("service.controller.invalidImage")
+            )
+          );
         }
       };
 
@@ -901,9 +942,33 @@ export default class Controller {
         .catch(() => {
           reject({
             success: false,
-            msg: "无权限，请前往用户授权"
+            msg: this.service.i18n.t("service.controller.noPermission") //"无权限，请前往用户授权"
           });
         });
+    });
+  }
+
+  /**
+   * 获取当前语言资源
+   * @param parentKey 指定这个key下的内容
+   */
+  public getCurrentLanguageResource(parentKey: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let locale = this.service.options.locale || "en";
+      let resource = this.service.i18n.i18next.getResourceBundle(
+        locale,
+        "translation"
+      );
+
+      if (resource) {
+        if (parentKey && resource[parentKey]) {
+          resolve(resource[parentKey]);
+        } else {
+          resolve(resource);
+        }
+      } else {
+        reject();
+      }
     });
   }
 }

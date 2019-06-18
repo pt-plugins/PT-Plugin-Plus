@@ -92,7 +92,7 @@ export class User {
         rejectFN(
           APP.createErrorMessage({
             status: EUserDataRequestStatus.notSupported,
-            msg: "暂不支持"
+            msg: this.service.i18n.t("service.user.notSupported") // "暂不支持"
           })
         );
 
@@ -122,7 +122,7 @@ export class User {
 
             rejectFN(
               APP.createErrorMessage({
-                msg: "未登录",
+                msg: this.service.i18n.t("service.user.notLogged"), //"未登录",
                 status: EUserDataRequestStatus.needLogin
               })
             );
@@ -168,7 +168,7 @@ export class User {
             rejectFN(
               APP.createErrorMessage({
                 status: EUserDataRequestStatus.unknown,
-                msg: "获取用户名和编号失败"
+                msg: this.service.i18n.t("service.user.getUserInfoFailed") //"获取用户名和编号失败"
               })
             );
           }
@@ -362,7 +362,7 @@ export class User {
               this.service.logger.add({
                 module: EModule.background,
                 event: "user.abortGetUserInfo.error",
-                msg: "取消获取用户信息请求失败",
+                msg: this.service.i18n.t("service.user.abortGetUserInfoFailed"), //"取消获取用户信息请求失败",
                 data: {
                   site: site.host,
                   error

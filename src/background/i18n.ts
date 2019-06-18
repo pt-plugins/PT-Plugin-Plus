@@ -4,6 +4,7 @@ import { API } from "@/service/api";
 
 export class i18nService {
   public loadedLanguages: Array<string> = [];
+  public i18next = i18next;
   constructor(public service: PTPlugin) {}
   public init() {
     i18next.init({

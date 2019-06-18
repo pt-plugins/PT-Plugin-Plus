@@ -1,9 +1,9 @@
-(function (options) {
+(function(options) {
   class Parser {
     constructor() {
       this.haveData = false;
       if (/login-element-0/.test(options.responseText)) {
-        options.errorMsg = `[${options.site.name}]需要登录后再搜索`;
+        options.status = ESearchResultParseStatus.needLogin; //`[${options.site.name}]需要登录后再搜索`;
         return;
       }
 
@@ -25,7 +25,7 @@
       // 获取种子列表行
       let rows = table.find("> tbody > tr");
       if (rows.length == 0) {
-        options.errorMsg = `[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
+        options.status = ESearchResultParseStatus.torrentTableIsEmpty; //`[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
         return [];
       }
       let results = [];
@@ -69,21 +69,24 @@
         // 评论数
         if (text == "C") {
           fieldIndex.comments = index;
-          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          fieldIndex.author =
+            index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 发布时间
         if (cell.find("a[href*='sortby=UpDt']").length) {
           fieldIndex.time = index;
-          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          fieldIndex.author =
+            index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 大小
         if (cell.find("a[href*='sortby=size']").length) {
           fieldIndex.size = index;
-          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          fieldIndex.author =
+            index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
@@ -94,14 +97,16 @@
           fieldIndex.leechers = index;
           // 完成数
           fieldIndex.completed = index;
-          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          fieldIndex.author =
+            index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 分类
         if (text == "Category") {
           fieldIndex.category = index;
-          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          fieldIndex.author =
+            index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
       }
@@ -128,33 +133,50 @@
             url = `${site.url}${url}`;
           }
 
-          let SLC = (fieldIndex.seeders == -1 ? "//" : cells.eq(fieldIndex.seeders).text()).split("/");
+          let SLC = (fieldIndex.seeders == -1
+            ? "//"
+            : cells.eq(fieldIndex.seeders).text()
+          ).split("/");
 
           let data = {
             title: title.text(),
             subTitle: this.getSubTitle(title, row),
             link,
             url: url,
-            size: cells.eq(fieldIndex.size).text().trim() || 0,
+            size:
+              cells
+                .eq(fieldIndex.size)
+                .text()
+                .trim() || 0,
             time: fieldIndex.time == -1 ? "" : cells.eq(fieldIndex.time).text(),
-            author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",
+            author:
+              fieldIndex.author == -1
+                ? ""
+                : cells.eq(fieldIndex.author).text() || "",
             seeders: parseInt(SLC[0]),
             leechers: parseInt(SLC[1]),
             completed: parseInt(SLC[2]),
-            comments: fieldIndex.comments == -1 ? "" : cells.eq(fieldIndex.comments).text() || 0,
+            comments:
+              fieldIndex.comments == -1
+                ? ""
+                : cells.eq(fieldIndex.comments).text() || 0,
             site: site,
             tags: this.getTags(row, options.torrentTagSelectors),
             entryName: options.entry.name,
-            category: fieldIndex.category == -1 ? null : this.getCategory(cells.eq(fieldIndex.category))
+            category:
+              fieldIndex.category == -1
+                ? null
+                : this.getCategory(cells.eq(fieldIndex.category))
           };
           results.push(data);
         }
         if (results.length == 0) {
-          options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
+          options.status = ESearchResultParseStatus.noTorrents; //`[${options.site.name}]没有搜索到相关的种子`;
         }
       } catch (error) {
         console.log(error);
-        options.errorMsg = `[${options.site.name}]获取种子信息出错: ${error.stack}`;
+        options.status = ESearchResultParseStatus.parseError;
+        options.errorMsg = error.stack; //`[${options.site.name}]获取种子信息出错: ${error.stack}`;
       }
 
       return results;
@@ -162,8 +184,8 @@
 
     /**
      * 获取标签
-     * @param {*} row 
-     * @param {*} selectors 
+     * @param {*} row
+     * @param {*} selectors
      * @return array
      */
     getTags(row, selectors) {
@@ -171,7 +193,7 @@
       if (selectors && selectors.length > 0) {
         selectors.forEach(item => {
           if (item.selector) {
-            let result = row.find(item.selector)
+            let result = row.find(item.selector);
             if (result.length) {
               tags.push({
                 name: item.name,
@@ -186,8 +208,8 @@
 
     /**
      * 获取副标题
-     * @param {*} title 
-     * @param {*} row 
+     * @param {*} title
+     * @param {*} row
      */
     getSubTitle(title, row) {
       return "";
@@ -206,7 +228,7 @@
     }
   }
 
-  let parser = new Parser(options)
-  options.results = parser.getResult()
+  let parser = new Parser(options);
+  options.results = parser.getResult();
   console.log(options.results);
-})(options)
+})(options);

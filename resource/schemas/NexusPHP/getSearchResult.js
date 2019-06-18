@@ -1,5 +1,5 @@
 if (!"".getQueryString) {
-  String.prototype.getQueryString = function (name, split) {
+  String.prototype.getQueryString = function(name, split) {
     if (split == undefined) split = "&";
     var reg = new RegExp(
         "(^|" + split + "|\\?)" + name + "=([^" + split + "]*)(" + split + "|$)"
@@ -10,19 +10,23 @@ if (!"".getQueryString) {
   };
 }
 
-(function (options) {
+(function(options) {
   class Parser {
     constructor() {
       this.haveData = false;
       if (/takelogin\.php/.test(options.responseText)) {
-        options.errorMsg = `[${options.site.name}]需要登录后再搜索`;
+        options.status = ESearchResultParseStatus.needLogin; //`[${options.site.name}]需要登录后再搜索`;
         return;
       }
 
       options.isLogged = true;
 
-      if (/没有种子|No [Tt]orrents?|Your search did not match anything|用准确的关键字重试/.test(options.responseText)) {
-        options.errorMsg = `[${options.site.name}]没有搜索到相关的种子`;
+      if (
+        /没有种子|No [Tt]orrents?|Your search did not match anything|用准确的关键字重试/.test(
+          options.responseText
+        )
+      ) {
+        options.status = ESearchResultParseStatus.noTorrents; // `[${options.site.name}]没有搜索到相关的种子`;
         return;
       }
 
@@ -44,7 +48,7 @@ if (!"".getQueryString) {
       // 获取种子列表行
       let rows = table.find("> tbody > tr");
       if (rows.length == 0) {
-        options.errorMsg = `[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
+        options.status = ESearchResultParseStatus.torrentTableIsEmpty; //`[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
         return [];
       }
       let results = [];
@@ -88,49 +92,56 @@ if (!"".getQueryString) {
         // 评论数
         if (cell.find("img.comments").length) {
           fieldIndex.comments = index;
-          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          fieldIndex.author =
+            index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 发布时间
         if (cell.find("img.time").length) {
           fieldIndex.time = index;
-          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          fieldIndex.author =
+            index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 大小
         if (cell.find("img.size").length) {
           fieldIndex.size = index;
-          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          fieldIndex.author =
+            index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 种子数
         if (cell.find("img.seeders").length) {
           fieldIndex.seeders = index;
-          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          fieldIndex.author =
+            index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 下载数
         if (cell.find("img.leechers").length) {
           fieldIndex.leechers = index;
-          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          fieldIndex.author =
+            index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 完成数
         if (cell.find("img.snatched").length) {
           fieldIndex.completed = index;
-          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          fieldIndex.author =
+            index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
 
         // 分类
         if (/(cat|类型|類型|分类|分類|Тип)/gi.test(text)) {
           fieldIndex.category = index;
-          fieldIndex.author = index == fieldIndex.author ? -1 : fieldIndex.author;
+          fieldIndex.author =
+            index == fieldIndex.author ? -1 : fieldIndex.author;
           continue;
         }
       }
@@ -148,7 +159,8 @@ if (!"".getQueryString) {
             continue;
           }
           let link = title.attr("href");
-          if (link && link.substr(0, 2) === '//') { // 适配HUDBT、WHU这样以相对链接开头
+          if (link && link.substr(0, 2) === "//") {
+            // 适配HUDBT、WHU这样以相对链接开头
             link = `${site_url_help.protocol}://${link}`;
           } else if (link && link.substr(0, 4) !== "http") {
             link = `${site.url}${link}`;
@@ -169,7 +181,8 @@ if (!"".getQueryString) {
             url = `download.php?id=${id}`;
           }
 
-          if (url && url.substr(0, 2) === '//') { // 适配HUDBT、WHU这样以相对链接开头
+          if (url && url.substr(0, 2) === "//") {
+            // 适配HUDBT、WHU这样以相对链接开头
             url = `${site_url_help.protocol}://${url}`;
           } else if (url && url.substr(0, 4) !== "http") {
             url = `${site.url}${url}`;
@@ -179,7 +192,10 @@ if (!"".getQueryString) {
             continue;
           }
 
-          url = url + (site && site.passkey ? "&passkey=" + site.passkey : "") + "&https=1";
+          url =
+            url +
+            (site && site.passkey ? "&passkey=" + site.passkey : "") +
+            "&https=1";
 
           let data = {
             title: title.attr("title") || title.text(),
@@ -187,21 +203,44 @@ if (!"".getQueryString) {
             link,
             url,
             size: cells.eq(fieldIndex.size).html() || 0,
-            time: fieldIndex.time == -1 ? "" : this.getTime(cells.eq(fieldIndex.time)),
-            author: fieldIndex.author == -1 ? "" : cells.eq(fieldIndex.author).text() || "",
-            seeders: fieldIndex.seeders == -1 ? "" : cells.eq(fieldIndex.seeders).text() || 0,
-            leechers: fieldIndex.leechers == -1 ? "" : cells.eq(fieldIndex.leechers).text() || 0,
-            completed: fieldIndex.completed == -1 ? "" : cells.eq(fieldIndex.completed).text() || 0,
-            comments: fieldIndex.comments == -1 ? "" : cells.eq(fieldIndex.comments).text() || 0,
+            time:
+              fieldIndex.time == -1
+                ? ""
+                : this.getTime(cells.eq(fieldIndex.time)),
+            author:
+              fieldIndex.author == -1
+                ? ""
+                : cells.eq(fieldIndex.author).text() || "",
+            seeders:
+              fieldIndex.seeders == -1
+                ? ""
+                : cells.eq(fieldIndex.seeders).text() || 0,
+            leechers:
+              fieldIndex.leechers == -1
+                ? ""
+                : cells.eq(fieldIndex.leechers).text() || 0,
+            completed:
+              fieldIndex.completed == -1
+                ? ""
+                : cells.eq(fieldIndex.completed).text() || 0,
+            comments:
+              fieldIndex.comments == -1
+                ? ""
+                : cells.eq(fieldIndex.comments).text() || 0,
             site: site,
             tags: this.getTags(row, options.torrentTagSelectors),
             entryName: options.entry.name,
-            category: fieldIndex.category == -1 ? null : this.getCategory(cells.eq(fieldIndex.category))
+            category:
+              fieldIndex.category == -1
+                ? null
+                : this.getCategory(cells.eq(fieldIndex.category))
           };
           results.push(data);
         }
       } catch (error) {
-        options.errorMsg = `[${options.site.name}]获取种子信息出错: ${error.stack}`;
+        options.status = ESearchResultParseStatus.parseError;
+        options.errorMsg = error.stack;
+        //`[${options.site.name}]获取种子信息出错: ${error.stack}`;
       }
 
       return results;
@@ -209,20 +248,22 @@ if (!"".getQueryString) {
 
     /**
      * 获取时间
-     * @param {*} cell 
+     * @param {*} cell
      */
     getTime(cell) {
       let time = cell.find("span[title],time[title]").attr("title");
       if (!time) {
-        time = $("<span>").html(cell.html().replace("<br>", " ")).text();
+        time = $("<span>")
+          .html(cell.html().replace("<br>", " "))
+          .text();
       }
       return time || "";
     }
 
     /**
      * 获取标签
-     * @param {*} row 
-     * @param {*} selectors 
+     * @param {*} row
+     * @param {*} selectors
      * @return array
      */
     getTags(row, selectors) {
@@ -230,7 +271,7 @@ if (!"".getQueryString) {
       if (selectors && selectors.length > 0) {
         selectors.forEach(item => {
           if (item.selector) {
-            let result = row.find(item.selector)
+            let result = row.find(item.selector);
             if (result.length) {
               tags.push({
                 name: item.name,
@@ -266,31 +307,51 @@ if (!"".getQueryString) {
 
     /**
      * 获取副标题
-     * @param {*} title 
-     * @param {*} row 
+     * @param {*} title
+     * @param {*} row
      */
     getSubTitle(title, row) {
       try {
-        let subTitle = title.parent().html().split("<br>");
+        let subTitle = title
+          .parent()
+          .html()
+          .split("<br>");
         if (subTitle && subTitle.length > 1) {
-          subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
+          subTitle = $("<span>")
+            .html(subTitle[subTitle.length - 1])
+            .text();
         } else {
           // 特殊情况处理
           switch (options.site.host) {
             case "hdchina.org":
-              if (title.parent().next().is("h4")) {
-                subTitle = title.parent().next().text();
+              if (
+                title
+                  .parent()
+                  .next()
+                  .is("h4")
+              ) {
+                subTitle = title
+                  .parent()
+                  .next()
+                  .text();
               }
               break;
 
             case "tp.m-team.cc":
               title = row.find("a[href*='hit'][title]").last();
-              subTitle = title.parent().html().split("<br>");
-              subTitle = $("<span>").html(subTitle[subTitle.length - 1]).text();
+              subTitle = title
+                .parent()
+                .html()
+                .split("<br>");
+              subTitle = $("<span>")
+                .html(subTitle[subTitle.length - 1])
+                .text();
               break;
 
             case "u2.dmhy.org":
-              subTitle = $('.torrentname > tbody > tr:eq(1)', row).find('.tooltip').text();
+              subTitle = $(".torrentname > tbody > tr:eq(1)", row)
+                .find(".tooltip")
+                .text();
               break;
 
             default:
@@ -325,7 +386,7 @@ if (!"".getQueryString) {
       }
 
       if (img.length) {
-        result.name = img.attr("title") || img.attr('alt');
+        result.name = img.attr("title") || img.attr("alt");
       } else {
         result.name = link.text();
       }
@@ -333,7 +394,7 @@ if (!"".getQueryString) {
     }
   }
 
-  let parser = new Parser(options)
-  options.results = parser.getResult()
+  let parser = new Parser(options);
+  options.results = parser.getResult();
   console.log(options.results);
-})(options)
+})(options);

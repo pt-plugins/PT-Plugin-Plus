@@ -268,5 +268,4 @@ export const APP = {
 };
 
 APP.cache.init();
-console.log(RESOURCE_API);
 export const API = RESOURCE_API;
