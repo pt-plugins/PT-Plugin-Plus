@@ -3,7 +3,7 @@
     <v-alert :value="true" type="info">{{ $t('settings.base.title') }}</v-alert>
     <v-card color>
       <v-card-text>
-        <v-form v-model="valid">
+        <v-form v-model="valid" ref="form">
           <v-container fluid grid-list-xs>
             <v-layout row wrap>
               <v-flex xs12>
@@ -18,6 +18,8 @@
                   item-value="id"
                   required
                   :rules="rules.require"
+                  autofocus
+                  ref="defaultClient"
                 >
                   <template slot="selection" slot-scope="{ item }">
                     <span v-text="item.name"></span>
@@ -230,7 +232,7 @@
       <v-divider></v-divider>
 
       <v-card-actions class="pa-3">
-        <v-btn color="success" @click="save" :disabled="!valid">
+        <v-btn color="success" @click="save">
           <v-icon>check_circle_outline</v-icon>
           <span class="ml-1">{{ $t('settings.base.save') }}</span>
         </v-btn>
@@ -302,6 +304,10 @@ export default Vue.extend({
   methods: {
     save() {
       console.log(this.options);
+      if (!(this.$refs.form as any).validate()) {
+        (this.$refs.defaultClient as any).focus();
+        return;
+      }
       this.$store.dispatch("saveConfig", this.options);
       this.successMsg = this.$t("settings.base.saved").toString();
     },
