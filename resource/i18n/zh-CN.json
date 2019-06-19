@@ -1,5 +1,5 @@
 {
-  "name": "Chinese (简体中文)",
+  "name": "简体中文 Chinese (Simplified)",
   "code": "zh-CN",
   "authors": [
     "栽培者"
@@ -14,6 +14,7 @@
     "common": {
       "debugMode": "当前处于调试模式",
       "changeLanguage": "切换语言",
+      "addLanguage": "临时添加新语言",
       "version": "版本",
       "systemLog": "系统日志",
       "haveNewReleases": "有更新可用",
@@ -361,6 +362,7 @@
         },
         "index": {
           "title": "下载服务器配置",
+          "subTitle": "在开始使用之前，您至少需要添加一个下载服务器。",
           "add": "新增",
           "remove": "删除",
           "clear": "清除",

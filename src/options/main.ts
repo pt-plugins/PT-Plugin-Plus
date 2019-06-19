@@ -6,7 +6,7 @@ import store from "./store";
 import { filters } from "@/service/filters";
 import dayjs from "dayjs";
 import { i18nService } from "./i18n";
-import { Options } from "@/interface/common";
+import { Options, i18nResource } from "@/interface/common";
 
 (function main() {
   let options: Options;
@@ -125,6 +125,10 @@ import { Options } from "@/interface/common";
       } else {
         vm.$vuetify.lang.current = "zh-Hans";
       }
+    };
+
+    i18n.onAdded = (resource: i18nResource) => {
+      store.dispatch("addLangauge", resource);
     };
 
     options = result;

@@ -68,6 +68,11 @@ export default Vue.extend({
           title: "navigation.settings.title",
           items: [
             {
+              title: "navigation.settings.downloadClients",
+              icon: "cloud_download",
+              key: "/set-download-clients"
+            },
+            {
               title: "navigation.settings.base",
               icon: "settings",
               key: "/set-base"
@@ -76,11 +81,6 @@ export default Vue.extend({
               title: "navigation.settings.sites",
               icon: "public",
               key: "/set-sites"
-            },
-            {
-              title: "navigation.settings.downloadClients",
-              icon: "cloud_download",
-              key: "/set-download-clients"
             },
             {
               title: "navigation.settings.downloadPaths",

@@ -146,7 +146,9 @@ export enum EAction {
   // 更改语言
   changeLanguage = "changeLanguage",
   // 获取当前语言资源
-  getCurrentLanguageResource = "getCurrentLanguageResource"
+  getCurrentLanguageResource = "getCurrentLanguageResource",
+  // 增加新的语言
+  addLanguage = "addLanguage"
 }
 
 /**

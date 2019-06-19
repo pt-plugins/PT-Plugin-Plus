@@ -13,7 +13,8 @@ import {
   EModule,
   ERequestMethod,
   UserInfo,
-  EUserDataRange
+  EUserDataRange,
+  i18nResource
 } from "@/interface/common";
 import { filters as Filters } from "@/service/filters";
 import { ClientController } from "@/service/clientController";
@@ -970,5 +971,9 @@ export default class Controller {
         reject();
       }
     });
+  }
+
+  public addLanguage(resource: i18nResource): Promise<any> {
+    return this.service.i18n.add(resource);
   }
 }

@@ -542,6 +542,13 @@ export default new Vuex.Store({
           extension.save(_options);
         }
       }
+    },
+
+    addLangauge({ commit, state }, options) {
+      extension
+        .sendRequest(EAction.addLanguage, null, options)
+        .then(() => {})
+        .catch(error => {});
     }
   },
   getters: {

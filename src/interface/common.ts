@@ -391,3 +391,10 @@ export interface UserInfo {
   // 消息数量
   messageCount?: number;
 }
+
+export type i18nResource = {
+  name: string;
+  code: string;
+  authors?: Array<string>;
+  words: Dictionary<any>;
+};

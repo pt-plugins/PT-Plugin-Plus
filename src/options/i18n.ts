@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueI18n from "vue-i18n";
 import { API } from "@/service/api";
+import { i18nResource } from "@/interface/common";
 
 Vue.use(VueI18n);
 
@@ -14,8 +15,11 @@ export class i18nService {
   public loadedLanguages: Array<string> = [];
   // 已支持的语言文件列表
   public config: Array<any> = [];
+  // 当前语言
+  public currentLanguage: string = "";
 
   public onChanged: Function = () => {};
+  public onAdded: Function = () => {};
 
   private initialized = false;
 
@@ -34,6 +38,7 @@ export class i18nService {
         .then(() => {
           this.reset(langCode)
             .then(() => {
+              this.currentLanguage = langCode;
               this.initialized = true;
               resolve(i18n);
             })
@@ -78,18 +83,50 @@ export class i18nService {
               i18n.setLocaleMessage(langCode, result.words);
               this.loadedLanguages.push(langCode);
               i18n.locale = langCode;
+              this.currentLanguage = langCode;
               this.initialized && this.onChanged.call(this, langCode);
               resolve(langCode);
             })
             .fail(e => {
+              if (langCode != "en") {
+                this.reset("en").then(() => {
+                  resolve(langCode);
+                });
+                return;
+              }
               reject(e);
             });
           return;
         }
         i18n.locale = langCode;
+        this.currentLanguage = langCode;
         this.initialized && this.onChanged.call(this, langCode);
       }
+      this.currentLanguage = langCode;
       resolve(langCode);
+    });
+  }
+
+  /**
+   * 从指定的资源加载新的语言
+   * @param resource
+   */
+  public add(resource: i18nResource): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (resource.name && resource.code) {
+        if (this.loadedLanguages.includes(resource.code)) {
+          reject();
+        } else {
+          i18n.setLocaleMessage(resource.code, resource.words);
+          this.loadedLanguages.push(resource.code);
+          i18n.locale = resource.code;
+          this.currentLanguage = resource.code;
+          this.initialized && this.onAdded.call(this, resource);
+          resolve(resource.code);
+        }
+      } else {
+        reject();
+      }
     });
   }
 }

@@ -77,6 +77,10 @@
       </v-card>
     </v-dialog>
 
+    <v-alert :value="true" color="grey">
+      <div v-html="$t('settings.downloadClients.index.subTitle')"></div>
+    </v-alert>
+
     <v-snackbar
       v-model="itemDuplicate"
       top

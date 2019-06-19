@@ -1,6 +1,7 @@
 import i18next from "i18next";
 import PTPlugin from "./service";
 import { API } from "@/service/api";
+import { i18nResource } from "@/interface/common";
 
 export class i18nService {
   public loadedLanguages: Array<string> = [];
@@ -40,6 +41,12 @@ export class i18nService {
               });
             })
             .fail(e => {
+              if (langCode != "en") {
+                this.reset("en").then(() => {
+                  resolve(langCode);
+                });
+                return;
+              }
               reject(e);
             });
           return;
@@ -55,5 +62,29 @@ export class i18nService {
 
   public t(key: any, options?: any): string {
     return i18next.t(key, options);
+  }
+
+  public add(resource: i18nResource): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (resource.name && resource.code) {
+        if (this.loadedLanguages.includes(resource.code)) {
+          reject();
+        } else {
+          i18next.addResourceBundle(
+            resource.code,
+            "translation",
+            resource.words,
+            true,
+            true
+          );
+          this.loadedLanguages.push(resource.code);
+          i18next.changeLanguage(resource.code).then(() => {
+            resolve(resource.code);
+          });
+        }
+      } else {
+        reject();
+      }
+    });
   }
 }
