@@ -32,7 +32,7 @@
             reject({
               status: "error",
               code: result.error.code,
-              msg: "身份验证失败"
+              msg: i18n.t("downloadClient.permissionDenied") //"身份验证失败"
             })
           }
           /**
@@ -94,7 +94,7 @@
           } else {
             callback({
               status: "error",
-              msg: "服务器连接失败"
+              msg: i18n.t("downloadClient.serverConnectionFailed") //"服务器连接失败"
             })
           }
         }).catch((result) => {
@@ -166,10 +166,14 @@
         console.log(result)
         if (result.error) {
           let errorMap = {
-            400: "文件上传失败",
-            401: "达到的最大任务数",
-            402: `指定的目录[${options.savePath}]不可用或无权限`,
-            403: `指定的目录[${options.savePath}]不存在`
+            400: i18n.t("downloadClient.fileUploadFailed"), // "文件上传失败",
+            401: i18n.t("downloadClient.maxNumberOfTasksReached"), //"达到的最大任务数",
+            402: i18n.t("downloadClient.destinationDenied", {
+              path: options.savePath
+            }), //`指定的目录[${options.savePath}]不可用或无权限`,
+            403: i18n.t("downloadClient.destinationDoesNotExist", {
+              path: options.savePath
+            }) //`指定的目录[${options.savePath}]不存在`
           };
           /**
            * 400 File upload failed
@@ -191,7 +195,7 @@
       }).fail(() => {
         callback({
           status: "error",
-          msg: "服务器连接失败"
+          msg: i18n.t("downloadClient.serverConnectionFailed") //"服务器连接失败"
         })
       })
     }

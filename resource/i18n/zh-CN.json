@@ -28,7 +28,8 @@
       "removeConfirm": "确认要删除这条记录吗？",
       "removeConfirmTitle": "删除确认",
       "clearConfirm": "确认要删除所有记录吗？",
-      "id": "ID"
+      "id": "ID",
+      "readyToStart": "准备开始……"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -693,6 +694,20 @@
         "torrentTableIsEmpty": "[{siteName}]没有定位到种子列表，或没有相关的种子",
         "parseError": "[{siteName}]获取种子信息出错: {error}"
       }
+    },
+    "downloadClient": {
+      "timeout": "连接超时",
+      "unknownError": "未知错误",
+      "notFound": "指定的地址未找到，服务器返回了 404",
+      "addURLSuccess": "URL已添加至 {name} 。",
+      "unsupportedMediaType": "种子文件有误",
+      "serverIsUnavailable": "服务器不可用或网络错误",
+      "permissionDenied": "身份验证失败",
+      "serverConnectionFailed": "服务器连接失败",
+      "destinationDenied": "指定的目录[{path}]不可用或无权限",
+      "destinationDoesNotExist": "指定的目录[{path}]不存在",
+      "fileUploadFailed": "文件上传失败",
+      "maxNumberOfTasksReached": "达到的最大任务数"
     }
   }
 }

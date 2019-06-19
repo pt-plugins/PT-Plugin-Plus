@@ -60,7 +60,8 @@ export class ClientController {
           client.init({
             loginName: clientOptions.loginName,
             loginPwd: clientOptions.loginPwd,
-            address: clientOptions.address
+            address: clientOptions.address,
+            name: clientOptions.name
           });
           this.clients[clientOptions.id] = client;
           resolve({ client, options: clientOptions });
@@ -71,7 +72,8 @@ export class ClientController {
         client.init({
           loginName: clientOptions.loginName,
           loginPwd: clientOptions.loginPwd,
-          address: clientOptions.address
+          address: clientOptions.address,
+          name: clientOptions.name
         });
         this.clients[clientOptions.id] = client;
         resolve({ client, options: clientOptions });

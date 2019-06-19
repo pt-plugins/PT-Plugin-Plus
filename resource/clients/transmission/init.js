@@ -111,11 +111,20 @@
           resolve(resultData);
         }, (request, event, page) => {
           switch (request.status) {
+            case 0:
+              result = {
+                status: "error",
+                code: request.status,
+                msg: i18n.t("downloadClient.serverIsUnavailable") //"服务器不可用或网络错误"
+              };
+              reject && reject(result)
+              break;
+
             case 401:
               result = {
                 status: "error",
                 code: request.status,
-                msg: "身份验证失败"
+                msg: i18n.t("downloadClient.permissionDenied") //"身份验证失败"
               };
               reject && reject(result)
               break;
@@ -124,7 +133,7 @@
               result = {
                 status: "error",
                 code: request.status,
-                msg: event || "未知错误"
+                msg: event || i18n.t("downloadClient.unknownError") //"未知错误"
               };
               reject && reject(result)
               break;

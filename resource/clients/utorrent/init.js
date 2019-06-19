@@ -58,7 +58,7 @@
             });
             break;
 
-            // 测试是否可连接
+          // 测试是否可连接
           case "testClientConnectivity":
             this.getSessionId()
               .then(result => {
@@ -79,11 +79,11 @@
     getSessionId(callback) {
       return new Promise((resolve, reject) => {
         $.ajax({
-            type: "GET",
-            url: this.options.address + "token.html?t=",
-            headers: this.headers,
-            timeout: PTBackgroundService.options.connectClientTimeout
-          })
+          type: "GET",
+          url: this.options.address + "token.html?t=",
+          headers: this.headers,
+          timeout: PTBackgroundService.options.connectClientTimeout
+        })
           .done(resultData => {
             console.log(resultData);
             this.token = $(resultData).html();
@@ -97,15 +97,19 @@
             let result = {
               status: textStatus || "error",
               code: jqXHR.status,
-              msg: textStatus === "timeout" ? "连接超时" : "未知错误"
+              msg: textStatus === "timeout" ? i18n.t("downloadClient.timeout") : i18n.t("downloadClient.unknownError") //"连接超时" : "未知错误"
             };
             switch (jqXHR.status) {
+              case 0:
+                result.msg = i18n.t("downloadClient.serverIsUnavailable") //"服务器不可用或网络错误"
+                break;
+
               case 401:
-                result.msg = "身份验证失败";
+                result.msg = i18n.t("downloadClient.permissionDenied");//"身份验证失败";
                 break;
 
               case 404:
-                result.msg = "指定的地址未找到，服务器返回了 404";
+                result.msg = i18n.t("downloadClient.notFound");// "指定的地址未找到，服务器返回了 404";
                 break;
             }
             reject(result);
@@ -188,9 +192,9 @@
       }
 
       PTBackgroundService.requestMessage({
-          action: "getTorrentDataFromURL",
-          data: url
-        })
+        action: "getTorrentDataFromURL",
+        data: url
+      })
         .then((result) => {
           let formData = new FormData();
           formData.append("torrent_file", result, "file.torrent")
@@ -218,7 +222,9 @@
             var result = resultData;
             if (resultData.build) {
               result.status = "success";
-              result.msg = "URL已添加至 µTorrent 。";
+              result.msg = result.msg = i18n.t("downloadClient.addURLSuccess", {
+                name: this.options.name
+              });//"URL已添加至 µTorrent 。";
             }
             callback(result);
           }

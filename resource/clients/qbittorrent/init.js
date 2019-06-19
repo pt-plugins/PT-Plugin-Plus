@@ -59,7 +59,7 @@
             });
             break;
 
-            // 测试是否可连接
+          // 测试是否可连接
           case "testClientConnectivity":
             this.getSessionId().then(result => {
               resolve(true);
@@ -134,7 +134,7 @@
               callback({
                 status: "error",
                 code: jqXHR.status,
-                msg: "种子文件有误"
+                msg: i18n.t("downloadClient.unsupportedMediaType") //"种子文件有误"
               })
               return;
 
@@ -148,7 +148,7 @@
             callback({
               status: "error",
               code,
-              msg: msg || code === 0 ? "服务器不可用或网络错误" : "未知错误"
+              msg: msg || code === 0 ? i18n.t("downloadClient.serverIsUnavailable") : i18n.t("downloadClient.unknownError") //"服务器不可用或网络错误" : "未知错误"
             })
           });
         }
@@ -175,9 +175,9 @@
       }
 
       PTBackgroundService.requestMessage({
-          action: "getTorrentDataFromURL",
-          data: url
-        })
+        action: "getTorrentDataFromURL",
+        data: url
+      })
         .then((result) => {
           let formData = new FormData();
           if (data.savePath) {
@@ -209,7 +209,9 @@
           }, resultData);
           if (!resultData.error && resultData.result || resultData == "Ok.") {
             result.status = "success";
-            result.msg = "URL已添加至 qBittorrent 。";
+            result.msg = i18n.t("downloadClient.addURLSuccess", {
+              name: this.options.name
+            }); //"URL已添加至 qBittorrent 。";
           }
           callback(result);
         }
