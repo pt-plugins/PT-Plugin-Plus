@@ -25,6 +25,17 @@
       >{{ $t("common.haveNewReleases") }}, {{ releasesVersion }}</v-btn>
     </span>
     <v-spacer></v-spacer>
+    <v-btn
+      flat
+      small
+      href="https://t.me/joinchat/NZ9NCxPKXyby8f35rn_QTw"
+      target="_blank"
+      rel="noopener noreferrer nofollow"
+      title="Telegram"
+    >
+      <img src="https://telegram.org/img/website_icon.svg" class="mr-1" width="16">
+      Telegram
+    </v-btn>
     <input type="file" ref="fileLanguage" style="display:none;">
     <v-menu top offset-y>
       <template v-slot:activator="{ on }">
