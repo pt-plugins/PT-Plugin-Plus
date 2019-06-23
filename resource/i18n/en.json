@@ -1,23 +1,24 @@
 {
-  "name": "English",
+  "name": "English (Beta)",
   "code": "en",
   "authors": [
-    "ronggang"
+    "ronggang", "ylxb2016", "xiongqiwei", "jackson008"
   ],
   "words": {
     "app": {
       "initError": "The configuration information failed to be loaded. The system definition information was not obtained. Please try to refresh the current page.",
-      "initializing": "The program is preparing some data, please wait...",
+      "initializing": "The data is being prepared, please wait...",
       "author": "ronggang",
       "name": "PT Plugin Plus"
     },
     "common": {
       "debugMode": "Debug mode active",
       "changeLanguage": "Switch language",
+      "addLanguage": "Add a new language temporarily",
       "version": "Version",
       "systemLog": "System Log",
       "haveNewReleases": "Update available",
-      "add": "New",
+      "add": "Add",
       "edit": "Edit",
       "copy": "Copy",
       "ok": "OK",
@@ -34,8 +35,8 @@
       "navBarTip": "Click to show\/hide the navigation bar",
       "help": "Wiki",
       "github": "Github",
-      "showNewTorrents": "Get the first page of each station",
-      "showNewTorrentsTip": "Search the first page torrents of each station according to the current solution"
+      "showNewTorrents": "Get the first page of each tracker",
+      "showNewTorrentsTip": "Search the first page torrents of each tracker according to the current solution"
     },
     "navigation": {
       "dashboard": {
@@ -66,14 +67,14 @@
     },
     "permissions": {
       "title": "Thank you for choosing PT Plugin Plus",
-      "subtitle": "Please authorize the required features to avoid affecting normal use.",
+      "subtitle": "In order to work properly, please authorize the required permission.",
       "authorize": "Authorization",
       "cancel": "Cancel",
       "cancelled": "Bye!",
       "details": {
-        "allSites": "Access to all websites for searching and get torrent data;",
+        "allSites": "Access to all trackers for searching and get torrents data;",
         "tabs": "Read permission of the activity tab to display the PT Plugin Plus icon;",
-        "downloads": "Download permission for batch download of torrent files"
+        "downloads": "Download permission for batch download of torrents"
       },
       "headers": {
         "title": "Permission description",
@@ -81,14 +82,14 @@
       }
     },
     "searchBox": {
-      "searchTip": "Input keyword, IMDb number, press Enter to search",
+      "searchTip": "Input keyword, IMDb numbers, then press <Enter> to search",
       "default": "<Default>",
       "defaultTip": "Search only allowed sites",
       "all": "<All Sites>",
-      "noSearchSolution": "No Search Solution, please add",
-      "noAllowSearchSites": "The site that allows search is not configured yet. Please configure it first.",
+      "noSearchSolution": "No Search Solution, please add a solution",
+      "noAllowSearchSites": "The site to search is not configured yet. Please configure it before.",
       "searchThisKey": "Search “{key}”",
-      "doubanTip": "The above data comes from the Douban Movie API v2 query interface; if you do not want to display these results for pre-selection, you can close it in the General Settings",
+      "doubanTip": "The above data comes from the Douban Movie API v2 ; if you do not want to display these results for pre-selection, you can close it in the General Settings",
       "toDouban": "View in Douban"
     },
     "donate": {
@@ -98,22 +99,22 @@
       "title": "Download history",
       "remove": "Remove",
       "clear": "Clear",
-      "removeConfirm": "Are you sure you want to delete this record?",
-      "removeConfirmTitle": "Delete confirmation",
-      "clearConfirm": "Are you sure you want to delete all downloads?",
+      "removeConfirm": "Confirm to delete this record?",
+      "removeConfirmTitle": "Delete confirmed",
+      "clearConfirm": "Confirm to delete all download records?",
       "ok": "@:(common.ok)",
       "cancel": "@:(common.cancel)",
       "download": "Download again",
-      "fail": "failure",
+      "fail": "Failure",
       "success": "Success",
       "unknown": "N/A",
-      "defaultPath": "Default directory",
-      "seedingTorrent": "Sending torrent to download server...",
+      "defaultPath": "Default Path",
+      "seedingTorrent": "Sending torrents to download server...",
       "headers": {
         "site": "Source",
         "title": "Title",
         "status": "Status",
-        "time": "Time",
+        "time": "Download time",
         "action": "Action"
       }
     },
@@ -130,12 +131,12 @@
       "settings": "Settings",
       "statistic": "Statistic",
       "newMessage": "New message",
-      "startGetting": "Getting...",
-      "gettingForSite": "Getting {siteName} data",
+      "startGetting": "Getting user profile...",
+      "gettingForSite": "Getting {siteName} user profile",
       "requestCompleted": "Request completed, time: {second} seconds.",
       "getUserInfoError": "An error occurred",
       "getUserInfoAbort": "Get user profile request has been canceled. ({siteName})",
-      "getUserInfoAbortError": "Failed to get user profile request cancellation. ({siteName})",
+      "getUserInfoAbortError": "Cancellation failed to get user profile request. ({siteName})",
       "headers": {
         "site": "Site",
         "userName": "User name",
@@ -163,31 +164,31 @@
     },
     "reference": {
       "title": "This project uses or references the following items",
-      "thanks": "The birth of PT Plugin Plus is based on these projects. Thanks to all the participants of the project, thank you for their contribution!",
+      "thanks": "The birth of 'PT Plugin Plus' is established on the base of these projects. Thanks all the participants of the project, thanks for your contribution!",
       "headers": {
         "name": "Name",
-        "ver": "Ver",
+        "ver": "Version",
         "url": "URL"
       }
     },
     "team": {
       "title": "Alphabetical Order",
       "contributors": "Contributors:",
-      "issues": "Users:"
+      "issues": "Suggesters:"
     },
     "timeline": {
       "share": "Generate a share image",
-      "siteName": "Site name",
+      "siteName": "Tracker name",
       "userName": "User name",
       "userLevel": "User level",
       "close": "Close",
       "shareMessage": "Growth process",
       "total": {
-        "uploaded": "Total upload: ",
+        "uploaded": "Total uploads: ",
         "downloaded": "Total download: ",
         "seedingSize": "Seeding size: ",
         "ratio": "Total ratio: ",
-        "years": "Ｐ age：≈ {year} year(s)"
+        "years": "PT ages：≈ {year} year(s)"
       },
       "updateat": "Update at: ",
       "user": {
@@ -205,20 +206,20 @@
       "download": "Download",
       "downloadFailed": "Re-download failed",
       "sendToClient": "Send to server",
-      "sendToClientTip": "Send torrent to download server",
-      "save": "Save torrent file",
+      "sendToClientTip": "Send torrents to download server",
+      "save": "Save torrents",
       "searching": "Searching, please wait...",
       "cancelSearch": "Cancel search",
       "showCheckbox": "Multiple selection",
       "noTag": "No tag",
       "allSites": "All Sites",
-      "multiDownloadConfirm": "The number of torrents currently downloaded exceeds one, and the browser may prompt to save multiple times. Do you want to continue?",
-      "copyToClipboard": "Copy Link",
-      "copyToClipboardTip": "Copy download link to clipboard",
+      "multiDownloadConfirm": "The number of torrents currently downloaded exceeds one, and the browser may prompt multiple times to save. Do you want to continue?",
+      "copyToClipboard": "Copy Links",
+      "copyToClipboardTip": "Copy download links to clipboard",
       "reSearch": "Re-search",
       "showCategory": "Category",
       "filterSearchResults": "Filter search results",
-      "noResultsSites": "No results site:",
+      "noResultsSites": "Site with 0 result:",
       "failedSites": "Failed site:",
       "reSearchFailedSites": "Re-search failed site",
       "failUrl": "Invalid link",
@@ -229,7 +230,7 @@
         "size": "Size",
         "seeders": "Seeders",
         "leechers": "Leechers",
-        "completed": "Completed",
+        "completed": "Completed/Snatched",
         "time": "Time(≈)",
         "action": "Action"
       },
@@ -310,28 +311,28 @@
         "autoRefreshUserDataTip4": "times after failure,",
         "autoRefreshUserDataTip5": "minute apart",
         "searchResultOrderBySitePriority": "When the search results are clicked on the site header, they are sorted by site priority (effective after refreshing the page after saving)",
-        "saveSearchKey": "Save search keywords",
+        "saveSearchKey": "Save historical search keyword records",
         "showMoiveInfoCardOnSearch": "Show movie and rating information when searching by IMDb number",
         "getMovieInformationBeforeSearching": "When entering a search keyword, load relevant information from Douban for pre-selection",
-        "maxMovieInformationCount": "Display the maximum number of entries (1-20):",
+        "maxMovieInformationCount": "Maximum display number of entries (1-20):",
         "searchModeForItem": "When clicking on a pre-selected item:",
         "showToolbarOnContentPage": "Enable site page plugin icons and toolbars (such as one-click downloads, etc.)",
         "lastUpdate": " (last updated on {time})",
         "lastUpdateUnknown": " (Update time is unknown)",
-        "lastUpdateFailed": " (Update time acquisition failed)",
+        "lastUpdateFailed": " (Failed to get update time)",
         "autoRefreshUserDataLastUpdate": " (last updated on {time})",
         "beforeSearchingItemSearchMode": {
-          "id": "Search by ID to get more accurate content, but it takes time to convert ID",
+          "id": "Search by IMDb ID to get more accurate content, but it need more time to get IMDb ID",
           "name": "Fuzzy search by name to get more content"
         }
       },
       "downloadClients": {
         "add": {
           "title": "Add download server",
-          "titleStep1": "Select server type",
+          "titleStep1": "Select bittorrent client type",
           "titleStep2": "Detailed configuration",
-          "validMsg": "Please select a server type",
-          "helpMsg": "Can't find the server type you want? ",
+          "validMsg": "Please select a bittorrent client type",
+          "helpMsg": "Can't find the bittorrent client type you want? ",
           "nextStep": "Next",
           "prevStep": "Previous",
           "cancel": "Cancel"
@@ -343,7 +344,7 @@
         },
         "editor": {
           "name": "Name of server",
-          "type": "Server type",
+          "type": "bittorrent client type",
           "address": "Server address",
           "addressTip": "The server address contains the port, such as: http:\/\/192.168.1.1:5000\/",
           "loginName": "log-in name",
@@ -355,12 +356,13 @@
           "testSuccess": "Server can be connected",
           "testConnectionError": "Network connection error",
           "testError": "Server connection failed",
-          "testUnknownError": "unknown mistake",
+          "testUnknownError": "unknown errors",
           "testOtherError": "Other errors, the code returned by the server is: {code}",
           "testAddressError": "Server address error"
         },
         "index": {
           "title": "Download server configuration",
+          "subTitle": "You must to add at least one download server before you start using it.",
           "add": "New",
           "remove": "Remove",
           "clear": "Clear",
@@ -381,34 +383,34 @@
       },
       "downloadPaths": {
         "add": {
-          "title": "Add download directory definition",
-          "path": "Directory list",
-          "pathTip": "Press Enter multiple directories separated first as the default directory",
+          "title": "Add new download Path",
+          "path": "Paths list",
+          "pathTip": "Press Enter multiple Paths separated first as the default Path",
           "ok": "OK",
           "cancel": "Cancel",
           "selectSite": "Select a site (not selected means all sites are available)"
         },
         "edit": {
-          "title": "Edit download directory definition",
+          "title": "Edit download Path definition",
           "site": "Site"
         },
         "index": {
-          "title": "Download directory settings",
+          "title": "Download Path settings",
           "selectedClient": "Servers need to be set",
           "add": "New",
           "remove": "Remove",
           "clear": "Clear",
           "itemDuplicate": "The name already exists",
-          "removeConfirm": "Are you sure you want to delete this save directory?",
+          "removeConfirm": "Are you sure you want to delete this Download Path?",
           "removeConfirmTitle": "Delete confirmation",
-          "removeSelectedConfirm": "Are you sure you want to delete the selected save directory?",
+          "removeSelectedConfirm": "Are you sure you want to delete the selected Download Path?",
           "ok": "OK",
           "cancel": "Cancel",
           "notSupport": "This server type is not supported at this time",
           "allSite": "<All Sites>",
           "headers": {
             "name": "Site",
-            "path": "Save directory",
+            "path": "Download Path",
             "action": "Action"
           }
         },
@@ -457,7 +459,7 @@
           "defaultClient": "Default download server",
           "name": "Plugin name",
           "pages": "Applicable page",
-          "pagesTip": "The page starts with '\/' to indicate the root directory of the website. After inputting, press Enter to add multiple, which can be a regular expression.",
+          "pagesTip": "The page starts with '/' to indicate the root path of the website. After inputting, press Enter to add multiple, which can be a regular expression.",
           "scripts": "Script files",
           "scriptsTip": "\/ means to load the script from the resource directory root, you can add multiple",
           "script": "Javascript",
@@ -585,7 +587,7 @@
       "seedingCount": "Seeding count",
       "size": "Size",
       "count": "Count",
-      "note": "Note: <br>1. Chart history data comes from the overview page, manual or automatic update will be recorded; <br>2. Each station only saves one per day;"
+      "note": "Note: <br>1. Chart history data comes from the overview page, manual or automatic update will be recorded; <br>2. Each tracker only saves one per day;"
     },
     "service": {
       "testClientConnectivityFailed": "Test client connection failed[{address}]",
@@ -596,7 +598,7 @@
         "searchSelectionText": "Search for \"%s\" related torrents",
         "searchSelectionTextOnThisSite": "Search only for this site \"%s\" related torrents",
         "searchByIMDb": "Search current IMDb related torrents",
-        "downloadClientPath": "{clientName} -> Specified directory",
+        "downloadClientPath": "{clientName} -> Specified path",
         "userCanceled": "User canceled",
         "pluginStatusIsUnknown": "The status of the plugin is unknown. The current operation may fail. Please refresh the page and try again.",
         "sendingLink": "Sending a link to download server",
@@ -691,6 +693,20 @@
         "torrentTableIsEmpty": "[{siteName}] is not targeting the torrent list, or there is no related torrent",
         "parseError": "[{siteName}] Error getting seed information: {error}"
       }
+    },
+    "downloadClient": {
+      "timeout": "Access timed out",
+      "unknownError": "Unknow Error",
+      "notFound": "The specified address was not found and the server returned error: 404",
+      "addURLSuccess": "URL has been added into {name}",
+      "unsupportedMediaType": "Wrong torrent file",
+      "serverIsUnavailable": "Server unavailable or network error",
+      "permissionDenied": "Authentication failure",
+      "serverConnectionFailed": "Server access failed",
+      "destinationDenied": "The specified directory [{path}] is unavailable or no access permissions",
+      "destinationDoesNotExist": "The specified directory [{path}] does not exist",
+      "fileUploadFailed": "File upload failed",
+      "maxNumberOfTasksReached": "Maximum number of tasks reached"
     }
   }
 }
