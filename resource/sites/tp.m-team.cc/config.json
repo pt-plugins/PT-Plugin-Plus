@@ -7,6 +7,10 @@
   "schema": "NexusPHP",
   "host": "tp.m-team.cc",
   "plugins": [{
+    "name": "种子列表",
+    "pages": ["/adult.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }, {
     "name": "种子列表封面模式",
     "pages": ["/torrents.php", "/movie.php", "/music.php", "/adult.php"],
     "scripts": ["/libs/album/album.js", "torrents.js"],

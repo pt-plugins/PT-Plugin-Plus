@@ -7,75 +7,75 @@
     "综合",
     "影视"
   ],
+  "plugins": [{
+    "name": "种子列表",
+    "pages": ["/pt"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }],
   "schema": "NexusPHP",
   "host": "hdcity.city",
   "collaborator": "waldens",
-  "searchEntry": [
-    {
-      "entry": "/pt?iwannaseethis=$key$&notnewword=1&v=legacyinv",
-      "name": "全部",
-      "resultType": "html",
-      "parseScriptFile": "getSearchResult.js",
-      "resultSelector": "table.torrents:last > tbody > tr",
-      "enabled": true
-    }
-  ],
-  "categories": [
-    {
-      "entry": "*",
-      "result": "&cat$id$=1",
-      "category": [
-        {
-          "id": 401,
-          "name": "Movies/电影"
-        },
-        {
-          "id": 402,
-          "name": "Series/剧集"
-        },
-        {
-          "id": 404,
-          "name": "Doc/档案记录"
-        },
-        {
-          "id": 405,
-          "name": "Anim/动漫"
-        },
-        {
-          "id": 403,
-          "name": "Shows/节目"
-        },
-        {
-          "id": 406,
-          "name": "MV/音乐视频"
-        },
-        {
-          "id": 407,
-          "name": "Sports/体育"
-        },
-        {
-          "id": 408,
-          "name": "Audio/音频"
-        },
-        {
-          "id": 727,
-          "name": "XXX/家长指引"
-        },
-        {
-          "id": 728,
-          "name": "Edu/文档/教材"
-        },
-        {
-          "id": 729,
-          "name": "Soft/软件"
-        },
-        {
-          "id": 409,
-          "name": "Other/其他"
-        }
-      ]
-    }
-  ],
+  "searchEntry": [{
+    "entry": "/pt?iwannaseethis=$key$&notnewword=1&v=legacyinv",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table.torrents:last > tbody > tr",
+    "enabled": true
+  }],
+  "categories": [{
+    "entry": "*",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "Movies/电影"
+      },
+      {
+        "id": 402,
+        "name": "Series/剧集"
+      },
+      {
+        "id": 404,
+        "name": "Doc/档案记录"
+      },
+      {
+        "id": 405,
+        "name": "Anim/动漫"
+      },
+      {
+        "id": 403,
+        "name": "Shows/节目"
+      },
+      {
+        "id": 406,
+        "name": "MV/音乐视频"
+      },
+      {
+        "id": 407,
+        "name": "Sports/体育"
+      },
+      {
+        "id": 408,
+        "name": "Audio/音频"
+      },
+      {
+        "id": 727,
+        "name": "XXX/家长指引"
+      },
+      {
+        "id": 728,
+        "name": "Edu/文档/教材"
+      },
+      {
+        "id": 729,
+        "name": "Soft/软件"
+      },
+      {
+        "id": 409,
+        "name": "Other/其他"
+      }
+    ]
+  }],
   "selectors": {
     "userBaseInfo": {
       "page": "/userdetails",
