@@ -44,7 +44,9 @@
 .pt-plugin-body .droper {
   height: 45px;
   width: 100%;
-  border: 1px dotted #aaa;
+  background-color: #1976d2;
+  opacity: 0.2;
+  border-radius: 5px;
   position: absolute;
   top: 0;
   left: 0;

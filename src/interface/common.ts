@@ -41,6 +41,7 @@ export interface ButtonOption {
   click?: Function;
   icon?: string;
   type?: EButtonType;
+  onDrop?: Function;
 }
 
 export interface SystemOptions {

@@ -119,7 +119,24 @@ String.prototype.getQueryString = function(name, split) {
             return;
           }
           this.showAllContentMenus(event.originalEvent, success, error);
-        }
+        },
+        onDrop: this.isNexusPHP()
+          ? (data, event, success, error) => {
+              console.log(data);
+              let url = this.getDroperURL(data.url);
+              console.log(url);
+              this.showContentMenusForUrl(
+                {
+                  url,
+                  title: data.title,
+                  link: data.url
+                },
+                event.originalEvent,
+                success,
+                error
+              );
+            }
+          : undefined
       });
 
       // 复制下载链接
@@ -147,7 +164,25 @@ String.prototype.getQueryString = function(name, split) {
             .catch(() => {
               error();
             });
-        }
+        },
+        onDrop: this.isNexusPHP()
+          ? (data, event, success, error) => {
+              if (checkPasskey && !PTService.site.passkey) {
+                error(this.t("needPasskey"));
+                return;
+              }
+              let url = this.getDroperURL(data.url);
+              url &&
+                PTService.call(PTService.action.copyTextToClipboard, url)
+                  .then(result => {
+                    console.log("命令执行完成", result);
+                    success();
+                  })
+                  .catch(() => {
+                    error();
+                  });
+            }
+          : undefined
       });
 
       // 检查是否有下载管理权限
@@ -345,38 +380,7 @@ String.prototype.getQueryString = function(name, split) {
         };
       }
 
-      let siteURL = PTService.site.url;
-      if (siteURL.substr(-1) != "/") {
-        siteURL += "/";
-      }
-
-      if (PTService.site.schema == "NexusPHP") {
-        if (!data.url.getQueryString) {
-          PTService.showNotice({
-            msg:
-              "系统依赖函数（getQueryString）未正确加载，请尝试刷新页面或重新启用插件。"
-          });
-          callback();
-          return;
-        }
-
-        if (data.url.indexOf("download.php") == -1) {
-          let id = data.url.getQueryString("id");
-          if (id) {
-            // 如果站点没有配置禁用https，则默认添加https链接
-            data.url =
-              siteURL +
-              "download.php?id=" +
-              id +
-              (PTService.site.passkey
-                ? "&passkey=" + PTService.site.passkey
-                : "") +
-              (PTService.site.disableHttps ? "" : "&https=1");
-          } else {
-            data.url = "";
-          }
-        }
-      }
+      data.url = this.getDroperURL(data);
 
       if (!data.url) {
         PTService.showNotice({
@@ -393,6 +397,59 @@ String.prototype.getQueryString = function(name, split) {
         .catch(result => {
           callback(result);
         });
+    }
+
+    isNexusPHP() {
+      return PTService.site.schema == "NexusPHP";
+    }
+
+    /**
+     * 获取有效的拖放地址
+     * @param {*} url
+     */
+    getDroperURL(url) {
+      let siteURL = PTService.site.url;
+      if (siteURL.substr(-1) != "/") {
+        siteURL += "/";
+      }
+
+      if (PTService.site.schema == "NexusPHP") {
+        if (!url.getQueryString) {
+          PTService.showNotice({
+            msg:
+              "系统依赖函数（getQueryString）未正确加载，请尝试刷新页面或重新启用插件。"
+          });
+          return null;
+        }
+
+        if (url.indexOf("download.php") == -1) {
+          let id = url.getQueryString("id");
+          if (id) {
+            // 如果站点没有配置禁用https，则默认添加https链接
+            url =
+              siteURL +
+              "download.php?id=" +
+              id +
+              (PTService.site.passkey
+                ? "&passkey=" + PTService.site.passkey
+                : "") +
+              (PTService.site.disableHttps ? "" : "&https=1");
+          } else {
+            url = "";
+          }
+        }
+      } else {
+        if (url && url.substr(0, 2) === "//") {
+          url = `${location.protocol}://${url}`;
+        } else if (url && url.substr(0, 4) !== "http") {
+          if (url.substr(0, 1) == "/") {
+            url = url.substr(1);
+          }
+          url = `${siteURL}${url}`;
+        }
+      }
+
+      return url;
     }
 
     /**

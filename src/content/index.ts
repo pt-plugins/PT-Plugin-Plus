@@ -431,6 +431,40 @@ class PTPContent {
       .html(options.label)
       .appendTo(inner);
 
+    let onSuccess = (result: any) => {
+      if (options.type == EButtonType.normal) {
+        loading.hide();
+      } else {
+        inner.hide();
+      }
+
+      success.show();
+      if (result && result.msg) {
+        if (!result.type) {
+          result.type = "success";
+        }
+        this.showNotice(result);
+      }
+      setTimeout(() => {
+        success.hide();
+        inner.show();
+      }, 2000);
+    };
+
+    let onError = (error: any) => {
+      if (options.type == EButtonType.normal) {
+        loading.hide();
+      }
+      inner.show();
+      this.showNotice({
+        msg:
+          error ||
+          i18n.t("callbackFailed", {
+            label: options.label
+          }) // `${options.label} 发生错误，请重试。`
+      });
+    };
+
     if (options.click) {
       button.click(event => {
         if (options.type == EButtonType.normal) {
@@ -438,45 +472,16 @@ class PTPContent {
           loading.show();
         }
 
-        (<any>options).click(
-          (result: any) => {
-            if (options.type == EButtonType.normal) {
-              loading.hide();
-            } else {
-              inner.hide();
-            }
-
-            success.show();
-            if (result && result.msg) {
-              if (!result.type) {
-                result.type = "success";
-              }
-              this.showNotice(result);
-            }
-            setTimeout(() => {
-              success.hide();
-              inner.show();
-            }, 2000);
-          },
-          (error: any) => {
-            if (options.type == EButtonType.normal) {
-              loading.hide();
-            }
-            inner.show();
-            this.showNotice({
-              msg:
-                error ||
-                i18n.t("callbackFailed", {
-                  label: options.label
-                }) // `${options.label} 发生错误，请重试。`
-            });
-          },
-          event
-        );
+        (<any>options).click(onSuccess, onError, event);
       });
     }
 
     button.appendTo(this.buttonBar);
+
+    // 是否指定了拖放事件
+    if (options.onDrop) {
+      this.addDroper(button, options.onDrop, onSuccess, onError);
+    }
 
     let offset = <any>line.outerHeight(true) + <any>button.outerHeight(true);
     this.buttonBarHeight += offset;
@@ -608,11 +613,16 @@ class PTPContent {
     this.buttonBar.on("dragover", (e: any) => {
       e.stopPropagation();
       e.preventDefault();
-      this.droper.show();
+      this.showDroper();
     });
 
-    this.buttonBar.on("dragleave mouseleave", (e: any) => {
+    this.buttonBar.on("dragleave", (e: any) => {
       this.buttonBar.removeClass("pt-plugin-body-over");
+    });
+
+    this.buttonBar.on("mouseleave", (e: any) => {
+      this.buttonBar.removeClass("pt-plugin-body-over");
+      this.hideDroper();
     });
 
     this.droper.appendTo(this.buttonBar);
@@ -644,7 +654,7 @@ class PTPContent {
         //console.log(e);
         e.stopPropagation();
         e.preventDefault();
-        this.droper.hide();
+        this.hideDroper();
 
         // 获取未处理的地址
         try {
@@ -691,13 +701,76 @@ class PTPContent {
     );
 
     // 离开拖放时
-    this.droper.on("dragleave", (e: any) => {
+    this.droper.on("dragleave dragend", (e: any) => {
       e.stopPropagation();
       e.preventDefault();
-      this.droper.hide();
+      this.hideDroper();
       this.logo.removeClass("onLoading");
       this.buttonBar.removeClass("pt-plugin-body-over");
     });
+  }
+
+  /**
+   * 增加拖放对象
+   * @param parent
+   * @param onDrop
+   */
+  public addDroper(
+    parent: any,
+    onDrop: Function,
+    onSuccess: Function,
+    onError: Function
+  ) {
+    if (!onDrop) {
+      return;
+    }
+    let droper: JQuery = $("<div style='display:none;' class='droper'/>");
+
+    droper.appendTo(this.buttonBar);
+    // 拖入接收对象时
+    droper.on("dragover", (e: any) => {
+      //console.log(e);
+      e.stopPropagation();
+      e.preventDefault();
+      this.buttonBar.addClass("pt-plugin-body-over");
+    });
+
+    // 拖放事件
+    droper.on("drop", (e: any) => {
+      console.log(e);
+      e.stopPropagation();
+      e.preventDefault();
+      this.hideDroper();
+
+      // 获取未处理的地址
+      try {
+        let data = JSON.parse(
+          e.originalEvent.dataTransfer.getData("text/plain")
+        );
+        if (data && data.url) {
+          onDrop.call(this, data, e, onSuccess, onError);
+        }
+      } catch (error) {}
+    });
+
+    // 离开拖放时
+    droper.on("dragleave dragend", (e: any) => {
+      e.stopPropagation();
+      e.preventDefault();
+      this.hideDroper();
+      this.buttonBar.removeClass("pt-plugin-body-over");
+    });
+
+    // 设置位置
+    droper.offset(parent.position());
+  }
+
+  private hideDroper() {
+    $(".droper").hide();
+  }
+
+  private showDroper() {
+    $(".droper").show();
   }
 
   private initBrowserEvent() {
