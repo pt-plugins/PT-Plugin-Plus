@@ -68,6 +68,12 @@
       <v-icon small class="mr-1">bug_report</v-icon>
       {{ $t("common.systemLog") }}
     </v-btn>
+    <v-snackbar
+      v-model="invalidFile"
+      top
+      :timeout="3000"
+      color="error"
+    >{{ $t('footer.invalidFile') }}</v-snackbar>
   </v-footer>
 </template>
 <script lang="ts">
@@ -88,7 +94,8 @@ export default Vue.extend({
       releasesVersion: "",
       languages: [] as Array<any>,
       fileInput: null as any,
-      currentLanguage: ""
+      currentLanguage: "",
+      invalidFile: false
     };
   },
   created() {
@@ -152,12 +159,16 @@ export default Vue.extend({
         r.onload = (e: any) => {
           try {
             let result = JSON.parse(e.target.result);
-            if (result.code) {
+            if (result.code && result.words) {
               this.loadLanguage(result);
+              this.invalidFile = false;
+            } else {
+              this.invalidFile = true;
             }
             console.log(result);
           } catch (error) {
-            console.error(error);
+            console.warn(error);
+            this.invalidFile = true;
           }
         };
         r.onerror = () => {};

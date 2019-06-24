@@ -710,7 +710,8 @@
       "maxNumberOfTasksReached": "达到的最大任务数"
     },
     "footer": {
-      "replaceLanguageConfirm": "该语言已存在，是否需要替换？"
+      "replaceLanguageConfirm": "该语言已存在，是否需要替换？",
+      "invalidFile": "无效的语言文件！"
     }
   }
 }
