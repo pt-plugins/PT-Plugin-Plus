@@ -128,7 +128,11 @@ import { Options, i18nResource } from "@/interface/common";
     };
 
     i18n.onAdded = (resource: i18nResource) => {
-      store.dispatch("addLangauge", resource);
+      store.dispatch("addLanguage", resource);
+    };
+
+    i18n.onReplaced = (resource: i18nResource) => {
+      store.dispatch("replaceLanguage", resource);
     };
 
     options = result;

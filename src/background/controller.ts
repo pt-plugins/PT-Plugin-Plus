@@ -976,4 +976,8 @@ export default class Controller {
   public addLanguage(resource: i18nResource): Promise<any> {
     return this.service.i18n.add(resource);
   }
+
+  public replaceLanguage(resource: i18nResource): Promise<any> {
+    return this.service.i18n.replace(resource);
+  }
 }

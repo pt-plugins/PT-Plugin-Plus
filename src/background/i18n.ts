@@ -87,4 +87,29 @@ export class i18nService {
       }
     });
   }
+
+  /**
+   * 替换已有语言资源
+   * @param resource 语言资源内容
+   */
+  public replace(resource: i18nResource): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (resource.name && resource.code) {
+        if (this.loadedLanguages.includes(resource.code)) {
+          i18next.addResourceBundle(
+            resource.code,
+            "translation",
+            resource.words,
+            true,
+            true
+          );
+          i18next.changeLanguage(resource.code).then(() => {
+            resolve(resource.code);
+          });
+        }
+      } else {
+        reject();
+      }
+    });
+  }
 }

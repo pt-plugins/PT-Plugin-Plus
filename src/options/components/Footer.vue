@@ -33,8 +33,7 @@
       rel="noopener noreferrer nofollow"
       title="Telegram"
     >
-      <img src="https://telegram.org/img/website_icon.svg" class="mr-1" width="16">
-      Telegram
+      <v-img src="./assets/telegram.svg" class="mr-1" width="16"/>Telegram
     </v-btn>
     <input type="file" ref="fileLanguage" style="display:none;">
     <v-menu top offset-y>
@@ -75,6 +74,7 @@
 import { APP, API } from "@/service/api";
 import Vue from "vue";
 import { EInstallType } from "@/interface/enum";
+import { i18nResource } from "@/interface/common";
 export default Vue.extend({
   data() {
     return {
@@ -166,17 +166,33 @@ export default Vue.extend({
       }
     },
 
-    loadLanguage(resource: any) {
-      window.i18nService
-        .add(resource)
-        .then(() => {
-          this.currentLanguage = resource.code;
-          this.languages.push({
-            name: resource.name,
-            code: resource.code
-          });
-        })
-        .catch(() => {});
+    /**
+     * 加载语言信息
+     */
+    loadLanguage(resource: i18nResource) {
+      // 检测指定的语言是否已存在
+      if (window.i18nService.exists(resource.code)) {
+        // 是否替换
+        if (window.confirm(this.$t("footer.replaceLanguageConfirm") + "")) {
+          window.i18nService
+            .replace(resource)
+            .then(() => {
+              this.currentLanguage = resource.code;
+            })
+            .catch(() => {});
+        }
+      } else {
+        window.i18nService
+          .add(resource)
+          .then(() => {
+            this.currentLanguage = resource.code;
+            this.languages.push({
+              name: resource.name,
+              code: resource.code
+            });
+          })
+          .catch(() => {});
+      }
     },
 
     selectFile() {

@@ -544,9 +544,16 @@ export default new Vuex.Store({
       }
     },
 
-    addLangauge({ commit, state }, options) {
+    addLanguage({ commit, state }, options) {
       extension
         .sendRequest(EAction.addLanguage, null, options)
+        .then(() => {})
+        .catch(error => {});
+    },
+
+    replaceLanguage({ commit, state }, options) {
+      extension
+        .sendRequest(EAction.replaceLanguage, null, options)
         .then(() => {})
         .catch(error => {});
     }

@@ -708,6 +708,9 @@
       "destinationDoesNotExist": "指定的目录[{path}]不存在",
       "fileUploadFailed": "文件上传失败",
       "maxNumberOfTasksReached": "达到的最大任务数"
+    },
+    "footer": {
+      "replaceLanguageConfirm": "该语言已存在，是否需要替换？"
     }
   }
 }

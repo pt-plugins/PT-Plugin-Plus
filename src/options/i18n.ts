@@ -20,6 +20,7 @@ export class i18nService {
 
   public onChanged: Function = () => {};
   public onAdded: Function = () => {};
+  public onReplaced: Function = () => {};
 
   private initialized = false;
 
@@ -128,5 +129,29 @@ export class i18nService {
         reject();
       }
     });
+  }
+
+  /**
+   * 替换已有语言资源
+   * @param resource 语言资源内容
+   */
+  public replace(resource: i18nResource): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (resource.name && resource.code) {
+        if (this.loadedLanguages.includes(resource.code)) {
+          i18n.setLocaleMessage(resource.code, resource.words);
+          i18n.locale = resource.code;
+          this.currentLanguage = resource.code;
+          this.initialized && this.onReplaced.call(this, resource);
+          resolve(resource.code);
+        }
+      } else {
+        reject();
+      }
+    });
+  }
+
+  public exists(code: string): boolean {
+    return this.loadedLanguages.includes(code);
   }
 }
