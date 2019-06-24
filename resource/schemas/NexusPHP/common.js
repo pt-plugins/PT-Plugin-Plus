@@ -984,7 +984,7 @@ String.prototype.getQueryString = function(name, split) {
       let _this = this;
 
       function addMenu(item) {
-        let title = this.t("buttons.menuDownloadTo", {
+        let title = _this.t("buttons.menuDownloadTo", {
           server: `${item.client.name} -> ${item.client.address}`
         }); //`下载到：${item.client.name} -> ${item.client.address}`;
         if (item.path) {
