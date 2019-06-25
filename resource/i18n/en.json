@@ -28,7 +28,8 @@
       "removeConfirm": "Are you sure you want to delete this record?",
       "removeConfirmTitle": "Delete confirmation",
       "clearConfirm": "Are you sure you want to delete all records?",
-      "id": "ID"
+      "id": "ID",
+      "readyToStart": "Read to start..."
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -707,6 +708,10 @@
       "destinationDoesNotExist": "The specified directory [{path}] does not exist",
       "fileUploadFailed": "File upload failed",
       "maxNumberOfTasksReached": "Maximum number of tasks reached"
+    },
+    "footer": {
+      "replaceLanguageConfirm": "The language already exists. Do you need to replace it?",
+      "invalidFile": "Invalid language file!"
     }
   }
 }
