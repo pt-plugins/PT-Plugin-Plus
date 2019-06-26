@@ -6,6 +6,22 @@
   "tags": ["音乐", "0day"],
   "schema": "Gazelle",
   "host": "alpharatio.cc",
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "queryString": "searchstr=$key$&searchsubmit=1",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/Gazelle/getSearchResult.js",
+    "resultSelector": "table.torrent_table:last > tbody > tr",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "taglist=$key$&searchsubmit=1"
+    }]
+  },
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
   "categories": [{
     "entry": "*",
     "result": "&filter_cat[$id$]=1",
@@ -102,6 +118,15 @@
     }]
   }],
   "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "messageCount": {
+          "selector": ["div.alertbar > a[href='inbox.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        }
+      }
+    },
     "userSeedingTorrents": {
       "page": "/ajax.php?action=community_stats&userid=$user.id$",
       "dataType": "json",
