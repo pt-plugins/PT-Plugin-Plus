@@ -524,7 +524,7 @@
           "removeTitle": "删除确认",
           "plugins": "插件",
           "title": "站点设置",
-          "subTitle": "只有配置过的站点才会显示插件图标及相应的功能；<br/>已离线的站点的不再参与搜索和信息获取；",
+          "subTitle": "只有配置过的站点才会显示插件图标及相应的功能；<br/>已离线的站点不再参与搜索和信息获取；",
           "searchEntry": "搜索入口",
           "importedText": "已成功导入",
           "siteDuplicateText": "该站点已存在",
