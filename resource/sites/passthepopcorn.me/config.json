@@ -1,0 +1,76 @@
+{
+  "name":"PTP",
+  "description": "电影",
+  "url":"https://passthepopcorn.me/",
+  "icon":"https://passthepopcorn.me/favicon.ico",
+  "tags": ["电影"],
+  "schema": "Gazelle",
+  "host": "passthepopcorn.me",
+  "collaborator": "lengmianxia",
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "resultType": "json",
+    "parseScriptFile": "getSearchResult.js",
+    "queryString": "searchstr=$key$&grouping=0&json=noredirect"
+  },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": ["a.user-info-bar__link[href*='user.php']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["a.user-info-bar__link[href*='user.php']:first"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/user.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["a.user-info-bar__link[href*='type=seeding']:first"],
+          "filters": ["query.attr('title').sizeToNumber()"] 
+        },
+        "downloaded": {
+          "selector": ["a.user-info-bar__link[href*='type=leeching']:first"],
+          "filters": ["query.attr('title').sizeToNumber()"] 
+        },
+        "ratio": {
+          "selector": "ul.list > li:contains('Ratio:')",
+          "filters": ["query.text().replace(/,|\\n|\\s+/g,'').match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "seeding": {
+          "selector": "ul.list > li:contains('Seeding:')",
+          "filters": ["query.text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+        },
+        "seedingSize": {
+          "selector": "ul.list > li:contains('Seeding size:')",
+          "filters": ["query.text().trim().replace(/,/g,'').match(/:.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "levelName": {
+          "selector": "ul.list > li:contains('Class:')",
+          "filters": ["query.text().replace(/,|\\n|\\s+/g,'').match(/Class:(.+)/)", "(query && query.length>=2)?query[1]:''"]
+        },
+        "bonus": {
+          "selector": ["ul.list > li:contains('Points:')", "div:contains('Stats') + ul.stats > li:contains('SeedBonus:')"],
+          "filters": ["query.text().replace(/,|\\n|\\s+/g,'')", "query.match(/Points.+?([\\d.]+)/)||query.match(/SeedBonus.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "joinTime": {
+          "selector": ["ul.list > li:contains('Joined:') > span"],
+          "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    }
+  }
+}
