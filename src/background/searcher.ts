@@ -204,7 +204,9 @@ export class Searcher {
                 ? ` ${entry.appendToSearchKeyString}`
                 : ""),
             rows: rows,
-            passkey: site.passkey ? site.passkey : ""
+            passkey: site.passkey ? site.passkey : "",
+            "user.csrfToken":
+              site.user && site.user.csrfToken ? site.user.csrfToken : ""
           });
 
           entryCount++;

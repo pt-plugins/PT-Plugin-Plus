@@ -391,6 +391,7 @@ export interface UserInfo {
   lastErrorMsg?: string;
   // 消息数量
   messageCount?: number;
+  [key: string]: any;
 }
 
 export type i18nResource = {
