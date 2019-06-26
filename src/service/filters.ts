@@ -144,21 +144,27 @@ export const filters: IFilter = {
     }
     let r: number;
     let u = "KiB";
-    if (bytes < 1000 * 1024) {
-      r = bytes / 1024;
+    if (bytes < 1000 * Math.pow(2, 10)) {
+      r = bytes / Math.pow(2, 10);
       u = "KiB";
-    } else if (bytes < 1000 * 1048576) {
-      r = bytes / 1048576;
+    } else if (bytes < 1000 * Math.pow(2, 20)) {
+      r = bytes / Math.pow(2, 20);
       u = "MiB";
-    } else if (bytes < 1000 * 1073741824) {
-      r = bytes / 1073741824;
+    } else if (bytes < 1000 * Math.pow(2, 30)) {
+      r = bytes / Math.pow(2, 30);
       u = "GiB";
-    } else if (bytes < 1000 * 1099511627776) {
-      r = bytes / 1099511627776;
+    } else if (bytes < 1000 * Math.pow(2, 40)) {
+      r = bytes / Math.pow(2, 40);
       u = "TiB";
-    } else {
-      r = bytes / 1125899906842624;
+    } else if (bytes < 1000 * Math.pow(2, 50)) {
+      r = bytes / Math.pow(2, 50);
       u = "PiB";
+    } else if (bytes < 1000 * Math.pow(2, 60)) {
+      r = bytes / Math.pow(2, 60);
+      u = "EiB";
+    } else {
+      r = bytes / Math.pow(2, 70);
+      u = "ZiB";
     }
 
     if (type === "speed") {

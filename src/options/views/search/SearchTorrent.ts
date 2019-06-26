@@ -762,12 +762,18 @@ export default Vue.extend({
         return size;
       }
       let _size_raw_match = size.match(
-        /^(\d*\.?\d+)(.*[^TGMK])?([TGMK](B|iB))$/i
+        /^(\d*\.?\d+)(.*[^ZEPTGMK])?([ZEPTGMK](B|iB))$/i
       );
       if (_size_raw_match) {
         let _size_num = parseFloat(_size_raw_match[1]);
         let _size_type = _size_raw_match[3];
         switch (true) {
+          case /Zi?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 70);
+          case /Ei?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 60);
+          case /Pi?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 50);
           case /Ti?B/i.test(_size_type):
             return _size_num * Math.pow(2, 40);
           case /Gi?B/i.test(_size_type):

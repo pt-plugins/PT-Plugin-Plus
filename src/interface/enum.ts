@@ -2,8 +2,10 @@
  * 体积单位
  */
 export enum ESizeUnit {
-  TiB = "TiB",
+  ZiB = "ZiB",
+  EiB = "EiB",
   PiB = "PiB",
+  TiB = "TiB",
   GiB = "GiB",
   MiB = "MiB",
   KiB = "KiB"

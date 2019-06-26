@@ -139,19 +139,31 @@ export class InfoParser {
       let unit = item.replace(/[^A-Za-z]/g, "").toLowerCase();
       switch (true) {
         case /ki?b/.test(unit):
-          total += size * 1024;
+          total += size * Math.pow(2, 10);
           break;
 
         case /mi?b/.test(unit):
-          total += size * 1048576;
+          total += size * Math.pow(2, 20);
           break;
 
         case /gi?b/.test(unit):
-          total += size * 1073741824;
+          total += size * Math.pow(2, 30);
           break;
 
         case /ti?b?/.test(unit):
-          total += size * 1099511627776;
+          total += size * Math.pow(2, 40);
+          break;
+
+        case /pi?b?/.test(unit):
+          total += size * Math.pow(2, 50);
+          break;
+
+        case /ei?b?/.test(unit):
+          total += size * Math.pow(2, 60);
+          break;
+
+        case /zi?b?/.test(unit):
+          total += size * Math.pow(2, 70);
           break;
       }
     });
