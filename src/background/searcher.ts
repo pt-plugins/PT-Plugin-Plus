@@ -109,6 +109,15 @@ export class Searcher {
         return;
       }
 
+      // 提取 IMDb 编号，如果带整个网址，则只取编号部分
+      let imdb = key.match(/(tt\d+)/);
+      if (imdb && imdb.length >= 2) {
+        key = imdb[1];
+      }
+
+      // 将所有 . 替换为空格
+      key = key.replace(/\./g, " ");
+
       // 是否有搜索入口配置项
       if (searchEntryConfig && searchEntryConfig.page) {
         let searchPage = searchEntryConfig.page + "?";
@@ -134,7 +143,10 @@ export class Searcher {
 
               // 替换关键字
               if (area.replaceKey) {
-                key = key.replace(area.replaceKey[0], area.replaceKey[1]);
+                key = key.replace(
+                  new RegExp(area.replaceKey[0], "g"),
+                  area.replaceKey[1]
+                );
               }
 
               return true;
