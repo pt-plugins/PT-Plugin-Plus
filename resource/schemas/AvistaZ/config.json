@@ -54,11 +54,11 @@
         },
         "uploaded": {
           "selector": ["td:contains('Uploaded') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "downloaded": {
           "selector": ["td:contains('Downloaded') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "ratio": {
           "selector": "td:contains('Ratio') + td",

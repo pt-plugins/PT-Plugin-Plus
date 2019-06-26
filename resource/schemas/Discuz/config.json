@@ -53,11 +53,11 @@
       "fields": {
         "uploaded": {
           "selector": ["#psts li:contains('上传量')"],
-          "filters": ["query.text().replace(/,/g,'').match(/上传量+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/上传量+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "downloaded": {
           "selector": ["#psts li:contains('下载量')"],
-          "filters": ["query.text().replace(/,/g,'').match(/下载量+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/下载量+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "levelName": {
           "selector": "a[href='home.php?mod=spacecp&ac=usergroup']",

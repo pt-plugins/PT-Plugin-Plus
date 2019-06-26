@@ -56,7 +56,7 @@
         },
         "seedingSize": {
           "selector": "ul.list > li:contains('Seeding size:')",
-          "filters": ["query.text().trim().replace(/,/g,'').match(/:.+?([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().trim().replace(/,/g,'').match(/:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "levelName": {
           "selector": "ul.list > li:contains('Class:')",

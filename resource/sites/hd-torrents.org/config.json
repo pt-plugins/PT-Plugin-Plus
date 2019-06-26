@@ -17,7 +17,7 @@
   "host": "hd-torrents.org",
   "searchEntryConfig": {
     "page": "/torrents.php",
-    "queryString": "search=$key$",
+    "queryString": "csrfToken=$user.csrfToken$&search=$key$",
     "area": [{
       "name": "标题",
       "appendQueryString": "&options=0"
@@ -66,6 +66,10 @@
         "isLogged": {
           "selector": ["a[href*='logout.php?']"],
           "filters": ["query.length>0"]
+        },
+        "csrfToken": {
+          "selector": ["input[name='csrfToken']"],
+          "filters": ["query.val()"]
         }
       }
     },
@@ -77,11 +81,11 @@
         },
         "uploaded": {
           "selector": ["td.header:contains('Uploaded') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "downloaded": {
           "selector": ["td.header:contains('Downloaded') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "ratio": {
           "selector": "td.header:contains('Ratio') + td",

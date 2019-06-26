@@ -20,11 +20,11 @@
       "fields": {
         "uploaded": {
           "selector": ["span.detailsInfoSpan:contains('Up: ') > span"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "downloaded": {
           "selector": ["span.detailsInfoSpan:contains('Down: ') > span"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[TGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "ratio": {
           "selector": "span.detailsInfoSpan:contains('Ratio: ') > span",
