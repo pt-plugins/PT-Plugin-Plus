@@ -29,7 +29,7 @@
       "removeConfirmTitle": "Delete confirmation",
       "clearConfirm": "Are you sure you want to delete all records?",
       "id": "ID",
-      "readyToStart": "Read to start..."
+      "readyToStart": "Ready to start..."
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -62,7 +62,7 @@
       },
       "support": {
         "title": "Support This Project",
-        "bugReport": "Bug Reoprt",
+        "bugReport": "Bug Report",
         "donate": "Donate"
       }
     },
