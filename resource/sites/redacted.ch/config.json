@@ -4,7 +4,21 @@
   "url": "https://redacted.ch/",
   "icon": "https://redacted.ch/favicon.ico",
   "tags": ["音乐"],
-  "schema": "Gazelle",
+  "schema": "GazelleJSONAPI",
   "host": "redacted.ch",
-  "collaborator": "ylxb2016"
+  "collaborator": "ylxb2016, enigamz",
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/torrents.php?type=seeding&userid=$user.id$",
+      "fields": {
+        "seedingSize": {
+          "selector": ["td.number_column.nobr"],
+          "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        },
+        "bonus" : {
+          "value": null
+        }
+      }
+    }
+  }
 }

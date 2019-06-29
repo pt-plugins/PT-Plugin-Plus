@@ -1,0 +1,62 @@
+{
+  "name": "GazelleJSONAPI",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "种子列表",
+    "pages": ["/torrents.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "securityKeyFields": ["authkey", "torrent_pass"],
+  "searchEntryConfig": {
+    "page": "/ajax.php",
+    "resultType": "json",
+    "parseScriptFile": "/schemas/GazelleJSONAPI/getSearchResult.js",
+    "queryString": "action=browse&searchstr=$key$"
+  },
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/ajax.php?action=index",
+      "dataType": "json",
+      "fields": {
+        "id": {
+          "selector": ["response.id"]
+        },
+        "name": {
+          "selector": ["response.username"]
+        },
+        "messageCount": {
+          "selector": ["response.notifications.messages"]
+        },
+        "uploaded": {
+          "selector": ["response.userstats.uploaded"]
+        },
+        "downloaded": {
+          "selector": ["response.userstats.downloaded"]
+        },
+        "ratio": {
+          "selector": ["response.userstats.ratio"]
+        },
+        "levelName": {
+          "selector": ["response.userstats.class"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/ajax.php?action=user&id=$user.id$",
+      "dataType": "json",
+      "fields": {        
+        "joinTime": {
+          "selector": ["response.stats.joinedDate"],
+          "filters": ["dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["response.community.seeding"]
+        }
+      }
+    }
+  }
+}
