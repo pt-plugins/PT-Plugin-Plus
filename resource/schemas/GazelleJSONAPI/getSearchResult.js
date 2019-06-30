@@ -57,13 +57,10 @@
                 url: `${site.url}torrents.php?action=download&id=${torrent.torrentId}&authkey=${authkey}&torrent_pass=${passkey}`,
                 size: parseFloat(torrent.size),
                 time: torrent.time,
-                author: "",
                 seeders: torrent.seeders,
                 leechers: torrent.leechers,
                 completed: torrent.snatches,
-                comments: 0,
                 site: site,
-                tags: group.tags,
                 entryName: options.entry.name,
                 category: group.releaseType
               }
