@@ -3,141 +3,162 @@
   "description": "0day",
   "url": "https://alpharatio.cc/",
   "icon": "https://alpharatio.cc/favicon.ico",
-  "tags": ["音乐", "0day"],
-  "schema": "Gazelle",
+  "tags": ["综合", "0day"],
+  "schema": "GazelleJSONAPI",
   "host": "alpharatio.cc",
-  "searchEntryConfig": {
-    "page": "/torrents.php",
-    "queryString": "searchstr=$key$&searchsubmit=1",
-    "resultType": "html",
-    "parseScriptFile": "/schemas/Gazelle/getSearchResult.js",
-    "resultSelector": "table.torrent_table:last > tbody > tr",
-    "area": [{
-      "name": "IMDB",
-      "keyAutoMatch": "^(tt\\d+)$",
-      "queryString": "taglist=$key$&searchsubmit=1"
-    }]
-  },
+  "collaborator": "enigamz",
   "searchEntry": [{
     "name": "all",
     "enabled": true
-  }],
-  "categories": [{
-    "entry": "*",
-    "result": "&filter_cat[$id$]=1",
-    "category": [{
-      "id": 1,
-      "name": "TvSD"
-    }, {
-      "id": 2,
-      "name": "TvHD"
-    }, {
-      "id": 3,
-      "name": "TvUHD"
-    }, {
-      "id": 4,
-      "name": "TvDVDRip"
-    }, {
-      "id": 5,
-      "name": "TvPackSD"
-    }, {
-      "id": 6,
-      "name": "TvPackHD"
-    }, {
-      "id": 7,
-      "name": "TvPackUHD"
-    }, {
-      "id": 8,
-      "name": "MovieSD"
-    }, {
-      "id": 9,
-      "name": "MovieHD"
-    }, {
-      "id": 10,
-      "name": "MovieUHD"
-    }, {
-      "id": 11,
-      "name": "MoviePackSD"
-    }, {
-      "id": 12,
-      "name": "MoviePackHD"
-    }, {
-      "id": 13,
-      "name": "MoviePackUHD"
-    }, {
-      "id": 14,
-      "name": "MovieXXX"
-    }, {
-      "id": 15,
-      "name": "Bluray"
-    }, {
-      "id": 16,
-      "name": "AnimeSD"
-    }, {
-      "id": 17,
-      "name": "AnimeHD"
-    }, {
-      "id": 18,
-      "name": "GamesPC"
-    }, {
-      "id": 19,
-      "name": "GamesxBox"
-    }, {
-      "id": 20,
-      "name": "GamesPS"
-    }, {
-      "id": 21,
-      "name": "GamesNin"
-    }, {
-      "id": 22,
-      "name": "AppsWindows"
-    }, {
-      "id": 23,
-      "name": "AppsMAC"
-    }, {
-      "id": 24,
-      "name": "AppsLinux"
-    }, {
-      "id": 25,
-      "name": "AppsMobile"
-    }, {
-      "id": 26,
-      "name": "0dayXXX"
-    }, {
-      "id": 27,
-      "name": "eBook"
-    }, {
-      "id": 28,
-      "name": "AudioBook"
-    }, {
-      "id": 29,
-      "name": "Music"
-    }, {
-      "id": 30,
-      "name": "Misc"
-    }]
-  }],
-  "selectors": {
-    "userExtendInfo": {
-      "merge": true,
-      "fields": {
-        "messageCount": {
-          "selector": ["div.alertbar > a[href='inbox.php']"],
-          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
-        }
-      }
-    },
-    "userSeedingTorrents": {
-      "page": "/ajax.php?action=community_stats&userid=$user.id$",
-      "dataType": "json",
-      "fields": {
-        "seeding": {
-          "selector": ["response.seeding"]
-        },
-        "seedingSize": {
-          "value": -1
-        }
-      }
-    }
-  }
+  },
+  {
+    "queryString": "filter_cat[1]=1",
+    "name": "TvSD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[2]=1",
+    "name": "TvHD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[3]=1",
+    "name": "TvUHD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[4]=1",
+    "name": "TvDVDRip",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[5]=1",
+    "name": "TvPackSD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[6]=1",
+    "name": "TvPackHD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[7]=1",
+    "name": "TvPackUHD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[8]=1",
+    "name": "MovieSD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[9]=1",
+    "name": "MovieHD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[10]=1",
+    "name": "MovieUHD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[11]=1",
+    "name": "MoviePackSD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[12]=1",
+    "name": "MoviePackHD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[13]=1",
+    "name": "MoviePackUHD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[14]=1",
+    "name": "MovieXXX",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[15]=1",
+    "name": " Bluray",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[16]=1",
+    "name": "AnimeSD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[17]=1",
+    "name": "AnimeHD",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[18]=1",
+    "name": "GamesPC",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[19]=1",
+    "name": "GamesxBox",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[20]=1",
+    "name": "GamesPS",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[21]=1",
+    "name": "GamesNin",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[22]=1",
+    "name": "AppsWindows",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[23]=1",
+    "name": "AppsMAC",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[24]=1",
+    "name": "AppsLinux",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[25]=1",
+    "name": "AppsMobile",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[26]=1",
+    "name": "0dayXXX",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[27]=1",
+    "name": "eBook",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[28]=1",
+    "name": "AudioBook",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[29]=1",
+    "name": "Music",
+    "enabled": false
+  },
+  {
+    "queryString": "filter_cat[30]=1",
+    "name": "Misc",
+    "enabled": false
+  }]
 }
