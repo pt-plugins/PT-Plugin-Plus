@@ -1,10 +1,106 @@
 {
   "name": "BTN",
   "description": "著名剧集站点，又被戏称为鼻涕妞",
-  "url": "http://broadcasthe.net/",
-  "icon": "http://broadcasthe.net/favicon.ico",
-  "tags": ["剧集", "0day"],
+  "url": "https://broadcasthe.net/",
+  "icon": "https://broadcasthe.net/favicon.ico",
+  "tags": ["剧集"],
   "schema": "Gazelle",
   "host": "broadcasthe.net",
-  "collaborator": "ylxb2016"
+  "collaborator": "ylxb2016, enigmaz",
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "queryString": "searchstr=$key$"
+  },
+  "searchEntry": [
+    {
+      "name": "all",
+      "enabled": true
+    },
+    {
+      "queryString": "filter_cat[1]=1",
+      "name": "Episode",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[2]=1",
+      "name": "Season",
+      "enabled": false
+    }
+  ],
+  "categories": [
+    {
+      "entry": "*",
+      "result": "&filter_cat[$id$]=1",
+      "category": [
+        {
+          "id": 1,
+          "name": "Episode"
+        },
+        {
+          "id": 2,
+          "name": "Season"
+        }
+      ]
+    }
+  ],
+  "selectors": {
+    "userExtendInfo": {
+      "page": "/user.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(1)",
+          "filters": [
+            "query.text().replace(/,/g,'').match(/Upload.+?([\\d.]+ ?[TGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "downloaded": {
+          "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(7)",
+          "filters": [
+            "query.text().replace(/,/g,'').match(/Downloaded.+?([\\d.]+ ?[TGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "ratio": {
+          "value": null
+        },
+        "levelName": {
+          "selector": "#section2 > div > div.statistics > div:nth-child(1) > ul > li:nth-child(2)",
+          "filters": [
+            "query.text().match(/Class:.+?(.+)/)",
+            "(query && query.length>=2)?query[1]:''"
+          ]
+        },
+        "bonus": {
+          "selector": "#section2 > div > div.statistics > div:nth-child(1) > ul > li:nth-child(5) > a",
+          "filters": [
+            "query.text()"
+          ]
+        },
+        "joinTime": {
+          "selector": "#section2 > div > div.statistics > div:nth-child(1) > ul > li:nth-child(1) > span",
+          "filters": [
+            "query.attr('title')||query.text()",
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        },
+        "seeding": {
+          "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(4)",
+          "filters": [
+            "query.text().replace(/,/g,'').match(/Seeding:.+?(\\d+).+?/)",
+            "(query && query.length>=2)?(query[1]):0"
+          ]
+        },
+        "seedingSize": {
+          "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(5)",
+          "filters": [
+            "query.text().replace(/,/g,'').match(/Seeding Size:.+?([\\d.]+ ?[TGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
+        }
+      }
+    }
+  }
 }

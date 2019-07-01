@@ -4,44 +4,20 @@
   "url": "https://dicmusic.club/",
   "icon": "https://dicmusic.club/favicon.ico",
   "tags": ["音乐"],
-  "schema": "Gazelle",
+  "schema": "GazelleJSONAPI",
   "host": "dicmusic.club",
-  "collaborator": "ylxb2016",
+  "collaborator": "ylxb2016, enigmaz",
   "selectors": {
-    "userExtendInfo": {
-      "page": "/user.php?id=$user.id$",
+    "userSeedingTorrents": {
+      "page": "/torrents.php?type=seeding&userid=$user.id$",
       "fields": {
-        "uploaded": {
-          "selector": "div.box_userinfo_stats > ul.stats > li:contains('已上传: ')",
-          "filters": ["query.text().match(/已上传:.+?([\\d.]+ [ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
-        },
-        "downloaded": {
-          "selector": "div.box_userinfo_stats > ul.stats > li:contains('下载量: ')",
-          "filters": ["query.text().match(/下载量:.+?([\\d.]+ [ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
-        },
-        "levelName": {
-          "selector": "div.box_userinfo_personal > ul.stats > li:contains('等级: ')",
-          "filters": ["query.text().match(/等级:.+?(.+)/)", "(query && query.length>=2)?query[1]:''"]
+        "seedingSize": {
+          "selector": ["td.td_size.number_column.nobr"],
+          "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         },
         "bonus": {
-          "selector": ["div.box_userinfo_stats > ul.stats > li:contains('积分: ')"],
-          "filters": ["query.text().replace(/,/g,'')", "query.match(/积分:.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
-        },
-        "joinTime": {
-          "selector": ["div.box_userinfo_stats > ul.stats > li:contains('注册时间: ') > span"],
-          "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
-        }
-      }
-    },
-    "userSeedingTorrents": {
-      "page": "/ajax.php?action=community_stats&userid=$user.id$",
-      "dataType": "json",
-      "fields": {
-        "seeding": {
-          "selector": ["response.seeding"]
-        },
-        "seedingSize": {
-          "value": -1
+          "selector": ["[href='bonus.php']"],
+          "filters": ["query.text().replace(/,/g,'')", "query.match(/积分.+?\\(([\\d.]+)\\)/)", "(query && query.length>=2)?query[1]:0"]
         }
       }
     }
