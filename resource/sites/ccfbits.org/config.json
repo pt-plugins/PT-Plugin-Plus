@@ -1,16 +1,15 @@
 {
   "name": "CCFBits",
   "description": "",
-  "url": "http://ccfbits.org/",
-  "icon": "http://ccfbits.org/favicon.ico",
+  "url": "https://ccfbits.org/",
+  "icon": "https://ccfbits.org/favicon.ico",
   "tags": [
     "影视",
     "剧集",
     "综合"
   ],
   "host": "ccfbits.org",
-  "plugins": [
-    {
+  "plugins": [{
       "name": "种子详情页面",
       "pages": [
         "^/t/(\\d+)/$",
@@ -33,17 +32,14 @@
     }
   ],
   "collaborator": "Rhilip",
-  "searchEntry": [
-    {
-      "entry": "browse.php?search=$key$&notnewword=1",
-      "name": "全站",
-      "resultType": "html",
-      "parseScriptFile": "getSearchResult.js",
-      "enabled": true
-    }
-  ],
-  "torrentTagSelectors": [
-    {
+  "searchEntry": [{
+    "entry": "browse.php?search=$key$&notnewword=1",
+    "name": "全站",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
       "name": "Free",
       "selector": "font[color=\"#C20603\"]:contains('免费')",
       "color": "blue"
