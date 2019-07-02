@@ -116,7 +116,8 @@ class Config {
             "torrentTagSelectors",
             "icon",
             "activeURL",
-            "searchEntryConfig"
+            "searchEntryConfig",
+            "schema"
           ].forEach((key: string) => {
             let _item = item as any;
             if (_item[key]) {
@@ -238,6 +239,11 @@ class Config {
 
           if (systemSite.categories) {
             _site.categories = systemSite.categories;
+          }
+
+          // 网站架构以系统定义为准
+          if (systemSite.schema) {
+            _site.schema = systemSite.schema;
           }
 
           // 清理已移除的标签选择器
