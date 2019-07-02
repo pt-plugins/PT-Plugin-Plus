@@ -204,10 +204,13 @@ export class Searcher {
                 ? ` ${entry.appendToSearchKeyString}`
                 : ""),
             rows: rows,
-            passkey: site.passkey ? site.passkey : "",
-            "user.csrfToken":
-              site.user && site.user.csrfToken ? site.user.csrfToken : ""
+            passkey: site.passkey ? site.passkey : ""
           });
+
+          // 替换用户相关信息
+          if (site.user) {
+            url = this.replaceKeys(url, site.user, "user");
+          }
 
           entryCount++;
 
@@ -549,13 +552,26 @@ export class Searcher {
     return schema;
   }
 
-  replaceKeys(source: string, keys: Dictionary<any>): string {
+  /**
+   * 替换指定的字符串列表
+   * @param source
+   * @param keys
+   */
+  replaceKeys(
+    source: string,
+    keys: Dictionary<any>,
+    prefix: string = ""
+  ): string {
     let result: string = source;
 
     for (const key in keys) {
       if (keys.hasOwnProperty(key)) {
         const value = keys[key];
-        result = result.replace("$" + key + "$", value);
+        let search = "$" + key + "$";
+        if (prefix) {
+          search = `$${prefix}.${key}$`;
+        }
+        result = result.replace(search, value);
       }
     }
     return result;
