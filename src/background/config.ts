@@ -60,7 +60,7 @@ class Config {
       saveKey: true
     },
     // 连接下载服务器超时时间（毫秒）
-    connectClientTimeout: 5000,
+    connectClientTimeout: 30000,
     rowsPerPageItems: [
       10,
       20,
