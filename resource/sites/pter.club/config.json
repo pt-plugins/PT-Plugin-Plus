@@ -13,5 +13,16 @@
     "entry": "/music.php?search=$key$&notnewword=1",
     "name": "音乐",
     "enabled": true
-  }]
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowhead:contains('猫粮') + td"],
+          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+        }
+      }
+    }
+  }
 }
