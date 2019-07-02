@@ -1,15 +1,18 @@
 {
-  "name": "CMCT",
+  "name": "SSD",
   "description": "Classic Movie Compression Team",
-  "url": "https://hdcmct.org/",
-  "icon": "https://hdcmct.org/favicon.ico",
+  "url": "https://springsunday.net/",
+  "icon": "https://springsunday.net/favicon.ico",
   "tags": [
     "影视",
     "音乐",
     "综合"
   ],
   "schema": "NexusPHP",
-  "host": "hdcmct.org",
+  "host": "springsunday.net",
+  "formerHosts": [
+    "hdcmct.org"
+  ],
   "searchEntry": [{
       "name": "全部",
       "enabled": true
