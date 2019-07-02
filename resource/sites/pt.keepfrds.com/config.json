@@ -98,5 +98,16 @@
         "name": "HQ Audio"
       }
     ]
-  }]
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowhead:contains('魔力值') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/魔力值:.+?([\\d.]+)/)[1]", "parseFloat(query)"]
+        }
+      }
+    }
+  }
 }
