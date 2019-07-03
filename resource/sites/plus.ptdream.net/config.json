@@ -9,5 +9,8 @@
   ],
   "schema": "meanTorrent",
   "host": "plus.ptdream.net",
-  "collaborator": "DXV5"
+  "collaborator": "DXV5",
+  "supportedFeatures": {
+    "imdbSearch": false
+  }
 }

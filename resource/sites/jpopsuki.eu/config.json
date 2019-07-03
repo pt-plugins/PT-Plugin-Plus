@@ -66,5 +66,9 @@
         }
       }
     }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
   }
 }

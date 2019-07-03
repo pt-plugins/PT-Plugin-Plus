@@ -1,9 +1,14 @@
 {
-  "name":"PrivateHD",
-  "description":"欧美电视剧PT站",
-  "icon":"https://privatehd.to/favicon.ico",
-  "schema":"AvistaZ",
-  "tags":["剧集"],
-  "url":"https://privatehd.to/",
-  "collaborator": "bimzcy"
+  "name": "PrivateHD",
+  "description": "欧美电视剧PT站",
+  "icon": "https://privatehd.to/favicon.ico",
+  "schema": "AvistaZ",
+  "tags": ["剧集"],
+  "url": "https://privatehd.to/",
+  "host": "privatehd.to",
+  "collaborator": "bimzcy",
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  }
 }

@@ -8,5 +8,9 @@
     "综合"
   ],
   "schema": "meanTorrent",
-  "host": "hdpost.top"
+  "host": "hdpost.top",
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  }
 }

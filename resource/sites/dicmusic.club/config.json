@@ -21,5 +21,8 @@
         }
       }
     }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false
   }
 }

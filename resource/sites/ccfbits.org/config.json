@@ -145,5 +145,9 @@
         }
       }
     }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
   }
 }

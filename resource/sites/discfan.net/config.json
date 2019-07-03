@@ -49,5 +49,8 @@
       "id": 417,
       "name": "体育"
     }]
-  }]
+  }],
+  "supportedFeatures": {
+    "imdbSearch": false
+  }
 }

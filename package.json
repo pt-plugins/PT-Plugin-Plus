@@ -13,7 +13,8 @@
     "lint": "vue-cli-service lint",
     "background": "webpack --config webpack/prod.js",
     "dev": "yarn install && vue-cli-service build --mode=development && webpack --config webpack/dev.js && cd debug && yarn install && tsc && node ./dist/buildResource.js",
-    "dev-s": "cd debug && yarn install && tsc && node ./dist/index.js"
+    "dev-s": "cd debug && yarn install && tsc && node ./dist/index.js",
+    "resource": "cd debug && yarn install && tsc && node ./dist/buildResource.js"
   },
   "dependencies": {
     "basiccontext": "^3.5.1",

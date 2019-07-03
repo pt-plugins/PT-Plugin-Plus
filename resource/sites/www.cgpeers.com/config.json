@@ -19,5 +19,9 @@
         }
       }
     }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
   }
 }

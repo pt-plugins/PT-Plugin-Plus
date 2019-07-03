@@ -69,5 +69,8 @@
     "name": "50%",
     "selector": "img.pro_50pctdown",
     "color": "orange"
-  }]
+  }],
+  "supportedFeatures": {
+    "imdbSearch": false
+  }
 }

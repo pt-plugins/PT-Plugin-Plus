@@ -1,6 +1,8 @@
 import * as FS from "fs";
 import * as PATH from "path";
 
+export type Dictionary<T> = { [key: string]: T };
+
 /**
  * 构建过程辅助工具
  */
@@ -113,6 +115,9 @@ export class BuildPlugin {
     return results;
   }
 
+  /**
+   * 获取已支持站点列表
+   */
   public getSupportedSites() {
     let schemaFolder = PATH.join(this.resourcePath, "schemas");
     let schemaList = FS.readdirSync(schemaFolder);
@@ -133,6 +138,9 @@ export class BuildPlugin {
 
     let list = FS.readdirSync(parentFolder);
 
+    let itemTemplate =
+      "| $schema$ | $name$ | $search$ | $imdbSearch$ | $userData$ | $sendTorrent$ | $collaborator$ |";
+
     list.forEach((path: string) => {
       let file = PATH.join(parentFolder, path);
       var stat = FS.statSync(file);
@@ -145,25 +153,70 @@ export class BuildPlugin {
           schema = "其他架构";
         }
 
-        schemas[schema].push(
-          content.name +
-            (content.collaborator ? ` - @${content.collaborator}` : "")
-        );
+        let supportedFeatures = {
+          search: true,
+          imdbSearch: true,
+          userData: true,
+          sendTorrent: true
+        };
+
+        if (content.supportedFeatures) {
+          supportedFeatures = Object.assign(
+            supportedFeatures,
+            content.supportedFeatures
+          );
+        }
+
+        let count = schemas[schema].length;
+        let item = this.replaceKeys(itemTemplate, {
+          schema: count == 0 ? schema : "",
+          name: content.name,
+          search: supportedFeatures.search === true ? "√" : "",
+          imdbSearch: supportedFeatures.imdbSearch === true ? "√" : "",
+          userData:
+            supportedFeatures.userData === true
+              ? "√"
+              : supportedFeatures.userData === false
+              ? ""
+              : supportedFeatures.userData,
+          sendTorrent: supportedFeatures.sendTorrent === true ? "√" : "",
+          collaborator: this.getCollaborator(content.collaborator)
+        });
+        schemas[schema].push(item);
       }
     });
 
+    console.log("\n");
     for (const key in schemas) {
       if (schemas.hasOwnProperty(key)) {
-        const items = schemas[key];
-        console.log(`\n## ${key}`);
+        const items: Array<any> = schemas[key];
+        // console.log(`\n## ${key}`);
 
-        items.sort().forEach((item: string) => {
-          console.log(`- ${item}`);
+        items.forEach((item: string) => {
+          console.log(item);
         });
       }
     }
+    console.log("\n");
 
     // console.log(results);
+  }
+
+  public getCollaborator(source: string | Array<string>): string {
+    if (!source) {
+      return "";
+    }
+    if (typeof source == "string") {
+      return source;
+    } else if (source.length > 0) {
+      let result: Array<string> = [];
+      source.forEach((item: string) => {
+        result.push(item);
+      });
+
+      return result.join(", ");
+    }
+    return "";
   }
 
   /**
@@ -191,5 +244,30 @@ export class BuildPlugin {
       }
     });
     return results;
+  }
+
+  /**
+   * 替换指定的字符串列表
+   * @param source
+   * @param keys
+   */
+  replaceKeys(
+    source: string,
+    keys: Dictionary<any>,
+    prefix: string = ""
+  ): string {
+    let result: string = source;
+
+    for (const key in keys) {
+      if (keys.hasOwnProperty(key)) {
+        const value = keys[key];
+        let search = "$" + key + "$";
+        if (prefix) {
+          search = `$${prefix}.${key}$`;
+        }
+        result = result.replace(search, value);
+      }
+    }
+    return result;
   }
 }

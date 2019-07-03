@@ -117,7 +117,8 @@ class Config {
             "icon",
             "activeURL",
             "searchEntryConfig",
-            "schema"
+            "schema",
+            "supportedFeatures"
           ].forEach((key: string) => {
             let _item = item as any;
             if (_item[key]) {

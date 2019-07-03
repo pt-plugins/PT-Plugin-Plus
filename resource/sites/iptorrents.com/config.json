@@ -5,5 +5,8 @@
   "icon": "https://iptorrents.com/favicon.ico",
   "tags": ["综合"],
   "schema": "IPTorrents",
-  "host": "iptorrents.com"
+  "host": "iptorrents.com",
+  "supportedFeatures": {
+    "userData": "◐"
+  }
 }

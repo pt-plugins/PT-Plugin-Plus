@@ -13,8 +13,7 @@
     "parseScriptFile": "getSearchResult.js",
     "queryString": "searchstr=$key$"
   },
-  "searchEntry": [
-    {
+  "searchEntry": [{
       "name": "all",
       "enabled": true
     },
@@ -29,22 +28,19 @@
       "enabled": false
     }
   ],
-  "categories": [
-    {
-      "entry": "*",
-      "result": "&filter_cat[$id$]=1",
-      "category": [
-        {
-          "id": 1,
-          "name": "Episode"
-        },
-        {
-          "id": 2,
-          "name": "Season"
-        }
-      ]
-    }
-  ],
+  "categories": [{
+    "entry": "*",
+    "result": "&filter_cat[$id$]=1",
+    "category": [{
+        "id": 1,
+        "name": "Episode"
+      },
+      {
+        "id": 2,
+        "name": "Season"
+      }
+    ]
+  }],
   "selectors": {
     "userExtendInfo": {
       "page": "/user.php?id=$user.id$",
@@ -102,5 +98,8 @@
         }
       }
     }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false
   }
 }

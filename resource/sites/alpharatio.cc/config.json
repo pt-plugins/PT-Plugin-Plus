@@ -8,157 +8,162 @@
   "host": "alpharatio.cc",
   "collaborator": "enigamz",
   "searchEntry": [{
-    "name": "all",
-    "enabled": true
-  },
-  {
-    "queryString": "filter_cat[1]=1",
-    "name": "TvSD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[2]=1",
-    "name": "TvHD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[3]=1",
-    "name": "TvUHD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[4]=1",
-    "name": "TvDVDRip",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[5]=1",
-    "name": "TvPackSD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[6]=1",
-    "name": "TvPackHD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[7]=1",
-    "name": "TvPackUHD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[8]=1",
-    "name": "MovieSD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[9]=1",
-    "name": "MovieHD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[10]=1",
-    "name": "MovieUHD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[11]=1",
-    "name": "MoviePackSD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[12]=1",
-    "name": "MoviePackHD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[13]=1",
-    "name": "MoviePackUHD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[14]=1",
-    "name": "MovieXXX",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[15]=1",
-    "name": " Bluray",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[16]=1",
-    "name": "AnimeSD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[17]=1",
-    "name": "AnimeHD",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[18]=1",
-    "name": "GamesPC",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[19]=1",
-    "name": "GamesxBox",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[20]=1",
-    "name": "GamesPS",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[21]=1",
-    "name": "GamesNin",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[22]=1",
-    "name": "AppsWindows",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[23]=1",
-    "name": "AppsMAC",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[24]=1",
-    "name": "AppsLinux",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[25]=1",
-    "name": "AppsMobile",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[26]=1",
-    "name": "0dayXXX",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[27]=1",
-    "name": "eBook",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[28]=1",
-    "name": "AudioBook",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[29]=1",
-    "name": "Music",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[30]=1",
-    "name": "Misc",
-    "enabled": false
-  }]
+      "name": "all",
+      "enabled": true
+    },
+    {
+      "queryString": "filter_cat[1]=1",
+      "name": "TvSD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[2]=1",
+      "name": "TvHD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[3]=1",
+      "name": "TvUHD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[4]=1",
+      "name": "TvDVDRip",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[5]=1",
+      "name": "TvPackSD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[6]=1",
+      "name": "TvPackHD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[7]=1",
+      "name": "TvPackUHD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[8]=1",
+      "name": "MovieSD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[9]=1",
+      "name": "MovieHD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[10]=1",
+      "name": "MovieUHD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[11]=1",
+      "name": "MoviePackSD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[12]=1",
+      "name": "MoviePackHD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[13]=1",
+      "name": "MoviePackUHD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[14]=1",
+      "name": "MovieXXX",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[15]=1",
+      "name": " Bluray",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[16]=1",
+      "name": "AnimeSD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[17]=1",
+      "name": "AnimeHD",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[18]=1",
+      "name": "GamesPC",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[19]=1",
+      "name": "GamesxBox",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[20]=1",
+      "name": "GamesPS",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[21]=1",
+      "name": "GamesNin",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[22]=1",
+      "name": "AppsWindows",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[23]=1",
+      "name": "AppsMAC",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[24]=1",
+      "name": "AppsLinux",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[25]=1",
+      "name": "AppsMobile",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[26]=1",
+      "name": "0dayXXX",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[27]=1",
+      "name": "eBook",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[28]=1",
+      "name": "AudioBook",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[29]=1",
+      "name": "Music",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[30]=1",
+      "name": "Misc",
+      "enabled": false
+    }
+  ],
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  }
 }

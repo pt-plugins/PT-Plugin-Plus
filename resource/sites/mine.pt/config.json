@@ -8,5 +8,8 @@
     "综合"
   ],
   "schema": "meanTorrent",
-  "host": "mine.pt"
+  "host": "mine.pt",
+  "supportedFeatures": {
+    "userData": "◐"
+  }
 }

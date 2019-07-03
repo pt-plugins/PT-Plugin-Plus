@@ -5,5 +5,9 @@
   "description": "天雪",
   "icon": "https://www.skyey2.com/favicon.ico",
   "tags": ["动漫"],
-  "host": "www.skyey2.com"
+  "host": "www.skyey2.com",
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  }
 }

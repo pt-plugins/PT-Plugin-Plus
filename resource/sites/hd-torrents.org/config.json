@@ -111,5 +111,8 @@
         }
       }
     }
+  },
+  "supportedFeatures": {
+    "userData": "◐"
   }
 }

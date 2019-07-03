@@ -1,8 +1,13 @@
 {
-  "name":"GFXPeers",
-  "icon":"https://gfxpeers.net/favicon.ico",
-  "url":"https://gfxpeers.net/",
-  "schema":"Gazelle",
-  "tags":["设计","素材"],
-  "collaborator": "bimzcy"
+  "name": "GFXPeers",
+  "icon": "https://gfxpeers.net/favicon.ico",
+  "url": "https://gfxpeers.net/",
+  "schema": "Gazelle",
+  "tags": ["设计", "素材"],
+  "host": "gfxpeers.net",
+  "collaborator": "bimzcy",
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  }
 }

@@ -90,5 +90,8 @@
         }
       }
     }
+  },
+  "supportedFeatures": {
+    "userData": "◐"
   }
 }

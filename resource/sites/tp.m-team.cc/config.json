@@ -180,5 +180,8 @@
         }
       }
     }
+  },
+  "supportedFeatures": {
+    "userData": "◐"
   }
 }

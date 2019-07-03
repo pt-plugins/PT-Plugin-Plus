@@ -5,5 +5,9 @@
   "icon": "https://avistaz.to/images/avistaz-favicon.png",
   "tags": ["综合"],
   "schema": "AvistaZ",
-  "host": "avistaz.to"
+  "host": "avistaz.to",
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  }
 }

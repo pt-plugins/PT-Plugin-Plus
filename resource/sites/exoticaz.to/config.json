@@ -5,5 +5,9 @@
   "icon": "https://i.exoticaz.to/images/favicon.png",
   "tags": ["Adult"],
   "schema": "AvistaZ",
-  "host": "exoticaz.to"
+  "host": "exoticaz.to",
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  }
 }

@@ -1,9 +1,14 @@
 {
-  "name":"Oppaitime",
-  "description":"成人动漫站",
-  "icon":"https://oppaiti.me/favicon.ico",
-  "schema":"Gazelle",
-  "tags":["动画","漫画","游戏","影视"],
-  "url":"https://oppaiti.me/",
-  "collaborator": "bimzcy"
+  "name": "Oppaitime",
+  "description": "成人动漫站",
+  "icon": "https://oppaiti.me/favicon.ico",
+  "schema": "Gazelle",
+  "tags": ["动画", "漫画", "游戏", "影视"],
+  "url": "https://oppaiti.me/",
+  "host": "oppaiti.me",
+  "collaborator": "bimzcy",
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  }
 }
