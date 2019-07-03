@@ -380,7 +380,7 @@ String.prototype.getQueryString = function(name, split) {
         };
       }
 
-      data.url = this.getDroperURL(data);
+      data.url = this.getDroperURL(data.url);
 
       if (!data.url) {
         PTService.showNotice({
