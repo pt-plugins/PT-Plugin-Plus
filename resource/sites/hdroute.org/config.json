@@ -1,0 +1,109 @@
+{
+  "name": "HDRoute",
+  "description": "HDRoute",
+  "url": "http://hdroute.org/",
+  "icon": "http://hdroute.org/favicon.ico",
+  "tags": [
+    "影视",
+    "综合"
+  ],
+  "host": "hdroute.org",
+  "collaborator": "Aniverse",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/browse.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "searchEntryConfig": {
+    "page": "/browse.php",
+    "queryString": "s=$key$&dp=0&add=0&action=s&or=1",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "s=&dp=0&add=0&action=s&or=1&imdb=$key$",
+      "replaceKey": [
+        "tt", ""
+      ]
+    }],
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "#unsticky-torrent-table dl"
+  },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "figure.sprite_dlp000",
+    "color": "blue"
+  }, {
+    "name": "~Free",
+    "selector": "figure.sprite_tempo_free",
+    "title": "title",
+    "color": "teal"
+  }, {
+    "name": "30%",
+    "selector": "figure.sprite_dlp030",
+    "color": "indigo"
+  }, {
+    "name": "50%",
+    "selector": "figure.sprite_dlp050",
+    "color": "orange"
+  }, {
+    "name": "70%",
+    "selector": "figure.sprite_dlp070",
+    "color": "blue-grey"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": [".headerRightInfo a[href*='userdetail.php']"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": [".headerRightInfo a[href*='userdetail.php']"]
+        },
+        "bonus": {
+          "value": "N/A"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetail.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": [".headerRightInfo span:contains('上传量: ')"],
+          "filters": ["query.text().replace(/,/g,'').match(/上传量:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": [".headerRightInfo span:contains('下载量: ')"],
+          "filters": ["query.text().replace(/,/g,'').match(/下载量:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==2)?(query[1]).sizeToNumber():0"]
+        },
+        "levelName": {
+          "selector": [".userdetail-list-title:contains('用户等级') + div"],
+          "filters": ["query.text().replace(' 级别', '')"]
+        },
+        "joinTime": {
+          "selector": [".userdetail-list-title:contains('注册日期') + div"],
+          "filters": ["query.text().trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": [".header-user-data a[href*='list_seeding.php']"],
+          "filters": ["query.text().trim()"]
+        },
+        "seedingSize": {
+          "selector": [".header-user-data a[href*='list_seeding.php']"],
+          "filters": ["query.next().text().match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==2)?(query[1]).sizeToNumber():0"]
+        }
+      }
+    }
+  }
+}

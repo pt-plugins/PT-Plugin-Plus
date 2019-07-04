@@ -398,6 +398,7 @@
                   :class="['tag', `${tag.color}`]"
                   v-for="(tag, index) in props.item.tags"
                   :key="index"
+                  :title="tag.title"
                 >{{ tag.name }}</span>
               </span>
 

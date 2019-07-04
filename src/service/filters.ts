@@ -98,6 +98,11 @@ export const filters: IFilter = {
       return "";
     }
 
+    let bytes = parseFloat(sourceString);
+    if (isNaN(bytes)) {
+      return sourceString;
+    }
+
     if (!format) {
       return sourceString;
     }
