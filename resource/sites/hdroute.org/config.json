@@ -8,7 +8,6 @@
     "综合"
   ],
   "host": "hdroute.org",
-  "collaborator": "Aniverse",
   "plugins": [{
     "name": "种子详情页面",
     "pages": ["/details.php"],
