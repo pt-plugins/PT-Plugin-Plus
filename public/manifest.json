@@ -1,8 +1,8 @@
 {
 	"name": "__MSG_manifest_appName__",
 	"short_name": "__MSG_manifest_shortName__",
-	"version": "1.1.0",
-	"version_name": "1.1.0",
+	"version": "1.1.1",
+	"version_name": "1.1.1",
 	"description": "__MSG_manifest_appDescription__",
 	"manifest_version": 2,
 	"default_locale": "zh_CN",
@@ -17,9 +17,10 @@
 		"clipboardWrite",
 		"storage",
 		"contextMenus",
-		"notifications"
+		"notifications",
+		"\u003Call_urls>"
 	],
-	"optional_permissions": ["tabs", "*://*/*", "downloads"],
+	"optional_permissions": ["tabs", "downloads"],
 	"icons": {
 		"16": "assets/icon.png",
 		"19": "assets/icon-19.png",

@@ -1,0 +1,11 @@
+{
+	"manifest_appName": {
+		"message": "PT Plugin Plus"
+	},
+	"manifest_shortName": {
+		"message": "PT Plugin Plus"
+	},
+	"manifest_appDescription": {
+		"message": "This plugin can help you achieve one-click download and aggregate search in each Private Tracker. One-click download has supported clients: Transmission, μTorrent, qBittorrent v4.1+, Synology Download Station, ruTorrent."
+	}
+}
