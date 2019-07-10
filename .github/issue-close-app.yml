@@ -1,0 +1,27 @@
+# Comment that will be sent if an issue is judged to be closed
+comment: "This issue is closed because it does not meet our issue template. Please read it.\n 您好，我是问题处理机器人，因为您没有按规定提交问题，所以被我自动关闭了，请按规定填写，谢谢！"
+issueConfigs:
+  - content:
+      # bug report
+      - "PT Plugin Plus version"
+      - "PT Plugin Plus installation method"
+      - "Problem Description"
+  - content:
+      # bug report cn
+      - "PT 助手版本"
+      - "PT 助手安装方式"
+      - "问题描述"
+  - content:
+      # feature request
+      - "Is your feature request related to a problem"
+      - "Describe the solution you'd like"
+      - "Describe alternatives you've considered"
+  - content:
+      # feature request cn
+      - "您的功能请求是否与问题有关"
+      - "描述你想要的解决方案"
+      - "描述您考虑过的替代方案"
+  - content:
+      # 建议和意见
+      - "请在上面描述您的建议或意见，并且不要删除这段内容"
+      - "Please describe your suggestions or comments"
