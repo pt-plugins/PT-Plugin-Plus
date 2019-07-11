@@ -1,0 +1,12 @@
+{
+  "name": "Flood",
+  "type": "flood",
+  "ver": "0.0.1",
+  "icon": "https://github.com/Flood-UI/flood/raw/master/flood.png",
+  "scripts": [
+    "init.js"
+  ],
+  "description": "ruTorrent 的另一款基于Node的Web前端面板，界面美观，加载速度快。",
+  "warning": "1.如果当前已登录Flood面板，请退出登陆后再做连接性测试； 2. 目前无法准确获得Flood添加种子是否成功。",
+  "allowCustomPath": true
+}

@@ -30,6 +30,7 @@ PT 助手 Plus，是一款 Google Chrome 和 Firefox 浏览器插件（Web Exten
   - Deluge
   - qBittorrent `v4.1+`
   - ruTorrent
+  - Flood
 - 比 RSS 更灵活的下载方式：
   - 针对不同的站点发送到不同的下载服务器；
   - 针对不同的站点、下载服务器设置不同的保存路径；
