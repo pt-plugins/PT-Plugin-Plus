@@ -38,7 +38,7 @@
           <td>
             <a @click="edit(props.item)">
               <v-avatar size="18">
-                <img :src="props.item.icon">
+                <img :src="props.item.icon" />
               </v-avatar>
               <span class="ml-2">{{ props.item.name }}</span>
             </a>
@@ -62,7 +62,7 @@
               @click.stop="updateAllowGetUserInfo(props.item)"
             ></v-switch>
           </td>
-          <td>
+          <!-- <td>
             <v-switch
               true-value="true"
               false-value="false"
@@ -70,7 +70,7 @@
               hide-details
               @click.stop="updateOfflineStatus(props.item)"
             ></v-switch>
-          </td>
+          </td>-->
           <td>
             <a
               :href="props.item.activeURL"
@@ -104,9 +104,9 @@
     </v-card>
 
     <!-- 新增站点 -->
-    <AddSite v-model="showAddDialog" @save="addSite"/>
+    <AddSite v-model="showAddDialog" @save="addSite" />
     <!-- 编辑站点 -->
-    <EditSite v-model="showEditDialog" :site="selectedSite" @save="updateSite"/>
+    <EditSite v-model="showEditDialog" :site="selectedSite" @save="updateSite" />
 
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
@@ -371,11 +371,11 @@ export default Vue.extend({
           align: "left",
           value: "allowGetUserInfo"
         },
-        {
-          text: this.$t("settings.sites.index.headers.offline"),
-          align: "left",
-          value: "offline"
-        },
+        // {
+        //   text: this.$t("settings.sites.index.headers.offline"),
+        //   align: "left",
+        //   value: "offline"
+        // },
         {
           text: this.$t("settings.sites.index.headers.activeURL"),
           align: "left",

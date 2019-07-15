@@ -15,7 +15,7 @@
             :label="$t('settings.downloadClients.editor.address')"
             :placeholder="$t('settings.downloadClients.editor.addressTip')"
             required
-            :rules="rules.require"
+            :rules="[rules.url]"
           ></v-text-field>
 
           <v-text-field
@@ -90,7 +90,14 @@ export default Vue.extend({
     return {
       showPassword: false,
       rules: {
-        require: [(v: any) => !!v || "!"]
+        require: [(v: any) => !!v || "!"],
+        url: (v: any) => {
+          return (
+            /^(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]$/.test(
+              v
+            ) || this.$t("settings.downloadClients.editor.addressTip")
+          );
+        }
       },
       testing: false,
       haveError: false,

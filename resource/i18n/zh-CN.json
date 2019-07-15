@@ -29,7 +29,8 @@
       "removeConfirmTitle": "删除确认",
       "clearConfirm": "确认要删除所有记录吗？",
       "id": "ID",
-      "readyToStart": "准备开始……"
+      "readyToStart": "准备开始……",
+      "help": "帮助"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -347,7 +348,7 @@
           "name": "服务器名称",
           "type": "服务器类型",
           "address": "服务器地址",
-          "addressTip": "服务器地址包含端口，如：http:\/\/192.168.1.1:5000\/",
+          "addressTip": "完整的服务器地址（含端口），如：http:\/\/192.168.1.1:5000\/",
           "loginName": "登录名",
           "loginPwd": "登录密码",
           "id": "ID",

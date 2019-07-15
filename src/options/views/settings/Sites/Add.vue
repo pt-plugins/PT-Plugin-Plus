@@ -8,10 +8,21 @@
     >{{ $t('settings.sites.add.validMsg') }}</v-snackbar>
     <v-dialog v-model="show" max-width="800">
       <v-card>
-        <v-card-title
-          class="headline blue-grey darken-2"
-          style="color:white"
-        >{{ $t('settings.sites.add.title') }}</v-card-title>
+        <v-toolbar dark color="blue-grey darken-2">
+          <v-toolbar-title>{{ $t('settings.sites.add.title') }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn
+            icon
+            flat
+            color="success"
+            href="https://github.com/ronggang/PT-Plugin-Plus/wiki/config-site"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            :title="$t('common.help')"
+          >
+            <v-icon>help</v-icon>
+          </v-btn>
+        </v-toolbar>
 
         <v-card-text>
           <v-stepper v-model="step">
@@ -40,13 +51,13 @@
                 >
                   <template slot="selection" slot-scope="{ item }">
                     <v-list-tile-avatar>
-                      <img :src="item.icon">
+                      <img :src="item.icon" />
                     </v-list-tile-avatar>
                     <span v-text="item.name"></span>
                   </template>
                   <template slot="item" slot-scope="data" style>
                     <v-list-tile-avatar>
-                      <img :src="data.item.icon">
+                      <img :src="data.item.icon" />
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                       <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
@@ -61,7 +72,7 @@
 
               <!-- 站点配置 -->
               <v-stepper-content step="2">
-                <SiteEditor :site="selectedSite" :custom="isCustom"/>
+                <SiteEditor :site="selectedSite" :custom="isCustom" />
               </v-stepper-content>
             </v-stepper-items>
           </v-stepper>

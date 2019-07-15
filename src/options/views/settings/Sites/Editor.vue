@@ -82,7 +82,7 @@
           :label="$t('settings.sites.editor.url')"
           :placeholder="$t('settings.sites.editor.urlTip')"
           required
-          :rules="rules.require"
+          :rules="[rules.url]"
           :disabled="!custom"
         ></v-text-field>
 
@@ -169,7 +169,14 @@ export default Vue.extend({
     return {
       showPasskey: false,
       rules: {
-        require: [(v: any) => !!v || "!"]
+        require: [(v: any) => !!v || "!"],
+        url: (v: any) => {
+          return (
+            /^(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]$/.test(
+              v
+            ) || this.$t("settings.sites.editor.urlTip")
+          );
+        }
       },
       cdn: ""
     };

@@ -29,7 +29,8 @@
       "removeConfirmTitle": "Delete confirmation",
       "clearConfirm": "Are you sure you want to delete all records?",
       "id": "ID",
-      "readyToStart": "Ready to start..."
+      "readyToStart": "Ready to start...",
+      "help": "Help"
     },
     "topbar": {
       "title": "@:(app.name)",
