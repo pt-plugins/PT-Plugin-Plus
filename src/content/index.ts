@@ -227,7 +227,7 @@ class PTPContent {
       this.options.system &&
       this.options.system.sites &&
       this.options.system.sites.find((item: Site) => {
-        return item.name == this.site.name;
+        return item.host == this.site.host;
       });
 
     if (!this.site.plugins) {
