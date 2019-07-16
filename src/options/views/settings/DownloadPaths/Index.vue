@@ -73,7 +73,7 @@
     </v-card>
 
     <!-- 新增 -->
-    <AddItem v-model="showAddDialog" @save="addItem" :client="selectedClient"/>
+    <AddItem v-model="showAddDialog" @save="addItem" :client="selectedClient" />
     <!-- 编辑 -->
     <EditItem
       v-model="showEditDialog"
@@ -120,7 +120,7 @@
 import Vue from "vue";
 import AddItem from "./Add.vue";
 import EditItem from "./Edit.vue";
-import { ECommonKey } from "@/interface/enum";
+import { ECommonKey, EViewKey } from "@/interface/enum";
 export default Vue.extend({
   components: {
     AddItem,
@@ -138,11 +138,19 @@ export default Vue.extend({
       },
       items: [],
       dialogRemoveConfirm: false,
-      selectedClient: {} as any
+      selectedClient: {} as any,
+      lastClientId: ""
     };
   },
   created() {
     this.items = this.$store.state.options.clients;
+    this.initView();
+  },
+  watch: {
+    selectedClient() {
+      this.lastClientId = this.selectedClient.id;
+      this.updateViewOptions();
+    }
   },
   methods: {
     getPaths(paths: any) {
@@ -209,6 +217,33 @@ export default Vue.extend({
         this.selected = [];
         this.reload();
       }
+    },
+    /**
+     * 初始当前界面
+     */
+    initView() {
+      let options = this.$store.getters.viewsOptions(EViewKey.downloadPaths, {
+        lastClientId: ""
+      });
+
+      this.lastClientId = options.lastClientId;
+
+      if (this.lastClientId && this.items.length > 0) {
+        this.selectedClient = this.items.find((item: any) => {
+          return item.id == this.lastClientId;
+        });
+      }
+    },
+    /**
+     * 更新当前界面配置
+     */
+    updateViewOptions() {
+      this.$store.dispatch("updateViewOptions", {
+        key: EViewKey.downloadPaths,
+        options: {
+          lastClientId: this.lastClientId
+        }
+      });
     }
   },
   computed: {

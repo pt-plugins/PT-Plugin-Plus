@@ -210,7 +210,8 @@ export enum EPaginationKey {
 }
 
 export enum EViewKey {
-  home = "home"
+  home = "home",
+  downloadPaths = "downloadPaths"
 }
 
 /**
