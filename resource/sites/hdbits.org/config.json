@@ -1,0 +1,93 @@
+{
+  "name": "HDB",
+  "description": "HDB",
+  "url": "https://hdbits.org/",
+  "icon": "https://hdbits.org/favicon.ico",
+  "tags": ["影视", "综合"],
+  "schema": "HDB",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["^/t/(\\d+)/$", "/details.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/browse.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
+  }],
+  "host": "hdbits.org",
+  "searchEntryConfig": {
+    "page": "/browse.php",
+    "queryString": "search=$key$",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table#torrent-list:last > tbody > tr",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "imdb=$key$"
+    }]
+  },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": "a[href*='userdetails.php']:first",
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": "a[href*='userdetails.php']:first"
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        },
+        "messageCount": {
+          "selector": ["span.js-notifications-count"],
+          "filters": ["query ? (query.text().match(/(\\d+)/) ? parseInt(query[0]):'0') : '0'"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.rowhead:contains('Uploaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td.rowhead:contains('Downloaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "td.rowhead:contains('Share ratio') + td",
+          "filters": ["parseFloat(query.text())"]
+        },
+        "levelName": {
+          "selector": ["td.rowhead:contains('Class') + td"]
+        },
+        "bonus": {
+          "selector": ["td.rowhead:contains('Bonus') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?query[1]:''"]
+        },
+        "joinTime": {
+          "selector": ["td.rowhead:contains('JOIN'):contains('date') + td"],
+          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["td.heading:contains('Currently'):contains('seeding') + td"],
+          "filters": ["query.text().match(/([\\d.]+)/)", "(query && query.length>=1)?query[0]:''"]
+        },
+        "seedingSize": {
+          "selector": ["td.heading:contains('Seeding size') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        }
+      }
+    }
+  }
+}
