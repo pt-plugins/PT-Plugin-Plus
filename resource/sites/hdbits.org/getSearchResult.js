@@ -2,6 +2,7 @@
   class Parser {
     constructor() {
       this.haveData = false;
+      this.categories = {};
       if (/\/doLogin/.test(options.responseText)) {
         options.status = ESearchResultParseStatus.needLogin;
         return;
@@ -33,8 +34,6 @@
       let rows = options.page.find(
         options.resultSelector || "table#torrent-list:last > tbody > tr"
       );
-      let time_regex = /(\d{4}-\d{2}-\d{2}[^\d]+?\d{2}:\d{2}:\d{2})/;
-      let time_regen_replace = /-(\d{2})[^\d]+?(\d{2}):/;
 
       // 用于定位每个字段所列的位置
       let fieldIndex = {
@@ -52,6 +51,7 @@
         name: 2,
         // 发布人
         author: 9,
+        //配置
         category: 0
       };
 
@@ -73,23 +73,10 @@
         if (link && link.substr(0, 4) !== "http") {
           link = `${site.url}${link}`;
         }
-
-        let id = link.getQueryString("id");
-        let url = "";
-
-        if (site.passkey && id) {
-          // 格式：vvvid|||passkeyzz
-          let key = new Base64().encode(
-            "vvv" + id + "|||" + site.passkey + "zz"
-          );
-          url = `https://${site.host}/rssdd.php?par=${key}&ssl=yes`;
-        } else {
-          url = row.find("a.js-download").attr("href");
-          if (url && url.substr(0, 4) !== "http") {
-            url = `${site.url}${url}`;
-          }
-        }
-
+        let url = row.find("a.js-download").attr("href");
+        if (url && url.substr(0, 4) !== "http") {
+          url = `${site.url}${url}`;
+        }    
         if (!url) {
           continue;
         }
@@ -101,6 +88,7 @@
             .text();
         }
 
+        let time = cells.eq(fieldIndex.time).text().replace(/([a-zA-Z]+)/g,"$1 ").replace(/^\s+|\s+$/g,'')+".";
         let data = {
           title: $("<span>")
             .html(titleStrings[0])
@@ -109,7 +97,7 @@
           link,
           url: url,
           size: cells.eq(fieldIndex.size).html() || 0,
-          time:cells.eq(fieldIndex.time).text() || "",
+          time: time || "",
           author: cells.eq(fieldIndex.author).text() || "",
           seeders:
             cells
@@ -138,20 +126,6 @@
       return results;
     }
 
-    // cloudflare Email 解码方法，来自 https://usamaejaz.com/cloudflare-email-decoding/
-    // TODO 以后视情况将其改成公用方法
-    static cfDecodeEmail(encodedString) {
-      var email = "",
-        r = parseInt(encodedString.substr(0, 2), 16),
-        n,
-        i;
-      for (n = 2; encodedString.length - n; n += 2) {
-        i = parseInt(encodedString.substr(n, 2), 16) ^ r;
-        email += String.fromCharCode(i);
-      }
-      return email;
-    }
-
     /**
      * 获取分类
      * @param {*} cell 当前列
@@ -162,16 +136,33 @@
         link: ""
       };
       let link = cell.find("a:first");
-      let img = link.find("img:first");
-
       result.link = link.attr("href");
+      let id = result.link.match(/cat=(\d+)/)[1];
       if (result.link.substr(0, 4) !== "http") {
         result.link = options.site.url + result.link;
       }
-
-      result.name = img.attr("alt");
+      result.name = this.getCategoryName(id);
       return result;
     }
+
+    getCategoryName(id) {
+      if ($.isEmptyObject(this.categories)) {
+        let cells = options.page.find("table.bottom > tbody > tr").eq(1).find("td");
+        cells.each((i, dom) => {
+          let id = $(dom)
+            .find("input")
+            .attr("id");
+          id = id.replace("c", "");
+          let name = $(dom)
+            .find("a")
+            .text();
+          if (id) {
+            this.categories[id] = name;
+          }
+        });
+      }
+      return this.categories ? this.categories[id] : "";
+  }
 
     /**
      * 获取标签
