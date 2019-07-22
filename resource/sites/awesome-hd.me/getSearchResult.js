@@ -55,20 +55,9 @@ if (!"".getQueryString) {
         options.status = ESearchResultParseStatus.torrentTableIsEmpty; //`[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
         return results;
       }
-
       // 用于定位每个字段所列的位置
       let fieldIndex;
-      if(!imdbflag) {
-        fieldIndex = {
-          time: 2,
-          size: 3,
-          seeders: 5,
-          leechers: 6,
-          completed: 4,
-          comments: -1,
-          author: -1
-        };
-      } else {
+      if(imdbflag){
         fieldIndex = {
           time: -1,
           size: 1,
@@ -101,6 +90,21 @@ if (!"".getQueryString) {
           let url = row.find("a[href*='torrents.php?action=download']").first();                        
           if (url.length == 0) {
             continue;
+          }
+
+          let column = cells.length;
+          if(!imdbflag && column >5) {
+            fieldIndex = {
+              time: column -5,
+              size: column -4,
+              seeders: column -2,
+              leechers: column -1,
+              completed: column -3,
+              comments: -1,
+              author: -1
+            };
+          } else {
+             continue;
           }
 
           url = url.attr("href");
