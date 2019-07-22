@@ -352,7 +352,9 @@ export class ContextMenus {
           action: EAction.showMessage,
           data: {
             type: EDataResultType.info,
-            msg: this.service.i18n.t("service.contextMenus.sendingLink")
+            msg: this.service.i18n.t("service.contextMenus.sendingLink"),
+            timeout: 2,
+            indeterminate: true
           }
         },
         (result: any) => {
@@ -412,6 +414,7 @@ export class ContextMenus {
         ),
         data: options
       });
+      this.hideNotice(tabid, notice);
       return;
     }
 
@@ -425,7 +428,7 @@ export class ContextMenus {
         action: EAction.showMessage,
         data: url
       });
-      notice && notice.hide && notice.hide();
+      this.hideNotice(tabid, notice);
       return;
     }
 
@@ -462,8 +465,25 @@ export class ContextMenus {
         });
       })
       .finally(() => {
-        notice && notice.hide && notice.hide();
+        this.hideNotice(tabid, notice);
       });
+  }
+
+  /**
+   * 隐藏指定的 notice
+   * @param tabid
+   * @param notice
+   */
+  private hideNotice(tabid: number = 0, notice: any) {
+    if (!notice) return;
+    if (notice.id) {
+      chrome.tabs.sendMessage(tabid, {
+        action: EAction.hideMessage,
+        data: notice.id
+      });
+    } else if (notice.hide) {
+      notice.hide();
+    }
   }
 
   /**

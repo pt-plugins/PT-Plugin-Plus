@@ -12,7 +12,8 @@ import {
   EDataResultType,
   Request,
   EButtonType,
-  ECommonKey
+  ECommonKey,
+  Dictionary
 } from "@/interface/common";
 import { APP } from "@/service/api";
 import { filters } from "@/service/filters";
@@ -44,6 +45,7 @@ class PTPContent {
 
   private scripts: any[] = [];
   private styles: any[] = [];
+  private messageItems: Dictionary<any> = {};
 
   public buttonBar: JQuery = <any>null;
   public droper: JQuery = $("<div style='display:none;' class='droper'/>");
@@ -530,7 +532,8 @@ class PTPContent {
         timeout: 5,
         position: "bottomRight",
         progressBar: true,
-        width: 320
+        width: 320,
+        indeterminate: false
       },
       typeof options === "string"
         ? { msg: options }
@@ -545,7 +548,25 @@ class PTPContent {
     }
     delete options.msg;
 
-    return $(new (<any>window)["NoticeJs"](options).show());
+    let notice = new (<any>window)["NoticeJs"](options);
+
+    if (options.indeterminate === true) {
+      this.messageItems[notice.id] = notice;
+      notice.show();
+      return notice;
+    }
+
+    return $(notice.show());
+  }
+
+  /**
+   * 隐藏并关闭指定消息
+   * @param id
+   */
+  public hideMessage(id: string) {
+    if (this.messageItems[id]) {
+      this.messageItems[id].close();
+    }
   }
 
   /**
@@ -785,6 +806,10 @@ class PTPContent {
           case EAction.showMessage:
             let notice = this.showNotice(message.data);
             callback && callback(notice);
+            break;
+
+          case EAction.hideMessage:
+            this.hideMessage(message.data);
             break;
 
           case EAction.serviceStoped:

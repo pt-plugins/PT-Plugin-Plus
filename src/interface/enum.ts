@@ -152,7 +152,9 @@ export enum EAction {
   // 增加新的语言
   addLanguage = "addLanguage",
   // 替换现有语言
-  replaceLanguage = "replaceLanguage"
+  replaceLanguage = "replaceLanguage",
+  // 隐藏指定的消息（用于前端页面）
+  hideMessage = "hideMessage"
 }
 
 /**

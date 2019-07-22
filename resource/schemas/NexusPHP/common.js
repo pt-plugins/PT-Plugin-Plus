@@ -85,7 +85,7 @@ String.prototype.getQueryString = function(name, split) {
       this.defaultClientOptions &&
         PTService.addButton({
           title: this.t("buttons.downloadAllTip", {
-            path: this.defaultClientOptions.name
+            name: this.defaultClientOptions.name
           }), //`将当前页面所有种子下载到[${this.defaultClientOptions.name}]`,
           icon: "get_app",
           label: this.t("buttons.downloadAll"), //"下载所有",
@@ -281,6 +281,8 @@ String.prototype.getQueryString = function(name, split) {
         if (showNotice) {
           notice = PTService.showNotice({
             type: "info",
+            timeout: 2,
+            indeterminate: true,
             msg: this.t("sendingTorrent") //"正在发送下载链接到服务器，请稍候……"
           });
         }
@@ -293,7 +295,6 @@ String.prototype.getQueryString = function(name, split) {
           link: option.link
         })
           .then(result => {
-            notice && notice.hide();
             console.log("命令执行完成", result);
             if (showNotice) {
               PTService.showNotice(result);
@@ -301,13 +302,28 @@ String.prototype.getQueryString = function(name, split) {
             resolve(result);
           })
           .catch(result => {
-            notice && notice.hide();
-            PTService.showNotice({
-              msg: (result && result.msg) || result
-            });
+            // PTService.showNotice({
+            //   msg: (result && result.msg) || result
+            // });
             reject(result);
+          })
+          .finally(() => {
+            this.hideNotice(notice);
           });
       });
+    }
+
+    /**
+     * 隐藏指定的 notice
+     * @param notice
+     */
+    hideNotice(notice) {
+      if (!notice) return;
+      if (notice.id && notice.close) {
+        notice.close();
+      } else if (notice.hide) {
+        notice.hide();
+      }
     }
 
     /**
@@ -343,13 +359,14 @@ String.prototype.getQueryString = function(name, split) {
         if (showNotice) {
           notice = PTService.showNotice({
             type: "info",
+            timeout: 2,
+            indeterminate: true,
             msg: this.t("sendingTorrent") //"正在发送下载链接到服务器，请稍候……"
           });
         }
 
         PTService.call(PTService.action.sendTorrentToClient, options)
           .then(result => {
-            notice && notice.hide();
             console.log("命令执行完成", result);
             if (showNotice) {
               PTService.showNotice(result);
@@ -357,11 +374,13 @@ String.prototype.getQueryString = function(name, split) {
             resolve(result);
           })
           .catch(result => {
-            notice && notice.hide();
-            PTService.showNotice({
-              msg: (result && result.msg) || result
-            });
+            // PTService.showNotice({
+            //   msg: (result && result.msg) || result
+            // });
             reject(result);
+          })
+          .finally(() => {
+            this.hideNotice(notice);
           });
       });
     }

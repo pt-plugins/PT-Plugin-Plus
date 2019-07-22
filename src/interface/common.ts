@@ -215,6 +215,7 @@ export interface NoticeOptions {
   timeout?: number;
   position?: string;
   text?: string;
+  indeterminate?: boolean;
 }
 
 export interface CacheType {
