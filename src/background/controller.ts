@@ -236,7 +236,7 @@ export default class Controller {
             data: result
           });
 
-          if (result && result.code === 0) {
+          if (result && (result.code === 0 || result.success === false)) {
             switch (result.msg) {
               // 连接超时
               case "timeout":
