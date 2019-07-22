@@ -94,6 +94,7 @@ var Defaults = exports.Defaults = {
     newestOnTop: false,
     timeout: 30,
     progressBar: true,
+    indeterminate: false,
     closeWith: ['button'],
     animation: null,
     modal: false,
@@ -187,7 +188,7 @@ var CloseItem = exports.CloseItem = function CloseItem(item) {
     var position = '.' + item.closest('.noticejs').className.replace('noticejs', '').trim();
     setTimeout(function () {
         if (document.querySelectorAll(position + ' .item').length <= 0) {
-          document.querySelector(position) && document.querySelector(position).remove();
+            document.querySelector(position) && document.querySelector(position).remove();
         }
     }, 500);
 };
@@ -324,6 +325,7 @@ var NoticeJs = function () {
 
     this.options = Object.assign(API.Defaults, options);
     this.component = new _components.Components();
+    this.id = "noticejs-" + Math.random();
 
     this.on('beforeShow', this.options.callbacks.beforeShow);
     this.on('onShow', this.options.callbacks.onShow);
@@ -366,7 +368,8 @@ var NoticeJs = function () {
 
       //Append NoticeJs
       var noticeJs = helper.appendNoticeJs(noticeJsHeader, noticeJsBody, noticeJsProgressBar);
-
+      noticeJs.setAttribute("id", this.id);
+      this.dom = noticeJs;
       return noticeJs;
     }
 
@@ -393,6 +396,16 @@ var NoticeJs = function () {
      * @return {Notice}
      */
 
+  }, {
+    key: 'close',
+
+
+    /**
+     * close
+     */
+    value: function close() {
+      helper.CloseItem(this.dom);
+    }
   }], [{
     key: 'overrideDefaults',
     value: function overrideDefaults(options) {
@@ -511,7 +524,7 @@ var Components = exports.Components = function () {
 
       // Progress bar animation
       if (options.progressBar === true && typeof options.timeout !== 'boolean' && options.timeout !== false) {
-        var frame = function frame() {
+        var _frame = function _frame() {
           if (width <= 0) {
             clearInterval(id);
 
@@ -539,8 +552,38 @@ var Components = exports.Components = function () {
           }
         };
 
+        var _indeterminateFrame = function _indeterminateFrame() {
+          if (progressDirection === 0) {
+            width--;
+            if (width === 0) {
+              progressDirection = 1;
+            }
+          } else {
+            width++;
+            if (width === 100) {
+              progressDirection = 0;
+            }
+          }
+
+          if (document.getElementById(domId) == null) {
+            clearInterval(id);
+          } else {
+            bar.style.width = width + '%';
+          }
+        };
+
         var width = 100;
-        var id = setInterval(frame, options.timeout);
+        var progressDirection = 0;
+        var id = 0;
+        var domId = "";
+
+        if (options.indeterminate === true) {
+          id = setInterval(_indeterminateFrame, options.timeout);
+          domId = "noticejs-progressbar-" + id;
+          element.setAttribute("id", domId);
+        } else {
+          id = setInterval(_frame, options.timeout);
+        }
       }
 
       return element;
