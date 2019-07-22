@@ -20,7 +20,7 @@
   }],
   "selectors": {
     "userBaseInfo": {
-      "page": "/",
+      "page": "/status/account",
       "fields": {
         "id": {
           "selector": ["script:contains('var user')"],
