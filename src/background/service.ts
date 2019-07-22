@@ -78,7 +78,14 @@ export default class PTPlugin {
           EAction.openOptions,
           EAction.getClearedOptions,
           EAction.getBase64FromImageUrl,
-          EAction.changeLanguage
+          EAction.changeLanguage,
+          EAction.addLanguage,
+          EAction.getCurrentLanguageResource,
+          EAction.replaceLanguage,
+          EAction.readUIOptions,
+          EAction.addContentPage,
+          EAction.getDownloadHistory,
+          EAction.getTorrentDataFromURL
         ].includes(request.action)
       ) {
         this.logger.add({
