@@ -1,0 +1,69 @@
+{
+  "name": "AHD",
+  "description": "AHD",
+  "url": "https://awesome-hd.me/",
+  "icon": "https://awesome-hd.me/favicon.ico",
+  "tags": ["影视"],
+  "schema": "Gazelle",
+  "host": "awesome-hd.me",
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "queryString": "searchstr=$key$",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "id=$key$"
+    }]
+  },
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "page": "/user.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": "div:contains('Stats') + ul.stats > li:contains('Uploaded')",
+          "filters": ["query.text().replace(/,/g,'').match(/Uploaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": "div:contains('Stats') + ul.stats > li:contains('Downloaded')",
+          "filters": ["query.text().replace(/,/g,'').match(/Downloaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "div:contains('Stats') + ul.stats > li:contains('Ratio:')",
+          "filters": ["query.text().replace(/,/g,'').match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "levelName": {
+          "selector": "div:contains('Personal') + ul.stats > li:contains('Class:')",
+          "filters": ["query.text().match(/Class:.+?(.+)/)", "(query && query.length>=2)?query[1]:''"]
+        },
+        "bonus": {
+          "selector": ["div:contains('Stats') + ul.stats > li:contains('Bonus Points:')", "div:contains('Stats') + ul.stats > li:contains('SeedBonus:')"],
+          "filters": ["query.text().replace(/,/g,'')", "query.match(/Bonus Points.+?([\\d.]+)/)||query.match(/SeedBonus.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "joinTime": {
+          "selector": ["div:contains('Stats') + ul.stats > li:contains('Joined:') > span"],
+          "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["div:contains('Community') + ul.stats > li:contains('Seeding:')"],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/Seeding:.+?(\\d+).+?/)",
+            "(query && query.length>=2)?(query[1]):0"
+          ]
+        },
+        "seedingSize": {
+          "selector": ["div:contains('Community') + ul.stats > li:contains('Seeding size:')"],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/Seeding size:.+?([\\d.]+ ?[TGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
+        }
+      }
+    }
+  }
+}
