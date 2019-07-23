@@ -43,10 +43,6 @@ if (!"".getQueryString) {
       //判断是否为IMDB搜索跳转界面
       let imdbpage = options.page.find("div.linkbox > a[href ^='upload.php?imdbid']");
       let imdbflag = imdbpage.length !=0;
-      let imdlink;
-      if(imdbflag){
-        imdlink = imdbpage.first().attr("href").replace("upload.php?imdbid","torrents.php?id");
-      } 
       // 获取种子列表行
       let rows = options.page.find(
         options.resultSelector || "table.torrent_table:first > tbody > tr"
@@ -55,6 +51,23 @@ if (!"".getQueryString) {
         options.status = ESearchResultParseStatus.torrentTableIsEmpty; //`[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
         return results;
       }
+
+      let imdlink;
+      let moviename = "";
+      let movienames = {};
+      let groupid;
+      if(imdbflag){
+        imdlink = imdbpage.first().attr("href").replace("upload.php?imdbid","torrents.php?id");
+        moviename = options.page.find("div.thin > h2").first().text();
+      } else {
+        let movierows = options.page.find("a[title='View Torrent'][href ^='torrents.php?id=']");
+        for(let index = 0; index < movierows.length; index++){
+            let movierow = movierows.eq(index);
+            groupid = movierow.attr("href").getQueryString("id");
+            movienames[groupid] = movierow.parent().text().replace(/[\r\n]/g,"").replace(/Bookmark.*/g,"").trim();
+        }
+      }
+
       // 用于定位每个字段所列的位置
       let fieldIndex;
       if(imdbflag){
@@ -83,7 +96,6 @@ if (!"".getQueryString) {
           if (title.length == 0) {
             continue;
           }
-
           let subTitle = row.find("div.torrent_info").first();
 
           // 获取下载链接
@@ -93,19 +105,21 @@ if (!"".getQueryString) {
           }
 
           let column = cells.length;
-          if(!imdbflag && column >5) {
-            fieldIndex = {
-              time: column -5,
-              size: column -4,
-              seeders: column -2,
-              leechers: column -1,
-              completed: column -3,
-              comments: -1,
-              author: -1
-            };
-          } else {
-             continue;
-          }
+          if(!imdbflag ) {
+            if(column >5) {
+              fieldIndex = {
+                time: column -5,
+                size: column -4,
+                seeders: column -2,
+                leechers: column -1,
+                completed: column -3,
+                comments: -1,
+                author: -1
+              };
+            }else {
+              continue;
+           }
+          } 
 
           url = url.attr("href");
           let torrentid = url.getQueryString("id");
@@ -123,6 +137,7 @@ if (!"".getQueryString) {
             let timerow = rows.eq(index+1);
             time = timerow.find("td > blockquote > span:contains('ago')").attr("title");
           } else {
+            groupid = title.attr("href").getQueryString("id");
             time =
             fieldIndex.time == -1
               ? ""
@@ -138,7 +153,7 @@ if (!"".getQueryString) {
             time += ":00";
           }
           let data = {
-            title: title.text(),
+            title: imdbflag ? moviename+title.text(): movienames[groupid]+"» "+title.text(),
             subTitle: subTitle.text(),
             link,
             url: url,
