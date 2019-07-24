@@ -21,6 +21,23 @@
     "name": "all",
     "enabled": true
   }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "strong:contains('100% Freeleech')",
+    "color": "blue"
+  }, {
+    "name": "25%",
+    "selector": "strong:contains('25% Freeleech')",
+    "color": "indigo"
+  }, {
+    "name": "50%",
+    "selector": "strong:contains('50% Freeleech')",
+    "color": "orange"
+  }, {
+    "name": "75%",
+    "selector": "strong:contains('75% Freeleech')",
+    "color": "lime"
+  }],
   "selectors": {
     "userExtendInfo": {
       "page": "/user.php?id=$user.id$",
