@@ -14,7 +14,6 @@ if (!"".getQueryString) {
   class Parser {
     constructor() {
       this.haveData = false;
-      this.categories = {};
       if (/auth_form/.test(options.responseText)) {
         options.status = ESearchResultParseStatus.needLogin; //`[${options.site.name}]需要登录后再搜索`;
         return;
@@ -55,16 +54,24 @@ if (!"".getQueryString) {
       let imdlink;
       let moviename = "";
       let movienames = {};
+      let categories = {};
       let groupid;
       if(imdbflag){
         imdlink = imdbpage.first().attr("href").replace("upload.php?imdbid","torrents.php?id");
         moviename = options.page.find("div.thin > h2").first().text();
       } else {
-        let movierows = options.page.find("a[title='View Torrent'][href ^='torrents.php?id=']");
-        for(let index = 0; index < movierows.length; index++){
-            let movierow = movierows.eq(index);
-            groupid = movierow.attr("href").getQueryString("id");
-            movienames[groupid] = movierow.parent().text().replace(/[\r\n]/g,"").replace(/Bookmark.*/g,"").trim();
+        let torrentinforows = options.page.find("tr.torrent, tr.group");
+        for(let index = 0; index < torrentinforows.length; index++){
+          let torrentinforow = torrentinforows.eq(index);
+          let torrentinfo = torrentinforow.find("td.center.cats_col").first();
+          let torrenttitle = torrentinforow.find("a[title='View Torrent'][href ^='torrents.php?id=']").first();
+
+          groupid = torrenttitle.attr("href").getQueryString("id");
+          movienames[groupid] = torrenttitle.parent().text().replace(/[\r\n]/g,"").replace(/Bookmark.*/g,"").trim();
+          if(!movienames[groupid] || new RegExp("\t[DL	| RP]\t").test(movienames[groupid])){
+            movienames[groupid] = torrenttitle.parent().text().replace(/[\r\n]/g,"").replace(/\t+/g,"\t").replace("\t[DL	| RP]\t","").split('\t')[0];
+          }
+          categories[groupid] = torrentinfo.find("div").first().attr("class").split(" ")[0].replace("cats_","");
         }
       }
 
@@ -153,7 +160,7 @@ if (!"".getQueryString) {
             time += ":00";
           }
           let data = {
-            title: imdbflag ? moviename+title.text(): movienames[groupid]+"» "+title.text(),
+            title: imdbflag ? moviename+title.text().replace("» ","&nbsp;/&nbsp;"): new RegExp(title.text()).test(movienames[groupid]) ? movienames[groupid] : movienames[groupid]+"&nbsp;/&nbsp;"+title.text(),
             subTitle: subTitle.text(),
             link,
             url: url,
@@ -181,7 +188,8 @@ if (!"".getQueryString) {
                 : cells.eq(fieldIndex.comments).text() || 0,
             site: site,
             entryName: options.entry.name,
-            category: ""
+            tags: this.getTags(row, options.torrentTagSelectors),
+            category: imdbflag ? "":categories[groupid]
           };
           results.push(data);
         }
@@ -196,6 +204,31 @@ if (!"".getQueryString) {
 
       return results;
     }
+
+    /**
+     * 获取标签
+     * @param {*} row
+     * @param {*} selectors
+     * @return array
+     */
+    getTags(row, selectors) {
+      let tags = [];
+      if (selectors && selectors.length > 0) {
+        selectors.forEach(item => {
+          if (item.selector) {
+            let result = row.find(item.selector);
+            if (result.length) {
+              tags.push({
+                name: item.name,
+                color: item.color
+              });
+            }
+          }
+        });
+      }
+      return tags;
+    }
+
 
   }
 
