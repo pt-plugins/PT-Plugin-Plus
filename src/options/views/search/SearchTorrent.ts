@@ -54,10 +54,12 @@ export default Vue.extend({
       searchMsg: "",
       datas: [] as any,
       getLinks: [] as any,
-      selected: [],
+      selected: [] as any,
       pagination: {
         page: 1,
-        rowsPerPage: 100
+        rowsPerPage: 100,
+        descending: false,
+        sortBy: ""
       },
       loading: false,
       errorMsg: "",
@@ -105,7 +107,10 @@ export default Vue.extend({
       pathHandler: new PathHandler(),
       IMDbId: "",
       // 下载失败的种子列表
-      downloadFailedTorrents: [] as FileDownloader[]
+      downloadFailedTorrents: [] as FileDownloader[],
+      // 最后操作的checkbox索引
+      lastCheckedIndex: -1,
+      shiftKey: false
     };
   },
   created() {
@@ -121,6 +126,20 @@ export default Vue.extend({
         rowsPerPage: 100
       }
     );
+  },
+  mounted() {
+    // 初始化鼠标点击事件，用于按shift键多选操作
+    const downEvent = "mousedown.torrentSearch";
+    const upEvent = "mouseUp.torrentSearch";
+    $(".search-torrent").off(downEvent);
+    $(".search-torrent").off(upEvent);
+    $(".search-torrent").on(downEvent, e => {
+      this.shiftKey = e.shiftKey || false;
+    });
+
+    $(".search-torrent").on(upEvent, e => {
+      this.shiftKey = false;
+    });
   },
   beforeRouteUpdate(to: Route, from: Route, next: any) {
     if (!to.params.key) {
@@ -203,7 +222,7 @@ export default Vue.extend({
       this.filterKey = "";
 
       if (window.location.hostname == "localhost") {
-        $.getJSON("http://localhost:8001/testSearchData.json").done(
+        $.getJSON("http://localhost:8001/test/searchData.json").done(
           (result: any) => {
             if (result) {
               this.addSearchResult(result);
@@ -1425,6 +1444,76 @@ export default Vue.extend({
      */
     reDownloadFailedTorrents() {
       this.downloadTorrentFiles(this.downloadFailedTorrents);
+    },
+
+    /**
+     * shift键多选操作
+     * @param selected 是否被选中
+     * @param index 当前索引
+     */
+    shiftCheck(selected: boolean, index: number) {
+      if (this.lastCheckedIndex === -1) {
+        this.lastCheckedIndex = index;
+        return;
+      }
+      if (this.shiftKey) {
+        let start = index;
+        let end = this.lastCheckedIndex;
+        let startIndex = Math.min(start, end);
+        let endIndex = Math.max(start, end) + 1;
+        let datas = this.clone(this.datas);
+
+        datas = datas.sort(
+          this.arrayObjectSort(
+            this.pagination.sortBy,
+            this.pagination.descending ? "desc" : "abs"
+          )
+        );
+
+        for (let i = startIndex; i < endIndex; i++) {
+          let data = datas[i];
+          let _index = this.selected.findIndex((_item: any) => {
+            return _item.link === data.link;
+          });
+
+          if (selected) {
+            if (_index === -1) {
+              this.selected.push(data);
+            }
+          } else {
+            if (_index !== -1) {
+              this.selected.splice(_index, 1);
+            }
+          }
+        }
+      }
+      this.lastCheckedIndex = index;
+    },
+    /**
+     * 对指定的对象进行排序
+     * @param field 字段
+     * @param sortOrder 排序方式
+     */
+    arrayObjectSort(field: string, sortOrder: string = "") {
+      // 深层获取对象指定的属性值
+      function getObjectValue(obj: any, path: string) {
+        return new Function("o", "return o." + path)(obj);
+      }
+      return function(object1: any, object2: any) {
+        var value1 = getObjectValue(object1, field);
+        var value2 = getObjectValue(object2, field);
+        if (value1 < value2) {
+          if (sortOrder == "desc") {
+            return 1;
+          } else return -1;
+        } else if (value1 > value2) {
+          if (sortOrder == "desc") {
+            return -1;
+          } else return 1;
+        } else {
+          return 0;
+        }
+      };
     }
   },
   computed: {

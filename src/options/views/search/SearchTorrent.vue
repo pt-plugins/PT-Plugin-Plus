@@ -1,6 +1,6 @@
 <template>
   <div class="search-torrent">
-    <MovieInfoCard :IMDbId="IMDbId" v-if="!!options.showMoiveInfoCardOnSearch"/>
+    <MovieInfoCard :IMDbId="IMDbId" v-if="!!options.showMoiveInfoCardOnSearch" />
     <v-alert :value="true" type="info" style="padding:8px 16px;">
       {{ $t('searchTorrent.title') }} [{{ key }}], {{searchMsg}} {{skipSites}}
       <v-btn
@@ -66,7 +66,7 @@
           <v-list-tile-content>
             <v-list-tile-title>
               <v-avatar size="18" class="mr-2">
-                <img :src="item.site.icon">
+                <img :src="item.site.icon" />
               </v-avatar>
               {{item.site.name}} {{ $t('searchTorrent.searching') }}
             </v-list-tile-title>
@@ -104,10 +104,10 @@
                 <v-icon class="mr-1" left v-if="key===allSitesKey">public</v-icon>
                 <template v-else>
                   <v-avatar class="mr-1" v-if="item.length>0">
-                    <img :src="item[0].site.icon" style="width:60%;height:60%;">
+                    <img :src="item[0].site.icon" style="width:60%;height:60%;" />
                   </v-avatar>
                   <v-avatar class="mr-1" v-else>
-                    <img :src="item.site.icon" style="width:60%;height:60%;">
+                    <img :src="item.site.icon" style="width:60%;height:60%;" />
                   </v-avatar>
                 </template>
                 <span>{{ key===allSitesKey?$t("searchTorrent.allSites"):key }}</span>
@@ -140,7 +140,7 @@
               >
                 <template>
                   <v-avatar class="mr-1">
-                    <img :src="item.site.icon" style="width:60%;height:60%;">
+                    <img :src="item.site.icon" style="width:60%;height:60%;" />
                   </v-avatar>
                 </template>
                 <span>{{ item.site.name }}</span>
@@ -173,7 +173,7 @@
               >
                 <template>
                   <v-avatar class="mr-1">
-                    <img :src="item.site.icon" style="width:60%;height:60%;">
+                    <img :src="item.site.icon" style="width:60%;height:60%;" />
                   </v-avatar>
                 </template>
                 <span>{{ item.site.name }}</span>
@@ -369,14 +369,19 @@
       >
         <template slot="items" slot-scope="props">
           <td v-if="checkBox">
-            <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+            <v-checkbox
+              v-model="props.selected"
+              primary
+              hide-details
+              @change="shiftCheck($event, props.index);"
+            ></v-checkbox>
           </td>
           <!-- 站点 -->
           <td class="center">
             <v-avatar size="18">
-              <img :src="props.item.site.icon">
+              <img :src="props.item.site.icon" />
             </v-avatar>
-            <br>
+            <br />
             <span class="captionText">{{ props.item.site.name }}</span>
           </td>
           <!-- 标题 -->
@@ -412,7 +417,7 @@
               :title="props.item.category.name"
               class="captionText"
             >{{ props.item.category.name }}</span>
-            <br>
+            <br />
             <span class="captionText">&lt;{{ props.item.entryName }}&gt;</span>
           </td>
           <td class="size">{{props.item.size | formatSize}}</td>
