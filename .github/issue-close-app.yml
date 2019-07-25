@@ -25,3 +25,12 @@ issueConfigs:
       # 建议和意见
       - "请在上面描述您的建议或意见，并且不要删除这段内容"
       - "Please describe your suggestions or comments"
+  - content:
+      # 新站点请求
+      - "站点名称"
+      - "站点地址"
+      - "站点描述"
+      - "资源类型"
+      - "开放注册"
+      - "是否连坐"
+      - "站点规则"
