@@ -1,11 +1,14 @@
 {
   "name": "M-Team",
   "description": "M-Team",
-  "url": "https://tp.m-team.cc/",
-  "icon": "https://tp.m-team.cc/favicon.ico",
+  "url": "https://pt.m-team.cc/",
+  "icon": "https://pt.m-team.cc/favicon.ico",
   "tags": ["影视", "综合"],
   "schema": "NexusPHP",
-  "host": "tp.m-team.cc",
+  "host": "pt.m-team.cc",
+  "formerHosts": [
+    "tp.m-team.cc"
+  ],
   "plugins": [{
     "name": "种子列表",
     "pages": ["/adult.php"],
