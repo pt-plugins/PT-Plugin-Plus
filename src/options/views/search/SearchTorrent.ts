@@ -841,6 +841,15 @@ export default Vue.extend({
       this.clearMessage();
       let host = filters.parseURL(url).host;
       let site = this.options.sites.find((site: Site) => {
+        // 当定义了CDN列表时，匹配其中之一即可
+        if (site.cdn) {
+          let index = site.cdn.findIndex(cdn => {
+            return cdn.indexOf(host) > -1;
+          });
+          if (index > -1) {
+            return true;
+          }
+        }
         return site.host === host;
       });
       let defaultClientOptions: any = {};
