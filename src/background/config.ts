@@ -224,6 +224,8 @@ class Config {
       publicSites: this.publicSites
     };
 
+    this.upgradeSites();
+
     // 升级不存在的配置项
     this.options.sites &&
       this.options.sites.length &&
@@ -319,7 +321,6 @@ class Config {
         }
       });
 
-    this.upgradeSites();
     console.log(this.options);
   }
 
