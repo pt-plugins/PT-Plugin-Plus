@@ -91,12 +91,12 @@
                 @click.stop="getSiteUserInfo(props.item)"
               >
                 <v-avatar :size="showSiteName ? 18 : 24">
-                  <img :src="props.item.icon">
+                  <img :src="props.item.icon" />
                 </v-avatar>
               </v-btn>
             </v-badge>
 
-            <br>
+            <br />
             <a
               :href="props.item.activeURL"
               target="_blank"
@@ -203,18 +203,22 @@ export default Vue.extend({
     resetSites() {
       this.sites = [];
       this.options.sites.forEach((site: Site) => {
-        if (site.allowGetUserInfo) {
-          if (!site.user) {
-            site.user = {
+        let _site: Site = this.clone(site);
+        if (_site.allowGetUserInfo) {
+          if (!_site.user) {
+            _site.user = {
               id: "",
               name: "",
               isLogged: false,
               isLoading: false
             };
           } else {
-            this.formatUserInfo(site.user);
+            if (_site.user.isLoading === undefined) {
+              _site.user.isLoading = false;
+            }
+            this.formatUserInfo(_site.user);
           }
-          this.sites.push(site);
+          this.sites.push(_site);
         }
       });
     },
