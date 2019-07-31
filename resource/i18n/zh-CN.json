@@ -326,6 +326,15 @@
         "beforeSearchingItemSearchMode": {
           "id": "以ID进行搜索，以获得较精确的内容，但转换ID时需要时间",
           "name": "以名称进行模糊搜索，以获得较多的内容"
+        },
+        "downloadFailedRetry": "当下载失败后进行重试",
+        "downloadFailedRetryTip1": "重试",
+        "downloadFailedRetryTip2": "次，每次间隔",
+        "downloadFailedRetryTip3": "秒（0表示失败后立即重试）",
+        "tabs": {
+          "base": "常规",
+          "search": "搜索",
+          "download": "下载"
         }
       },
       "downloadClients": {

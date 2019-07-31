@@ -77,7 +77,13 @@ class Config {
       maxMovieInformationCount: 5,
       searchModeForItem: EBeforeSearchingItemSearchMode.id
     },
-    showToolbarOnContentPage: true
+    showToolbarOnContentPage: true,
+    // 下载失败后是否进行重试
+    downloadFailedRetry: false,
+    // 下载失败重试次数
+    downloadFailedFailedRetryCount: 3,
+    // 下载失败间隔时间（秒）
+    downloadFailedFailedRetryInterval: 5
   };
 
   public uiOptions: UIOptions = {};

@@ -50,6 +50,8 @@ export default class Controller {
   public contentPages: any[] = [];
 
   private imageBase64Cache: Dictionary<any> = {};
+  // 下载重试次数
+  private downloadFailedRetriesCache: Dictionary<any> = {};
 
   constructor(public service: Service) {}
 
@@ -237,6 +239,19 @@ export default class Controller {
           });
 
           if (result && (result.code === 0 || result.success === false)) {
+            if (
+              this.downloadFailedRetry(
+                clientConfig,
+                downloadOptions,
+                host,
+                result,
+                resolve,
+                reject
+              )
+            ) {
+              return;
+            }
+
             switch (result.msg) {
               // 连接超时
               case "timeout":
@@ -281,8 +296,25 @@ export default class Controller {
             .catch((result: any) => {
               reject(result);
             });
+
+          if (this.downloadFailedRetriesCache[downloadOptions.url]) {
+            delete this.downloadFailedRetriesCache[downloadOptions.url];
+          }
         })
         .catch((result: any) => {
+          if (
+            this.downloadFailedRetry(
+              clientConfig,
+              downloadOptions,
+              host,
+              result,
+              resolve,
+              reject
+            )
+          ) {
+            return;
+          }
+
           this.service.logger.add({
             module: EModule.background,
             event: "service.controller.doDownload.error",
@@ -301,6 +333,84 @@ export default class Controller {
           reject(result);
         });
     });
+  }
+
+  /**
+   * 下载失败重试
+   * @param clientConfig
+   * @param downloadOptions
+   * @param host
+   * @param failedMsg
+   * @param resolve
+   * @param reject
+   */
+  private downloadFailedRetry(
+    clientConfig: any,
+    downloadOptions: DownloadOptions,
+    host: string = "",
+    failedMsg: any,
+    resolve?: any,
+    reject?: any
+  ): boolean {
+    // 是否失败重试
+    if (this.options.downloadFailedRetry) {
+      let maxRetries = this.options.downloadFailedFailedRetryCount;
+      if (maxRetries === undefined) {
+        maxRetries = 0;
+      }
+      let retries = this.downloadFailedRetriesCache[downloadOptions.url];
+
+      if (retries === undefined) {
+        retries = 0;
+      }
+      if (retries < maxRetries) {
+        retries++;
+        this.service.logger.add({
+          module: EModule.background,
+          event: "service.controller.downloadFailedRetries",
+          msg:
+            this.service.i18n.t("service.controller.downloadError", {
+              name: clientConfig.options.name,
+              action: EAction.addTorrentFromURL
+            }) +
+            " (" +
+            retries +
+            ")", // `下载服务器${clientConfig.options.name}处理[${EAction.addTorrentFromURL}]命令失败`,
+          data: failedMsg
+        });
+
+        this.downloadFailedRetriesCache[downloadOptions.url] = retries;
+
+        // 是否需要延时下载
+        if (
+          this.options.downloadFailedFailedRetryInterval &&
+          this.options.downloadFailedFailedRetryInterval > 0
+        ) {
+          setTimeout(() => {
+            this.doDownload(clientConfig, downloadOptions, host)
+              .then((result: any) => {
+                resolve(result);
+              })
+              .catch((result: any) => {
+                reject(result);
+              });
+          }, this.options.downloadFailedFailedRetryInterval * 1000);
+        } else {
+          this.doDownload(clientConfig, downloadOptions, host)
+            .then((result: any) => {
+              resolve(result);
+            })
+            .catch((result: any) => {
+              reject(result);
+            });
+        }
+
+        return true;
+      }
+
+      delete this.downloadFailedRetriesCache[downloadOptions.url];
+    }
+    return false;
   }
 
   /**

@@ -326,6 +326,15 @@
         "beforeSearchingItemSearchMode": {
           "id": "Search by IMDb ID to get more accurate content, but it need more time to get IMDb ID",
           "name": "Fuzzy search by name to get more content"
+        },
+        "downloadFailedRetry": "Retry after download failed",
+        "downloadFailedRetryTip1": "Retry",
+        "downloadFailedRetryTip2": "times after failure,",
+        "downloadFailedRetryTip3": "second apart. (0 means retry immediately after failure)",
+        "tabs": {
+          "base": "General",
+          "search": "Search",
+          "download": "Download"
         }
       },
       "downloadClients": {

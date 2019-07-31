@@ -111,6 +111,12 @@ export interface Options {
   showToolbarOnContentPage?: boolean;
   // 当前语言
   locale?: string;
+  // 下载失败重试后是否重试
+  downloadFailedRetry?: boolean;
+  // 下载失败重试次数
+  downloadFailedFailedRetryCount?: number;
+  // 下载失败间隔时间（秒）
+  downloadFailedFailedRetryInterval?: number;
 }
 
 // 在搜索之前一些选项配置
