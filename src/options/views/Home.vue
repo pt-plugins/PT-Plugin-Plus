@@ -351,6 +351,8 @@ export default Vue.extend({
         })
         .finally(() => {
           this.removeQueue(site);
+          // 重新加载配置信息
+          this.$store.commit("readConfig");
         });
     },
 

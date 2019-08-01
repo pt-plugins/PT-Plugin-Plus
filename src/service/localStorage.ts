@@ -7,19 +7,34 @@ export default class localStorage {
     }
   }
 
-  public set(key: any, value?: any, type: EStorageType = EStorageType.json) {
-    if (this.isExtensionMode) {
-      let data: any = {};
-      data[key] = value;
-      // console.log("save", data);
-      chrome.storage.local.set(data);
-    } else {
-      // console.log(key);
-      if (typeof value !== "string" && type == EStorageType.json) {
-        value = JSON.stringify(value);
+  /**
+   * 设置指定的值
+   * @param key
+   * @param value
+   * @param type
+   */
+  public set(
+    key: any,
+    value?: any,
+    type: EStorageType = EStorageType.json
+  ): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (this.isExtensionMode) {
+        let data: any = {};
+        data[key] = value;
+        // console.log("save", data);
+        chrome.storage.local.set(data, () => {
+          resolve();
+        });
+      } else {
+        // console.log(key);
+        if (typeof value !== "string" && type == EStorageType.json) {
+          value = JSON.stringify(value);
+        }
+        window.localStorage.setItem(key, value);
+        resolve();
       }
-      window.localStorage.setItem(key, value);
-    }
+    });
   }
 
   public get(

@@ -86,8 +86,9 @@ export class UserData {
 
       this.items[host] = siteData;
 
-      this.storage.set(this.configKey, this.items);
-      this.service.saveUserData();
+      this.storage.set(this.configKey, this.items).then(() => {
+        this.service.saveUserData();
+      });
     }
   }
 
@@ -97,9 +98,10 @@ export class UserData {
   public clear(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.items = {};
-      this.storage.set(this.configKey, this.items);
-      this.service.saveUserData();
-      resolve(this.items);
+      this.storage.set(this.configKey, this.items).then(() => {
+        this.service.saveUserData();
+        resolve(this.items);
+      });
     });
   }
 
