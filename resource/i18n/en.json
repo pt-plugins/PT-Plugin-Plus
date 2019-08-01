@@ -151,7 +151,8 @@
         "joinTime": "Join time",
         "lastUpdateTime": "Update at",
         "status": "Status"
-      }
+      },
+      "tip": "N/A means no support"
     },
     "systemLog": {
       "title": "System Log",

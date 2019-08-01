@@ -153,6 +153,10 @@
         </template>
       </v-data-table>
     </v-card>
+
+    <v-alert :value="true" color="grey">
+      <div v-html="$t('home.tip')"></div>
+    </v-alert>
   </div>
 </template>
 
