@@ -200,7 +200,7 @@ export default Vue.extend({
      */
     doSearch() {
       clearTimeout(this.searchTimer);
-      this.searchTimer = setTimeout(() => {
+      this.searchTimer = window.setTimeout(() => {
         this.search();
       }, 220);
     },
