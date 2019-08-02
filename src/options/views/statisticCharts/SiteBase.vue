@@ -13,13 +13,13 @@
     >
       <template slot="selection" slot-scope="{ item }">
         <v-list-tile-avatar v-if="item.icon">
-          <img :src="item.icon">
+          <img :src="item.icon" />
         </v-list-tile-avatar>
         <span v-text="item.name"></span>
       </template>
       <template slot="item" slot-scope="data">
         <v-list-tile-avatar v-if="data.item.icon">
-          <img :src="data.item.icon">
+          <img :src="data.item.icon" />
         </v-list-tile-avatar>
         <v-list-tile-content>
           <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
@@ -42,8 +42,8 @@
     </v-layout>
 
     <div ref="charts">
-      <highcharts :options="chartBaseData"/>
-      <highcharts :options="chartExtData" class="mt-4"/>
+      <highcharts :options="chartBaseData" />
+      <highcharts :options="chartExtData" class="mt-4" />
 
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -75,6 +75,7 @@ import {
 } from "@/interface/common";
 import html2canvas from "html2canvas";
 import FileSaver from "file-saver";
+import { PPF } from "../../../service/public";
 
 const extension = new Extension();
 
@@ -143,10 +144,7 @@ export default Vue.extend({
   },
 
   created() {
-    if (chrome && chrome.runtime) {
-      let manifest = chrome.runtime.getManifest();
-      this.version = "v" + (manifest.version_name || manifest.version);
-    }
+    this.version = PPF.getVersion();
 
     // 插入到第一个位置
     this.sites.push({

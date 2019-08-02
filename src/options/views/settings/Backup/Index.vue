@@ -3,8 +3,8 @@
     <v-alert :value="true" type="info">{{ $t('settings.backup.title') }}</v-alert>
     <v-card>
       <v-card-actions class="pa-3">
-        <input type="file" ref="fileRestore" style="display:none;">
-        <v-btn color="success" @click="backup">
+        <input type="file" ref="fileRestore" style="display:none;" />
+        <v-btn color="success" @click="createBackupFile">
           <v-icon>save</v-icon>
           <span class="ml-1">{{ $t('settings.backup.backup') }}</span>
         </v-btn>
@@ -57,13 +57,17 @@
 import FileSaver from "file-saver";
 import Vue from "vue";
 import Extension from "@/service/extension";
+import JSZip from "jszip";
+import md5 from "blueimp-md5";
 import { EAction, EModule, Options } from "@/interface/common";
+import { PPF } from "@/service/public";
 const extension = new Extension();
 export default Vue.extend({
   data() {
     return {
       fileName: "PT-plugin-plus-config.json",
       fileInput: null as any,
+      zipFileName: "PT-Plugin-Plus-Config.zip",
       errorMsg: "",
       haveError: false,
       haveSuccess: false,
@@ -94,6 +98,35 @@ export default Vue.extend({
     }
   },
   methods: {
+    /**
+     * 获取当前配置信息，以文本形式返回
+     */
+    getOptionData(): Promise<any> {
+      return new Promise<any>((resolve?: any, reject?: any) => {
+        extension
+          .sendRequest(EAction.getClearedOptions)
+          .then((options: any) => {
+            delete options.system;
+            resolve(options);
+          })
+          .catch(() => {
+            reject();
+          });
+      });
+    },
+    getUserData(): Promise<any> {
+      return new Promise<any>((resolve?: any, reject?: any) => {
+        extension
+          .sendRequest(EAction.getUserHistoryData, null, "")
+          .then((data: any) => {
+            console.log(data);
+            resolve(data);
+          })
+          .catch(() => {
+            reject();
+          });
+      });
+    },
     backup() {
       this.clearMessage();
       extension
@@ -121,28 +154,22 @@ export default Vue.extend({
         restoreFile.files.length > 0 &&
         restoreFile.files[0].name.length > 0
       ) {
+        let file = restoreFile.files[0];
+        if (file.name.substr(-4) === ".zip") {
+          this.restoreFromZipFile(file);
+          return;
+        }
         var r = new FileReader();
         r.onload = (e: any) => {
-          if (confirm(this.$t("settings.backup.restoreConfirm").toString())) {
-            try {
-              let result = JSON.parse(e.target.result);
-              this.$store.dispatch("resetRunTimeOptions", result);
-              // let system = this.$store.state.options.system;
-              console.log(result);
-              this.successMsg = this.$t(
-                "settings.backup.restoreSuccess"
-              ).toString();
-            } catch (error) {
-              this.errorMsg = this.$t(
-                "settings.backup.restoreError"
-              ).toString();
-            }
-          }
+          let result = JSON.parse(e.target.result);
+          this.restoreConfirm({
+            options: result
+          });
         };
         r.onerror = () => {
           this.errorMsg = this.$t("settings.backup.loadError").toString();
         };
-        r.readAsText(restoreFile.files[0]);
+        r.readAsText(file);
         restoreFile.value = "";
       }
     },
@@ -244,6 +271,92 @@ export default Vue.extend({
         .finally(() => {
           this.status.clearFromGoogle = false;
         });
+    },
+    /**
+     * 创建备份文件
+     */
+    createBackupFile() {
+      const zip = new JSZip();
+      let requests: any[] = [];
+      requests.push(this.getOptionData());
+      requests.push(this.getUserData());
+
+      Promise.all(requests).then(results => {
+        const options = JSON.stringify(results[0]);
+        const datas = JSON.stringify(results[1]);
+        // 配置
+        zip.file("options.json", options);
+        // 用户数据
+        zip.file("userdatas.json", datas);
+
+        // 创建检证用的文件
+        const manifest = {
+          hash: md5(options + datas),
+          version: PPF.getVersion(),
+          time: new Date().getTime()
+        };
+        zip.file("manifest.json", JSON.stringify(manifest));
+
+        zip.generateAsync({ type: "blob" }).then(blob => {
+          saveAs(blob, this.zipFileName);
+        });
+      });
+    },
+    /**
+     * 从 zip 文件中恢复配置信息
+     */
+    restoreFromZipFile(file: any) {
+      JSZip.loadAsync(file)
+        .then(zip => {
+          let requests: any[] = [];
+          requests.push(zip.file("manifest.json").async("text"));
+          requests.push(zip.file("options.json").async("text"));
+          requests.push(zip.file("userdatas.json").async("text"));
+          return Promise.all(requests);
+        })
+        .then(results => {
+          try {
+            const manifest = JSON.parse(results[0]);
+            const options = JSON.parse(results[1]);
+            const datas = JSON.parse(results[2]);
+            const hash = md5(results[1] + results[2]);
+
+            if (manifest.hash === hash) {
+              this.restoreConfirm({
+                options,
+                datas
+              });
+            } else {
+              this.errorMsg = this.$t(
+                "settings.backup.restoreError"
+              ).toString();
+            }
+          } catch (error) {
+            this.errorMsg = this.$t("settings.backup.restoreError").toString();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.errorMsg = this.$t("settings.backup.restoreError").toString();
+        });
+    },
+    /**
+     * 恢复配置确认
+     */
+    restoreConfirm(infos: any) {
+      if (confirm(this.$t("settings.backup.restoreConfirm").toString())) {
+        try {
+          this.$store.dispatch("resetRunTimeOptions", infos.options);
+          if (infos.datas) {
+            extension.sendRequest(EAction.resetUserDatas, null, infos.datas);
+          }
+          this.successMsg = this.$t(
+            "settings.backup.restoreSuccess"
+          ).toString();
+        } catch (error) {
+          this.errorMsg = this.$t("settings.backup.restoreError").toString();
+        }
+      }
     }
   },
   watch: {

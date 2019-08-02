@@ -990,6 +990,13 @@ export default class Controller {
     });
   }
 
+  public resetUserDatas(datas: any) {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.service.userData.reset(datas);
+      resolve();
+    });
+  }
+
   /**
    * 根据指定的关键字获取电影信息
    * @param key

@@ -151,4 +151,15 @@ export class UserData {
       }
     });
   }
+
+  /**
+   * 重置数据
+   * @param datas 源数据
+   */
+  public reset(datas: any) {
+    this.items = datas;
+    this.storage.set(this.configKey, this.items).then(() => {
+      this.service.saveUserData();
+    });
+  }
 }
