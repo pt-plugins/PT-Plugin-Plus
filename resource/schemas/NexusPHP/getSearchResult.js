@@ -338,6 +338,7 @@ if (!"".getQueryString) {
               break;
 
             case "tp.m-team.cc":
+            case "pt.m-team.cc":
               title = row.find("a[href*='hit'][title]").last();
               subTitle = title
                 .parent()
