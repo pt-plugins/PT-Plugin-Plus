@@ -1,0 +1,92 @@
+{
+  "name": "Cinematik",
+  "schema": "Cinematik",
+  "url": "https://www.cinematik.net/",
+  "icon": "https://www.cinematik.net/favicon.ico",
+  "tags": ["影视"],
+  "host": "www.cinematik.net",
+  "collaborator": "DXV5",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/browse.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
+  }],
+  "searchEntryConfig": {
+    "page": "/browse.php",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "queryString": "support=dvd%7Cbd&incldead=0&search=$key$&dir_name="
+  },
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "img[src*='freedownload.png']",
+    "color": "blue"
+  }, {
+    "name": "2xFree",
+    "selector": "img[src*='platinumdownload.png']",
+    "color": "green"
+  }, {
+    "name": "25%",
+    "selector": "img[src*='silverdownload.png']",
+    "color": "indigo"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/itik-include/me.php",
+      "fields": {
+        "id": {
+          "selector": "div.frname a[href*='userdetails.php']",
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": "div.frname a[href*='userdetails.php']"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["#user-default td.rowhead:contains('Uploaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["#user-default td.rowhead:contains('Downloaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "levelName": {
+          "selector": "#user-default td.rowhead:contains('Class') + td"
+        },
+        "bonus": {
+          "value": "N/A"
+        },
+        "joinTime": {
+          "selector": "#user-default td.rowhead:contains('Join') + td",
+          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/userdetails-tab.php?SID=&id=$user.id$&mode=7&page=0",
+      "fields": {
+        "seeding": {
+          "selector": ["table:first tr:not(:eq(0))"],
+          "filters": ["query.length"]
+        },
+        "seedingSize": {
+          "selector": ["table:first tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td:eq(4)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    }
+  }
+}
