@@ -7,12 +7,22 @@
   "schema": "UNIT3D",
   "host": "beyond-hd.me",
   "collaborator": "lengmianxia",
-  "searchEntry": [{
-    "entry": "/torrents?doSearch=Search&search=$key$",
-    "name": "全部",
+  "searchEntryConfig": {
+    "page": "/torrents",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
     "resultSelector": "div.table-responsive > table:last",
+    "queryString": "search=$key$",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "imdb=$key$",
+      "replaceKey": [
+        "tt", ""
+      ]
+  }]},
+  "searchEntry": [{
+    "name": "全部",
     "enabled": true
   }],
   "torrentTagSelectors": [{
