@@ -72,6 +72,44 @@
         )
       );
     }
+
+    /**
+     * 获取有效的拖放地址
+     * @param {*} url
+     */
+    getDroperURL(url) {
+      let siteURL = PTService.site.url;
+      if (siteURL.substr(-1) != "/") {
+        siteURL += "/";
+      }
+
+      if (!url.getQueryString) {
+        PTService.showNotice({
+          msg:
+            "系统依赖函数（getQueryString）未正确加载，请尝试刷新页面或重新启用插件。"
+        });
+        return null;
+      }
+
+      if (url.indexOf("download.php") === -1) {
+        let id = url.getQueryString("id");
+        if (id) {
+          // 如果站点没有配置禁用https，则默认添加https链接
+          url =
+            siteURL +
+            "download.php?id=" +
+            id +
+            (PTService.site.passkey
+              ? "&passkey=" + PTService.site.passkey
+              : "") +
+            (PTService.site.disableHttps ? "" : "&https=1");
+        } else {
+          url = "";
+        }
+      }
+
+      return url;
+    }
   }
   new App().init();
 })(jQuery);
