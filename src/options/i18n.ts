@@ -26,7 +26,7 @@ export class i18nService {
 
   constructor() {
     // 加载英文内容
-    this.reset("en");
+    this.loadLangResource("en");
   }
 
   /**
@@ -39,7 +39,6 @@ export class i18nService {
         .then(() => {
           this.reset(langCode)
             .then(() => {
-              this.currentLanguage = langCode;
               this.initialized = true;
               resolve(i18n);
             })
@@ -72,23 +71,61 @@ export class i18nService {
   }
 
   /**
+   * 加载语言资源文件
+   * @param langCode
+   */
+  public loadLangResource(langCode: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      $.getJSON(`${API.host}/i18n/${langCode}.json`)
+        .done((result: any) => {
+          this.push(result);
+          resolve(result);
+        })
+        .fail(e => {
+          reject(e);
+        });
+    });
+  }
+
+  /**
+   * push 语言资源
+   * @param resource
+   */
+  public push(resource: i18nResource) {
+    if (resource.name && resource.code) {
+      if (!this.exists(resource.code)) {
+        i18n.setLocaleMessage(resource.code, resource.words);
+        this.loadedLanguages.push(resource.code);
+      }
+    }
+  }
+
+  /**
+   * 变更语言
+   * @param langCode
+   */
+  public change(langCode: string) {
+    if (this.currentLanguage !== langCode) {
+      i18n.locale = langCode;
+      this.currentLanguage = langCode;
+      this.initialized && this.onChanged.call(this, langCode);
+    }
+  }
+
+  /**
    * 重设语言
    * @param langCode 语言代码
    */
   public reset(langCode: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      if (i18n.locale !== langCode) {
-        if (!this.loadedLanguages.includes(langCode)) {
-          $.getJSON(`${API.host}/i18n/${langCode}.json`)
-            .done((result: any) => {
-              i18n.setLocaleMessage(langCode, result.words);
-              this.loadedLanguages.push(langCode);
-              i18n.locale = langCode;
-              this.currentLanguage = langCode;
-              this.initialized && this.onChanged.call(this, langCode);
+      if (this.currentLanguage !== langCode) {
+        if (!this.exists(langCode)) {
+          this.loadLangResource(langCode)
+            .then(() => {
+              this.change(langCode);
               resolve(langCode);
             })
-            .fail(e => {
+            .catch(e => {
               if (langCode != "en") {
                 this.reset("en").then(() => {
                   resolve(langCode);
@@ -99,11 +136,8 @@ export class i18nService {
             });
           return;
         }
-        i18n.locale = langCode;
-        this.currentLanguage = langCode;
-        this.initialized && this.onChanged.call(this, langCode);
+        this.change(langCode);
       }
-      this.currentLanguage = langCode;
       resolve(langCode);
     });
   }
@@ -115,11 +149,10 @@ export class i18nService {
   public add(resource: i18nResource): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       if (resource.name && resource.code) {
-        if (this.loadedLanguages.includes(resource.code)) {
+        if (this.exists(resource.code)) {
           reject();
         } else {
-          i18n.setLocaleMessage(resource.code, resource.words);
-          this.loadedLanguages.push(resource.code);
+          this.push(resource);
           i18n.locale = resource.code;
           this.currentLanguage = resource.code;
           this.initialized && this.onAdded.call(this, resource);
@@ -138,7 +171,7 @@ export class i18nService {
   public replace(resource: i18nResource): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       if (resource.name && resource.code) {
-        if (this.loadedLanguages.includes(resource.code)) {
+        if (this.exists(resource.code)) {
           i18n.setLocaleMessage(resource.code, resource.words);
           i18n.locale = resource.code;
           this.currentLanguage = resource.code;
