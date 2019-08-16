@@ -1,5 +1,5 @@
 (function($) {
-  console.log("this is torrent.js");
+  console.log("this is browse.js");
   class App extends window.NexusPHPCommon {
     init() {
       this.initButtons();
@@ -19,14 +19,12 @@
      * 获取下载链接
      */
     getDownloadURLs() {
-      let links = $("a[href*='download']").toArray();
+      let links = $(
+        "a.brolin[href*='details.php?id='][href*='hit=1']:has(b)"
+      ).toArray();
       let siteURL = PTService.site.url;
       if (siteURL.substr(-1) != "/") {
         siteURL += "/";
-      }
-
-      if (links.length == 0) {
-        links = $(".torrentname a[href*='details.php']").toArray();
       }
 
       if (links.length == 0) {
@@ -36,25 +34,12 @@
 
       let urls = $.map(links, item => {
         let url =
+          "download.php?id=" +
           $(item)
             .attr("href")
-            .replace(/details\.php/gi, "download.php") +
-          (PTService.site.passkey ? "&passkey=" + PTService.site.passkey : "");
+            .getQueryString("id");
         if (url) {
-          if (url.substr(0, 2) === "//") {
-            // 适配HUDBT、WHU这样以相对链接开头
-            url = location.protocol + url;
-          } else if (url.substr(0, 4) !== "http") {
-            url = siteURL + url;
-          }
-
-          if (
-            url &&
-            url.indexOf("https=1") === -1 &&
-            !PTService.site.disableHttps
-          ) {
-            url += "&https=1";
-          }
+          url = siteURL + url;
         }
         return url;
       });
@@ -67,7 +52,7 @@
      */
     confirmWhenExceedSize() {
       return this.confirmSize(
-        $(".torrents").find(
+        $("table[border='1']:last").find(
           "td:contains('MB'),td:contains('GB'),td:contains('TB')"
         )
       );
@@ -91,21 +76,11 @@
         return null;
       }
 
-      if (url.indexOf("download.php") === -1) {
-        let id = url.getQueryString("id");
-        if (id) {
-          // 如果站点没有配置禁用https，则默认添加https链接
-          url =
-            siteURL +
-            "download.php?id=" +
-            id +
-            (PTService.site.passkey
-              ? "&passkey=" + PTService.site.passkey
-              : "") +
-            (PTService.site.disableHttps ? "" : "&https=1");
-        } else {
-          url = "";
-        }
+      let id = url.getQueryString("id");
+      if (id) {
+        url = siteURL + "download.php?id=" + id;
+      } else {
+        url = "";
       }
 
       return url;

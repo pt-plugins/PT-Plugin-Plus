@@ -771,7 +771,17 @@ class PTPContent {
         if (data && data.url) {
           onDrop.call(this, data, e, onSuccess, onError);
         }
-      } catch (error) {}
+      } catch (error) {
+        // 错误时，尝试直接使用文本内容
+        let data = e.originalEvent.dataTransfer.getData("text/plain");
+        if (data) {
+          data = {
+            url: data
+          };
+
+          onDrop.call(this, data, e, onSuccess, onError);
+        }
+      }
     });
 
     // 离开拖放时

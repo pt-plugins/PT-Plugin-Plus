@@ -1,0 +1,12 @@
+{
+  "name": "HDD",
+  "description": "HDD",
+  "url": "https://hddisk.org/",
+  "icon": "https://hddisk.org/favicon.ico",
+  "tags": [
+    "影视",
+    "综合"
+  ],
+  "schema": "NexusPHP",
+  "host": "hddisk.org"
+}

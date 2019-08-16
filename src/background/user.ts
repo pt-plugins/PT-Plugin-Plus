@@ -17,6 +17,10 @@ type Service = PTPlugin;
 export class User {
   private requestQueue: any = {};
   private requestQueueCount: number = 0;
+  private infoParserCache: Dictionary<any> = {};
+
+  // 用于脚本解析器调用
+  public InfoParser = InfoParser;
 
   constructor(public service: Service) {}
 
@@ -219,7 +223,7 @@ export class User {
             }
           }
 
-          requests.push(this.getInfos(host, url, rule, userInfo));
+          requests.push(this.getInfos(host, url, rule, site, userInfo));
         }
       });
       if (requests.length) {
@@ -251,6 +255,7 @@ export class User {
     host: string,
     url: string,
     rule: Dictionary<any>,
+    site?: Site,
     userInfo?: UserInfo
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
@@ -258,7 +263,7 @@ export class User {
         .replace("://", "****")
         .replace(/\/\//g, "/")
         .replace("****", "://");
-      PPF.updateBadge(++this.requestQueueCount);
+
       let requestData = rule.requestData;
       if (requestData && userInfo) {
         for (const key in requestData) {
@@ -270,6 +275,17 @@ export class User {
           }
         }
       }
+
+      /**
+       * 是否有脚本解析器
+       */
+      if (rule.parser && site) {
+        this.runParser(rule, site, userInfo, resolve, reject);
+        return;
+      }
+
+      PPF.updateBadge(++this.requestQueueCount);
+
       let request = $.ajax({
         url,
         method: rule.requestMethod || ERequestMethod.GET,
@@ -320,6 +336,58 @@ export class User {
 
       this.addQueue(host, url, request);
     });
+  }
+
+  /**
+   * 执行脚本解析器
+   * @param rule
+   * @param site
+   * @param userInfo
+   * @param resolve
+   * @param reject
+   */
+  public runParser(
+    rule: Dictionary<any>,
+    site: Site,
+    userInfo?: UserInfo,
+    resolve?: any,
+    reject?: any
+  ) {
+    let siteConfigPath = site.schema == "publicSite" ? "publicSites" : "sites";
+
+    if (site.path) {
+      siteConfigPath += `/${site.path}`;
+    } else {
+      siteConfigPath += `/${site.host}`;
+    }
+
+    let path = rule.parser;
+    // 判断是否为相对路径
+    if (path.substr(0, 1) !== "/" && path.substr(0, 4) !== "http") {
+      path = `${siteConfigPath}/${path}`;
+    }
+
+    // 传递给解析解析的参数
+    let _options = {
+      site,
+      rule,
+      userInfo,
+      resolve,
+      reject
+    };
+
+    // 当前对象
+    let _self = this;
+
+    let script = this.infoParserCache[path];
+    if (script) {
+      eval(script);
+    } else {
+      APP.getScriptContent(path).done(script => {
+        this.infoParserCache[path] = script;
+        eval(script);
+      });
+    }
   }
 
   public addQueue(host: string, url: string, request: any) {

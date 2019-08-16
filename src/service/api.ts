@@ -210,9 +210,15 @@ export const APP = {
    */
   getScriptContent(path: string): JQueryXHR {
     let url = `${API.host}/${path}`;
+    // 外部链接
+    if (path.substr(0, 4) === "http") {
+      url = path;
+    } else {
+      url = url.replace("resource//", "resource/");
+    }
     APP.debugMode && console.log("getScriptContent", url);
     return $.ajax({
-      url: url.replace("resource//", "resource/"),
+      url,
       dataType: "text"
     });
   },

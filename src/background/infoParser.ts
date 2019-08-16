@@ -132,8 +132,6 @@ export class InfoParser {
   getTotalSize(datas: string[]) {
     let total: number = 0.0;
 
-    console.log(datas);
-
     datas.forEach((item: string) => {
       let size = parseFloat(item.replace(/[A-Za-z]/g, ""));
       let unit = item.replace(/[^A-Za-z]/g, "").toLowerCase();

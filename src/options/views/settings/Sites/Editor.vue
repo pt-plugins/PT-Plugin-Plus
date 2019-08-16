@@ -28,7 +28,7 @@
           :value="getSchema"
           :label="$t('settings.sites.editor.schema')"
           disabled
-          v-if="!custom"
+          v-if="!site.isCustom"
         ></v-text-field>
 
         <!-- 当前架构(自定义时) -->
@@ -41,7 +41,7 @@
           single-line
           item-text="name"
           item-value="name"
-          v-if="custom"
+          v-if="site.isCustom"
         >
           <template slot="selection" slot-scope="{ item }">
             <span v-text="item.name"></span>

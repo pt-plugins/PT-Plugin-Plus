@@ -138,18 +138,27 @@ export default Vue.extend({
       },
       items: [],
       dialogRemoveConfirm: false,
-      selectedClient: {} as any,
+      selectedClient: {
+        address: ""
+      } as any,
       lastClientId: ""
     };
   },
   created() {
-    this.items = this.$store.state.options.clients;
-    this.initView();
+    if (
+      this.$store.state.options.clients &&
+      this.$store.state.options.clients.length > 0
+    ) {
+      this.items = this.$store.state.options.clients;
+      this.initView();
+    }
   },
   watch: {
     selectedClient() {
-      this.lastClientId = this.selectedClient.id;
-      this.updateViewOptions();
+      if (this.selectedClient && this.selectedClient.id) {
+        this.lastClientId = this.selectedClient.id;
+        this.updateViewOptions();
+      }
     }
   },
   methods: {
@@ -229,9 +238,13 @@ export default Vue.extend({
       this.lastClientId = options.lastClientId;
 
       if (this.lastClientId && this.items.length > 0) {
-        this.selectedClient = this.items.find((item: any) => {
+        let selectedClient = this.items.find((item: any) => {
           return item.id == this.lastClientId;
         });
+
+        if (selectedClient) {
+          this.selectedClient = selectedClient;
+        }
       }
     },
     /**
@@ -248,6 +261,9 @@ export default Vue.extend({
   },
   computed: {
     getClientPaths(): any {
+      if (!this.selectedClient) {
+        return [];
+      }
       if (!this.selectedClient.paths) {
         return [];
       }

@@ -70,6 +70,10 @@
         "csrfToken": {
           "selector": ["input[name='csrfToken']"],
           "filters": ["query.val()"]
+        },
+        "messageCount": {
+          "selector": [".new-pm.warning"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         }
       }
     },

@@ -2,7 +2,11 @@ class HelpFunctions {
   public isExtensionMode: boolean = false;
   constructor() {
     try {
-      this.isExtensionMode = !!(chrome.runtime && chrome.extension);
+      this.isExtensionMode = !!(
+        chrome.runtime &&
+        chrome.extension &&
+        chrome.runtime.getManifest
+      );
     } catch (error) {
       console.log("HelpFunctions: is not extension mode.", error);
     }
@@ -45,6 +49,18 @@ class HelpFunctions {
       }
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  /**
+   * 获取当前版本
+   */
+  public getVersion() {
+    if (this.isExtensionMode) {
+      const manifest = chrome.runtime.getManifest();
+      return "v" + (manifest.version_name || manifest.version);
+    } else {
+      return "localVersion";
     }
   }
 }

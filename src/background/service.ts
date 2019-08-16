@@ -383,7 +383,7 @@ export default class PTPlugin {
     let failedRetryInterval =
       this.options.autoRefreshUserDataFailedRetryInterval || 5;
 
-    this.autoRefreshUserDataTimer = setInterval(() => {
+    this.autoRefreshUserDataTimer = window.setInterval(() => {
       let time = new Date().getTime();
 
       if (

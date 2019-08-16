@@ -154,7 +154,9 @@ export enum EAction {
   // 替换现有语言
   replaceLanguage = "replaceLanguage",
   // 隐藏指定的消息（用于前端页面）
-  hideMessage = "hideMessage"
+  hideMessage = "hideMessage",
+  // 重置用户数据，可用于恢复用户数据
+  resetUserDatas = "resetUserDatas"
 }
 
 /**

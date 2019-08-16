@@ -1,11 +1,14 @@
 {
   "name": "M-Team",
   "description": "M-Team",
-  "url": "https://tp.m-team.cc/",
-  "icon": "https://tp.m-team.cc/favicon.ico",
+  "url": "https://pt.m-team.cc/",
+  "icon": "https://pt.m-team.cc/favicon.ico",
   "tags": ["影视", "综合"],
   "schema": "NexusPHP",
-  "host": "tp.m-team.cc",
+  "host": "pt.m-team.cc",
+  "formerHosts": [
+    "tp.m-team.cc"
+  ],
   "plugins": [{
     "name": "种子列表",
     "pages": ["/adult.php"],
@@ -179,9 +182,20 @@
           "filters": ["query.text().replace(/,/g,'').match(/下[载載]量.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         }
       }
+    },
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlist.php?userid=$user.id$&type=seeding",
+      "parser": "getUserSeedingTorrents.js",
+      "fields": {
+        "seeding": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["query.find('td.rowfollow:eq(2)').length"]
+        },
+        "seedingSize": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
     }
-  },
-  "supportedFeatures": {
-    "userData": "◐"
   }
 }

@@ -316,7 +316,15 @@ export default Vue.extend({
           if (result && result.name) {
             this.$store.commit(
               "addSite",
-              Object.assign({ valid: true, activeURL: site.url }, site)
+              Object.assign(
+                {
+                  valid: true,
+                  activeURL: site.url,
+                  allowSearch: true,
+                  allowGetUserInfo: true
+                },
+                site
+              )
             );
             this.importedCount++;
           }

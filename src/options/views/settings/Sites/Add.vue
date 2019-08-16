@@ -172,8 +172,13 @@ export default Vue.extend({
       } else {
         this.valid = true;
       }
+      this.isCustom = false;
     },
     custom() {
+      this.selectedSite = {
+        name: "",
+        isCustom: true
+      };
       this.isCustom = true;
       this.valid = false;
       this.step = 2;

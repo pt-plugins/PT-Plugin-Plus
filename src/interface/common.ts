@@ -111,6 +111,12 @@ export interface Options {
   showToolbarOnContentPage?: boolean;
   // 当前语言
   locale?: string;
+  // 下载失败重试后是否重试
+  downloadFailedRetry?: boolean;
+  // 下载失败重试次数
+  downloadFailedFailedRetryCount?: number;
+  // 下载失败间隔时间（秒）
+  downloadFailedFailedRetryInterval?: number;
 }
 
 // 在搜索之前一些选项配置
@@ -202,6 +208,8 @@ export interface Site {
   // 离线，设置为true时，不再进行搜索和个人信息获取，保存原数据统计
   // todo: 后续可根据站点返回的状态码自动设置为离线
   offline?: boolean;
+  // 是否为自定义
+  isCustom?: boolean;
 }
 
 export interface Request {
