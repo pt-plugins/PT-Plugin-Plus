@@ -19,7 +19,12 @@
     "page": "/browse.php",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "queryString": "support=dvd%7Cbd&incldead=0&search=$key$&dir_name="
+    "queryString": "search=$key$&incldead=1",
+    "area": [{
+      "name": "IMDB",
+      "queryString": "search=$key$&incldead=1&srchdtls=1",
+      "keyAutoMatch": "^(tt\\d+)$"
+    }]
   },
   "searchEntry": [{
     "name": "all",
