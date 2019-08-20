@@ -1,0 +1,93 @@
+{
+  "name": "FileList",
+  "description": "FileList",
+  "url": "https://filelist.ro/",
+  "icon": "https://filelist.ro/favicon.ico",
+  "tags": ["影视","综合"],
+  "schema": "FileList",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["^/t/(\\d+)/$", "/details.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/browse.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
+  }],
+  "host": "filelist.ro",
+  "searchEntryConfig": {
+    "page": "/browse.php",
+    "queryString": "search=$key$&cat=0&searchin=1&sort=2",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "div.visitedlinks:last > div[class=torrentrow]"
+  },
+  "searchEntry": [{
+    "name": "All",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "img[alt='FreeLeech']",
+    "color": "blue"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": "a[href*='userdetails.php']:last",
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": "a[href*='userdetails.php']:last"
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        },
+        "messageCount": {
+          "selector": ["td[style*='background: red'] a[href*='messages.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "bonus": {
+          "selector": ["a[href='/shop.php']"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?query[1]:''"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.colhead:contains('Uploaded') + td"],
+          "filters": ["query.text().sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ["td.colhead:contains('Downloaded') + td"],
+          "filters": ["query.text().sizeToNumber()"]
+        },
+        "ratio": {
+          "selector": "td.colhead:contains('Share ratio') + td",
+          "filters": ["parseFloat(query.text())"]
+        },
+        "levelName": {
+          "selector": ["td.colhead:contains('Class') + td"]
+        },
+        "joinTime": {
+          "selector": ["td.colhead:contains('Join'):contains('date') + td"],
+          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["td.colhead:contains('Seed'):contains('bonus') + td > div > b"],
+          "filters": ["query.first().text().match(/([\\d.]+)/)", "(query && query.length>=1)?query[0]:''"]
+        },
+        "seedingSize": {
+          "selector": ["td.colhead:contains('Seed'):contains('bonus') + td > div > b"],
+          "filters": ["query.last().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        }
+      }
+    }
+  }
+}
