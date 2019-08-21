@@ -62,6 +62,20 @@ import md5 from "blueimp-md5";
 import { EAction, EModule, Options } from "@/interface/common";
 import { PPF } from "@/service/public";
 const extension = new Extension();
+
+interface IHashData {
+  hash: string;
+  keyMap: number[];
+  length: number;
+}
+
+interface IManifest {
+  checkInfo: IHashData;
+  version: string;
+  time: number;
+  hash?: string;
+}
+
 export default Vue.extend({
   data() {
     return {
@@ -291,7 +305,7 @@ export default Vue.extend({
 
         // 创建检证用的文件
         const manifest = {
-          hash: md5(options + datas),
+          checkInfo: this.createHash(options + datas),
           version: PPF.getVersion(),
           time: new Date().getTime()
         };
@@ -301,6 +315,67 @@ export default Vue.extend({
           saveAs(blob, this.zipFileName);
         });
       });
+    },
+    /**
+     * 创建用于验证数据对象
+     */
+    createHash(data: string): IHashData {
+      const length = data.length;
+
+      const keys: any[] = [];
+
+      let result: IHashData = {
+        hash: "",
+        keyMap: [],
+        length
+      };
+
+      for (let n = 0; n < 32; n++) {
+        let index = Math.round(length * Math.random());
+        keys.push(data.substr(index, 1));
+        result.keyMap.push(index);
+      }
+
+      result.hash = md5(keys.join(""));
+
+      return result;
+    },
+    /**
+     * 简单验证数据，仅防止格式错误的数据
+     */
+    checkData(manifest: IManifest, data: string): boolean {
+      if (!manifest) {
+        return false;
+      }
+
+      if (!manifest.checkInfo) {
+        return false;
+      }
+
+      const checkInfo = manifest.checkInfo;
+      const length = data.length;
+
+      if (length !== checkInfo.length) {
+        return false;
+      }
+
+      const keys: any[] = [];
+
+      try {
+        if (checkInfo.keyMap.length !== 32) {
+          return false;
+        }
+        for (let n = 0; n < 32; n++) {
+          let index = checkInfo.keyMap[n];
+          keys.push(data.substr(index, 1));
+        }
+
+        if (md5(keys.join("")) === checkInfo.hash) {
+          return true;
+        }
+      } catch (error) {}
+
+      return false;
     },
     /**
      * 从 zip 文件中恢复配置信息
@@ -319,9 +394,8 @@ export default Vue.extend({
             const manifest = JSON.parse(results[0]);
             const options = JSON.parse(results[1]);
             const datas = JSON.parse(results[2]);
-            const hash = md5(results[1] + results[2]);
 
-            if (manifest.hash === hash) {
+            if (this.checkData(manifest, results[1] + results[2])) {
               this.restoreConfirm({
                 options,
                 datas
