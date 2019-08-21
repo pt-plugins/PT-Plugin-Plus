@@ -68,8 +68,8 @@
           rel="noopener noreferrer nofollow"
         >
           <v-avatar size="20" class="mr-1">
-            <img :src="rottenTomatoes.fresh" v-if="tomatoRating>=60">
-            <img :src="rottenTomatoes.rotten" v-else>
+            <img :src="rottenTomatoes.fresh" v-if="tomatoRating>=60" />
+            <img :src="rottenTomatoes.rotten" v-else />
           </v-avatar>
           {{ tomatoRating }}%
         </v-btn>
@@ -187,8 +187,15 @@ export default Vue.extend({
           });
       }
     },
-    formatArray(array: any, splitChar: string = " / "): string {
+    formatArray(
+      array: any,
+      splitChar: string = " / ",
+      maxLength: number = 10
+    ): string {
       if (array && array.length > 0) {
+        if (maxLength > 0 && array.length > maxLength) {
+          return array.slice(0, maxLength - 1).join(splitChar) + " ...";
+        }
         return array.join(splitChar);
       }
       return "";
