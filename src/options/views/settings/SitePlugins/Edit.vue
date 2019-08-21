@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" max-width="800">
+  <v-dialog v-model="show" fullscreen>
     <v-card>
       <v-card-title
         class="headline blue-grey darken-2"
@@ -7,7 +7,7 @@
       >{{ $t('settings.sitePlugins.edit.title') }}</v-card-title>
 
       <v-card-text>
-        <Editor :data="defaultItem"/>
+        <Editor :data="defaultItem" />
       </v-card-text>
 
       <v-divider></v-divider>
