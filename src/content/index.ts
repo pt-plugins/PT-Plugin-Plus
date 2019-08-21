@@ -274,7 +274,7 @@ class PTPContent {
             plugin.scripts.forEach((script: any) => {
               let path = script;
               // 判断是否为相对路径
-              if (path.substr(0, 1) !== "/") {
+              if (path.substr(0, 1) !== "/" && path.substr(0, 4) !== "http") {
                 path = `${siteConfigPath}/${script}`;
               }
               // 文件
@@ -295,7 +295,7 @@ class PTPContent {
           if (plugin.styles) {
             plugin.styles.forEach((style: string) => {
               let path = style;
-              if (path.substr(0, 1) !== "/") {
+              if (path.substr(0, 1) !== "/" && path.substr(0, 4) !== "http") {
                 path = `${siteConfigPath}/${style}`;
               }
               this.styles.push({

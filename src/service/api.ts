@@ -130,22 +130,29 @@ export const APP = {
     return new Promise<any>((resolve?: any, reject?: any) => {
       switch (script.type) {
         case "code":
-          eval(script.content);
+          this.runScript(script.content);
           resolve();
           break;
 
         default:
           {
-            let url = `${API.host}/${script.content || script}`;
+            let url = script.content || script;
+            if (url.substr(0, 4) !== "http") {
+              if (url.substr(0, 1) !== "/") {
+                url = `/${url}`;
+              }
+              url = `${API.host}${url}`;
+            }
+
             let content = this.cache.get(url);
             if (content) {
-              eval(content);
+              this.runScript(content);
               resolve();
             } else {
               $.get(
                 url,
                 result => {
-                  eval(result);
+                  this.runScript(result);
                   this.cache.set(url, result);
                   resolve();
                 },
@@ -159,6 +166,15 @@ export const APP = {
     });
   },
   /**
+   * 执行指定的脚本
+   * @param script 脚本内容
+   * @param scope 作用域
+   */
+  runScript(script: string, scope: any = window) {
+    // 默认将脚本作用于 window 对象，这种方式可以正常加载外部的第三方库
+    eval.call(scope, script);
+  },
+  /**
    * 追加样式信息
    * @param options
    */
@@ -167,7 +183,13 @@ export const APP = {
       let style = $("<style/>").appendTo(document.body);
       switch (options.type) {
         case "file": {
-          let url = `${API.host}/${options.content}`;
+          let url = options.content;
+          if (url.substr(0, 4) !== "http") {
+            if (url.substr(0, 1) !== "/") {
+              url = `/${url}`;
+            }
+            url = `${API.host}${url}`;
+          }
           let content = this.cache.get(url);
 
           if (content) {
