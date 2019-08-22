@@ -245,7 +245,8 @@ class PTPContent {
     }
 
     if (site && site.plugins) {
-      this.site.plugins.push(...site.plugins);
+      // 将系统定义的内容添加到最前面，确保基本库优先加载
+      this.site.plugins = site.plugins.concat(this.site.plugins);
     }
 
     // 网站指定的脚本
