@@ -298,6 +298,10 @@ export interface SearchResultItem {
   tags?: SearchResultItemTag[];
   entryName?: string;
   category?: SearchResultItemCategory;
+  // 进度（100表示完成）
+  progress?: number;
+  // 状态
+  status?: number;
 }
 
 /**
@@ -321,6 +325,7 @@ export interface SearchEntryConfig {
   resultSelector?: string;
   area?: SearchEntryConfigArea[];
   headers?: Dictionary<any>;
+  fieldSelector?: Dictionary<any>;
 }
 
 export interface SearchEntry {

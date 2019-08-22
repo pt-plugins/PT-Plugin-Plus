@@ -265,7 +265,12 @@
       "downloadTo": "下载到：{path}",
       "noReSearchSites": "没有需要重新搜索的站点",
       "doubanIdConverting": "正在尝试转换豆瓣编号，请稍候……",
-      "invalidDoubanId": "无效的豆瓣ID"
+      "invalidDoubanId": "无效的豆瓣ID",
+      "torrentStatus": {
+        "downloading": "正在下载",
+        "sending": "正在做种",
+        "completed": "已完成，未做种"
+      }
     },
     "settings": {
       "backup": {

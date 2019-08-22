@@ -15,6 +15,7 @@ import { APP } from "@/service/api";
 import { SiteService } from "./site";
 import PTPlugin from "./service";
 import extend from "extend";
+import { InfoParser } from "./infoParser";
 
 export type SearchConfig = {
   site?: Site;
@@ -382,7 +383,8 @@ export class Searcher {
               torrentTagSelectors: torrentTagSelectors,
               errorMsg: "",
               isLogged: false,
-              status: ESearchResultParseStatus.success
+              status: ESearchResultParseStatus.success,
+              searcher: this
             };
 
             // 执行获取结果的脚本
@@ -575,5 +577,36 @@ export class Searcher {
       }
     }
     return result;
+  }
+
+  /**
+   * 从当前行中获取指定字段的值
+   * @param site 当前站点
+   * @param row 当前行
+   * @param fieldName 字段名称
+   * @return null 表示没有获取到内容
+   */
+  public getFieldValue(
+    site: Site,
+    row: JQuery<HTMLElement>,
+    fieldName: string = ""
+  ) {
+    let selector: any;
+    if (site.searchEntryConfig && site.searchEntryConfig.fieldSelector) {
+      selector = site.searchEntryConfig.fieldSelector[fieldName];
+
+      if (!selector) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+
+    const parser = new InfoParser(this.service);
+    return parser.getFieldData(
+      row,
+      selector,
+      site.searchEntryConfig.fieldSelector
+    );
   }
 }

@@ -265,7 +265,12 @@
       "downloadTo": "Download to: {path}",
       "noReSearchSites": "No sites that need to be re-searched",
       "doubanIdConverting": "Trying to convert the douban id, please wait...",
-      "invalidDoubanId": "Invalid douban id"
+      "invalidDoubanId": "Invalid douban id",
+      "torrentStatus": {
+        "downloading": "Downloading",
+        "sending": "Sending",
+        "completed": "Completed"
+      }
     },
     "settings": {
       "backup": {

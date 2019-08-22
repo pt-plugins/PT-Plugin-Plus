@@ -43,11 +43,20 @@
     color: #8c8c8c !important;
   }
 
+  .progress {
+    position: absolute;
+    bottom: 0;
+    right: 8px;
+    width: 80%;
+    opacity: .8;
+  }
+
   .center {
     text-align: center;
   }
 
   .size {
+    position: relative;
     text-align: right;
   }
 

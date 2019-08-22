@@ -257,3 +257,13 @@ export enum EBeforeSearchingItemSearchMode {
   id = "id",
   name = "name"
 }
+
+// 种子当前状态
+export enum ETorrentStatus {
+  // 正在下载
+  downloading = 1,
+  // 正在做种
+  sending = 2,
+  // 已完成，未做种
+  completed = 255
+}

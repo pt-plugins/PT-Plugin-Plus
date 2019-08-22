@@ -420,7 +420,15 @@
             <br />
             <span class="captionText">&lt;{{ props.item.entryName }}&gt;</span>
           </td>
-          <td class="size">{{props.item.size | formatSize}}</td>
+          <td class="size">
+            {{props.item.size | formatSize}}
+            <TorrentProgress
+              class="progress"
+              v-if="props.item.progress!=null"
+              :progress="props.item.progress"
+              :status="props.item.status"
+            ></TorrentProgress>
+          </td>
           <!-- <td class="center">{{ props.item.comments }}</td> -->
           <td class="size">{{ props.item.seeders }}</td>
           <td class="size">{{ props.item.leechers }}</td>

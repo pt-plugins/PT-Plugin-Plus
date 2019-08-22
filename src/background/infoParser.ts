@@ -31,8 +31,9 @@ export class InfoParser {
 
   /**
    * 获取字段信息
-   * @param content
-   * @param config
+   * @param content 原始内容
+   * @param config 当前字段定义信息
+   * @param rule 选择器规则
    */
   getFieldData(content: any, config: any, rule: any) {
     let query: any;
@@ -85,7 +86,7 @@ export class InfoParser {
     let dateTime = dayjs;
     let _self = this;
     if (query != null) {
-      if (config.attribute || config.filters) {
+      if (config.attribute || config.filters || config.switchFilters) {
         if (config.attribute && rule.dataType != ERequestResultType.JSON) {
           query = query.attr(config.attribute);
         }

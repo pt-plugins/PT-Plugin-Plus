@@ -28,6 +28,7 @@ import { Downloader, downloadFile, FileDownloader } from "@/service/downloader";
 import * as basicContext from "basiccontext";
 import { PathHandler } from "@/service/pathHandler";
 import MovieInfoCard from "@/options/components/MovieInfoCard.vue";
+import TorrentProgress from "@/options/components/TorrentProgress.vue";
 
 type searchResult = {
   sites: Dictionary<any>;
@@ -41,7 +42,8 @@ const extension = new Extension();
 
 export default Vue.extend({
   components: {
-    MovieInfoCard
+    MovieInfoCard,
+    TorrentProgress
   },
   data() {
     return {
