@@ -8,5 +8,17 @@
   "host": "pt.btschool.club",
   "formerHosts": [
     "pt.btschool.net"
-  ]
+  ],
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [".progress:eq(0) > div"],
+        "filters": ["query.attr('style').match(/width:(\\d.+)%/)", "(query && query.length>=2)?query[1]:null"]
+      },
+      "status": {
+        "selector": [".progress:eq(0) > div"],
+        "filters": ["query.attr('class')", "query=='progress_seeding'?2:(query=='progress_completed'?255:1)"]
+      }
+    }
+  }
 }

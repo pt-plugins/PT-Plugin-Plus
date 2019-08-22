@@ -19,6 +19,18 @@
     "scripts": ["/libs/album/album.js", "torrents.js"],
     "styles": ["/libs/album/style.css"]
   }],
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["> td:eq(8)"],
+        "filters": ["query.text()==='--'?null:parseFloat(query.text())"]
+      },
+      "status": {
+        "selector": [".peer-active"],
+        "filters": ["query.length===0?255:(parseFloat(query.text())==100?2:1)"]
+      }
+    }
+  },
   "searchEntry": [{
     "name": "综合",
     "enabled": true

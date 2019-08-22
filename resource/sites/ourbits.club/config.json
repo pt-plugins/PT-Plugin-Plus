@@ -120,5 +120,20 @@
         "name": "Music"
       }
     ]
-  }]
+  }],
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["div.progressBar > div"],
+        "filters": ["query.attr('style').match(/width:.?(\\d.+)%/)", "(query && query.length>=2)?query[1]:null"]
+      },
+      "status": {
+        "selector": ["div.progressBar.doing > div", "div.progressBar > div"],
+        "switchFilters": [
+          ["query.attr('style').match(/width:.?(\\d.+)%/)", "(query && query.length>=2)?query[1]:0", "parseInt(query)==100?2:1"],
+          ["255"]
+        ]
+      }
+    }
+  }
 }

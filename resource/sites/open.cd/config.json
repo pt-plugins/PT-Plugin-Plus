@@ -6,6 +6,18 @@
   "tags": ["音乐"],
   "schema": "NexusPHP",
   "host": "open.cd",
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [".progress:eq(0) > div"],
+        "filters": ["query.attr('style').match(/width:(\\d.+)%/)", "(query && query.length>=2)?query[1]:null"]
+      },
+      "status": {
+        "selector": [".progress:eq(0) > div"],
+        "filters": ["query.attr('class')", "query=='progress_seeding'?2:(query=='progress_completed'?255:1)"]
+      }
+    }
+  },
   "searchEntry": [{
     "entry": "/torrents.php?search=$key$&boardid=2&notnewword=1",
     "name": "原抓区",

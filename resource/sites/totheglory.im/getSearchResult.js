@@ -146,7 +146,9 @@
           site: site,
           entryName: options.entry.name,
           category: this.getCategory(cells.eq(fieldIndex.category)),
-          tags: this.getTags(row, options.torrentTagSelectors)
+          tags: this.getTags(row, options.torrentTagSelectors),
+          progress: options.searcher.getFieldValue(site, row, "progress"),
+          status: options.searcher.getFieldValue(site, row, "status")
         };
         results.push(data);
       }
