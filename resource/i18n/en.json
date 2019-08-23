@@ -340,8 +340,14 @@
         "tabs": {
           "base": "General",
           "search": "Search",
-          "download": "Download"
-        }
+          "download": "Download",
+          "advanced": "Advanced"
+        },
+        "apiKey": {
+          "omdb": "OMDb API Key",
+          "douban": "Douban API Key"
+        },
+        "apiKeyTip": "The OMDb API Key is used to obtain the rating information of the movie;\nThe Douban API Key is used to obtain the basic information of the movie, such as pictures, introductions, etc."
       },
       "downloadClients": {
         "add": {

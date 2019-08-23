@@ -73,6 +73,20 @@ export default class Controller {
     if (options.connectClientTimeout) {
       this.movieInfoService.timeout = options.connectClientTimeout;
     }
+
+    // 追加用户定义的apiKey
+    if (this.options.apiKey) {
+      if (this.options.apiKey.omdb && this.options.apiKey.omdb.length > 0) {
+        this.movieInfoService.appendApiKey("omdb", this.options.apiKey.omdb);
+      }
+
+      if (this.options.apiKey.douban && this.options.apiKey.douban.length > 0) {
+        this.movieInfoService.appendApiKey(
+          "douban",
+          this.options.apiKey.douban
+        );
+      }
+    }
   }
 
   /**

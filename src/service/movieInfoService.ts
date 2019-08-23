@@ -139,9 +139,7 @@ export class MovieInfoService {
         }
 
         // 每个Key 1000 一天的限制
-        let apikey = this.omdbApiKeys[
-          Math.floor(Math.random() * this.omdbApiKeys.length)
-        ];
+        let apikey = this.getOmdbApiKey();
         let url = `${
           this.omdbApiURL
         }/?i=${IMDbId}&apikey=${apikey}&tomatoes=true`;
@@ -160,6 +158,16 @@ export class MovieInfoService {
         reject("error IMDbId");
       }
     });
+  }
+
+  /**
+   * 从OMDb apikey列表中随机获取一个key
+   */
+  public getOmdbApiKey() {
+    // 随机获取一个key
+    return this.omdbApiKeys[
+      Math.floor(Math.random() * this.omdbApiKeys.length)
+    ];
   }
 
   /**
@@ -252,6 +260,30 @@ export class MovieInfoService {
         .fail(error => {
           reject(error);
         });
+    });
+  }
+
+  /**
+   * 追加API Key
+   * @param type
+   * @param keys
+   */
+  public appendApiKey(type: string = "", keys: string[]) {
+    let apiKeys: string[];
+    switch (type) {
+      case "omdb":
+        apiKeys = this.omdbApiKeys;
+        break;
+
+      case "douban":
+        apiKeys = this.doubanApiKeys;
+        break;
+    }
+
+    keys.forEach(key => {
+      if (key && !apiKeys.includes(key)) {
+        apiKeys.push(key);
+      }
     });
   }
 }

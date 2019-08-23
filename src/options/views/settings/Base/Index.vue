@@ -23,6 +23,11 @@
               <v-icon>cloud_download</v-icon>
             </v-tab>
 
+            <v-tab key="advanced">
+              {{ $t('settings.base.tabs.advanced') }}
+              <v-icon>memory</v-icon>
+            </v-tab>
+
             <!-- 常规选项 -->
             <v-tab-item key="base">
               <v-container fluid grid-list-xs>
@@ -307,10 +312,36 @@
                 </v-layout>
               </v-container>
             </v-tab-item>
+
+            <!-- 高级 -->
+            <v-tab-item key="advanced">
+              <v-container fluid grid-list-xs>
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <!-- omdb api key -->
+                    <v-textarea
+                      v-model="apiKey.omdb"
+                      :label="$t('settings.base.apiKey.omdb')"
+                      auto-grow
+                      box
+                    ></v-textarea>
+
+                    <!-- douban api key -->
+                    <v-textarea
+                      v-model="apiKey.douban"
+                      :label="$t('settings.base.apiKey.douban')"
+                      auto-grow
+                      box
+                    ></v-textarea>
+
+                    <v-alert :value="true" color="info" icon="info" outline>
+                      <div v-html="$t('settings.base.apiKeyTip').toString().replace(/\n/g, '<br>')"></div>
+                    </v-alert>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-tab-item>
           </v-tabs>
-          <v-container fluid grid-list-xs>
-            <v-layout row wrap></v-layout>
-          </v-container>
         </v-form>
       </v-card-text>
 
@@ -375,7 +406,8 @@ export default Vue.extend({
         showToolbarOnContentPage: true,
         downloadFailedRetry: false,
         downloadFailedFailedRetryCount: 3,
-        downloadFailedFailedRetryInterval: 5
+        downloadFailedFailedRetryInterval: 5,
+        apiKey: {}
       } as Options,
       units: [] as any,
       hours: [] as any,
@@ -387,7 +419,11 @@ export default Vue.extend({
       errorMsg: "",
       lastUpdate: "",
       autoRefreshUserDataLastUpdate: "",
-      activeTab: "base"
+      activeTab: "base",
+      apiKey: {
+        omdb: "",
+        douban: ""
+      }
     };
   },
   methods: {
@@ -398,6 +434,37 @@ export default Vue.extend({
         (this.$refs.defaultClient as any).focus();
         return;
       }
+
+      if (!this.options.apiKey) {
+        this.options.apiKey = {};
+      }
+
+      let omdbApiKeys: string[] = [];
+      let doubanApiKeys: string[] = [];
+
+      // 添加 omdb api key
+      if (this.apiKey.omdb) {
+        let items = this.apiKey.omdb.split("\n");
+        items.forEach((item: string) => {
+          if (/^[a-z0-9]{8}$/.test(item)) {
+            omdbApiKeys.push(item);
+          }
+        });
+      }
+
+      // 添加 douban api key
+      if (this.apiKey.douban) {
+        let items = this.apiKey.douban.split("\n");
+        items.forEach((item: string) => {
+          if (/^[a-z0-9]{32}$/.test(item)) {
+            doubanApiKeys.push(item);
+          }
+        });
+      }
+
+      this.options.apiKey.omdb = omdbApiKeys;
+      this.options.apiKey.douban = doubanApiKeys;
+
       this.$store.dispatch("saveConfig", this.options);
       this.successMsg = this.$t("settings.base.saved").toString();
     },
@@ -437,6 +504,17 @@ export default Vue.extend({
       console.log("downloadHistory", result);
       this.downloadHistory = result;
     });
+
+    if (this.options.apiKey) {
+      if (this.options.apiKey.omdb && this.options.apiKey.omdb.length > 0) {
+        this.apiKey.omdb = this.options.apiKey.omdb.join("\n");
+      }
+
+      if (this.options.apiKey.douban && this.options.apiKey.douban.length > 0) {
+        this.apiKey.douban = this.options.apiKey.douban.join("\n");
+      }
+    }
+
     APP.cache
       .getLastUpdateTime()
       .then((time: number) => {

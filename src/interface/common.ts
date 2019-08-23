@@ -60,6 +60,11 @@ export interface SearchOptions {
   saveKey?: boolean;
 }
 
+export interface IApiKey {
+  omdb?: string[];
+  douban?: string[];
+}
+
 /**
  * 参数
  */
@@ -117,6 +122,8 @@ export interface Options {
   downloadFailedFailedRetryCount?: number;
   // 下载失败间隔时间（秒）
   downloadFailedFailedRetryInterval?: number;
+  // 用户自定义 API Key 列表
+  apiKey?: IApiKey;
 }
 
 // 在搜索之前一些选项配置
