@@ -25,7 +25,25 @@ export class MovieInfoService {
     "4ee790e0",
     "d82cb888",
     "d58193b6",
-    "15c0aa3f"
+    "15c0aa3f",
+    "53acf36d",
+    "3a864b75",
+    "2892ab46",
+    "b507af90",
+    "d0e68145",
+    "7cf67120",
+    "85b2a90c",
+    "2896ff0a",
+    "a8ac6c8c",
+    "f1082913",
+    "aa4b9983",
+    "c4e08870",
+    "5d5c0049",
+    "79a462f2",
+    "e4c3fce8",
+    "918d70df",
+    "e94cb667",
+    "eb84d6d7"
   ];
   // 豆瓣 apikey
   public doubanApiKeys = [
