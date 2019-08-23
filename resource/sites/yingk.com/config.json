@@ -6,11 +6,21 @@
   "tags": ["影视", "综合"],
   "schema": "NexusPHP",
   "host": "yingk.com",
-  "searchEntry": [{
-    "name": "全部",
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "queryString": "search=$key$&notnewword=1",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "appendQueryString": "&search_area=5",
+      "parseScript": "(payload && payload.doubanId)?payload.doubanId:key"
+    }],
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr",
+    "resultSelector": "table.torrents:last > tbody > tr"
+  },
+  "searchEntry": [{
+    "name": "全部",
     "enabled": true
   }],
   "categories": [{
