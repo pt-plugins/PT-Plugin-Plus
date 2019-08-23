@@ -20,7 +20,8 @@ import {
   DownloadClient,
   DownloadOptions,
   ECommonKey,
-  ERequestMethod
+  ERequestMethod,
+  ISearchPayload
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import dayjs from "dayjs";
@@ -112,7 +113,8 @@ export default Vue.extend({
       downloadFailedTorrents: [] as FileDownloader[],
       // 最后操作的checkbox索引
       lastCheckedIndex: -1,
-      shiftKey: false
+      shiftKey: false,
+      searchPayload: {} as ISearchPayload
     };
   },
   created() {
@@ -206,10 +208,7 @@ export default Vue.extend({
         this.search();
       }, 220);
     },
-    /**
-     * 开始搜索
-     */
-    search() {
+    reset() {
       this.selected = [];
       this.clearMessage();
       this.datas = [];
@@ -222,7 +221,13 @@ export default Vue.extend({
         noResultsSites: []
       } as searchResult;
       this.filterKey = "";
-
+      this.searchPayload = {};
+    },
+    /**
+     * 开始搜索
+     */
+    search(searchPayload?: ISearchPayload) {
+      this.reset();
       if (window.location.hostname == "localhost") {
         $.getJSON("http://localhost:8001/test/searchData.json").done(
           (result: any) => {
@@ -261,6 +266,10 @@ export default Vue.extend({
         return;
       }
 
+      if (searchPayload) {
+        this.searchPayload = searchPayload;
+      }
+
       let searchKeys = {
         id: "",
         cn: "",
@@ -275,6 +284,17 @@ export default Vue.extend({
         searchKeys.id = tmp[0];
         searchKeys.cn = tmp[1];
         searchKeys.en = tmp[2];
+
+        if (/(douban\d+)/.test(searchKeys.id)) {
+          this.searchPayload.doubanId = (searchKeys.id as any).match(
+            /douban(\d+)/
+          )[1];
+        } else {
+          this.searchPayload.imdbId = searchKeys.id;
+        }
+
+        this.searchPayload.cn = searchKeys.cn;
+        this.searchPayload.en = searchKeys.en;
       }
 
       // 豆瓣ID
@@ -282,12 +302,13 @@ export default Vue.extend({
         this.getIMDbIdFromDouban(this.key)
           .then(result => {
             if (typeof result == "string") {
+              this.searchPayload.imdbId = result;
               this.key = result;
-              this.search();
+              this.search(this.searchPayload);
             } else {
               if (searchKeys.cn) {
                 this.key = searchKeys.cn;
-                this.search();
+                this.search(this.searchPayload);
               } else {
                 this.errorMsg = this.$t(
                   "searchTorrent.doubanIdConversionFailed"
@@ -471,7 +492,8 @@ export default Vue.extend({
       extension
         .sendRequest(EAction.getSearchResult, null, {
           key: this.latestTorrentsOnly ? "" : this.key,
-          site: site
+          site: site,
+          payload: this.searchPayload
         })
         .then((result: any) => {
           if (result && result.length) {

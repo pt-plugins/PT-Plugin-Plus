@@ -80,7 +80,11 @@ export default class Controller {
    * @param options
    */
   public getSearchResult(options: any): Promise<any> {
-    return this.searcher.searchTorrent(options.site, options.key);
+    return this.searcher.searchTorrent(
+      options.site,
+      options.key,
+      options.payload
+    );
   }
 
   /**

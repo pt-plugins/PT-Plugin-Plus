@@ -313,6 +313,7 @@ export interface SearchEntryConfigArea {
   appendQueryString?: string;
   keyAutoMatch?: string;
   replaceKey?: string[];
+  parseScript?: string;
 }
 
 export interface SearchEntryConfig {
@@ -414,3 +415,11 @@ export type i18nResource = {
   authors?: Array<string>;
   words: Dictionary<any>;
 };
+
+// 搜索时附加数据
+export interface ISearchPayload {
+  imdbId?: string;
+  doubanId?: string;
+  cn?: string;
+  en?: string;
+}

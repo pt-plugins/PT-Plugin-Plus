@@ -9,7 +9,8 @@ import {
   EModule,
   ERequestResultType,
   SearchEntryConfigArea,
-  SearchEntryConfig
+  SearchEntryConfig,
+  ISearchPayload
 } from "@/interface/common";
 import { APP } from "@/service/api";
 import { SiteService } from "./site";
@@ -60,8 +61,13 @@ export class Searcher {
    * 搜索种子
    * @param site 需要搜索的站点
    * @param key 需要搜索的关键字
+   * @param payload 附加数据
    */
-  public searchTorrent(site: Site, key: string = ""): Promise<any> {
+  public searchTorrent(
+    site: Site,
+    key: string = "",
+    payload?: ISearchPayload
+  ): Promise<any> {
     console.log("searchTorrent: start");
     return new Promise<any>((resolve?: any, reject?: any) => {
       let result: DataResult = {
@@ -148,6 +154,13 @@ export class Searcher {
                   new RegExp(area.replaceKey[0], "g"),
                   area.replaceKey[1]
                 );
+              }
+
+              // 解析脚本，最终返回搜索关键字，可调用 payload 里的数据进行关键字替换
+              if (area.parseScript) {
+                try {
+                  key = eval(area.parseScript);
+                } catch (error) {}
               }
 
               return true;
