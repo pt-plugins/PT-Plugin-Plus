@@ -6,5 +6,16 @@
   "tags": ["影视", "综合"],
   "schema": "NexusPHP",
   "host": "joyhd.net",
-  "collaborator": "ylxb2016"
+  "collaborator": "ylxb2016",
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowhead:contains('银元') + td"],
+          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+        }
+      }
+    }
+  }
 }
