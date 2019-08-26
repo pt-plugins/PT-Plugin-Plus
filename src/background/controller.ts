@@ -243,7 +243,10 @@ export default class Controller {
         .call(EAction.addTorrentFromURL, {
           url: downloadOptions.url,
           savePath: downloadOptions.savePath,
-          autoStart: downloadOptions.autoStart
+          autoStart:
+            downloadOptions.autoStart === undefined
+              ? false
+              : downloadOptions.autoStart
         })
         .then((result: any) => {
           this.service.logger.add({
