@@ -7,6 +7,22 @@
   "host": "hdstreet.club",
   "collaborator": "wyl219",
   "searchEntryConfig": {
-    "parseScriptFile": "/sites/yingk.com/getSearchResult.js"
-  }
+    "parseScriptFile": "/sites/yingk.com/getSearchResult.js",
+    "queryString": "search=$key$&notnewword=1",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "appendQueryString": "&search_area=5",
+      "parseScript": "(payload && payload.doubanId)?payload.doubanId:key"
+    }]
+  },
+  "searchEntry": [{
+    "entry": "/torrents.php",
+    "name": "华语区",
+    "enabled": true
+  }, {
+    "entry": "/torrentsasia.php",
+    "name": "外语区",
+    "enabled": true
+  }]
 }
