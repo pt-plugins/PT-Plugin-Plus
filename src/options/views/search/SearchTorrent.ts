@@ -202,10 +202,14 @@ export default Vue.extend({
     /**
      * 延迟执行搜索
      */
-    doSearch() {
+    doSearch(searchPayload?: ISearchPayload) {
       clearTimeout(this.searchTimer);
+      let _searchPayload: ISearchPayload;
+      if (searchPayload) {
+        _searchPayload = this.clone(searchPayload);
+      }
       this.searchTimer = window.setTimeout(() => {
-        this.search();
+        this.search(_searchPayload);
       }, 220);
     },
     reset() {
@@ -227,6 +231,8 @@ export default Vue.extend({
      * 开始搜索
      */
     search(searchPayload?: ISearchPayload) {
+      if (this.loading || !this.key) return;
+
       this.reset();
       if (window.location.hostname == "localhost") {
         $.getJSON("http://localhost:8001/test/searchData.json").done(
@@ -240,8 +246,6 @@ export default Vue.extend({
         );
         return;
       }
-
-      if (this.loading || !this.key) return;
 
       if (!this.options.system) {
         if (this.reloadCount >= 10) {

@@ -87,6 +87,7 @@ export class Searcher {
         schema && schema.searchEntryConfig ? schema.searchEntryConfig : {},
         siteServce.options.searchEntryConfig
       );
+      let searchEntryConfigQueryString = "";
 
       if (siteServce.options.searchEntry) {
         searchConfig.rootPath = `sites/${host}/`;
@@ -127,8 +128,8 @@ export class Searcher {
 
       // 是否有搜索入口配置项
       if (searchEntryConfig && searchEntryConfig.page) {
-        let searchPage = searchEntryConfig.page + "?";
-        siteSearchPage = searchPage + searchEntryConfig.queryString;
+        siteSearchPage = searchEntryConfig.page;
+        searchEntryConfigQueryString = searchEntryConfig.queryString + "";
 
         // 搜索区域
         if (searchEntryConfig.area) {
@@ -140,12 +141,12 @@ export class Searcher {
             ) {
               // 如果有定义查询字符串，则替换默认的查询字符串
               if (area.queryString) {
-                siteSearchPage = searchPage + area.queryString;
+                searchEntryConfigQueryString = area.queryString;
               }
 
               // 追加查询字符串
               if (area.appendQueryString) {
-                siteSearchPage += area.appendQueryString;
+                searchEntryConfigQueryString += area.appendQueryString;
               }
 
               // 替换关键字
@@ -178,6 +179,7 @@ export class Searcher {
 
       searchConfig.entry.forEach((entry: SearchEntry) => {
         let searchPage = entry.entry || siteSearchPage;
+        let queryString = entry.queryString || searchEntryConfigQueryString;
         if (searchEntryConfig) {
           entry.parseScriptFile =
             entry.parseScriptFile || searchEntryConfig.parseScriptFile;
@@ -206,10 +208,15 @@ export class Searcher {
           if ((searchPage + "").substr(0, 1) == "/") {
             searchPage = (searchPage + "").substr(1);
           }
-          let url: string =
-            site.url +
-            searchPage +
-            (entry.queryString ? `&${entry.queryString}` : "");
+          let url: string = site.url + searchPage;
+
+          if (queryString) {
+            if (searchPage.indexOf("?") !== -1) {
+              url += "&" + queryString;
+            } else {
+              url += "?" + queryString;
+            }
+          }
 
           url = this.replaceKeys(url, {
             key:

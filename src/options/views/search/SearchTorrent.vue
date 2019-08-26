@@ -8,7 +8,7 @@
         icon
         small
         color="white"
-        @click.stop="doSearch"
+        @click.stop="doSearch(searchPayload);"
         :title="$t('searchTorrent.reSearch')"
         v-if="!loading && key!=''"
       >
