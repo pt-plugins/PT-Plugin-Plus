@@ -331,7 +331,7 @@ export class ContextMenus {
   private sendTorrentToClient(tabid: number = 0, options: DownloadOptions) {
     console.log("sendTorrentToClient", options);
     let site = this.getSiteFromURL(options.url);
-    if (site) {
+    if (site && options.savePath) {
       let savePath = this.pathHandler.getSavePath(options.savePath, site);
       if (savePath === false) {
         // "用户已取消"

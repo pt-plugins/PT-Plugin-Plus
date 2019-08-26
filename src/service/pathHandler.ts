@@ -25,6 +25,9 @@ export class PathHandler {
    * @param {*} sourcePath
    */
   public getSavePath(sourcePath: any, site: Site): any {
+    if (!sourcePath) {
+      return undefined;
+    }
     let path = sourcePath;
     let key = "<...>";
 
