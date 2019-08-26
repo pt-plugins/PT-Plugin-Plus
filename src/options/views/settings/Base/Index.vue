@@ -334,6 +334,21 @@
                       box
                     ></v-textarea>
 
+                    <div class="mb-4 text-xs-right">
+                      <v-btn
+                        @click="verifyApiKey"
+                        :loading="apiKeyVerifying"
+                      >{{ $t('settings.base.verifyApiKey') }}</v-btn>
+                    </div>
+
+                    <v-alert :value="showVerifyingStatus" color="info" icon="info" outline>
+                      <div>OMDb:</div>
+                      <div v-html="apiKeyVerifyResults.omdb.join('<br>')"></div>
+                      <v-divider></v-divider>
+                      <div>Douban:</div>
+                      <div v-html="apiKeyVerifyResults.douban.join('<br>')"></div>
+                    </v-alert>
+
                     <v-alert :value="true" color="info" icon="info" outline>
                       <div v-html="$t('settings.base.apiKeyTip').toString().replace(/\n/g, '<br>')"></div>
                     </v-alert>
@@ -376,6 +391,7 @@ import {
   EBeforeSearchingItemSearchMode
 } from "@/interface/common";
 import Extension from "@/service/extension";
+import { MovieInfoService } from "@/service/movieInfoService";
 
 const extension = new Extension();
 
@@ -423,7 +439,13 @@ export default Vue.extend({
       apiKey: {
         omdb: "",
         douban: ""
-      }
+      },
+      apiKeyVerifyResults: {
+        omdb: [] as any,
+        douban: [] as any
+      },
+      apiKeyVerifying: false,
+      showVerifyingStatus: false
     };
   },
   methods: {
@@ -482,6 +504,83 @@ export default Vue.extend({
             })
             .catch();
         }, 200);
+      }
+    },
+    /**
+     * 测试 Api Key
+     */
+    verifyApiKey() {
+      let omdbKeys = this.apiKey.omdb.split("\n");
+      let doubanKeys = this.apiKey.douban.split("\n");
+      let count = omdbKeys.length + doubanKeys.length;
+      if (count == 0) {
+        return;
+      }
+      let movieSerice = new MovieInfoService();
+
+      this.apiKeyVerifyResults = {
+        omdb: [],
+        douban: []
+      };
+      this.apiKeyVerifying = true;
+      this.showVerifyingStatus = true;
+
+      let doneCount = 0;
+      omdbKeys.forEach((item: string) => {
+        if (/^[a-z0-9]{8}$/.test(item)) {
+          movieSerice
+            .verifyOmdbApiKey(item)
+            .then(() => {
+              this.apiKeyVerifyResults.omdb.push(`「${item}」 ok.`);
+            })
+            .catch(error => {
+              this.apiKeyVerifyResults.omdb.push(
+                `<span style='color:red'>「${item}」 error. (${error})</span>`
+              );
+            })
+            .finally(() => {
+              doneCount++;
+              if (doneCount === count) {
+                this.apiKeyVerifying = false;
+                window.setTimeout(() => {
+                  this.showVerifyingStatus = false;
+                }, 60000);
+              }
+            });
+        } else {
+          doneCount++;
+        }
+      });
+
+      doubanKeys.forEach((item: string) => {
+        if (/^[a-z0-9]{32}$/.test(item)) {
+          movieSerice
+            .verifyDoubanApiKey(item)
+            .then(() => {
+              this.apiKeyVerifyResults.douban.push(`「${item}」 ok.`);
+            })
+            .catch(error => {
+              this.apiKeyVerifyResults.douban.push(
+                `<span style='color:red'>「${item}」 error.</span>`
+              );
+            })
+            .finally(() => {
+              doneCount++;
+              if (doneCount === count) {
+                this.apiKeyVerifying = false;
+                window.setTimeout(() => {
+                  this.showVerifyingStatus = false;
+                }, 60000);
+              }
+            });
+        } else {
+          doneCount++;
+        }
+      });
+
+      if (doneCount === count) {
+        this.apiKeyVerifying = false;
+        this.showVerifyingStatus = false;
       }
     }
   },

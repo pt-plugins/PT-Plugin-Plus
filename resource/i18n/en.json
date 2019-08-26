@@ -347,7 +347,8 @@
           "omdb": "OMDb API Key",
           "douban": "Douban API Key"
         },
-        "apiKeyTip": "The OMDb API Key is used to obtain the rating information of the movie;\nThe Douban API Key is used to obtain the basic information of the movie, such as pictures, introductions, etc."
+        "apiKeyTip": "The OMDb API Key is used to obtain the rating information of the movie;\nThe Douban API Key is used to obtain the basic information of the movie, such as pictures, introductions, etc.",
+        "verifyApiKey": "Verify Api Key"
       },
       "downloadClients": {
         "add": {

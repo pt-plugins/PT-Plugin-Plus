@@ -347,7 +347,8 @@
           "omdb": "OMDb API Key",
           "douban": "豆瓣 API Key"
         },
-        "apiKeyTip": "OMDb API Key 用于获取影片的评分信息；\n豆瓣 API Key 用于获取影片的基本资料，如图片、简介等；\n助手已内置了些一Key，如出现无法正常获取评分或影片资料，可进行设置；多个Key按回车进行区分。"
+        "apiKeyTip": "OMDb API Key 用于获取影片的评分信息；\n豆瓣 API Key 用于获取影片的基本资料，如图片、简介等；\n助手已内置了些一Key，如出现无法正常获取评分或影片资料，可进行设置；多个Key按回车进行区分。",
+        "verifyApiKey": "验证 Api Key"
       },
       "downloadClients": {
         "add": {
