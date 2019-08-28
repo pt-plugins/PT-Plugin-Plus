@@ -293,7 +293,29 @@
         "clearFromGoogleTip": "从Google中清除已备份的参数",
         "clearFromGoogleConfirm": "是否要从Google中清除已备份的参数？",
         "clearFromGoogleError": "清除失败！",
-        "clearFromGoogleSuccess": "内容已清除"
+        "clearFromGoogleSuccess": "内容已清除",
+        "index": {
+          "headers": {
+            "name": "服务名称",
+            "type": "类型",
+            "lastBackupTime": "最近备份时间",
+            "action": "操作"
+          }
+        },
+        "server": {
+          "add": {
+            "title": "添加备份服务器"
+          },
+          "edit": {
+            "title": "编辑备份服务器"
+          },
+          "editor": {
+            "name": "服务名称",
+            "address": "服务器地址",
+            "authCode": "授权码",
+            "applyAuthCode": "申请授权码"
+          }
+        }
       },
       "base": {
         "title": "常规设置",

@@ -8,12 +8,22 @@ import {
   SearchEntry,
   EBeforeSearchingItemSearchMode,
   SearchSolution,
-  SearchSolutionRange
+  SearchSolutionRange,
+  IBackupServer,
+  EBackupServerType,
+  EUserDataRange,
+  IHashData
 } from "@/interface/common";
 import { API, APP } from "@/service/api";
 import localStorage from "@/service/localStorage";
 import { SyncStorage } from "./syncStorage";
 import { PPF } from "@/service/public";
+import JSZip from "jszip";
+import md5 from "blueimp-md5";
+import dayjs from "dayjs";
+import { OWSS } from "./plugins/OWSS";
+import PTPlugin from "./service";
+type Service = PTPlugin;
 
 /**
  * 配置信息类
@@ -29,7 +39,7 @@ class Config {
   public publicSites: any[] = [];
   public requestCount: number = 0;
 
-  constructor() {
+  constructor(public service: Service) {
     this.reload();
   }
 
@@ -48,6 +58,7 @@ class Config {
     exceedSizeUnit: ESizeUnit.GiB,
     sites: [],
     clients: [],
+    backupServers: [],
     system: {},
     allowDropToSend: true,
     allowSelectionTextSearch: true,
@@ -627,6 +638,129 @@ class Config {
           });
       } else {
         reject(APP.createErrorMessage("chrome.storage 不存在"));
+      }
+    });
+  }
+
+  /**
+   * 创建用于验证数据对象
+   */
+  public createHash(data: string): IHashData {
+    const length = data.length;
+
+    const keys: any[] = [];
+
+    let result: IHashData = {
+      hash: "",
+      keyMap: [],
+      length
+    };
+
+    for (let n = 0; n < 32; n++) {
+      let index = Math.round(length * Math.random());
+      keys.push(data.substr(index, 1));
+      result.keyMap.push(index);
+    }
+
+    result.hash = md5(keys.join(""));
+
+    return result;
+  }
+
+  public getBackupFileData(fileName: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      const formData = new FormData();
+      formData.append("name", fileName);
+
+      const zip = new JSZip();
+
+      const rawUserData = this.service.userData.get("", EUserDataRange.all);
+      const rawOptions = this.cleaningOptions(this.service.options);
+
+      console.log(rawOptions);
+
+      delete rawOptions.system;
+
+      const options = JSON.stringify(rawOptions);
+      const userData = JSON.stringify(rawUserData);
+
+      // 配置
+      zip.file("options.json", JSON.stringify(options));
+      // 用户数据
+      zip.file("userdatas.json", JSON.stringify(userData));
+
+      // 创建检证用的文件
+      const manifest = {
+        checkInfo: this.createHash(options + userData),
+        version: PPF.getVersion(),
+        time: new Date().getTime()
+      };
+      zip.file("manifest.json", JSON.stringify(manifest));
+
+      zip.generateAsync({ type: "blob" }).then(blob => {
+        formData.append("data", blob);
+        resolve(formData);
+      });
+    });
+  }
+
+  public backupToServer(server: IBackupServer): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      const time = dayjs().valueOf();
+      const fileName =
+        "PT-Plugin-Plus-Backup-" +
+        dayjs().format("YYYY-MM-DD HH:mm:ss") +
+        ".zip";
+      this.getBackupFileData(fileName)
+        .then(formData => {
+          switch (server.type) {
+            case EBackupServerType.OWSS:
+              new OWSS(server)
+                .add(formData)
+                .then(result => {
+                  resolve({
+                    time,
+                    fileName
+                  });
+                })
+                .catch(error => {
+                  reject(error);
+                });
+              break;
+
+            default:
+              reject("暂不支持");
+              break;
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  public restoreFromServer(server: IBackupServer) {}
+
+  public getBackupListFromServer(
+    server: IBackupServer,
+    options: any = {}
+  ): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      switch (server.type) {
+        case EBackupServerType.OWSS:
+          new OWSS(server)
+            .list(options)
+            .then(result => {
+              resolve(result);
+            })
+            .catch(error => {
+              reject(error);
+            });
+          break;
+
+        default:
+          reject("暂不支持");
+          break;
       }
     });
   }

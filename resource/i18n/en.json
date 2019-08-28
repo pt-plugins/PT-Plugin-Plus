@@ -293,7 +293,29 @@
         "clearFromGoogleTip": "Clear backed up parameters from Google",
         "clearFromGoogleConfirm": "Do you want to clear the backed up parameters from Google?",
         "clearFromGoogleError": "Clear failed!",
-        "clearFromGoogleSuccess": "Content cleared"
+        "clearFromGoogleSuccess": "Content cleared",
+        "index": {
+          "headers": {
+            "name": "Service name",
+            "type": "Type",
+            "lastBackupTime": "Last backup time",
+            "action": "Action"
+          }
+        },
+        "server": {
+          "add": {
+            "title": "Add Backup Server"
+          },
+          "edit": {
+            "title": "Edit Backup Server"
+          },
+          "editor": {
+            "name": "Service name",
+            "address": "Server address",
+            "authCode": "Authorization Code",
+            "applyAuthCode": "Apply"
+          }
+        }
       },
       "base": {
         "title": "General",

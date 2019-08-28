@@ -23,7 +23,7 @@ import { i18nService } from "./i18n";
  */
 export default class PTPlugin {
   // 当前配置对象
-  public config: Config = new Config();
+  public config: Config = new Config(this);
   public options: Options = {
     sites: [],
     clients: []
@@ -447,9 +447,7 @@ export default class PTPlugin {
   private getNextTime(addDays: number = 1) {
     let today = PPF.getToDay();
     let time = new Date(
-      `${today} ${this.options.autoRefreshUserDataHours}:${
-        this.options.autoRefreshUserDataMinutes
-      }:00`
+      `${today} ${this.options.autoRefreshUserDataHours}:${this.options.autoRefreshUserDataMinutes}:00`
     );
 
     return new Date(time.setDate(time.getDate() + addDays)).getTime();

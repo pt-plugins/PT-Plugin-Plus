@@ -14,7 +14,8 @@ import {
   ERequestMethod,
   UserInfo,
   EUserDataRange,
-  i18nResource
+  i18nResource,
+  IBackupServer
 } from "@/interface/common";
 import { filters as Filters } from "@/service/filters";
 import { ClientController } from "@/service/clientController";
@@ -1117,5 +1118,15 @@ export default class Controller {
 
   public replaceLanguage(resource: i18nResource): Promise<any> {
     return this.service.i18n.replace(resource);
+  }
+
+  public backupToServer(server: IBackupServer): Promise<any> {
+    return this.service.config.backupToServer(server);
+  }
+
+  public getBackupListFromServer(options: any = {}): Promise<any> {
+    const server = options.server;
+    delete options.server;
+    return this.service.config.getBackupListFromServer(server, options);
   }
 }

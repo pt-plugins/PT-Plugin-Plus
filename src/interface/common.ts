@@ -7,7 +7,8 @@ import {
   EAction,
   EDataResultType,
   EUserDataRequestStatus,
-  EBeforeSearchingItemSearchMode
+  EBeforeSearchingItemSearchMode,
+  EBackupServerType
 } from "./enum";
 
 /**
@@ -63,6 +64,20 @@ export interface SearchOptions {
 export interface IApiKey {
   omdb?: string[];
   douban?: string[];
+}
+
+/**
+ * 备份服务器
+ */
+export interface IBackupServer {
+  id: string;
+  type: EBackupServerType;
+  address: string;
+  name: string;
+  lastBackupTime?: number;
+  loginName?: string;
+  loginPwd?: string;
+  authCode?: string;
 }
 
 /**
@@ -124,6 +139,8 @@ export interface Options {
   downloadFailedFailedRetryInterval?: number;
   // 用户自定义 API Key 列表
   apiKey?: IApiKey;
+  // 备份服务器列表
+  backupServers?: IBackupServer[];
 }
 
 // 在搜索之前一些选项配置
@@ -429,4 +446,17 @@ export interface ISearchPayload {
   doubanId?: string;
   cn?: string;
   en?: string;
+}
+
+export interface IHashData {
+  hash: string;
+  keyMap: number[];
+  length: number;
+}
+
+export interface IManifest {
+  checkInfo: IHashData;
+  version: string;
+  time: number;
+  hash?: string;
 }

@@ -12,6 +12,10 @@
           <v-icon>restore</v-icon>
           <span class="ml-1">{{ $t('settings.backup.restore') }}</span>
         </v-btn>
+        <v-btn color="info" @click="test">
+          <v-icon>restore</v-icon>
+          <span class="ml-1">测试</span>
+        </v-btn>
         <v-spacer></v-spacer>
         <div v-if="!isDevelopmentMode">
           <v-btn
@@ -47,10 +51,47 @@
           </v-btn>
         </div>
       </v-card-actions>
+
+      <v-data-table
+        v-model="selected"
+        :headers="headers"
+        :items="this.$store.state.options.backupServers"
+        :pagination.sync="pagination"
+        item-key="id"
+        select-all
+        class="elevation-1"
+      >
+        <template slot="items" slot-scope="props">
+          <td style="width:20px;">
+            <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+          </td>
+          <td>
+            <a @click="editBackupServer(props.item)">{{ props.item.name }}</a>
+          </td>
+          <td>{{ props.item.type }}</td>
+          <td>{{ props.item.lastBackupTime }}</td>
+          <td>
+            <v-icon small class="mr-2" @click="backupToServer(props.item)" color="success">backup</v-icon>
+            <v-icon
+              small
+              class="mr-2"
+              @click="restoreFromServer(props.item)"
+              color="info"
+            >cloud_download</v-icon>
+            <v-icon small class="mr-2" @click="editBackupServer(props.item)">edit</v-icon>
+            <v-icon small color="error" @click="removeBackupServer(props.item)">delete</v-icon>
+          </td>
+        </template>
+      </v-data-table>
     </v-card>
     <v-alert :value="true" color="grey">{{ $t('settings.backup.subTitle') }}</v-alert>
     <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
     <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{ successMsg }}</v-snackbar>
+
+    <!-- 新增 -->
+    <AddOWSS v-model="showAddOWSS" @save="addBackupServer" />
+    <!-- 新增 -->
+    <EditOWSS v-model="showEditOWSS" :initData="selectedItem" @save="updateBackupServer" />
   </div>
 </template>
 <script lang="ts">
@@ -59,8 +100,19 @@ import Vue from "vue";
 import Extension from "@/service/extension";
 import JSZip from "jszip";
 import md5 from "blueimp-md5";
-import { EAction, EModule, Options } from "@/interface/common";
+import {
+  EAction,
+  EModule,
+  Options,
+  IBackupServer,
+  EBackupServerType
+} from "@/interface/common";
 import { PPF } from "@/service/public";
+import { FileDownloader } from "@/service/downloader";
+import AddOWSS from "./OWSS/Add.vue";
+import EditOWSS from "./OWSS/Edit.vue";
+import { OWSS } from "@/background/plugins/OWSS";
+
 const extension = new Extension();
 
 interface IHashData {
@@ -77,6 +129,10 @@ interface IManifest {
 }
 
 export default Vue.extend({
+  components: {
+    AddOWSS,
+    EditOWSS
+  },
   data() {
     return {
       fileName: "PT-plugin-plus-config.json",
@@ -91,7 +147,15 @@ export default Vue.extend({
         restoreFromGoogle: false,
         clearFromGoogle: false
       },
-      isDevelopmentMode: false
+      isDevelopmentMode: false,
+      pagination: {
+        rowsPerPage: -1
+      },
+      selected: [] as any,
+      showAddOWSS: false,
+      showEditOWSS: false,
+      servers: [] as any,
+      selectedItem: {} as IBackupServer
     };
   },
   mounted() {
@@ -110,6 +174,7 @@ export default Vue.extend({
         }
       });
     }
+    console.log(this.$store.state.options.backupServers);
   },
   methods: {
     /**
@@ -431,6 +496,47 @@ export default Vue.extend({
           this.errorMsg = this.$t("settings.backup.restoreError").toString();
         }
       }
+    },
+    addBackupServer(server: IBackupServer) {
+      this.$store.dispatch("addBackupServer", server);
+    },
+    editBackupServer(server: IBackupServer) {
+      this.selectedItem = server;
+      this.showEditOWSS = true;
+    },
+    updateBackupServer(server: IBackupServer) {
+      this.$store.dispatch("updateBackupServer", server);
+    },
+    removeBackupServer(server: IBackupServer) {
+      if (confirm(this.$t("common.removeConfirm").toString())) {
+        this.$store.dispatch("removeBackupServer", server);
+      }
+    },
+    backupToServer(server: IBackupServer) {
+      extension
+        .sendRequest(EAction.backupToServer, null, server)
+        .then((result: any) => {
+          console.log(result);
+        })
+        .catch(() => {
+          this.errorMsg = this.$t("settings.backup.backupError").toString();
+        });
+    },
+    restoreFromServer(server: IBackupServer) {
+      extension
+        .sendRequest(EAction.getBackupListFromServer, null, {
+          server,
+          pageSize: 5
+        })
+        .then((result: any) => {
+          console.log(result);
+        })
+        .catch(() => {
+          this.errorMsg = this.$t("settings.backup.backupError").toString();
+        });
+    },
+    test() {
+      this.showAddOWSS = true;
     }
   },
   watch: {
@@ -439,6 +545,32 @@ export default Vue.extend({
     },
     errorMsg() {
       this.haveError = this.errorMsg != "";
+    }
+  },
+  computed: {
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("settings.backup.index.headers.name"),
+          align: "left",
+          value: "name"
+        },
+        {
+          text: this.$t("settings.backup.index.headers.type"),
+          align: "left",
+          value: "type"
+        },
+        {
+          text: this.$t("settings.backup.index.headers.lastBackupTime"),
+          align: "left",
+          value: "lastBackupTime"
+        },
+        {
+          text: this.$t("settings.backup.index.headers.action"),
+          value: "name",
+          sortable: false
+        }
+      ];
     }
   }
 });

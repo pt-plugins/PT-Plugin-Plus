@@ -156,7 +156,10 @@ export enum EAction {
   // 隐藏指定的消息（用于前端页面）
   hideMessage = "hideMessage",
   // 重置用户数据，可用于恢复用户数据
-  resetUserDatas = "resetUserDatas"
+  resetUserDatas = "resetUserDatas",
+  backupToServer = "backupToServer",
+  restoreFromServer = "restoreFromServer",
+  getBackupListFromServer = "getBackupListFromServer"
 }
 
 /**
@@ -266,4 +269,12 @@ export enum ETorrentStatus {
   sending = 2,
   // 已完成，未做种
   completed = 255
+}
+
+/**
+ * 备份服务器类型
+ */
+export enum EBackupServerType {
+  OWSS = "OWSS",
+  WebDAV = "WebDAV"
 }

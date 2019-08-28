@@ -10,7 +10,8 @@ import {
   EModule,
   SearchSolution,
   SearchEntry,
-  ECommonKey
+  ECommonKey,
+  IBackupServer
 } from "@/interface/common";
 import Extension from "@/service/extension";
 
@@ -556,6 +557,69 @@ export default new Vuex.Store({
         .sendRequest(EAction.replaceLanguage, null, options)
         .then(() => {})
         .catch(error => {});
+    },
+
+    /**
+     * 添加备份服务器
+     * @param param0
+     * @param server
+     */
+    addBackupServer({ commit, state }, server: IBackupServer) {
+      let _options: Options = Object.assign({}, state.options);
+
+      if (!_options.backupServers) {
+        _options.backupServers = [];
+      }
+
+      server.id = md5(new Date().toString());
+      _options.backupServers.push(server);
+
+      commit("updateOptions", _options);
+      extension.save(_options);
+    },
+
+    /**
+     * 更新备份服务器
+     * @param param0
+     * @param newData
+     */
+    updateBackupServer({ commit, state }, newData: IBackupServer) {
+      let _options: Options = Object.assign({}, state.options);
+
+      if (_options.backupServers) {
+        let index = _options.backupServers.findIndex((item: IBackupServer) => {
+          return item.id === newData.id;
+        });
+
+        if (index !== -1) {
+          _options.backupServers[index] = newData;
+
+          commit("updateOptions", _options);
+          extension.save(_options);
+        }
+      }
+    },
+
+    /**
+     * 删除备份服务器
+     * @param param0
+     * @param newData
+     */
+    removeBackupServer({ commit, state }, newData: IBackupServer) {
+      let _options: Options = Object.assign({}, state.options);
+
+      if (_options.backupServers) {
+        let index = _options.backupServers.findIndex((item: IBackupServer) => {
+          return item.id === newData.id;
+        });
+
+        if (index !== -1) {
+          _options.backupServers.splice(index, 1);
+
+          commit("updateOptions", _options);
+          extension.save(_options);
+        }
+      }
     }
   },
   getters: {
