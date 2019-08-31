@@ -55,7 +55,7 @@
       <v-data-table
         v-model="selected"
         :headers="headers"
-        :items="this.$store.state.options.backupServers"
+        :items="servers"
         :pagination.sync="pagination"
         item-key="id"
         select-all
@@ -69,18 +69,50 @@
             <a @click="editBackupServer(props.item)">{{ props.item.name }}</a>
           </td>
           <td>{{ props.item.type }}</td>
-          <td>{{ props.item.lastBackupTime }}</td>
+          <td>{{ props.item.lastBackupTime | formatDate }}</td>
           <td>
-            <v-icon small class="mr-2" @click="backupToServer(props.item)" color="success">backup</v-icon>
-            <v-icon
+            <v-btn
+              flat
+              icon
               small
-              class="mr-2"
-              @click="restoreFromServer(props.item)"
+              @click="backupToServer(props.item)"
+              :loading="props.item.loading"
+              color="success"
+              class="mx-0"
+            >
+              <v-icon small>backup</v-icon>
+            </v-btn>
+            <v-btn
+              flat
+              icon
+              small
+              @click="restoreFromServer(props)"
+              :loading="props.item.loading"
               color="info"
-            >cloud_download</v-icon>
-            <v-icon small class="mr-2" @click="editBackupServer(props.item)">edit</v-icon>
-            <v-icon small color="error" @click="removeBackupServer(props.item)">delete</v-icon>
+              class="mx-0"
+            >
+              <v-icon small>restore</v-icon>
+            </v-btn>
+            <v-btn flat icon small @click="editBackupServer(props.item)" color="grey" class="mx-0">
+              <v-icon small>edit</v-icon>
+            </v-btn>
+            <v-btn
+              flat
+              icon
+              small
+              @click="removeBackupServer(props.item)"
+              :loading="props.item.loading"
+              color="error"
+              class="mx-0"
+            >
+              <v-icon small>delete</v-icon>
+            </v-btn>
           </td>
+        </template>
+        <template slot="expand" slot-scope="props">
+          <div class="px-5">
+            <OWSSList :items="props.item.dataList" />
+          </div>
         </template>
       </v-data-table>
     </v-card>
@@ -111,7 +143,13 @@ import { PPF } from "@/service/public";
 import { FileDownloader } from "@/service/downloader";
 import AddOWSS from "./OWSS/Add.vue";
 import EditOWSS from "./OWSS/Edit.vue";
+import OWSSList from "./OWSS/List.vue";
 import { OWSS } from "@/background/plugins/OWSS";
+
+interface IBackupServerPro extends IBackupServer {
+  loading?: boolean;
+  dataList?: any[];
+}
 
 const extension = new Extension();
 
@@ -131,7 +169,8 @@ interface IManifest {
 export default Vue.extend({
   components: {
     AddOWSS,
-    EditOWSS
+    EditOWSS,
+    OWSSList
   },
   data() {
     return {
@@ -174,7 +213,26 @@ export default Vue.extend({
         }
       });
     }
-    console.log(this.$store.state.options.backupServers);
+    // this.servers = JSON.parse(
+    //   JSON.stringify(this.$store.state.options.backupServers)
+    // );
+
+    if (
+      this.$store.state.options.backupServers &&
+      this.$store.state.options.backupServers.length > 0
+    ) {
+      this.$store.state.options.backupServers.forEach((item: IBackupServer) => {
+        this.servers.push(
+          Object.assign(
+            {
+              loading: false,
+              dataList: []
+            },
+            JSON.parse(JSON.stringify(item))
+          )
+        );
+      });
+    }
   },
   methods: {
     /**
@@ -512,28 +570,43 @@ export default Vue.extend({
         this.$store.dispatch("removeBackupServer", server);
       }
     },
-    backupToServer(server: IBackupServer) {
+    backupToServer(server: IBackupServerPro) {
+      server.loading = true;
+      setTimeout(() => {
+        server.loading = false;
+      }, 5000);
+      return;
       extension
         .sendRequest(EAction.backupToServer, null, server)
         .then((result: any) => {
+          server.loading = false;
+          server.lastBackupTime = result.time;
           console.log(result);
         })
         .catch(() => {
           this.errorMsg = this.$t("settings.backup.backupError").toString();
         });
     },
-    restoreFromServer(server: IBackupServer) {
+    restoreFromServer(prop: any) {
+      let server: IBackupServer = prop.item;
+      prop.expanded = true;
+
       extension
         .sendRequest(EAction.getBackupListFromServer, null, {
           server,
-          pageSize: 5
+          pageSize: 5,
+          search: "PT-Plugin-Plus"
         })
         .then((result: any) => {
+          prop.item.dataList = result;
           console.log(result);
         })
         .catch(() => {
           this.errorMsg = this.$t("settings.backup.backupError").toString();
         });
+    },
+    getBackupServerFileList(index: number) {
+      return this.servers[index].dataList;
     },
     test() {
       this.showAddOWSS = true;
