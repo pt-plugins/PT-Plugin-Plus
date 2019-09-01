@@ -314,6 +314,9 @@
             "address": "服务器地址",
             "authCode": "授权码",
             "applyAuthCode": "申请授权码"
+          },
+          "list": {
+            "noData": "暂无备份数据"
           }
         }
       },

@@ -314,6 +314,9 @@
             "address": "Server address",
             "authCode": "Authorization Code",
             "applyAuthCode": "Apply"
+          },
+          "list": {
+            "noData": "No backup data yet"
           }
         }
       },

@@ -697,7 +697,7 @@ class Config {
       };
       zip.file("manifest.json", JSON.stringify(manifest));
 
-      zip.generateAsync({ type: "blob" }).then(blob => {
+      zip.generateAsync({ type: "blob" }).then((blob: any) => {
         formData.append("data", blob);
         resolve(formData);
       });
@@ -705,6 +705,7 @@ class Config {
   }
 
   public backupToServer(server: IBackupServer): Promise<any> {
+    console.log("backupToServer", server);
     return new Promise<any>((resolve?: any, reject?: any) => {
       const time = dayjs().valueOf();
       const fileName =

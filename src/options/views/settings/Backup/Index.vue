@@ -12,10 +12,25 @@
           <v-icon>restore</v-icon>
           <span class="ml-1">{{ $t('settings.backup.restore') }}</span>
         </v-btn>
-        <v-btn color="info" @click="test">
-          <v-icon>restore</v-icon>
-          <span class="ml-1">测试</span>
-        </v-btn>
+
+        <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn color="info" dark v-on="on">
+              <v-icon>add</v-icon>
+              <span class="ml-1">{{ $t('settings.backup.server.add.title') }}</span>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-tile
+              v-for="(item, index) in backupServerTypes"
+              :key="index"
+              @click="showAddServer(item.type)"
+            >
+              <v-list-tile-title>{{ item.type }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
+
         <v-spacer></v-spacer>
         <div v-if="!isDevelopmentMode">
           <v-btn
@@ -76,7 +91,7 @@
               icon
               small
               @click="backupToServer(props.item)"
-              :loading="props.item.loading"
+              :loading="props.item.backingup"
               color="success"
               class="mx-0"
             >
@@ -86,7 +101,7 @@
               flat
               icon
               small
-              @click="restoreFromServer(props)"
+              @click="getBackupServerFileList(props)"
               :loading="props.item.loading"
               color="info"
               class="mx-0"
@@ -101,7 +116,7 @@
               icon
               small
               @click="removeBackupServer(props.item)"
-              :loading="props.item.loading"
+              :loading="props.item.deleting"
               color="error"
               class="mx-0"
             >
@@ -111,7 +126,12 @@
         </template>
         <template slot="expand" slot-scope="props">
           <div class="px-5">
-            <OWSSList :items="props.item.dataList" />
+            <OWSSList
+              :items="props.item.dataList"
+              :server="props.item"
+              :loading="props.item.loading"
+              @download="restoreFromServer"
+            />
           </div>
         </template>
       </v-data-table>
@@ -149,6 +169,8 @@ import { OWSS } from "@/background/plugins/OWSS";
 interface IBackupServerPro extends IBackupServer {
   loading?: boolean;
   dataList?: any[];
+  backingup?: boolean;
+  deleting?: boolean;
 }
 
 const extension = new Extension();
@@ -194,7 +216,12 @@ export default Vue.extend({
       showAddOWSS: false,
       showEditOWSS: false,
       servers: [] as any,
-      selectedItem: {} as IBackupServer
+      selectedItem: {} as IBackupServer,
+      backupServerTypes: [
+        {
+          type: "OWSS"
+        }
+      ]
     };
   },
   mounted() {
@@ -226,6 +253,8 @@ export default Vue.extend({
           Object.assign(
             {
               loading: false,
+              backingup: false,
+              deleting: false,
               dataList: []
             },
             JSON.parse(JSON.stringify(item))
@@ -571,26 +600,38 @@ export default Vue.extend({
       }
     },
     backupToServer(server: IBackupServerPro) {
-      server.loading = true;
-      setTimeout(() => {
-        server.loading = false;
-      }, 5000);
-      return;
+      server.backingup = true;
+      // setTimeout(() => {
+      //   server.backingup = false;
+      // }, 5000);
+      // return;
       extension
         .sendRequest(EAction.backupToServer, null, server)
         .then((result: any) => {
-          server.loading = false;
           server.lastBackupTime = result.time;
           console.log(result);
         })
         .catch(() => {
           this.errorMsg = this.$t("settings.backup.backupError").toString();
+        })
+        .finally(() => {
+          server.backingup = false;
         });
     },
-    restoreFromServer(prop: any) {
-      let server: IBackupServer = prop.item;
+    restoreFromServer(server: IBackupServer, options: any) {
+      console.log(server, options);
+    },
+    /**
+     * 获取已备份的文件列表
+     */
+    getBackupServerFileList(prop: any) {
+      let server: IBackupServerPro = prop.item;
       prop.expanded = true;
-
+      server.loading = true;
+      // setTimeout(() => {
+      //   server.loading = false;
+      // }, 5000);
+      // return;
       extension
         .sendRequest(EAction.getBackupListFromServer, null, {
           server,
@@ -603,13 +644,17 @@ export default Vue.extend({
         })
         .catch(() => {
           this.errorMsg = this.$t("settings.backup.backupError").toString();
+        })
+        .finally(() => {
+          server.loading = false;
         });
     },
-    getBackupServerFileList(index: number) {
-      return this.servers[index].dataList;
-    },
-    test() {
-      this.showAddOWSS = true;
+    showAddServer(type: EBackupServerType) {
+      switch (type) {
+        case EBackupServerType.OWSS:
+          this.showAddOWSS = true;
+          break;
+      }
     }
   },
   watch: {
