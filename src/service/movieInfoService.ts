@@ -40,7 +40,11 @@ export class MovieInfoService {
     "e4c3fce8",
     "918d70df",
     "e94cb667",
-    "eb84d6d7"
+    "eb84d6d7",
+    "e192b5a",
+    "d62b4cf5",
+    "5e6442a3",
+    "9b1468c6"
   ];
   // 豆瓣 apikey
   public doubanApiKeys = [
@@ -139,9 +143,7 @@ export class MovieInfoService {
         const request = () => {
           // 每个Key 1000 一天的限制
           let apikey = this.getOmdbApiKey();
-          let url = `${
-            this.omdbApiURL
-          }/?i=${IMDbId}&apikey=${apikey}&tomatoes=true`;
+          let url = `${this.omdbApiURL}/?i=${IMDbId}&apikey=${apikey}&tomatoes=true`;
           $.ajax({
             url: url,
             timeout: this.timeout
