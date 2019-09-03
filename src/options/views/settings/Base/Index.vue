@@ -468,7 +468,7 @@ export default Vue.extend({
       if (this.apiKey.omdb) {
         let items = this.apiKey.omdb.split("\n");
         items.forEach((item: string) => {
-          if (/^[a-z0-9]{8}$/.test(item)) {
+          if (/^[a-z0-9]{7,8}$/.test(item)) {
             omdbApiKeys.push(item);
           }
         });
@@ -527,7 +527,7 @@ export default Vue.extend({
 
       let doneCount = 0;
       omdbKeys.forEach((item: string) => {
-        if (/^[a-z0-9]{8}$/.test(item)) {
+        if (/^[a-z0-9]{7,8}$/.test(item)) {
           movieSerice
             .verifyOmdbApiKey(item)
             .then(() => {
