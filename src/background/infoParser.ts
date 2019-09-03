@@ -101,13 +101,14 @@ export class InfoParser {
         }
 
         if (filters) {
-          filters.forEach((filter: string) => {
+          filters.every((filter: string) => {
             try {
               query = eval(filter);
             } catch (error) {
               this.service.debug("InfoParser.filter.Error", filter, error);
-              return;
+              return false;
             }
+            return true;
           });
         }
         result = query;
