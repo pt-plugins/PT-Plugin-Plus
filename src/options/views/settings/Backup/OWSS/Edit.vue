@@ -9,7 +9,7 @@
             icon
             flat
             color="success"
-            href="https://github.com/ronggang/PT-Plugin-Plus/wiki/backup-server"
+            href="https://github.com/ronggang/PT-Plugin-Plus/wiki/config-backup-server"
             target="_blank"
             rel="noopener noreferrer nofollow"
             :title="$t('common.help')"

@@ -14,10 +14,17 @@
               <div>
                 <span>{{ item.time | formatDate }}</span>
                 <span class="ml-2">{{ item.size | formatSize }}</span>
-                <v-btn icon ripple small class="mr-0" @click="onDownload(item)">
+                <v-btn
+                  icon
+                  ripple
+                  small
+                  class="mr-0"
+                  @click="onDownload(item, index)"
+                  :loading="downloading && downloadingIndex==index"
+                >
                   <v-icon color="info" small>cloud_download</v-icon>
                 </v-btn>
-                <v-btn icon ripple class="ml-0" small @click="onDelete(item)">
+                <v-btn icon ripple class="ml-0" small @click="onDelete(item, index)">
                   <v-icon color="red" small>delete</v-icon>
                 </v-btn>
               </div>
@@ -40,18 +47,25 @@
 <script lang="ts">
 import Vue from "vue";
 export default Vue.extend({
+  data() {
+    return {
+      downloadingIndex: 0
+    };
+  },
   props: {
     items: Array,
     loading: Boolean,
+    downloading: Boolean,
     server: Object
   },
   methods: {
-    onDownload(item: any) {
-      this.$emit("download", this.server, item);
+    onDownload(item: any, index: number) {
+      this.downloadingIndex = index;
+      this.$emit("download", this.server, item, index);
     },
 
-    onDelete(item: any) {
-      this.$emit("delete", this.server, item);
+    onDelete(item: any, index: number) {
+      this.$emit("delete", this.server, item, index);
     }
   }
 });

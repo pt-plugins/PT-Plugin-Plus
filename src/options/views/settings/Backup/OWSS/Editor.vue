@@ -24,8 +24,12 @@
             :placeholder="$t('settings.backup.server.editor.authCode')"
             required
             :rules="rules.require"
+            :type="showAuthCode ? 'text' : 'password'"
           >
             <template v-slot:append>
+              <v-icon
+                @click="showAuthCode = !showAuthCode"
+              >{{showAuthCode ? 'visibility_off' : 'visibility'}}</v-icon>
               <v-btn
                 flat
                 small
@@ -57,7 +61,7 @@ const extension = new Extension();
 export default Vue.extend({
   data() {
     return {
-      showPassword: false,
+      showAuthCode: false,
       rules: {
         require: [(v: any) => !!v || "!"],
         url: (v: any) => {
@@ -68,27 +72,10 @@ export default Vue.extend({
           );
         }
       },
-      testing: false,
       haveError: false,
       haveSuccess: false,
       successMsg: "",
       errorMsg: "",
-      testButtonIcon: "compass_calibration",
-      testButtonColor: "info",
-      testButtonStatus: {
-        success: "success",
-        error: "error"
-      },
-      buttonColor: {
-        default: "info",
-        success: "success",
-        error: "error"
-      } as Dictionary<any>,
-      buttonIcon: {
-        default: "compass_calibration",
-        success: "done",
-        error: "close"
-      } as Dictionary<any>,
       valid: false,
       option: {
         authCode: ""

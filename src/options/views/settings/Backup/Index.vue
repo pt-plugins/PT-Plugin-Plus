@@ -13,9 +13,11 @@
           <span class="ml-1">{{ $t('settings.backup.restore') }}</span>
         </v-btn>
 
+        <v-divider class="mx-3 mt-0" vertical></v-divider>
+
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
-            <v-btn color="info" dark v-on="on">
+            <v-btn color="blue-grey" dark v-on="on">
               <v-icon>add</v-icon>
               <span class="ml-1">{{ $t('settings.backup.server.add.title') }}</span>
             </v-btn>
@@ -130,7 +132,9 @@
               :items="props.item.dataList"
               :server="props.item"
               :loading="props.item.loading"
+              :downloading="props.item.restoring"
               @download="restoreFromServer"
+              @delete="deleteFileFromBackupServer"
             />
           </div>
         </template>
@@ -170,6 +174,7 @@ interface IBackupServerPro extends IBackupServer {
   loading?: boolean;
   dataList?: any[];
   backingup?: boolean;
+  restoring?: boolean;
   deleting?: boolean;
 }
 
@@ -240,30 +245,37 @@ export default Vue.extend({
         }
       });
     }
-    // this.servers = JSON.parse(
-    //   JSON.stringify(this.$store.state.options.backupServers)
-    // );
 
-    if (
-      this.$store.state.options.backupServers &&
-      this.$store.state.options.backupServers.length > 0
-    ) {
-      this.$store.state.options.backupServers.forEach((item: IBackupServer) => {
-        this.servers.push(
-          Object.assign(
-            {
-              loading: false,
-              backingup: false,
-              deleting: false,
-              dataList: []
-            },
-            JSON.parse(JSON.stringify(item))
-          )
-        );
-      });
-    }
+    this.initBackupServers();
   },
   methods: {
+    /**
+     * 初始化备份服务器列表
+     */
+    initBackupServers() {
+      if (
+        this.$store.state.options.backupServers &&
+        this.$store.state.options.backupServers.length > 0
+      ) {
+        this.servers = [];
+        this.$store.state.options.backupServers.forEach(
+          (item: IBackupServer) => {
+            this.servers.push(
+              Object.assign(
+                {
+                  loading: false,
+                  backingup: false,
+                  deleting: false,
+                  restoring: false,
+                  dataList: []
+                },
+                JSON.parse(JSON.stringify(item))
+              )
+            );
+          }
+        );
+      }
+    },
     /**
      * 获取当前配置信息，以文本形式返回
      */
@@ -584,27 +596,42 @@ export default Vue.extend({
         }
       }
     },
+    /**
+     * 添加备份服务器
+     */
     addBackupServer(server: IBackupServer) {
-      this.$store.dispatch("addBackupServer", server);
+      this.$store.dispatch("addBackupServer", server).then(() => {
+        this.initBackupServers();
+      });
     },
+    /**
+     * 修改备份服务器
+     */
     editBackupServer(server: IBackupServer) {
       this.selectedItem = server;
       this.showEditOWSS = true;
     },
+    /**
+     * 更新备份服务器
+     */
     updateBackupServer(server: IBackupServer) {
-      this.$store.dispatch("updateBackupServer", server);
+      this.$store.dispatch("updateBackupServer", server).then(() => {
+        this.initBackupServers();
+      });
     },
+    /**
+     * 删除备份服务器
+     */
     removeBackupServer(server: IBackupServer) {
       if (confirm(this.$t("common.removeConfirm").toString())) {
         this.$store.dispatch("removeBackupServer", server);
       }
     },
+    /**
+     * 备份到服务器
+     */
     backupToServer(server: IBackupServerPro) {
       server.backingup = true;
-      // setTimeout(() => {
-      //   server.backingup = false;
-      // }, 5000);
-      // return;
       extension
         .sendRequest(EAction.backupToServer, null, server)
         .then((result: any) => {
@@ -618,8 +645,27 @@ export default Vue.extend({
           server.backingup = false;
         });
     },
-    restoreFromServer(server: IBackupServer, options: any) {
-      console.log(server, options);
+    /**
+     * 从服务器恢复指定的内容
+     */
+    restoreFromServer(server: IBackupServerPro, options: any) {
+      server.restoring = true;
+      extension
+        .sendRequest(EAction.restoreFromServer, null, {
+          server,
+          path: options.name
+        })
+        .then((result: any) => {
+          this.restoreConfirm(result);
+          // console.log(result);
+        })
+        .catch(error => {
+          console.log(error);
+          this.errorMsg = this.$t("settings.backup.restoreError").toString();
+        })
+        .finally(() => {
+          server.restoring = false;
+        });
     },
     /**
      * 获取已备份的文件列表
@@ -628,10 +674,6 @@ export default Vue.extend({
       let server: IBackupServerPro = prop.item;
       prop.expanded = true;
       server.loading = true;
-      // setTimeout(() => {
-      //   server.loading = false;
-      // }, 5000);
-      // return;
       extension
         .sendRequest(EAction.getBackupListFromServer, null, {
           server,
@@ -643,7 +685,9 @@ export default Vue.extend({
           console.log(result);
         })
         .catch(() => {
-          this.errorMsg = this.$t("settings.backup.backupError").toString();
+          this.errorMsg = this.$t(
+            "settings.backup.server.getFileListError"
+          ).toString();
         })
         .finally(() => {
           server.loading = false;
@@ -655,6 +699,33 @@ export default Vue.extend({
           this.showAddOWSS = true;
           break;
       }
+    },
+    deleteFileFromBackupServer(
+      server: IBackupServerPro,
+      options: any,
+      index: number
+    ) {
+      if (!confirm(this.$t("common.removeConfirm").toString())) {
+        return;
+      }
+      extension
+        .sendRequest(EAction.deleteFileFromBackupServer, null, {
+          server,
+          path: options.name
+        })
+        .then((result: any) => {
+          if (server.dataList && server.dataList[index]) {
+            server.dataList.splice(index, 1);
+          }
+          console.log(result);
+        })
+        .catch(error => {
+          console.log(error);
+          // this.errorMsg = this.$t("settings.backup.restoreError").toString();
+        })
+        .finally(() => {
+          server.loading = false;
+        });
     }
   },
   watch: {

@@ -1129,4 +1129,15 @@ export default class Controller {
     delete options.server;
     return this.service.config.getBackupListFromServer(server, options);
   }
+
+  public restoreFromServer(options: any = {}): Promise<any> {
+    return this.service.config.restoreFromServer(options.server, options.path);
+  }
+
+  public deleteFileFromBackupServer(options: any = {}): Promise<any> {
+    return this.service.config.deleteFileFromBackupServer(
+      options.server,
+      options.path
+    );
+  }
 }

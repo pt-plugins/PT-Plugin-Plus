@@ -12,7 +12,8 @@ import {
   IBackupServer,
   EBackupServerType,
   EUserDataRange,
-  IHashData
+  IHashData,
+  IManifest
 } from "@/interface/common";
 import { API, APP } from "@/service/api";
 import localStorage from "@/service/localStorage";
@@ -667,6 +668,10 @@ class Config {
     return result;
   }
 
+  /**
+   * 获取备份数据
+   * @param fileName
+   */
   public getBackupFileData(fileName: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       const formData = new FormData();
@@ -685,9 +690,9 @@ class Config {
       const userData = JSON.stringify(rawUserData);
 
       // 配置
-      zip.file("options.json", JSON.stringify(options));
+      zip.file("options.json", options);
       // 用户数据
-      zip.file("userdatas.json", JSON.stringify(userData));
+      zip.file("userdatas.json", userData);
 
       // 创建检证用的文件
       const manifest = {
@@ -704,6 +709,10 @@ class Config {
     });
   }
 
+  /**
+   * 备份配置到服务器
+   * @param server
+   */
   public backupToServer(server: IBackupServer): Promise<any> {
     console.log("backupToServer", server);
     return new Promise<any>((resolve?: any, reject?: any) => {
@@ -740,8 +749,120 @@ class Config {
     });
   }
 
-  public restoreFromServer(server: IBackupServer) {}
+  /**
+   * 从备份服务器中恢复指定的文件
+   * @param server
+   * @param path
+   */
+  public restoreFromServer(server: IBackupServer, path: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      switch (server.type) {
+        case EBackupServerType.OWSS:
+          new OWSS(server)
+            .get(path)
+            .then(data => {
+              this.restoreFromZipFile(data)
+                .then(result => {
+                  resolve(result);
+                })
+                .catch(error => {
+                  reject(error);
+                });
+            })
+            .catch(error => {
+              reject(error);
+            });
+          break;
 
+        default:
+          reject("暂不支持");
+          break;
+      }
+    });
+  }
+
+  /**
+   * 从zip备份文件中恢复
+   * @param data
+   */
+  private restoreFromZipFile(data: any): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      JSZip.loadAsync(data)
+        .then(zip => {
+          let requests: any[] = [];
+          requests.push(zip.file("manifest.json").async("text"));
+          requests.push(zip.file("options.json").async("text"));
+          requests.push(zip.file("userdatas.json").async("text"));
+          return Promise.all(requests);
+        })
+        .then(results => {
+          try {
+            const manifest = JSON.parse(results[0]);
+            const options = JSON.parse(results[1]);
+            const datas = JSON.parse(results[2]);
+
+            if (this.checkData(manifest, results[1] + results[2])) {
+              resolve({
+                options,
+                datas
+              });
+            } else {
+              reject("error");
+            }
+          } catch (error) {
+            reject(error);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          reject(error);
+        });
+    });
+  }
+
+  /**
+   * 简单验证数据，仅防止格式错误的数据
+   */
+  checkData(manifest: IManifest, data: string): boolean {
+    if (!manifest) {
+      return false;
+    }
+
+    if (!manifest.checkInfo) {
+      return false;
+    }
+
+    const checkInfo = manifest.checkInfo;
+    const length = data.length;
+
+    if (length !== checkInfo.length) {
+      return false;
+    }
+
+    const keys: any[] = [];
+
+    try {
+      if (checkInfo.keyMap.length !== 32) {
+        return false;
+      }
+      for (let n = 0; n < 32; n++) {
+        let index = checkInfo.keyMap[n];
+        keys.push(data.substr(index, 1));
+      }
+
+      if (md5(keys.join("")) === checkInfo.hash) {
+        return true;
+      }
+    } catch (error) {}
+
+    return false;
+  }
+
+  /**
+   * 获取备份文件列表
+   * @param server
+   * @param options
+   */
   public getBackupListFromServer(
     server: IBackupServer,
     options: any = {}
@@ -751,6 +872,35 @@ class Config {
         case EBackupServerType.OWSS:
           new OWSS(server)
             .list(options)
+            .then(result => {
+              resolve(result);
+            })
+            .catch(error => {
+              reject(error);
+            });
+          break;
+
+        default:
+          reject("暂不支持");
+          break;
+      }
+    });
+  }
+
+  /**
+   * 删除指定的文件
+   * @param server
+   * @param path
+   */
+  public deleteFileFromBackupServer(
+    server: IBackupServer,
+    path: string
+  ): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      switch (server.type) {
+        case EBackupServerType.OWSS:
+          new OWSS(server)
+            .delete(path)
             .then(result => {
               resolve(result);
             })

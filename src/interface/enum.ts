@@ -157,9 +157,14 @@ export enum EAction {
   hideMessage = "hideMessage",
   // 重置用户数据，可用于恢复用户数据
   resetUserDatas = "resetUserDatas",
+  // 备份配置到服务器
   backupToServer = "backupToServer",
+  // 从服务器恢复配置
   restoreFromServer = "restoreFromServer",
-  getBackupListFromServer = "getBackupListFromServer"
+  // 从服务器获取已备份的列表
+  getBackupListFromServer = "getBackupListFromServer",
+  // 从服务器删除指定的文件
+  deleteFileFromBackupServer = "deleteFileFromBackupServer"
 }
 
 /**
