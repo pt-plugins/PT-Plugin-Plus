@@ -19,14 +19,14 @@
     }
   },
   "searchEntry": [{
-    "entry": "/torrents.php?search=$key$&boardid=2&notnewword=1",
+    "appendQueryString": "&boardid=2",
     "name": "原抓区",
     "resultType": "html",
     "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
     "resultSelector": "table.torrents:last > tbody > tr",
     "enabled": true
   }, {
-    "entry": "/torrents.php?search=$key$&boardid=1&notnewword=1",
+    "appendQueryString": "&boardid=1",
     "name": "普通区",
     "resultType": "html",
     "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",

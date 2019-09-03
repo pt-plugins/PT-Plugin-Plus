@@ -40,11 +40,11 @@
     }
   },
   "searchEntry": [{
-    "queryString": "c=M",
+    "appendQueryString": "&c=M",
     "name": "影视&音乐",
     "enabled": true
   }, {
-    "queryString": "c=G",
+    "appendQueryString": "&c=G",
     "name": "游戏&软件",
     "enabled": true
   }],

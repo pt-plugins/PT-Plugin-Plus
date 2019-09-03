@@ -368,6 +368,7 @@ export interface SearchEntry {
   categories?: string[];
   appendToSearchKeyString?: string;
   headers?: Dictionary<any>;
+  appendQueryString?: string;
 }
 
 export interface UIOptions {

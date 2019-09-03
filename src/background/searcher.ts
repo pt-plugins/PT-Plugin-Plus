@@ -179,7 +179,14 @@ export class Searcher {
 
       searchConfig.entry.forEach((entry: SearchEntry) => {
         let searchPage = entry.entry || siteSearchPage;
-        let queryString = entry.queryString || searchEntryConfigQueryString;
+        let queryString = entry.queryString;
+        // 当前入口没有查询字符串时，尝试使用默认配置
+        if (!queryString && searchPage.indexOf("?") === -1) {
+          queryString = searchEntryConfigQueryString;
+        }
+        if (entry.appendQueryString) {
+          queryString += entry.appendQueryString;
+        }
         if (searchEntryConfig) {
           entry.parseScriptFile =
             entry.parseScriptFile || searchEntryConfig.parseScriptFile;
