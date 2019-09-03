@@ -309,7 +309,7 @@ export class User {
               content = JSON.parse(result);
             }
           } catch (error) {
-            this.service.debug(error);
+            this.service.debug("getInfos.error", host, url, error);
             reject(error);
             return;
           }

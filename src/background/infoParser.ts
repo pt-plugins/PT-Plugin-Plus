@@ -106,6 +106,7 @@ export class InfoParser {
               query = eval(filter);
             } catch (error) {
               this.service.debug("InfoParser.filter.Error", filter, error);
+              query = null;
               return false;
             }
             return true;
