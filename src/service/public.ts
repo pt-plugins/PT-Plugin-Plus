@@ -127,6 +127,63 @@ class HelpFunctions {
       chrome.notifications.clear(id, () => {});
     }, timeout);
   }
+
+  /**
+   * 去除重复的查询字符串
+   * @param url
+   */
+  public removeDuplicateQueryString(url: string) {
+    let querys: string[] = [],
+      queryString = "",
+      rule = /([^&=]+)=([^&]*)/g,
+      m,
+      head = "",
+      index = url.indexOf("?");
+
+    if (index !== -1) {
+      head = url.substr(0, index + 1);
+      queryString = url.substr(index + 1);
+      while ((m = rule.exec(queryString))) {
+        const v = m[1] + "=" + m[2];
+        if (!querys.includes(v)) {
+          querys.push(v);
+        }
+      }
+
+      return head + querys.join("&");
+    }
+
+    return url;
+  }
+
+  /**
+   * 删除链接中指定值的查询字符串
+   * @param url
+   * @param value
+   */
+  public removeQueryStringFromValue(url: string, value: string) {
+    let querys: string[] = [],
+      queryString = "",
+      rule = /([^&=]+)=([^&]*)/g,
+      m,
+      head = "",
+      index = url.indexOf("?");
+
+    if (index !== -1) {
+      head = url.substr(0, index + 1);
+      queryString = url.substr(index + 1);
+      while ((m = rule.exec(queryString))) {
+        const v = m[1] + "=" + m[2];
+        if (m[2] !== value) {
+          querys.push(v);
+        }
+      }
+
+      return head + querys.join("&");
+    }
+
+    return url;
+  }
 }
 
 /**

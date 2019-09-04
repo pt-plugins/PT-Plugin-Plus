@@ -17,6 +17,7 @@ import { SiteService } from "./site";
 import PTPlugin from "./service";
 import extend from "extend";
 import { InfoParser } from "./infoParser";
+import { PPF } from "@/service/public";
 
 export type SearchConfig = {
   site?: Site;
@@ -119,6 +120,7 @@ export class Searcher {
 
       // 提取 IMDb 编号，如果带整个网址，则只取编号部分
       let imdb = key.match(/(tt\d+)/);
+      let autoMatched = false;
       if (imdb && imdb.length >= 2) {
         key = imdb[1];
       }
@@ -139,6 +141,7 @@ export class Searcher {
               area.keyAutoMatch &&
               new RegExp(area.keyAutoMatch, "").test(key)
             ) {
+              autoMatched = true;
               // 如果有定义查询字符串，则替换默认的查询字符串
               if (area.queryString) {
                 searchEntryConfigQueryString = area.queryString;
@@ -177,20 +180,31 @@ export class Searcher {
       let entryCount = 0;
       let doneCount = 0;
 
+      const KEY = "$key$";
+
       searchConfig.entry.forEach((entry: SearchEntry) => {
         let searchPage = entry.entry || siteSearchPage;
-        let queryString = entry.queryString;
-        // 当前入口没有查询字符串时，尝试使用默认配置
-        if (!queryString && searchPage.indexOf("?") === -1) {
-          queryString = searchEntryConfigQueryString;
 
-          // 当前入口有查询字符串，并且不包含搜索关键字时，使用追加方式
-        } else if (
-          queryString &&
-          queryString.indexOf("$key$") === -1 &&
-          searchEntryConfigQueryString
+        // 当已自动匹配规则时，去除入口页面中已指定的关键字字段
+        if (
+          autoMatched &&
+          searchPage.indexOf(KEY) !== -1 &&
+          searchEntryConfigQueryString.indexOf(KEY) !== -1
         ) {
-          queryString = searchEntryConfigQueryString + "&" + queryString;
+          searchPage = PPF.removeQueryStringFromValue(searchPage, KEY);
+        }
+
+        let queryString = entry.queryString;
+
+        if (searchEntryConfigQueryString) {
+          // 当前入口没有查询字符串时，尝试使用默认配置
+          if (!queryString) {
+            queryString = searchEntryConfigQueryString;
+
+            // 当前入口有查询字符串，并且不包含搜索关键字时，使用追加方式
+          } else if (queryString && queryString.indexOf(KEY) === -1) {
+            queryString = searchEntryConfigQueryString + "&" + queryString;
+          }
         }
 
         if (entry.appendQueryString) {
@@ -233,6 +247,9 @@ export class Searcher {
               url += "?" + queryString;
             }
           }
+
+          // 支除重复的参数
+          url = PPF.removeDuplicateQueryString(url);
 
           url = this.replaceKeys(url, {
             key:
