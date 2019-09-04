@@ -40,18 +40,19 @@ export default class DownloadQuene {
 
     if (queue) {
       this.isRunning = true;
-      console.log("downloadQueue", queue);
       const timout = (this.service.options.batchDownloadInterval || 0) * 1000;
 
       const sender = queue.clientId
         ? this.service.controller.sendTorrentToClient
         : this.service.controller.sendTorrentToDefaultClient;
 
-      sender(queue)
+      sender
+        .call(this.service.controller, queue)
         .then(() => {
           this.successCount++;
         })
         .catch(error => {
+          console.log(error);
           this.failedCount++;
         })
         .finally(() => {
