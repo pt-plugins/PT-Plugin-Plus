@@ -157,7 +157,11 @@ export class ContextMenus {
    * @param site
    */
   private getSiteDocumentUrlPatterns(site: Site): string[] {
-    let documentUrlPatterns: string[] = [`*://${site.host}/*`, `${site.url}`];
+    let url = site.url + "";
+    if (url.substr(-1) != "/") {
+      url += "/";
+    }
+    let documentUrlPatterns: string[] = [`*://${site.host}/*`, `${url}`];
 
     if (site.cdn && site.cdn.length > 0) {
       documentUrlPatterns.push(...site.cdn);
