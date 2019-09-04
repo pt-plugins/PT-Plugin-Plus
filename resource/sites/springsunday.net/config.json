@@ -103,5 +103,10 @@
         "name": "Others(其他)"
       }
     ]
+  }],
+  "plugins": [{
+    "name": "保种列表",
+    "pages": ["/rescue.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
   }]
 }
