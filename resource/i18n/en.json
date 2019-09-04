@@ -378,7 +378,9 @@
           "douban": "Douban API Key"
         },
         "apiKeyTip": "The OMDb API Key is used to obtain the rating information of the movie;\nThe Douban API Key is used to obtain the basic information of the movie, such as pictures, introductions, etc.",
-        "verifyApiKey": "Verify Api Key"
+        "verifyApiKey": "Verify Api Key",
+        "batchDownloadInterval": "Per torrent interval (seconds) when downloading in bulk",
+        "enableBackgroundDownload": "Enable background download task"
       },
       "downloadClients": {
         "add": {
@@ -688,7 +690,9 @@
         "invalidTorrent": "Invalid Torrent",
         "getUserInfoSiteIsEmpty": "No site needs to get user information",
         "invalidImage": "Invalid Image",
-        "noPermission": "No permission, please go to user authorization"
+        "noPermission": "No permission, please go to user authorization",
+        "downloadTaskIsCreated": "Download task has been created ({count} total)",
+        "downloadTaskIsCompleted": "Batch download task has been sent. Success: {success}, Failed: {failed}."
       },
       "omnibox": {
         "search": "Search for the relevant seed for \"{text}\" in the ({solutionName}) solution"

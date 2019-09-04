@@ -250,6 +250,16 @@
               <v-container fluid grid-list-xs>
                 <v-layout row wrap>
                   <v-flex xs12>
+                    <!-- 批量下载时间间隔 -->
+                    <v-flex xs12>
+                      <v-text-field
+                        v-model="options.batchDownloadInterval"
+                        :label="$t('settings.base.batchDownloadInterval')"
+                        :placeholder="$t('settings.base.batchDownloadInterval')"
+                        type="number"
+                      ></v-text-field>
+                    </v-flex>
+
                     <!-- 保存下载历史 -->
                     <v-switch
                       color="success"
@@ -284,6 +294,13 @@
                         <span>{{ $t('settings.base.downloadFailedRetryTip3') }}</span>
                       </div>
                     </v-flex>
+
+                    <!-- 启用后台下载任务 -->
+                    <v-switch
+                      color="success"
+                      v-model="options.enableBackgroundDownload"
+                      :label="$t('settings.base.enableBackgroundDownload')"
+                    ></v-switch>
 
                     <!-- 批量下载确认 -->
                     <v-switch
@@ -423,7 +440,9 @@ export default Vue.extend({
         downloadFailedRetry: false,
         downloadFailedFailedRetryCount: 3,
         downloadFailedFailedRetryInterval: 5,
-        apiKey: {}
+        apiKey: {},
+        batchDownloadInterval: 0,
+        enableBackgroundDownload: false
       } as Options,
       units: [] as any,
       hours: [] as any,

@@ -378,7 +378,9 @@
           "douban": "豆瓣 API Key"
         },
         "apiKeyTip": "OMDb API Key 用于获取影片的评分信息；\n豆瓣 API Key 用于获取影片的基本资料，如图片、简介等；\n助手已内置了些一Key，如出现无法正常获取评分或影片资料，可进行设置；多个Key按回车进行区分。",
-        "verifyApiKey": "验证 Api Key"
+        "verifyApiKey": "验证 Api Key",
+        "batchDownloadInterval": "批量下载（发送）种子时，每个链接时间间隔（秒）",
+        "enableBackgroundDownload": "当批量下载（发送）种子时，使用后台任务，完成后再通知我"
       },
       "downloadClients": {
         "add": {
@@ -688,7 +690,9 @@
         "invalidTorrent": "无效的种子文件",
         "getUserInfoSiteIsEmpty": "没有站点需要获取用户信息",
         "invalidImage": "无效的图片文件",
-        "noPermission": "无权限，请前往用户授权"
+        "noPermission": "无权限，请前往用户授权",
+        "downloadTaskIsCreated": "批量下载任务（共 {count} 条）已创建，任务完成后通知您！",
+        "downloadTaskIsCompleted": "批量下载任务已发送完成，成功：{success}，失败：{failed}"
       },
       "omnibox": {
         "search": "在「{solutionName}」方案中搜索 “{text}” 的相关种子"

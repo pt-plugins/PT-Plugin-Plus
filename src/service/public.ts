@@ -97,6 +97,36 @@ class HelpFunctions {
       new Date().getTime().toString() + this.getRandomString()
     ).toString();
   }
+
+  /**
+   * 显示系统提示信息
+   * @param options
+   */
+  public showNotifications(
+    options: chrome.notifications.NotificationOptions,
+    timeout: number = 3000
+  ) {
+    options = Object.assign(
+      {
+        type: "basic",
+        iconUrl: chrome.extension.getURL("/assets/icon-128.png"),
+        title: "PT 助手 Plus",
+        priority: 0,
+        message: ""
+      },
+      options
+    );
+
+    let id = Math.floor(Math.random() * 99999) + "";
+
+    chrome.notifications.create(id, options, function(myId) {
+      id = myId;
+    });
+
+    setTimeout(() => {
+      chrome.notifications.clear(id, () => {});
+    }, timeout);
+  }
 }
 
 /**

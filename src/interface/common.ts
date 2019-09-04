@@ -141,6 +141,10 @@ export interface Options {
   apiKey?: IApiKey;
   // 备份服务器列表
   backupServers?: IBackupServer[];
+  // 批量下载时间间隔（秒）
+  batchDownloadInterval?: number;
+  // 启用后台批量下载
+  enableBackgroundDownload?: boolean;
 }
 
 // 在搜索之前一些选项配置

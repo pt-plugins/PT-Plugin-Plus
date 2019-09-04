@@ -95,7 +95,11 @@ class Config {
     // 下载失败重试次数
     downloadFailedFailedRetryCount: 3,
     // 下载失败间隔时间（秒）
-    downloadFailedFailedRetryInterval: 5
+    downloadFailedFailedRetryInterval: 5,
+    // 批量下载时间间隔（秒）
+    batchDownloadInterval: 0,
+    // 启用后台下载任务
+    enableBackgroundDownload: false
   };
 
   public uiOptions: UIOptions = {};

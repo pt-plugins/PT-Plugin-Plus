@@ -1140,4 +1140,15 @@ export default class Controller {
       options.path
     );
   }
+
+  public sendTorrentsInBackground(items: any[] = []): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.service.downloadQuene.add(items).run();
+      resolve(
+        this.service.i18n.t("service.controller.downloadTaskIsCreated", {
+          count: items.length
+        })
+      );
+    });
+  }
 }

@@ -1,6 +1,7 @@
 import localStorage from "./localStorage";
 import md5 from "blueimp-md5";
 import { EConfigKey, DataResult, EDataResultType } from "@/interface/common";
+import { PPF } from "./public";
 
 let rootPath = "";
 let isExtensionMode = false;
@@ -260,27 +261,11 @@ export const APP = {
    * 显示系统提示信息
    * @param options
    */
-  showNotifications(options: chrome.notifications.NotificationOptions) {
-    options = Object.assign(
-      {
-        type: "basic",
-        iconUrl: "assets/icon-128.png",
-        title: "PT 助手 Plus",
-        priority: 0,
-        message: ""
-      },
-      options
-    );
-
-    let id = Math.floor(Math.random() * 99999) + "";
-
-    chrome.notifications.create(id, options, function(myId) {
-      id = myId;
-    });
-
-    setTimeout(() => {
-      chrome.notifications.clear(id, () => {});
-    }, 3000);
+  showNotifications(
+    options: chrome.notifications.NotificationOptions,
+    timeout = 3000
+  ) {
+    PPF.showNotifications(options, timeout);
   },
   getInstallType(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {

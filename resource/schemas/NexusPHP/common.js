@@ -867,16 +867,63 @@ String.prototype.getQueryString = function(name, split) {
         return;
       }
 
-      this.downloadURLs(
-        urls,
-        urls.length,
-        msg => {
-          success({
-            msg
+      // 是否启用后台下载任务
+      if (PTService.options.enableBackgroundDownload) {
+        this.downloadURLsInBackground(
+          urls,
+          msg => {
+            success({
+              msg
+            });
+          },
+          downloadOptions
+        );
+      } else {
+        this.downloadURLs(
+          urls,
+          urls.length,
+          msg => {
+            success({
+              msg
+            });
+          },
+          downloadOptions
+        );
+      }
+    }
+
+    downloadURLsInBackground(urls, callback, downloadOptions) {
+      const items = [];
+
+      const savePath = downloadOptions
+        ? PTService.pathHandler.getSavePath(
+            downloadOptions.savePath,
+            PTService.site
+          )
+        : "";
+
+      urls.forEach(url => {
+        if (downloadOptions) {
+          items.push({
+            clientId: downloadOptions.client.id,
+            url,
+            savePath,
+            autoStart: downloadOptions.client.autoStart
           });
-        },
-        downloadOptions
-      );
+        } else {
+          items.push({
+            url
+          });
+        }
+      });
+
+      PTService.call(PTService.action.sendTorrentsInBackground, items)
+        .then(result => {
+          callback(result);
+        })
+        .catch(result => {
+          callback(result);
+        });
     }
 
     /**
@@ -933,11 +980,18 @@ String.prototype.getQueryString = function(name, split) {
           },
           false
         )
-          .then(result => {
-            this.downloadURLs(urls, count, callback, downloadOptions);
+          .finally(() => {
+            // 是否设置了时间间隔
+            if (PTService.options.batchDownloadInterval > 0) {
+              setTimeout(() => {
+                this.downloadURLs(urls, count, callback, downloadOptions);
+              }, PTService.options.batchDownloadInterval * 1000);
+            } else {
+              this.downloadURLs(urls, count, callback, downloadOptions);
+            }
           })
-          .catch(result => {
-            this.downloadURLs(urls, count, callback, downloadOptions);
+          .catch(error => {
+            console.log("");
           });
       }
     }

@@ -164,7 +164,9 @@ export enum EAction {
   // 从服务器获取已备份的列表
   getBackupListFromServer = "getBackupListFromServer",
   // 从服务器删除指定的文件
-  deleteFileFromBackupServer = "deleteFileFromBackupServer"
+  deleteFileFromBackupServer = "deleteFileFromBackupServer",
+  // 在后台批量下载指定的链接
+  sendTorrentsInBackground = "sendTorrentsInBackground"
 }
 
 /**
