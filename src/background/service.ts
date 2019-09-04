@@ -71,31 +71,31 @@ export default class PTPlugin {
     console.log("requestMessage", request.action);
     return new Promise<any>((resolve?: any, reject?: any) => {
       let result: any;
-      if (
-        ![
-          EAction.getSystemLogs,
-          EAction.writeLog,
-          EAction.readConfig,
-          EAction.saveConfig,
-          EAction.saveUIOptions,
-          EAction.openOptions,
-          EAction.getClearedOptions,
-          EAction.getBase64FromImageUrl,
-          EAction.changeLanguage,
-          EAction.addLanguage,
-          EAction.getCurrentLanguageResource,
-          EAction.replaceLanguage,
-          EAction.readUIOptions,
-          EAction.addContentPage,
-          EAction.getDownloadHistory,
-          EAction.getTorrentDataFromURL
-        ].includes(request.action)
-      ) {
-        this.logger.add({
-          module: EModule.background,
-          event: `${ELogEvent.requestMessage}.${request.action}`
-        });
-      }
+      // if (
+      //   ![
+      //     EAction.getSystemLogs,
+      //     EAction.writeLog,
+      //     EAction.readConfig,
+      //     EAction.saveConfig,
+      //     EAction.saveUIOptions,
+      //     EAction.openOptions,
+      //     EAction.getClearedOptions,
+      //     EAction.getBase64FromImageUrl,
+      //     EAction.changeLanguage,
+      //     EAction.addLanguage,
+      //     EAction.getCurrentLanguageResource,
+      //     EAction.replaceLanguage,
+      //     EAction.readUIOptions,
+      //     EAction.addContentPage,
+      //     EAction.getDownloadHistory,
+      //     EAction.getTorrentDataFromURL
+      //   ].includes(request.action)
+      // ) {
+      //   this.logger.add({
+      //     module: EModule.background,
+      //     event: `${ELogEvent.requestMessage}.${request.action}`
+      //   });
+      // }
 
       try {
         switch (request.action) {
