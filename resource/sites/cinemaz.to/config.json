@@ -1,0 +1,10 @@
+{
+  "name": "CinemaZ",
+  "description": "Movies Obscure Foreign",
+  "icon": "https://cinemaz.to/favicon.ico",
+  "schema": "AvistaZ",
+  "tags": ["剧集"],
+  "url": "https://cinemaz.to/",
+  "host": "cinemaz.to",
+  "collaborator": "tranhoangcore"
+}
