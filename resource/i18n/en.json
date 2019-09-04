@@ -30,7 +30,11 @@
       "clearConfirm": "Are you sure you want to delete all records?",
       "id": "ID",
       "readyToStart": "Ready to start...",
-      "help": "Help"
+      "help": "Help",
+      "export": "Export",
+      "import": "Import",
+      "share": "Share",
+      "actionConfirm": "Are you sure you want to do this?"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -585,7 +589,10 @@
             "offline": "Offline",
             "activeURL": "URL",
             "action": "Action"
-          }
+          },
+          "importConfig": "Import from config",
+          "importConfirm": "Are you sure you want to import [{name}] ?",
+          "importDuplicateConfirm": "The site {name} already exists. Do you need to import search entrys and plugins?"
         }
       },
       "siteSearchEntry": {

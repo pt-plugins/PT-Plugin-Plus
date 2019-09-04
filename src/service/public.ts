@@ -1,3 +1,5 @@
+import md5 from "blueimp-md5";
+
 class HelpFunctions {
   public isExtensionMode: boolean = false;
   constructor() {
@@ -62,6 +64,38 @@ class HelpFunctions {
     } else {
       return "localVersion";
     }
+  }
+
+  /**
+   * 获取随机字符串
+   * @param  {number} length    长度，默认为32
+   * @param  {boolean} noSimilar 是否包含容易混淆的字符，默认为包含
+   * @return {string}           返回的内容
+   */
+  public getRandomString(
+    length: number = 32,
+    noSimilar: boolean = false
+  ): string {
+    // 是否包含容易混淆的字符[oO,Ll,9gq,Vv,Uu,I1]，默认为包含
+    let chars = noSimilar
+      ? "abcdefhijkmnprstwxyz2345678ABCDEFGHJKMNPQRSTWXYZ"
+      : "abcdefghijkmnopqrstuvwxyz0123456789ABCDEFGHIJKMNOPQRSTUVWXYZ";
+    let maxLength = chars.length;
+    let result = [];
+    for (let i = 0; i < length; i++) {
+      result.push(chars.charAt(Math.floor(Math.random() * maxLength)));
+    }
+
+    return result.join("");
+  }
+
+  /**
+   * 获取一个编号
+   */
+  public getNewId(): string {
+    return md5(
+      new Date().getTime().toString() + this.getRandomString()
+    ).toString();
   }
 }
 

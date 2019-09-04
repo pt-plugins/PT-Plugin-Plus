@@ -154,12 +154,14 @@ export interface BeforeSearching {
 }
 
 export interface Plugin {
+  id?: string;
   name?: string;
   pages?: string[] | any;
   scripts?: string[] | any;
   styles?: string[] | any;
   script?: string;
   style?: string;
+  isCustom?: boolean;
 }
 
 export interface SiteSchema {

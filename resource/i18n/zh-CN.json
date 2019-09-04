@@ -30,7 +30,11 @@
       "clearConfirm": "确认要删除所有记录吗？",
       "id": "ID",
       "readyToStart": "准备开始……",
-      "help": "帮助"
+      "help": "帮助",
+      "export": "导出",
+      "import": "导入",
+      "share": "分享",
+      "actionConfirm": "确认要进行此操作吗？"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -585,7 +589,10 @@
             "offline": "已离线",
             "activeURL": "URL",
             "action": "操作"
-          }
+          },
+          "importConfig": "从文件导入",
+          "importConfirm": "确认要导入 【{name}】 吗？",
+          "importDuplicateConfirm": "该站点 【{name}】 已存在，是否需要导入搜索入口和插件？"
         }
       },
       "siteSearchEntry": {
