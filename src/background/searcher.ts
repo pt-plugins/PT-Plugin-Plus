@@ -183,7 +183,16 @@ export class Searcher {
         // 当前入口没有查询字符串时，尝试使用默认配置
         if (!queryString && searchPage.indexOf("?") === -1) {
           queryString = searchEntryConfigQueryString;
+
+          // 当前入口有查询字符串，并且不包含搜索关键字时，使用追加方式
+        } else if (
+          queryString &&
+          queryString.indexOf("$key$") === -1 &&
+          searchEntryConfigQueryString
+        ) {
+          queryString = searchEntryConfigQueryString + "&" + queryString;
         }
+
         if (entry.appendQueryString) {
           queryString += entry.appendQueryString;
         }
