@@ -46,7 +46,8 @@ String.prototype.getQueryString = function(name, split) {
 
             PTService.addButton({
               title: this.t("buttons.freeSpaceTip", {
-                path: this.defaultPath
+                path: this.defaultPath,
+                interpolation: { escapeValue: false }
               }), // "默认服务器剩余空间\n" + this.defaultPath,
               icon: "filter_drama",
               label: PTService.filters.formatSize(
