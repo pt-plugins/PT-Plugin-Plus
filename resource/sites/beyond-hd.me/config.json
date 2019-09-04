@@ -16,11 +16,9 @@
     "area": [{
       "name": "IMDB",
       "keyAutoMatch": "^(tt\\d+)$",
-      "queryString": "imdb=$key$",
-      "replaceKey": [
-        "tt", ""
-      ]
-  }]},
+      "queryString": "imdb=$key$"
+    }]
+  },
   "searchEntry": [{
     "name": "全部",
     "enabled": true
