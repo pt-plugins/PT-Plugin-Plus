@@ -27,6 +27,10 @@ import { Options, i18nResource } from "@/interface/common";
       return "";
     }
     if (dayjs(val).isValid()) {
+      // 标准时间戳需要 * 1000
+      if (/^(\d){10}$/.test(val)) {
+        val = parseInt(val) * 1000;
+      }
       return dayjs(val).format(format);
     }
     return val;

@@ -662,8 +662,14 @@ export default Vue.extend({
         }
 
         if (dayjs(item.time).isValid()) {
-          // 转成整数是为了排序
-          item.time = dayjs(item.time).valueOf();
+          let val: number | string = item.time + "";
+          // 标准时间戳需要 * 1000
+          if (/^(\d){10}$/.test(val + "")) {
+            item.time = parseInt(val) * 1000;
+          } else {
+            // 转成整数是为了排序
+            item.time = dayjs(val).valueOf();
+          }
         } else if (typeof item.time == "string") {
           let time = filters.timeAgoToNumber(item.time);
           if (time > 0) {
