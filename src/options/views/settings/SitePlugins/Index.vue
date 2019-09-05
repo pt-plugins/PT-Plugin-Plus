@@ -14,6 +14,23 @@
           <v-icon class="mr-2">remove</v-icon>
           {{$t('common.remove')}}
         </v-btn>
+        <v-divider class="mx-3 mt-0" inset vertical></v-divider>
+
+        <input
+          type="file"
+          ref="fileImport"
+          style="display:none;"
+          multiple
+          accept="application/json"
+        />
+        <!-- 导入配置文件 -->
+        <v-btn color="info" @click="importConfig">
+          <v-icon class="mr-2">folder_open</v-icon>
+          {{$t('settings.sites.index.importConfig')}}
+        </v-btn>
+
+        <v-divider class="mx-3 mt-0" inset vertical></v-divider>
+
         <v-btn
           color="info"
           href="https://github.com/ronggang/PT-Plugin-Plus/wiki/config-custom-plugin"
@@ -109,6 +126,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
+    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{ successMsg }}</v-snackbar>
   </div>
 </template>
 
@@ -119,7 +139,9 @@ import AddItem from "./Add.vue";
 import EditItem from "./Edit.vue";
 
 import { filters } from "@/service/filters";
-import { PPF } from "../../../../service/public";
+import { PPF } from "@/service/public";
+import FileSaver from "file-saver";
+
 export default Vue.extend({
   components: {
     AddItem,
@@ -145,7 +167,12 @@ export default Vue.extend({
         readonly: false
       } as any,
       dialogRemoveConfirm: false,
-      plugins: [] as any
+      plugins: [] as any,
+      fileImport: null as any,
+      errorMsg: "",
+      haveError: false,
+      haveSuccess: false,
+      successMsg: ""
     };
   },
   methods: {
@@ -244,8 +271,104 @@ export default Vue.extend({
         this.plugins = plugins;
       }
     },
+
+    clearMessage() {
+      this.successMsg = "";
+      this.errorMsg = "";
+    },
+
+    /**
+     * 导出插件
+     */
     share(item: Plugin) {
-      console.log(item);
+      let fileName =
+        (this.site.host || this.site.name) + "-plugin-" + item.name + ".json";
+
+      const blob = new Blob([JSON.stringify(item)], {
+        type: "text/plain"
+      });
+      FileSaver.saveAs(blob, fileName);
+    },
+    /**
+     * 导入配置文件
+     */
+    importConfig() {
+      this.fileImport.click();
+    },
+
+    importConfigFile(event: Event) {
+      this.clearMessage();
+      let inputDOM: any = event.srcElement;
+      if (inputDOM.files.length > 0 && inputDOM.files[0].name.length > 0) {
+        for (let index = 0; index < inputDOM.files.length; index++) {
+          const file = inputDOM.files[index];
+          const r = new FileReader();
+          r.onload = (e: any) => {
+            try {
+              const result = JSON.parse(e.target.result);
+              this.importPlugin(result);
+            } catch (error) {
+              console.log(error);
+              this.errorMsg = this.$t("common.importFailed").toString();
+            }
+          };
+          r.onerror = () => {
+            this.errorMsg = this.$t("settings.backup.loadError").toString();
+          };
+          r.readAsText(file);
+        }
+
+        inputDOM.value = "";
+      }
+    },
+
+    /**
+     * 导入插件信息
+     */
+    importPlugin(source: Plugin) {
+      if (
+        !(
+          source.name &&
+          source.id &&
+          source.isCustom &&
+          source.pages &&
+          source.pages.length > 0
+        )
+      ) {
+        this.errorMsg = this.$t(
+          "settings.sitePlugins.index.invalidPlugin"
+        ).toString();
+        return;
+      }
+      const plugin = this.getPlugin(source);
+      if (plugin) {
+        const newName = window.prompt(
+          this.$t("settings.sitePlugins.index.importNameDuplicate", {
+            name: plugin.name
+          }).toString()
+        );
+
+        if (newName) {
+          source.name = newName;
+          this.importPlugin(source);
+          return;
+        } else {
+          return;
+        }
+      }
+      this.addItem(source);
+
+      this.successMsg = this.$t("common.importSuccess").toString();
+    },
+
+    getPlugin(source: Plugin) {
+      const plugins = this.site.plugins;
+      if (plugins && plugins.length > 0) {
+        return plugins.find((item: Plugin) => {
+          return item.name === source.name;
+        });
+      }
+      return null;
     }
   },
   created() {
@@ -254,6 +377,13 @@ export default Vue.extend({
     if (host) {
       this.reloadPlugins(host);
     }
+  },
+  mounted() {
+    this.fileImport = this.$refs.fileImport;
+    this.fileImport.addEventListener("change", this.importConfigFile);
+  },
+  beforeDestroy() {
+    this.fileImport.removeEventListener("change", this.importConfigFile);
   },
   computed: {
     headers(): Array<any> {
@@ -279,6 +409,14 @@ export default Vue.extend({
           sortable: false
         }
       ];
+    }
+  },
+  watch: {
+    successMsg() {
+      this.haveSuccess = this.successMsg != "";
+    },
+    errorMsg() {
+      this.haveError = this.errorMsg != "";
     }
   }
 });

@@ -16,7 +16,13 @@
 
         <v-divider class="mx-3 mt-0" inset vertical></v-divider>
 
-        <input type="file" ref="fileImport" style="display:none;" multiple />
+        <input
+          type="file"
+          ref="fileImport"
+          style="display:none;"
+          multiple
+          accept="application/json"
+        />
         <!-- 导入配置文件 -->
         <v-btn color="info" @click="importConfig">
           <v-icon class="mr-2">folder_open</v-icon>
@@ -466,8 +472,13 @@ export default Vue.extend({
           const file = restoreFile.files[index];
           const r = new FileReader();
           r.onload = (e: any) => {
-            const result = JSON.parse(e.target.result);
-            this.importSite(result);
+            try {
+              const result = JSON.parse(e.target.result);
+              this.importSite(result);
+            } catch (error) {
+              console.log(error);
+              this.errorMsg = this.$t("common.importFailed").toString();
+            }
           };
           r.onerror = () => {
             this.errorMsg = this.$t("settings.backup.loadError").toString();

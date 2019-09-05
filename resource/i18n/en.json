@@ -34,7 +34,9 @@
       "export": "Export",
       "import": "Import",
       "share": "Share",
-      "actionConfirm": "Are you sure you want to do this?"
+      "actionConfirm": "Are you sure you want to do this?",
+      "importFailed": "Import failed",
+      "importSuccess": "Import success"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -534,7 +536,9 @@
             "pages": "Applicable page",
             "enable": "Enable",
             "action": "Action"
-          }
+          },
+          "importNameDuplicate": "The name [{name}] already exists. Please re-enter the new name:",
+          "invalidPlugin": "Invalid plugin"
         }
       },
       "sites": {

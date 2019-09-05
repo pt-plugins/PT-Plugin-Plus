@@ -34,7 +34,9 @@
       "export": "导出",
       "import": "导入",
       "share": "分享",
-      "actionConfirm": "确认要进行此操作吗？"
+      "actionConfirm": "确认要进行此操作吗？",
+      "importFailed": "导入失败",
+      "importSuccess": "已成功导入"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -534,7 +536,9 @@
             "pages": "适用页面",
             "enable": "启用",
             "action": "操作"
-          }
+          },
+          "importNameDuplicate": "该名称【{name}】已存在，请重新输入新的名称：",
+          "invalidPlugin": "无效的插件"
         }
       },
       "sites": {
