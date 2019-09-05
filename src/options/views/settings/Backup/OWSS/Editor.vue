@@ -78,7 +78,9 @@ export default Vue.extend({
       errorMsg: "",
       valid: false,
       option: {
-        authCode: ""
+        authCode: "",
+        address: "",
+        name: ""
       } as any
     };
   },
@@ -93,11 +95,14 @@ export default Vue.extend({
     errorMsg() {
       this.haveError = this.errorMsg != "";
     },
-    valid() {
-      this.$emit("change", {
-        data: this.option,
-        valid: this.valid
-      });
+    option: {
+      handler() {
+        this.$emit("change", {
+          data: this.option,
+          valid: this.valid
+        });
+      },
+      deep: true
     },
     initData() {
       if (this.initData) {
