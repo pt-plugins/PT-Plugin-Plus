@@ -18,7 +18,7 @@
       </v-toolbar>
 
       <v-card-text class="body">
-        <Editor :data="defaultItem" />
+        <Editor :initData="defaultItem" @change="change" />
       </v-card-text>
 
       <v-divider></v-divider>
@@ -29,7 +29,7 @@
           <v-icon>cancel</v-icon>
           <span class="ml-1">{{ $t('common.cancel') }}</span>
         </v-btn>
-        <v-btn flat color="success" @click="save" :disabled="!defaultItem.valid">
+        <v-btn flat color="success" @click="save" :disabled="!valid||defaultItem.readonly">
           <v-icon>check_circle_outline</v-icon>
           <span class="ml-1">{{ $t('common.ok') }}</span>
         </v-btn>
@@ -47,12 +47,14 @@ export default Vue.extend({
   data() {
     return {
       show: false,
-      defaultItem: {}
+      defaultItem: {},
+      newData: {} as any,
+      valid: false
     };
   },
   props: {
     value: Boolean,
-    data: Object
+    initData: Object
   },
   model: {
     prop: "value",
@@ -65,17 +67,22 @@ export default Vue.extend({
     value() {
       this.show = this.value;
       if (this.show) {
-        this.defaultItem = Object.assign({}, this.data);
+        this.defaultItem = Object.assign({}, this.initData);
       }
     }
   },
   methods: {
     save() {
-      this.$emit("save", this.defaultItem);
+      this.$emit("save", this.newData);
       this.show = false;
     },
     cancel() {
       this.show = false;
+    },
+    change(options: any) {
+      console.log(options);
+      this.newData = options.data;
+      this.valid = options.valid;
     }
   }
 });

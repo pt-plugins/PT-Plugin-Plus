@@ -184,6 +184,10 @@ class HelpFunctions {
 
     return url;
   }
+
+  public clone(source: any) {
+    return JSON.parse(JSON.stringify(source));
+  }
 }
 
 /**

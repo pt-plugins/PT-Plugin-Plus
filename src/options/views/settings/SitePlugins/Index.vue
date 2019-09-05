@@ -14,6 +14,15 @@
           <v-icon class="mr-2">remove</v-icon>
           {{$t('common.remove')}}
         </v-btn>
+        <v-btn
+          color="info"
+          href="https://github.com/ronggang/PT-Plugin-Plus/wiki/config-custom-plugin"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          <v-icon class="mr-2">help</v-icon>
+          {{ $t('settings.siteSearchEntry.index.help') }}
+        </v-btn>
         <v-spacer></v-spacer>
         <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-card-title>
@@ -31,10 +40,9 @@
             <v-checkbox v-model="props.selected" primary hide-details v-if="props.item.isCustom"></v-checkbox>
           </td>
           <td>
-            <a @click="edit(props.item.id)" v-if="props.item.isCustom">
+            <a @click="edit(props.item)">
               <span class="ml-2">{{ props.item.name }}</span>
             </a>
-            <span class="ml-2" v-else>{{ props.item.name }}</span>
           </td>
           <td>
             <v-chip
@@ -51,22 +59,32 @@
           </td>
           <td>{{ props.item.url }}</td>
           <td>
-            <v-icon small class="mr-2" @click="edit(props.item.id)" v-if="props.item.isCustom">edit</v-icon>
+            <v-icon small class="mr-2" @click="edit(props.item)" :title="$t('common.edit')">edit</v-icon>
             <v-icon
               small
               color="error"
               @click="removeConfirm(props.item)"
+              :title="$t('common.remove')"
               v-if="props.item.isCustom"
             >delete</v-icon>
+
+            <v-icon
+              small
+              color="info"
+              class="ml-2"
+              @click="share(props.item)"
+              :title="$t('common.share')"
+              v-if="props.item.isCustom"
+            >share</v-icon>
           </td>
         </template>
       </v-data-table>
     </v-card>
 
     <!-- 新增插件 -->
-    <AddItem v-model="showAddDialog" @save="addItem"/>
+    <AddItem v-model="showAddDialog" @save="addItem" />
     <!-- 编辑插件 -->
-    <EditItem v-model="showEditDialog" :data="selectedItem" @save="updateItem"/>
+    <EditItem v-model="showEditDialog" :initData="selectedItem" @save="updateItem" />
 
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
@@ -96,11 +114,12 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Site } from "@/interface/common";
+import { Site, Plugin } from "@/interface/common";
 import AddItem from "./Add.vue";
 import EditItem from "./Edit.vue";
 
 import { filters } from "@/service/filters";
+import { PPF } from "../../../../service/public";
 export default Vue.extend({
   components: {
     AddItem,
@@ -115,7 +134,16 @@ export default Vue.extend({
       showAddDialog: false,
       showEditDialog: false,
       site: {} as Site,
-      selectedItem: {},
+      selectedItem: {
+        name: "",
+        id: null,
+        pages: [],
+        scripts: [],
+        styles: [],
+        script: "",
+        style: "",
+        readonly: false
+      } as any,
       dialogRemoveConfirm: false,
       plugins: [] as any
     };
@@ -124,14 +152,13 @@ export default Vue.extend({
     add() {
       this.showAddDialog = true;
     },
-    edit(id: any) {
-      let item = (this.site as any).plugins.find((item: any) => {
-        return item.id === id;
-      });
-      if (item) {
-        this.selectedItem = item;
-        this.showEditDialog = true;
+    edit(source: any) {
+      this.selectedItem = PPF.clone(source);
+      if (!source.id) {
+        this.selectedItem.readonly = true;
       }
+
+      this.showEditDialog = true;
     },
     removeConfirm(item: any) {
       this.selectedItem = item;
@@ -152,11 +179,13 @@ export default Vue.extend({
           this.$t("settings.sitePlugins.index.removeSelectedConfirm").toString()
         )
       ) {
-        this.selected.forEach((item: any) => {
-          this.$store.commit("removePlugin", {
-            host: this.site.host,
-            plugin: item
-          });
+        this.selected.forEach((item: Plugin) => {
+          if (item.isCustom) {
+            this.$store.commit("removePlugin", {
+              host: this.site.host,
+              plugin: item
+            });
+          }
         });
         this.selected = [];
         this.reloadPlugins(this.site.host);
@@ -214,6 +243,9 @@ export default Vue.extend({
 
         this.plugins = plugins;
       }
+    },
+    share(item: Plugin) {
+      console.log(item);
     }
   },
   created() {

@@ -19,7 +19,7 @@
         </v-toolbar>
 
         <v-card-text class="body">
-          <Editor :data="selected" />
+          <Editor :initData="selected" @change="change" />
         </v-card-text>
 
         <v-divider></v-divider>
@@ -30,7 +30,7 @@
             <v-icon>cancel</v-icon>
             <span class="ml-1">{{ $t('common.cancel') }}</span>
           </v-btn>
-          <v-btn flat color="success" @click="save" :disabled="!selected.valid">
+          <v-btn flat color="success" @click="save" :disabled="!valid">
             <v-icon>check_circle_outline</v-icon>
             <span class="ml-1">{{ $t('common.ok') }}</span>
           </v-btn>
@@ -54,7 +54,8 @@ export default Vue.extend({
   console.log("I'm a plugin.");
 })();`
       } as any,
-      valid: false
+      valid: false,
+      newData: {}
     };
   },
   props: {
@@ -77,11 +78,16 @@ export default Vue.extend({
   },
   methods: {
     save() {
-      this.$emit("save", Object.assign({ isCustom: true }, this.selected));
+      this.$emit("save", Object.assign({ isCustom: true }, this.newData));
       this.show = false;
     },
     cancel() {
       this.show = false;
+    },
+    change(options: any) {
+      console.log(options);
+      this.newData = options.data;
+      this.valid = options.valid;
     }
   }
 });
