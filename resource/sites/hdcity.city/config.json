@@ -15,12 +15,18 @@
   "schema": "NexusPHP",
   "host": "hdcity.city",
   "collaborator": "waldens",
+  "searchEntryConfig": {
+    "page": "/pt",
+    "queryString": "iwannaseethis=$key$&notnewword=1&v=legacyinv",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "appendQueryString": "&search_area=1"
+    }],
+    "parseScriptFile": "getSearchResult.js"
+  },
   "searchEntry": [{
-    "entry": "/pt?iwannaseethis=$key$&notnewword=1&v=legacyinv",
     "name": "全部",
-    "resultType": "html",
-    "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr",
     "enabled": true
   }],
   "categories": [{

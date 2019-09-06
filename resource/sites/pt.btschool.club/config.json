@@ -10,6 +10,11 @@
     "pt.btschool.net"
   ],
   "searchEntryConfig": {
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "appendQueryString": "&search_area=1"
+    }],
     "fieldSelector": {
       "progress": {
         "selector": [".progress:eq(0) > div"],
