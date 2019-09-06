@@ -283,7 +283,7 @@ export default Vue.extend({
       // 当搜索关键字包含|时表示指定了多个内容，格式如下
       // doubanid|中文名|英文名
       // imdbid|中文名|英文名
-      if (this.key.indexOf("|")) {
+      if (this.key.indexOf("|") !== -1) {
         let tmp = (this.key + "||").split("|");
         searchKeys.id = tmp[0];
         searchKeys.cn = tmp[1];
@@ -452,12 +452,12 @@ export default Vue.extend({
       });
 
       this.pagination.page = 1;
-      this.doSearchTorrentWithQueue(sites);
       if (/^(tt\d+)$/.test(this.key)) {
         this.IMDbId = this.key;
       } else {
         this.IMDbId = "";
       }
+      this.doSearchTorrentWithQueue(sites);
     },
 
     /**
@@ -467,6 +467,14 @@ export default Vue.extend({
       this.loading = true;
       this.searchMsg = this.$t("searchTorrent.searching").toString();
       sites.forEach((site: Site, index: number) => {
+        // 站点是否跳过IMDbId搜索
+        if (
+          this.IMDbId &&
+          site.searchEntryConfig &&
+          site.searchEntryConfig.skipIMDbId
+        ) {
+          return;
+        }
         this.searchQueue.push({
           site,
           key: this.key

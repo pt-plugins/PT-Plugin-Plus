@@ -7,6 +7,9 @@
   "schema": "GazelleJSONAPI",
   "host": "redacted.ch",
   "collaborator": "ylxb2016, enigamz",
+  "searchEntryConfig": {
+    "skipIMDbId": true
+  },
   "searchEntry": [{
       "name": "all",
       "enabled": true

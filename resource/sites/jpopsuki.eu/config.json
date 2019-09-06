@@ -6,6 +6,9 @@
   "tags": ["音乐", "日韩"],
   "schema": "Gazelle",
   "host": "jpopsuki.eu",
+  "searchEntryConfig": {
+    "skipIMDbId": true
+  },
   "searchEntry": [{
     "entry": "/torrents.php?searchstr=$key$&searchsubmit=1",
     "name": "all",

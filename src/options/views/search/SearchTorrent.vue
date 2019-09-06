@@ -425,7 +425,7 @@
             <TorrentProgress
               class="progress"
               v-if="props.item.progress!=null"
-              :progress="props.item.progress"
+              :progress="parseInt(props.item.progress)"
               :status="props.item.status"
             ></TorrentProgress>
           </td>

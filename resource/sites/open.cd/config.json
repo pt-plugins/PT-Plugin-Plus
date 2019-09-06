@@ -7,6 +7,7 @@
   "schema": "NexusPHP",
   "host": "open.cd",
   "searchEntryConfig": {
+    "skipIMDbId": true,
     "fieldSelector": {
       "progress": {
         "selector": [".progress:eq(0) > div"],
@@ -21,16 +22,10 @@
   "searchEntry": [{
     "appendQueryString": "&boardid=2",
     "name": "原抓区",
-    "resultType": "html",
-    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr",
     "enabled": true
   }, {
     "appendQueryString": "&boardid=1",
     "name": "普通区",
-    "resultType": "html",
-    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr",
     "enabled": true
   }],
   "categories": [{

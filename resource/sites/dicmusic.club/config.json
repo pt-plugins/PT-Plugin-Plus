@@ -7,6 +7,9 @@
   "schema": "GazelleJSONAPI",
   "host": "dicmusic.club",
   "collaborator": "ylxb2016, enigmaz",
+  "searchEntryConfig": {
+    "skipIMDbId": true
+  },
   "selectors": {
     "userSeedingTorrents": {
       "page": "/torrents.php?type=seeding&userid=$user.id$",

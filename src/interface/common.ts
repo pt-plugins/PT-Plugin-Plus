@@ -346,6 +346,7 @@ export interface SearchEntryConfigArea {
   parseScript?: string;
 }
 
+// 搜索入口默认配置
 export interface SearchEntryConfig {
   page: string;
   entry?: string;
@@ -357,6 +358,8 @@ export interface SearchEntryConfig {
   area?: SearchEntryConfigArea[];
   headers?: Dictionary<any>;
   fieldSelector?: Dictionary<any>;
+  // 跳过IMDb搜索
+  skipIMDbId?: boolean;
 }
 
 export interface SearchEntry {
