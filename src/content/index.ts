@@ -13,7 +13,8 @@ import {
   Request,
   EButtonType,
   ECommonKey,
-  Dictionary
+  Dictionary,
+  EPluginPosition
 } from "@/interface/common";
 import { APP } from "@/service/api";
 import { filters } from "@/service/filters";
@@ -386,6 +387,11 @@ class PTPContent {
       $(".pt-plugin-body").remove();
     }
     this.buttonBar = $("<div class='pt-plugin-body'/>").appendTo(document.body);
+    if (this.options.position == EPluginPosition.left) {
+      this.buttonBar.css({
+        right: "unset"
+      });
+    }
     this.logo = $(
       "<div class='logo' title='" + i18n.t("pluginTitle") + "'/>"
     ).appendTo(this.buttonBar);

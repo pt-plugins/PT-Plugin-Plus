@@ -143,6 +143,26 @@
                       :label="$t('settings.base.showToolbarOnContentPage')"
                     ></v-switch>
 
+                    <!-- 插件显示位置 -->
+                    <v-radio-group
+                      v-model="options.position"
+                      row
+                      v-if="options.showToolbarOnContentPage"
+                      class="ml-5"
+                    >
+                      <span class="mr-1">{{ $t('settings.base.position.label') }}</span>
+                      <v-radio
+                        :label="$t('settings.base.position.left')"
+                        color="success"
+                        value="left"
+                      ></v-radio>
+                      <v-radio
+                        :label="$t('settings.base.position.right')"
+                        color="success"
+                        value="right"
+                      ></v-radio>
+                    </v-radio-group>
+
                     <!-- 拖放下载 -->
                     <v-switch
                       color="success"
@@ -442,7 +462,8 @@ export default Vue.extend({
         downloadFailedFailedRetryInterval: 5,
         apiKey: {},
         batchDownloadInterval: 0,
-        enableBackgroundDownload: false
+        enableBackgroundDownload: false,
+        position: "right"
       } as Options,
       units: [] as any,
       hours: [] as any,
@@ -470,6 +491,7 @@ export default Vue.extend({
   methods: {
     save() {
       console.log(this.options);
+      this.successMsg = "";
       if (!(this.$refs.form as any).validate()) {
         this.activeTab = "base";
         (this.$refs.defaultClient as any).focus();

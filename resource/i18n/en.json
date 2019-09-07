@@ -382,7 +382,12 @@
         "apiKeyTip": "The OMDb API Key is used to obtain the rating information of the movie;\nThe Douban API Key is used to obtain the basic information of the movie, such as pictures, introductions, etc.",
         "verifyApiKey": "Verify Api Key",
         "batchDownloadInterval": "Per torrent interval (seconds) when downloading in bulk",
-        "enableBackgroundDownload": "Enable background download task"
+        "enableBackgroundDownload": "Enable background download task",
+        "position": {
+          "label": "Displayed on: ",
+          "left": " Left side of page",
+          "right": "Rigth side of page"
+        }
       },
       "downloadClients": {
         "add": {

@@ -13,7 +13,8 @@ import {
   EBackupServerType,
   EUserDataRange,
   IHashData,
-  IManifest
+  IManifest,
+  EPluginPosition
 } from "@/interface/common";
 import { API, APP } from "@/service/api";
 import localStorage from "@/service/localStorage";
@@ -99,7 +100,9 @@ class Config {
     // 批量下载时间间隔（秒）
     batchDownloadInterval: 0,
     // 启用后台下载任务
-    enableBackgroundDownload: false
+    enableBackgroundDownload: false,
+    // 助手工具栏显示位置
+    position: EPluginPosition.right
   };
 
   public uiOptions: UIOptions = {};

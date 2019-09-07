@@ -285,3 +285,11 @@ export enum EBackupServerType {
   OWSS = "OWSS",
   WebDAV = "WebDAV"
 }
+
+/**
+ * 插件显示位置
+ */
+export enum EPluginPosition {
+  left = "left",
+  right = "right"
+}

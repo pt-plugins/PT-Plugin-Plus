@@ -8,7 +8,8 @@ import {
   EDataResultType,
   EUserDataRequestStatus,
   EBeforeSearchingItemSearchMode,
-  EBackupServerType
+  EBackupServerType,
+  EPluginPosition
 } from "./enum";
 
 /**
@@ -145,6 +146,8 @@ export interface Options {
   batchDownloadInterval?: number;
   // 启用后台批量下载
   enableBackgroundDownload?: boolean;
+  // 插件默认显示位置
+  position?: EPluginPosition;
 }
 
 // 在搜索之前一些选项配置
