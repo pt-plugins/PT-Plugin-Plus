@@ -76,7 +76,13 @@
           </td>
           <td>{{ props.item.url }}</td>
           <td>
-            <v-icon small class="mr-2" @click="edit(props.item)" :title="$t('common.edit')">edit</v-icon>
+            <v-icon
+              small
+              class="mr-2"
+              @click="edit(props.item)"
+              :title="$t('common.edit')"
+              v-if="props.item.isCustom"
+            >edit</v-icon>
             <v-icon
               small
               color="error"
