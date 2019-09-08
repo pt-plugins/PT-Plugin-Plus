@@ -293,3 +293,10 @@ export enum EPluginPosition {
   left = "left",
   right = "right"
 }
+
+/**
+ * 相关Wiki链接
+ */
+export enum EWikiLink {
+  faq = "https://github.com/ronggang/PT-Plugin-Plus/wiki/frequently-asked-questions"
+}

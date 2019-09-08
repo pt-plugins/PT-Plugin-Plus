@@ -674,7 +674,9 @@
         "sendTorrentToClientDone": "The download link is sent.",
         "sendTorrentToClientError": "Download link failed to send!",
         "sendTorrentToDefaultClient": "Sent to the default server {client.name} -> {- client.address}",
-        "sendTorrentToClient": "Send to other servers"
+        "sendTorrentToClient": "Send to other servers",
+        "searchInSite": "Search in site",
+        "searchInSolution": "Search in solution"
       },
       "searcher": {
         "siteSearchConfigEntryIsEmpty": "The site [{site.name}] is not configured with a search page. Please configure it first.",

@@ -15,7 +15,8 @@ import {
   UserInfo,
   EUserDataRange,
   i18nResource,
-  IBackupServer
+  IBackupServer,
+  EWikiLink
 } from "@/interface/common";
 import { filters as Filters } from "@/service/filters";
 import { ClientController } from "@/service/clientController";
@@ -877,7 +878,9 @@ export default class Controller {
           // "无效的种子文件"
           reject(
             APP.createErrorMessage(
-              this.service.i18n.t("service.controller.invalidTorrent")
+              this.service.i18n.t("service.controller.invalidTorrent", {
+                link: EWikiLink.faq
+              })
             )
           );
         }

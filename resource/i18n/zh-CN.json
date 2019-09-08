@@ -674,7 +674,9 @@
         "sendTorrentToClientDone": "下载链接发送完成。",
         "sendTorrentToClientError": "下载链接发送失败！",
         "sendTorrentToDefaultClient": "发送到默认服务器 {client.name} -> {- client.address}",
-        "sendTorrentToClient": "发送到其他服务器"
+        "sendTorrentToClient": "发送到其他服务器",
+        "searchInSite": "在指定的站点进行搜索",
+        "searchInSolution": "以指定的方案中搜索"
       },
       "searcher": {
         "siteSearchConfigEntryIsEmpty": "该站点[{site.name}]未配置搜索页面，请先配置",
@@ -696,7 +698,7 @@
         "transmissionSuccess": "{data.name}已发送至 Transmission，编号：{data.id}",
         "transmissionDuplicate": "{name}种子已存在！编号：{id}",
         "transmissionError": "链接发送失败，请检查下载服务器是否可用。",
-        "invalidTorrent": "无效的种子文件",
+        "invalidTorrent": "无效的种子文件，请参考 <a href='{link}' target='_blank'>『常见问题』</a>",
         "getUserInfoSiteIsEmpty": "没有站点需要获取用户信息",
         "invalidImage": "无效的图片文件",
         "noPermission": "无权限，请前往用户授权",

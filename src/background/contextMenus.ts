@@ -8,7 +8,8 @@ import {
   EDataResultType,
   DownloadOptions,
   EModule,
-  ECommonKey
+  ECommonKey,
+  SearchSolution
 } from "@/interface/common";
 import PTPlugin from "./service";
 import URLParse from "url-parse";
@@ -507,6 +508,70 @@ export class ContextMenus {
           this.service.controller.searchTorrent(info.selectionText);
         }
       });
+
+      const sites = this.options.sites;
+      // 以指定的站点进行搜索
+      if (sites && sites.length > 0) {
+        let parentId = `searchInSite`;
+
+        this.add({
+          id: parentId,
+          title: this.service.i18n.t("service.contextMenus.searchInSite"),
+          contexts: ["selection"]
+        });
+
+        // 添加站点
+        sites.forEach((site: Site) => {
+          let id = `searchInSite**${site.host}`;
+          this.add({
+            id,
+            title: `${site.name} - ${site.host}`,
+            parentId: parentId,
+            contexts: ["selection"],
+            onclick: (
+              info: chrome.contextMenus.OnClickData,
+              tab: chrome.tabs.Tab
+            ) => {
+              let data = info.menuItemId.split("**");
+              this.service.controller.searchTorrent(
+                info.selectionText,
+                data[1]
+              );
+            }
+          });
+        });
+      }
+
+      const solutions = this.options.searchSolutions;
+      // 以指定的方案进行搜索
+      if (solutions && solutions.length > 0) {
+        let parentId = `searchInSolution`;
+
+        this.add({
+          id: parentId,
+          title: this.service.i18n.t("service.contextMenus.searchInSolution"),
+          contexts: ["selection"]
+        });
+        solutions.forEach((item: SearchSolution) => {
+          let id = `searchInSolution**${item.id}`;
+          this.add({
+            id,
+            title: `${item.name}`,
+            parentId: parentId,
+            contexts: ["selection"],
+            onclick: (
+              info: chrome.contextMenus.OnClickData,
+              tab: chrome.tabs.Tab
+            ) => {
+              let data = info.menuItemId.split("**");
+              this.service.controller.searchTorrent(
+                info.selectionText,
+                data[1]
+              );
+            }
+          });
+        });
+      }
     }
 
     // 搜索IMDb相关种子
