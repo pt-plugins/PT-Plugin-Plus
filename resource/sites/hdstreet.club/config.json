@@ -24,5 +24,10 @@
     "entry": "/torrentsasia.php",
     "name": "外语区",
     "enabled": true
+  }],
+  "plugins": [{
+    "name": "其他区域种子列表",
+    "pages": ["/torrentsasia.php", "/reseed.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
   }]
 }
