@@ -314,8 +314,8 @@ export default Vue.extend({
       if (downloaded == 0 && uploaded > 0) {
         user.ratio = -1;
       }
-      // 没有分享率时，重新以 上传量 / 下载量计算
-      else if (downloaded > 0 && !user.ratio) {
+      // 重新以 上传量 / 下载量计算分享率
+      else if (downloaded > 0) {
         user.ratio = uploaded / downloaded;
       }
     },
