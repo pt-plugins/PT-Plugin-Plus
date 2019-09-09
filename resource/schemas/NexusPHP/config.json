@@ -74,7 +74,8 @@
           "filters": ["query ? query.getQueryString('id'):''"]
         },
         "name": {
-          "selector": ["a[href*='userdetails.php'][class*='Name']:first", "a[href*='userdetails.php']:first"]
+          "selector": ["a[href*='userdetails.php'][class*='Name']:first", "a[href*='userdetails.php']:first"],
+          "filters": ["query && query.attr('href').getQueryString('id') > 0 ? query.text(): ''"]
         },
         "isLogged": {
           "selector": ["a[href*='logout.php']"],
