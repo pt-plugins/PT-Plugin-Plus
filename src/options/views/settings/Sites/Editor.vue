@@ -1,7 +1,7 @@
 <template>
   <v-card class="mb-5" color="grey lighten-4">
     <v-card-text>
-      <v-form v-model="site.valid">
+      <v-form v-model="valid">
         <!-- 站点名称 -->
         <v-text-field
           ref="name"
@@ -178,20 +178,34 @@ export default Vue.extend({
           );
         }
       },
-      cdn: ""
+      cdn: "",
+      valid: false,
+      site: {} as Site
     };
   },
   props: {
-    site: Object,
-    custom: Boolean
+    custom: Boolean,
+    initData: {
+      type: Object,
+      default: () => ({
+        valid: false
+      })
+    }
   },
   watch: {
-    site() {
-      if (this.site.cdn) {
-        this.cdn = this.site.cdn.join("\n");
-      } else {
-        this.cdn = "";
-      }
+    site: {
+      handler() {
+        if (this.site.cdn) {
+          this.cdn = this.site.cdn.join("\n");
+        } else {
+          this.cdn = "";
+        }
+        this.$emit("change", {
+          data: this.site,
+          valid: this.valid
+        });
+      },
+      deep: true
     },
     cdn() {
       let items = this.cdn.split("\n");
@@ -213,6 +227,12 @@ export default Vue.extend({
       }
 
       this.site.cdn = result;
+    },
+    initData() {
+      if (this.initData) {
+        this.site = Object.assign({}, this.initData);
+        this.valid = this.site.name && this.site.host ? true : false;
+      }
     }
   },
   computed: {

@@ -7,7 +7,7 @@
       >{{ $t('settings.sites.edit.title') }}</v-card-title>
 
       <v-card-text>
-        <SiteEditor :site="defaultSite"/>
+        <SiteEditor :initData="defaultSite" @change="change" />
       </v-card-text>
 
       <v-divider></v-divider>
@@ -18,7 +18,7 @@
           <v-icon>cancel</v-icon>
           <span class="ml-1">{{ $t('common.cancel') }}</span>
         </v-btn>
-        <v-btn flat color="success" @click="save" :disabled="!defaultSite.valid">
+        <v-btn flat color="success" @click="save" :disabled="!valid">
           <v-icon>check_circle_outline</v-icon>
           <span class="ml-1">{{ $t('common.ok') }}</span>
         </v-btn>
@@ -36,7 +36,9 @@ export default Vue.extend({
   data() {
     return {
       show: false,
-      defaultSite: {}
+      defaultSite: {},
+      valid: true,
+      newData: {}
     };
   },
   props: {
@@ -59,8 +61,13 @@ export default Vue.extend({
     }
   },
   methods: {
+    change(options: any) {
+      console.log(options);
+      this.newData = options.data;
+      this.valid = options.valid;
+    },
     save() {
-      this.$emit("save", this.defaultSite);
+      this.$emit("save", this.newData);
       this.show = false;
     },
     cancel() {

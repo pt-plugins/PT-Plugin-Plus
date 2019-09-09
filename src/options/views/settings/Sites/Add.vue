@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-snackbar
-      v-model="valid"
+      :value="haveError"
       top
       :timeout="3000"
       color="error"
@@ -72,7 +72,7 @@
 
               <!-- 站点配置 -->
               <v-stepper-content step="2">
-                <SiteEditor :site="selectedSite" :custom="isCustom" />
+                <SiteEditor :initData="selectedSite" :custom="isCustom" @change="change" />
               </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
@@ -109,13 +109,7 @@
             <span>{{ $t('settings.sites.add.next') }}</span>
             <v-icon>navigate_next</v-icon>
           </v-btn>
-          <v-btn
-            flat
-            color="success"
-            @click="save"
-            v-show="step===stepCount"
-            :disabled="!selectedSite.valid"
-          >
+          <v-btn flat color="success" @click="save" v-show="step===stepCount" :disabled="!valid">
             <v-icon>check_circle_outline</v-icon>
           </v-btn>
         </v-card-actions>
@@ -138,7 +132,9 @@ export default Vue.extend({
       stepCount: 2,
       selectedSite: {} as Site,
       valid: false,
-      isCustom: false
+      isCustom: false,
+      newData: {} as Site,
+      haveError: false
     };
   },
   props: {
@@ -161,16 +157,31 @@ export default Vue.extend({
     }
   },
   methods: {
+    change(options: any) {
+      console.log(options);
+      this.newData = options.data;
+      this.valid = options.valid;
+    },
     save() {
-      this.$emit("save", Object.assign({}, this.selectedSite));
+      this.$emit(
+        "save",
+        Object.assign(
+          {
+            isCustom: this.isCustom
+          },
+          this.newData
+        )
+      );
       this.show = false;
     },
     next(step: number) {
       if (this.selectedSite && this.selectedSite.name) {
-        this.valid = false;
+        this.valid = true;
+        this.haveError = false;
         this.step++;
       } else {
-        this.valid = true;
+        this.haveError = true;
+        this.valid = false;
       }
       this.isCustom = false;
     },
@@ -212,6 +223,9 @@ export default Vue.extend({
   },
   computed: {
     selectedSiteDescription(): string {
+      if (!this.selectedSite) {
+        return "";
+      }
       let site = this.selectedSite;
       let description = "";
       if (site.description !== undefined) {
