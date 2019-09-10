@@ -473,3 +473,17 @@ export interface IManifest {
   time: number;
   hash?: string;
 }
+
+/**
+ * 已收藏的种子
+ */
+export interface ICollection {
+  host: string;
+  title: string;
+  time?: number;
+  // 下载地址
+  url: string;
+  // 种子页面链接
+  link: string;
+  size: number;
+}

@@ -437,38 +437,78 @@
           <td>{{ props.item.time | formatDate }}</td>
           <td>
             <template v-if="!!props.item.url">
-              <v-icon
-                small
-                class="mr-2"
-                @click="copyLinkToClipboard(props.item.url)"
-                :title="$t('searchTorrent.copyToClipboardTip')"
-              >file_copy</v-icon>
+              <v-btn flat icon small class="mx-0" color="grey darken-1">
+                <v-icon
+                  small
+                  @click="copyLinkToClipboard(props.item.url)"
+                  :title="$t('searchTorrent.copyToClipboardTip')"
+                >file_copy</v-icon>
+              </v-btn>
 
               <!-- 服务端下载 -->
-              <v-icon
-                @click.stop="showSiteContentMenus(props.item, $event)"
-                small
-                class="mr-2"
-                :title="$t('searchTorrent.sendToClient')"
-              >cloud_download</v-icon>
+              <v-btn flat icon small class="mx-0" color="grey darken-1">
+                <v-icon
+                  @click.stop="showSiteContentMenus(props.item, $event)"
+                  small
+                  :title="$t('searchTorrent.sendToClient')"
+                >cloud_download</v-icon>
+              </v-btn>
 
-              <v-icon
-                @click.stop="saveTorrentFile(props.item)"
+              <!-- 下载种子文件 -->
+              <v-btn
+                flat
+                icon
                 small
-                class="mr-2"
-                :title="$t('searchTorrent.save')"
+                class="mx-0"
                 v-if="props.item.site.downloadMethod=='POST'"
-              >get_app</v-icon>
+                color="grey darken-1"
+              >
+                <v-icon
+                  @click.stop="saveTorrentFile(props.item)"
+                  small
+                  :title="$t('searchTorrent.save')"
+                >get_app</v-icon>
+              </v-btn>
 
-              <a
+              <v-btn
+                flat
+                icon
+                small
+                class="mx-0"
                 v-else
                 :href="props.item.url"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 :title="$t('searchTorrent.save')"
+                color="grey darken-1"
               >
-                <v-icon small class="mr-2">get_app</v-icon>
-              </a>
+                <v-icon small>get_app</v-icon>
+              </v-btn>
+
+              <!-- 收藏 -->
+              <v-btn
+                flat
+                icon
+                small
+                class="mx-0"
+                color="grey darken-1"
+                @click="addToCollection(props.item)"
+                v-if="!isCollectioned(props.item.link)"
+              >
+                <v-icon small>favorite_border</v-icon>
+              </v-btn>
+
+              <v-btn
+                flat
+                icon
+                small
+                class="mx-0"
+                color="pink"
+                @click="deleteCollection(props.item)"
+                v-else
+              >
+                <v-icon small>favorite</v-icon>
+              </v-btn>
             </template>
             <span v-else>{{ $t('searchTorrent.failUrl') }}</span>
           </td>

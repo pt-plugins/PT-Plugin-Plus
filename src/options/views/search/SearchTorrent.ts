@@ -21,7 +21,8 @@ import {
   DownloadOptions,
   ECommonKey,
   ERequestMethod,
-  ISearchPayload
+  ISearchPayload,
+  ICollection
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import dayjs from "dayjs";
@@ -114,7 +115,8 @@ export default Vue.extend({
       // 最后操作的checkbox索引
       lastCheckedIndex: -1,
       shiftKey: false,
-      searchPayload: {} as ISearchPayload
+      searchPayload: {} as ISearchPayload,
+      torrentCollections: [] as ICollection[]
     };
   },
   created() {
@@ -130,6 +132,7 @@ export default Vue.extend({
         rowsPerPage: 100
       }
     );
+    this.loadTorrentCollections();
   },
   mounted() {
     // 初始化鼠标点击事件，用于按shift键多选操作
@@ -164,6 +167,7 @@ export default Vue.extend({
     }
 
     this.host = this.$route.params["host"];
+    this.loadTorrentCollections();
   },
   watch: {
     key() {
@@ -1565,6 +1569,41 @@ export default Vue.extend({
           return 0;
         }
       };
+    },
+    addToCollection(item: any) {
+      extension
+        .sendRequest(EAction.addTorrentToCollection, null, {
+          title: item.title,
+          url: item.url,
+          link: item.link,
+          host: item.site.host,
+          size: item.size
+        })
+        .then(result => {
+          this.torrentCollections = result;
+          console.log(result);
+        });
+    },
+    deleteCollection(item: any) {
+      extension
+        .sendRequest(EAction.deleteTorrentFromCollention, null, {
+          link: item.link
+        })
+        .then(result => {
+          this.torrentCollections = result;
+        });
+    },
+    loadTorrentCollections() {
+      extension.sendRequest(EAction.getTorrentCollections).then(result => {
+        this.torrentCollections = result;
+      });
+    },
+    isCollectioned(link: string): boolean {
+      return (
+        this.torrentCollections.findIndex(item => {
+          return item.link === link;
+        }) !== -1
+      );
     }
   },
   computed: {
@@ -1624,7 +1663,7 @@ export default Vue.extend({
         {
           text: this.$t("searchTorrent.headers.action"),
           sortable: false,
-          width: "100px"
+          width: "130px"
         }
       ];
     }

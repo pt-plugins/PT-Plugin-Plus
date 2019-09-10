@@ -276,35 +276,6 @@ export default Vue.extend({
         );
       }
     },
-    /**
-     * 获取当前配置信息，以文本形式返回
-     */
-    getOptionData(): Promise<any> {
-      return new Promise<any>((resolve?: any, reject?: any) => {
-        extension
-          .sendRequest(EAction.getClearedOptions)
-          .then((options: any) => {
-            delete options.system;
-            resolve(options);
-          })
-          .catch(() => {
-            reject();
-          });
-      });
-    },
-    getUserData(): Promise<any> {
-      return new Promise<any>((resolve?: any, reject?: any) => {
-        extension
-          .sendRequest(EAction.getUserHistoryData, null, "")
-          .then((data: any) => {
-            console.log(data);
-            resolve(data);
-          })
-          .catch(() => {
-            reject();
-          });
-      });
-    },
     backup() {
       this.clearMessage();
       extension
@@ -454,92 +425,10 @@ export default Vue.extend({
      * 创建备份文件
      */
     createBackupFile() {
-      const zip = new JSZip();
-      let requests: any[] = [];
-      requests.push(this.getOptionData());
-      requests.push(this.getUserData());
-
-      Promise.all(requests).then(results => {
-        const options = JSON.stringify(results[0]);
-        const datas = JSON.stringify(results[1]);
-        // 配置
-        zip.file("options.json", options);
-        // 用户数据
-        zip.file("userdatas.json", datas);
-
-        // 创建检证用的文件
-        const manifest = {
-          checkInfo: this.createHash(options + datas),
-          version: PPF.getVersion(),
-          time: new Date().getTime()
-        };
-        zip.file("manifest.json", JSON.stringify(manifest));
-
-        zip.generateAsync({ type: "blob" }).then(blob => {
-          saveAs(blob, this.zipFileName);
-        });
+      extension.sendRequest(EAction.createBackupFile).catch(error => {
+        console.log(error);
+        this.errorMsg = this.$t("settings.backup.backupError").toString();
       });
-    },
-    /**
-     * 创建用于验证数据对象
-     */
-    createHash(data: string): IHashData {
-      const length = data.length;
-
-      const keys: any[] = [];
-
-      let result: IHashData = {
-        hash: "",
-        keyMap: [],
-        length
-      };
-
-      for (let n = 0; n < 32; n++) {
-        let index = Math.round(length * Math.random());
-        keys.push(data.substr(index, 1));
-        result.keyMap.push(index);
-      }
-
-      result.hash = md5(keys.join(""));
-
-      return result;
-    },
-    /**
-     * 简单验证数据，仅防止格式错误的数据
-     */
-    checkData(manifest: IManifest, data: string): boolean {
-      if (!manifest) {
-        return false;
-      }
-
-      if (!manifest.checkInfo) {
-        return false;
-      }
-
-      const checkInfo = manifest.checkInfo;
-      const length = data.length;
-
-      if (length !== checkInfo.length) {
-        return false;
-      }
-
-      const keys: any[] = [];
-
-      try {
-        if (checkInfo.keyMap.length !== 32) {
-          return false;
-        }
-        for (let n = 0; n < 32; n++) {
-          let index = checkInfo.keyMap[n];
-          keys.push(data.substr(index, 1));
-        }
-
-        if (md5(keys.join("")) === checkInfo.hash) {
-          return true;
-        }
-      } catch (error) {}
-
-      return false;
     },
     /**
      * 从 zip 文件中恢复配置信息
@@ -551,27 +440,26 @@ export default Vue.extend({
           requests.push(zip.file("manifest.json").async("text"));
           requests.push(zip.file("options.json").async("text"));
           requests.push(zip.file("userdatas.json").async("text"));
+
+          if (zip.file("collection.json")) {
+            requests.push(zip.file("collection.json").async("text"));
+          }
+
           return Promise.all(requests);
         })
         .then(results => {
-          try {
-            const manifest = JSON.parse(results[0]);
-            const options = JSON.parse(results[1]);
-            const datas = JSON.parse(results[2]);
-
-            if (this.checkData(manifest, results[1] + results[2])) {
-              this.restoreConfirm({
-                options,
-                datas
-              });
-            } else {
+          extension
+            .sendRequest(EAction.checkBackupData, null, results)
+            .then(result => {
+              console.log(result);
+              this.restoreConfirm(result);
+            })
+            .catch(error => {
+              console.log(error);
               this.errorMsg = this.$t(
                 "settings.backup.restoreError"
               ).toString();
-            }
-          } catch (error) {
-            this.errorMsg = this.$t("settings.backup.restoreError").toString();
-          }
+            });
         })
         .catch(error => {
           console.log(error);

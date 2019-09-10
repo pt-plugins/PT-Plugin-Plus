@@ -19,6 +19,7 @@ import { PPF } from "@/service/public";
 import { OmniBox } from "./omnibox";
 import { i18nService } from "./i18n";
 import DownloadQuene from "./downloadQuene";
+import Collection from "./collection";
 /**
  * PT 助手后台服务类
  */
@@ -43,6 +44,8 @@ export default class PTPlugin {
   public i18n: i18nService = new i18nService(this);
   // 种子下载队列服务
   public downloadQuene: DownloadQuene = new DownloadQuene(this);
+  // 收藏
+  public collection: Collection = new Collection();
 
   private reloadCount: number = 0;
   private autoRefreshUserDataTimer: number = 0;

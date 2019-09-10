@@ -1154,4 +1154,27 @@ export default class Controller {
       );
     });
   }
+
+  public createBackupFile(fileName: string): Promise<any> {
+    return this.service.config.createBackupFile(fileName);
+  }
+
+  public checkBackupData(data: any[]): Promise<any> {
+    return this.service.config.checkBackupData(data);
+  }
+
+  public addTorrentToCollection(data: any): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.service.collection.add(data);
+      resolve(this.service.collection.items);
+    });
+  }
+
+  public getTorrentCollections(): Promise<any> {
+    return this.service.collection.load();
+  }
+
+  public deleteTorrentFromCollention(data: any): Promise<any> {
+    return this.service.collection.delete(data);
+  }
 }

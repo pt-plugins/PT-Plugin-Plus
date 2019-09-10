@@ -166,7 +166,17 @@ export enum EAction {
   // 从服务器删除指定的文件
   deleteFileFromBackupServer = "deleteFileFromBackupServer",
   // 在后台批量下载指定的链接
-  sendTorrentsInBackground = "sendTorrentsInBackground"
+  sendTorrentsInBackground = "sendTorrentsInBackground",
+  // 创建备份文件
+  createBackupFile = "createBackupFile",
+  // 验证备份数据
+  checkBackupData = "checkBackupData",
+  // 将种子添加到收藏
+  addTorrentToCollection = "addTorrentToCollection",
+  // 获取种子收藏
+  getTorrentCollections = "getTorrentCollections",
+  // 删除种子收藏
+  deleteTorrentFromCollention = "deleteTorrentFromCollention"
 }
 
 /**
@@ -186,7 +196,8 @@ export enum EConfigKey {
   systemLogs = "PT-Plugin-Plus-systemLogs",
   uiOptions = "PT-Plugin-Plus-uiOptions",
   cache = "PT-Plugin-Plus-Cache-Contents",
-  userDatas = "PT-Plugin-Plus-User-Datas"
+  userDatas = "PT-Plugin-Plus-User-Datas",
+  collection = "PT-Plugin-Plus-Collection"
 }
 
 /**

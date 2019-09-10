@@ -14,7 +14,8 @@ import {
   EUserDataRange,
   IHashData,
   IManifest,
-  EPluginPosition
+  EPluginPosition,
+  Dictionary
 } from "@/interface/common";
 import { API, APP } from "@/service/api";
 import localStorage from "@/service/localStorage";
@@ -25,6 +26,8 @@ import md5 from "blueimp-md5";
 import dayjs from "dayjs";
 import { OWSS } from "./plugins/OWSS";
 import PTPlugin from "./service";
+import FileSaver from "file-saver";
+
 type Service = PTPlugin;
 
 /**
@@ -676,44 +679,70 @@ class Config {
   }
 
   /**
-   * 获取备份数据
+   * 创建备份文件
    * @param fileName
    */
-  public getBackupFileData(fileName: string): Promise<any> {
+  public createBackupFile(fileName?: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      const formData = new FormData();
-      formData.append("name", fileName);
-
-      const zip = new JSZip();
-
-      const rawUserData = this.service.userData.get("", EUserDataRange.all);
-      const rawOptions = this.cleaningOptions(this.service.options);
-
-      console.log(rawOptions);
-
-      delete rawOptions.system;
-
-      const options = JSON.stringify(rawOptions);
-      const userData = JSON.stringify(rawUserData);
-
-      // 配置
-      zip.file("options.json", options);
-      // 用户数据
-      zip.file("userdatas.json", userData);
-
-      // 创建检证用的文件
-      const manifest = {
-        checkInfo: this.createHash(options + userData),
-        version: PPF.getVersion(),
-        time: new Date().getTime()
-      };
-      zip.file("manifest.json", JSON.stringify(manifest));
-
-      zip.generateAsync({ type: "blob" }).then((blob: any) => {
-        formData.append("data", blob);
-        resolve(formData);
-      });
+      this.getBackupFileBlob()
+        .then(blob => {
+          saveAs(blob, fileName || this.getNewBackupFileName());
+          resolve(true);
+        })
+        .catch(error => {
+          reject(error);
+        });
     });
+  }
+
+  /**
+   * 获取备份数据
+   */
+  public getBackupFileBlob(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      try {
+        const zip = new JSZip();
+
+        const rawUserData = this.service.userData.get("", EUserDataRange.all);
+        const rawOptions = this.cleaningOptions(this.service.options);
+
+        delete rawOptions.system;
+
+        const options = JSON.stringify(rawOptions);
+        const userData = JSON.stringify(rawUserData);
+
+        // 配置
+        zip.file("options.json", options);
+        // 用户数据
+        zip.file("userdatas.json", userData);
+
+        // 创建检证用的文件
+        const manifest = {
+          checkInfo: this.createHash(options + userData),
+          version: PPF.getVersion(),
+          time: new Date().getTime()
+        };
+        zip.file("manifest.json", JSON.stringify(manifest));
+
+        // 用户收藏
+        const collection = this.service.collection.items;
+        if (collection && collection.length > 0) {
+          zip.file("collection.json", JSON.stringify(collection));
+        }
+
+        zip.generateAsync({ type: "blob" }).then((blob: any) => {
+          resolve(blob);
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  private getNewBackupFileName(): string {
+    return (
+      "PT-Plugin-Plus-Backup-" + dayjs().format("YYYY-MM-DD HH:mm:ss") + ".zip"
+    );
   }
 
   /**
@@ -724,12 +753,13 @@ class Config {
     console.log("backupToServer", server);
     return new Promise<any>((resolve?: any, reject?: any) => {
       const time = dayjs().valueOf();
-      const fileName =
-        "PT-Plugin-Plus-Backup-" +
-        dayjs().format("YYYY-MM-DD HH:mm:ss") +
-        ".zip";
-      this.getBackupFileData(fileName)
-        .then(formData => {
+      const fileName = this.getNewBackupFileName();
+      this.getBackupFileBlob()
+        .then(blob => {
+          const formData = new FormData();
+          formData.append("name", fileName);
+          formData.append("data", blob);
+
           switch (server.type) {
             case EBackupServerType.OWSS:
               new OWSS(server)
@@ -768,7 +798,7 @@ class Config {
           new OWSS(server)
             .get(path)
             .then(data => {
-              this.restoreFromZipFile(data)
+              this.restoreFromZipData(data)
                 .then(result => {
                   resolve(result);
                 })
@@ -789,10 +819,41 @@ class Config {
   }
 
   /**
-   * 从zip备份文件中恢复
+   * 验证备份数据
    * @param data
    */
-  private restoreFromZipFile(data: any): Promise<any> {
+  public checkBackupData(data: any[]): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      try {
+        const manifest = JSON.parse(data[0]);
+        const options = JSON.parse(data[1]);
+        const datas = JSON.parse(data[2]);
+
+        const result: Dictionary<any> = {
+          options,
+          datas
+        };
+
+        if (data.length > 3) {
+          result["collection"] = JSON.parse(data[3]);
+        }
+
+        if (this.checkData(manifest, data[1] + data[2])) {
+          resolve(result);
+        } else {
+          reject("error");
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  /**
+   * 验证备份文件并获取数据
+   * @param data
+   */
+  private restoreFromZipData(data: any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       JSZip.loadAsync(data)
         .then(zip => {
@@ -800,25 +861,20 @@ class Config {
           requests.push(zip.file("manifest.json").async("text"));
           requests.push(zip.file("options.json").async("text"));
           requests.push(zip.file("userdatas.json").async("text"));
+
+          if (zip.file("collection.json")) {
+            requests.push(zip.file("collection.json").async("text"));
+          }
           return Promise.all(requests);
         })
         .then(results => {
-          try {
-            const manifest = JSON.parse(results[0]);
-            const options = JSON.parse(results[1]);
-            const datas = JSON.parse(results[2]);
-
-            if (this.checkData(manifest, results[1] + results[2])) {
-              resolve({
-                options,
-                datas
-              });
-            } else {
-              reject("error");
-            }
-          } catch (error) {
-            reject(error);
-          }
+          this.checkBackupData(results)
+            .then(result => {
+              resolve(result);
+            })
+            .catch(error => {
+              reject(error);
+            });
         })
         .catch(error => {
           console.log(error);
