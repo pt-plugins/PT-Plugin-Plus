@@ -1164,10 +1164,7 @@ export default class Controller {
   }
 
   public addTorrentToCollection(data: any): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      this.service.collection.add(data);
-      resolve(this.service.collection.items);
-    });
+    return this.service.collection.add(data);
   }
 
   public getTorrentCollections(): Promise<any> {
@@ -1175,6 +1172,13 @@ export default class Controller {
   }
 
   public deleteTorrentFromCollention(data: any): Promise<any> {
+    if (Array.isArray(data)) {
+      return this.service.collection.remove(data);
+    }
     return this.service.collection.delete(data);
+  }
+
+  public clearTorrentCollention(): Promise<any> {
+    return this.service.collection.clear();
   }
 }

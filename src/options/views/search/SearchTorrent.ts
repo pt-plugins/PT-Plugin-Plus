@@ -1577,7 +1577,11 @@ export default Vue.extend({
           url: item.url,
           link: item.link,
           host: item.site.host,
-          size: item.size
+          size: item.size,
+          subTitle: item.subTitle,
+          movieInfo: {
+            imdbId: this.IMDbId
+          }
         })
         .then(result => {
           this.torrentCollections = result;

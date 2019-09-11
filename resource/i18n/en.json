@@ -50,7 +50,8 @@
       "dashboard": {
         "title": "Overview",
         "searchResults": "Search Results",
-        "history": "Download History"
+        "history": "Download History",
+        "collection": "Collection"
       },
       "settings": {
         "title": "Settings",
@@ -783,6 +784,18 @@
     "footer": {
       "replaceLanguageConfirm": "The language already exists. Do you need to replace it?",
       "invalidFile": "Invalid language file!"
+    },
+    "collection": {
+      "title": "Collection list",
+      "add": "Add to collection",
+      "remove": "Remove from collection",
+      "headers": {
+        "site": "Site",
+        "title": "Title",
+        "size": "Size",
+        "time": "Add time",
+        "action": "Action"
+      }
     }
   }
 }

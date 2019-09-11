@@ -3,7 +3,7 @@
     <v-alert :value="true" type="info">{{ $t("collection.title") }}</v-alert>
     <v-card>
       <v-card-title>
-        <v-btn color="error" :disabled="selected.length==0">
+        <v-btn color="error" :disabled="selected.length==0" @click="removeSelected">
           <v-icon class="mr-2">remove</v-icon>
           {{ $t("common.remove") }}
         </v-btn>
@@ -30,75 +30,68 @@
           <td style="width:20px;">
             <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
           </td>
-          <!-- 站点 -->
-          <td style="text-align: center;">
-            <div v-if="!!props.item.site">
-              <v-avatar size="18">
-                <img :src="props.item.site.icon" />
-              </v-avatar>
-              <br />
-              <span class="captionText">{{ props.item.site.name }}</span>
-            </div>
-          </td>
           <td>
             <v-img
-              :src="props.item.movieInfo.image"
-              class="ml-3 mb-3"
+              :src="(props.item.movieInfo && props.item.movieInfo.image)?props.item.movieInfo.image:'./assets/movie.png'"
+              class="mx-0 my-2"
               contain
-              max-height="100"
+              max-height="80"
               position="left center"
             >
-              <v-layout style="margin-left: 80px;">
-                <a
-                  v-if="props.item.link"
-                  :href="props.item.link"
-                  target="_blank"
-                  :title="props.item.title"
-                  rel="noopener noreferrer nofollow"
-                >{{ props.item.title || props.item.link}}</a>
-                <span v-else :title="props.item.url">{{ props.item.title }}</span>
-                <br />
-                <span class="sub-title">{{ props.item.subTitle }}</span>
+              <v-layout style="margin-left: 80px;" row wrap>
+                <template v-if="(props.item.movieInfo && props.item.movieInfo.title)">
+                  <v-flex xs12>
+                    <a
+                      :href="props.item.movieInfo.link"
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                    >
+                      <img src="https://img3.doubanio.com/favicon.ico" class="mr-2 mt-0" width="16" />
+                    </a>
+                    <span class="title">{{ props.item.movieInfo.title }}</span>
+
+                    <span class="caption ml-2">({{ props.item.movieInfo.year }})</span>
+                  </v-flex>
+
+                  <v-flex xs12 class="mb-1">
+                    <span class="sub-title">{{ props.item.movieInfo.alt_title }}</span>
+                  </v-flex>
+                </template>
+                <template>
+                  <v-flex xs12>
+                    <a
+                      :href="props.item.link"
+                      target="_blank"
+                      :title="props.item.title"
+                      rel="noopener noreferrer nofollow"
+                    >
+                      <span>{{ props.item.title }}</span>
+                    </a>
+                  </v-flex>
+
+                  <v-flex xs12>
+                    <span class="sub-title">{{ props.item.subTitle }}</span>
+                  </v-flex>
+                </template>
               </v-layout>
             </v-img>
+            <v-layout class="mb-2" row wrap v-if="!!props.item.site">
+              <v-avatar :size="15">
+                <img :src="props.item.site.icon" />
+              </v-avatar>
+              <span class="caption ml-1">{{ props.item.site.name }}</span>
+            </v-layout>
           </td>
           <td>{{ props.item.size | formatSize }}</td>
           <td>{{ props.item.time | formatDate }}</td>
           <td>
-            <v-icon
-              small
-              class="mr-2"
-              @click="download(props.item)"
-              :title="$t('history.download')"
-            >cloud_download</v-icon>
-            <v-icon small color="error" @click="removeConfirm(props.item)">delete</v-icon>
+            <v-btn flat icon small @click="removeConfirm(props.item)" color="error" class="mx-0">
+              <v-icon small>delete</v-icon>
+            </v-btn>
           </td>
         </template>
       </v-data-table>
     </v-card>
-
-    <!-- 删除确认 -->
-    <v-dialog v-model="dialogRemoveConfirm" width="300">
-      <v-card>
-        <v-card-title class="headline red lighten-2">{{ $t('history.removeConfirmTitle') }}</v-card-title>
-
-        <v-card-text>{{ $t('history.removeConfirm') }}</v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn flat color="info" @click="dialogRemoveConfirm=false">
-            <v-icon>cancel</v-icon>
-            <span class="ml-1">{{ $t('history.cancel') }}</span>
-          </v-btn>
-          <v-btn color="error" flat @click="remove">
-            <v-icon>check_circle_outline</v-icon>
-            <span class="ml-1">{{ $t('history.ok') }}</span>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
     <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
     <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{ successMsg }}</v-snackbar>
@@ -106,7 +99,13 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { EAction, DownloadOptions, Site, Dictionary } from "@/interface/common";
+import {
+  EAction,
+  DownloadOptions,
+  Site,
+  Dictionary,
+  ICollection
+} from "@/interface/common";
 import Extension from "@/service/extension";
 
 const extension = new Extension();
@@ -121,7 +120,6 @@ export default Vue.extend({
         descending: true
       },
       items: [] as any[],
-      dialogRemoveConfirm: false,
       options: this.$store.state.options,
       errorMsg: "",
       haveError: false,
@@ -133,28 +131,26 @@ export default Vue.extend({
 
   methods: {
     clear() {
-      if (confirm(this.$t("history.clearConfirm").toString())) {
+      if (confirm(this.$t("common.clearConfirm").toString())) {
         extension
-          .sendRequest(EAction.clearDownloadHistory)
+          .sendRequest(EAction.clearTorrentCollention)
           .then((result: any) => {
-            console.log("clearDownloadHistory", result);
-            this.items = result;
+            this.items = [];
           });
       }
     },
-    remove() {
+    remove(item: ICollection | ICollection[]) {
       extension
-        .sendRequest(EAction.removeDownloadHistory, null, [this.selectedItem])
+        .sendRequest(EAction.deleteTorrentFromCollention, null, item)
         .then((result: any) => {
-          console.log("removeDownloadHistory", result);
-          this.items = result;
+          this.getTorrentCollections();
         });
-      this.dialogRemoveConfirm = false;
     },
 
-    removeConfirm(item: any) {
-      this.selectedItem = item;
-      this.dialogRemoveConfirm = true;
+    removeConfirm(item: ICollection) {
+      if (confirm(this.$t("common.removeConfirm").toString())) {
+        this.remove(item);
+      }
     },
     getTorrentCollections() {
       extension
@@ -178,39 +174,12 @@ export default Vue.extend({
         });
     },
 
-    getClientName(clientId: string): string {
-      let client = this.options.clients.find((item: any) => {
-        return item.id === clientId;
-      });
-      if (client) {
-        return client.name;
+    removeSelected() {
+      if (this.selected && this.selected.length > 0) {
+        if (confirm(this.$t("common.actionConfirm").toString())) {
+          this.remove(this.selected);
+        }
       }
-      return "";
-    },
-    download(options: any) {
-      console.log(options);
-
-      this.haveSuccess = true;
-      this.successMsg = this.$t("history.seedingTorrent").toString();
-
-      let data = Object.assign({}, options.data);
-      if (!data.clientId) {
-        data.clientId = options.clientId;
-      }
-
-      extension
-        .sendRequest(EAction.sendTorrentToClient, null, data)
-        .then((result: any) => {
-          console.log("命令执行完成", result);
-
-          if (result.success) {
-            this.haveSuccess = true;
-            this.successMsg = result.msg;
-          } else {
-            this.haveError = true;
-            this.errorMsg = result.msg;
-          }
-        });
     }
   },
 
@@ -222,20 +191,14 @@ export default Vue.extend({
     headers(): Array<any> {
       return [
         {
-          text: this.$t("collection.headers.site"),
-          align: "center",
-          value: "data.host",
-          width: "140px"
-        },
-        {
           text: this.$t("collection.headers.title"),
           align: "left",
-          value: "data.title"
+          value: "title"
         },
         {
-          text: this.$t("collection.headers.status"),
+          text: this.$t("collection.headers.size"),
           align: "left",
-          value: "data.success"
+          value: "size"
         },
         {
           text: this.$t("collection.headers.time"),
@@ -244,7 +207,7 @@ export default Vue.extend({
         },
         {
           text: this.$t("collection.headers.action"),
-          value: "name",
+          value: "title",
           sortable: false
         }
       ];

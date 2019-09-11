@@ -176,7 +176,9 @@ export enum EAction {
   // 获取种子收藏
   getTorrentCollections = "getTorrentCollections",
   // 删除种子收藏
-  deleteTorrentFromCollention = "deleteTorrentFromCollention"
+  deleteTorrentFromCollention = "deleteTorrentFromCollention",
+  // 清除种子收藏
+  clearTorrentCollention = "clearTorrentCollention"
 }
 
 /**
