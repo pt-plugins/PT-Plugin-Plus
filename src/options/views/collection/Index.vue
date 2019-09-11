@@ -85,6 +85,15 @@
           <td>{{ props.item.size | formatSize }}</td>
           <td>{{ props.item.time | formatDate }}</td>
           <td>
+            <DownloadTo
+              :downloadOptions="props.item"
+              flat
+              icon
+              small
+              class="mx-0"
+              @error="onError"
+              @success="onSuccss"
+            />
             <v-btn flat icon small @click="removeConfirm(props.item)" color="error" class="mx-0">
               <v-icon small>delete</v-icon>
             </v-btn>
@@ -93,8 +102,12 @@
       </v-data-table>
     </v-card>
 
-    <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
-    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{ successMsg }}</v-snackbar>
+    <v-snackbar v-model="haveError" top :timeout="3000" color="error" multi-line>
+      <span v-html="errorMsg"></span>
+    </v-snackbar>
+    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success" multi-line>
+      <span v-html="successMsg"></span>
+    </v-snackbar>
   </div>
 </template>
 <script lang="ts">
@@ -107,9 +120,13 @@ import {
   ICollection
 } from "@/interface/common";
 import Extension from "@/service/extension";
+import DownloadTo from "@/options/components/DownloadTo.vue";
 
 const extension = new Extension();
 export default Vue.extend({
+  components: {
+    DownloadTo
+  },
   data() {
     return {
       selected: [],
@@ -130,6 +147,11 @@ export default Vue.extend({
   },
 
   methods: {
+    clearMessage() {
+      this.successMsg = "";
+      this.errorMsg = "";
+    },
+
     clear() {
       if (confirm(this.$t("common.clearConfirm").toString())) {
         extension
@@ -152,6 +174,7 @@ export default Vue.extend({
         this.remove(item);
       }
     },
+
     getTorrentCollections() {
       extension
         .sendRequest(EAction.getTorrentCollections)
@@ -180,11 +203,28 @@ export default Vue.extend({
           this.remove(this.selected);
         }
       }
+    },
+
+    onError(msg: string) {
+      this.errorMsg = msg;
+    },
+
+    onSuccss(msg: string) {
+      this.successMsg = msg;
     }
   },
 
   created() {
     this.getTorrentCollections();
+  },
+
+  watch: {
+    successMsg() {
+      this.haveSuccess = this.successMsg != "";
+    },
+    errorMsg() {
+      this.haveError = this.errorMsg != "";
+    }
   },
 
   computed: {
@@ -208,7 +248,8 @@ export default Vue.extend({
         {
           text: this.$t("collection.headers.action"),
           value: "title",
-          sortable: false
+          sortable: false,
+          width: 150
         }
       ];
     }
@@ -223,3 +264,5 @@ export default Vue.extend({
   }
 }
 </style>
+
+<style lang="scss" src="../search/contextMenu.scss"></style>

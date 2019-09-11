@@ -494,7 +494,8 @@ export default class Controller {
           }) +
           (downloadOptions.savePath
             ? this.service.i18n.t("service.controller.torrentSavePath", {
-                path: downloadOptions.savePath
+                path: downloadOptions.savePath,
+                interpolation: { escapeValue: false }
               })
             : ""), //`${downloadOptions.title || ""} 种子已添加完成。` +
         // (downloadOptions.savePath
@@ -518,7 +519,8 @@ export default class Controller {
               result.msg += this.service.i18n.t(
                 "service.controller.torrentSavePath",
                 {
-                  path: downloadOptions.savePath
+                  path: downloadOptions.savePath,
+                  interpolation: { escapeValue: false }
                 }
               ); //`<br/>保存至 ${downloadOptions.savePath} `;
             }
