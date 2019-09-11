@@ -61,6 +61,11 @@ export default Vue.extend({
               title: "navigation.dashboard.history",
               icon: "history",
               key: "/history"
+            },
+            {
+              title: "navigation.dashboard.collection",
+              icon: "favorite",
+              key: "/collection"
             }
           ]
         },
@@ -130,7 +135,7 @@ export default Vue.extend({
             },
             {
               title: "navigation.support.donate",
-              icon: "favorite",
+              icon: "free_breakfast",
               key: "/donate"
             }
           ]

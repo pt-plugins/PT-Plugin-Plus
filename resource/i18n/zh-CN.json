@@ -50,7 +50,8 @@
       "dashboard": {
         "title": "概览",
         "searchResults": "搜索结果",
-        "history": "下载历史"
+        "history": "下载历史",
+        "collection": "我的收藏"
       },
       "settings": {
         "title": "参数设置",
@@ -783,6 +784,18 @@
     "footer": {
       "replaceLanguageConfirm": "该语言已存在，是否需要替换？",
       "invalidFile": "无效的语言文件！"
+    },
+    "collection": {
+      "title": "收藏列表",
+      "add": "添加到收藏",
+      "remove": "从收藏中删除",
+      "headers": {
+        "site": "来源",
+        "title": "标题",
+        "size": "大小",
+        "time": "添加时间",
+        "action": "操作"
+      }
     }
   }
 }

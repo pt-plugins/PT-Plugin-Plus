@@ -122,6 +122,11 @@ export default new Router({
       path: "/set-permissions",
       name: "set-permissions",
       component: () => import("./components/Permissions.vue")
+    },
+    {
+      path: "/collection",
+      name: "collection",
+      component: () => import("./views/collection/Index.vue")
     }
   ]
 });

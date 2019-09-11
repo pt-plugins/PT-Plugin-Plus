@@ -480,10 +480,20 @@ export interface IManifest {
 export interface ICollection {
   host: string;
   title: string;
-  time?: number;
   // 下载地址
   url: string;
   // 种子页面链接
   link: string;
   size: number;
+  time?: number;
+  subTitle?: string;
+  movieInfo?: {
+    title: string;
+    alt_title: string;
+    imdbId?: string;
+    doubanId?: string | number;
+    image?: string;
+    link?: string;
+    year?: number;
+  };
 }

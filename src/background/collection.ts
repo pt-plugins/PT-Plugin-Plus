@@ -1,5 +1,6 @@
 import { ICollection, EConfigKey } from "@/interface/common";
 import localStorage from "@/service/localStorage";
+import { MovieInfoService } from "@/service/movieInfoService";
 
 /**
  * 收藏
@@ -7,6 +8,7 @@ import localStorage from "@/service/localStorage";
 export default class Collection {
   public items: any[] = [];
   public storage: localStorage = new localStorage();
+  public movieInfoService = new MovieInfoService();
 
   private configKey = EConfigKey.collection;
 
@@ -30,26 +32,55 @@ export default class Collection {
    * 添加新记录
    * @param newItem
    */
-  public add(newItem: ICollection) {
-    let saveData = Object.assign(
-      {
-        time: new Date().getTime()
-      },
-      newItem
-    );
-    if (!this.items) {
-      this.load().then(() => {
-        this.items.push(saveData);
-        this.storage.set(this.configKey, this.items);
-      });
-    } else {
-      let index = this.items.findIndex((item: ICollection) => {
-        return item.link === saveData.link;
-      });
-      if (index === -1) {
-        this.items.push(saveData);
-        this.storage.set(this.configKey, this.items);
+  public add(newItem: ICollection): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let saveData = Object.assign(
+        {
+          time: new Date().getTime()
+        },
+        newItem
+      );
+
+      let movieInfo = Object.assign({}, saveData.movieInfo);
+
+      if (movieInfo.imdbId) {
+        // 获取影片信息
+        this.movieInfoService
+          .getInfoFromIMDb(movieInfo.imdbId)
+          .then(result => {
+            // 保留数字ID
+            movieInfo.doubanId = result.id.toString().replace(/(\D)/g, "");
+            movieInfo.image = result.image;
+            movieInfo.title = result.title;
+            movieInfo.link = result.mobile_link;
+            movieInfo.alt_title = result.alt_title;
+            if (result.attrs) {
+              movieInfo.year = result.attrs.year[0];
+            }
+
+            saveData.movieInfo = movieInfo;
+            this.push(saveData);
+            resolve(this.items);
+          })
+          .catch(error => {
+            console.log(error);
+            this.push(saveData);
+            resolve(this.items);
+          });
+      } else {
+        this.push(saveData);
+        resolve(this.items);
       }
+    });
+  }
+
+  private push(newItem: ICollection) {
+    let index = this.items.findIndex((item: ICollection) => {
+      return item.link === newItem.link;
+    });
+    if (index === -1) {
+      this.items.push(newItem);
+      this.storage.set(this.configKey, this.items);
     }
   }
 
