@@ -188,6 +188,14 @@ class HelpFunctions {
   public clone(source: any) {
     return JSON.parse(JSON.stringify(source));
   }
+
+  /**
+   * 输出调试信息
+   * @param msg
+   */
+  public debug(...msg: any) {
+    console.log(new Date().toLocaleString(), ...msg);
+  }
 }
 
 /**

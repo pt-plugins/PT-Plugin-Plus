@@ -1,13 +1,3 @@
-String.prototype.getQueryString = function(name, split) {
-  if (split == undefined) split = "&";
-  var reg = new RegExp(
-      "(^|" + split + "|\\?)" + name + "=([^" + split + "]*)(" + split + "|$)"
-    ),
-    r;
-  if ((r = this.match(reg))) return decodeURI(r[2]);
-  return null;
-};
-
 (function($, window) {
   class Common {
     constructor() {
@@ -76,6 +66,9 @@ String.prototype.getQueryString = function(name, split) {
       this.addCopyTextToClipboardButton();
 
       this.initFreeSpaceButton();
+
+      // 初始化收藏按钮
+      this.initCollectionButton();
     }
 
     /**
@@ -608,6 +601,84 @@ String.prototype.getQueryString = function(name, split) {
             })
             .catch(result => {
               error(result);
+            });
+        }
+      });
+    }
+
+    /**
+     * 初始化收藏按钮
+     */
+    initCollectionButton() {
+      // 获取收藏情况
+      PTService.call(PTService.action.getTorrentCollention, location.href)
+        .then(result => {
+          this.addRemoveCollectionButton(result);
+        })
+        .catch(() => {
+          this.addToCollectionButton();
+        });
+    }
+
+    /**
+     * 添加收藏按钮
+     */
+    addToCollectionButton() {
+      PTService.removeButton("removeFromCollection");
+
+      PTService.addButton({
+        title: this.t("buttons.addToCollection"),
+        icon: "favorite_border",
+        label: this.t("buttons.addToCollection"),
+        key: "addToCollection",
+        click: (success, error) => {
+          const data = {
+            title: this.getTitle(),
+            url: this.getDownloadURL(),
+            link: location.href,
+            host: location.host,
+            size: PTService.getFieldValue("size"),
+            subTitle: PTService.getFieldValue("subTitle"),
+            movieInfo: {
+              imdbId: PTService.getFieldValue("imdbId")
+            }
+          };
+
+          PTService.call(PTService.action.addTorrentToCollection, data)
+            .then(result => {
+              success();
+              setTimeout(() => {
+                this.addRemoveCollectionButton(data);
+              }, 1000);
+            })
+            .catch(() => {
+              error();
+            });
+        }
+      });
+    }
+
+    /**
+     * 添加移除收藏按钮
+     */
+    addRemoveCollectionButton(item) {
+      PTService.removeButton("addToCollection");
+
+      PTService.addButton({
+        title: this.t("buttons.removeFromCollection"),
+        icon: "favorite",
+        label: this.t("buttons.removeFromCollection"),
+        key: "removeFromCollection",
+        click: (success, error) => {
+          PTService.call(PTService.action.deleteTorrentFromCollention, item)
+            .then(result => {
+              success();
+              setTimeout(() => {
+                this.addToCollectionButton();
+              }, 1000);
+            })
+            .catch(() => {
+              error();
             });
         }
       });

@@ -1183,4 +1183,19 @@ export default class Controller {
   public clearTorrentCollention(): Promise<any> {
     return this.service.collection.clear();
   }
+
+  public getTorrentCollention(link: string): Promise<any> {
+    return this.service.collection.get(link);
+  }
+
+  public getSiteSelectorConfig(options: any): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      const result = this.service.getSiteSelector(options.host, options.name);
+      if (result) {
+        resolve(result);
+      } else {
+        reject(false);
+      }
+    });
+  }
 }

@@ -20,6 +20,7 @@ import { APP } from "@/service/api";
 import { filters } from "@/service/filters";
 import { PathHandler } from "@/service/pathHandler";
 import i18n from "i18next";
+import { InfoParser } from "@/background/infoParser";
 
 /**
  * 插件背景脚本，会插入到每个页面
@@ -65,6 +66,10 @@ class PTPContent {
   public pathHandler: PathHandler = new PathHandler();
   // 多语言处理器
   public i18n = i18n;
+  // 页面解析器
+  public infoParser: InfoParser = new InfoParser();
+  // 当前页面选择器配置
+  public pageSelector: any = {};
 
   constructor() {
     this.extension = new Extension();
@@ -188,6 +193,7 @@ class PTPContent {
     this.scripts = [];
     this.styles = [];
 
+    this.initPageSelector();
     // 初始化插件按钮列表
     this.initButtonBar();
     this.initDroper();
@@ -845,6 +851,38 @@ class PTPContent {
       this.locationURL = location.href;
       this.initPages();
     }
+  }
+
+  private initPageSelector() {
+    this.call(EAction.getSiteSelectorConfig, {
+      host: this.site.host,
+      name: location.pathname
+    }).then(result => {
+      this.pageSelector = result;
+    });
+  }
+
+  /**
+   * 从当前行中获取指定字段的值
+   * @param site 当前站点
+   * @param row 当前行
+   * @param fieldName 字段名称
+   * @return null 表示没有获取到内容
+   */
+  public getFieldValue(fieldName: string = "", content: any = $("body")) {
+    let selector: any;
+    console.log("getFieldValue", fieldName);
+    if (this.pageSelector && this.pageSelector.fields) {
+      selector = this.pageSelector.fields[fieldName];
+
+      if (!selector) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+
+    return this.infoParser.getFieldData(content, selector, this.pageSelector);
   }
 }
 

@@ -143,4 +143,23 @@ export default class Collection {
       resolve(this.items);
     });
   }
+
+  /**
+   * 获取指定链接的收藏
+   * @param link
+   */
+  public get(link: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.load().then(() => {
+        let item = this.items.find((data: ICollection) => {
+          return data.link === link;
+        });
+        if (item) {
+          resolve(item);
+        } else {
+          reject(false);
+        }
+      });
+    });
+  }
 }

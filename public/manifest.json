@@ -51,6 +51,7 @@
 			"libs/basicContext/themes/default.min.css"
 		],
 		"js": [
+			"libs/types.expand.js",
 			"libs/jquery/jquery-3.3.1.min.js",
 			"libs/Base64.js",
 			"libs/notice/notice.js",

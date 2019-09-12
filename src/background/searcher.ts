@@ -655,7 +655,7 @@ export class Searcher {
       return null;
     }
 
-    const parser = new InfoParser(this.service);
+    const parser = new InfoParser();
     return parser.getFieldData(
       row,
       selector,

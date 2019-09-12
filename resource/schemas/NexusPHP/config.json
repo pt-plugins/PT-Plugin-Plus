@@ -125,6 +125,19 @@
           "filters": ["jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
       }
+    },
+    "/details.php": {
+      "fields": {
+        "size": {
+          "selector": ["b:contains('大小'):first"],
+          "filters": ["query.parent().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        },
+        "imdbId": {
+          "selector": ["a[href*='www.imdb.com/title/']:first"],
+          "attribute": "href",
+          "filters": ["query.match(/(tt\\d+)/)", "(query && query.length>=2)?query[1]:null"]
+        }
+      }
     }
   }
 }

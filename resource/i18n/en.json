@@ -744,7 +744,9 @@
         "sayThanks": "Say Thanks",
         "sayThanksTip": "Say thanks to the current torrent",
         "cover": "Cover",
-        "coverTip": "View by cover"
+        "coverTip": "View by cover",
+        "addToCollection": "Collection",
+        "removeFromCollection": "Remove Collection"
       },
       "needPasskey": "Please set the site key (Passkey) first.",
       "userCanceled": "User Canceled",

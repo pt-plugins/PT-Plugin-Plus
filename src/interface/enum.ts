@@ -178,7 +178,11 @@ export enum EAction {
   // 删除种子收藏
   deleteTorrentFromCollention = "deleteTorrentFromCollention",
   // 清除种子收藏
-  clearTorrentCollention = "clearTorrentCollention"
+  clearTorrentCollention = "clearTorrentCollention",
+  // 获取收藏
+  getTorrentCollention = "getTorrentCollention",
+  // 获取当前站点指定的选择器配置
+  getSiteSelectorConfig = "getSiteSelectorConfig"
 }
 
 /**

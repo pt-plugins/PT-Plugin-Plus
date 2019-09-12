@@ -316,10 +316,7 @@ export class User {
 
           if (content && rule) {
             try {
-              let results = new InfoParser(this.service).getResult(
-                content,
-                rule
-              );
+              let results = new InfoParser().getResult(content, rule);
               resolve(results);
             } catch (error) {
               this.service.debug(error);

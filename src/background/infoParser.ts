@@ -1,9 +1,9 @@
 import { Dictionary, ERequestResultType } from "@/interface/common";
 import dayjs from "dayjs";
-import PTPlugin from "./service";
-type Service = PTPlugin;
+import { PPF } from "@/service/public";
+
 export class InfoParser {
-  constructor(public service: Service) {}
+  constructor() {}
   /**
    * 根据指定规则和原始获取需要的数据
    * @param content 原始内容
@@ -76,7 +76,7 @@ export class InfoParser {
 
         selectorIndex++;
       } catch (error) {
-        this.service.debug("InfoParser.getFieldData.Error", selector, error);
+        PPF.debug("InfoParser.getFieldData.Error", selector, error);
         return true;
       }
     });
@@ -105,7 +105,7 @@ export class InfoParser {
             try {
               query = eval(filter);
             } catch (error) {
-              this.service.debug("InfoParser.filter.Error", filter, error);
+              PPF.debug("InfoParser.filter.Error", filter, error);
               query = null;
               return false;
             }

@@ -744,7 +744,9 @@
         "sayThanks": "感谢发布者",
         "sayThanksTip": "对当前种子说谢谢",
         "cover": "封面模式",
-        "coverTip": "以封面的方式进行查看"
+        "coverTip": "以封面的方式进行查看",
+        "addToCollection": "添加到收藏",
+        "removeFromCollection": "从收藏删除"
       },
       "needPasskey": "请先设置站点密钥（Passkey）。",
       "userCanceled": "用户取消操作",
@@ -787,8 +789,8 @@
     },
     "collection": {
       "title": "收藏列表",
-      "add": "添加到收藏",
-      "remove": "从收藏中删除",
+      "add": "加入收藏",
+      "remove": "取消收藏",
       "headers": {
         "site": "来源",
         "title": "标题",
