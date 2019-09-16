@@ -1198,4 +1198,16 @@ export default class Controller {
       }
     });
   }
+
+  public resetTorrentCollections(items: any): Promise<any> {
+    return this.service.collection.reset(items);
+  }
+
+  public getTorrentCollectionGroups(): Promise<any> {
+    return this.service.collection.getGroups();
+  }
+
+  public addTorrentCollectionGroup(data: any): Promise<any> {
+    return this.service.collection.addGroup(data);
+  }
 }

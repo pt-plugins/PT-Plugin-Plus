@@ -2,6 +2,29 @@
   <div class="collection">
     <v-alert :value="true" type="info">{{ $t("collection.title") }}</v-alert>
     <v-card>
+      <div style="height: 120px; overflow-x: auto;display: -webkit-box;" class="ma-2 pt-2">
+        <v-card
+          color="blue-grey darken-2"
+          class="white--text mr-2"
+          v-for="(group, index) in groups"
+          :key="index"
+          style="width: 200px;height: 90px;"
+        >
+          <v-card-title>
+            <div>
+              <div class="title">{{ group.name }}</div>
+              <span>{{ group.description }}</span>
+            </div>
+          </v-card-title>
+          <v-card-actions>
+            <span>{{ group.count }}</span>
+          </v-card-actions>
+        </v-card>
+      </div>
+
+      <!-- 分隔线 -->
+      <v-divider></v-divider>
+
       <v-card-title>
         <v-btn color="error" :disabled="selected.length==0" @click="removeSelected">
           <v-icon class="mr-2">remove</v-icon>
@@ -12,6 +35,14 @@
           <v-icon class="mr-2">clear</v-icon>
           {{ $t("common.clear") }}
         </v-btn>
+
+        <v-divider class="mx-3 mt-0" vertical></v-divider>
+
+        <v-btn color="success" @click="addGroup">
+          <v-icon class="mr-2">add</v-icon>
+          {{ $t("collection.addGroup") }}
+        </v-btn>
+
         <v-spacer></v-spacer>
 
         <!-- <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field> -->
@@ -24,12 +55,13 @@
         :pagination.sync="pagination"
         item-key="link"
         select-all
-        class="elevation-1"
+        class="dataList"
       >
         <template slot="items" slot-scope="props">
-          <td style="width:20px;">
+          <td style="width:50px;">
             <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
           </td>
+          <td>{{ props.index + 1 }}</td>
           <td>
             <v-img
               :src="(props.item.movieInfo && props.item.movieInfo.image)?props.item.movieInfo.image:'./assets/movie.png'"
@@ -75,16 +107,31 @@
                 </template>
               </v-layout>
             </v-img>
-            <v-layout class="mb-2" row wrap v-if="!!props.item.site">
-              <v-avatar :size="15">
-                <img :src="props.item.site.icon" />
-              </v-avatar>
-              <span class="caption ml-1">{{ props.item.site.name }}</span>
+
+            <template>
+              <div style="margin-left: 80px;">
+                <span v-for="(group, index) in getGroupList(props.item)" :key="index">{{group.name}}</span>
+              </div>
+            </template>
+          </td>
+          <td>
+            <v-layout row wrap v-if="!!props.item.site">
+              <a
+                :href="props.item.site.activeURL"
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                class="nodecoration"
+              >
+                <v-avatar :size="15">
+                  <img :src="props.item.site.icon" />
+                </v-avatar>
+                <span class="caption ml-1 site-name">{{ props.item.site.name }}</span>
+              </a>
             </v-layout>
           </td>
-          <td>{{ props.item.size | formatSize }}</td>
-          <td>{{ props.item.time | formatDate }}</td>
-          <td>
+          <td class="text-xs-right">{{ props.item.size | formatSize }}</td>
+          <td class="text-xs-right">{{ props.item.time | formatDate }}</td>
+          <td class="text-xs-center">
             <DownloadTo
               :downloadOptions="props.item"
               flat
@@ -117,7 +164,8 @@ import {
   DownloadOptions,
   Site,
   Dictionary,
-  ICollection
+  ICollection,
+  ICollectionGroup
 } from "@/interface/common";
 import Extension from "@/service/extension";
 import DownloadTo from "@/options/components/DownloadTo.vue";
@@ -136,7 +184,8 @@ export default Vue.extend({
         sortBy: "time",
         descending: true
       },
-      items: [] as any[],
+      items: [] as ICollection[],
+      groups: [] as ICollectionGroup[],
       options: this.$store.state.options,
       errorMsg: "",
       haveError: false,
@@ -176,25 +225,40 @@ export default Vue.extend({
     },
 
     getTorrentCollections() {
-      extension
-        .sendRequest(EAction.getTorrentCollections)
-        .then((result: any) => {
-          console.log("getTorrentCollections", result);
-          this.items = [];
-          result.forEach((item: any) => {
-            let site = this.siteCache[item.host];
-            if (!site) {
-              site = this.options.sites.find((site: Site) => {
-                return site.host === item.host;
-              });
-              this.siteCache[item.host] = site;
-            }
+      const requests: any[] = [];
 
-            item.site = site;
+      requests.push(extension.sendRequest(EAction.getTorrentCollectionGroups));
+      requests.push(extension.sendRequest(EAction.getTorrentCollections));
 
-            this.items.push(item);
-          });
+      return Promise.all(requests).then(results => {
+        console.log("getTorrentCollections", results);
+        this.items = [];
+        this.groups = [];
+        let noGroup = {
+          name: this.$t("collection.noGroup").toString(),
+          count: 0
+        };
+        results[1].forEach((item: any) => {
+          let site = this.siteCache[item.host];
+          if (!site) {
+            site = this.options.sites.find((site: Site) => {
+              return site.host === item.host;
+            });
+            this.siteCache[item.host] = site;
+          }
+
+          item.site = site;
+          if (!item.groups) {
+            noGroup.count++;
+          }
+
+          this.items.push(item);
         });
+
+        this.groups.push(noGroup);
+
+        this.groups.push(...results[0]);
+      });
     },
 
     removeSelected() {
@@ -211,6 +275,40 @@ export default Vue.extend({
 
     onSuccss(msg: string) {
       this.successMsg = msg;
+    },
+
+    addGroup() {
+      let name = window.prompt("请输入分组名称：");
+      if (name) {
+        extension
+          .sendRequest(EAction.addTorrentCollectionGroup, null, {
+            name
+          })
+          .then(() => {
+            this.getTorrentCollections();
+          });
+      }
+    },
+
+    getGroupList(item: ICollection) {
+      let result: ICollectionGroup[] = [];
+      if (item.groups) {
+        item.groups.forEach(id => {
+          this.groups.forEach(group => {
+            if (group.id === id) {
+              result.push(group);
+            }
+          });
+        });
+      }
+
+      if (result.length == 0) {
+        result.push({
+          name: this.$t("collection.noGroup").toString()
+        });
+      }
+
+      return result;
     }
   },
 
@@ -231,23 +329,39 @@ export default Vue.extend({
     headers(): Array<any> {
       return [
         {
+          text: "№",
+          align: "left",
+          sortable: false,
+          value: "title",
+          width: 30
+        },
+        {
           text: this.$t("collection.headers.title"),
           align: "left",
           value: "title"
         },
         {
-          text: this.$t("collection.headers.size"),
+          text: this.$t("collection.headers.site"),
           align: "left",
-          value: "size"
+          value: "site.host",
+          width: 150
+        },
+        {
+          text: this.$t("collection.headers.size"),
+          align: "right",
+          value: "size",
+          width: 80
         },
         {
           text: this.$t("collection.headers.time"),
-          align: "left",
-          value: "time"
+          align: "right",
+          value: "time",
+          width: 130
         },
         {
           text: this.$t("collection.headers.action"),
           value: "title",
+          align: "center",
           sortable: false,
           width: 150
         }
@@ -256,11 +370,35 @@ export default Vue.extend({
   }
 });
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
 .collection {
   .sub-title {
     color: #aaaaaa;
     font-size: 12px;
+  }
+
+  .dataList {
+    table.v-table thead tr:not(.v-datatable__progress) th,
+    table.v-table tbody tr td {
+      padding: 8px !important;
+      font-size: 12px;
+    }
+
+    table.v-table tbody tr:nth-child(even) {
+      background-color: #f1f1f1;
+    }
+
+    table.v-table tbody tr:nth-child(odd) {
+      background-color: #fff;
+    }
+  }
+
+  .nodecoration {
+    text-decoration: none;
+  }
+
+  .site-name {
+    vertical-align: middle;
   }
 }
 </style>

@@ -472,10 +472,23 @@ export default Vue.extend({
     restoreConfirm(infos: any) {
       if (confirm(this.$t("settings.backup.restoreConfirm").toString())) {
         try {
+          // 恢复运行时配置
           this.$store.dispatch("resetRunTimeOptions", infos.options);
+
+          // 恢复用户数据
           if (infos.datas) {
             extension.sendRequest(EAction.resetUserDatas, null, infos.datas);
           }
+
+          // 恢复收藏
+          if (infos.collection) {
+            extension.sendRequest(
+              EAction.resetTorrentCollections,
+              null,
+              infos.collection
+            );
+          }
+
           this.successMsg = this.$t(
             "settings.backup.restoreSuccess"
           ).toString();

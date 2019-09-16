@@ -857,9 +857,19 @@ class PTPContent {
     this.call(EAction.getSiteSelectorConfig, {
       host: this.site.host,
       name: location.pathname
-    }).then(result => {
-      this.pageSelector = result;
-    });
+    })
+      .then(result => {
+        this.pageSelector = result;
+      })
+      .catch(() => {
+        // 如果没有当前页面的选择器，则尝试获取通用的选择器
+        this.call(EAction.getSiteSelectorConfig, {
+          host: this.site.host,
+          name: "common"
+        }).then(result => {
+          this.pageSelector = result;
+        });
+      });
   }
 
   /**

@@ -496,4 +496,19 @@ export interface ICollection {
     link?: string;
     year?: number;
   };
+  // 分组ID列表
+  groups?: string[];
+}
+
+/**
+ * 收藏分组
+ */
+export interface ICollectionGroup {
+  id?: string;
+  name: string;
+  count?: number;
+  description?: string;
+  image?: string;
+  color?: string;
+  update?: number;
 }

@@ -791,6 +791,8 @@
       "title": "Collection list",
       "add": "Add to collection",
       "remove": "Remove from collection",
+      "addGroup": "Add Group",
+      "noGroup": "<No Group>",
       "headers": {
         "site": "Site",
         "title": "Title",

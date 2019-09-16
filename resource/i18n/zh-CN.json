@@ -791,6 +791,8 @@
       "title": "收藏列表",
       "add": "加入收藏",
       "remove": "取消收藏",
+      "addGroup": "添加分组",
+      "noGroup": "<未分组>",
       "headers": {
         "site": "来源",
         "title": "标题",

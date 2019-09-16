@@ -10,6 +10,7 @@
   bottom: 50%;
   opacity: .3;
   z-index: 100;
+  font-size: 12px;
 }
 
 .pt-plugin-body:hover,

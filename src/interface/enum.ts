@@ -182,7 +182,11 @@ export enum EAction {
   // 获取收藏
   getTorrentCollention = "getTorrentCollention",
   // 获取当前站点指定的选择器配置
-  getSiteSelectorConfig = "getSiteSelectorConfig"
+  getSiteSelectorConfig = "getSiteSelectorConfig",
+  // 重置收藏，可用于恢复收藏
+  resetTorrentCollections = "resetTorrentCollections",
+  getTorrentCollectionGroups = "getTorrentCollectionGroups",
+  addTorrentCollectionGroup = "addTorrentCollectionGroup"
 }
 
 /**
