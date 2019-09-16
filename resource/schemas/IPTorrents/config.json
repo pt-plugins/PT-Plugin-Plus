@@ -78,6 +78,14 @@
           "value": -1
         }
       }
+    },
+    "/details.php": {
+      "fields": {
+        "size": {
+          "selector": ["th.ar:contains('Size') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        }
+      }
     }
   }
 }

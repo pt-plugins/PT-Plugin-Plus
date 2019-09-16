@@ -632,15 +632,40 @@
         label: this.t("buttons.addToCollection"),
         key: "addToCollection",
         click: (success, error) => {
+          let title = "";
+
+          if (this.getTitle) {
+            title = this.getTitle();
+          } else {
+            title = PTService.getFieldValue("title");
+          }
+
+          if (!title) {
+            title = $("title:first").text();
+          }
+
+          let imdbId = PTService.getFieldValue("imdbId");
+
+          if (!imdbId) {
+            const link = $("a[href*='www.imdb.com/title/']:first");
+            if (link.length > 0) {
+              let match = link.attr("href").match(/(tt\d+)/);
+
+              if (match && match.length >= 2) {
+                imdbId = match[1];
+              }
+            }
+          }
+
           const data = {
-            title: this.getTitle(),
+            title: title,
             url: this.getDownloadURL(),
             link: location.href,
             host: location.host,
             size: PTService.getFieldValue("size"),
             subTitle: PTService.getFieldValue("subTitle"),
             movieInfo: {
-              imdbId: PTService.getFieldValue("imdbId")
+              imdbId: imdbId
             }
           };
 

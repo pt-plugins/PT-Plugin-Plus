@@ -85,6 +85,14 @@
           "filters": ["query.text().trim().replace('Registration date ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         }
       }
+    },
+    "common": {
+      "fields": {
+        "size": {
+          "selector": ["td.col-sm-2:contains('Size') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        }
+      }
     }
   }
 }

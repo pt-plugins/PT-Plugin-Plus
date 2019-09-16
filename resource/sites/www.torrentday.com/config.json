@@ -49,6 +49,14 @@
           "value": -1
         }
       }
+    },
+    "/details.php": {
+      "fields": {
+        "size": {
+          "selector": ["span[title='File Size']"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        }
+      }
     }
   },
   "supportedFeatures": {
