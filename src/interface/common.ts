@@ -512,3 +512,26 @@ export interface ICollectionGroup {
   color?: string;
   update?: number;
 }
+
+export const BASE_COLORS = [
+  "red",
+  "pink",
+  "purple",
+  "deep-purple",
+  "indigo",
+  "blue",
+  "light-blue",
+  "cyan",
+  "teal",
+  "green",
+  "light-green",
+  "lime",
+  "yellow",
+  "amber",
+  "orange",
+  "deep-orange",
+  "brown",
+  "blue-grey",
+  "grey",
+  "black"
+];

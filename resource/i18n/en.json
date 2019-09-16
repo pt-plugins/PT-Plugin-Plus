@@ -792,7 +792,9 @@
       "add": "Add to collection",
       "remove": "Remove from collection",
       "addGroup": "Add Group",
+      "addToGroup": "Add To Group",
       "noGroup": "<No Group>",
+      "changeGroupName": "Change the group name",
       "headers": {
         "site": "Site",
         "title": "Title",

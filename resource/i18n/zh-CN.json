@@ -792,7 +792,9 @@
       "add": "加入收藏",
       "remove": "取消收藏",
       "addGroup": "添加分组",
+      "addToGroup": "添加到分组",
       "noGroup": "<未分组>",
+      "changeGroupName": "修改分组名称",
       "headers": {
         "site": "来源",
         "title": "标题",

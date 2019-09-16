@@ -1210,4 +1210,12 @@ export default class Controller {
   public addTorrentCollectionGroup(data: any): Promise<any> {
     return this.service.collection.addGroup(data);
   }
+
+  public addTorrentCollectionToGroup(options: any): Promise<any> {
+    return this.service.collection.addToGroup(options.item, options.groupId);
+  }
+
+  public updateTorrentCollectionGroup(data: any): Promise<any> {
+    return this.service.collection.updateGroup(data);
+  }
 }

@@ -3,23 +3,18 @@
     <v-alert :value="true" type="info">{{ $t("collection.title") }}</v-alert>
     <v-card>
       <div style="height: 120px; overflow-x: auto;display: -webkit-box;" class="ma-2 pt-2">
-        <v-card
-          color="blue-grey darken-2"
-          class="white--text mr-2"
+        <GroupCard
+          :color="group.color"
           v-for="(group, index) in groups"
           :key="index"
-          style="width: 200px;height: 90px;"
-        >
-          <v-card-title>
-            <div>
-              <div class="title">{{ group.name }}</div>
-              <span>{{ group.description }}</span>
-            </div>
-          </v-card-title>
-          <v-card-actions>
-            <span>{{ group.count }}</span>
-          </v-card-actions>
-        </v-card>
+          :name="group.name"
+          :description="group.description"
+          :count="group.count"
+          :group="group"
+          @changeColor="changeGroupColor"
+          @remove="removeGroup"
+          @rename="changeGroupName"
+        ></GroupCard>
       </div>
 
       <!-- 分隔线 -->
@@ -108,9 +103,19 @@
               </v-layout>
             </v-img>
 
+            <!-- 分组列表 -->
             <template>
               <div style="margin-left: 80px;">
-                <span v-for="(group, index) in getGroupList(props.item)" :key="index">{{group.name}}</span>
+                <v-chip
+                  label
+                  :color="group.color||'grey'"
+                  :dark="group.color && group.color.indexOf('lighten')>0?false: true"
+                  v-for="(group, index) in getGroupList(props.item)"
+                  :key="index"
+                  small
+                >{{group.name}}</v-chip>
+
+                <AddToGroup icon small flat @add="addToGroup" :item="props.item" :groups="groups"></AddToGroup>
               </div>
             </template>
           </td>
@@ -165,15 +170,21 @@ import {
   Site,
   Dictionary,
   ICollection,
-  ICollectionGroup
+  ICollectionGroup,
+  BASE_COLORS
 } from "@/interface/common";
 import Extension from "@/service/extension";
 import DownloadTo from "@/options/components/DownloadTo.vue";
+import GroupCard from "./GroupCard.vue";
+import AddToGroup from "./AddToGroup.vue";
 
 const extension = new Extension();
+
 export default Vue.extend({
   components: {
-    DownloadTo
+    DownloadTo,
+    GroupCard,
+    AddToGroup
   },
   data() {
     return {
@@ -282,7 +293,8 @@ export default Vue.extend({
       if (name) {
         extension
           .sendRequest(EAction.addTorrentCollectionGroup, null, {
-            name
+            name,
+            color: BASE_COLORS[Math.floor(Math.random() * BASE_COLORS.length)]
           })
           .then(() => {
             this.getTorrentCollections();
@@ -309,6 +321,41 @@ export default Vue.extend({
       }
 
       return result;
+    },
+
+    removeGroup(group: ICollectionGroup) {
+      console.log(group);
+    },
+
+    changeGroupColor(color: string, group: ICollectionGroup) {
+      group.color = color;
+      console.log(color, group);
+      extension
+        .sendRequest(EAction.updateTorrentCollectionGroup, null, group)
+        .then(() => {
+          this.getTorrentCollections();
+        });
+    },
+
+    addToGroup(item: ICollection, group: ICollectionGroup) {
+      console.log(item, group);
+      extension
+        .sendRequest(EAction.addTorrentCollectionToGroup, null, {
+          item,
+          groupId: group.id
+        })
+        .then(() => {
+          this.getTorrentCollections();
+        });
+    },
+
+    changeGroupName(name: string, group: ICollectionGroup) {
+      group.name = name;
+      extension
+        .sendRequest(EAction.updateTorrentCollectionGroup, null, group)
+        .then(() => {
+          this.getTorrentCollections();
+        });
     }
   },
 

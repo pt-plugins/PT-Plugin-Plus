@@ -278,6 +278,24 @@ export default class Collection {
     });
   }
 
+  public updateGroup(item: ICollectionGroup): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.load().then(() => {
+        let index = this.groups.findIndex((data: ICollectionGroup) => {
+          return data.id === item.id;
+        });
+        if (index >= 0) {
+          this.groups[index] = item;
+        }
+        this.storage.set(this.configKey, {
+          groups: this.groups,
+          items: this.items
+        });
+        resolve(this.groups);
+      });
+    });
+  }
+
   public getGroups(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.load().then(() => {
