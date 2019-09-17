@@ -18,7 +18,7 @@
         <v-spacer></v-spacer>
 
         <template v-if="!readOnly">
-          <template v-if="hover">
+          <template v-if="hover||colorBoxIsOpen">
             <v-btn icon small @click.stop="rename" class="ma-0" :title="$t('common.edit')">
               <v-icon small>edit</v-icon>
             </v-btn>
@@ -26,6 +26,14 @@
             <v-btn icon small @click.stop="remove" class="ma-0" :title="$t('common.remove')">
               <v-icon small>delete</v-icon>
             </v-btn>
+
+            <ColorSelector
+              @change="changeColor"
+              :dark="dark"
+              class="ma-0"
+              @show="colorBoxIsOpen=true"
+              @hide="colorBoxIsOpen=false"
+            />
 
             <v-btn
               v-if="!isDefault"
@@ -49,8 +57,6 @@
           >
             <v-icon small>favorite</v-icon>
           </v-btn>
-
-          <ColorSelector @change="changeColor" :dark="dark" class="ma-0" />
         </template>
       </v-card-actions>
     </v-card>
@@ -102,7 +108,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      dark: true
+      dark: true,
+      colorBoxIsOpen: false
     };
   },
 

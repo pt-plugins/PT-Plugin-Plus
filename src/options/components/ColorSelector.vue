@@ -1,5 +1,5 @@
 <template>
-  <v-menu offset-y>
+  <v-menu offset-y v-model="show">
     <template v-slot:activator="{ on }">
       <v-btn icon small v-on="on" :dark="dark" class="ma-0">
         <v-icon small>color_lens</v-icon>
@@ -48,13 +48,24 @@ export default Vue.extend({
   },
   data() {
     return {
-      colors: BASE_COLORS
+      colors: BASE_COLORS,
+      show: false
     };
   },
 
   methods: {
     changeColor(color: string) {
       this.$emit("change", color);
+    }
+  },
+
+  watch: {
+    show() {
+      if (this.show) {
+        this.$emit("show");
+      } else {
+        this.$emit("hide");
+      }
     }
   }
 });

@@ -64,9 +64,15 @@ export default Vue.extend({
      */
     showContentMenus(event?: any) {
       let menus: any[] = [];
+      let groups: string[] = this.item.groups || [];
 
       this.groups.forEach((group: any) => {
-        if (group.id && group.name && group.id !== ECommonKey.all) {
+        if (
+          group.id &&
+          group.name &&
+          group.id !== ECommonKey.all &&
+          !groups.includes(group.id)
+        ) {
           menus.push({
             title: group.name,
             fn: () => {
@@ -75,6 +81,10 @@ export default Vue.extend({
           });
         }
       });
+
+      if (menus.length == 0) {
+        return;
+      }
 
       basicContext.show(menus, event);
       $(".basicContext").css({
