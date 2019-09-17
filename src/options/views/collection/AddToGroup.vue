@@ -18,7 +18,8 @@ import {
   Options,
   EAction,
   ICollection,
-  ICollectionGroup
+  ICollectionGroup,
+  ECommonKey
 } from "@/interface/common";
 
 import * as basicContext from "basiccontext";
@@ -65,7 +66,7 @@ export default Vue.extend({
       let menus: any[] = [];
 
       this.groups.forEach((group: any) => {
-        if (group.id && group.name) {
+        if (group.id && group.name && group.id !== ECommonKey.all) {
           menus.push({
             title: group.name,
             fn: () => {

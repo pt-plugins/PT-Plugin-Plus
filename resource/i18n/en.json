@@ -36,7 +36,11 @@
       "share": "Share",
       "actionConfirm": "Are you sure you want to do this?",
       "importFailed": "Import failed",
-      "importSuccess": "Import success"
+      "importSuccess": "Import success",
+      "all": "All",
+      "setDefault": "Set Default",
+      "cancelDefault": "Cancel Default",
+      "search": "Search"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -795,6 +799,8 @@
       "addToGroup": "Add To Group",
       "noGroup": "<No Group>",
       "changeGroupName": "Change the group name",
+      "removeGroupConfirm": "Are you sure you want to delete this group?{count} collections will be removed from this group.",
+      "setIMDbId": "Set IMDb ID",
       "headers": {
         "site": "Site",
         "title": "Title",

@@ -188,7 +188,10 @@ export enum EAction {
   getTorrentCollectionGroups = "getTorrentCollectionGroups",
   addTorrentCollectionGroup = "addTorrentCollectionGroup",
   addTorrentCollectionToGroup = "addTorrentCollectionToGroup",
-  updateTorrentCollectionGroup = "updateTorrentCollectionGroup"
+  updateTorrentCollectionGroup = "updateTorrentCollectionGroup",
+  removeTorrentCollectionFromGroup = "removeTorrentCollectionFromGroup",
+  removeTorrentCollectionGroup = "removeTorrentCollectionGroup",
+  updateTorrentCollention = "updateTorrentCollention"
 }
 
 /**
@@ -274,7 +277,8 @@ export enum EUserDataRequestStatus {
  * 公用的一些键值
  */
 export enum ECommonKey {
-  allSite = "__allSite__"
+  allSite = "__allSite__",
+  all = "__all__"
 }
 
 /**

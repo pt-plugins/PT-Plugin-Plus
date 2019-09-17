@@ -1166,11 +1166,14 @@ export default class Controller {
   }
 
   public addTorrentToCollection(data: any): Promise<any> {
+    if (this.options.defaultCollectionGroupId) {
+      data.groups = [this.options.defaultCollectionGroupId];
+    }
     return this.service.collection.add(data);
   }
 
-  public getTorrentCollections(): Promise<any> {
-    return this.service.collection.load();
+  public getTorrentCollections(groupId?: string): Promise<any> {
+    return this.service.collection.load(groupId);
   }
 
   public deleteTorrentFromCollention(data: any): Promise<any> {
@@ -1217,5 +1220,20 @@ export default class Controller {
 
   public updateTorrentCollectionGroup(data: any): Promise<any> {
     return this.service.collection.updateGroup(data);
+  }
+
+  public removeTorrentCollectionFromGroup(options: any): Promise<any> {
+    return this.service.collection.removeFromGroup(
+      options.item,
+      options.groupId
+    );
+  }
+
+  public removeTorrentCollectionGroup(data: any): Promise<any> {
+    return this.service.collection.removeGroup(data);
+  }
+
+  public updateTorrentCollention(data: any): Promise<any> {
+    return this.service.collection.update(data);
   }
 }

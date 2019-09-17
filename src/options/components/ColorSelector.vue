@@ -1,7 +1,7 @@
 <template>
   <v-menu offset-y>
     <template v-slot:activator="{ on }">
-      <v-btn icon small v-on="on" :dark="dark">
+      <v-btn icon small v-on="on" :dark="dark" class="ma-0">
         <v-icon small>color_lens</v-icon>
       </v-btn>
     </template>

@@ -126,7 +126,11 @@ export default new Router({
     {
       path: "/collection",
       name: "collection",
-      component: () => import("./views/collection/Index.vue")
+      component: () => import("./views/collection/Index.vue"),
+      meta: {
+        // 需要被缓存
+        keepAlive: true
+      }
     }
   ]
 });

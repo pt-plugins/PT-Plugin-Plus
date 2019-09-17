@@ -11,9 +11,16 @@
           :description="group.description"
           :count="group.count"
           :group="group"
+          :active="group.id===activeGroupId"
+          :readOnly="!group.id || group.readOnly"
+          :width="group.width"
+          :isDefault="group.id===defaultGroupId"
           @changeColor="changeGroupColor"
           @remove="removeGroup"
           @rename="changeGroupName"
+          @click="setGroupActive"
+          @setDefault="setDefaultGroup"
+          @cancelDefault="cancelDefaultGroup"
         ></GroupCard>
       </div>
 
@@ -40,11 +47,21 @@
 
         <v-spacer></v-spacer>
 
-        <!-- <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field> -->
+        <v-text-field
+          v-model="filterKey"
+          class="search"
+          append-icon="search"
+          label="Search"
+          single-line
+          hide-details
+          clearable
+        ></v-text-field>
       </v-card-title>
 
       <v-data-table
         v-model="selected"
+        :search="filterKey"
+        :custom-filter="searchResultFilter"
         :headers="headers"
         :items="items"
         :pagination.sync="pagination"
@@ -62,10 +79,10 @@
               :src="(props.item.movieInfo && props.item.movieInfo.image)?props.item.movieInfo.image:'./assets/movie.png'"
               class="mx-0 my-2"
               contain
-              max-height="80"
+              :max-height="(props.item.movieInfo && props.item.movieInfo.image)? 100: 80"
               position="left center"
             >
-              <v-layout style="margin-left: 80px;" row wrap>
+              <v-layout style="margin-left: 90px;" row wrap>
                 <template v-if="(props.item.movieInfo && props.item.movieInfo.title)">
                   <v-flex xs12>
                     <a
@@ -105,17 +122,28 @@
 
             <!-- 分组列表 -->
             <template>
-              <div style="margin-left: 80px;">
-                <v-chip
-                  label
-                  :color="group.color||'grey'"
-                  :dark="group.color && group.color.indexOf('lighten')>0?false: true"
-                  v-for="(group, index) in getGroupList(props.item)"
-                  :key="index"
-                  small
-                >{{group.name}}</v-chip>
+              <div style="margin-left: 90px;">
+                <v-hover v-for="(group, index) in getGroupList(props.item)" :key="index">
+                  <v-chip
+                    slot-scope="{ hover }"
+                    :close="hover && group.id!=null"
+                    label
+                    :color="group.color||'grey'"
+                    :dark="group.color && group.color.indexOf('lighten')>0?false: true"
+                    small
+                    @input="removeFromGroup(props.item, group)"
+                  >{{group.name}}</v-chip>
+                </v-hover>
 
-                <AddToGroup icon small flat @add="addToGroup" :item="props.item" :groups="groups"></AddToGroup>
+                <AddToGroup
+                  v-if="groups && groups.length>1"
+                  icon
+                  small
+                  flat
+                  @add="addToGroup"
+                  :item="props.item"
+                  :groups="groups"
+                ></AddToGroup>
               </div>
             </template>
           </td>
@@ -137,6 +165,31 @@
           <td class="text-xs-right">{{ props.item.size | formatSize }}</td>
           <td class="text-xs-right">{{ props.item.time | formatDate }}</td>
           <td class="text-xs-center">
+            <v-btn
+              v-if="props.item.movieInfo && !!props.item.movieInfo.imdbId"
+              flat
+              icon
+              small
+              class="mx-0"
+              :title="$t('common.search')"
+              :to="`/search-torrent/${props.item.movieInfo.imdbId}`"
+            >
+              <v-icon small>search</v-icon>
+            </v-btn>
+
+            <v-btn
+              v-else
+              flat
+              icon
+              small
+              class="mx-0"
+              :title="$t('collection.setIMDbId')"
+              @click="setIMDbId(props.item)"
+            >
+              <v-icon small>edit</v-icon>
+            </v-btn>
+
+            <!-- 下载到 -->
             <DownloadTo
               :downloadOptions="props.item"
               flat
@@ -146,6 +199,8 @@
               @error="onError"
               @success="onSuccss"
             />
+
+            <!-- 删除 -->
             <v-btn flat icon small @click="removeConfirm(props.item)" color="error" class="mx-0">
               <v-icon small>delete</v-icon>
             </v-btn>
@@ -171,12 +226,15 @@ import {
   Dictionary,
   ICollection,
   ICollectionGroup,
-  BASE_COLORS
+  BASE_COLORS,
+  ECommonKey,
+  Options
 } from "@/interface/common";
 import Extension from "@/service/extension";
 import DownloadTo from "@/options/components/DownloadTo.vue";
 import GroupCard from "./GroupCard.vue";
 import AddToGroup from "./AddToGroup.vue";
+import { PPF } from "@/service/public";
 
 const extension = new Extension();
 
@@ -196,16 +254,26 @@ export default Vue.extend({
         descending: true
       },
       items: [] as ICollection[],
+      allItems: [] as ICollection[],
       groups: [] as ICollectionGroup[],
-      options: this.$store.state.options,
+      options: this.$store.state.options as Options,
       errorMsg: "",
       haveError: false,
       haveSuccess: false,
       successMsg: "",
-      siteCache: {} as Dictionary<any>
+      siteCache: {} as Dictionary<any>,
+      activeGroupId: ECommonKey.all as any,
+      defaultGroupId: "" as any,
+      filterKey: ""
     };
   },
-
+  /**
+   * 当前组件激活时触发
+   * 因为启用了搜索结果缓存，所以需要在这里处理关键字
+   */
+  activated() {
+    this.getTorrentCollections();
+  },
   methods: {
     clearMessage() {
       this.successMsg = "";
@@ -247,8 +315,11 @@ export default Vue.extend({
         this.groups = [];
         let noGroup = {
           name: this.$t("collection.noGroup").toString(),
-          count: 0
+          count: 0,
+          readOnly: true,
+          width: 100
         };
+
         results[1].forEach((item: any) => {
           let site = this.siteCache[item.host];
           if (!site) {
@@ -259,16 +330,34 @@ export default Vue.extend({
           }
 
           item.site = site;
-          if (!item.groups) {
+          if (!item.groups || item.groups.length == 0) {
             noGroup.count++;
           }
 
           this.items.push(item);
         });
 
-        this.groups.push(noGroup);
+        this.allItems = PPF.clone(this.items);
+
+        let allGroup = {
+          name: this.$t("common.all").toString(),
+          id: ECommonKey.all,
+          count: this.allItems.length,
+          color: "grey darken-2",
+          readOnly: true,
+          width: 100
+        };
+
+        this.groups.push(allGroup);
+        if (noGroup.count !== allGroup.count && noGroup.count > 0) {
+          this.groups.push(noGroup);
+        }
 
         this.groups.push(...results[0]);
+
+        if (this.activeGroupId !== ECommonKey.all) {
+          this.filterCollections();
+        }
       });
     },
 
@@ -324,7 +413,24 @@ export default Vue.extend({
     },
 
     removeGroup(group: ICollectionGroup) {
-      console.log(group);
+      if (group.count && group.count > 0) {
+        if (
+          !confirm(
+            this.$t("collection.removeGroupConfirm", {
+              count: group.count
+            }).toString()
+          )
+        ) {
+          return;
+        }
+      }
+      extension
+        .sendRequest(EAction.removeTorrentCollectionGroup, null, group)
+        .then(() => {
+          this.getTorrentCollections();
+        });
+
+      this.cancelDefaultGroup(group);
     },
 
     changeGroupColor(color: string, group: ICollectionGroup) {
@@ -356,11 +462,111 @@ export default Vue.extend({
         .then(() => {
           this.getTorrentCollections();
         });
+    },
+
+    removeFromGroup(item: ICollection, group: ICollectionGroup) {
+      extension
+        .sendRequest(EAction.removeTorrentCollectionFromGroup, null, {
+          item,
+          groupId: group.id
+        })
+        .then(() => {
+          this.getTorrentCollections();
+        });
+    },
+
+    setGroupActive(group: ICollectionGroup) {
+      this.activeGroupId = group.id;
+      if (this.activeGroupId === ECommonKey.all) {
+        this.getTorrentCollections();
+        return;
+      }
+      this.filterCollections();
+    },
+
+    filterCollections() {
+      let groupId = this.activeGroupId;
+
+      this.items = [];
+      for (let index = 0; index < this.allItems.length; index++) {
+        const item = this.allItems[index];
+        if (groupId && item.groups && item.groups.includes(groupId)) {
+          this.items.push(item);
+        } else if (!groupId && (!item.groups || item.groups.length == 0)) {
+          this.items.push(item);
+        }
+      }
+    },
+
+    setDefaultGroup(group: ICollectionGroup) {
+      this.defaultGroupId = group.id;
+      this.$store.dispatch("saveConfig", {
+        defaultCollectionGroupId: group.id
+      });
+    },
+
+    cancelDefaultGroup(group: ICollectionGroup) {
+      if (this.defaultGroupId === group.id) {
+        this.defaultGroupId = "";
+        this.$store.dispatch("saveConfig", {
+          defaultCollectionGroupId: ""
+        });
+      }
+    },
+
+    setIMDbId(item: ICollection) {
+      let imdbId = prompt(this.$t("collection.setIMDbId").toString());
+      if (imdbId && /^(tt\d+)$/.test(imdbId)) {
+        let data = PPF.clone(item);
+        delete data.site;
+        data.movieInfo = {
+          imdbId
+        };
+        extension
+          .sendRequest(EAction.updateTorrentCollention, null, data)
+          .then(() => {
+            this.getTorrentCollections();
+          });
+      }
+    },
+
+    /**
+     * 搜索结果过滤器，用于用户二次过滤
+     * @param items
+     * @param search
+     */
+    searchResultFilter(items: any[], search: string) {
+      search = search.toString().toLowerCase();
+      if (search.trim() === "") return items;
+
+      // 以空格分隔要过滤的关键字
+      let searchs = search.split(" ");
+
+      return items.filter((item: ICollection) => {
+        let texts: string[] = [];
+        texts.push(item.title);
+
+        item.subTitle && texts.push(item.title);
+        if (item.movieInfo) {
+          item.movieInfo.title && texts.push(item.movieInfo.title);
+          item.movieInfo.alt_title && texts.push(item.movieInfo.alt_title);
+        }
+
+        let source = texts.join("").toLowerCase();
+        let result = true;
+        searchs.forEach(key => {
+          if (key.trim() != "") {
+            result = result && source.indexOf(key) > -1;
+          }
+        });
+        return result;
+      });
     }
   },
 
   created() {
     this.getTorrentCollections();
+    this.defaultGroupId = this.options.defaultCollectionGroupId;
   },
 
   watch: {
@@ -397,7 +603,7 @@ export default Vue.extend({
           text: this.$t("collection.headers.size"),
           align: "right",
           value: "size",
-          width: 80
+          width: 100
         },
         {
           text: this.$t("collection.headers.time"),

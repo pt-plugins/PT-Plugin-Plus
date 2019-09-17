@@ -148,6 +148,8 @@ export interface Options {
   enableBackgroundDownload?: boolean;
   // 插件默认显示位置
   position?: EPluginPosition;
+  // 默认的收藏分组ID
+  defaultCollectionGroupId?: string;
 }
 
 // 在搜索之前一些选项配置

@@ -36,7 +36,11 @@
       "share": "分享",
       "actionConfirm": "确认要进行此操作吗？",
       "importFailed": "导入失败",
-      "importSuccess": "已成功导入"
+      "importSuccess": "已成功导入",
+      "all": "全部",
+      "setDefault": "设为默认",
+      "cancelDefault": "取消默认",
+      "search": "搜索"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -795,6 +799,8 @@
       "addToGroup": "添加到分组",
       "noGroup": "<未分组>",
       "changeGroupName": "修改分组名称",
+      "removeGroupConfirm": "确认要删除这个分组吗？{count} 个收藏将从这个分组中删除。",
+      "setIMDbId": "设置IMDb ID",
       "headers": {
         "site": "来源",
         "title": "标题",

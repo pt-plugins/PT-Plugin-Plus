@@ -1,25 +1,70 @@
 <template>
-  <v-card :color="color" class="mr-2" :style="styles" @click="click" :dark="dark">
-    <v-card-title>
-      <div>
-        <div class="title" @click="rename">{{ name }}</div>
-        <span>{{ description }}</span>
-      </div>
-    </v-card-title>
-    <v-card-actions>
-      <span>{{ count }}</span>
-      <v-spacer></v-spacer>
+  <v-hover>
+    <v-card
+      :color="color"
+      slot-scope="{ hover }"
+      :class="`elevation-${hover||active ? 5 : 1} mr-2`"
+      :style="styles"
+      @click="click"
+      :dark="dark"
+    >
+      <v-card-title class="ma-0 pa-2">
+        <div class="subheading">{{ name }}</div>
+        <div>{{ description }}</div>
+      </v-card-title>
 
-      <template v-if="!!group.id">
-        <ColorSelector @change="changeColor" :dark="dark" />
+      <v-card-actions class="toolbar">
+        <span class="ma-1">{{ count }}</span>
+        <v-spacer></v-spacer>
 
-        <v-btn icon small @click.stop="remove">
-          <v-icon small>delete</v-icon>
-        </v-btn>
-      </template>
-    </v-card-actions>
-  </v-card>
+        <template v-if="!readOnly">
+          <template v-if="hover">
+            <v-btn icon small @click.stop="rename" class="ma-0" :title="$t('common.edit')">
+              <v-icon small>edit</v-icon>
+            </v-btn>
+
+            <v-btn icon small @click.stop="remove" class="ma-0" :title="$t('common.remove')">
+              <v-icon small>delete</v-icon>
+            </v-btn>
+
+            <v-btn
+              v-if="!isDefault"
+              icon
+              small
+              @click.stop="setDefault"
+              class="ma-0"
+              :title="$t('common.setDefault')"
+            >
+              <v-icon small>favorite_border</v-icon>
+            </v-btn>
+          </template>
+
+          <v-btn
+            v-if="isDefault"
+            icon
+            small
+            @click.stop="cancelDefault"
+            class="ma-0"
+            :title="$t('common.cancelDefault')"
+          >
+            <v-icon small>favorite</v-icon>
+          </v-btn>
+
+          <ColorSelector @change="changeColor" :dark="dark" class="ma-0" />
+        </template>
+      </v-card-actions>
+    </v-card>
+  </v-hover>
 </template>
+<style lang="scss" scoped>
+.toolbar {
+  position: absolute;
+  bottom: 0;
+  height: 35px;
+  width: 100%;
+  padding: 5px;
+}
+</style>
 <script lang="ts">
 import Vue from "vue";
 import { isNumber } from "util";
@@ -50,35 +95,18 @@ export default Vue.extend({
     },
     group: {
       type: Object
-    }
+    },
+    active: Boolean,
+    readOnly: Boolean,
+    isDefault: Boolean
   },
   data() {
     return {
-      styles: {
-        width: "200px",
-        height: "90px"
-      },
       dark: true
     };
   },
 
   watch: {
-    width() {
-      if (isNumber(this.width)) {
-        this.styles.width = this.width.toString() + "px";
-      } else {
-        this.styles.width = this.width;
-      }
-    },
-
-    height() {
-      if (isNumber(this.height)) {
-        this.styles.height = this.height.toString() + "px";
-      } else {
-        this.styles.height = this.height;
-      }
-    },
-
     color() {
       if (this.color.indexOf("lighten") > 0) {
         this.dark = false;
@@ -109,6 +137,36 @@ export default Vue.extend({
       if (newValue && newValue !== this.name) {
         this.$emit("rename", newValue, this.group);
       }
+    },
+
+    setDefault() {
+      this.$emit("setDefault", this.group);
+    },
+
+    cancelDefault() {
+      this.$emit("cancelDefault", this.group);
+    }
+  },
+
+  computed: {
+    styles() {
+      let result = {
+        width: this.width,
+        height: this.height
+      };
+
+      if (isNumber(this.width)) {
+        result.width = this.width.toString() + "px";
+      } else {
+        result.width = this.width;
+      }
+      if (isNumber(this.height)) {
+        result.height = this.height.toString() + "px";
+      } else {
+        result.height = this.height;
+      }
+
+      return result;
     }
   }
 });

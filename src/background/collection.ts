@@ -88,20 +88,9 @@ export default class Collection {
 
       if (movieInfo.imdbId) {
         // 获取影片信息
-        this.movieInfoService
-          .getInfoFromIMDb(movieInfo.imdbId)
+        this.getMoviceInfo(movieInfo.imdbId)
           .then(result => {
-            // 保留数字ID
-            movieInfo.doubanId = result.id.toString().replace(/(\D)/g, "");
-            movieInfo.image = result.image;
-            movieInfo.title = result.title;
-            movieInfo.link = result.mobile_link;
-            movieInfo.alt_title = result.alt_title;
-            if (result.attrs) {
-              movieInfo.year = result.attrs.year[0];
-            }
-
-            saveData.movieInfo = movieInfo;
+            saveData.movieInfo = result;
             this.push(saveData);
             resolve(this.items);
           })
@@ -114,6 +103,34 @@ export default class Collection {
         this.push(saveData);
         resolve(this.items);
       }
+    });
+  }
+
+  private getMoviceInfo(imdbId: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      // 获取影片信息
+      this.movieInfoService
+        .getInfoFromIMDb(imdbId)
+        .then(result => {
+          // 保留数字ID
+          let movieInfo = {
+            imdbId,
+            doubanId: result.id.toString().replace(/(\D)/g, ""),
+            image: result.image,
+            title: result.title,
+            link: result.mobile_link,
+            alt_title: result.alt_title,
+            year: undefined
+          };
+          if (result.attrs) {
+            movieInfo.year = result.attrs.year[0];
+          }
+
+          resolve(movieInfo);
+        })
+        .catch(error => {
+          reject();
+        });
     });
   }
 
@@ -143,14 +160,37 @@ export default class Collection {
         });
         if (index >= 0) {
           this.items[index] = item;
+          let movieInfo = Object.assign({}, item.movieInfo);
+
+          if (movieInfo.imdbId) {
+            // 获取影片信息
+            this.getMoviceInfo(movieInfo.imdbId)
+              .then(result => {
+                item.movieInfo = result;
+                this.items[index] = item;
+                this.updateData();
+                resolve(this.items);
+              })
+              .catch(error => {
+                console.log(error);
+                this.updateData();
+                resolve(this.items);
+              });
+            return;
+          }
         }
-        this.updateGroupCount();
-        this.storage.set(this.configKey, {
-          groups: this.groups,
-          items: this.items
-        });
+
+        this.updateData();
         resolve(this.items);
       });
+    });
+  }
+
+  private updateData() {
+    this.updateGroupCount();
+    this.storage.set(this.configKey, {
+      groups: this.groups,
+      items: this.items
     });
   }
 
@@ -221,24 +261,41 @@ export default class Collection {
 
   /**
    * 重置
-   * @param items
+   * @param datas
    */
-  public reset(items: ICollection[]): Promise<any> {
+  public reset(datas: any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      this.items = items;
+      if (!datas) {
+        reject(false);
+        return;
+      }
+      if (Array.isArray(datas)) {
+        this.items = datas;
+      } else {
+        this.groups = datas.groups || this.groups;
+        this.items = datas.items || this.items;
+      }
+
       this.storage.set(this.configKey, {
         groups: this.groups,
         items: this.items
       });
-      resolve(this.items);
+      resolve({
+        groups: this.groups,
+        items: this.items
+      });
     });
   }
 
+  /**
+   * 添加分组
+   * @param newItem
+   */
   public addGroup(newItem: ICollectionGroup): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let saveData = Object.assign(
         {
-          id: PPF.getNewId().substr(8),
+          id: PPF.getNewId().substr(0, 8),
           update: new Date().getTime()
         },
         newItem
@@ -254,21 +311,45 @@ export default class Collection {
   }
 
   /**
-   * 删除历史记录
+   * 删除分组信息
    * @param items 需要删除的列表
    */
-  public removeGroup(items: ICollectionGroup[]): Promise<any> {
+  public removeGroup(
+    datas: ICollectionGroup | ICollectionGroup[]
+  ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      let items: ICollectionGroup[] = [];
+      if (Array.isArray(datas)) {
+        items = datas;
+      } else {
+        items.push(datas);
+      }
       this.load().then(() => {
         for (let index = this.groups.length - 1; index >= 0; index--) {
-          let item: ICollectionGroup = this.groups[index];
+          let group: ICollectionGroup = this.groups[index];
           let findIndex = items.findIndex((data: ICollectionGroup) => {
-            return data.id === item.id;
+            return data.id === group.id;
           });
           if (findIndex >= 0) {
+            // 清除收藏中已引用该分组的项
+            this.items.forEach((item: ICollection) => {
+              if (!item.groups) {
+                return;
+              }
+              let index = item.groups.findIndex((id: string) => {
+                return id === group.id;
+              });
+
+              if (index !== -1) {
+                item.groups.splice(index, 1);
+              }
+            });
+
             this.groups.splice(index, 1);
           }
         }
+
+        this.updateGroupCount();
         this.storage.set(this.configKey, {
           groups: this.groups,
           items: this.items
@@ -278,6 +359,10 @@ export default class Collection {
     });
   }
 
+  /**
+   * 更新指定的分组信息
+   * @param item
+   */
   public updateGroup(item: ICollectionGroup): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.load().then(() => {
@@ -296,6 +381,9 @@ export default class Collection {
     });
   }
 
+  /**
+   * 获取分组列表
+   */
   public getGroups(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.load().then(() => {
@@ -304,6 +392,11 @@ export default class Collection {
     });
   }
 
+  /**
+   * 将收藏添加到指定的分组
+   * @param item
+   * @param groupId
+   */
   public addToGroup(item: ICollection, groupId: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       if (!item.groups) {
@@ -325,6 +418,11 @@ export default class Collection {
     });
   }
 
+  /**
+   * 将指定的收藏从分组中删除
+   * @param item
+   * @param groupId
+   */
   public removeFromGroup(item: ICollection, groupId: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       if (item.groups) {
