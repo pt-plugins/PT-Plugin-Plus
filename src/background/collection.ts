@@ -92,6 +92,8 @@ export default class Collection {
         delete saveData.site;
       }
 
+      saveData.link = PPF.getCleaningURL(saveData.link);
+
       if (movieInfo.imdbId) {
         // 获取影片信息
         this.getMoviceInfo(movieInfo.imdbId)
@@ -161,6 +163,7 @@ export default class Collection {
   public update(item: ICollection): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.load().then(() => {
+        item.link = PPF.getCleaningURL(item.link);
         let index = this.items.findIndex((data: ICollection) => {
           return data.link === item.link;
         });
@@ -257,6 +260,7 @@ export default class Collection {
    */
   public get(link: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      link = PPF.getCleaningURL(link);
       this.load().then(() => {
         let item = this.items.find((data: ICollection) => {
           return data.link === link;
@@ -451,5 +455,15 @@ export default class Collection {
         }
       }
     });
+  }
+
+  public getAllLinks() {
+    let links: string[] = [];
+
+    this.items.forEach((item: ICollection) => {
+      links.push(PPF.getCleaningURL(item.link));
+    });
+
+    return links;
   }
 }

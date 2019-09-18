@@ -1236,4 +1236,15 @@ export default class Controller {
   public updateTorrentCollention(data: any): Promise<any> {
     return this.service.collection.update(data);
   }
+
+  public getAllTorrentCollectionLinks(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      const result = this.service.collection.getAllLinks();
+      if (result) {
+        resolve(result);
+      } else {
+        reject(false);
+      }
+    });
+  }
 }

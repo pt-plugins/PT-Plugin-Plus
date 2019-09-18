@@ -186,6 +186,35 @@ class HelpFunctions {
     return url;
   }
 
+  /**
+   * 删除链接中指定的字段
+   * @param url
+   * @param value
+   */
+  public removeQueryStringFields(url: string, fields: string[]) {
+    let querys: string[] = [],
+      queryString = "",
+      rule = /([^&=]+)=([^&]*)/g,
+      m,
+      head = "",
+      index = url.indexOf("?");
+
+    if (index !== -1) {
+      head = url.substr(0, index + 1);
+      queryString = url.substr(index + 1);
+      while ((m = rule.exec(queryString))) {
+        const v = m[1] + "=" + m[2];
+        if (!fields.includes(m[1])) {
+          querys.push(v);
+        }
+      }
+
+      return head + querys.join("&");
+    }
+
+    return url;
+  }
+
   public clone(source: any) {
     return JSON.parse(JSON.stringify(source));
   }
@@ -214,6 +243,10 @@ class HelpFunctions {
         top: "+=10px"
       });
     } catch (error) {}
+  }
+
+  public getCleaningURL(url: string) {
+    return this.removeQueryStringFields(url, ["hit", "cmtpage", "page"]);
   }
 }
 

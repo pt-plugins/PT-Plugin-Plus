@@ -500,11 +500,18 @@ export default Vue.extend({
             (restoreContent == ERestoreContent.all ||
               restoreContent == ERestoreContent.collection)
           ) {
-            extension.sendRequest(
-              EAction.resetTorrentCollections,
-              null,
-              infos.collection
-            );
+            extension
+              .sendRequest(
+                EAction.resetTorrentCollections,
+                null,
+                infos.collection
+              )
+              .then(() => {
+                // 取消默认收藏分组信息
+                this.$store.dispatch("saveConfig", {
+                  defaultCollectionGroupId: ""
+                });
+              });
           }
 
           this.successMsg = this.$t(

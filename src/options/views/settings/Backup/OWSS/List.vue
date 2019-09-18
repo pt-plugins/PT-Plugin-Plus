@@ -73,7 +73,7 @@ export default Vue.extend({
       let menus: any[] = [];
 
       menus.push({
-        title: "恢复所有",
+        title: this.$t("settings.backup.restoreAll"),
         fn: () => {
           console.log(this.server);
           this.$emit("download", this.server, item, ERestoreContent.all);
@@ -83,7 +83,7 @@ export default Vue.extend({
       menus.push({});
 
       menus.push({
-        title: "仅恢复收藏",
+        title: this.$t("settings.backup.restoreCollection"),
         fn: () => {
           this.$emit("download", this.server, item, ERestoreContent.collection);
         }

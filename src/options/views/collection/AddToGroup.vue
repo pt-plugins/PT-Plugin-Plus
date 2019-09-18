@@ -22,7 +22,7 @@ import {
   ECommonKey
 } from "@/interface/common";
 
-import * as basicContext from "basiccontext";
+import { PPF } from "@/service/public";
 
 export default Vue.extend({
   props: {
@@ -64,15 +64,11 @@ export default Vue.extend({
      */
     showContentMenus(event?: any) {
       let menus: any[] = [];
-      let groups: string[] = this.item.groups || [];
-
+      let groups: string[] = PPF.clone(this.item.groups || []);
+      groups.push(ECommonKey.all);
+      groups.push(ECommonKey.noGroup);
       this.groups.forEach((group: any) => {
-        if (
-          group.id &&
-          group.name &&
-          group.id !== ECommonKey.all &&
-          !groups.includes(group.id)
-        ) {
+        if (group.id && group.name && !groups.includes(group.id)) {
           menus.push({
             title: group.name,
             fn: () => {
@@ -86,11 +82,7 @@ export default Vue.extend({
         return;
       }
 
-      basicContext.show(menus, event);
-      $(".basicContext").css({
-        left: "-=20px",
-        top: "+=10px"
-      });
+      PPF.showContextMenu(menus, event);
     },
 
     clearStatus() {

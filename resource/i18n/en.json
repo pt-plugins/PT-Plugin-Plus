@@ -331,7 +331,9 @@
             "noData": "No backup data yet"
           },
           "getFileListError": "Failed to get the backup file, please confirm whether the network and backup server are available"
-        }
+        },
+        "restoreAll": "Restore All",
+        "restoreCollection": "Restore Collection Only"
       },
       "base": {
         "title": "General",

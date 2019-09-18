@@ -331,7 +331,9 @@
             "noData": "暂无备份数据"
           },
           "getFileListError": "获取备份文件失败，请确认网络和备份服务器是否可用"
-        }
+        },
+        "restoreAll": "恢复所有设置",
+        "restoreCollection": "仅恢复收藏数据"
       },
       "base": {
         "title": "常规设置",

@@ -198,7 +198,8 @@ export enum EAction {
   // 删除收藏分组
   removeTorrentCollectionGroup = "removeTorrentCollectionGroup",
   // 更新收藏信息
-  updateTorrentCollention = "updateTorrentCollention"
+  updateTorrentCollention = "updateTorrentCollention",
+  getAllTorrentCollectionLinks = "getAllTorrentCollectionLinks"
 }
 
 /**

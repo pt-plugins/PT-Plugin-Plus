@@ -31,6 +31,7 @@ import * as basicContext from "basiccontext";
 import { PathHandler } from "@/service/pathHandler";
 import MovieInfoCard from "@/options/components/MovieInfoCard.vue";
 import TorrentProgress from "@/options/components/TorrentProgress.vue";
+import { PPF } from "@/service/public";
 
 type searchResult = {
   sites: Dictionary<any>;
@@ -116,7 +117,7 @@ export default Vue.extend({
       lastCheckedIndex: -1,
       shiftKey: false,
       searchPayload: {} as ISearchPayload,
-      torrentCollections: [] as ICollection[]
+      torrentCollectionLinks: [] as string[]
     };
   },
   created() {
@@ -1584,7 +1585,7 @@ export default Vue.extend({
           }
         })
         .then(result => {
-          this.torrentCollections = result;
+          this.loadTorrentCollections();
           console.log(result);
         });
     },
@@ -1594,20 +1595,18 @@ export default Vue.extend({
           link: item.link
         })
         .then(result => {
-          this.torrentCollections = result;
+          this.loadTorrentCollections();
         });
     },
     loadTorrentCollections() {
-      extension.sendRequest(EAction.getTorrentCollections).then(result => {
-        this.torrentCollections = result;
-      });
+      extension
+        .sendRequest(EAction.getAllTorrentCollectionLinks)
+        .then(result => {
+          this.torrentCollectionLinks = result;
+        });
     },
     isCollectioned(link: string): boolean {
-      return (
-        this.torrentCollections.findIndex(item => {
-          return item.link === link;
-        }) !== -1
-      );
+      return this.torrentCollectionLinks.includes(PPF.getCleaningURL(link));
     }
   },
   computed: {
