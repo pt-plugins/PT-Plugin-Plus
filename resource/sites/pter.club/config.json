@@ -37,5 +37,10 @@
         }
       }
     }
-  }
+  },
+  "plugins": [{
+    "name": "保种和官方列表",
+    "pages": ["/reseed.php", "/officialgroup.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }]
 }
