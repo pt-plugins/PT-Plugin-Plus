@@ -1,13 +1,15 @@
 <template>
-  <v-btn :flat="flat" :icon="icon" :small="small" :loading="loading">
+  <v-btn
+    :flat="flat"
+    :icon="icon"
+    :small="small"
+    :loading="loading"
+    @click.stop="showSiteContentMenus"
+    :title="$t('searchTorrent.sendToClient')"
+  >
     <v-icon v-if="haveSuccess" color="success" small>done</v-icon>
     <v-icon v-else-if="haveError" color="red" small>close</v-icon>
-    <v-icon
-      v-else
-      @click.stop="showSiteContentMenus"
-      small
-      :title="$t('searchTorrent.sendToClient')"
-    >{{ iconText }}</v-icon>
+    <v-icon v-else small>{{ iconText }}</v-icon>
   </v-btn>
 </template>
 <script lang="ts">
@@ -18,12 +20,12 @@ import {
   ECommonKey,
   DownloadOptions,
   Site,
-  EAction
+  EAction,
+  ICollection
 } from "@/interface/common";
 import { PathHandler } from "@/service/pathHandler";
-
-import * as basicContext from "basiccontext";
 import Extension from "@/service/extension";
+import { PPF } from "@/service/public";
 
 const extension = new Extension();
 
@@ -37,7 +39,7 @@ export default Vue.extend({
       default: "cloud_download"
     },
     downloadOptions: {
-      type: Object,
+      type: [Object, Array],
       default: () => {
         return {
           host: String,
@@ -55,7 +57,8 @@ export default Vue.extend({
       loading: false,
       site: {} as Site,
       haveSuccess: false,
-      haveError: false
+      haveError: false,
+      allContentMenus: [] as any[]
     };
   },
 
@@ -146,7 +149,11 @@ export default Vue.extend({
      * @param options
      * @param event
      */
-    showSiteContentMenus(event?: any) {
+    showSiteContentMenus(event: any) {
+      if (Array.isArray(this.downloadOptions)) {
+        this.showAllContentMenus(event);
+        return;
+      }
       let options = this.downloadOptions;
 
       let items = this.getSiteContentMenus(options.host);
@@ -185,11 +192,111 @@ export default Vue.extend({
         }
       });
 
-      basicContext.show(menus, event);
-      $(".basicContext").css({
-        left: "-=20px",
-        top: "+=10px"
+      PPF.showContextMenu(menus, event);
+    },
+
+    /**
+     * 显示批量下载时可用下载服务器菜单
+     * @param event
+     */
+    showAllContentMenus(event: any) {
+      let clients: any[] = [];
+      let menus: any[] = [];
+      let _this = this;
+
+      function addMenu(item: any) {
+        let title = _this
+          .$t("searchTorrent.downloadTo", {
+            path: `${item.client.name} -> ${item.client.address}`
+          })
+          .toString();
+        if (item.path) {
+          title += ` -> ${item.path}`;
+        }
+        menus.push({
+          title: title,
+          fn: () => {
+            _this.sendTorrentsInBackground(item);
+          }
+        });
+      }
+
+      if (this.allContentMenus.length == 0) {
+        this.options.clients.forEach((client: DownloadClient) => {
+          clients.push({
+            client: client,
+            path: ""
+          });
+        });
+        clients.forEach((item: any) => {
+          if (item.client && item.client.name) {
+            addMenu(item);
+
+            if (item.client.paths) {
+              // 添加适用于所有站点的目录
+              let publicPaths = item.client.paths[ECommonKey.allSite];
+              if (publicPaths) {
+                publicPaths.forEach((path: string) => {
+                  // 去除带关键字的目录
+                  if (
+                    path.indexOf("$site.name$") == -1 &&
+                    path.indexOf("$site.host$") == -1 &&
+                    path.indexOf("<...>") == -1
+                  ) {
+                    let _item = PPF.clone(item);
+                    _item.path = path;
+                    addMenu(_item);
+                  }
+                });
+              }
+            }
+          } else {
+            menus.push({});
+          }
+        });
+        this.allContentMenus = menus;
+      } else {
+        menus = this.allContentMenus;
+      }
+
+      PPF.showContextMenu(menus, event);
+    },
+
+    /**
+     * 发送下载任务到后台
+     */
+    sendTorrentsInBackground(options: any) {
+      let items: DownloadOptions[] = [];
+      this.downloadOptions.forEach((item: ICollection | DownloadOptions) => {
+        items.push({
+          title: item.title,
+          url: item.url,
+          clientId: options.client.id,
+          savePath: options.path,
+          autoStart: options.client.autoStart,
+          link: item.link
+        });
       });
+
+      this.loading = true;
+      extension
+        .sendRequest(EAction.sendTorrentsInBackground, null, items)
+        .then((result: any) => {
+          console.log("命令执行完成", result);
+          this.haveSuccess = true;
+          this.$emit("success", result);
+        })
+        .catch((result: any) => {
+          console.log(result);
+          this.haveError = true;
+          this.$emit("error", result.msg || result);
+        })
+        .finally(() => {
+          this.loading = false;
+          setTimeout(() => {
+            this.clearStatus();
+          }, 5000);
+        });
     },
 
     sendToClient(downloadOptions: DownloadOptions) {

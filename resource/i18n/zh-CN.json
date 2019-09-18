@@ -40,7 +40,8 @@
       "all": "全部",
       "setDefault": "设为默认",
       "cancelDefault": "取消默认",
-      "search": "搜索"
+      "search": "搜索",
+      "color": "颜色"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -291,7 +292,7 @@
         "restore": "恢复",
         "backupToGoogle": "备份到Google",
         "restoreFromGoogle": "从Google恢复",
-        "restoreConfirm": "确认要从备份数据中恢复配置吗？这将覆盖当前所有设置信息。",
+        "restoreConfirm": "确认要从备份数据中恢复配置吗？这将覆盖当前设置信息。",
         "restoreSuccess": "参数已恢复",
         "restoreError": "参数恢复失败！",
         "loadError": "配置信息加载失败",
@@ -801,6 +802,7 @@
       "changeGroupName": "修改分组名称",
       "removeGroupConfirm": "确认要删除这个分组吗？{count} 个收藏将从这个分组中删除。",
       "setIMDbId": "设置IMDb ID",
+      "inputGroupName": "请输入分组名称：",
       "headers": {
         "site": "来源",
         "title": "标题",

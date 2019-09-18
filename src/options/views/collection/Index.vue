@@ -2,7 +2,11 @@
   <div class="collection">
     <v-alert :value="true" type="info">{{ $t("collection.title") }}</v-alert>
     <v-card>
-      <div style="height: 120px; overflow-x: auto;display: -webkit-box;" class="ma-2 pt-2">
+      <div
+        style="height: 130px; overflow-x: auto;display: -webkit-box;"
+        class="ma-2 pt-2"
+        v-if="groups.length>1"
+      >
         <GroupCard
           :color="group.color"
           v-for="(group, index) in groups"
@@ -12,15 +16,18 @@
           :count="group.count"
           :group="group"
           :active="group.id===activeGroupId"
-          :readOnly="!group.id || group.readOnly"
+          :readOnly="group.readOnly"
           :width="group.width"
           :isDefault="group.id===defaultGroupId"
+          :items="getItemsFromGroup(group.id)"
           @changeColor="changeGroupColor"
           @remove="removeGroup"
           @rename="changeGroupName"
           @click="setGroupActive"
           @setDefault="setDefaultGroup"
           @cancelDefault="cancelDefaultGroup"
+          @downloadSuccess="onSuccess"
+          @downloadError="onError"
         ></GroupCard>
       </div>
 
@@ -197,7 +204,7 @@
               small
               class="mx-0"
               @error="onError"
-              @success="onSuccss"
+              @success="onSuccess"
             />
 
             <!-- 删除 -->
@@ -285,7 +292,9 @@ export default Vue.extend({
         extension
           .sendRequest(EAction.clearTorrentCollention)
           .then((result: any) => {
+            this.allItems = [];
             this.items = [];
+            this.groups = [];
           });
       }
     },
@@ -314,10 +323,11 @@ export default Vue.extend({
         this.items = [];
         this.groups = [];
         let noGroup = {
+          id: ECommonKey.noGroup,
           name: this.$t("collection.noGroup").toString(),
           count: 0,
           readOnly: true,
-          width: 100
+          width: 120
         };
 
         results[1].forEach((item: any) => {
@@ -345,7 +355,7 @@ export default Vue.extend({
           count: this.allItems.length,
           color: "grey darken-2",
           readOnly: true,
-          width: 100
+          width: 120
         };
 
         this.groups.push(allGroup);
@@ -373,12 +383,12 @@ export default Vue.extend({
       this.errorMsg = msg;
     },
 
-    onSuccss(msg: string) {
+    onSuccess(msg: string) {
       this.successMsg = msg;
     },
 
     addGroup() {
-      let name = window.prompt("请输入分组名称：");
+      let name = window.prompt(this.$t("common.inputGroupName").toString());
       if (name) {
         extension
           .sendRequest(EAction.addTorrentCollectionGroup, null, {
@@ -487,15 +497,28 @@ export default Vue.extend({
     filterCollections() {
       let groupId = this.activeGroupId;
 
-      this.items = [];
+      this.items = this.getItemsFromGroup(groupId);
+    },
+
+    getItemsFromGroup(groupId: string) {
+      if (groupId === ECommonKey.all) {
+        return this.allItems;
+      }
+
+      let result = [];
       for (let index = 0; index < this.allItems.length; index++) {
         const item = this.allItems[index];
-        if (groupId && item.groups && item.groups.includes(groupId)) {
-          this.items.push(item);
-        } else if (!groupId && (!item.groups || item.groups.length == 0)) {
-          this.items.push(item);
+        if (item.groups && item.groups.includes(groupId)) {
+          result.push(item);
+        } else if (
+          groupId === ECommonKey.noGroup &&
+          (!item.groups || item.groups.length === 0)
+        ) {
+          result.push(item);
         }
       }
+
+      return result;
     },
 
     setDefaultGroup(group: ICollectionGroup) {

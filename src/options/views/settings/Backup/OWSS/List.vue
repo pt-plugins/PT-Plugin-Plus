@@ -13,18 +13,20 @@
             <v-list-tile-sub-title>
               <div>
                 <span>{{ item.time | formatDate }}</span>
-                <span class="ml-2">{{ item.size | formatSize }}</span>
+                <span class="mx-2">{{ item.size | formatSize }}</span>
+                <!-- 恢复 -->
                 <v-btn
                   icon
-                  ripple
                   small
-                  class="mr-0"
-                  @click="onDownload(item, index)"
+                  class="mx-0"
                   :loading="downloading && downloadingIndex==index"
+                  @click="selectRestoreType(item, index, $event)"
                 >
                   <v-icon color="info" small>cloud_download</v-icon>
                 </v-btn>
-                <v-btn icon ripple class="ml-0" small @click="onDelete(item, index)">
+
+                <!-- 删除备份 -->
+                <v-btn icon ripple class="mx-0" small @click="onDelete(item, index)">
                   <v-icon color="red" small>delete</v-icon>
                 </v-btn>
               </div>
@@ -46,6 +48,8 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import { PPF } from "@/service/public";
+import { ERestoreContent } from "@/interface/enum";
 export default Vue.extend({
   data() {
     return {
@@ -59,13 +63,33 @@ export default Vue.extend({
     server: Object
   },
   methods: {
-    onDownload(item: any, index: number) {
-      this.downloadingIndex = index;
-      this.$emit("download", this.server, item, index);
-    },
-
     onDelete(item: any, index: number) {
       this.$emit("delete", this.server, item, index);
+    },
+
+    selectRestoreType(item: any, index: number, event: any) {
+      this.downloadingIndex = index;
+
+      let menus: any[] = [];
+
+      menus.push({
+        title: "恢复所有",
+        fn: () => {
+          console.log(this.server);
+          this.$emit("download", this.server, item, ERestoreContent.all);
+        }
+      });
+
+      menus.push({});
+
+      menus.push({
+        title: "仅恢复收藏",
+        fn: () => {
+          this.$emit("download", this.server, item, ERestoreContent.collection);
+        }
+      });
+
+      PPF.showContextMenu(menus, event);
     }
   }
 });

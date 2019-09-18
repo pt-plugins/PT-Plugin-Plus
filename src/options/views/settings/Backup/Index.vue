@@ -161,7 +161,8 @@ import {
   EModule,
   Options,
   IBackupServer,
-  EBackupServerType
+  EBackupServerType,
+  ERestoreContent
 } from "@/interface/common";
 import { PPF } from "@/service/public";
 import { FileDownloader } from "@/service/downloader";
@@ -469,19 +470,36 @@ export default Vue.extend({
     /**
      * 恢复配置确认
      */
-    restoreConfirm(infos: any) {
+    restoreConfirm(
+      infos: any,
+      restoreContent: ERestoreContent = ERestoreContent.all
+    ) {
       if (confirm(this.$t("settings.backup.restoreConfirm").toString())) {
         try {
           // 恢复运行时配置
-          this.$store.dispatch("resetRunTimeOptions", infos.options);
+          if (
+            infos.options &&
+            (restoreContent == ERestoreContent.all ||
+              restoreContent == ERestoreContent.options)
+          ) {
+            this.$store.dispatch("resetRunTimeOptions", infos.options);
+          }
 
           // 恢复用户数据
-          if (infos.datas) {
+          if (
+            infos.datas &&
+            (restoreContent == ERestoreContent.all ||
+              restoreContent == ERestoreContent.userDatas)
+          ) {
             extension.sendRequest(EAction.resetUserDatas, null, infos.datas);
           }
 
           // 恢复收藏
-          if (infos.collection) {
+          if (
+            infos.collection &&
+            (restoreContent == ERestoreContent.all ||
+              restoreContent == ERestoreContent.collection)
+          ) {
             extension.sendRequest(
               EAction.resetTorrentCollections,
               null,
@@ -549,7 +567,11 @@ export default Vue.extend({
     /**
      * 从服务器恢复指定的内容
      */
-    restoreFromServer(server: IBackupServerPro, options: any) {
+    restoreFromServer(
+      server: IBackupServerPro,
+      options: any,
+      restoreContent: ERestoreContent = ERestoreContent.all
+    ) {
       server.restoring = true;
       extension
         .sendRequest(EAction.restoreFromServer, null, {
@@ -557,7 +579,7 @@ export default Vue.extend({
           path: options.name
         })
         .then((result: any) => {
-          this.restoreConfirm(result);
+          this.restoreConfirm(result, restoreContent);
           // console.log(result);
         })
         .catch(error => {

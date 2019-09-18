@@ -1,7 +1,7 @@
 <template>
   <v-menu offset-y v-model="show">
     <template v-slot:activator="{ on }">
-      <v-btn icon small v-on="on" :dark="dark" class="ma-0">
+      <v-btn icon small v-on="on" :dark="dark" class="ma-0" :title="title">
         <v-icon small>color_lens</v-icon>
       </v-btn>
     </template>
@@ -44,7 +44,8 @@ import Vue from "vue";
 import { BASE_COLORS } from "@/interface/common";
 export default Vue.extend({
   props: {
-    dark: Boolean
+    dark: Boolean,
+    title: String
   },
   data() {
     return {

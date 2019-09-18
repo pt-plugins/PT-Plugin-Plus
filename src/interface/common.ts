@@ -486,6 +486,7 @@ export interface ICollection {
   url: string;
   // 种子页面链接
   link: string;
+  site: any;
   size: number;
   time?: number;
   subTitle?: string;

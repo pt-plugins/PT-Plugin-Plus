@@ -185,12 +185,19 @@ export enum EAction {
   getSiteSelectorConfig = "getSiteSelectorConfig",
   // 重置收藏，可用于恢复收藏
   resetTorrentCollections = "resetTorrentCollections",
+  // 获取收藏分组
   getTorrentCollectionGroups = "getTorrentCollectionGroups",
+  // 添加收藏分组
   addTorrentCollectionGroup = "addTorrentCollectionGroup",
+  // 将当前收藏添加到分组
   addTorrentCollectionToGroup = "addTorrentCollectionToGroup",
+  // 更新收藏分组信息
   updateTorrentCollectionGroup = "updateTorrentCollectionGroup",
+  // 将收藏从分组中删除
   removeTorrentCollectionFromGroup = "removeTorrentCollectionFromGroup",
+  // 删除收藏分组
   removeTorrentCollectionGroup = "removeTorrentCollectionGroup",
+  // 更新收藏信息
   updateTorrentCollention = "updateTorrentCollention"
 }
 
@@ -278,7 +285,8 @@ export enum EUserDataRequestStatus {
  */
 export enum ECommonKey {
   allSite = "__allSite__",
-  all = "__all__"
+  all = "__all__",
+  noGroup = "__noGroup__"
 }
 
 /**
@@ -326,4 +334,14 @@ export enum EPluginPosition {
  */
 export enum EWikiLink {
   faq = "https://github.com/ronggang/PT-Plugin-Plus/wiki/frequently-asked-questions"
+}
+
+/**
+ * 需要恢复的内容
+ */
+export enum ERestoreContent {
+  all = "all",
+  options = "options",
+  userDatas = "userDatas",
+  collection = "collection"
 }

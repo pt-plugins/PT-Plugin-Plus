@@ -9,30 +9,49 @@
       :dark="dark"
     >
       <v-card-title class="ma-0 pa-2">
-        <div class="subheading">{{ name }}</div>
+        <div>
+          <span class="subheading">{{ name }}</span>
+          <span class="ml-2 caption">({{ count }})</span>
+        </div>
         <div>{{ description }}</div>
       </v-card-title>
 
       <v-card-actions class="toolbar">
-        <span class="ma-1">{{ count }}</span>
+        <span class="ma-1 caption" v-if="count>0">{{ size | formatSize}}</span>
         <v-spacer></v-spacer>
+
+        <!-- 下载到 -->
+        <DownloadTo
+          v-show="hover && count>0"
+          :downloadOptions="items"
+          flat
+          icon
+          small
+          class="mx-0"
+          @error="onDownloadError"
+          @success="onDownloadSuccess"
+        />
 
         <template v-if="!readOnly">
           <template v-if="hover||colorBoxIsOpen">
+            <!-- 编辑 -->
             <v-btn icon small @click.stop="rename" class="ma-0" :title="$t('common.edit')">
               <v-icon small>edit</v-icon>
             </v-btn>
 
+            <!-- 删除 -->
             <v-btn icon small @click.stop="remove" class="ma-0" :title="$t('common.remove')">
               <v-icon small>delete</v-icon>
             </v-btn>
 
+            <!-- 颜色选择 -->
             <ColorSelector
               @change="changeColor"
               :dark="dark"
               class="ma-0"
               @show="colorBoxIsOpen=true"
               @hide="colorBoxIsOpen=false"
+              :title="$t('common.color')"
             />
 
             <v-btn
@@ -75,19 +94,22 @@
 import Vue from "vue";
 import { isNumber } from "util";
 import ColorSelector from "@/options/components/ColorSelector.vue";
+import DownloadTo from "@/options/components/DownloadTo.vue";
+import { ICollection } from "@/interface/common";
 
 export default Vue.extend({
   components: {
-    ColorSelector
+    ColorSelector,
+    DownloadTo
   },
   props: {
     width: {
       type: [String, Number],
-      default: "200px"
+      default: "240px"
     },
     height: {
       type: [String, Number],
-      default: "90px"
+      default: "100px"
     },
     name: String,
     description: String,
@@ -104,7 +126,13 @@ export default Vue.extend({
     },
     active: Boolean,
     readOnly: Boolean,
-    isDefault: Boolean
+    isDefault: Boolean,
+    items: {
+      type: Array,
+      default: () => {
+        return [] as ICollection[];
+      }
+    }
   },
   data() {
     return {
@@ -152,6 +180,15 @@ export default Vue.extend({
 
     cancelDefault() {
       this.$emit("cancelDefault", this.group);
+    },
+
+    onDownloadSuccess(msg: any) {
+      console.log("onDownloadSuccess");
+      this.$emit("downloadSuccess", msg);
+    },
+
+    onDownloadError(msg: any) {
+      this.$emit("downloadError", msg);
     }
   },
 
@@ -174,6 +211,19 @@ export default Vue.extend({
       }
 
       return result;
+    },
+
+    size() {
+      let size = 0;
+      if (this.items && this.items.length > 0) {
+        (this.items as any).forEach((item: ICollection) => {
+          if (item.size && item.size > 0) {
+            size += item.size;
+          }
+        });
+      }
+
+      return size;
     }
   }
 });

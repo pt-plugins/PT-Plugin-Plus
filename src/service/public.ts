@@ -1,4 +1,5 @@
 import md5 from "blueimp-md5";
+import * as basicContext from "basiccontext";
 
 class HelpFunctions {
   public isExtensionMode: boolean = false;
@@ -195,6 +196,24 @@ class HelpFunctions {
    */
   public debug(...msg: any) {
     console.log(new Date().toLocaleString(), ...msg);
+  }
+
+  /**
+   * 显示上下文菜单
+   * @param menus
+   * @param event
+   */
+  public showContextMenu(menus: any, event: any) {
+    try {
+      // 显示菜单
+      basicContext.show(menus, event);
+
+      // 修正偏移量
+      $(".basicContext").css({
+        left: "-=20px",
+        top: "+=10px"
+      });
+    } catch (error) {}
   }
 }
 

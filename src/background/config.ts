@@ -725,10 +725,13 @@ class Config {
         zip.file("manifest.json", JSON.stringify(manifest));
 
         // 用户收藏
-        const collection = this.service.collection.items;
-        if (collection && collection.length > 0) {
-          zip.file("collection.json", JSON.stringify(collection));
-        }
+        zip.file(
+          "collection.json",
+          JSON.stringify({
+            items: this.service.collection.items,
+            groups: this.service.collection.groups
+          })
+        );
 
         zip.generateAsync({ type: "blob" }).then((blob: any) => {
           resolve(blob);

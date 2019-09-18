@@ -79,12 +79,18 @@ export default class Collection {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let saveData = Object.assign(
         {
-          time: new Date().getTime()
+          time: new Date().getTime(),
+          site: null
         },
         newItem
       );
 
       let movieInfo = Object.assign({}, saveData.movieInfo);
+
+      // 清理站点配置信息
+      if (saveData.site) {
+        delete saveData.site;
+      }
 
       if (movieInfo.imdbId) {
         // 获取影片信息
@@ -161,6 +167,11 @@ export default class Collection {
         if (index >= 0) {
           this.items[index] = item;
           let movieInfo = Object.assign({}, item.movieInfo);
+
+          // 清理站点配置信息
+          if (item.site) {
+            delete item.site;
+          }
 
           if (movieInfo.imdbId) {
             // 获取影片信息
