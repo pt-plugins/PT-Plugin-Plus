@@ -1,8 +1,15 @@
 <template>
   <v-menu offset-y v-model="show">
     <template v-slot:activator="{ on }">
-      <v-btn icon small v-on="on" :dark="dark" class="ma-0" :title="title">
-        <v-icon small>color_lens</v-icon>
+      <v-btn
+        icon
+        :small="small"
+        v-on="on"
+        :dark="dark"
+        :class="['ma-0',mini?'btn-mini':'']"
+        :title="title"
+      >
+        <v-icon :small="small">color_lens</v-icon>
       </v-btn>
     </template>
     <div v-for="(color, index) in colors" :key="index">
@@ -45,7 +52,9 @@ import { BASE_COLORS } from "@/interface/common";
 export default Vue.extend({
   props: {
     dark: Boolean,
-    title: String
+    title: String,
+    mini: Boolean,
+    small: Boolean
   },
   data() {
     return {

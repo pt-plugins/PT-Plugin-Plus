@@ -3,7 +3,7 @@
     <v-alert :value="true" type="info">{{ $t("collection.title") }}</v-alert>
     <v-card>
       <div
-        style="height: 130px; overflow-x: auto;display: -webkit-box;"
+        style="height: 120px; overflow-x: auto;display: -webkit-box;"
         class="ma-2 pt-2"
         v-if="groups.length>1"
       >

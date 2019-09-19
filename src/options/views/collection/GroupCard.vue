@@ -26,8 +26,7 @@
           :downloadOptions="items"
           flat
           icon
-          small
-          class="mx-0"
+          class="mx-0 btn-mini"
           @error="onDownloadError"
           @success="onDownloadSuccess"
         />
@@ -35,13 +34,13 @@
         <template v-if="!readOnly">
           <template v-if="hover||colorBoxIsOpen">
             <!-- 编辑 -->
-            <v-btn icon small @click.stop="rename" class="ma-0" :title="$t('common.edit')">
-              <v-icon small>edit</v-icon>
+            <v-btn icon @click.stop="rename" class="ma-0 btn-mini" :title="$t('common.edit')">
+              <v-icon>edit</v-icon>
             </v-btn>
 
             <!-- 删除 -->
-            <v-btn icon small @click.stop="remove" class="ma-0" :title="$t('common.remove')">
-              <v-icon small>delete</v-icon>
+            <v-btn icon @click.stop="remove" class="ma-0 btn-mini" :title="$t('common.remove')">
+              <v-icon>delete</v-icon>
             </v-btn>
 
             <!-- 颜色选择 -->
@@ -49,6 +48,7 @@
               @change="changeColor"
               :dark="dark"
               class="ma-0"
+              mini
               @show="colorBoxIsOpen=true"
               @hide="colorBoxIsOpen=false"
               :title="$t('common.color')"
@@ -57,24 +57,22 @@
             <v-btn
               v-if="!isDefault"
               icon
-              small
               @click.stop="setDefault"
-              class="ma-0"
+              class="ma-0 btn-mini"
               :title="$t('common.setDefault')"
             >
-              <v-icon small>favorite_border</v-icon>
+              <v-icon>favorite_border</v-icon>
             </v-btn>
           </template>
 
           <v-btn
             v-if="isDefault"
             icon
-            small
             @click.stop="cancelDefault"
-            class="ma-0"
+            class="ma-0 btn-mini"
             :title="$t('common.cancelDefault')"
           >
-            <v-icon small>favorite</v-icon>
+            <v-icon>favorite</v-icon>
           </v-btn>
         </template>
       </v-card-actions>
@@ -105,11 +103,11 @@ export default Vue.extend({
   props: {
     width: {
       type: [String, Number],
-      default: "240px"
+      default: "200px"
     },
     height: {
       type: [String, Number],
-      default: "100px"
+      default: "90px"
     },
     name: String,
     description: String,

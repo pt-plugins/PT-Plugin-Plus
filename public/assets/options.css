@@ -1,0 +1,9 @@
+.btn-mini {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 12px !important;
+}
+
+.btn-mini .v-btn__content i {
+  font-size: 12px !important;
+}
