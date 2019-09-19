@@ -89,6 +89,15 @@ export default Vue.extend({
         }
       });
 
+      menus.push({});
+
+      menus.push({
+        title: this.$t("settings.backup.restoreCookies"),
+        fn: () => {
+          this.$emit("download", this.server, item, ERestoreContent.cookies);
+        }
+      });
+
       PPF.showContextMenu(menus, event);
     }
   }

@@ -177,6 +177,13 @@
                       v-model="options.searchResultOrderBySitePriority"
                       :label="$t('settings.base.searchResultOrderBySitePriority')"
                     ></v-switch>
+
+                    <!-- 允许备份Cookies -->
+                    <v-switch
+                      color="success"
+                      v-model="options.allowBackupCookies"
+                      :label="$t('settings.base.allowBackupCookies')"
+                    ></v-switch>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -429,6 +436,7 @@ import {
 } from "@/interface/common";
 import Extension from "@/service/extension";
 import { MovieInfoService } from "@/service/movieInfoService";
+import { PPF } from "@/service/public";
 
 const extension = new Extension();
 
@@ -463,7 +471,8 @@ export default Vue.extend({
         apiKey: {},
         batchDownloadInterval: 0,
         enableBackgroundDownload: false,
-        position: "right"
+        position: "right",
+        allowBackupCookies: false
       } as Options,
       units: [] as any,
       hours: [] as any,
@@ -527,6 +536,25 @@ export default Vue.extend({
 
       this.options.apiKey.omdb = omdbApiKeys;
       this.options.apiKey.douban = doubanApiKeys;
+
+      // 如果启用备份 Cookies，检测是否有权限
+      if (this.options.allowBackupCookies) {
+        PPF.usePermissions(
+          ["cookies"],
+          true,
+          this.$t("permissions.request.cookies").toString()
+        )
+          .then(() => {
+            this.$store.dispatch("saveConfig", this.options);
+            this.successMsg = this.$t("settings.base.saved").toString();
+          })
+          .catch(() => {
+            this.options.allowBackupCookies = false;
+            this.$store.dispatch("saveConfig", this.options);
+            this.successMsg = this.$t("settings.base.saved").toString();
+          });
+        return;
+      }
 
       this.$store.dispatch("saveConfig", this.options);
       this.successMsg = this.$t("settings.base.saved").toString();

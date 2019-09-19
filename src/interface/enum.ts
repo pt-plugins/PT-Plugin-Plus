@@ -199,7 +199,10 @@ export enum EAction {
   removeTorrentCollectionGroup = "removeTorrentCollectionGroup",
   // 更新收藏信息
   updateTorrentCollention = "updateTorrentCollention",
-  getAllTorrentCollectionLinks = "getAllTorrentCollectionLinks"
+  // 获取所有收藏的链接地址
+  getAllTorrentCollectionLinks = "getAllTorrentCollectionLinks",
+  // 恢复Cookies
+  restoreCookies = "restoreCookies"
 }
 
 /**
@@ -344,5 +347,6 @@ export enum ERestoreContent {
   all = "all",
   options = "options",
   userDatas = "userDatas",
-  collection = "collection"
+  collection = "collection",
+  cookies = "cookies"
 }

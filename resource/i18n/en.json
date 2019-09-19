@@ -88,11 +88,16 @@
       "details": {
         "allSites": "Access to all trackers for searching and get torrents data;",
         "tabs": "Read permission of the activity tab to display the PT Plugin Plus icon;",
-        "downloads": "Download permission for batch download of torrents"
+        "downloads": "Download permission for batch download of torrents",
+        "cookies": "Import/Export site cookies"
       },
       "headers": {
         "title": "Permission description",
         "enabled": "Authorized"
+      },
+      "request": {
+        "default": "Are you sure granting this permission?",
+        "cookies": "Are you sure granting cookies permission to read and write?"
       }
     },
     "searchBox": {
@@ -333,7 +338,8 @@
           "getFileListError": "Failed to get the backup file, please confirm whether the network and backup server are available"
         },
         "restoreAll": "Restore All",
-        "restoreCollection": "Restore Collection Only"
+        "restoreCollection": "Restore Collection Only",
+        "restoreCookies": "Restore Cookies Only"
       },
       "base": {
         "title": "General",
@@ -395,7 +401,8 @@
           "label": "Displayed on: ",
           "left": " Left side of page",
           "right": "Rigth side of page"
-        }
+        },
+        "allowBackupCookies": "Backup cookies of the configured site. (Backup to Google is not supported)"
       },
       "downloadClients": {
         "add": {

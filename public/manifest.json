@@ -18,9 +18,10 @@
 		"storage",
 		"contextMenus",
 		"notifications",
-		"\u003Call_urls>"
+		"http://*/*",
+		"https://*/*"
 	],
-	"optional_permissions": ["tabs", "downloads"],
+	"optional_permissions": ["tabs", "downloads", "cookies"],
 	"icons": {
 		"16": "assets/icon.png",
 		"19": "assets/icon-19.png",
@@ -41,7 +42,8 @@
 	},
 	"content_scripts": [{
 		"matches": [
-			"*://*/*"
+			"http://*/*",
+			"https://*/*"
 		],
 		"css": [
 			"assets/base.css",

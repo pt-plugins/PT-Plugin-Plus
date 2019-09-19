@@ -613,7 +613,7 @@ export default class PTPlugin {
    * @param source
    */
   public clone(source: any) {
-    return JSON.parse(JSON.stringify(source));
+    return PPF.clone(source);
   }
 
   /**
@@ -621,23 +621,7 @@ export default class PTPlugin {
    * @param permissions 需要检查的权限列表
    */
   public checkPermissions(permissions: string[]): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      // 查询当前权限
-      chrome.permissions.contains(
-        {
-          permissions: permissions
-        },
-        result => {
-          if (result === true) {
-            resolve(true);
-          } else {
-            reject({
-              success: false
-            });
-          }
-        }
-      );
-    });
+    return PPF.checkPermissions(permissions);
   }
 
   /**
@@ -645,21 +629,6 @@ export default class PTPlugin {
    * @param permissions 需要申请的权限列表
    */
   public requestPermissions(permissions: string[]): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      chrome.permissions.request(
-        {
-          permissions: permissions
-        },
-        granted => {
-          if (granted === true) {
-            resolve(true);
-          } else {
-            reject({
-              success: false
-            });
-          }
-        }
-      );
-    });
+    return PPF.requestPermissions(permissions);
   }
 }

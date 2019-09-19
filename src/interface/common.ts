@@ -150,6 +150,8 @@ export interface Options {
   position?: EPluginPosition;
   // 默认的收藏分组ID
   defaultCollectionGroupId?: string;
+  // 允许备份站点 cookies
+  allowBackupCookies?: boolean;
 }
 
 // 在搜索之前一些选项配置
@@ -538,3 +540,9 @@ export const BASE_COLORS = [
   "grey",
   "black"
 ];
+
+export interface ICookies {
+  host: string;
+  url: string;
+  cookies: chrome.cookies.Cookie[];
+}

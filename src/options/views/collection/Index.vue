@@ -678,5 +678,3 @@ export default Vue.extend({
   }
 }
 </style>
-
-<style lang="scss" src="../search/contextMenu.scss"></style>

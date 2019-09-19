@@ -12,21 +12,16 @@ import {
   IBackupServer,
   EBackupServerType,
   EUserDataRange,
-  IHashData,
-  IManifest,
-  EPluginPosition,
-  Dictionary
+  EPluginPosition
 } from "@/interface/common";
 import { API, APP } from "@/service/api";
 import localStorage from "@/service/localStorage";
 import { SyncStorage } from "./syncStorage";
 import { PPF } from "@/service/public";
-import JSZip from "jszip";
-import md5 from "blueimp-md5";
 import dayjs from "dayjs";
 import { OWSS } from "./plugins/OWSS";
 import PTPlugin from "./service";
-import FileSaver from "file-saver";
+import { BackupFileParser } from "@/service/backupFileParser";
 
 type Service = PTPlugin;
 
@@ -43,6 +38,7 @@ class Config {
   public clients: any[] = [];
   public publicSites: any[] = [];
   public requestCount: number = 0;
+  public backupFileParser: BackupFileParser = new BackupFileParser();
 
   constructor(public service: Service) {
     this.reload();
@@ -654,31 +650,6 @@ class Config {
   }
 
   /**
-   * 创建用于验证数据对象
-   */
-  public createHash(data: string): IHashData {
-    const length = data.length;
-
-    const keys: any[] = [];
-
-    let result: IHashData = {
-      hash: "",
-      keyMap: [],
-      length
-    };
-
-    for (let n = 0; n < 32; n++) {
-      let index = Math.round(length * Math.random());
-      keys.push(data.substr(index, 1));
-      result.keyMap.push(index);
-    }
-
-    result.hash = md5(keys.join(""));
-
-    return result;
-  }
-
-  /**
    * 创建备份文件
    * @param fileName
    */
@@ -701,44 +672,203 @@ class Config {
   public getBackupFileBlob(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       try {
-        const zip = new JSZip();
-
         const rawUserData = this.service.userData.get("", EUserDataRange.all);
         const rawOptions = this.cleaningOptions(this.service.options);
 
         delete rawOptions.system;
 
-        const options = JSON.stringify(rawOptions);
-        const userData = JSON.stringify(rawUserData);
-
-        // 配置
-        zip.file("options.json", options);
-        // 用户数据
-        zip.file("userdatas.json", userData);
-
-        // 创建检证用的文件
-        const manifest = {
-          checkInfo: this.createHash(options + userData),
-          version: PPF.getVersion(),
-          time: new Date().getTime()
-        };
-        zip.file("manifest.json", JSON.stringify(manifest));
-
-        // 用户收藏
-        zip.file(
-          "collection.json",
-          JSON.stringify({
+        let rawData = {
+          options: rawOptions,
+          userData: rawUserData,
+          collection: {
             items: this.service.collection.items,
             groups: this.service.collection.groups
-          })
-        );
+          },
+          cookies: undefined
+        };
 
-        zip.generateAsync({ type: "blob" }).then((blob: any) => {
-          resolve(blob);
-        });
+        // 是否备份站点 Cookies
+        if (this.service.options.allowBackupCookies) {
+          this.getAllSiteCookies()
+            .then(result => {
+              rawData.cookies = result;
+              this.backupFileParser
+                .createBackupFileBlob(rawData)
+                .then((blob: any) => {
+                  resolve(blob);
+                });
+            })
+            .catch(() => {
+              this.backupFileParser
+                .createBackupFileBlob(rawData)
+                .then((blob: any) => {
+                  resolve(blob);
+                });
+            });
+        } else {
+          this.backupFileParser
+            .createBackupFileBlob(rawData)
+            .then((blob: any) => {
+              resolve(blob);
+            });
+        }
       } catch (error) {
         reject(error);
       }
+    });
+  }
+
+  /**
+   * 获取所有站点Cookies
+   */
+  public getAllSiteCookies(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      PPF.checkPermissions(["cookies"])
+        .then(() => {
+          const sites = this.options.sites;
+
+          if (sites && sites.length > 0) {
+            const requests: any[] = [];
+            sites.forEach((site: Site) => {
+              requests.push(this.getCookiesFromSite(site));
+            });
+
+            Promise.all(requests)
+              .then(results => {
+                resolve(results);
+              })
+              .catch(error => {
+                reject(error);
+              });
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  /**
+   * 获取指定站点Cookies
+   * @param site
+   */
+  public getCookiesFromSite(site: Site): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      const url = site.activeURL || site.url;
+      chrome.cookies.getAll(
+        {
+          url
+        },
+        result => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError.message);
+            return;
+          }
+          resolve({
+            host: site.host,
+            url,
+            cookies: result
+          });
+          console.log(result);
+        }
+      );
+    });
+  }
+
+  /**
+   * 恢复Cookies
+   * @param datas
+   */
+  public restoreCookies(datas: any[]): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let requests: any[] = [];
+      datas.forEach((item: any) => {
+        item.cookies.forEach((cookie: any) => {
+          let options = PPF.clone(cookie);
+
+          if (options.storeId !== undefined) {
+            delete options.storeId;
+          }
+
+          if (options.hostOnly !== undefined) {
+            delete options.hostOnly;
+          }
+
+          if (options.sameSite !== undefined) {
+            delete options.sameSite;
+          }
+
+          if (options.session !== undefined) {
+            delete options.session;
+          }
+
+          options.url = item.url;
+
+          requests.push(this.setCookies(options, item.host));
+        });
+      });
+
+      // 不管是否成功，都返回
+      Promise.all(requests).finally(() => {
+        resolve();
+      });
+    });
+  }
+
+  /**
+   * 设置站点 Cookies
+   * @param cookie
+   * @param host
+   */
+  public setCookies(
+    cookie: chrome.cookies.SetDetails,
+    host: string
+  ): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let site: Site = PPF.getSiteFromHost(host, this.service.options);
+
+      // 尝试获取当前站点已存在的Cookie
+      chrome.cookies.get(
+        {
+          url: (site.activeURL || site.url) + "",
+          name: cookie.name + ""
+        },
+        _cookie => {
+          // 默认不对已存在相同的name的内容进行更新
+          let allowSet = false;
+          const now = new Date().getTime() / 1000;
+
+          // 如果当前站点没有这个Cookies，则允许设置
+          if (_cookie === null) {
+            allowSet = true;
+          } else if (
+            // 如果站点存在这个Cookies，但已过期，允许设置
+            _cookie.expirationDate &&
+            _cookie.expirationDate < now
+          ) {
+            allowSet = true;
+          }
+
+          if (allowSet) {
+            // 如果要导入的内容已过期，尝试按当天日期增加一天
+            if (cookie.expirationDate && cookie.expirationDate < now) {
+              cookie.expirationDate = now + 60 * 60 * 24;
+            }
+
+            chrome.cookies.set(cookie, result => {
+              if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError.message);
+                return;
+              }
+              resolve(result);
+              console.log(result);
+            });
+          } else {
+            console.log("跳过 %s: %s", host, cookie.name);
+            resolve();
+          }
+        }
+      );
     });
   }
 
@@ -801,7 +931,8 @@ class Config {
           new OWSS(server)
             .get(path)
             .then(data => {
-              this.restoreFromZipData(data)
+              this.backupFileParser
+                .loadZipData(data)
                 .then(result => {
                   resolve(result);
                 })
@@ -819,109 +950,6 @@ class Config {
           break;
       }
     });
-  }
-
-  /**
-   * 验证备份数据
-   * @param data
-   */
-  public checkBackupData(data: any[]): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      try {
-        const manifest = JSON.parse(data[0]);
-        const options = JSON.parse(data[1]);
-        const datas = JSON.parse(data[2]);
-
-        const result: Dictionary<any> = {
-          options,
-          datas
-        };
-
-        if (data.length > 3) {
-          result["collection"] = JSON.parse(data[3]);
-        }
-
-        if (this.checkData(manifest, data[1] + data[2])) {
-          resolve(result);
-        } else {
-          reject("error");
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  /**
-   * 验证备份文件并获取数据
-   * @param data
-   */
-  private restoreFromZipData(data: any): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      JSZip.loadAsync(data)
-        .then(zip => {
-          let requests: any[] = [];
-          requests.push(zip.file("manifest.json").async("text"));
-          requests.push(zip.file("options.json").async("text"));
-          requests.push(zip.file("userdatas.json").async("text"));
-
-          if (zip.file("collection.json")) {
-            requests.push(zip.file("collection.json").async("text"));
-          }
-          return Promise.all(requests);
-        })
-        .then(results => {
-          this.checkBackupData(results)
-            .then(result => {
-              resolve(result);
-            })
-            .catch(error => {
-              reject(error);
-            });
-        })
-        .catch(error => {
-          console.log(error);
-          reject(error);
-        });
-    });
-  }
-
-  /**
-   * 简单验证数据，仅防止格式错误的数据
-   */
-  checkData(manifest: IManifest, data: string): boolean {
-    if (!manifest) {
-      return false;
-    }
-
-    if (!manifest.checkInfo) {
-      return false;
-    }
-
-    const checkInfo = manifest.checkInfo;
-    const length = data.length;
-
-    if (length !== checkInfo.length) {
-      return false;
-    }
-
-    const keys: any[] = [];
-
-    try {
-      if (checkInfo.keyMap.length !== 32) {
-        return false;
-      }
-      for (let n = 0; n < 32; n++) {
-        let index = checkInfo.keyMap[n];
-        keys.push(data.substr(index, 1));
-      }
-
-      if (md5(keys.join("")) === checkInfo.hash) {
-        return true;
-      }
-    } catch (error) {}
-
-    return false;
   }
 
   /**

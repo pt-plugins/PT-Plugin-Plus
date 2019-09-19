@@ -87,12 +87,17 @@
       "cancelled": "世界如此之大，期待有缘再相会！",
       "details": {
         "allSites": "所有网站的访问权限，用于搜索和读取做种数据；",
-        "tabs": "活动选项卡的读取权限，用于显示助手图标；",
-        "downloads": "下载权限，用于批量下载种子文件"
+        "tabs": "所有打开页面的读取权限，用于显示助手图标及各项操作；",
+        "downloads": "下载权限，用于批量下载种子文件",
+        "cookies": "Cookies操作权限，用于备份和恢复站点的登录状态等内容"
       },
       "headers": {
         "title": "权限描述",
         "enabled": "已授权"
+      },
+      "request": {
+        "default": "是否授于该权限？",
+        "cookies": "是否授于Cookies读写权限？"
       }
     },
     "searchBox": {
@@ -333,7 +338,8 @@
           "getFileListError": "获取备份文件失败，请确认网络和备份服务器是否可用"
         },
         "restoreAll": "恢复所有设置",
-        "restoreCollection": "仅恢复收藏数据"
+        "restoreCollection": "仅恢复收藏数据",
+        "restoreCookies": "仅恢复站点Cookies"
       },
       "base": {
         "title": "常规设置",
@@ -395,7 +401,8 @@
           "label": "工具栏位于：",
           "left": "页面左侧",
           "right": "页面右侧"
-        }
+        },
+        "allowBackupCookies": "当进行备份操作时，同时备份已配置站点的 Cookies；（不支持备份到Google）"
       },
       "downloadClients": {
         "add": {

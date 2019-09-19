@@ -9,11 +9,11 @@
         <!-- 顶部工具条 -->
         <Topbar v-model="drawer"></Topbar>
         <!-- 内容显示区域 -->
-        <Content/>
+        <Content />
         <!-- 页脚 -->
-        <Footer/>
+        <Footer />
       </template>
-      <Permissions v-else @update="reload"/>
+      <Permissions v-else @update="reload" />
     </template>
   </v-app>
 </template>
@@ -47,8 +47,7 @@ export default {
       // 查询当前权限
       chrome.permissions.contains(
         {
-          permissions: ["tabs"],
-          origins: ["*://*/*"]
+          origins: ["http://*/*", "https://*/*"]
         },
         result => {
           this.havePermissions = result;
@@ -76,3 +75,5 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" src="./assets/contextMenu.scss"></style>

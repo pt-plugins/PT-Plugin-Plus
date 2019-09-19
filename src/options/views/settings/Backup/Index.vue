@@ -154,8 +154,6 @@
 import FileSaver from "file-saver";
 import Vue from "vue";
 import Extension from "@/service/extension";
-import JSZip from "jszip";
-import md5 from "blueimp-md5";
 import {
   EAction,
   EModule,
@@ -169,7 +167,7 @@ import { FileDownloader } from "@/service/downloader";
 import AddOWSS from "./OWSS/Add.vue";
 import EditOWSS from "./OWSS/Edit.vue";
 import OWSSList from "./OWSS/List.vue";
-import { OWSS } from "@/background/plugins/OWSS";
+import { BackupFileParser } from "@/service/backupFileParser";
 
 interface IBackupServerPro extends IBackupServer {
   loading?: boolean;
@@ -180,6 +178,7 @@ interface IBackupServerPro extends IBackupServer {
 }
 
 const extension = new Extension();
+const backupFileParser = new BackupFileParser();
 
 interface IHashData {
   hash: string;
@@ -435,32 +434,11 @@ export default Vue.extend({
      * 从 zip 文件中恢复配置信息
      */
     restoreFromZipFile(file: any) {
-      JSZip.loadAsync(file)
-        .then(zip => {
-          let requests: any[] = [];
-          requests.push(zip.file("manifest.json").async("text"));
-          requests.push(zip.file("options.json").async("text"));
-          requests.push(zip.file("userdatas.json").async("text"));
-
-          if (zip.file("collection.json")) {
-            requests.push(zip.file("collection.json").async("text"));
-          }
-
-          return Promise.all(requests);
-        })
-        .then(results => {
-          extension
-            .sendRequest(EAction.checkBackupData, null, results)
-            .then(result => {
-              console.log(result);
-              this.restoreConfirm(result);
-            })
-            .catch(error => {
-              console.log(error);
-              this.errorMsg = this.$t(
-                "settings.backup.restoreError"
-              ).toString();
-            });
+      backupFileParser
+        .loadZipData(file)
+        .then(result => {
+          console.log(result);
+          this.restoreConfirm(result);
         })
         .catch(error => {
           console.log(error);
@@ -512,6 +490,37 @@ export default Vue.extend({
                   defaultCollectionGroupId: ""
                 });
               });
+          }
+
+          // 恢复Cookies
+          if (
+            infos.cookies &&
+            (restoreContent == ERestoreContent.all ||
+              restoreContent == ERestoreContent.cookies)
+          ) {
+            PPF.usePermissions(
+              ["cookies"],
+              true,
+              this.$t("permissions.request.cookies").toString()
+            )
+              .then(() => {
+                return extension.sendRequest(
+                  EAction.restoreCookies,
+                  null,
+                  infos.cookies
+                );
+              })
+              .then(() => {
+                this.successMsg = this.$t(
+                  "settings.backup.restoreSuccess"
+                ).toString();
+              })
+              .catch(() => {
+                this.errorMsg = this.$t(
+                  "settings.backup.restoreError"
+                ).toString();
+              });
+            return;
           }
 
           this.successMsg = this.$t(

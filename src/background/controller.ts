@@ -1161,10 +1161,6 @@ export default class Controller {
     return this.service.config.createBackupFile(fileName);
   }
 
-  public checkBackupData(data: any[]): Promise<any> {
-    return this.service.config.checkBackupData(data);
-  }
-
   public addTorrentToCollection(data: any): Promise<any> {
     if (this.options.defaultCollectionGroupId) {
       data.groups = [this.options.defaultCollectionGroupId];
@@ -1246,5 +1242,9 @@ export default class Controller {
         reject(false);
       }
     });
+  }
+
+  public restoreCookies(data: any): Promise<any> {
+    return this.service.config.restoreCookies(data);
   }
 }

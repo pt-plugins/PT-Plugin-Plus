@@ -526,4 +526,3 @@
 </template>
 <script lang="ts" src="./SearchTorrent.ts"></script>
 <style lang="scss" src="./SearchTorrent.scss"></style>
-<style lang="scss" src="./contextMenu.scss"></style>

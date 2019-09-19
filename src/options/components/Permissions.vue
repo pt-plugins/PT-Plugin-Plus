@@ -58,12 +58,13 @@ export default Vue.extend({
     return {
       permissions: [
         {
-          key: "*://*/*",
+          origins: ["http://*/*", "https://*/*"],
           title: "permissions.details.allSites",
           isOrigin: true
         },
         { key: "tabs", title: "permissions.details.tabs" },
-        { key: "downloads", title: "permissions.details.downloads" }
+        { key: "downloads", title: "permissions.details.downloads" },
+        { key: "cookies", title: "permissions.details.cookies" }
       ],
       selected: [] as any,
       cancelled: false,
@@ -82,7 +83,7 @@ export default Vue.extend({
         };
         this.selected.forEach((item: any) => {
           if (item.isOrigin) {
-            options.origins.push(item.key);
+            options.origins.push(...item.origins);
           } else {
             options.permissions.push(item.key);
           }
@@ -103,7 +104,7 @@ export default Vue.extend({
       let options = {};
       if (item.isOrigin) {
         options = {
-          origins: [item.key]
+          origins: item.origins
         };
       } else {
         options = {
@@ -133,7 +134,7 @@ export default Vue.extend({
       let options = {};
       if (item.isOrigin) {
         options = {
-          origins: [item.key]
+          origins: item.origins
         };
       } else {
         options = {

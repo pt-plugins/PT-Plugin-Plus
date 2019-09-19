@@ -1,5 +1,6 @@
 import md5 from "blueimp-md5";
 import * as basicContext from "basiccontext";
+import { Options, Site } from "@/interface/common";
 
 class HelpFunctions {
   public isExtensionMode: boolean = false;
@@ -247,6 +248,129 @@ class HelpFunctions {
 
   public getCleaningURL(url: string) {
     return this.removeQueryStringFields(url, ["hit", "cmtpage", "page"]);
+  }
+
+  /**
+   * 检查权限
+   * @param permissions 需要检查的权限列表
+   */
+  public checkPermissions(permissions: string[]): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (chrome && chrome.permissions) {
+        // 查询当前权限
+        chrome.permissions.contains(
+          {
+            permissions: permissions
+          },
+          result => {
+            if (result === true) {
+              resolve(true);
+            } else {
+              reject({
+                success: false
+              });
+            }
+          }
+        );
+      } else {
+        reject({
+          success: false
+        });
+      }
+    });
+  }
+
+  /**
+   * 申请权限
+   * @param permissions 需要申请的权限列表
+   */
+  public requestPermissions(permissions: string[]): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (chrome && chrome.permissions) {
+        chrome.permissions.request(
+          {
+            permissions: permissions
+          },
+          granted => {
+            if (granted === true) {
+              resolve(true);
+            } else {
+              reject({
+                success: false
+              });
+            }
+          }
+        );
+      } else {
+        reject({
+          success: false
+        });
+      }
+    });
+  }
+
+  /**
+   * 使用指定的使用
+   * @param permissions 权限列表
+   * @param needConfirm 是否需要确认，因为有些权限默认浏览器会弹出确认，有些不会弹出确认，增加此参数用于手工确认
+   */
+  public usePermissions(
+    permissions: string[],
+    needConfirm: boolean = false,
+    confirmMsg: string = ""
+  ): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.checkPermissions(permissions)
+        .then(result => {
+          resolve(result);
+        })
+        .catch(() => {
+          let confirmed = true;
+          if (needConfirm) {
+            confirmed = confirm(confirmMsg);
+          }
+          if (!confirmed) {
+            reject({
+              success: false
+            });
+            return;
+          }
+          this.requestPermissions(permissions)
+            .then(result => {
+              resolve(result);
+            })
+            .catch(error => {
+              reject(error);
+            });
+        });
+    });
+  }
+
+  /**
+   * 根据指定的host获取已定义的站点信息
+   * @param host
+   */
+  public getSiteFromHost(host: string, options: Options) {
+    let sites: Site[] = [];
+    if (options.sites) {
+      sites.push(...options.sites);
+    }
+
+    if (options.system && options.system.publicSites) {
+      sites.push(...options.system.publicSites);
+    }
+
+    let site = sites.find((item: Site) => {
+      let cdn = item.cdn || [];
+      item.url && cdn.push(item.url);
+      return item.host == host || cdn.join("").indexOf(host) > -1;
+    });
+
+    if (site) {
+      return this.clone(site);
+    }
+
+    return null;
   }
 }
 
