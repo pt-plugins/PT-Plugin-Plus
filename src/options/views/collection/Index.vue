@@ -388,7 +388,7 @@ export default Vue.extend({
     },
 
     addGroup() {
-      let name = window.prompt(this.$t("common.inputGroupName").toString());
+      let name = window.prompt(this.$t("collection.inputGroupName").toString());
       if (name) {
         extension
           .sendRequest(EAction.addTorrentCollectionGroup, null, {
