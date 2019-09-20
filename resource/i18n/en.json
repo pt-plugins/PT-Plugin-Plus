@@ -333,13 +333,22 @@
             "applyAuthCode": "Apply"
           },
           "list": {
-            "noData": "No backup data yet"
+            "noData": "No backup data yet",
+            "backupToServer": "Backup to server",
+            "loadBackupList": "Load backup list"
           },
-          "getFileListError": "Failed to get the backup file, please confirm whether the network and backup server are available"
+          "getFileListError": "Failed to get the backup file, please confirm whether the network and backup server are available",
+          "owss": {
+            "addressTip": "The server address contains the port, such as: http:\/\/192.168.1.1:8088\/storage"
+          }
         },
         "restoreAll": "Restore All",
         "restoreCollection": "Restore Collection Only",
-        "restoreCookies": "Restore Cookies Only"
+        "restoreCookies": "Restore Cookies Only",
+        "contentNotExist": {
+          "cookies": "Cookies not exist in the backup file",
+          "collection": "Collection not exists in the backup file"
+        }
       },
       "base": {
         "title": "General",

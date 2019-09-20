@@ -68,7 +68,7 @@ export default Vue.extend({
           return (
             /^(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]$/.test(
               v
-            ) || this.$t("settings.downloadClients.editor.addressTip")
+            ) || this.$t("settings.backup.server.owss.addressTip")
           );
         }
       },
@@ -112,11 +112,33 @@ export default Vue.extend({
   },
   methods: {
     applyAuthCode() {
+      this.successMsg = "";
+      this.errorMsg = "";
       if (this.option.address) {
-        $.getJSON(`${this.option.address}/create`, result => {
-          console.log(result);
-          this.option.authCode = result.data;
-        });
+        $.ajax({
+          url: `${this.option.address}/create`
+        })
+          .done(result => {
+            console.log(result);
+            if (result && result.data) {
+              this.option.authCode = result.data;
+              this.successMsg = result.data;
+            } else if (result.code && result.msg) {
+              this.errorMsg = result.msg + " (" + result.code + ")";
+            }
+          })
+          .fail((jqXHR, status, text) => {
+            if (
+              jqXHR.responseJSON &&
+              jqXHR.responseJSON.code &&
+              jqXHR.responseJSON.msg
+            ) {
+              this.errorMsg =
+                jqXHR.responseJSON.msg + " (" + jqXHR.responseJSON.code + ")";
+            } else {
+              this.errorMsg = status + ", " + text;
+            }
+          });
       }
     }
   }

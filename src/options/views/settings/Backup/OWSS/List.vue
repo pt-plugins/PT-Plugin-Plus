@@ -12,8 +12,10 @@
             <v-list-tile-title>{{ item.name }}</v-list-tile-title>
             <v-list-tile-sub-title>
               <div>
-                <span>{{ item.time | formatDate }}</span>
-                <span class="mx-2">{{ item.size | formatSize }}</span>
+                <span class="caption">
+                  <span>{{ item.time | formatDate }}</span>
+                  <span class="mx-2">{{ item.size | formatSize }}</span>
+                </span>
                 <!-- 恢复 -->
                 <v-btn
                   icon
@@ -21,12 +23,20 @@
                   class="mx-0"
                   :loading="downloading && downloadingIndex==index"
                   @click="selectRestoreType(item, index, $event)"
+                  :title="$t('settings.backup.restore')"
                 >
                   <v-icon color="info" small>cloud_download</v-icon>
                 </v-btn>
 
                 <!-- 删除备份 -->
-                <v-btn icon ripple class="mx-0" small @click="onDelete(item, index)">
+                <v-btn
+                  icon
+                  ripple
+                  class="mx-0"
+                  small
+                  @click="onDelete(item, index)"
+                  :title="$t('common.remove')"
+                >
                   <v-icon color="red" small>delete</v-icon>
                 </v-btn>
               </div>
@@ -36,7 +46,7 @@
           <v-list-tile-action></v-list-tile-action>
         </v-list-tile>
 
-        <v-divider v-if="index>0 && index<items.length-1" :key="index"></v-divider>
+        <v-divider :key="index"></v-divider>
       </template>
     </v-list>
     <v-list two-line dense v-else-if="!loading">

@@ -333,13 +333,22 @@
             "applyAuthCode": "申请授权码"
           },
           "list": {
-            "noData": "暂无备份数据"
+            "noData": "暂无备份数据",
+            "backupToServer": "备份到服务器",
+            "loadBackupList": "历史记录"
           },
-          "getFileListError": "获取备份文件失败，请确认网络和备份服务器是否可用"
+          "getFileListError": "获取备份文件失败，请确认网络和备份服务器是否可用",
+          "owss": {
+            "addressTip": "完整的服务器地址，如：http:\/\/192.168.1.1:8088\/storage"
+          }
         },
         "restoreAll": "恢复所有设置",
         "restoreCollection": "仅恢复收藏数据",
-        "restoreCookies": "仅恢复站点Cookies"
+        "restoreCookies": "仅恢复站点Cookies",
+        "contentNotExist": {
+          "cookies": "备份文件中不存在Cookies",
+          "collection": "备份文件中不存在收藏信息"
+        }
       },
       "base": {
         "title": "常规设置",

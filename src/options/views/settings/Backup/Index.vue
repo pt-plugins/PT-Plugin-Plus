@@ -96,6 +96,7 @@
               :loading="props.item.backingup"
               color="success"
               class="mx-0"
+              :title="$t('settings.backup.server.list.backupToServer')"
             >
               <v-icon small>backup</v-icon>
             </v-btn>
@@ -107,10 +108,19 @@
               :loading="props.item.loading"
               color="info"
               class="mx-0"
+              :title="$t('settings.backup.server.list.loadBackupList')"
             >
               <v-icon small>restore</v-icon>
             </v-btn>
-            <v-btn flat icon small @click="editBackupServer(props.item)" color="grey" class="mx-0">
+            <v-btn
+              flat
+              icon
+              small
+              @click="editBackupServer(props.item)"
+              color="grey"
+              class="mx-0"
+              :title="$t('common.edit')"
+            >
               <v-icon small>edit</v-icon>
             </v-btn>
             <v-btn
@@ -121,6 +131,7 @@
               :loading="props.item.deleting"
               color="error"
               class="mx-0"
+              :title="$t('common.remove')"
             >
               <v-icon small>delete</v-icon>
             </v-btn>
@@ -452,6 +463,27 @@ export default Vue.extend({
       infos: any,
       restoreContent: ERestoreContent = ERestoreContent.all
     ) {
+      // 如果指定了恢复内容，检测要恢复的内容是否存在
+      switch (restoreContent) {
+        case ERestoreContent.collection:
+          if (!infos.collection) {
+            this.errorMsg = this.$t(
+              "settings.backup.contentNotExist.collection"
+            ).toString();
+            return;
+          }
+          break;
+
+        case ERestoreContent.cookies:
+          if (!infos.cookies) {
+            this.errorMsg = this.$t(
+              "settings.backup.contentNotExist.cookies"
+            ).toString();
+            return;
+          }
+          break;
+      }
+
       if (confirm(this.$t("settings.backup.restoreConfirm").toString())) {
         try {
           // 恢复运行时配置
