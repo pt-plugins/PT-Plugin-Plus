@@ -75,7 +75,7 @@ import {
 } from "@/interface/common";
 import html2canvas from "html2canvas";
 import FileSaver from "file-saver";
-import { PPF } from "../../../service/public";
+import { PPF } from "@/service/public";
 
 const extension = new Extension();
 
@@ -227,25 +227,15 @@ export default Vue.extend({
                 };
               }
 
-              if (data.uploaded && data.uploaded > 0) {
-                item.uploaded += parseFloat(data.uploaded);
-              }
-
-              if (data.downloaded && data.downloaded > 0) {
-                item.downloaded += parseFloat(data.downloaded);
-              }
+              item.uploaded += this.getNumber(data.uploaded);
+              item.downloaded += this.getNumber(data.downloaded);
 
               if (data.seeding && data.seeding > 0) {
                 item.seeding += Math.round(data.seeding);
               }
 
-              if (data.seedingSize && data.seedingSize > 0) {
-                item.seedingSize += parseFloat(data.seedingSize);
-              }
-
-              if (data.bonus && data.bonus > 0) {
-                item.bonus += parseFloat(data.bonus);
-              }
+              item.seedingSize += this.getNumber(data.seedingSize);
+              item.bonus += this.getNumber(data.bonus);
 
               if (!userNames[data.name]) {
                 userNames[data.name] = 0;
@@ -276,6 +266,18 @@ export default Vue.extend({
       this.userName = nameInfo.name;
 
       return datas;
+    },
+    getNumber(source: any) {
+      if (typeof source === "string") {
+        source = source.replace(/,/g, "");
+        return parseFloat(source);
+      }
+
+      if (source) {
+        return parseFloat(source);
+      }
+
+      return 0;
     },
     resetData(result: any) {
       if (this.host) {
@@ -355,9 +357,9 @@ export default Vue.extend({
             continue;
           }
 
-          datas[0].data.push(parseFloat(data.uploaded));
-          datas[1].data.push(parseFloat(data.downloaded));
-          datas[2].data.push(parseFloat(data.bonus));
+          datas[0].data.push(this.getNumber(data.uploaded));
+          datas[1].data.push(this.getNumber(data.downloaded));
+          datas[2].data.push(this.getNumber(data.bonus));
           categories.push(date);
         }
       }

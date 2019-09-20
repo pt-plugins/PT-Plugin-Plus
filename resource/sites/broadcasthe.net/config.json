@@ -72,7 +72,7 @@
         "bonus": {
           "selector": "#section2 > div > div.statistics > div:nth-child(1) > ul > li:nth-child(5) > a",
           "filters": [
-            "query.text()"
+            "query.text().replace(/,/g,'')"
           ]
         },
         "joinTime": {
