@@ -63,14 +63,18 @@ export default class Extension {
                   return;
                 }
               }
-              callback && callback(result);
-              if (
-                result &&
-                (result.status === "error" || result.success === false)
+
+              callback && callback(result.resolve || result.reject);
+
+              if (result.reject) {
+                reject(result.reject);
+              } else if (
+                result.resolve.status === "error" ||
+                result.resolve.success === false
               ) {
-                reject(result);
+                reject(result.resolve);
               } else {
-                resolve(result);
+                resolve(result.resolve);
               }
             }
           );

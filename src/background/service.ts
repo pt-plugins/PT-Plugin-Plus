@@ -503,10 +503,16 @@ export default class PTPlugin {
         (message: any, sender: chrome.runtime.MessageSender, callback) => {
           this.requestMessage(message, sender)
             .then((result: any) => {
-              callback && callback(result);
+              callback &&
+                callback({
+                  resolve: result
+                });
             })
             .catch((result: any) => {
-              callback && callback(result);
+              callback &&
+                callback({
+                  reject: result
+                });
             });
           // 这句不能去掉
           return true;
