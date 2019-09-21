@@ -69,8 +69,9 @@ export default class Extension {
               if (result.reject) {
                 reject(result.reject);
               } else if (
-                result.resolve.status === "error" ||
-                result.resolve.success === false
+                result.resolve &&
+                (result.resolve.status === "error" ||
+                  result.resolve.success === false)
               ) {
                 reject(result.resolve);
               } else {
