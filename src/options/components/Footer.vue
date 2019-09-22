@@ -3,7 +3,7 @@
     <span class="pl-2 grey--text text--darken-1">
       &copy; {{ $t("app.author") }} 2019, {{ $t("common.version") }} {{version}}
       <span
-        v-if="isDevelopmentMode"
+        v-if="isDevelopmentMode && $vuetify.breakpoint.mdAndUp"
         class="deep-orange--text"
       >{{ words.developmentMode }}</span>
       <v-chip
@@ -12,7 +12,7 @@
         color="orange"
         disabled
         small
-        v-if="isDebugMode"
+        v-if="isDebugMode && $vuetify.breakpoint.mdAndUp"
       >{{ $t("common.debugMode") }}</v-chip>
       <v-btn
         outline
@@ -32,15 +32,21 @@
       target="_blank"
       rel="noopener noreferrer nofollow"
       title="Telegram"
+      :icon="$vuetify.breakpoint.smAndDown"
     >
-      <v-img src="./assets/telegram.svg" class="mr-1" width="16"/>Telegram
+      <v-img
+        src="./assets/telegram.svg"
+        width="16"
+        :style="$vuetify.breakpoint.smAndDown?'max-width:16px':null"
+      />
+      <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">Telegram</span>
     </v-btn>
-    <input type="file" ref="fileLanguage" style="display:none;">
+    <input type="file" ref="fileLanguage" style="display:none;" />
     <v-menu top offset-y>
       <template v-slot:activator="{ on }">
-        <v-btn flat small v-on="on">
-          <v-icon small class="mr-1">language</v-icon>
-          {{ $t("common.changeLanguage" )}}
+        <v-btn flat small v-on="on" :icon="$vuetify.breakpoint.smAndDown">
+          <v-icon small>language</v-icon>
+          <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">{{ $t("common.changeLanguage" )}}</span>
         </v-btn>
       </template>
 
@@ -64,9 +70,9 @@
         </v-list-tile>
       </v-list>
     </v-menu>
-    <v-btn flat small to="/system-logs">
-      <v-icon small class="mr-1">bug_report</v-icon>
-      {{ $t("common.systemLog") }}
+    <v-btn flat small to="/system-logs" :icon="$vuetify.breakpoint.smAndDown">
+      <v-icon small>bug_report</v-icon>
+      <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">{{ $t("common.systemLog") }}</span>
     </v-btn>
     <v-snackbar
       v-model="invalidFile"

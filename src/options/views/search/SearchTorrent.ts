@@ -117,7 +117,8 @@ export default Vue.extend({
       lastCheckedIndex: -1,
       shiftKey: false,
       searchPayload: {} as ISearchPayload,
-      torrentCollectionLinks: [] as string[]
+      torrentCollectionLinks: [] as string[],
+      headerOrderClickCount: 0
     };
   },
   created() {
@@ -1607,6 +1608,42 @@ export default Vue.extend({
     },
     isCollectioned(link: string): boolean {
       return this.torrentCollectionLinks.includes(PPF.getCleaningURL(link));
+    },
+    toggleAll() {
+      if (this.selected.length) this.selected = [];
+      else this.selected = this.datas.slice();
+    },
+    changeSort(column: string) {
+      if (this.pagination.sortBy === column) {
+        this.pagination.descending = !this.pagination.descending;
+        this.headerOrderClickCount++;
+        if (this.headerOrderClickCount == 2) {
+          this.pagination.sortBy = "";
+        }
+      } else {
+        this.headerOrderClickCount = 0;
+        this.pagination.sortBy = column;
+        this.pagination.descending = false;
+      }
+    },
+    getHeaderClass(header: any) {
+      let result: string[] = [];
+      result.push("column");
+
+      if (header.sortable !== false) {
+        result.push("sortable");
+
+        result.push(this.pagination.descending ? "desc" : "asc");
+        if (header.value === this.pagination.sortBy) {
+          result.push("active");
+        }
+      }
+
+      if (header.align) {
+        result.push(`text-xs-${header.align}`);
+      }
+
+      return result;
     }
   },
   computed: {
@@ -1618,55 +1655,62 @@ export default Vue.extend({
           value: this.$store.state.options.searchResultOrderBySitePriority
             ? "site.priority"
             : "site.host",
-          width: "100px"
+          visible: this.$vuetify.breakpoint.mdAndUp
         },
         {
           text: this.$t("searchTorrent.headers.title"),
           align: "left",
-          value: "title"
+          value: "title",
+          visible: true
         },
         {
           text: this.$t("searchTorrent.headers.category"),
           align: "center",
           value: "category.name",
-          width: "150px"
+          width: "150px",
+          visible: this.$vuetify.breakpoint.width > 1200
         },
         {
           text: this.$t("searchTorrent.headers.size"),
           align: "right",
           value: "size",
-          width: "100px"
+          width: "100px",
+          visible: this.$vuetify.breakpoint.smAndUp
         },
-        // { text: "评论", align: "center", value: "comments" },
         {
           text: this.$t("searchTorrent.headers.seeders"),
           align: "right",
           value: "seeders",
-          width: "60px"
+          width: "60px",
+          visible: this.$vuetify.breakpoint.smAndUp
         },
         {
           text: this.$t("searchTorrent.headers.leechers"),
           align: "right",
           value: "leechers",
-          width: "60px"
+          width: "60px",
+          visible: this.$vuetify.breakpoint.mdAndUp
         },
         {
           text: this.$t("searchTorrent.headers.completed"),
           align: "right",
           value: "completed",
-          width: "60px"
+          width: "60px",
+          visible: this.$vuetify.breakpoint.mdAndUp
         },
-        // { text: "发布者", align: "left", value: "author" },
         {
           text: this.$t("searchTorrent.headers.time"),
           align: "left",
           value: "time",
-          width: "130px"
+          width: "130px",
+          visible: this.$vuetify.breakpoint.mdAndUp
         },
         {
           text: this.$t("searchTorrent.headers.action"),
           sortable: false,
-          width: "130px"
+          width: this.$vuetify.breakpoint.mdAndUp ? "130px" : "50px",
+          align: "center",
+          visible: true
         }
       ];
     }

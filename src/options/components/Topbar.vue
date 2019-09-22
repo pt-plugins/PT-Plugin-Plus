@@ -4,19 +4,19 @@
     <v-toolbar-title style="width: 220px;" class="hidden-sm-and-down">
       <span>{{ $t("topbar.title") }}</span>
     </v-toolbar-title>
-    <SearchBox/>
+    <SearchBox />
     <v-btn
       flat
       to="/search-torrent/__LatestTorrents__"
-      class="grey--text text--darken-2 hidden-sm-and-down"
+      class="grey--text text--darken-2 hidden-xs-only"
       :title="$t('topbar.showNewTorrentsTip')"
     >
       <v-icon>fiber_new</v-icon>
-      <span class="ml-2">{{ $t("topbar.showNewTorrents") }}</span>
+      <span class="ml-2 hidden-md-and-down">{{ $t("topbar.showNewTorrents") }}</span>
     </v-btn>
 
     <v-spacer></v-spacer>
-    <v-toolbar-items class="hidden-sm-and-down">
+    <v-toolbar-items class="hidden-xs-only">
       <v-btn
         flat
         href="https://github.com/ronggang/PT-Plugin-Plus"
@@ -25,7 +25,7 @@
         rel="noopener noreferrer nofollow"
       >
         <v-icon>home</v-icon>
-        <span class="ml-2">{{ $t("topbar.github") }}</span>
+        <span class="ml-2 hidden-md-and-down">{{ $t("topbar.github") }}</span>
       </v-btn>
       <v-btn
         flat
@@ -35,7 +35,7 @@
         rel="noopener noreferrer nofollow"
       >
         <v-icon>help</v-icon>
-        <span class="ml-2">{{ $t("topbar.help") }}</span>
+        <span class="ml-2 hidden-md-and-down">{{ $t("topbar.help") }}</span>
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>

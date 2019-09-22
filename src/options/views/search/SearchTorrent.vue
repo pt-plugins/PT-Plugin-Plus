@@ -276,6 +276,7 @@
               <v-switch
                 color="success"
                 v-model="showCategory"
+                v-if="$vuetify.breakpoint.mdAndUp"
                 :label="$t('searchTorrent.showCategory')"
                 style="width: 100px;flex:none;float:right;"
               ></v-switch>
@@ -321,6 +322,7 @@
                 color="success"
                 small
                 :title="$t('searchTorrent.save')"
+                v-if="$vuetify.breakpoint.mdAndUp"
               >
                 <v-icon class="mr-2" small>get_app</v-icon>
                 {{$t('searchTorrent.download')}} ({{selected.length}})
@@ -367,6 +369,34 @@
         :rows-per-page-items="options.rowsPerPageItems"
         @update:pagination="updatePagination"
       >
+        <!-- 表头内容 -->
+        <template v-slot:headers="props">
+          <tr>
+            <th v-if="checkBox">
+              <v-checkbox
+                :input-value="props.all"
+                :indeterminate="props.indeterminate"
+                primary
+                hide-details
+                @click.stop="toggleAll"
+              ></v-checkbox>
+            </th>
+            <template v-for="header in props.headers">
+              <th
+                v-if="header.visible"
+                :key="header.text"
+                :class="getHeaderClass(header)"
+                @click="header.sortable!==false && changeSort(header.value)"
+                :style="header.width?`width:${header.width};`:''"
+              >
+                <v-icon small v-if="header.sortable!==false">arrow_upward</v-icon>
+                {{ header.text }}
+              </th>
+            </template>
+          </tr>
+        </template>
+
+        <!-- 表格内容 -->
         <template slot="items" slot-scope="props">
           <td v-if="checkBox">
             <v-checkbox
@@ -377,15 +407,25 @@
             ></v-checkbox>
           </td>
           <!-- 站点 -->
-          <td class="center">
+          <td class="center" v-if="$vuetify.breakpoint.mdAndUp">
             <v-avatar size="18">
               <img :src="props.item.site.icon" />
             </v-avatar>
-            <br />
-            <span class="captionText">{{ props.item.site.name }}</span>
+            <template v-if="$vuetify.breakpoint.width>1200">
+              <br />
+              <span class="captionText">{{ props.item.site.name }}</span>
+            </template>
           </td>
           <!-- 标题 -->
-          <td class="titleCell">
+          <td class="titleCell" :style="$vuetify.breakpoint.xs?'max-width: 75vw;':''">
+            <v-avatar
+              size="16"
+              class="mr-1"
+              style="vertical-align: unset;"
+              v-if="$vuetify.breakpoint.smAndDown"
+            >
+              <img :src="props.item.site.icon" />
+            </v-avatar>
             <a
               :href="props.item.link"
               target="_blank"
@@ -409,9 +449,19 @@
 
               <span v-if="props.item.subTitle">{{props.item.subTitle}}</span>
             </div>
+            <div v-if="$vuetify.breakpoint.xs" class="my-1">
+              {{props.item.size | formatSize}}
+              <TorrentProgress
+                class="progress"
+                style="position: unset;"
+                v-if="props.item.progress!=null"
+                :progress="parseInt(props.item.progress)"
+                :status="props.item.status"
+              ></TorrentProgress>
+            </div>
           </td>
           <!-- 分类 -->
-          <td class="category center">
+          <td class="category center" v-if="$vuetify.breakpoint.width>1200">
             <span
               v-if="props.item.category && !!props.item.category.name"
               :title="props.item.category.name"
@@ -420,7 +470,7 @@
             <br />
             <span class="captionText">&lt;{{ props.item.entryName }}&gt;</span>
           </td>
-          <td class="size">
+          <td class="size" v-if="$vuetify.breakpoint.smAndUp">
             {{props.item.size | formatSize}}
             <TorrentProgress
               class="progress"
@@ -430,14 +480,20 @@
             ></TorrentProgress>
           </td>
           <!-- <td class="center">{{ props.item.comments }}</td> -->
-          <td class="size">{{ props.item.seeders }}</td>
-          <td class="size">{{ props.item.leechers }}</td>
-          <td class="size">{{ props.item.completed }}</td>
+          <td class="size" v-if="$vuetify.breakpoint.smAndUp">{{ props.item.seeders }}</td>
+          <td class="size" v-if="$vuetify.breakpoint.mdAndUp">{{ props.item.leechers }}</td>
+          <td class="size" v-if="$vuetify.breakpoint.mdAndUp">{{ props.item.completed }}</td>
           <!-- <td>{{ props.item.author }}</td> -->
-          <td>{{ props.item.time | formatDate }}</td>
-          <td>
+          <td v-if="$vuetify.breakpoint.mdAndUp">{{ props.item.time | formatDate }}</td>
+          <td class="text-xs-center">
             <template v-if="!!props.item.url">
-              <v-btn flat icon small class="mx-0" color="grey darken-1">
+              <v-btn
+                flat
+                icon
+                small
+                :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
+                color="grey darken-1"
+              >
                 <v-icon
                   small
                   @click="copyLinkToClipboard(props.item.url)"
@@ -446,7 +502,13 @@
               </v-btn>
 
               <!-- 服务端下载 -->
-              <v-btn flat icon small class="mx-0" color="grey darken-1">
+              <v-btn
+                flat
+                icon
+                small
+                :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
+                color="grey darken-1"
+              >
                 <v-icon
                   @click.stop="showSiteContentMenus(props.item, $event)"
                   small
@@ -455,42 +517,44 @@
               </v-btn>
 
               <!-- 下载种子文件 -->
-              <v-btn
-                flat
-                icon
-                small
-                class="mx-0"
-                v-if="props.item.site.downloadMethod=='POST'"
-                color="grey darken-1"
-              >
-                <v-icon
-                  @click.stop="saveTorrentFile(props.item)"
+              <template v-if="$vuetify.breakpoint.mdAndUp">
+                <v-btn
+                  flat
+                  icon
                   small
-                  :title="$t('searchTorrent.save')"
-                >get_app</v-icon>
-              </v-btn>
+                  :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
+                  v-if="props.item.site.downloadMethod=='POST'"
+                  color="grey darken-1"
+                >
+                  <v-icon
+                    @click.stop="saveTorrentFile(props.item)"
+                    small
+                    :title="$t('searchTorrent.save')"
+                  >get_app</v-icon>
+                </v-btn>
 
-              <v-btn
-                flat
-                icon
-                small
-                class="mx-0"
-                v-else
-                :href="props.item.url"
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                :title="$t('searchTorrent.save')"
-                color="grey darken-1"
-              >
-                <v-icon small>get_app</v-icon>
-              </v-btn>
+                <v-btn
+                  flat
+                  icon
+                  small
+                  :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
+                  v-else
+                  :href="props.item.url"
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  :title="$t('searchTorrent.save')"
+                  color="grey darken-1"
+                >
+                  <v-icon small>get_app</v-icon>
+                </v-btn>
+              </template>
 
               <!-- 收藏 -->
               <v-btn
                 flat
                 icon
                 small
-                class="mx-0"
+                :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
                 color="grey darken-1"
                 @click="addToCollection(props.item)"
                 v-if="!isCollectioned(props.item.link)"
@@ -502,7 +566,7 @@
                 flat
                 icon
                 small
-                class="mx-0"
+                :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
                 color="pink"
                 @click="deleteCollection(props.item)"
                 v-else
