@@ -8,6 +8,15 @@
   "host": "moecat.best",
   "collaborator": "haig233",
   "searchEntryConfig": {
+    "page": "/torrents.php",
+    "queryString": "search=$key$&notnewword=1",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "appendQueryString": "&search_area=5",
+      "parseScript": "(payload && payload.doubanId)?payload.doubanId:key"
+    }],
+    "resultType": "html",
     "parseScriptFile": "/sites/yingk.com/getSearchResult.js"
   }
 }
