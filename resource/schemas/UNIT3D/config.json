@@ -61,8 +61,8 @@
           "filters": ["query.parent().text().trim().replace(/,/g,'').match(/:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "bonus": {
-          "selector": ["div.ratio-bar i.fa-arrow-down"],
-          "filters": ["query.parent().text().trim().replace(/,/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+          "selector": ["div.ratio-bar i.fa-coins"],
+          "filters": ["query.parent().text().trim().replace(/ /g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
         },
         "seeding": {
           "selector": ["div.ratio-bar i.fa-upload"],
