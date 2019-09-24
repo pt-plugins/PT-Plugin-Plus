@@ -34,3 +34,11 @@ issueConfigs:
       - "开放注册"
       - "是否连坐"
       - "站点规则"
+  - content:
+      # 新站点请求
+      - "Tracker Name"
+      - "Tracker Url"
+      - "Tracker Description"
+      - "Resource Type"
+      - "Open registration"
+      - "Tracker rules"
