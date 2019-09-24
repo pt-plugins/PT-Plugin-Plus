@@ -5,7 +5,9 @@
     :small="small"
     :loading="loading"
     @click.stop="showSiteContentMenus"
+    :class="[mini?'btn-mini':'']"
     :title="$t('searchTorrent.sendToClient')"
+    :color="color"
   >
     <v-icon v-if="haveSuccess" color="success" small>done</v-icon>
     <v-icon v-else-if="haveError" color="red" small>close</v-icon>
@@ -34,6 +36,8 @@ export default Vue.extend({
     flat: Boolean,
     icon: Boolean,
     small: Boolean,
+    mini: Boolean,
+    color: String,
     iconText: {
       type: String,
       default: "cloud_download"

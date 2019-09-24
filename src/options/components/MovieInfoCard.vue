@@ -1,14 +1,22 @@
 <template>
   <div class="movieInfoCard" v-if="visible">
     <v-card color="blue-grey darken-2" class="white--text">
-      <v-card-title class="pb-0">
-        <div class="headline">
+      <v-card-title class="pb-2">
+        <div :class="$vuetify.breakpoint.mdAndUp?'headline': 'title'">
           <span>{{ info.title}}</span>
-          <span class="ml-1 title grey--text">({{ info.attrs.year[0] }})</span>
+          <span
+            :class="['ml-1','grey--text',$vuetify.breakpoint.mdAndUp?'title':'caption']"
+          >({{ info.attrs.year[0] }})</span>
         </div>
       </v-card-title>
-      <v-img :src="info.image" class="ml-3 mb-3" contain max-height="300" position="left center">
-        <v-layout style="margin-left: 220px;">
+      <v-img
+        :src="info.image"
+        class="ml-3 mb-3"
+        contain
+        :max-height="maxHeight"
+        position="left center"
+      >
+        <v-layout style="margin-left: 220px;" v-if="$vuetify.breakpoint.mdAndUp">
           <v-card-title class="pt-0">
             <v-flex xs12>
               <span>又名：</span>
@@ -44,6 +52,22 @@
             <div class="caption" v-html="`${info.summary} @豆瓣`"></div>
           </v-card-title>
         </v-layout>
+        <v-layout v-else style="margin-left: 75px;">
+          <v-card-text class="pt-0">
+            <v-flex xs12>
+              <span class="caption">{{ info.alt_title }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span class="caption">{{ formatArray(info.attrs.movie_type) }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span class="caption">{{ formatArray(info.attrs.pubdate) }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span class="caption">{{ formatArray(info.attrs.movie_duration) }}</span>
+            </v-flex>
+          </v-card-text>
+        </v-layout>
       </v-img>
       <v-divider light></v-divider>
       <v-card-actions class="px-3">
@@ -74,7 +98,7 @@
           {{ tomatoRating }}%
         </v-btn>
         <v-spacer></v-spacer>
-        <v-layout>
+        <v-layout v-if="$vuetify.breakpoint.mdAndUp">
           <v-flex xs6>
             <v-rating
               v-model="rating"
@@ -226,6 +250,9 @@ export default Vue.extend({
         return ratings;
       }
       return 0;
+    },
+    maxHeight(): number {
+      return this.$vuetify.breakpoint.smAndDown ? 120 : 300;
     }
   }
 });

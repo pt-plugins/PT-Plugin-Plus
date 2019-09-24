@@ -417,7 +417,7 @@
             </template>
           </td>
           <!-- 标题 -->
-          <td class="titleCell" :style="$vuetify.breakpoint.xs?'max-width: 75vw;':''">
+          <td :class="$vuetify.breakpoint.xs?'titleCell-mobile':'titleCell'">
             <v-avatar
               size="16"
               class="mr-1"
@@ -432,7 +432,7 @@
               v-html="props.item.titleHTML"
               :title="props.item.title"
               rel="noopener noreferrer nofollow"
-              class="subheading font-weight-medium"
+              :class="[$vuetify.breakpoint.xs?'body-2':'subheading', 'font-weight-medium']"
             ></a>
             <div
               class="sub-title captionText"
@@ -449,16 +449,41 @@
 
               <span v-if="props.item.subTitle">{{props.item.subTitle}}</span>
             </div>
-            <div v-if="$vuetify.breakpoint.xs" class="my-1">
-              {{props.item.size | formatSize}}
-              <TorrentProgress
-                class="progress"
-                style="position: unset;"
-                v-if="props.item.progress!=null"
-                :progress="parseInt(props.item.progress)"
-                :status="props.item.status"
-              ></TorrentProgress>
-            </div>
+
+            <v-layout v-if="$vuetify.breakpoint.xs">
+              <v-flex xs3 class="pt-2 captionText">{{props.item.size | formatSize}}</v-flex>
+              <v-flex xs3 class="pt-2 captionText">
+                <v-icon style="font-size:12px;margin-bottom: 2px;">arrow_upward</v-icon>
+                {{ props.item.seeders }}
+                <v-icon style="font-size:12px;margin-bottom: 2px;">arrow_downward</v-icon>
+                {{ props.item.leechers }}
+              </v-flex>
+              <v-flex xs3>
+                <!-- 进度条 -->
+                <TorrentProgress
+                  class="progress"
+                  style="position: unset; padding-top:2px;"
+                  v-if="props.item.progress!=null"
+                  :progress="parseInt(props.item.progress)"
+                  :status="props.item.status"
+                ></TorrentProgress>
+              </v-flex>
+
+              <v-flex xs3>
+                <!-- 工具栏 -->
+                <Actions
+                  v-if="$vuetify.breakpoint.xs"
+                  :url="props.item.url"
+                  :downloadMethod="props.item.site.downloadMethod"
+                  :isCollectioned="isCollectioned(props.item.link)"
+                  :item="props.item"
+                  @copyLinkToClipboard="copyLinkToClipboard(props.item.url)"
+                  @saveTorrentFile="saveTorrentFile(props.item)"
+                  @addToCollection="addToCollection(props.item)"
+                  @deleteCollection="deleteCollection(props.item)"
+                />
+              </v-flex>
+            </v-layout>
           </td>
           <!-- 分类 -->
           <td class="category center" v-if="$vuetify.breakpoint.width>1200">
@@ -485,94 +510,18 @@
           <td class="size" v-if="$vuetify.breakpoint.mdAndUp">{{ props.item.completed }}</td>
           <!-- <td>{{ props.item.author }}</td> -->
           <td v-if="$vuetify.breakpoint.mdAndUp">{{ props.item.time | formatDate }}</td>
-          <td class="text-xs-center">
+          <td class="text-xs-center" v-if="$vuetify.breakpoint.smAndUp">
             <template v-if="!!props.item.url">
-              <v-btn
-                flat
-                icon
-                small
-                :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
-                color="grey darken-1"
-              >
-                <v-icon
-                  small
-                  @click="copyLinkToClipboard(props.item.url)"
-                  :title="$t('searchTorrent.copyToClipboardTip')"
-                >file_copy</v-icon>
-              </v-btn>
-
-              <!-- 服务端下载 -->
-              <v-btn
-                flat
-                icon
-                small
-                :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
-                color="grey darken-1"
-              >
-                <v-icon
-                  @click.stop="showSiteContentMenus(props.item, $event)"
-                  small
-                  :title="$t('searchTorrent.sendToClient')"
-                >cloud_download</v-icon>
-              </v-btn>
-
-              <!-- 下载种子文件 -->
-              <template v-if="$vuetify.breakpoint.mdAndUp">
-                <v-btn
-                  flat
-                  icon
-                  small
-                  :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
-                  v-if="props.item.site.downloadMethod=='POST'"
-                  color="grey darken-1"
-                >
-                  <v-icon
-                    @click.stop="saveTorrentFile(props.item)"
-                    small
-                    :title="$t('searchTorrent.save')"
-                  >get_app</v-icon>
-                </v-btn>
-
-                <v-btn
-                  flat
-                  icon
-                  small
-                  :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
-                  v-else
-                  :href="props.item.url"
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  :title="$t('searchTorrent.save')"
-                  color="grey darken-1"
-                >
-                  <v-icon small>get_app</v-icon>
-                </v-btn>
-              </template>
-
-              <!-- 收藏 -->
-              <v-btn
-                flat
-                icon
-                small
-                :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
-                color="grey darken-1"
-                @click="addToCollection(props.item)"
-                v-if="!isCollectioned(props.item.link)"
-              >
-                <v-icon small>favorite_border</v-icon>
-              </v-btn>
-
-              <v-btn
-                flat
-                icon
-                small
-                :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
-                color="pink"
-                @click="deleteCollection(props.item)"
-                v-else
-              >
-                <v-icon small>favorite</v-icon>
-              </v-btn>
+              <Actions
+                :url="props.item.url"
+                :downloadMethod="props.item.site.downloadMethod"
+                :isCollectioned="isCollectioned(props.item.link)"
+                :item="props.item"
+                @copyLinkToClipboard="copyLinkToClipboard(props.item.url)"
+                @saveTorrentFile="saveTorrentFile(props.item)"
+                @addToCollection="addToCollection(props.item)"
+                @deleteCollection="deleteCollection(props.item)"
+              />
             </template>
             <span v-else>{{ $t('searchTorrent.failUrl') }}</span>
           </td>

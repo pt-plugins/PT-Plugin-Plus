@@ -31,6 +31,7 @@ import * as basicContext from "basiccontext";
 import { PathHandler } from "@/service/pathHandler";
 import MovieInfoCard from "@/options/components/MovieInfoCard.vue";
 import TorrentProgress from "@/options/components/TorrentProgress.vue";
+import Actions from "./Actions.vue";
 import { PPF } from "@/service/public";
 
 type searchResult = {
@@ -46,7 +47,8 @@ const extension = new Extension();
 export default Vue.extend({
   components: {
     MovieInfoCard,
-    TorrentProgress
+    TorrentProgress,
+    Actions
   },
   data() {
     return {
@@ -1708,9 +1710,9 @@ export default Vue.extend({
         {
           text: this.$t("searchTorrent.headers.action"),
           sortable: false,
-          width: this.$vuetify.breakpoint.mdAndUp ? "130px" : "50px",
+          width: this.$vuetify.breakpoint.mdAndUp ? "130px" : "80px",
           align: "center",
-          visible: true
+          visible: this.$vuetify.breakpoint.smAndUp
         }
       ];
     }
