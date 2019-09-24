@@ -169,7 +169,10 @@ export default Vue.extend({
           menus.push({
             title: this.$t("searchTorrent.downloadTo", {
               path:
-                `${item.client.name} -> ${item.client.address}` +
+                `${item.client.name}` +
+                (this.$vuetify.breakpoint.smAndDown
+                  ? ""
+                  : ` -> ${item.client.address}`) +
                 (item.path
                   ? ` -> ${this.pathHandler.replacePathKey(
                       item.path,

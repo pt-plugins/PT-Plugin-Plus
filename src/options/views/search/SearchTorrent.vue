@@ -419,7 +419,7 @@
           <!-- 标题 -->
           <td :class="$vuetify.breakpoint.xs?'titleCell-mobile':'titleCell'">
             <v-avatar
-              size="16"
+              size="14"
               class="mr-1"
               style="vertical-align: unset;"
               v-if="$vuetify.breakpoint.smAndDown"
@@ -481,6 +481,8 @@
                   @saveTorrentFile="saveTorrentFile(props.item)"
                   @addToCollection="addToCollection(props.item)"
                   @deleteCollection="deleteCollection(props.item)"
+                  @downloadSuccess="downloadSuccess"
+                  @downloadError="downloadError"
                 />
               </v-flex>
             </v-layout>
@@ -521,6 +523,8 @@
                 @saveTorrentFile="saveTorrentFile(props.item)"
                 @addToCollection="addToCollection(props.item)"
                 @deleteCollection="deleteCollection(props.item)"
+                @downloadSuccess="downloadSuccess"
+                @downloadError="downloadError"
               />
             </template>
             <span v-else>{{ $t('searchTorrent.failUrl') }}</span>

@@ -725,6 +725,9 @@ export default new Vuex.Store({
   }
 });
 
+// 用于本地调试
+window.chrome = window.chrome || {};
+
 // 更新当前TabId
 if (chrome && chrome.tabs) {
   chrome.tabs.getCurrent((tab: any) => {

@@ -242,16 +242,16 @@ export default Vue.extend({
       if (this.loading || !this.key) return;
 
       this.reset();
-      if (window.location.hostname == "localhost") {
-        $.getJSON("http://localhost:8001/test/searchData.json").done(
-          (result: any) => {
-            if (result) {
-              this.addSearchResult(result);
-              // this.datas = result;
-            }
-            // console.log(result);
+      if (window.location.protocol === "http:") {
+        $.getJSON(
+          `http://${window.location.hostname}:8001/test/searchData.json`
+        ).done((result: any) => {
+          if (result) {
+            this.addSearchResult(result);
+            // this.datas = result;
           }
-        );
+          // console.log(result);
+        });
         return;
       }
 
@@ -1646,6 +1646,14 @@ export default Vue.extend({
       }
 
       return result;
+    },
+
+    downloadSuccess(msg: string) {
+      this.successMsg = msg;
+    },
+
+    downloadError(msg: string) {
+      this.errorMsg = msg;
     }
   },
   computed: {

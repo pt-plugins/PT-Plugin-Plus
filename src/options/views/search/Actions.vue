@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="display: inline-flex;">
     <v-btn
       flat
       icon
@@ -13,21 +13,6 @@
         :title="$t('searchTorrent.copyToClipboardTip')"
       >file_copy</v-icon>
     </v-btn>
-
-    <!-- 服务端下载 -->
-    <!-- <v-btn
-      flat
-      icon
-      small
-      :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
-      color="grey darken-1"
-    >
-      <v-icon
-        @click.stop="showSiteContentMenus"
-        small
-        :title="$t('searchTorrent.sendToClient')"
-      >cloud_download</v-icon>
-    </v-btn>-->
 
     <!-- 下载到 -->
     <DownloadTo
@@ -124,11 +109,11 @@ export default Vue.extend({
     deleteCollection() {
       this.$emit("deleteCollection", this.item);
     },
-    downloadSuccess() {
-      this.$emit("downloadSuccess", this.item);
+    downloadSuccess(msg: any) {
+      this.$emit("downloadSuccess", msg);
     },
-    downloadError() {
-      this.$emit("downloadError", this.item);
+    downloadError(msg: any) {
+      this.$emit("downloadError", msg);
     }
   }
 });

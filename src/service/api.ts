@@ -25,9 +25,9 @@ try {
 }
 
 // const isExtensionMode = !!(window["chrome"] && window.chrome.extension);
-const isLocalhost = window.location.hostname === "localhost";
+const isLocalhost = window.location.protocol === "http:";
 const RESOURCE_URL = isLocalhost
-  ? "http://localhost:8001"
+  ? `http://${window.location.hostname}:8001`
   : (isExtensionMode ? rootPath : "") + "/resource";
 // 调试信息
 let RESOURCE_API = {
