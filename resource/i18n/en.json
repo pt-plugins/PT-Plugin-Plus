@@ -627,7 +627,8 @@
           },
           "importConfig": "Import from config",
           "importConfirm": "Are you sure you want to import [{name}] ?",
-          "importDuplicateConfirm": "The site {name} already exists. Do you need to import search entrys and plugins?"
+          "importDuplicateConfirm": "The site {name} already exists. Do you need to import search entrys and plugins?",
+          "resetFavicons": "Reset site favicons"
         }
       },
       "siteSearchEntry": {

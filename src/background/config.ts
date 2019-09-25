@@ -22,6 +22,7 @@ import dayjs from "dayjs";
 import { OWSS } from "./plugins/OWSS";
 import PTPlugin from "./service";
 import { BackupFileParser } from "@/service/backupFileParser";
+import { Favicon } from "@/service/favicon";
 
 type Service = PTPlugin;
 
@@ -32,6 +33,7 @@ class Config {
   private name: string = EConfigKey.default;
   private localStorage: localStorage = new localStorage();
   public syncStorage: SyncStorage = new SyncStorage();
+  public favicon: Favicon = new Favicon();
 
   public schemas: any[] = [];
   public sites: any[] = [];
@@ -120,16 +122,35 @@ class Config {
   /**
    * 获取站点图标并缓存
    */
-  public getFavicons() {
-    this.sites.forEach((site: Site) => {
-      PPF.getFavicon(site.activeURL || site.url || "");
-    });
-
-    if (this.options.sites) {
-      this.options.sites.forEach((site: Site) => {
-        PPF.getFavicon(site.activeURL || site.url || "");
+  public getFavicons(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let urls: string[] = [];
+      this.sites.forEach((site: Site) => {
+        urls.push(site.activeURL || site.url || "");
       });
-    }
+
+      if (this.options.sites) {
+        this.options.sites.forEach((site: Site) => {
+          urls.push(site.activeURL || site.url || "");
+        });
+      }
+
+      this.favicon.gets(urls).then((results: any[]) => {
+        results.forEach((result: any) => {
+          let site = this.options.sites.find((item: Site) => {
+            return item.host === result.host;
+          });
+
+          if (site) {
+            site.icon = result.data;
+          }
+        });
+
+        this.save();
+        this.service.options = this.options;
+        resolve(this.options);
+      });
+    });
   }
 
   /**
@@ -272,9 +293,6 @@ class Config {
     };
 
     this.upgradeSites();
-    if (PPF.isExtensionMode) {
-      this.getFavicons();
-    }
 
     // 升级不存在的配置项
     this.options.sites &&
@@ -353,11 +371,6 @@ class Config {
       if (site.priority == null) {
         site.priority = 100;
       }
-
-      if (PPF.isExtensionMode) {
-        // 获取图标缓存
-        site.icon = PPF.getFavicon(site.activeURL || site.url || "");
-      }
     });
 
     // 升级不存在的配置项
@@ -375,6 +388,10 @@ class Config {
           );
         }
       });
+
+    if (PPF.isExtensionMode) {
+      this.getFavicons();
+    }
 
     console.log(this.options);
   }

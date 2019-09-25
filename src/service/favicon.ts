@@ -24,15 +24,49 @@ export class Favicon {
     window.localStorage.setItem(StorageKey, JSON.stringify(this.cache));
   }
 
-  public get(url: string) {
-    let URL = filters.parseURL(url);
-    let cache = this.cache[URL.host];
-    if (!cache) {
-      this.cacheFavicon(URL.origin, URL.host);
+  public clear() {
+    this.cache = {};
+    this.saveCache();
+  }
 
-      cache = NOIMAGE;
+  public reset(): Promise<any> {
+    let _cache = JSON.parse(JSON.stringify(this.cache));
+    this.cache = {};
+    let urls: string[] = [];
+    for (const host in _cache) {
+      if (_cache.hasOwnProperty(host)) {
+        let item = _cache[host];
+        urls.push(item.origin);
+      }
     }
-    return cache;
+
+    return this.gets(urls);
+  }
+
+  public gets(urls: string[]): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let requests: any[] = [];
+      urls.forEach((url: string) => {
+        requests.push(this.get(url));
+      });
+      Promise.all(requests).then((results: any[]) => {
+        resolve(results);
+      });
+    });
+  }
+
+  public get(url: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let URL = filters.parseURL(url);
+      let cache = this.cache[URL.host];
+      if (!cache) {
+        this.cacheFavicon(URL.origin, URL.host).then((result: any) => {
+          resolve(result);
+        });
+        return;
+      }
+      return resolve(cache);
+    });
   }
 
   /**
@@ -40,19 +74,34 @@ export class Favicon {
    * @param url 站点地址
    * @param host 域名
    */
-  private cacheFavicon(url: string, host: string) {
-    this.download(`${url}/favicon.ico`)
-      .then(result => {
-        if (result && /image/gi.test(result.type)) {
-          this.transformBlob(result, "base64").then(base64 => {
-            this.cache[host] = base64;
-            this.saveCache();
+  private cacheFavicon(url: string, host: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.download(`${url}/favicon.ico`)
+        .then(result => {
+          if (result && /image/gi.test(result.type)) {
+            this.transformBlob(result, "base64").then(base64 => {
+              resolve(this.set(url, base64));
+            });
+          }
+        })
+        .catch(() => {
+          this.cacheFromIndex(url, host).then((result: any) => {
+            resolve(result);
           });
-        }
-      })
-      .catch(() => {
-        this.cacheFromIndex(url, host);
-      });
+        });
+    });
+  }
+
+  public set(url: string, data: string) {
+    let URL = filters.parseURL(url);
+    let item = {
+      origin: URL.origin,
+      host: URL.host,
+      data
+    };
+    this.cache[URL.host] = item;
+    this.saveCache();
+    return item;
   }
 
   /**
@@ -60,50 +109,50 @@ export class Favicon {
    * @param url
    * @param host
    */
-  private cacheFromIndex(url: string, host: string) {
-    this.download(url)
-      .then(result => {
-        if (result && /text/gi.test(result.type)) {
-          this.transformBlob(result, "text").then(text => {
-            try {
-              const doc = new DOMParser().parseFromString(text, "text/html");
-              // 构造 jQuery 对象
-              const head = $(doc).find("head");
-              let query = head.find("link[rel*=icon]:first");
-              if (query && query.length > 0) {
-                let URL = filters.parseURL(url);
-                let link = query.attr("href") + "";
+  private cacheFromIndex(url: string, host: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.download(url)
+        .then(result => {
+          if (result && /text/gi.test(result.type)) {
+            this.transformBlob(result, "text").then(text => {
+              try {
+                const doc = new DOMParser().parseFromString(text, "text/html");
+                // 构造 jQuery 对象
+                const head = $(doc).find("head");
+                let query = head.find("link[rel*=icon]:first");
+                if (query && query.length > 0) {
+                  let URL = filters.parseURL(url);
+                  let link = query.attr("href") + "";
 
-                if (link.substr(0, 2) === "//") {
-                  link = `${URL.protocol}:${link}`;
-                } else if (link.substr(0, 4) !== "http") {
-                  link = `${URL.origin}/${link}`;
+                  if (link.substr(0, 2) === "//") {
+                    link = `${URL.protocol}:${link}`;
+                  } else if (link.substr(0, 4) !== "http") {
+                    link = `${URL.origin}/${link}`;
+                  }
+
+                  this.download(`${url}/${link}`)
+                    .then(result => {
+                      if (result && /image/gi.test(result.type)) {
+                        this.transformBlob(result, "base64").then(base64 => {
+                          resolve(this.set(url, base64));
+                        });
+                      }
+                    })
+                    .catch(() => {
+                      resolve(this.set(url, NOIMAGE));
+                    });
                 }
-
-                this.download(`${url}/${link}`)
-                  .then(result => {
-                    if (result && /image/gi.test(result.type)) {
-                      this.transformBlob(result, "base64").then(base64 => {
-                        this.cache[host] = base64;
-                        this.saveCache();
-                      });
-                    }
-                  })
-                  .catch(() => {
-                    this.cache[host] = NOIMAGE;
-                    this.saveCache();
-                  });
+              } catch (error) {
+                console.log(error);
+                resolve(this.set(url, NOIMAGE));
               }
-            } catch (error) {
-              console.log(error);
-            }
-          });
-        }
-      })
-      .catch(() => {
-        this.cache[host] = NOIMAGE;
-        this.saveCache();
-      });
+            });
+          }
+        })
+        .catch(() => {
+          resolve(this.set(url, NOIMAGE));
+        });
+    });
   }
 
   private transformBlob(blob: Blob, to: string): Promise<any> {
@@ -153,11 +202,4 @@ export class Favicon {
       file.start();
     });
   }
-}
-
-if (!(window as any).getFavicon) {
-  const _Favicon = new Favicon();
-  (window as any).getFavicon = (url: string) => {
-    return _Favicon.get(url);
-  };
 }

@@ -627,7 +627,8 @@
           },
           "importConfig": "从文件导入",
           "importConfirm": "确认要导入 【{name}】 吗？",
-          "importDuplicateConfirm": "该站点 【{name}】 已存在，是否需要导入搜索入口和插件？"
+          "importDuplicateConfirm": "该站点 【{name}】 已存在，是否需要导入搜索入口和插件？",
+          "resetFavicons": "重置站点图标缓存"
         }
       },
       "siteSearchEntry": {

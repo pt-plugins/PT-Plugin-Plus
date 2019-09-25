@@ -1247,4 +1247,9 @@ export default class Controller {
   public restoreCookies(data: any): Promise<any> {
     return this.service.config.restoreCookies(data);
   }
+
+  public resetFavicons(): Promise<any> {
+    this.service.config.favicon.clear();
+    return this.service.config.getFavicons();
+  }
 }

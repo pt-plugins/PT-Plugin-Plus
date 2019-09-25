@@ -37,6 +37,15 @@
           {{$t('settings.sites.index.importAll')}}
         </v-btn>
         <span v-if="importing">{{ $t('settings.sites.index.importedText') }} {{importedCount}}</span>
+
+        <v-divider class="mx-3 mt-0" inset vertical></v-divider>
+
+        <!-- 重置站点图标缓存 -->
+        <v-btn color="purple" dark @click="resetFavicons" :loading="faviconReseting">
+          <v-icon class="mr-2">cached</v-icon>
+          {{$t('settings.sites.index.resetFavicons')}}
+        </v-btn>
+
         <v-spacer></v-spacer>
         <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-card-title>
@@ -218,7 +227,8 @@ export default Vue.extend({
       errorMsg: "",
       haveError: false,
       haveSuccess: false,
-      successMsg: ""
+      successMsg: "",
+      faviconReseting: false
     };
   },
   methods: {
@@ -595,6 +605,18 @@ export default Vue.extend({
       }
 
       this.successMsg = this.$t("settings.sites.index.importedText").toString();
+    },
+
+    resetFavicons() {
+      this.faviconReseting = true;
+      extension
+        .sendRequest(EAction.resetFavicons)
+        .then(options => {
+          this.$store.commit("updateOptions", options);
+        })
+        .finally(() => {
+          this.faviconReseting = false;
+        });
     }
   },
   created() {

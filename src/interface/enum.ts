@@ -202,7 +202,9 @@ export enum EAction {
   // 获取所有收藏的链接地址
   getAllTorrentCollectionLinks = "getAllTorrentCollectionLinks",
   // 恢复Cookies
-  restoreCookies = "restoreCookies"
+  restoreCookies = "restoreCookies",
+  // 重置站点图标缓存
+  resetFavicons = "resetFavicons"
 }
 
 /**
