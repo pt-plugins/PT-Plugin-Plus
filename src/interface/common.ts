@@ -546,3 +546,16 @@ export interface ICookies {
   url: string;
   cookies: chrome.cookies.Cookie[];
 }
+
+export interface IURL {
+  href: string;
+  protocol: string;
+  host: string;
+  port?: number;
+  query?: string;
+  params?: string[];
+  hash?: string;
+  path: string;
+  segments: string;
+  origin: string;
+}

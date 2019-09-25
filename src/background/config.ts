@@ -118,6 +118,21 @@ class Config {
   }
 
   /**
+   * 获取站点图标并缓存
+   */
+  public getFavicons() {
+    this.sites.forEach((site: Site) => {
+      PPF.getFavicon(site.activeURL || site.url || "");
+    });
+
+    if (this.options.sites) {
+      this.options.sites.forEach((site: Site) => {
+        PPF.getFavicon(site.activeURL || site.url || "");
+      });
+    }
+  }
+
+  /**
    * 清理参数配置，一些参数只需要运行时可用即可
    * @param options
    */
@@ -161,6 +176,14 @@ class Config {
               }
             });
           }
+        }
+
+        if (
+          PPF.isExtensionMode &&
+          item.icon &&
+          item.icon.substr(0, 10) === "data:image"
+        ) {
+          delete item.icon;
         }
       });
     }
@@ -249,6 +272,9 @@ class Config {
     };
 
     this.upgradeSites();
+    if (PPF.isExtensionMode) {
+      this.getFavicons();
+    }
 
     // 升级不存在的配置项
     this.options.sites &&
@@ -326,6 +352,11 @@ class Config {
 
       if (site.priority == null) {
         site.priority = 100;
+      }
+
+      if (PPF.isExtensionMode) {
+        // 获取图标缓存
+        site.icon = PPF.getFavicon(site.activeURL || site.url || "");
       }
     });
 
@@ -933,10 +964,10 @@ class Config {
             .then(data => {
               this.backupFileParser
                 .loadZipData(data)
-                .then(result => {
+                .then((result: any) => {
                   resolve(result);
                 })
-                .catch(error => {
+                .catch((error: any) => {
                   reject(error);
                 });
             })

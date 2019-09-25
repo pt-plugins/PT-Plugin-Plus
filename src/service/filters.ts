@@ -2,7 +2,20 @@ interface IFilter {
   formatNumber: (source: number, format?: string) => string;
   formatSize: (bytes: any, zeroToEmpty?: boolean, type?: string) => string;
   formatSpeed: (bytes: any, zeroToEmpty: boolean) => string;
-  parseURL: (url: string) => any;
+  parseURL: (
+    url: string
+  ) => {
+    source: string;
+    protocol: string;
+    host: string;
+    port?: number;
+    query?: string;
+    params?: string[];
+    hash?: string;
+    path: string;
+    segments: string;
+    origin: string;
+  };
   timeAgoToNumber: (source: string) => number;
   [key: string]: any;
 }
@@ -238,7 +251,8 @@ export const filters: IFilter = {
       })(),
       hash: a.hash.replace("#", ""),
       path: a.pathname.replace(/^([^/])/, "/$1"),
-      segments: a.pathname.replace(/^\//, "").split("/")
+      segments: a.pathname.replace(/^\//, "").split("/"),
+      origin: `${a.protocol}//${a.hostname}` + (a.port ? `:${a.port}` : "")
     };
   },
 

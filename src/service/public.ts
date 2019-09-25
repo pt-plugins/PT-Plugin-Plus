@@ -372,6 +372,14 @@ class HelpFunctions {
 
     return null;
   }
+
+  public getFavicon(url: string) {
+    if ((window as any).getFavicon) {
+      return (window as any).getFavicon(url);
+    }
+
+    return null;
+  }
 }
 
 /**

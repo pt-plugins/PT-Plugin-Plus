@@ -199,7 +199,7 @@ export default class Controller {
       let host = URL.host;
       let site = this.getSiteFromHost(host);
       // 重新指定host内容，因为站点可能定义了多域名
-      host = site.host;
+      host = site.host + "";
       let siteDefaultPath = this.getSiteDefaultPath(site);
       let siteClientConfig = this.siteDefaultClients[host];
       if (siteDefaultPath) {

@@ -2,6 +2,7 @@ import localStorage from "./localStorage";
 import md5 from "blueimp-md5";
 import { EConfigKey, DataResult, EDataResultType } from "@/interface/common";
 import { PPF } from "./public";
+import "./favicon";
 
 let rootPath = "";
 let isExtensionMode = false;
