@@ -1,11 +1,12 @@
 {
-  "name":"UHDBits",
+  "name": "UHDBits",
   "description": "HD",
-  "icon":"https://uhdbits.org/favicon.ico",
-  "schema":"GazelleJSONAPI",
-  "tags":["影视"],
-  "url":"https://uhdbits.org/",
+  "icon": "https://uhdbits.org/favicon.ico",
+  "schema": "GazelleJSONAPI",
+  "tags": ["影视"],
+  "url": "https://uhdbits.org/",
   "collaborator": "bimzcy, enigamz",
+  "host": "uhdbits.org",
   "searchEntryConfig": {
     "page": "/torrents.php",
     "resultType": "html",
@@ -19,39 +20,41 @@
     }]
   },
   "searchEntry": [{
-    "name": "all",
-    "enabled": true
-  },
-  {
-    "queryString": "filter_cat[1]=1",
-    "name": "Movie",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[2]=1",
-    "name": "Music",
-    "enabled": false
-  },
-  {
-    "queryString": "filter_cat[3]=1",
-    "name": "TV",
-    "enabled": false
-  }],
+      "name": "all",
+      "enabled": true
+    },
+    {
+      "queryString": "filter_cat[1]=1",
+      "name": "Movie",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[2]=1",
+      "name": "Music",
+      "enabled": false
+    },
+    {
+      "queryString": "filter_cat[3]=1",
+      "name": "TV",
+      "enabled": false
+    }
+  ],
   "categories": [{
     "entry": "*",
     "result": "&filter_cat[$id$]=1",
     "category": [{
-      "id": 1,
-      "name": "Movie"
-    },
-    {
-      "id": 2,
-      "name": "Music"
-    },
-    {
-      "id": 3,
-      "name": "TV"
-    }]
+        "id": 1,
+        "name": "Movie"
+      },
+      {
+        "id": 2,
+        "name": "Music"
+      },
+      {
+        "id": 3,
+        "name": "TV"
+      }
+    ]
   }],
   "selectors": {
     "userSeedingTorrents": {
@@ -61,7 +64,7 @@
           "selector": ["td.number_column.nobr"],
           "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         },
-        "bonus" : {
+        "bonus": {
           "selector": ["[href='bonus.php']+span"],
           "filters": ["query.text()"]
         }
