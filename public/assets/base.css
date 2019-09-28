@@ -25,7 +25,7 @@
   margin: 4px 5px 5px 5px;
 }
 
-.pt-plugin-body .logo {
+.pt-plugin-body .pt-plugin-logo {
   background-image: url('chrome-extension://__MSG_@@extension_id__/assets/icon-64.png');
   background-size: cover;
   height: 32px;
@@ -36,13 +36,13 @@
 }
 
 @-moz-document url-prefix() {
-  .pt-plugin-body .logo {
+  .pt-plugin-body .pt-plugin-logo {
     background-image: url('moz-extension://__MSG_@@extension_id__/assets/icon-64.png');
   }
 }
 
 
-.pt-plugin-body .droper {
+.pt-plugin-body .pt-plugin-droper {
   height: 45px;
   width: 100%;
   background-color: #1976d2;
@@ -66,22 +66,23 @@
 .pt-plugin-body a.pt-plugin-button {
   cursor: pointer;
   text-decoration: none;
+  color: #1976d2;
 }
 
 .pt-plugin-body a.pt-plugin-button:hover {
   background-color: rgba(77, 154, 231, 0.226)
 }
 
-.pt-plugin-body .pt-plugin-button .inner {
+.pt-plugin-body .pt-plugin-button .pt-plugin-button-inner {
   text-align: center;
 }
 
-.pt-plugin-body .onLoading {
+.pt-plugin-body .pt-plugin-onLoading {
   animation: onLoading 1.9s linear infinite running;
 }
 
 /* 正在执行动画 */
-.pt-plugin-body .loading {
+.pt-plugin-body .pt-plugin-loading {
   width: 40px;
   height: 40px;
   border-radius: 50%;
