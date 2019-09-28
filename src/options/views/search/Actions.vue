@@ -23,8 +23,8 @@
       :mini="$vuetify.breakpoint.smAndDown"
       class="mx-0"
       color="grey darken-1"
-      @error="downloadSuccess"
-      @success="downloadError"
+      @error="downloadError"
+      @success="downloadSuccess"
     />
 
     <!-- 下载种子文件 -->
