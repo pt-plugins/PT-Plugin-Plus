@@ -331,7 +331,16 @@ export default Vue.extend({
             }
           })
           .catch(error => {
-            this.errorMsg = error;
+            if (searchKeys.cn) {
+              this.key = searchKeys.cn;
+              this.search(this.searchPayload);
+            } else {
+              this.errorMsg =
+                error ||
+                this.$t("searchTorrent.doubanIdConversionFailed").toString();
+              this.searchMsg = this.errorMsg;
+              this.loading = false;
+            }
           });
         return;
       }
@@ -1584,7 +1593,8 @@ export default Vue.extend({
           size: item.size,
           subTitle: item.subTitle,
           movieInfo: {
-            imdbId: this.IMDbId
+            imdbId: this.IMDbId || this.searchPayload.imdbId,
+            doubanId: this.searchPayload.doubanId
           }
         })
         .then(result => {
@@ -1595,7 +1605,7 @@ export default Vue.extend({
     deleteCollection(item: any) {
       extension
         .sendRequest(EAction.deleteTorrentFromCollention, null, {
-          link: item.link
+          link: PPF.getCleaningURL(item.link)
         })
         .then(result => {
           this.loadTorrentCollections();

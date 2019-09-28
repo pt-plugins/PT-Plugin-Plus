@@ -657,6 +657,19 @@
             }
           }
 
+          let doubanId = PTService.getFieldValue("doubanId");
+
+          if (!doubanId) {
+            const link = $("a[href*='movie.douban.com/subject/']:first");
+            if (link.length > 0) {
+              let match = link.attr("href").match(/subject\/(\d+)/);
+
+              if (match && match.length >= 2) {
+                doubanId = match[1];
+              }
+            }
+          }
+
           const data = {
             title: title,
             url: this.getDownloadURL(),
@@ -665,7 +678,8 @@
             size: PTService.getFieldValue("size"),
             subTitle: PTService.getFieldValue("subTitle"),
             movieInfo: {
-              imdbId: imdbId
+              imdbId: imdbId,
+              doubanId: doubanId
             }
           };
 

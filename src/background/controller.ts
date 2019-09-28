@@ -1044,7 +1044,7 @@ export default class Controller {
    * 根据指定的 doubanId 获取 IMDbId
    * @param doubanId
    */
-  public getIMDbIdFromDouban(doubanId: number): Promise<any> {
+  public getIMDbIdFromDouban(doubanId: string): Promise<any> {
     return this.movieInfoService.getIMDbIdFromDouban(doubanId);
   }
 

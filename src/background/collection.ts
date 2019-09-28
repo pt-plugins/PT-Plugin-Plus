@@ -94,9 +94,9 @@ export default class Collection {
 
       saveData.link = PPF.getCleaningURL(saveData.link);
 
-      if (movieInfo.imdbId) {
+      if (movieInfo.imdbId || movieInfo.doubanId) {
         // 获取影片信息
-        this.getMoviceInfo(movieInfo.imdbId)
+        this.getMoviceInfo(movieInfo.imdbId, movieInfo.doubanId)
           .then(result => {
             saveData.movieInfo = result;
             this.push(saveData);
@@ -114,23 +114,32 @@ export default class Collection {
     });
   }
 
-  private getMoviceInfo(imdbId: string): Promise<any> {
+  private getMoviceInfo(
+    imdbId: string = "",
+    doubanId: string = ""
+  ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      let movieId = imdbId || doubanId;
+      let fn = this.movieInfoService.getInfoFromIMDb;
+      if (doubanId) {
+        fn = this.movieInfoService.getInfoFromDoubanId;
+      }
+
       // 获取影片信息
-      this.movieInfoService
-        .getInfoFromIMDb(imdbId)
+      fn.call(this.movieInfoService, movieId)
         .then(result => {
           // 保留数字ID
           let movieInfo = {
             imdbId,
             doubanId: result.id.toString().replace(/(\D)/g, ""),
-            image: result.image,
+            image:
+              result.image || (result.images ? result.images.small : undefined),
             title: result.title,
-            link: result.mobile_link,
-            alt_title: result.alt_title,
-            year: undefined
+            link: result.mobile_link || result.share_url,
+            alt_title: result.alt_title || result.original_title,
+            year: result.year
           };
-          if (result.attrs) {
+          if (!result.year && result.attrs) {
             movieInfo.year = result.attrs.year[0];
           }
 
@@ -176,9 +185,9 @@ export default class Collection {
             delete item.site;
           }
 
-          if (movieInfo.imdbId) {
+          if (movieInfo.imdbId || movieInfo.doubanId) {
             // 获取影片信息
-            this.getMoviceInfo(movieInfo.imdbId)
+            this.getMoviceInfo(movieInfo.imdbId, movieInfo.doubanId)
               .then(result => {
                 item.movieInfo = result;
                 this.items[index] = item;

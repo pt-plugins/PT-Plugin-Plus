@@ -496,7 +496,7 @@ export interface ICollection {
     title: string;
     alt_title: string;
     imdbId?: string;
-    doubanId?: string | number;
+    doubanId?: string;
     image?: string;
     link?: string;
     year?: number;

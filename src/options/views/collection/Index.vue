@@ -172,29 +172,44 @@
           <td class="text-xs-right">{{ props.item.size | formatSize }}</td>
           <td class="text-xs-right">{{ props.item.time | formatDate }}</td>
           <td class="text-xs-center">
-            <v-btn
-              v-if="props.item.movieInfo && !!props.item.movieInfo.imdbId"
-              flat
-              icon
-              small
-              class="mx-0"
-              :title="$t('common.search')"
-              :to="`/search-torrent/${props.item.movieInfo.imdbId}`"
-            >
-              <v-icon small>search</v-icon>
-            </v-btn>
+            <template v-if="props.item.movieInfo">
+              <!-- IMDb Id -->
+              <v-btn
+                v-if="!!props.item.movieInfo.imdbId"
+                flat
+                icon
+                small
+                class="mx-0"
+                :title="$t('common.search')"
+                :to="`/search-torrent/${props.item.movieInfo.imdbId}`"
+              >
+                <v-icon small>search</v-icon>
+              </v-btn>
+              <!-- 豆瓣ID -->
+              <v-btn
+                v-else-if="!!props.item.movieInfo.doubanId"
+                flat
+                icon
+                small
+                class="mx-0"
+                :title="$t('common.search')"
+                :to="`/search-torrent/douban${props.item.movieInfo.doubanId}|${props.item.movieInfo.title}|${props.item.movieInfo.alt_title}`"
+              >
+                <v-icon small>search</v-icon>
+              </v-btn>
 
-            <v-btn
-              v-else
-              flat
-              icon
-              small
-              class="mx-0"
-              :title="$t('collection.setIMDbId')"
-              @click="setIMDbId(props.item)"
-            >
-              <v-icon small>edit</v-icon>
-            </v-btn>
+              <v-btn
+                v-else
+                flat
+                icon
+                small
+                class="mx-0"
+                :title="$t('collection.setMovieId')"
+                @click="setMovieId(props.item)"
+              >
+                <v-icon small>edit</v-icon>
+              </v-btn>
+            </template>
 
             <!-- 下载到 -->
             <DownloadTo
@@ -208,7 +223,15 @@
             />
 
             <!-- 删除 -->
-            <v-btn flat icon small @click="removeConfirm(props.item)" color="error" class="mx-0">
+            <v-btn
+              flat
+              icon
+              small
+              @click="removeConfirm(props.item)"
+              color="error"
+              class="mx-0"
+              :title="$t('common.remove')"
+            >
               <v-icon small>delete</v-icon>
             </v-btn>
           </td>
@@ -537,13 +560,28 @@ export default Vue.extend({
       }
     },
 
-    setIMDbId(item: ICollection) {
-      let imdbId = prompt(this.$t("collection.setIMDbId").toString());
-      if (imdbId && /^(tt\d+)$/.test(imdbId)) {
+    setMovieId(item: ICollection) {
+      let id = prompt(this.$t("collection.setMovieId").toString());
+
+      if (!id) {
+        return;
+      }
+
+      let doubanId = "";
+      let imdbId = "";
+
+      if (/^(tt\d+)$/.test(id)) {
+        imdbId = id;
+      } else if (/^(\d+)$/.test(id)) {
+        doubanId = id;
+      }
+
+      if (imdbId || doubanId) {
         let data = PPF.clone(item);
         delete data.site;
         data.movieInfo = {
-          imdbId
+          imdbId,
+          doubanId
         };
         extension
           .sendRequest(EAction.updateTorrentCollention, null, data)

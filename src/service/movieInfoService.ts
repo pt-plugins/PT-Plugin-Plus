@@ -127,6 +127,39 @@ export class MovieInfoService {
   }
 
   /**
+   * 根据豆瓣ID获取影片信息
+   * @param id
+   */
+  public getInfoFromDoubanId(id: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (/^(\d+)$/.test(id)) {
+        let cache = this.cache.base[id];
+        if (cache) {
+          resolve(cache);
+          return;
+        }
+        let url = `${
+          this.doubanApiURL
+        }/movie/subject/${id}?apikey=${this.getDoubanApiKey()}`;
+
+        $.ajax({
+          url: url,
+          timeout: this.timeout
+        })
+          .done(json => {
+            this.cache.base[id] = json;
+            resolve(json);
+          })
+          .fail(error => {
+            reject(error);
+          });
+      } else {
+        reject("error douban id");
+      }
+    });
+  }
+
+  /**
    * 获取评分信息
    * @param IMDbId
    */
@@ -208,7 +241,7 @@ export class MovieInfoService {
    * 根据指定的 doubanId 获取 IMDbId
    * @param doubanId
    */
-  public getIMDbIdFromDouban(doubanId: number): Promise<any> {
+  public getIMDbIdFromDouban(doubanId: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let cache = this.cache.doubanToIMDb[doubanId];
       if (cache) {
