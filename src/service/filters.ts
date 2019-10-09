@@ -261,8 +261,15 @@ export const filters: IFilter = {
    * @param source
    */
   timeAgoToNumber(source: string): number {
-    // 有部分站点连 ago 都没有
-    let rule = /^([\d.]+).+?((year|month|week|day|hour|min|minute)s?)( +ago)?$/i;
+    /**
+     * 可以匹配以下情况：
+     * 1 year
+     * 1 year ago
+     * 2 yesrs ago
+     * 2.1 months ago
+     * 2.1 months ago by xxx
+     */
+    let rule = /^([\d.]+).+?((year|month|week|day|hour|min|minute)s?)( +ago)?(.+)?$/i;
 
     let matchs = source.trim().match(rule);
     if (!matchs) {
