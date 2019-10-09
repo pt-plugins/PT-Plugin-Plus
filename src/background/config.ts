@@ -23,6 +23,7 @@ import { OWSS } from "./plugins/OWSS";
 import PTPlugin from "./service";
 import { BackupFileParser } from "@/service/backupFileParser";
 import { Favicon } from "@/service/favicon";
+import FileSaver from "file-saver";
 
 type Service = PTPlugin;
 
@@ -698,26 +699,9 @@ class Config {
   }
 
   /**
-   * 创建备份文件
-   * @param fileName
+   * 获取备份原始数据，用于插件背景页和前端传输
    */
-  public createBackupFile(fileName?: string): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      this.getBackupFileBlob()
-        .then(blob => {
-          saveAs(blob, fileName || this.getNewBackupFileName());
-          resolve(true);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  }
-
-  /**
-   * 获取备份数据
-   */
-  public getBackupFileBlob(): Promise<any> {
+  public getBackupRawData(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       try {
         const rawUserData = this.service.userData.get("", EUserDataRange.all);
@@ -740,26 +724,54 @@ class Config {
           this.getAllSiteCookies()
             .then(result => {
               rawData.cookies = result;
-              this.backupFileParser
-                .createBackupFileBlob(rawData)
-                .then((blob: any) => {
-                  resolve(blob);
-                });
+              resolve(rawData);
             })
             .catch(() => {
-              this.backupFileParser
-                .createBackupFileBlob(rawData)
-                .then((blob: any) => {
-                  resolve(blob);
-                });
+              resolve(rawData);
             });
         } else {
-          this.backupFileParser
-            .createBackupFileBlob(rawData)
-            .then((blob: any) => {
-              resolve(blob);
-            });
+          resolve(rawData);
         }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  /**
+   * 创建备份文件
+   * @param fileName
+   */
+  public createBackupFile(fileName?: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.getBackupFileBlob()
+        .then(blob => {
+          FileSaver.saveAs(blob, fileName || this.getNewBackupFileName());
+          resolve(true);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  /**
+   * 获取备份数据
+   */
+  public getBackupFileBlob(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      try {
+        this.getBackupRawData()
+          .then((rawData: any) => {
+            this.backupFileParser
+              .createBackupFileBlob(rawData)
+              .then((blob: any) => {
+                resolve(blob);
+              });
+          })
+          .catch(error => {
+            reject(error);
+          });
       } catch (error) {
         reject(error);
       }
@@ -921,9 +933,7 @@ class Config {
   }
 
   private getNewBackupFileName(): string {
-    return (
-      "PT-Plugin-Plus-Backup-" + dayjs().format("YYYY-MM-DD HH:mm:ss") + ".zip"
-    );
+    return PPF.getNewBackupFileName();
   }
 
   /**

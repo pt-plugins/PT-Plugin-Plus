@@ -952,6 +952,11 @@
   resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.2.tgz#a811b8c18e2babab7d542b3365887ae2e4d9de47"
   integrity sha512-7EJYyKTL7tFR8+gDbB6Wwz/arpGa0Mywk1TJbNzKzHtzbwVmY4HR9WqS5VV7dsBUKQmPNr192jHr/VpBluj/hg==
 
+"@types/ua-parser-js@^0.7.33":
+  version "0.7.33"
+  resolved "https://registry.npm.taobao.org/@types/ua-parser-js/download/@types/ua-parser-js-0.7.33.tgz#4a92089511574e12928a7cb6b99a01831acd1dd7"
+  integrity sha1-SpIIlRFXThKSiny2uZoBgxrNHdc=
+
 "@types/url-parse@^1.4.2":
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/@types/url-parse/-/url-parse-1.4.3.tgz#fba49d90f834951cb000a674efee3d6f20968329"
@@ -11310,6 +11315,11 @@ typescript@^3.0.0:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.5.3.tgz#c830f657f93f1ea846819e929092f5fe5983e977"
   integrity sha512-ACzBtm/PhXBDId6a6sDJfroT2pOWt/oOnk4/dElG5G33ZL776N3Y6/6bKZJBFpd+b05F3Ct9qDjMeJmRWtE2/g==
+
+ua-parser-js@^0.7.20:
+  version "0.7.20"
+  resolved "https://registry.npm.taobao.org/ua-parser-js/download/ua-parser-js-0.7.20.tgz#7527178b82f6a62a0f243d1f94fd30e3e3c21098"
+  integrity sha1-dScXi4L2pioPJD0flP0w4+PCEJg=
 
 uglify-js@3.4.x:
   version "3.4.10"

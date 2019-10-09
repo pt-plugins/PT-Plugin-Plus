@@ -171,7 +171,8 @@ import {
   Options,
   IBackupServer,
   EBackupServerType,
-  ERestoreContent
+  ERestoreContent,
+  EBrowserType
 } from "@/interface/common";
 import { PPF } from "@/service/public";
 import { FileDownloader } from "@/service/downloader";
@@ -436,10 +437,36 @@ export default Vue.extend({
      * 创建备份文件
      */
     createBackupFile() {
-      extension.sendRequest(EAction.createBackupFile).catch(error => {
-        console.log(error);
-        this.errorMsg = this.$t("settings.backup.backupError").toString();
-      });
+      switch (PPF.browserName) {
+        case EBrowserType.Firefox:
+          extension
+            .sendRequest(EAction.getBackupRawData)
+            .then(result => {
+              backupFileParser
+                .createBackupFileBlob(result)
+                .then((blob: any) => {
+                  FileSaver.saveAs(blob, PPF.getNewBackupFileName());
+                });
+              console.log(result);
+            })
+            .catch(error => {
+              console.log(error);
+              this.errorMsg = this.$t("settings.backup.backupError").toString();
+            });
+          break;
+
+        default:
+          extension
+            .sendRequest(EAction.createBackupFile)
+            .then(result => {
+              console.log(result);
+            })
+            .catch(error => {
+              console.log(error);
+              this.errorMsg = this.$t("settings.backup.backupError").toString();
+            });
+          break;
+      }
     },
     /**
      * 从 zip 文件中恢复配置信息

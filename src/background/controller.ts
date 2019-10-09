@@ -1252,4 +1252,8 @@ export default class Controller {
     this.service.config.favicon.clear();
     return this.service.config.getFavicons();
   }
+
+  public getBackupRawData(): Promise<any> {
+    return this.service.config.getBackupRawData();
+  }
 }

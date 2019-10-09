@@ -1,9 +1,12 @@
 import md5 from "blueimp-md5";
 import * as basicContext from "basiccontext";
 import { Options, Site } from "@/interface/common";
+import dayjs from "dayjs";
+import { UAParser } from "ua-parser-js";
 
 class HelpFunctions {
   public isExtensionMode: boolean = false;
+  public browserName: string = "";
   constructor() {
     try {
       this.isExtensionMode = !!(
@@ -14,6 +17,8 @@ class HelpFunctions {
     } catch (error) {
       console.log("HelpFunctions: is not extension mode.", error);
     }
+
+    this.browserName = new UAParser().getBrowser().name || "";
   }
 
   /**
@@ -371,6 +376,12 @@ class HelpFunctions {
     }
 
     return null;
+  }
+
+  public getNewBackupFileName(): string {
+    return (
+      "PT-Plugin-Plus-Backup-" + dayjs().format("YYYY-MM-DD HH:mm:ss") + ".zip"
+    );
   }
 }
 

@@ -204,7 +204,9 @@ export enum EAction {
   // 恢复Cookies
   restoreCookies = "restoreCookies",
   // 重置站点图标缓存
-  resetFavicons = "resetFavicons"
+  resetFavicons = "resetFavicons",
+  // 获取备份文件原始数据
+  getBackupRawData = "getBackupRawData"
 }
 
 /**
@@ -351,4 +353,9 @@ export enum ERestoreContent {
   userDatas = "userDatas",
   collection = "collection",
   cookies = "cookies"
+}
+
+export enum EBrowserType {
+  Chrome = "Chrome",
+  Firefox = "Firefox"
 }
