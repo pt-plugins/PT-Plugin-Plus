@@ -12,7 +12,8 @@
   }, {
     "name": "种子列表",
     "pages": ["/torrents.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+    "scripts": ["/schemas/NexusPHP/common.js", "/libs/album/album.js", "torrents.js"],
+    "styles": ["/libs/album/style.css"]
   }],
   "host": "hd-torrents.org",
   "searchEntryConfig": {

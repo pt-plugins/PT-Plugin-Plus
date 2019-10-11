@@ -14,6 +14,46 @@
      */
     initButtons() {
       this.initListButtons();
+
+      // 添加封面模式
+      PTService.addButton({
+        title: PTService.i18n.t("buttons.coverTip"), //"以封面的方式进行查看",
+        icon: "photo",
+        label: PTService.i18n.t("buttons.cover"), //"封面模式",
+        click: (success, error) => {
+          // 获取目标表格
+          let items = $(
+            "table.mainblockcontenttt a[href*='details.php?id='][onmouseover]"
+          );
+          let images = [];
+          items.each((index, item) => {
+            let text = $(item).attr("onmouseover");
+            let query = text.match(/(.+)(img src=\\\')([^\']+)\\\'/);
+            if (query && query.length > 3) {
+              let url = location.origin + "/" + query[3];
+              let href = $(item).attr("href");
+              let title = $(item).text();
+              images.push({
+                url: url,
+                key: href,
+                title: title,
+                link: href
+              });
+            }
+          });
+          success();
+          if (images.length > 0) {
+            // 创建预览
+            new album({
+              images: images,
+              onClose: () => {
+                PTService.buttonBar.show();
+              }
+            });
+            PTService.buttonBar.hide();
+          }
+        }
+      });
     }
 
     /**
