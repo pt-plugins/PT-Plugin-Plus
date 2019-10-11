@@ -129,6 +129,11 @@
           const row = rows.eq(index);
           let cells = row.find(">td");
 
+          // 跳过字幕文件
+          if (row.find("a[href*='download.php?type=ass']").length > 0) {
+            continue;
+          }
+
           let title = row.find("a[href*='/forum.php?mod=viewthread']:first");
           if (title.length == 0) {
             continue;
