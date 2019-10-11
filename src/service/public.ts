@@ -1,6 +1,6 @@
 import md5 from "blueimp-md5";
 import * as basicContext from "basiccontext";
-import { Options, Site } from "@/interface/common";
+import { Options, Site, Dictionary } from "@/interface/common";
 import dayjs from "dayjs";
 import { UAParser } from "ua-parser-js";
 
@@ -382,6 +382,31 @@ class HelpFunctions {
     return (
       "PT-Plugin-Plus-Backup-" + dayjs().format("YYYY-MM-DD HH:mm:ss") + ".zip"
     );
+  }
+
+  /**
+   * 替换指定的字符串列表
+   * @param source
+   * @param maps
+   */
+  public replaceKeys(
+    source: string,
+    maps: Dictionary<any>,
+    prefix: string = ""
+  ): string {
+    let result: string = source;
+
+    for (const key in maps) {
+      if (maps.hasOwnProperty(key)) {
+        const value = maps[key];
+        let search = "$" + key + "$";
+        if (prefix) {
+          search = `$${prefix}.${key}$`;
+        }
+        result = result.replace(search, value);
+      }
+    }
+    return result;
   }
 }
 

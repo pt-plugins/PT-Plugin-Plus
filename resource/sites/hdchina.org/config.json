@@ -271,6 +271,7 @@
   "selectors": {
     "userExtendInfo": {
       "merge": true,
+      "topElement": "html",
       "fields": {
         "seeding": {
           "selector": ["div#ka1"],
@@ -283,6 +284,10 @@
         "messageCount": {
           "selector": ["div.msgalert a[href='messages.php']"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "xCsrf": {
+          "selector": ["meta[name='x-csrf']"],
+          "attribute": "content"
         }
       }
     },
@@ -293,7 +298,8 @@
       "requestMethod": "POST",
       "requestData": {
         "userid": "$user.id$",
-        "type": "seeding"
+        "type": "seeding",
+        "csrf": "$user.xCsrf$"
       },
       "fields": {
         "seeding": {
