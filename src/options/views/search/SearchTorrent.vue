@@ -367,7 +367,6 @@
         :class="'torrent'+(fixedTable?' fixed-table fixed-header v-table__overflow':'')"
         :select-all="checkBox"
         :rows-per-page-items="options.rowsPerPageItems"
-        @update:pagination="updatePagination"
       >
         <!-- 表头内容 -->
         <template v-slot:headers="props">

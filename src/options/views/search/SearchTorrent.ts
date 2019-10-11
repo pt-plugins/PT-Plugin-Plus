@@ -192,6 +192,12 @@ export default Vue.extend({
     },
     loading() {
       this.$store.commit("updateSearchStatus", this.loading);
+    },
+    pagination: {
+      handler() {
+        this.updatePagination(this.pagination);
+      },
+      deep: true
     }
   },
   methods: {
@@ -509,7 +515,7 @@ export default Vue.extend({
           }
         });
 
-        this.sendSearchRequest(site);
+        this.sendSearchRequest(PPF.clone(site));
       });
     },
 
