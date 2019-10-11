@@ -76,6 +76,7 @@ import {
 import html2canvas from "html2canvas";
 import FileSaver from "file-saver";
 import { PPF } from "@/service/public";
+import { isNumber } from "util";
 
 const extension = new Extension();
 
@@ -270,11 +271,10 @@ export default Vue.extend({
     getNumber(source: any) {
       if (typeof source === "string") {
         source = source.replace(/,/g, "");
-        return parseFloat(source);
       }
 
-      if (source) {
-        return parseFloat(source);
+      if (isNumber(source)) {
+        return parseFloat(source.toString());
       }
 
       return 0;
@@ -460,7 +460,6 @@ export default Vue.extend({
             });
 
             let result = `<div>${tips.join("")}</div>`;
-            console.log(result);
             return result;
           }
         }
@@ -611,7 +610,6 @@ export default Vue.extend({
             });
 
             let result = `<div>${tips.join("")}</div>`;
-            console.log(result);
             return result;
           }
         }
