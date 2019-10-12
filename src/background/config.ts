@@ -842,24 +842,26 @@ class Config {
   public restoreCookies(datas: any[]): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let requests: any[] = [];
+
+      // 需要保留的内容
+      const keepFields = [
+        "name",
+        "value",
+        "domain",
+        "path",
+        "secure",
+        "httpOnly",
+        "expirationDate"
+      ];
       datas.forEach((item: any) => {
         item.cookies.forEach((cookie: any) => {
           let options = PPF.clone(cookie);
 
-          if (options.storeId !== undefined) {
-            delete options.storeId;
-          }
-
-          if (options.hostOnly !== undefined) {
-            delete options.hostOnly;
-          }
-
-          if (options.sameSite !== undefined) {
-            delete options.sameSite;
-          }
-
-          if (options.session !== undefined) {
-            delete options.session;
+          // 删除不需要的键
+          for (const key in options) {
+            if (options.hasOwnProperty(key) && !keepFields.includes(key)) {
+              delete options[key];
+            }
           }
 
           options.url = item.url;
@@ -869,9 +871,13 @@ class Config {
       });
 
       // 不管是否成功，都返回
-      Promise.all(requests).finally(() => {
-        resolve();
-      });
+      Promise.all(requests)
+        .then(() => {
+          resolve();
+        })
+        .catch(() => {
+          resolve();
+        });
     });
   }
 
