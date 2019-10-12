@@ -359,3 +359,9 @@ export enum EBrowserType {
   Chrome = "Chrome",
   Firefox = "Firefox"
 }
+
+export enum EWorkingStatus {
+  success = "success",
+  error = "error",
+  loading = "loading"
+}

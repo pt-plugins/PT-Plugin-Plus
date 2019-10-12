@@ -348,6 +348,12 @@
         "contentNotExist": {
           "cookies": "Cookies not exist in the backup file",
           "collection": "Collection not exists in the backup file"
+        },
+        "backupItem": {
+          "base": "General",
+          "userDatas": "User Datas",
+          "collection": "Collection",
+          "cookies": "Cookies"
         }
       },
       "base": {

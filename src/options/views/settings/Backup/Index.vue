@@ -69,6 +69,8 @@
         </div>
       </v-card-actions>
 
+      <WorkingStatus ref="workingStatus" />
+
       <v-data-table
         v-model="selected"
         :headers="headers"
@@ -172,7 +174,9 @@ import {
   IBackupServer,
   EBackupServerType,
   ERestoreContent,
-  EBrowserType
+  EBrowserType,
+  IWorkingStatusItem,
+  EWorkingStatus
 } from "@/interface/common";
 import { PPF } from "@/service/public";
 import { FileDownloader } from "@/service/downloader";
@@ -180,6 +184,7 @@ import AddOWSS from "./OWSS/Add.vue";
 import EditOWSS from "./OWSS/Edit.vue";
 import OWSSList from "./OWSS/List.vue";
 import { BackupFileParser } from "@/service/backupFileParser";
+import WorkingStatus from "@/options/components/WorkingStatus.vue";
 
 interface IBackupServerPro extends IBackupServer {
   loading?: boolean;
@@ -192,24 +197,12 @@ interface IBackupServerPro extends IBackupServer {
 const extension = new Extension();
 const backupFileParser = new BackupFileParser();
 
-interface IHashData {
-  hash: string;
-  keyMap: number[];
-  length: number;
-}
-
-interface IManifest {
-  checkInfo: IHashData;
-  version: string;
-  time: number;
-  hash?: string;
-}
-
 export default Vue.extend({
   components: {
     AddOWSS,
     EditOWSS,
-    OWSSList
+    OWSSList,
+    WorkingStatus
   },
   data() {
     return {
@@ -238,12 +231,14 @@ export default Vue.extend({
         {
           type: "OWSS"
         }
-      ]
+      ],
+      workingStatus: null as any
     };
   },
   mounted() {
     this.fileInput = this.$refs.fileRestore;
     this.fileInput.addEventListener("change", this.restoreFile);
+    this.workingStatus = this.$refs.workingStatus;
   },
   beforeDestroy() {
     this.fileInput.removeEventListener("change", this.restoreFile);
@@ -261,6 +256,9 @@ export default Vue.extend({
     this.initBackupServers();
   },
   methods: {
+    t(key: string): string {
+      return this.$t(key).toString();
+    },
     /**
      * 初始化备份服务器列表
      */
@@ -513,13 +511,19 @@ export default Vue.extend({
 
       if (confirm(this.$t("settings.backup.restoreConfirm").toString())) {
         try {
+          this.workingStatus.clear();
           // 恢复运行时配置
           if (
             infos.options &&
             (restoreContent == ERestoreContent.all ||
               restoreContent == ERestoreContent.options)
           ) {
+            this.workingStatus.add({
+              key: "options",
+              title: this.t("settings.backup.backupItem.base")
+            });
             this.$store.dispatch("resetRunTimeOptions", infos.options);
+            this.workingStatus.update("options", EWorkingStatus.success);
           }
 
           // 恢复用户数据
@@ -528,7 +532,18 @@ export default Vue.extend({
             (restoreContent == ERestoreContent.all ||
               restoreContent == ERestoreContent.userDatas)
           ) {
-            extension.sendRequest(EAction.resetUserDatas, null, infos.datas);
+            this.workingStatus.add({
+              key: "userDatas",
+              title: this.t("settings.backup.backupItem.userDatas")
+            });
+            extension
+              .sendRequest(EAction.resetUserDatas, null, infos.datas)
+              .then(() => {
+                this.workingStatus.update("userDatas", EWorkingStatus.success);
+              })
+              .catch(() => {
+                this.workingStatus.update("userDatas", EWorkingStatus.error);
+              });
           }
 
           // 恢复收藏
@@ -537,6 +552,10 @@ export default Vue.extend({
             (restoreContent == ERestoreContent.all ||
               restoreContent == ERestoreContent.collection)
           ) {
+            this.workingStatus.add({
+              key: "collection",
+              title: this.t("settings.backup.backupItem.collection")
+            });
             extension
               .sendRequest(
                 EAction.resetTorrentCollections,
@@ -548,6 +567,10 @@ export default Vue.extend({
                 this.$store.dispatch("saveConfig", {
                   defaultCollectionGroupId: ""
                 });
+                this.workingStatus.update("collection", EWorkingStatus.success);
+              })
+              .catch(() => {
+                this.workingStatus.update("collection", EWorkingStatus.error);
               });
           }
 
@@ -557,6 +580,10 @@ export default Vue.extend({
             (restoreContent == ERestoreContent.all ||
               restoreContent == ERestoreContent.cookies)
           ) {
+            this.workingStatus.add({
+              key: "cookies",
+              title: this.t("settings.backup.backupItem.cookies")
+            });
             PPF.usePermissions(
               ["cookies"],
               true,
@@ -573,11 +600,13 @@ export default Vue.extend({
                 this.successMsg = this.$t(
                   "settings.backup.restoreSuccess"
                 ).toString();
+                this.workingStatus.update("cookies", EWorkingStatus.success);
               })
               .catch(() => {
                 this.errorMsg = this.$t(
                   "settings.backup.restoreError"
                 ).toString();
+                this.workingStatus.update("cookies", EWorkingStatus.error);
               });
             return;
           }

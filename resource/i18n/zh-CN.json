@@ -348,6 +348,12 @@
         "contentNotExist": {
           "cookies": "备份文件中不存在Cookies",
           "collection": "备份文件中不存在收藏信息"
+        },
+        "backupItem": {
+          "base": "常规设置",
+          "userDatas": "站点数据",
+          "collection": "我的收藏",
+          "cookies": "Cookies"
         }
       },
       "base": {

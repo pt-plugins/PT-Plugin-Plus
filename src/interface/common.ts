@@ -9,7 +9,8 @@ import {
   EUserDataRequestStatus,
   EBeforeSearchingItemSearchMode,
   EBackupServerType,
-  EPluginPosition
+  EPluginPosition,
+  EWorkingStatus
 } from "./enum";
 
 /**
@@ -558,4 +559,10 @@ export interface IURL {
   path: string;
   segments: string;
   origin: string;
+}
+
+export interface IWorkingStatusItem {
+  key: string;
+  status?: EWorkingStatus;
+  title: string;
 }
