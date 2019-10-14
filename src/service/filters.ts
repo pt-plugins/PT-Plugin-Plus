@@ -30,6 +30,10 @@ export const filters: IFilter = {
    * @param format 格式化格式
    */
   formatNumber(source: number, format: string = "###,###,###,###.00"): string {
+    if (source === undefined) {
+      return "";
+    }
+
     const fStr = (sNumber: string, fmt?: any, p?: any) => {
       if (sNumber === "" || sNumber === undefined) {
         if (fmt === "" || fmt === undefined) {

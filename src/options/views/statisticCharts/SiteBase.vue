@@ -76,7 +76,6 @@ import {
 import html2canvas from "html2canvas";
 import FileSaver from "file-saver";
 import { PPF } from "@/service/public";
-import { isNumber } from "util";
 
 const extension = new Extension();
 
@@ -273,7 +272,7 @@ export default Vue.extend({
         source = source.replace(/,/g, "");
       }
 
-      if (isNumber(source)) {
+      if (/^(-)?\d+(.\d+)?$/.test(source)) {
         return parseFloat(source.toString());
       }
 
