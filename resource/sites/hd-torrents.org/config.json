@@ -110,9 +110,16 @@
         "seeding": {
           "selector": ["td.nav[title='Active-Torrents'] > a[href*='#actives']"],
           "filters": ["query.text().replace(/,/g,'')"]
-        },
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/usercp.php?uid=$user.id$",
+      "parser": "getUserSeedingTorrents.js",
+      "fields": {
         "seedingSize": {
-          "value": -1
+          "selector": ["tr#SeedingtorrentsHideShowTR table.lista tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td:eq(1)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
       }
     }
