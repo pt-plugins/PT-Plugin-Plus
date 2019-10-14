@@ -1,8 +1,8 @@
 String.prototype.getQueryString = function(name, split) {
   if (split == undefined) split = "&";
-  var reg = new RegExp(
-      "(^|" + split + "|\\?)" + name + "=([^" + split + "]*)(" + split + "|$)"
-    ),
+  var rule =
+    "(^|" + split + "|\\?)" + name + "=([^" + split + "#]*)(" + split + "|#|$)";
+  var reg = new RegExp(rule),
     r;
   if ((r = this.match(reg))) return decodeURI(r[2]);
   return null;
