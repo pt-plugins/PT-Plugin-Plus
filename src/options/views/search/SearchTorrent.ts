@@ -845,9 +845,10 @@ export default Vue.extend({
       if (typeof size == "number") {
         return size;
       }
-      let _size_raw_match = size.match(
-        /^(\d*\.?\d+)(.*[^ZEPTGMK])?([ZEPTGMK](B|iB))$/i
-      );
+      let _size_raw_match = size
+        .replace(/,/g, "")
+        .trim()
+        .match(/^(\d*\.?\d+)(.*[^ZEPTGMK])?([ZEPTGMK](B|iB))$/i);
       if (_size_raw_match) {
         let _size_num = parseFloat(_size_raw_match[1]);
         let _size_type = _size_raw_match[3];

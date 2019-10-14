@@ -212,11 +212,11 @@ export class Searcher {
         }
         if (searchEntryConfig) {
           entry.parseScriptFile =
-            entry.parseScriptFile || searchEntryConfig.parseScriptFile;
-          entry.resultType = entry.resultType || searchEntryConfig.resultType;
+            searchEntryConfig.parseScriptFile || entry.parseScriptFile;
+          entry.resultType = searchEntryConfig.resultType || entry.resultType;
           entry.resultSelector =
-            entry.resultSelector || searchEntryConfig.resultSelector;
-          entry.headers = entry.headers || searchEntryConfig.headers;
+            searchEntryConfig.resultSelector || entry.resultSelector;
+          entry.headers = searchEntryConfig.headers || entry.headers;
         }
 
         // 判断是否指定了搜索页和用于获取搜索结果的脚本
@@ -274,9 +274,7 @@ export class Searcher {
             scriptPath = `${searchConfig.rootPath}${scriptPath}`;
           }
 
-          if (!entry.parseScript) {
-            entry.parseScript = this.parseScriptCache[scriptPath];
-          }
+          entry.parseScript = this.parseScriptCache[scriptPath];
 
           if (!entry.parseScript) {
             console.log("searchTorrent: getScriptContent", scriptPath);
@@ -288,7 +286,7 @@ export class Searcher {
                 this.getSearchResult(
                   url,
                   site,
-                  entry,
+                  PPF.clone(entry),
                   searchConfig.torrentTagSelectors
                 )
                   .then((result: any) => {
@@ -326,7 +324,7 @@ export class Searcher {
             this.getSearchResult(
               url,
               site,
-              entry,
+              PPF.clone(entry),
               searchConfig.torrentTagSelectors
             )
               .then((result: any) => {
