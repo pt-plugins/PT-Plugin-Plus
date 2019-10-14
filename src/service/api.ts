@@ -22,12 +22,11 @@ try {
 
   isDebugMode && console.log("is extension mode.");
 } catch (error) {
+  isExtensionMode = false;
   isDebugMode && console.log("is not extension mode.");
 }
 
-// const isExtensionMode = !!(window["chrome"] && window.chrome.extension);
-const isLocalhost = window.location.protocol === "http:";
-const RESOURCE_URL = isLocalhost
+const RESOURCE_URL = !isExtensionMode
   ? `http://${window.location.hostname}:8001`
   : (isExtensionMode ? rootPath : "") + "/resource";
 // 调试信息
