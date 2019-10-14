@@ -76,6 +76,7 @@ import {
 import html2canvas from "html2canvas";
 import FileSaver from "file-saver";
 import { PPF } from "@/service/public";
+import dayjs from "dayjs";
 
 const extension = new Extension();
 
@@ -356,9 +357,11 @@ export default Vue.extend({
             continue;
           }
 
-          datas[0].data.push(this.getNumber(data.uploaded));
-          datas[1].data.push(this.getNumber(data.downloaded));
-          datas[2].data.push(this.getNumber(data.bonus));
+          const time = new Date(date).getTime();
+
+          datas[0].data.push([time, this.getNumber(data.uploaded)]);
+          datas[1].data.push([time, this.getNumber(data.downloaded)]);
+          datas[2].data.push([time, this.getNumber(data.bonus)]);
           categories.push(date);
         }
       }
@@ -384,7 +387,14 @@ export default Vue.extend({
           }).toString()
         },
         xAxis: {
-          categories: categories,
+          type: "datetime",
+          dateTimeLabelFormats: {
+            day: "%Y-%m-%d",
+            week: "%Y-%m-%d",
+            month: "%Y-%m-%d",
+            year: "%Y-%m-%d"
+          },
+          // categories: categories,
           gridLineDashStyle: "ShortDash",
           gridLineWidth: 1,
           gridLineColor: "#dddddd"
@@ -432,6 +442,11 @@ export default Vue.extend({
         ],
         tooltip: {
           shared: true,
+          crosshairs: {
+            width: 1,
+            color: "red",
+            dashStyle: "shortdot"
+          },
           useHTML: true,
           formatter: function(): any {
             function createTipItem(text: string, color: string = "#000") {
@@ -439,7 +454,8 @@ export default Vue.extend({
             }
             let _this = this as any;
             let tips: string[] = [];
-            tips.push(createTipItem(_this.x));
+            // 标题（时间）
+            tips.push(createTipItem(dayjs(_this.x).format("YYYY-MM-DD")));
             _this.points.forEach((point: any) => {
               let value = point.y;
               switch (point.series.name) {
@@ -511,8 +527,10 @@ export default Vue.extend({
             continue;
           }
 
-          datas[0].data.push(parseFloat(data.seedingSize));
-          datas[1].data.push(parseFloat(data.seeding));
+          const time = new Date(date).getTime();
+
+          datas[0].data.push([time, parseFloat(data.seedingSize)]);
+          datas[1].data.push([time, parseFloat(data.seeding)]);
           categories.push(date);
         }
       }
@@ -538,7 +556,14 @@ export default Vue.extend({
           }).toString()
         },
         xAxis: {
-          categories: categories,
+          // categories: categories,
+          type: "datetime",
+          dateTimeLabelFormats: {
+            day: "%Y-%m-%d",
+            week: "%Y-%m-%d",
+            month: "%Y-%m-%d",
+            year: "%Y-%m-%d"
+          },
           gridLineDashStyle: "ShortDash",
           gridLineWidth: 1,
           gridLineColor: "#dddddd"
@@ -587,13 +612,19 @@ export default Vue.extend({
         tooltip: {
           shared: true,
           useHTML: true,
+          crosshairs: {
+            width: 1,
+            color: "red",
+            dashStyle: "shortdot"
+          },
           formatter: function(): any {
             function createTipItem(text: string, color: string = "#000") {
               return `<div style='color:${color};'>${text}</div>`;
             }
             let _this = this as any;
             let tips: string[] = [];
-            tips.push(createTipItem(_this.x));
+            // 标题（时间）
+            tips.push(createTipItem(dayjs(_this.x).format("YYYY-MM-DD")));
             _this.points.forEach((point: any) => {
               let value = point.y;
               switch (point.series.name) {
