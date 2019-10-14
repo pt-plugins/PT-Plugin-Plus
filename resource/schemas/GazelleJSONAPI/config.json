@@ -48,7 +48,7 @@
     "userExtendInfo": {
       "page": "/ajax.php?action=user&id=$user.id$",
       "dataType": "json",
-      "fields": {        
+      "fields": {
         "joinTime": {
           "selector": ["response.stats.joinedDate"],
           "filters": ["dateTime(query).isValid()?dateTime(query).valueOf():query"]
@@ -62,11 +62,11 @@
       "page": "/torrents.php?type=seeding&userid=$user.id$",
       "fields": {
         "seedingSize": {
-          "selector": ["td.number_column.nobr"],
+          "selector": ["tr.torrent_row > td.nobr"],
           "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         },
-        "bonus" : {
-          "value": null
+        "bonus": {
+          "value": "N/A"
         }
       }
     }

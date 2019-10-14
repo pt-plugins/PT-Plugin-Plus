@@ -136,8 +136,12 @@ export class InfoParser {
     let total: number = 0.0;
 
     datas.forEach((item: string) => {
-      let size = parseFloat(item.replace(/[A-Za-z]/g, ""));
-      let unit = item.replace(/[^A-Za-z]/g, "").toLowerCase();
+      let match = item.match(/^(\d*\.?\d+)(.*[^ZEPTGMK])?([ZEPTGMK](B|iB)?)$/i);
+      if (!match) {
+        return;
+      }
+      let size = parseFloat(match[1]);
+      let unit = match[3].toLowerCase();
       switch (true) {
         case /ki?b/.test(unit):
           total += size * Math.pow(2, 10);
