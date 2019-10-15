@@ -176,7 +176,8 @@ import {
   ERestoreContent,
   EBrowserType,
   IWorkingStatusItem,
-  EWorkingStatus
+  EWorkingStatus,
+  Site
 } from "@/interface/common";
 import { PPF } from "@/service/public";
 import { FileDownloader } from "@/service/downloader";
@@ -522,6 +523,19 @@ export default Vue.extend({
               key: "options",
               title: this.t("settings.backup.backupItem.base")
             });
+
+            let sites: Site[] = [];
+
+            // 去除没有 host 字段的站点
+            // 可能因自定义的站点之前出错导致 host 缺失
+            infos.options.sites.forEach((site: Site) => {
+              if (site.host) {
+                sites.push(site);
+              }
+            });
+
+            infos.options.sites = sites;
+
             this.$store.dispatch("resetRunTimeOptions", infos.options);
             this.workingStatus.update("options", EWorkingStatus.success);
           }

@@ -54,7 +54,7 @@
         :headers="headers"
         :items="this.$store.state.options.sites"
         :pagination.sync="pagination"
-        item-key="name"
+        item-key="host"
         select-all
         class="elevation-1"
       >
