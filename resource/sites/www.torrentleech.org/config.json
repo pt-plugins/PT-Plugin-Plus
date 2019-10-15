@@ -1,0 +1,52 @@
+{
+  "name": "TorrentLeech",
+  "description": "TorrentLeech",
+  "url": "https://www.torrentleech.org/",
+  "icon": "https://www.torrentleech.org/favicon.ico",
+  "tags": ["综合"],
+  "schema": "TorrentLeech",
+  "host": "www.torrentleech.org",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["^/torrent/(\\d+)$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents/top/index", "/torrents/browse/index"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "searchEntryConfig": {
+    "page": "/torrents/browse/list/query/$key$",
+    "resultType": "json",
+    "parseScriptFile": "getSearchResult.js"
+  },
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ["span.displayed-username"]
+        },
+        "name": {
+          "selector": ["span.displayed-username"]
+        },
+        "uploaded": {
+          "selector": ["ul.navbar-stats li[title='Uploaded']"],
+          "filters": ["query.text().trim().replace(/,/g,'').sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ["ul.navbar-stats li[title='Downloaded']"],
+          "filters": ["query.text().trim().replace(/,/g,'').sizeToNumber()"]
+        },
+        "bonus": {
+          "selector": ["ul.navbar-stats span.total-TL-points"],
+          "filters": ["query.text().replace(/,/g,'')", "query.match(/TL points.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        }
+      }
+    }
+  }
+}

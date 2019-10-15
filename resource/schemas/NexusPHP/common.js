@@ -1196,6 +1196,21 @@
         top: "+=10px"
       });
     }
+
+    /**
+     * 获取完整的URL地址
+     * @param {string} url
+     */
+    getFullURL(url) {
+      if (url.substr(0, 2) === "//") {
+        url = `${location.protocol}${url}`;
+      } else if (url.substr(0, 1) === "/") {
+        url = `${location.origin}${url}`;
+      } else if (url.substr(0, 4) !== "http") {
+        url = `${location.origin}/${url}`;
+      }
+      return url;
+    }
   }
 
   window.NexusPHPCommon = Common;
