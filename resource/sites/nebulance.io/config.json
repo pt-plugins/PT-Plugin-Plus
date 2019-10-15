@@ -40,9 +40,6 @@
             "name": {
               "selector": ["response.username"]
             },
-            "messageCount": {
-              "selector": ["response.notifications.messages"]
-            },
             "uploaded": {
               "selector": ["response.userstats.uploaded"]
             },
@@ -60,6 +57,10 @@
         "userExtendInfo": {
             "page": "/user.php?id=$user.id$",
             "fields": {
+              "messageCount": {
+                "selector": ["div.alertbar a[href*='inbox.php']"],
+                "filters": ["query.text().replace(/\\s+/g,'').match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+              },      
               "seeding": {
                 "selector": "ul.stats.nobullet > li:contains('Seeding:')",
                 "filters": ["query.text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
