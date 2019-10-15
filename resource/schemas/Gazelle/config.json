@@ -27,6 +27,10 @@
         "name": {
           "selector": ["a.username[href*='user.php']:first"]
         },
+        "messageCount": {
+          "selector": ["div.alert-bar > a[href*='inbox.php']", "div.alertbar > a[href*='inbox.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
         "isLogged": {
           "selector": ["a[href*='logout.php']"],
           "filters": ["query.length>0"]
