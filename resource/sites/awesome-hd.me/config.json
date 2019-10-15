@@ -39,6 +39,27 @@
     "color": "lime"
   }],
   "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "messageCount": {
+          "selector": ["div.alertbar a[href*='inbox.php']"],
+          "filters": ["query.text().replace(/\\s+/g,'').match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "id": {
+          "selector": ["a.username[href*='user.php']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["a.username[href*='user.php']:first"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
     "userExtendInfo": {
       "page": "/user.php?id=$user.id$",
       "fields": {

@@ -36,6 +36,10 @@
     "userBaseInfo": {
       "page": "/",
       "fields": {
+        "messageCount": {
+          "selector": ["a[title=Messages] span.message-count.badge"],
+          "filters": ["query.text()"]
+        },
         "name": {
           "selector": ["a[href*='/profile/']:first"],
           "filters": ["query.attr('href').match(/profile\\/(.+)/)", "(query && query.length>=2)?(query[1]):''"]
