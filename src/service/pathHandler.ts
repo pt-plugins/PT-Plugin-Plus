@@ -8,15 +8,25 @@ export class PathHandler {
 
   /**
    * 替换路径系统关键字
+   * 关键字列表：
+   * site.name 站点名称
+   * site.host 站点域名
+   * YYYY 年份
+   * MM 月份
+   * DD 日期
    * @param {*} path
    */
   public replacePathKey(path: any, site: Site) {
     if (!path) {
       return path;
     }
+    const now = new Date();
     return this.replaceKeys(path, {
       "site.name": site.name,
-      "site.host": site.host
+      "site.host": site.host,
+      YYYY: now.getFullYear(),
+      MM: ("0" + (now.getMonth() + 1).toString()).substr(-2),
+      DD: ("0" + now.getDate().toString()).substr(-2)
     });
   }
 
