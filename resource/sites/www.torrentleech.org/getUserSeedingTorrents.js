@@ -8,7 +8,7 @@
       this.pageInfo = {
         count: 0,
         current: 0,
-        size: 20
+        size: 100
       };
       this.result = {
         seeding: 0,
