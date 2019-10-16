@@ -18,7 +18,12 @@
   "searchEntryConfig": {
     "page": "/torrents/browse/list/query/$key$",
     "resultType": "json",
-    "parseScriptFile": "getSearchResult.js"
+    "parseScriptFile": "getSearchResult.js",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "page": "/torrents/browse/list/imdbID/$key$"
+    }]
   },
   "searchEntry": [{
     "name": "all",
@@ -45,8 +50,215 @@
         "bonus": {
           "selector": ["ul.navbar-stats span.total-TL-points"],
           "filters": ["query.text().replace(/,/g,'')", "query.match(/TL points.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "messageCount": {
+          "selector": ["a[href='/content/articles'] i.news-notify"],
+          "filters": ["query.length>0? 255: 0"]
         }
       }
+    },
+    "userExtendInfo": {
+      "page": "/profile/$user.name$",
+      "fields": {
+        "id": {
+          "selector": ["a.nav-link[href='#editProfile']"],
+          "attribute": "data-url",
+          "filters": ["query ? query.getQueryString('userID'):''"]
+        },
+        "levelName": {
+          "selector": [".dl-horizontal dt:contains('Class') + dd"]
+        },
+        "joinTime": {
+          "selector": [".dl-horizontal dt:contains('Join Date') + dd"],
+          "filters": ["dateTime(query.text().split(' ').slice(1).join(' '), 'Do MMMM YYYY').valueOf()"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/user/account/snatchlist",
+      "dataType": "json",
+      "parser": "getUserSeedingTorrents.js",
+      "requestMethod": "POST",
+      "requestData": {
+        "userID": "$user.id$",
+        "sEcho": 0,
+        "iColumns": "9",
+        "sColumns": ",,,,,,,,",
+        "iDisplayStart": "0",
+        "iDisplayLength": "50",
+        "mDataProp_0": "0",
+        "sSearch_0": "",
+        "bRegex_0": "false",
+        "bSearchable_0": "true",
+        "bSortable_0": "true",
+        "mDataProp_1": "1",
+        "sSearch_1": "",
+        "bRegex_1": "false",
+        "bSearchable_1": "true",
+        "bSortable_1": "true",
+        "mDataProp_2": "2",
+        "sSearch_2": "",
+        "bRegex_2": "false",
+        "bSearchable_2": "true",
+        "bSortable_2": "true",
+        "mDataProp_3": "3",
+        "sSearch_3": "",
+        "bRegex_3": "false",
+        "bSearchable_3": "true",
+        "bSortable_3": "true",
+        "mDataProp_4": "4",
+        "sSearch_4": "",
+        "bRegex_4": "false",
+        "bSearchable_4": "true",
+        "bSortable_4": "true",
+        "mDataProp_5": "5",
+        "sSearch_5": "",
+        "bRegex_5": "false",
+        "bSearchable_5": "true",
+        "bSortable_5": "true",
+        "mDataProp_6": "6",
+        "sSearch_6": "",
+        "bRegex_6": "false",
+        "bSearchable_6": "true",
+        "bSortable_6": "true",
+        "mDataProp_7": "7",
+        "sSearch_7": "",
+        "bRegex_7": "false",
+        "bSearchable_7": "true",
+        "bSortable_7": "true",
+        "mDataProp_8": "8",
+        "sSearch_8": "",
+        "bRegex_8": "false",
+        "bSearchable_8": "true",
+        "bSortable_8": "true",
+        "sSearch": "",
+        "bRegex": "false",
+        "iSortCol_0": "0",
+        "sSortDir_0": "desc",
+        "iSortingCols": "1"
+      }
     }
-  }
+  },
+  "categories": [{
+    "entry": "*",
+    "result": "/categories/$id$",
+    "category": [{
+      "id": "8",
+      "name": "Cam"
+    }, {
+      "id": "9",
+      "name": "TS/TC"
+    }, {
+      "id": "11",
+      "name": "DVDRip/DVDScreener"
+    }, {
+      "id": "37",
+      "name": "WEBRip"
+    }, {
+      "id": "43",
+      "name": "HDRip"
+    }, {
+      "id": "14",
+      "name": "BlurayRip"
+    }, {
+      "id": "12",
+      "name": "DVD-R"
+    }, {
+      "id": "13",
+      "name": "Bluray"
+    }, {
+      "id": "47",
+      "name": "4K"
+    }, {
+      "id": "15",
+      "name": "Boxsets"
+    }, {
+      "id": "29",
+      "name": "Documentaries"
+    }, {
+      "id": "26",
+      "name": "Episodes"
+    }, {
+      "id": "32",
+      "name": "Episodes HD"
+    }, {
+      "id": "27",
+      "name": "Boxsets"
+    }, {
+      "id": "17",
+      "name": "PC"
+    }, {
+      "id": "42",
+      "name": "Mac"
+    }, {
+      "id": "18",
+      "name": "XBOX"
+    }, {
+      "id": "19",
+      "name": "XBOX360"
+    }, {
+      "id": "40",
+      "name": "XBOXONE"
+    }, {
+      "id": "20",
+      "name": "PS2"
+    }, {
+      "id": "21",
+      "name": "PS3"
+    }, {
+      "id": "39",
+      "name": "PS4"
+    }, {
+      "id": "22",
+      "name": "PSP"
+    }, {
+      "id": "28",
+      "name": "Wii"
+    }, {
+      "id": "30",
+      "name": "Nintendo DS"
+    }, {
+      "id": "48",
+      "name": "Nintendo Switch"
+    }, {
+      "id": "23",
+      "name": "PC-ISO"
+    }, {
+      "id": "24",
+      "name": "Mac"
+    }, {
+      "id": "25",
+      "name": "Mobile"
+    }, {
+      "id": "33",
+      "name": "0-day"
+    }, {
+      "id": "38",
+      "name": "Education"
+    }, {
+      "id": "34",
+      "name": "Anime"
+    }, {
+      "id": "35",
+      "name": "Cartoons"
+    }, {
+      "id": "45",
+      "name": "EBooks"
+    }, {
+      "id": "46",
+      "name": "Comics"
+    }, {
+      "id": "31",
+      "name": "Audio"
+    }, {
+      "id": "16",
+      "name": "Music videos"
+    }, {
+      "id": "36",
+      "name": "Movies"
+    }, {
+      "id": "44",
+      "name": "TV Series"
+    }]
+  }]
 }

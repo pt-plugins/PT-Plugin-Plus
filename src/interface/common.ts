@@ -352,6 +352,8 @@ export interface SearchEntryConfigArea {
   keyAutoMatch?: string;
   replaceKey?: string[];
   parseScript?: string;
+  // 替换默认页面
+  page?: string;
 }
 
 // 搜索入口默认配置

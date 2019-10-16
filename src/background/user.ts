@@ -266,15 +266,15 @@ export class User {
 
       let requestData = rule.requestData;
       if (requestData && userInfo) {
-        for (const key in requestData) {
-          if (requestData.hasOwnProperty(key)) {
-            const value = requestData[key];
-            // requestData[key] = value
-            //   .replace("$user.id$", userInfo.id)
-            //   .replace("$user.name$", userInfo.name);
-
-            requestData[key] = PPF.replaceKeys(value, userInfo, "user");
+        try {
+          for (const key in requestData) {
+            if (requestData.hasOwnProperty(key)) {
+              const value = requestData[key];
+              requestData[key] = PPF.replaceKeys(value, userInfo, "user");
+            }
           }
+        } catch (error) {
+          console.log(error);
         }
       }
 

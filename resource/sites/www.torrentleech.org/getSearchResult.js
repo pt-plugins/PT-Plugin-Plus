@@ -43,7 +43,11 @@
               site: site,
               tags: [],
               entryName: options.entry.name,
-              category: null
+              category: options.searcher.getCategoryById(
+                site,
+                options.url,
+                item.categoryID
+              )
             };
             results.push(data);
           }

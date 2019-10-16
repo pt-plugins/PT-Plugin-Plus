@@ -394,6 +394,9 @@ class HelpFunctions {
     maps: Dictionary<any>,
     prefix: string = ""
   ): string {
+    if (!source) {
+      return source;
+    }
     let result: string = source;
 
     for (const key in maps) {

@@ -1,6 +1,8 @@
 import { Dictionary, ERequestResultType } from "@/interface/common";
 import dayjs from "dayjs";
 import { PPF } from "@/service/public";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 export class InfoParser {
   constructor() {}

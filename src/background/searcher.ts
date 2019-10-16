@@ -10,7 +10,9 @@ import {
   ERequestResultType,
   SearchEntryConfigArea,
   SearchEntryConfig,
-  ISearchPayload
+  ISearchPayload,
+  SiteCategories,
+  SiteCategory
 } from "@/interface/common";
 import { APP } from "@/service/api";
 import { SiteService } from "./site";
@@ -141,6 +143,10 @@ export class Searcher {
               area.keyAutoMatch &&
               new RegExp(area.keyAutoMatch, "").test(key)
             ) {
+              // 是否替换默认页面
+              if (area.page) {
+                siteSearchPage = area.page;
+              }
               autoMatched = true;
               // 如果有定义查询字符串，则替换默认的查询字符串
               if (area.queryString) {
@@ -435,7 +441,8 @@ export class Searcher {
               errorMsg: "",
               isLogged: false,
               status: ESearchResultParseStatus.success,
-              searcher: this
+              searcher: this,
+              url
             };
 
             // 执行获取结果的脚本
@@ -659,5 +666,32 @@ export class Searcher {
       selector,
       site.searchEntryConfig.fieldSelector
     );
+  }
+
+  /**
+   * 根据指定信息获取分类
+   * @param site 站点
+   * @param page 当前搜索页面
+   * @param id 分类ID
+   */
+  public getCategoryById(site: Site, page: string, id: string) {
+    let result = {};
+    if (site.categories) {
+      site.categories.forEach((item: SiteCategories) => {
+        if (
+          item.category &&
+          (item.entry == "*" || page.indexOf(item.entry as string))
+        ) {
+          let category = item.category.find((c: SiteCategory) => {
+            return c.id == id;
+          });
+
+          if (category) {
+            result = category;
+          }
+        }
+      });
+    }
+    return result;
   }
 }
