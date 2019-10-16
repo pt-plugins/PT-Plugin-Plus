@@ -1,0 +1,10 @@
+{
+  "name": "烧包",
+  "schema": "NexusPHP",
+  "url": "https://ptsbao.club/",
+  "description": "烧包 - 扬帆远航 风雨同路",
+  "icon": "https://ptsbao.club/favicon.ico",
+  "tags": ["影视", "综合"],
+  "host": "ptsbao.club",
+  "collaborator": "laizony"
+}
