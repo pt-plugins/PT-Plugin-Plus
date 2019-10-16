@@ -64,7 +64,7 @@
           "value": -1
         },
         "messageCount": {
-          "selector": ["#alerts > .alertbar > a[href='notice.php']"],
+          "selector": ["#alerts > .alertbar > a[href='notice.php']", "div.alertbar > a[href*='inbox.php']"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         }
       }
