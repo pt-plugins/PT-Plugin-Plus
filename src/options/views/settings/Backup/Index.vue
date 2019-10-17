@@ -141,7 +141,7 @@
         </template>
         <template slot="expand" slot-scope="props">
           <div class="px-5">
-            <OWSSList
+            <ServerList
               :items="props.item.dataList"
               :server="props.item"
               :loading="props.item.loading"
@@ -157,10 +157,15 @@
     <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
     <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{ successMsg }}</v-snackbar>
 
-    <!-- 新增 -->
-    <AddOWSS v-model="showAddOWSS" @save="addBackupServer" />
-    <!-- 新增 -->
-    <EditOWSS v-model="showEditOWSS" :initData="selectedItem" @save="updateBackupServer" />
+    <!-- 新增备份服务器 -->
+    <ServerAdd v-model="showServerAdd" :type="currentServerType" @save="addBackupServer" />
+    <!-- 编辑备份服务器 -->
+    <ServerEdit
+      v-model="showServerEdit"
+      :type="currentServerType"
+      :initData="selectedItem"
+      @save="updateBackupServer"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -181,9 +186,11 @@ import {
 } from "@/interface/common";
 import { PPF } from "@/service/public";
 import { FileDownloader } from "@/service/downloader";
-import AddOWSS from "./OWSS/Add.vue";
-import EditOWSS from "./OWSS/Edit.vue";
-import OWSSList from "./OWSS/List.vue";
+
+import ServerAdd from "./Server/Add.vue";
+import ServerEdit from "./Server/Edit.vue";
+import ServerList from "./Server/List.vue";
+
 import { BackupFileParser } from "@/service/backupFileParser";
 import WorkingStatus from "@/options/components/WorkingStatus.vue";
 
@@ -200,10 +207,10 @@ const backupFileParser = new BackupFileParser();
 
 export default Vue.extend({
   components: {
-    AddOWSS,
-    EditOWSS,
-    OWSSList,
-    WorkingStatus
+    WorkingStatus,
+    ServerAdd,
+    ServerEdit,
+    ServerList
   },
   data() {
     return {
@@ -224,13 +231,17 @@ export default Vue.extend({
         rowsPerPage: -1
       },
       selected: [] as any,
-      showAddOWSS: false,
-      showEditOWSS: false,
+      showServerAdd: false,
+      showServerEdit: false,
+      currentServerType: EBackupServerType.OWSS,
       servers: [] as any,
       selectedItem: {} as IBackupServer,
       backupServerTypes: [
         {
-          type: "OWSS"
+          type: EBackupServerType.OWSS
+        },
+        {
+          type: EBackupServerType.WebDAV
         }
       ],
       workingStatus: null as any
@@ -646,7 +657,8 @@ export default Vue.extend({
      */
     editBackupServer(server: IBackupServer) {
       this.selectedItem = server;
-      this.showEditOWSS = true;
+      this.currentServerType = server.type;
+      this.showServerEdit = true;
     },
     /**
      * 更新备份服务器
@@ -661,7 +673,11 @@ export default Vue.extend({
      */
     removeBackupServer(server: IBackupServer) {
       if (confirm(this.$t("common.removeConfirm").toString())) {
+        let index = this.servers.findIndex((item: IBackupServer) => {
+          return item.id === server.id;
+        });
         this.$store.dispatch("removeBackupServer", server);
+        this.servers.splice(index, 1);
       }
     },
     /**
@@ -735,11 +751,8 @@ export default Vue.extend({
         });
     },
     showAddServer(type: EBackupServerType) {
-      switch (type) {
-        case EBackupServerType.OWSS:
-          this.showAddOWSS = true;
-          break;
-      }
+      this.currentServerType = type;
+      this.showServerAdd = true;
     },
     deleteFileFromBackupServer(
       server: IBackupServerPro,

@@ -380,7 +380,7 @@ class HelpFunctions {
 
   public getNewBackupFileName(): string {
     return (
-      "PT-Plugin-Plus-Backup-" + dayjs().format("YYYY-MM-DD HH:mm:ss") + ".zip"
+      "PT-Plugin-Plus-Backup-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".zip"
     );
   }
 

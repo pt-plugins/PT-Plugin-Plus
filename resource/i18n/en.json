@@ -330,7 +330,9 @@
             "name": "Service name",
             "address": "Server address",
             "authCode": "Authorization Code",
-            "applyAuthCode": "Apply"
+            "applyAuthCode": "Apply",
+            "loginName": "log-in name",
+            "loginPwd": "login password"
           },
           "list": {
             "noData": "No backup data yet",

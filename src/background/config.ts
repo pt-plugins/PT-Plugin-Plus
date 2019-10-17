@@ -20,6 +20,7 @@ import { SyncStorage } from "./syncStorage";
 import { PPF } from "@/service/public";
 import dayjs from "dayjs";
 import { OWSS } from "./plugins/OWSS";
+import { WebDAV } from "./plugins/WebDAV";
 import PTPlugin from "./service";
 import { BackupFileParser } from "@/service/backupFileParser";
 import { Favicon } from "@/service/favicon";
@@ -951,6 +952,7 @@ class Config {
     return new Promise<any>((resolve?: any, reject?: any) => {
       const time = dayjs().valueOf();
       const fileName = this.getNewBackupFileName();
+      let service: OWSS | WebDAV | null = null;
       this.getBackupFileBlob()
         .then(blob => {
           const formData = new FormData();
@@ -959,22 +961,30 @@ class Config {
 
           switch (server.type) {
             case EBackupServerType.OWSS:
-              new OWSS(server)
-                .add(formData)
-                .then(result => {
-                  resolve({
-                    time,
-                    fileName
-                  });
-                })
-                .catch(error => {
-                  reject(error);
-                });
+              service = new OWSS(server);
+              break;
+
+            case EBackupServerType.WebDAV:
+              service = new WebDAV(server);
               break;
 
             default:
               reject("暂不支持");
               break;
+          }
+
+          if (service) {
+            service
+              .add(formData)
+              .then(result => {
+                resolve({
+                  time,
+                  fileName
+                });
+              })
+              .catch(error => {
+                reject(error);
+              });
           }
         })
         .catch(error => {
@@ -990,28 +1000,38 @@ class Config {
    */
   public restoreFromServer(server: IBackupServer, path: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      let service: OWSS | WebDAV | null = null;
+
       switch (server.type) {
         case EBackupServerType.OWSS:
-          new OWSS(server)
-            .get(path)
-            .then(data => {
-              this.backupFileParser
-                .loadZipData(data)
-                .then((result: any) => {
-                  resolve(result);
-                })
-                .catch((error: any) => {
-                  reject(error);
-                });
-            })
-            .catch(error => {
-              reject(error);
-            });
+          service = new OWSS(server);
+          break;
+
+        case EBackupServerType.WebDAV:
+          service = new WebDAV(server);
           break;
 
         default:
           reject("暂不支持");
           break;
+      }
+
+      if (service) {
+        service
+          .get(path)
+          .then(data => {
+            this.backupFileParser
+              .loadZipData(data)
+              .then((result: any) => {
+                resolve(result);
+              })
+              .catch((error: any) => {
+                reject(error);
+              });
+          })
+          .catch(error => {
+            reject(error);
+          });
       }
     });
   }
@@ -1026,21 +1046,30 @@ class Config {
     options: any = {}
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      let service: OWSS | WebDAV | null = null;
       switch (server.type) {
         case EBackupServerType.OWSS:
-          new OWSS(server)
-            .list(options)
-            .then(result => {
-              resolve(result);
-            })
-            .catch(error => {
-              reject(error);
-            });
+          service = new OWSS(server);
+          break;
+
+        case EBackupServerType.WebDAV:
+          service = new WebDAV(server);
           break;
 
         default:
           reject("暂不支持");
           break;
+      }
+
+      if (service) {
+        service
+          .list(options)
+          .then(result => {
+            resolve(result);
+          })
+          .catch(error => {
+            reject(error);
+          });
       }
     });
   }
@@ -1055,21 +1084,30 @@ class Config {
     path: string
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      let service: OWSS | WebDAV | null = null;
       switch (server.type) {
         case EBackupServerType.OWSS:
-          new OWSS(server)
-            .delete(path)
-            .then(result => {
-              resolve(result);
-            })
-            .catch(error => {
-              reject(error);
-            });
+          service = new OWSS(server);
+          break;
+
+        case EBackupServerType.WebDAV:
+          service = new WebDAV(server);
           break;
 
         default:
           reject("暂不支持");
           break;
+      }
+
+      if (service) {
+        service
+          .delete(path)
+          .then(result => {
+            resolve(result);
+          })
+          .catch(error => {
+            reject(error);
+          });
       }
     });
   }

@@ -3,7 +3,7 @@
     <v-dialog v-model="show" max-width="800">
       <v-card>
         <v-toolbar dark color="blue-grey darken-2">
-          <v-toolbar-title>{{ $t('settings.backup.server.edit.title') }}</v-toolbar-title>
+          <v-toolbar-title>{{ $t('settings.backup.server.add.title') }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn
             icon
@@ -19,7 +19,7 @@
         </v-toolbar>
 
         <v-card-text class="body">
-          <Editor :initData="defaultItem" @change="change" />
+          <Editor :type="type" :initData="selected" @change="change" />
         </v-card-text>
 
         <v-divider></v-divider>
@@ -50,14 +50,17 @@ export default Vue.extend({
   data() {
     return {
       show: false,
+      selected: {} as any,
       valid: false,
-      newData: {} as any,
-      defaultItem: {} as IBackupServer
+      newData: {} as any
     };
   },
   props: {
     value: Boolean,
-    initData: Object
+    type: {
+      type: String,
+      default: EBackupServerType.OWSS
+    }
   },
   model: {
     prop: "value",
@@ -66,17 +69,20 @@ export default Vue.extend({
   watch: {
     show() {
       this.$emit("change", this.show);
+      if (!this.show) {
+        this.selected = {};
+      }
     },
     value() {
       this.show = this.value;
-      if (this.show) {
-        this.defaultItem = Object.assign({}, this.initData);
-      }
     }
   },
   methods: {
     save() {
-      this.$emit("save", this.newData);
+      this.$emit(
+        "save",
+        Object.assign({ type: EBackupServerType.WebDAV }, this.newData)
+      );
       this.show = false;
     },
     cancel() {
@@ -90,3 +96,16 @@ export default Vue.extend({
   }
 });
 </script>
+<style lang="scss" scoped>
+// .body {
+//   position: absolute;
+//   bottom: 65px;
+//   top: 65px;
+//   overflow-y: auto;
+// }
+// .toolbar {
+//   position: absolute;
+//   bottom: 0;
+//   right: 0;
+// }
+</style>

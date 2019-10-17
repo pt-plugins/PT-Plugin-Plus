@@ -330,7 +330,9 @@
             "name": "服务名称",
             "address": "服务器地址",
             "authCode": "授权码",
-            "applyAuthCode": "申请授权码"
+            "applyAuthCode": "申请授权码",
+            "loginName": "登录名",
+            "loginPwd": "登录密码"
           },
           "list": {
             "noData": "暂无备份数据",

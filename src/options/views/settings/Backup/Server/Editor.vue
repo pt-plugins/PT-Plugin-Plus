@@ -18,26 +18,55 @@
             :rules="[rules.url]"
           ></v-text-field>
 
-          <v-text-field
-            v-model="option.authCode"
-            :label="$t('settings.backup.server.editor.authCode')"
-            :placeholder="$t('settings.backup.server.editor.authCode')"
-            required
-            :rules="rules.require"
-            :type="showAuthCode ? 'text' : 'password'"
-          >
-            <template v-slot:append>
-              <v-icon
-                @click="showAuthCode = !showAuthCode"
-              >{{showAuthCode ? 'visibility_off' : 'visibility'}}</v-icon>
-              <v-btn
-                flat
-                small
-                color="primary"
-                @click="applyAuthCode"
-              >{{ $t('settings.backup.server.editor.applyAuthCode') }}</v-btn>
-            </template>
-          </v-text-field>
+          <!-- 授权码 -->
+          <template v-if="type==='OWSS'">
+            <v-text-field
+              v-model="option.authCode"
+              :label="$t('settings.backup.server.editor.authCode')"
+              :placeholder="$t('settings.backup.server.editor.authCode')"
+              required
+              :rules="rules.require"
+              :type="showAuthCode ? 'text' : 'password'"
+            >
+              <template v-slot:append>
+                <v-icon
+                  @click="showAuthCode = !showAuthCode"
+                >{{showAuthCode ? 'visibility_off' : 'visibility'}}</v-icon>
+                <v-btn
+                  flat
+                  small
+                  color="primary"
+                  @click="applyAuthCode"
+                >{{ $t('settings.backup.server.editor.applyAuthCode') }}</v-btn>
+              </template>
+            </v-text-field>
+          </template>
+
+          <template v-else>
+            <!-- 登录名 -->
+            <v-text-field
+              v-model="option.loginName"
+              :label="$t('settings.backup.server.editor.loginName')"
+              :placeholder="$t('settings.backup.server.editor.loginName')"
+              required
+              :rules="rules.require"
+            ></v-text-field>
+
+            <v-text-field
+              v-model="option.loginPwd"
+              :label="$t('settings.backup.server.editor.loginPwd')"
+              :placeholder="$t('settings.backup.server.editor.loginPwd')"
+              required
+              :rules="rules.require"
+              :type="showLoginPwd ? 'text' : 'password'"
+            >
+              <template v-slot:append>
+                <v-icon
+                  @click="showLoginPwd = !showLoginPwd"
+                >{{showLoginPwd ? 'visibility_off' : 'visibility'}}</v-icon>
+              </template>
+            </v-text-field>
+          </template>
         </v-form>
       </v-card-text>
     </v-card>
@@ -56,11 +85,17 @@
 import md5 from "blueimp-md5";
 import Vue from "vue";
 import Extension from "@/service/extension";
-import { EAction, DataResult, Dictionary } from "@/interface/common";
+import {
+  EAction,
+  DataResult,
+  Dictionary,
+  EBackupServerType
+} from "@/interface/common";
 const extension = new Extension();
 export default Vue.extend({
   data() {
     return {
+      showLoginPwd: false,
       showAuthCode: false,
       rules: {
         require: [(v: any) => !!v || "!"],
@@ -80,13 +115,20 @@ export default Vue.extend({
       option: {
         authCode: "",
         address: "",
-        name: ""
+        name: "",
+        loginName: "",
+        loginPwd: "",
+        type: EBackupServerType.OWSS
       } as any
     };
   },
   props: {
     initData: Object,
-    isNew: Boolean
+    isNew: Boolean,
+    type: {
+      type: String,
+      default: EBackupServerType.OWSS
+    }
   },
   watch: {
     successMsg() {
@@ -104,9 +146,14 @@ export default Vue.extend({
       },
       deep: true
     },
+    type() {
+      this.option = Object.assign({}, this.initData);
+      this.option.type = this.type;
+    },
     initData() {
       if (this.initData) {
         this.option = Object.assign(this.option, this.initData);
+        this.option.type = this.type;
       }
     }
   },
