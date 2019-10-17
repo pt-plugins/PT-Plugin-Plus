@@ -1,4 +1,8 @@
-import { IBackupServer } from "@/interface/common";
+import {
+  IBackupServer,
+  EResourceOrderBy,
+  EResourceOrderMode
+} from "@/interface/common";
 import { createClient as WebDAVClient } from "webdav";
 
 export class WebDAV {
@@ -29,6 +33,8 @@ export class WebDAV {
           console.log(data);
 
           let result: any[] = [];
+          let orderMode: EResourceOrderMode =
+            options.orderMode || EResourceOrderMode.desc;
           if (data && data.length > 0) {
             data.forEach((item: any) => {
               result.push({
@@ -39,7 +45,33 @@ export class WebDAV {
               });
             });
           }
-          resolve(result);
+          resolve(
+            result.sort((a, b) => {
+              let v1, v2;
+              switch (options.orderBy) {
+                case EResourceOrderBy.name:
+                  v1 = a.name;
+                  v2 = b.name;
+                  break;
+
+                case EResourceOrderBy.size:
+                  v1 = a.size;
+                  v2 = b.size;
+                  break;
+
+                default:
+                  v1 = a.time;
+                  v2 = b.time;
+                  break;
+              }
+
+              if (orderMode === EResourceOrderMode.desc) {
+                return v1.toString().localeCompare(v2) == 1 ? -1 : 1;
+              } else {
+                return v1.toString().localeCompare(v2);
+              }
+            })
+          );
         })
         .catch((error: any) => {
           reject(error);

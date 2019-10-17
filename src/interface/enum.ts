@@ -365,3 +365,14 @@ export enum EWorkingStatus {
   error = "error",
   loading = "loading"
 }
+
+export enum EResourceOrderBy {
+  time = "time",
+  name = "name",
+  size = "size"
+}
+
+export enum EResourceOrderMode {
+  desc = "desc",
+  asc = "asc"
+}
