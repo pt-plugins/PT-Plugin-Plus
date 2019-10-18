@@ -119,9 +119,10 @@ export default class Collection {
     doubanId: string = ""
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      let movieId = imdbId || doubanId;
+      let movieId = imdbId;
       let fn = this.movieInfoService.getInfoFromIMDb;
       if (doubanId) {
+        movieId = doubanId;
         fn = this.movieInfoService.getInfoFromDoubanId;
       }
 
