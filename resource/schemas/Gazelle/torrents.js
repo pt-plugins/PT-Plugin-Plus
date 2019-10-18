@@ -21,13 +21,12 @@
      */
     getDownloadURLs() {
       let links = $("a[title='Download']").toArray();
-      let siteURL = PTService.site.url;
-      if (siteURL.substr(-1) != "/") {
-        siteURL += "/";
-      }
 
       if (links.length == 0) {
-        links = $("a[href*='torrents.php?action=download']").toArray();
+        // 排除使用免费令牌的链接
+        links = $(
+          "a[href*='torrents.php?action=download']:not([href*='usetoken'])"
+        ).toArray();
       }
 
       if (links.length == 0) {
@@ -36,10 +35,7 @@
 
       let urls = $.map(links, item => {
         let link = $(item).attr("href");
-        if (link && link.substr(0, 4) != "http") {
-          link = siteURL + link;
-        }
-        return link;
+        return this.getFullURL(link);
       });
 
       return urls;
@@ -90,11 +86,7 @@
         return;
       }
 
-      if (data.url.substr(0, 1) === "/") {
-        data.url = `${location.origin}${data.url}`;
-      } else if (data.url.substr(0, 4) !== "http") {
-        data.url = `${location.origin}/${data.url}`;
-      }
+      data.url = this.getFullURL(data.url);
 
       this.sendTorrentToDefaultClient(data)
         .then(result => {

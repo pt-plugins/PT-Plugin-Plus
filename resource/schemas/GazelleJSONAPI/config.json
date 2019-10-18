@@ -4,7 +4,7 @@
   "plugins": [{
     "name": "种子列表",
     "pages": ["/torrents.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Gazelle/torrents.js"]
   }],
   "securityKeyFields": ["authkey", "torrent_pass"],
   "searchEntryConfig": {
