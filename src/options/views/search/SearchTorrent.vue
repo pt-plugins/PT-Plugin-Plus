@@ -86,7 +86,7 @@
 
     <!-- 搜索结果列表 -->
     <v-card>
-      <v-card-title style="padding: 0 10px 0 3px;">
+      <v-card-title style="padding: 0 5px 0 3px;">
         <v-flex xs12>
           <!-- 站点返回的搜索结果 -->
           <div v-if="searchSiteCount>1">
@@ -369,6 +369,7 @@
           <v-flex xs6 class="px-0" style="height: 50px;">
             <v-radio-group v-model="currentOrderMode" row>
               <v-radio
+                class="mr-2"
                 v-for="(item, index) in orderMode"
                 :key="index"
                 :label="item.text"

@@ -194,7 +194,7 @@ export default Vue.extend({
 
       for (const host in source) {
         if (source.hasOwnProperty(host)) {
-          const siteData = source[host];
+          const siteData = this.fillData(source[host]);
           let site: Site = this.options.sites.find((item: Site) => {
             return item.host == host;
           });
@@ -279,8 +279,59 @@ export default Vue.extend({
 
       return 0;
     },
+    /**
+     * 填充数据，将两个日期中间空白的数据由前一天数据填充
+     */
+    fillData(result: any) {
+      let datas: any = {};
+      let lastDate: any = null;
+      let lastData: any = null;
+      for (const key in result) {
+        if (dayjs(key).isValid()) {
+          let data = result[key];
+          // 如果当前数据不可用，则使用上一条数据
+          if (!data.isLogged || data.lastUpdateStatus != "success") {
+            data = lastData;
+          } else if (lastData && data.id != lastData.id) {
+            data = lastData;
+          }
+
+          if (!data) {
+            continue;
+          }
+
+          let date = dayjs(key);
+
+          if (!lastDate) {
+            lastDate = date;
+          }
+
+          if (!lastData) {
+            lastData = PPF.clone(data);
+          }
+
+          let day = date.diff(lastDate, "day");
+          if (day > 1) {
+            for (let index = 0; index < day - 1; index++) {
+              lastDate = lastDate.add(1, "day");
+              datas[lastDate.format("YYYY-MM-DD")] = lastData;
+            }
+          }
+
+          datas[key] = data;
+
+          lastData = PPF.clone(data);
+          lastDate = date;
+        }
+      }
+
+      datas["latest"] = result["latest"];
+
+      return datas;
+    },
     resetData(result: any) {
       if (this.host) {
+        result = this.fillData(result);
         this.resetBaseData(result);
         this.resetExtData(result);
       } else {
