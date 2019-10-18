@@ -1256,4 +1256,8 @@ export default class Controller {
   public getBackupRawData(): Promise<any> {
     return this.service.config.getBackupRawData();
   }
+
+  public testBackupServerConnectivity(options: any): Promise<any> {
+    return this.service.config.testBackupServerConnectivity(options);
+  }
 }

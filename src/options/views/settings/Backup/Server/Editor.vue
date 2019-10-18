@@ -3,13 +3,25 @@
     <v-card class="mb-5" color="grey lighten-4">
       <v-card-text>
         <v-form v-model="valid">
+          <!-- 类型 -->
+          <v-text-field
+            :label="$t('settings.backup.server.editor.type')"
+            :placeholder="$t('settings.backup.server.editor.type')"
+            disabled
+            :value="type"
+          ></v-text-field>
+
+          <!-- 名称 -->
           <v-text-field
             v-model="option.name"
             :label="$t('settings.backup.server.editor.name')"
             :placeholder="$t('settings.backup.server.editor.name')"
             required
             :rules="rules.require"
+            ref="name"
           ></v-text-field>
+
+          <!-- 地址 -->
           <v-text-field
             v-model="option.address"
             :label="$t('settings.backup.server.editor.address')"
@@ -52,6 +64,7 @@
               :rules="rules.require"
             ></v-text-field>
 
+            <!-- 密码 -->
             <v-text-field
               v-model="option.loginPwd"
               :label="$t('settings.backup.server.editor.loginPwd')"
@@ -66,8 +79,22 @@
                 >{{showLoginPwd ? 'visibility_off' : 'visibility'}}</v-icon>
               </template>
             </v-text-field>
+
+            <v-switch :label="$t('settings.backup.server.editor.digest')" v-model="option.digest"></v-switch>
           </template>
         </v-form>
+
+        <v-btn
+          flat
+          block
+          :color="testButtonColor"
+          :loading="testing"
+          :disabled="testing || !valid"
+          @click="testServerConnectivity"
+        >
+          <v-icon class="mr-2">{{ testButtonIcon }}</v-icon>
+          {{ successMsg || errorMsg || $t('settings.downloadClients.editor.test') }}
+        </v-btn>
       </v-card-text>
     </v-card>
     <v-snackbar v-model="haveError" absolute top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
@@ -118,8 +145,26 @@ export default Vue.extend({
         name: "",
         loginName: "",
         loginPwd: "",
-        type: EBackupServerType.OWSS
-      } as any
+        type: EBackupServerType.OWSS,
+        digest: false
+      } as any,
+      testing: false,
+      testButtonIcon: "compass_calibration",
+      testButtonColor: "info",
+      testButtonStatus: {
+        success: "success",
+        error: "error"
+      },
+      buttonColor: {
+        default: "info",
+        success: "success",
+        error: "error"
+      } as Dictionary<any>,
+      buttonIcon: {
+        default: "compass_calibration",
+        success: "done",
+        error: "close"
+      } as Dictionary<any>
     };
   },
   props: {
@@ -128,9 +173,15 @@ export default Vue.extend({
     type: {
       type: String,
       default: EBackupServerType.OWSS
-    }
+    },
+    show: Boolean
   },
   watch: {
+    show() {
+      if (this.show && this.$refs.name) {
+        (this.$refs.name as any).focus();
+      }
+    },
     successMsg() {
       this.haveSuccess = this.successMsg != "";
     },
@@ -152,6 +203,9 @@ export default Vue.extend({
     },
     initData() {
       if (this.initData) {
+        if (this.initData.digest === undefined) {
+          this.initData.digest = false;
+        }
         this.option = Object.assign(this.option, this.initData);
         this.option.type = this.type;
       }
@@ -187,6 +241,65 @@ export default Vue.extend({
             }
           });
       }
+    },
+
+    /**
+     * 测试服务器是否可用
+     */
+    testServerConnectivity() {
+      this.successMsg = "";
+      this.errorMsg = "";
+      let options = Object.assign({}, this.option);
+      if (!options.address) {
+        this.errorMsg = this.$t(
+          "settings.downloadClients.editor.testAddressError"
+        ).toString();
+        return;
+      }
+      this.testing = true;
+
+      extension
+        .sendRequest(EAction.testBackupServerConnectivity, null, options)
+        .then((result: DataResult) => {
+          console.log(result);
+          if (result) {
+            this.successMsg = this.$t(
+              "settings.downloadClients.editor.testSuccess"
+            ).toString();
+            this.setTestButtonStatus(this.testButtonStatus.success);
+          } else {
+            this.errorMsg = this.$t(
+              "settings.downloadClients.editor.testError"
+            ).toString();
+          }
+          this.errorMsg &&
+            this.setTestButtonStatus(this.testButtonStatus.error);
+          this.testing = false;
+        })
+        .catch((result: DataResult) => {
+          console.log(result);
+          if (result && result.data && result.data.msg) {
+            this.errorMsg = result.data.msg;
+          } else {
+            this.errorMsg = this.$t(
+              "settings.downloadClients.editor.testError"
+            ).toString();
+          }
+
+          this.setTestButtonStatus(this.testButtonStatus.error);
+          this.testing = false;
+        });
+    },
+
+    setTestButtonStatus(status: string) {
+      this.testButtonIcon = this.buttonIcon[status];
+      this.testButtonColor = this.buttonColor[status];
+      window.setTimeout(() => {
+        this.testButtonIcon = this.buttonIcon.default;
+        this.testButtonColor = this.buttonColor.default;
+        this.successMsg = "";
+        this.errorMsg = "";
+      }, 3000);
     }
   }
 });

@@ -159,4 +159,21 @@ export class OWSS {
         });
     });
   }
+
+  /**
+   * 验证服务器可用性
+   */
+  public ping(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.request(`${this.options.authCode}/list`, ERequestMethod.GET, {
+        pageSize: 1
+      })
+        .then(() => {
+          resolve(true);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 }

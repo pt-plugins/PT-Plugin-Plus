@@ -17,7 +17,8 @@ export class WebDAV {
   private initServer() {
     this.service = WebDAVClient(this.options.address, {
       username: this.options.loginName,
-      password: this.options.loginPwd
+      password: this.options.loginPwd,
+      digest: this.options.digest ? true : undefined
     });
   }
 
@@ -132,6 +133,22 @@ export class WebDAV {
           } else {
             reject(false);
           }
+        })
+        .catch((error: any) => {
+          reject(error);
+        });
+    });
+  }
+
+  /**
+   * 验证服务器可用性
+   */
+  public ping(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.service
+        .getDirectoryContents("/")
+        .then(() => {
+          resolve(true);
         })
         .catch((error: any) => {
           reject(error);

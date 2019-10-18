@@ -80,6 +80,7 @@ export interface IBackupServer {
   loginName?: string;
   loginPwd?: string;
   authCode?: string;
+  digest?: boolean;
 }
 
 /**

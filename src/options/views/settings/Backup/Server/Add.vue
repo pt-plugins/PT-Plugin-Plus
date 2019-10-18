@@ -19,7 +19,7 @@
         </v-toolbar>
 
         <v-card-text class="body">
-          <Editor :type="type" :initData="selected" @change="change" />
+          <Editor :type="type" :initData="selected" @change="change" :show="show" />
         </v-card-text>
 
         <v-divider></v-divider>

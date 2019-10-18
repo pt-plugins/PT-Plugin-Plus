@@ -327,12 +327,14 @@
             "title": "Edit Backup Server"
           },
           "editor": {
-            "name": "Service name",
+            "type": "Server Type",
+            "name": "Server name",
             "address": "Server address",
             "authCode": "Authorization Code",
             "applyAuthCode": "Apply",
             "loginName": "log-in name",
-            "loginPwd": "login password"
+            "loginPwd": "login password",
+            "digest": "Use Digest Authorization"
           },
           "list": {
             "noData": "No backup data yet",

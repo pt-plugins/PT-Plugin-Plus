@@ -1111,5 +1111,39 @@ class Config {
       }
     });
   }
+
+  /**
+   * 测试指定的服务器是否可连接
+   * @param server
+   */
+  public testBackupServerConnectivity(server: IBackupServer): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      let service: OWSS | WebDAV | null = null;
+      switch (server.type) {
+        case EBackupServerType.OWSS:
+          service = new OWSS(server);
+          break;
+
+        case EBackupServerType.WebDAV:
+          service = new WebDAV(server);
+          break;
+
+        default:
+          reject("暂不支持");
+          break;
+      }
+
+      if (service) {
+        service
+          .ping()
+          .then(result => {
+            resolve(result);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      }
+    });
+  }
 }
 export default Config;

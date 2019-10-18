@@ -327,12 +327,14 @@
             "title": "编辑备份服务器"
           },
           "editor": {
+            "type": "服务器类型",
             "name": "服务名称",
             "address": "服务器地址",
             "authCode": "授权码",
             "applyAuthCode": "申请授权码",
             "loginName": "登录名",
-            "loginPwd": "登录密码"
+            "loginPwd": "登录密码",
+            "digest": "启用 Digest 认证"
           },
           "list": {
             "noData": "暂无备份数据",

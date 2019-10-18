@@ -206,7 +206,9 @@ export enum EAction {
   // 重置站点图标缓存
   resetFavicons = "resetFavicons",
   // 获取备份文件原始数据
-  getBackupRawData = "getBackupRawData"
+  getBackupRawData = "getBackupRawData",
+  // 测试备份服务器是否可连接
+  testBackupServerConnectivity = "testBackupServerConnectivity"
 }
 
 /**
