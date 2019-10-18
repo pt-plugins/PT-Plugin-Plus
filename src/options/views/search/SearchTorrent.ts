@@ -6,7 +6,6 @@ import {
   Site,
   SiteSchema,
   Dictionary,
-  EDownloadClientType,
   DataResult,
   EPaginationKey,
   EModule,
@@ -22,7 +21,7 @@ import {
   ECommonKey,
   ERequestMethod,
   ISearchPayload,
-  ICollection
+  EResourceOrderMode
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import dayjs from "dayjs";
@@ -120,7 +119,9 @@ export default Vue.extend({
       shiftKey: false,
       searchPayload: {} as ISearchPayload,
       torrentCollectionLinks: [] as string[],
-      headerOrderClickCount: 0
+      headerOrderClickCount: 0,
+
+      currentOrderMode: EResourceOrderMode.asc
     };
   },
   created() {
@@ -195,9 +196,18 @@ export default Vue.extend({
     },
     pagination: {
       handler() {
+        if (this.pagination.descending) {
+          this.currentOrderMode = EResourceOrderMode.desc;
+        } else {
+          this.currentOrderMode = EResourceOrderMode.asc;
+        }
         this.updatePagination(this.pagination);
       },
       deep: true
+    },
+    currentOrderMode() {
+      this.pagination.descending =
+        this.currentOrderMode === EResourceOrderMode.desc;
     }
   },
   methods: {
@@ -1541,7 +1551,9 @@ export default Vue.extend({
         datas = datas.sort(
           this.arrayObjectSort(
             this.pagination.sortBy,
-            this.pagination.descending ? "desc" : "abs"
+            this.pagination.descending
+              ? EResourceOrderMode.desc
+              : EResourceOrderMode.asc
           )
         );
 
@@ -1569,7 +1581,10 @@ export default Vue.extend({
      * @param field 字段
      * @param sortOrder 排序方式
      */
-    arrayObjectSort(field: string, sortOrder: string = "") {
+    arrayObjectSort(
+      field: string,
+      sortOrder: EResourceOrderMode = EResourceOrderMode.asc
+    ) {
       // 深层获取对象指定的属性值
       function getObjectValue(obj: any, path: string) {
         return new Function("o", "return o." + path)(obj);
@@ -1578,11 +1593,11 @@ export default Vue.extend({
         var value1 = getObjectValue(object1, field);
         var value2 = getObjectValue(object2, field);
         if (value1 < value2) {
-          if (sortOrder == "desc") {
+          if (sortOrder == EResourceOrderMode.desc) {
             return 1;
           } else return -1;
         } else if (value1 > value2) {
-          if (sortOrder == "desc") {
+          if (sortOrder == EResourceOrderMode.desc) {
             return -1;
           } else return 1;
         } else {
@@ -1738,6 +1753,23 @@ export default Vue.extend({
           width: this.$vuetify.breakpoint.mdAndUp ? "130px" : "80px",
           align: "center",
           visible: this.$vuetify.breakpoint.smAndUp
+        }
+      ];
+    },
+    orderHeaders(): Array<any> {
+      return this.headers.filter(item => {
+        return item.sortable !== false;
+      });
+    },
+    orderMode(): Array<any> {
+      return [
+        {
+          text: this.$t("common.orderMode.asc"),
+          value: EResourceOrderMode.asc
+        },
+        {
+          text: this.$t("common.orderMode.desc"),
+          value: EResourceOrderMode.desc
         }
       ];
     }

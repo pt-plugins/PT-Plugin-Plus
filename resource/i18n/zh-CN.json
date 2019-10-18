@@ -41,7 +41,12 @@
       "setDefault": "设为默认",
       "cancelDefault": "取消默认",
       "search": "搜索",
-      "color": "颜色"
+      "color": "颜色",
+      "orderBy": "排序字段",
+      "orderMode": {
+        "asc": "升序",
+        "desc": "降序"
+      }
     },
     "topbar": {
       "title": "@:(app.name)",

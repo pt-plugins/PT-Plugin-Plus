@@ -352,6 +352,35 @@
             </div>
           </v-layout>
         </v-flex>
+
+        <!-- 排序，小屏幕显示 -->
+        <template v-if="$vuetify.breakpoint.smAndDown">
+          <v-flex xs12 class="mt-2">
+            <v-divider></v-divider>
+          </v-flex>
+
+          <v-flex xs6 class="px-2" style="height: 50px;">
+            <v-select
+              :items="orderHeaders"
+              :label="$t('common.orderBy')"
+              v-model="pagination.sortBy"
+            ></v-select>
+          </v-flex>
+          <v-flex xs6 class="px-0" style="height: 50px;">
+            <v-radio-group v-model="currentOrderMode" row>
+              <v-radio
+                v-for="(item, index) in orderMode"
+                :key="index"
+                :label="item.text"
+                :value="item.value"
+              ></v-radio>
+            </v-radio-group>
+          </v-flex>
+
+          <v-flex xs12 class="mt-2">
+            <v-divider></v-divider>
+          </v-flex>
+        </template>
       </v-card-title>
 
       <!-- 数据表格 -->

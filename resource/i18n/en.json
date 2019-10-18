@@ -41,7 +41,12 @@
       "setDefault": "Set Default",
       "cancelDefault": "Cancel Default",
       "search": "Search",
-      "color": "Color"
+      "color": "Color",
+      "orderBy": "Order By",
+      "orderMode": {
+        "asc": "ASC",
+        "desc": "DESC"
+      }
     },
     "topbar": {
       "title": "@:(app.name)",
