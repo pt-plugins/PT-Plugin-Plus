@@ -159,10 +159,18 @@ export default Vue.extend({
         return;
       }
       let options = this.downloadOptions;
+      let host = options.host;
+      if (!host && options.site) {
+        host = options.site.host;
+      }
 
-      let items = this.getSiteContentMenus(options.host);
+      if (!host) {
+        return;
+      }
+
+      this.site = options.site || this.getSiteFromHost(host);
+      let items = this.getSiteContentMenus(host);
       let menus: any[] = [];
-      this.site = options.site || this.getSiteFromHost(options.host);
 
       items.forEach((item: any) => {
         if (item.client && item.client.name) {
