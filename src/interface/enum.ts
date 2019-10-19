@@ -268,7 +268,8 @@ export enum EPaginationKey {
 
 export enum EViewKey {
   home = "home",
-  downloadPaths = "downloadPaths"
+  downloadPaths = "downloadPaths",
+  searchTorrent = "searchTorrent"
 }
 
 /**

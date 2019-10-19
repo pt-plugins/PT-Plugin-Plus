@@ -5,12 +5,13 @@
     :small="small"
     :loading="loading"
     :color="color"
+    :disabled="disabled"
     @click.stop="showContentMenus"
   >
     <v-icon v-if="haveSuccess" color="success" small>done</v-icon>
     <v-icon v-else-if="haveError" color="red" small>close</v-icon>
     <v-icon v-else small :title="$t('collection.addToGroup')">{{ iconText }}</v-icon>
-    {{ label }}
+    <span class="ml-2">{{ label }}</span>
   </v-btn>
 </template>
 <script lang="ts">
@@ -20,10 +21,13 @@ import {
   EAction,
   ICollection,
   ICollectionGroup,
-  ECommonKey
+  ECommonKey,
+  BASE_COLORS
 } from "@/interface/common";
 
 import { PPF } from "@/service/public";
+import Extension from "@/service/extension";
+const extension = new Extension();
 
 export default Vue.extend({
   props: {
@@ -32,15 +36,9 @@ export default Vue.extend({
     small: Boolean,
     iconText: {
       type: String,
-      default: "add"
+      default: "favorite_border"
     },
-    item: {
-      type: Object,
-      default: () => {
-        return {} as ICollection;
-      }
-    },
-    groups: Array,
+
     color: {
       type: String,
       default: "success"
@@ -48,7 +46,9 @@ export default Vue.extend({
     label: {
       type: String,
       default: ""
-    }
+    },
+
+    disabled: Boolean
   },
 
   data() {
@@ -57,7 +57,8 @@ export default Vue.extend({
       contentMenus: [] as any[],
       loading: false,
       haveSuccess: false,
-      haveError: false
+      haveError: false,
+      groups: [] as ICollectionGroup[]
     };
   },
 
@@ -68,26 +69,45 @@ export default Vue.extend({
      * @param event
      */
     showContentMenus(event?: any) {
-      let menus: any[] = [];
-      let groups: string[] = PPF.clone(this.item.groups || []);
-      groups.push(ECommonKey.all);
-      groups.push(ECommonKey.noGroup);
-      this.groups.forEach((group: any) => {
-        if (group.id && group.name && !groups.includes(group.id)) {
+      extension.sendRequest(EAction.getTorrentCollectionGroups).then(result => {
+        this.groups = result;
+        let menus: any[] = [];
+
+        this.groups.forEach((group: any) => {
           menus.push({
             title: group.name,
             fn: () => {
-              this.$emit("add", this.item, group);
+              this.$emit("add", group);
             }
           });
-        }
+        });
+
+        menus.push({});
+        menus.push({
+          title: this.$t("collection.addGroup"),
+          fn: () => {
+            this.createGroup();
+          }
+        });
+
+        PPF.showContextMenu(menus, event);
       });
+    },
 
-      if (menus.length == 0) {
-        return;
+    createGroup() {
+      let name = window.prompt(this.$t("collection.inputGroupName").toString());
+      if (name) {
+        extension
+          .sendRequest(EAction.addTorrentCollectionGroup, null, {
+            name,
+            color: BASE_COLORS[Math.floor(Math.random() * BASE_COLORS.length)]
+          })
+          .then(result => {
+            if (result) {
+              this.$emit("add", result[result.length - 1]);
+            }
+          });
       }
-
-      PPF.showContextMenu(menus, event);
     },
 
     clearStatus() {

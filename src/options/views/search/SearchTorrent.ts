@@ -21,7 +21,9 @@ import {
   ECommonKey,
   ERequestMethod,
   ISearchPayload,
-  EResourceOrderMode
+  EResourceOrderMode,
+  ICollectionGroup,
+  EViewKey
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import dayjs from "dayjs";
@@ -30,6 +32,7 @@ import * as basicContext from "basiccontext";
 import { PathHandler } from "@/service/pathHandler";
 import MovieInfoCard from "@/options/components/MovieInfoCard.vue";
 import TorrentProgress from "@/options/components/TorrentProgress.vue";
+import AddToCollectionGroup from "./AddToCollectionGroup.vue";
 import Actions from "./Actions.vue";
 import { PPF } from "@/service/public";
 
@@ -47,7 +50,8 @@ export default Vue.extend({
   components: {
     MovieInfoCard,
     TorrentProgress,
-    Actions
+    Actions,
+    AddToCollectionGroup
   },
   data() {
     return {
@@ -137,6 +141,13 @@ export default Vue.extend({
         rowsPerPage: 100
       }
     );
+
+    let viewOptions = this.$store.getters.viewsOptions(EViewKey.searchTorrent, {
+      checkBox: false,
+      showCategory: false
+    });
+    Object.assign(this, viewOptions);
+
     this.loadTorrentCollections();
   },
   mounted() {
@@ -1605,20 +1616,38 @@ export default Vue.extend({
         }
       };
     },
-    addToCollection(item: any) {
+    addSelectedToCollection(group: ICollectionGroup) {
+      this.selected.forEach((item: SearchResultItem) => {
+        if (item.url) {
+          this.addToCollection(item, group);
+        }
+      });
+    },
+    /**
+     * 添加到收藏
+     * @param item 当前种子相关信息
+     * @param group 收藏分组信息
+     */
+    addToCollection(item: any, group?: ICollectionGroup) {
+      let options: any = {
+        title: item.title,
+        url: item.url,
+        link: item.link,
+        host: item.site.host,
+        size: item.size,
+        subTitle: item.subTitle,
+        movieInfo: {
+          imdbId: this.IMDbId || this.searchPayload.imdbId,
+          doubanId: this.searchPayload.doubanId
+        }
+      };
+
+      if (group && group.id) {
+        options.groups = [group.id];
+      }
+
       extension
-        .sendRequest(EAction.addTorrentToCollection, null, {
-          title: item.title,
-          url: item.url,
-          link: item.link,
-          host: item.site.host,
-          size: item.size,
-          subTitle: item.subTitle,
-          movieInfo: {
-            imdbId: this.IMDbId || this.searchPayload.imdbId,
-            doubanId: this.searchPayload.doubanId
-          }
-        })
+        .sendRequest(EAction.addTorrentToCollection, null, options)
         .then(result => {
           this.loadTorrentCollections();
           console.log(result);
@@ -1686,6 +1715,16 @@ export default Vue.extend({
 
     downloadError(msg: string) {
       this.errorMsg = msg;
+    },
+
+    updateViewOptions() {
+      this.$store.dispatch("updateViewOptions", {
+        key: EViewKey.searchTorrent,
+        options: {
+          checkBox: this.checkBox,
+          showCategory: this.showCategory
+        }
+      });
     }
   },
   computed: {
