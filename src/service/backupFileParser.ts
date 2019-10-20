@@ -68,6 +68,14 @@ export class BackupFileParser {
           zip.file("cookies.json", JSON.stringify(rawData.cookies));
         }
 
+        // 搜索结果快照
+        if (rawData.searchResultSnapshot) {
+          zip.file(
+            "searchResultSnapshot.json",
+            JSON.stringify(rawData.searchResultSnapshot)
+          );
+        }
+
         zip.generateAsync({ type: "blob" }).then((blob: any) => {
           resolve(blob);
         });
@@ -97,6 +105,10 @@ export class BackupFileParser {
           if (zip.file("cookies.json")) {
             requests.push(zip.file("cookies.json").async("text"));
           }
+
+          if (zip.file("searchResultSnapshot.json")) {
+            requests.push(zip.file("searchResultSnapshot.json").async("text"));
+          }
           return Promise.all(requests);
         })
         .then(results => {
@@ -112,6 +124,10 @@ export class BackupFileParser {
 
           if (results.length > 4) {
             result["cookies"] = JSON.parse(results[4]);
+          }
+
+          if (results.length > 5) {
+            result["searchResultSnapshot"] = JSON.parse(results[5]);
           }
 
           if (this.checkData(result.manifest, results[1] + results[2])) {

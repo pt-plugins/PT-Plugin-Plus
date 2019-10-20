@@ -341,6 +341,7 @@ export interface SearchResultItem {
   progress?: number;
   // 状态
   status?: number;
+  host?: string;
 }
 
 /**
@@ -568,4 +569,20 @@ export interface IWorkingStatusItem {
   key: string;
   status?: EWorkingStatus;
   title: string;
+}
+
+export interface ISearchResultSnapshot {
+  id: string;
+  key: string;
+  time: number;
+  searchPayload?: ISearchPayload;
+  result: SearchResultItem[];
+}
+
+export interface IBackupRawData {
+  options: any;
+  userData: any;
+  collection: any;
+  cookies?: any;
+  searchResultSnapshot?: any;
 }

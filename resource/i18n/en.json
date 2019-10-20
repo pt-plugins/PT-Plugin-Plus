@@ -61,7 +61,8 @@
         "title": "Overview",
         "searchResults": "Search Results",
         "history": "Download History",
-        "collection": "Collection"
+        "collection": "Collection",
+        "searchResultSnapshot": "Search Result Snapshot"
       },
       "settings": {
         "title": "Settings",
@@ -354,6 +355,7 @@
         "restoreAll": "Restore All",
         "restoreCollection": "Restore Collection Only",
         "restoreCookies": "Restore Cookies Only",
+        "restoreSearchResultSnapshot": "Restore Search Result Snapshot Only",
         "contentNotExist": {
           "cookies": "Cookies not exist in the backup file",
           "collection": "Collection not exists in the backup file"
@@ -362,7 +364,8 @@
           "base": "General",
           "userDatas": "User Datas",
           "collection": "Collection",
-          "cookies": "Cookies"
+          "cookies": "Cookies",
+          "searchResultSnapshot": "Search Result Snapshot"
         }
       },
       "base": {
@@ -843,6 +846,21 @@
         "size": "Size",
         "time": "Add time",
         "action": "Action"
+      }
+    },
+    "searchResultSnapshot": {
+      "title": "Search Result Snapshot",
+      "show": "Show Snapshot",
+      "removeConfirmTitle": "Delete confirmation",
+      "removeConfirm": "Are you sure you want to delete this Snapshot?",
+      "clearConfirm": "Are you sure you want to delete all Snapshot?",
+      "create": "Create Snapshot",
+      "createSuccess": "Create Snapshot Success",
+      "createError": "Create Snapshot Error",
+      "snapshotTime": "Snapshot Time: {time}",
+      "headers": {
+        "key": "Search Key",
+        "time": "Time"
       }
     }
   }

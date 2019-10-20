@@ -208,7 +208,19 @@ export enum EAction {
   // 获取备份文件原始数据
   getBackupRawData = "getBackupRawData",
   // 测试备份服务器是否可连接
-  testBackupServerConnectivity = "testBackupServerConnectivity"
+  testBackupServerConnectivity = "testBackupServerConnectivity",
+  // 创建搜索结果快照
+  createSearchResultSnapshot = "createSearchResultSnapshot",
+  // 加载搜索结果快照
+  loadSearchResultSnapshot = "loadSearchResultSnapshot",
+  // 获取搜索结果快照内容
+  getSearchResultSnapshot = "getSearchResultSnapshot",
+  // 删除搜索结果快照
+  removeSearchResultSnapshot = "removeSearchResultSnapshot",
+  // 清除搜索结果快照
+  clearSearchResultSnapshot = "clearSearchResultSnapshot",
+  // 重置搜索结果快照
+  resetSearchResultSnapshot = "resetSearchResultSnapshot"
 }
 
 /**
@@ -229,7 +241,8 @@ export enum EConfigKey {
   uiOptions = "PT-Plugin-Plus-uiOptions",
   cache = "PT-Plugin-Plus-Cache-Contents",
   userDatas = "PT-Plugin-Plus-User-Datas",
-  collection = "PT-Plugin-Plus-Collection"
+  collection = "PT-Plugin-Plus-Collection",
+  searchResultSnapshot = "PT-Plugin-Plus-SearchResultSnapshot"
 }
 
 /**
@@ -355,7 +368,8 @@ export enum ERestoreContent {
   options = "options",
   userDatas = "userDatas",
   collection = "collection",
-  cookies = "cookies"
+  cookies = "cookies",
+  searchResultSnapshot = "searchResultSnapshot"
 }
 
 export enum EBrowserType {

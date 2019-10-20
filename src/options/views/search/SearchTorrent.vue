@@ -374,6 +374,18 @@
           {{ $t('searchTorrent.downloadFailed') }} ({{downloadFailedTorrents.length}})
         </v-btn>
 
+        <!-- 保存搜索结果快照 -->
+        <v-btn
+          :disabled="loading || !datas.length"
+          color="success"
+          small
+          :title="$t('searchResultSnapshot.create')"
+          @click.stop="createSearchResultSnapshot()"
+        >
+          <v-icon class="mr-2" small>add_a_photo</v-icon>
+          {{$t('searchResultSnapshot.create')}}
+        </v-btn>
+
         <!-- 设置 -->
         <v-menu :close-on-content-click="false" offset-y class="ml-2">
           <template v-slot:activator="{ on }">

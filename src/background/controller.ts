@@ -1260,4 +1260,28 @@ export default class Controller {
   public testBackupServerConnectivity(options: any): Promise<any> {
     return this.service.config.testBackupServerConnectivity(options);
   }
+
+  public createSearchResultSnapshot(options: any): Promise<any> {
+    return this.service.searchResultSnapshot.add(options);
+  }
+
+  public getSearchResultSnapshot(id: string): Promise<any> {
+    return this.service.searchResultSnapshot.get(id);
+  }
+
+  public loadSearchResultSnapshot(): Promise<any> {
+    return this.service.searchResultSnapshot.load();
+  }
+
+  public removeSearchResultSnapshot(options: any): Promise<any> {
+    return this.service.searchResultSnapshot.remove(options);
+  }
+
+  public clearSearchResultSnapshot(): Promise<any> {
+    return this.service.searchResultSnapshot.clear();
+  }
+
+  public resetSearchResultSnapshot(datas: any): Promise<any> {
+    return this.service.searchResultSnapshot.reset(datas);
+  }
 }

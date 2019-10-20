@@ -108,6 +108,20 @@ export default Vue.extend({
         }
       });
 
+      menus.push({});
+
+      menus.push({
+        title: this.$t("settings.backup.restoreSearchResultSnapshot"),
+        fn: () => {
+          this.$emit(
+            "download",
+            this.server,
+            item,
+            ERestoreContent.searchResultSnapshot
+          );
+        }
+      });
+
       PPF.showContextMenu(menus, event);
     }
   }

@@ -50,7 +50,7 @@
     },
     "topbar": {
       "title": "@:(app.name)",
-      "navBarTip": "点击显示\/隐藏导航栏",
+      "navBarTip": "点击显示/隐藏导航栏",
       "help": "使用帮助",
       "github": "访问 Github",
       "showNewTorrents": "获取各站第一页种子",
@@ -61,7 +61,8 @@
         "title": "概览",
         "searchResults": "搜索结果",
         "history": "下载历史",
-        "collection": "我的收藏"
+        "collection": "我的收藏",
+        "searchResultSnapshot": "搜索结果快照"
       },
       "settings": {
         "title": "参数设置",
@@ -169,7 +170,7 @@
         "ratio": "分享率",
         "seeding": "做种数",
         "seedingSize": "做种体积",
-        "bonus": "魔力值\/积分",
+        "bonus": "魔力值/积分",
         "joinTime": "入站时间",
         "lastUpdateTime": "数据更新于",
         "status": "状态"
@@ -251,7 +252,7 @@
       "headers": {
         "site": "站点",
         "title": "标题",
-        "category": "分类\/入口",
+        "category": "分类/入口",
         "size": "大小",
         "seeders": "上传",
         "leechers": "下载",
@@ -348,12 +349,13 @@
           },
           "getFileListError": "获取备份文件失败，请确认网络和备份服务器是否可用",
           "owss": {
-            "addressTip": "完整的服务器地址，如：http:\/\/192.168.1.1:8088\/storage"
+            "addressTip": "完整的服务器地址，如：http://192.168.1.1:8088/storage"
           }
         },
         "restoreAll": "恢复所有设置",
         "restoreCollection": "仅恢复收藏数据",
         "restoreCookies": "仅恢复站点Cookies",
+        "restoreSearchResultSnapshot": "仅恢复搜索结果快照",
         "contentNotExist": {
           "cookies": "备份文件中不存在Cookies",
           "collection": "备份文件中不存在收藏信息"
@@ -362,7 +364,8 @@
           "base": "常规设置",
           "userDatas": "站点数据",
           "collection": "我的收藏",
-          "cookies": "Cookies"
+          "cookies": "Cookies",
+          "searchResultSnapshot": "搜索结果快照"
         }
       },
       "base": {
@@ -448,7 +451,7 @@
           "name": "服务器名称",
           "type": "服务器类型",
           "address": "服务器地址",
-          "addressTip": "完整的服务器地址（含端口），如：http:\/\/192.168.1.1:5000\/",
+          "addressTip": "完整的服务器地址（含端口），如：http://192.168.1.1:5000/",
           "loginName": "登录名",
           "loginPwd": "登录密码",
           "id": "ID",
@@ -522,7 +525,7 @@
           "siteHost": "将被替换为当前站点域名；",
           "example": "例：",
           "dynamic": "将会弹出输入框，由用户输入路径中 {key} 部分内容；",
-          "dynamicExample": "例：\/volume1\/<...> ，输入：test，结果 \/volume1\/test"
+          "dynamicExample": "例：/volume1/<...> ，输入：test，结果 /volume1/test"
         }
       },
       "searchSolution": {
@@ -561,13 +564,13 @@
           "defaultClient": "默认下载服务器",
           "name": "插件名称",
           "pages": "适用页面",
-          "pagesTip": "页面以'\/'开始表示网站根目录，输入完成后按回车添加，可添加多个，可以是正则表达式",
+          "pagesTip": "页面以'/'开始表示网站根目录，输入完成后按回车添加，可添加多个，可以是正则表达式",
           "scripts": "附加脚本文件",
-          "scriptsTip": "\/ 表示从资源目录根加载脚本，可添加多个",
+          "scriptsTip": "/ 表示从资源目录根加载脚本，可添加多个",
           "script": "JS脚本",
           "style": "附加样式",
           "styles": "附加样式文件",
-          "stylesTip": "\/ 表示从资源目录根加载脚本，可添加多个"
+          "stylesTip": "/ 表示从资源目录根加载脚本，可添加多个"
         },
         "index": {
           "title": "站点插件配置",
@@ -608,7 +611,7 @@
           "description": "网站描述",
           "host": "域名",
           "url": "网站地址",
-          "urlTip": "网站完整地址，如：https:\/\/www.github.com\/",
+          "urlTip": "网站完整地址，如：https://www.github.com/",
           "passkey": "密钥",
           "passkeyTip": "密钥仅用于复制下载地址操作，如果不需要用到此功能，请留空",
           "allowSearch": "允许搜索",
@@ -617,7 +620,7 @@
           "cdnTip": "如您使用的网址和系统定义的不同，可在此填写当前使用的网站地址，每行填写一个地址，第一个将做为搜索时使用的地址",
           "priority": "优先级",
           "priorityTip": "可用于搜索排序",
-          "offline": "站点已离线（停机\/关闭）"
+          "offline": "站点已离线（停机/关闭）"
         },
         "index": {
           "importAll": "一键导入站点",
@@ -843,6 +846,21 @@
         "size": "大小",
         "time": "添加时间",
         "action": "操作"
+      }
+    },
+    "searchResultSnapshot": {
+      "title": "搜索结果快照",
+      "show": "查看快照",
+      "removeConfirmTitle": "删除快照确认",
+      "removeConfirm": "确认要删除这个快照吗？",
+      "clearConfirm": "确认要清除所有快照吗？",
+      "create": "创建快照",
+      "createSuccess": "快照创建完成",
+      "createError": "快照创建失败",
+      "snapshotTime": "快照时间: {time}",
+      "headers": {
+        "key": "搜索内容",
+        "time": "时间"
       }
     }
   }

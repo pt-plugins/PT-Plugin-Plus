@@ -3,21 +3,23 @@
   <v-navigation-drawer clipped fixed v-model="drawer" app>
     <v-list v-for="(group,index) in navs" :key="index" dense>
       <v-subheader v-if="group.title" class="grey--text text--darken-1">{{ $t(group.title) }}</v-subheader>
-      <v-list-tile
-        :to="item.key"
-        v-for="(item, index) in group.items"
-        :key="index"
-        :href="item.url"
-        :target="item.url?'_blank':''"
-        rel="noopener noreferrer nofollow"
-      >
-        <v-list-tile-action class="ml-3">
-          <v-icon>{{item.icon}}</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>{{ $t(item.title) }}</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+      <template v-for="(item, index) in group.items">
+        <v-list-tile
+          v-if="item.visible!==false"
+          :to="item.key"
+          :key="index"
+          :href="item.url"
+          :target="item.url?'_blank':''"
+          rel="noopener noreferrer nofollow"
+        >
+          <v-list-tile-action class="ml-3">
+            <v-icon>{{item.icon}}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ $t(item.title) }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </template>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -56,6 +58,11 @@ export default Vue.extend({
               title: "navigation.dashboard.searchResults",
               icon: "search",
               key: "/search-torrent"
+            },
+            {
+              title: "navigation.dashboard.searchResultSnapshot",
+              icon: "add_a_photo",
+              key: "/search-result-snapshot"
             },
             {
               title: "navigation.dashboard.history",

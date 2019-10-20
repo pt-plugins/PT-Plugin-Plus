@@ -12,7 +12,8 @@ import {
   IBackupServer,
   EBackupServerType,
   EUserDataRange,
-  EPluginPosition
+  EPluginPosition,
+  IBackupRawData
 } from "@/interface/common";
 import { API, APP } from "@/service/api";
 import localStorage from "@/service/localStorage";
@@ -710,14 +711,15 @@ class Config {
 
         delete rawOptions.system;
 
-        let rawData = {
+        let rawData: IBackupRawData = {
           options: rawOptions,
           userData: rawUserData,
           collection: {
             items: this.service.collection.items,
             groups: this.service.collection.groups
           },
-          cookies: undefined
+          cookies: undefined,
+          searchResultSnapshot: this.service.searchResultSnapshot.items
         };
 
         // 是否备份站点 Cookies

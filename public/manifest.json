@@ -18,7 +18,8 @@
 		"contextMenus",
 		"notifications",
 		"http://*/*",
-		"https://*/*"
+		"https://*/*",
+		"unlimitedStorage"
 	],
 	"optional_permissions": ["tabs", "downloads", "cookies"],
 	"icons": {

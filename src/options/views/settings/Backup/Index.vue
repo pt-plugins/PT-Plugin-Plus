@@ -636,6 +636,36 @@ export default Vue.extend({
             return;
           }
 
+          // 恢复搜索快照
+          if (
+            infos.searchResultSnapshot &&
+            (restoreContent == ERestoreContent.all ||
+              restoreContent == ERestoreContent.searchResultSnapshot)
+          ) {
+            this.workingStatus.add({
+              key: "searchResultSnapshot",
+              title: this.t("settings.backup.backupItem.searchResultSnapshot")
+            });
+            extension
+              .sendRequest(
+                EAction.resetSearchResultSnapshot,
+                null,
+                infos.searchResultSnapshot
+              )
+              .then(() => {
+                this.workingStatus.update(
+                  "searchResultSnapshot",
+                  EWorkingStatus.success
+                );
+              })
+              .catch(() => {
+                this.workingStatus.update(
+                  "searchResultSnapshot",
+                  EWorkingStatus.error
+                );
+              });
+          }
+
           this.successMsg = this.$t(
             "settings.backup.restoreSuccess"
           ).toString();

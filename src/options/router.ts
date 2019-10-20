@@ -135,6 +135,11 @@ export default new Router({
         // 需要被缓存
         keepAlive: true
       }
+    },
+    {
+      path: "/search-result-snapshot",
+      name: "search-result-snapshot",
+      component: () => import("./views/search/SearchResultSnapshot.vue")
     }
   ]
 });

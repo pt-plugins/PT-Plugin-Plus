@@ -125,7 +125,8 @@ export default Vue.extend({
       torrentCollectionLinks: [] as string[],
       headerOrderClickCount: 0,
 
-      currentOrderMode: EResourceOrderMode.asc
+      currentOrderMode: EResourceOrderMode.asc,
+      rawDatas: [] as any[]
     };
   },
   created() {
@@ -251,6 +252,7 @@ export default Vue.extend({
       this.selected = [];
       this.clearMessage();
       this.datas = [];
+      this.rawDatas = [];
       this.getLinks = [];
       this.searchResult = {
         sites: {},
@@ -303,6 +305,15 @@ export default Vue.extend({
       if (!this.options.sites) {
         this.errorMsg = this.$t("searchTorrent.sitesIsMissing").toString();
         return;
+      }
+
+      // 显示搜索快照
+      if (/(show-snapshot)-([a-z0-9]{32})/.test(this.key)) {
+        let match = this.key.match(/(show-snapshot)-([a-z0-9]{32})/);
+        if (match) {
+          this.loadSearchResultSnapshot(match[2]);
+          return;
+        }
       }
 
       if (searchPayload) {
@@ -697,6 +708,56 @@ export default Vue.extend({
       }
     },
     /**
+     * 创建搜索结果快照
+     */
+    createSearchResultSnapshot() {
+      extension
+        .sendRequest(EAction.createSearchResultSnapshot, null, {
+          key: this.key,
+          searchPayload: this.searchPayload,
+          result: this.rawDatas
+        })
+        .then(result => {
+          this.successMsg = this.$t(
+            "searchResultSnapshot.createSuccess"
+          ).toString();
+          console.log("createSearchResultSnapshot", result);
+        })
+        .catch(() => {
+          this.errorMsg = this.$t(
+            "searchResultSnapshot.createError"
+          ).toString();
+        });
+    },
+    /**
+     * 加载搜索结果快照
+     * @param id 快照ID
+     */
+    loadSearchResultSnapshot(id: string) {
+      this.loading = true;
+      extension
+        .sendRequest(EAction.getSearchResultSnapshot, null, id)
+        .then(data => {
+          console.log("loadSearchResultSnapshot", data);
+          this.key = data.key;
+          this.searchPayload = data.searchPayload;
+          if (this.searchPayload && this.searchPayload.imdbId) {
+            this.IMDbId = this.searchPayload.imdbId;
+          } else if (/^(tt\d+)$/.test(this.key)) {
+            this.IMDbId = this.key;
+          } else {
+            this.IMDbId = "";
+          }
+          this.addSearchResult(PPF.clone(data.result));
+          this.searchMsg = this.$t("searchResultSnapshot.snapshotTime", {
+            time: dayjs(data.time).format("YYYY-MM-DD hh:mm:ss")
+          }).toString();
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
+        });
+    },
+    /**
      * 添加搜索结果，并组织字段格式
      */
     addSearchResult(result: any[]) {
@@ -707,6 +768,12 @@ export default Vue.extend({
       }
 
       result.forEach((item: SearchResultItem) => {
+        let _item = PPF.clone(item);
+        if (_item.site) {
+          _item.host = _item.site.host;
+          delete _item.site;
+        }
+        this.rawDatas.push(_item);
         // 忽略重复的搜索结果
         if (this.getLinks.indexOf(item.link) !== -1) {
           // 跳过本次循环进行下一个元素
@@ -782,6 +849,11 @@ export default Vue.extend({
         this.searchMsg = this.$t("searchTorrent.searchProgress", {
           count: this.datas.length
         }).toString();
+
+        if (!item.site) {
+          let host = item.host || "";
+          item.site = PPF.getSiteFromHost(host, this.options);
+        }
 
         let siteName = item.site.name;
         if (!this.searchResult.sites[siteName]) {
