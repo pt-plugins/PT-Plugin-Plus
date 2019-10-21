@@ -28,6 +28,7 @@ import { APP } from "@/service/api";
 import URLParse from "url-parse";
 import { User } from "./user";
 import { MovieInfoService } from "@/service/movieInfoService";
+import parseTorrent from "parse-torrent";
 
 type Service = PTPlugin;
 export default class Controller {
@@ -853,10 +854,20 @@ export default class Controller {
 
   /**
    * 从指定的链接获取种子文件内容
-   * @param url
+   * @param options
    */
-  public getTorrentDataFromURL(url: string): Promise<any> {
+  public getTorrentDataFromURL(options: string | any): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      let url = "";
+      if (typeof options === "string") {
+        url = options;
+        options = {
+          url,
+          parseTorrent: false
+        };
+      } else {
+        url = options.url;
+      }
       let site = this.getSiteOptionsFromURL(url);
       let requestMethod = ERequestMethod.GET;
       if (site) {
@@ -875,7 +886,22 @@ export default class Controller {
           file.content &&
           /octet-stream|x-bittorrent/gi.test(file.content.type)
         ) {
-          resolve(file.content);
+          // 是否解析种子文件
+          if (options.parseTorrent) {
+            parseTorrent.remote(file.content, (err, torrent) => {
+              if (err) {
+                console.log("parse.error", err);
+                reject(err);
+              } else {
+                resolve({
+                  url,
+                  torrent
+                });
+              }
+            });
+          } else {
+            resolve(file.content);
+          }
         } else {
           // "无效的种子文件"
           reject(

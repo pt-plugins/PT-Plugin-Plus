@@ -18,6 +18,10 @@
     table.v-table tbody tr:nth-child(odd) {
       background-color: #fff;
     }
+
+    table.v-table tbody tr[active='true'] {
+      background-color: #B3E5FC !important;
+    }
   }
 
   .titleCell {

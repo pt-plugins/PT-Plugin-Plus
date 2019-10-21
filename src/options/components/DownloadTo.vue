@@ -12,6 +12,7 @@
     <v-icon v-if="haveSuccess" color="success" small>done</v-icon>
     <v-icon v-else-if="haveError" color="red" small>close</v-icon>
     <v-icon v-else small>{{ iconText }}</v-icon>
+    <span v-if="!!label" class="ml-2">{{ label }}</span>
   </v-btn>
 </template>
 <script lang="ts">
@@ -50,7 +51,9 @@ export default Vue.extend({
           url: String
         };
       }
-    }
+    },
+    getOptionsOnly: Boolean,
+    label: String
   },
 
   data() {
@@ -191,14 +194,28 @@ export default Vue.extend({
             fn: () => {
               if (options.url) {
                 console.log(options, item);
-                this.sendToClient({
+                const downloadOptions = {
                   url: options.url,
                   title: options.title,
                   savePath: item.path,
                   autoStart: item.client.autoStart,
                   link: options.link,
                   clientId: item.client.id
-                });
+                };
+
+                if (this.getOptionsOnly) {
+                  this.$emit(
+                    "itemClick",
+                    Object.assign(
+                      {
+                        clientName: item.client.name
+                      },
+                      downloadOptions
+                    )
+                  );
+                  return;
+                }
+                this.sendToClient(downloadOptions);
               }
             }
           });

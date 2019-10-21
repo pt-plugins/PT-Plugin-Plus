@@ -301,7 +301,7 @@
       <!-- 操作按钮列表 -->
       <div class="mt-3">
         <!-- 保种 -->
-        <KeepUpload :items="selected" />
+        <KeepUpload :items="selected" v-if="selected.length>0" :label="`辅种 (${selected.length})`" />
         <!-- 添加到收藏 -->
         <AddToCollectionGroup
           :disabled="selected.length==0"
