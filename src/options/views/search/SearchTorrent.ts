@@ -35,6 +35,7 @@ import TorrentProgress from "@/options/components/TorrentProgress.vue";
 import AddToCollectionGroup from "./AddToCollectionGroup.vue";
 import Actions from "./Actions.vue";
 import { PPF } from "@/service/public";
+import KeepUpload from "./KeepUpload.vue";
 
 type searchResult = {
   sites: Dictionary<any>;
@@ -51,7 +52,8 @@ export default Vue.extend({
     MovieInfoCard,
     TorrentProgress,
     Actions,
-    AddToCollectionGroup
+    AddToCollectionGroup,
+    KeepUpload
   },
   data() {
     return {
@@ -1298,14 +1300,18 @@ export default Vue.extend({
           ).toString();
         });
     },
-    /**
-     * 复制下载链接到剪切板
-     */
-    copySelectedToClipboard() {
+    getSelectedURLs() {
       let urls: string[] = [];
       this.selected.forEach((item: SearchResultItem) => {
         item.url && urls.push(item.url);
       });
+      return urls;
+    },
+    /**
+     * 复制下载链接到剪切板
+     */
+    copySelectedToClipboard() {
+      let urls: string[] = this.getSelectedURLs();
       this.clearMessage();
       extension
         .sendRequest(EAction.copyTextToClipboard, null, urls.join("\n"))

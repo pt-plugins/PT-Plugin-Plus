@@ -300,6 +300,8 @@
 
       <!-- 操作按钮列表 -->
       <div class="mt-3">
+        <!-- 保种 -->
+        <KeepUpload :items="selected" />
         <!-- 添加到收藏 -->
         <AddToCollectionGroup
           :disabled="selected.length==0"
