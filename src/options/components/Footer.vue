@@ -71,9 +71,23 @@
       </v-list>
     </v-menu>
     <v-btn flat small to="/system-logs" :icon="$vuetify.breakpoint.smAndDown">
-      <v-icon small>bug_report</v-icon>
+      <v-icon small>assignment</v-icon>
       <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">{{ $t("common.systemLog") }}</span>
     </v-btn>
+
+    <v-btn
+      v-if="$vuetify.breakpoint.mdAndUp"
+      flat
+      small
+      href="https://github.com/ronggang/PT-Plugin-Plus/issues"
+      target="_blank"
+      rel="noopener noreferrer nofollow"
+      :title="$t('navigation.support.bugReport')"
+    >
+      <v-icon small>bug_report</v-icon>
+      <span class="ml-1">{{ $t("navigation.support.bugReport") }}</span>
+    </v-btn>
+
     <v-snackbar
       v-model="invalidFile"
       top

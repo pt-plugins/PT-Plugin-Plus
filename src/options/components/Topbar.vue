@@ -1,7 +1,7 @@
 <template>
   <v-toolbar :color="baseColor" app fixed clipped-left>
     <v-toolbar-side-icon @click.stop="drawer = !drawer" :title="$t('topbar.navBarTip')"></v-toolbar-side-icon>
-    <v-toolbar-title style="width: 220px;" class="hidden-sm-and-down">
+    <v-toolbar-title style="width: 220px;" class="hidden-md-and-down">
       <span>{{ $t("topbar.title") }}</span>
     </v-toolbar-title>
     <SearchBox />
@@ -23,19 +23,30 @@
         target="_blank"
         class="grey--text text--darken-2"
         rel="noopener noreferrer nofollow"
+        :title="$t('topbar.github')"
       >
         <v-icon>home</v-icon>
-        <span class="ml-2 hidden-md-and-down">{{ $t("topbar.github") }}</span>
+        <span class="ml-1">{{ $t("topbar.github") }}</span>
       </v-btn>
       <v-btn
         flat
         href="https://github.com/ronggang/PT-Plugin-Plus/wiki"
         target="_blank"
         class="grey--text text--darken-2"
+        :title="$t('topbar.help')"
         rel="noopener noreferrer nofollow"
       >
         <v-icon>help</v-icon>
-        <span class="ml-2 hidden-md-and-down">{{ $t("topbar.help") }}</span>
+        <span class="ml-1">{{ $t("topbar.help") }}</span>
+      </v-btn>
+      <v-btn
+        flat
+        to="/donate"
+        class="grey--text text--darken-2"
+        :title="$t('navigation.support.donate')"
+      >
+        <v-icon>free_breakfast</v-icon>
+        <span class="ml-1">{{ $t("navigation.support.donate") }}</span>
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>

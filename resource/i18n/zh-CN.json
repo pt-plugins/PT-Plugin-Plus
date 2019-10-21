@@ -51,8 +51,8 @@
     "topbar": {
       "title": "@:(app.name)",
       "navBarTip": "点击显示/隐藏导航栏",
-      "help": "使用帮助",
-      "github": "访问 Github",
+      "help": "帮助",
+      "github": "主页",
       "showNewTorrents": "获取各站第一页种子",
       "showNewTorrentsTip": "根据当前方案，搜索各站的第一页种子"
     },
@@ -82,7 +82,7 @@
       "support": {
         "title": "支持本项目",
         "bugReport": "Bug反馈",
-        "donate": "捐助"
+        "donate": "捐赠"
       }
     },
     "permissions": {

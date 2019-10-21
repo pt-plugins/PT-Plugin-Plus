@@ -62,7 +62,7 @@
         "searchResults": "Search Results",
         "history": "Download History",
         "collection": "Collection",
-        "searchResultSnapshot": "Search Result Snapshot"
+        "searchResultSnapshot": "Search Snapshot"
       },
       "settings": {
         "title": "Settings",
@@ -254,9 +254,9 @@
         "title": "Title",
         "category": "Category\/Entrance",
         "size": "Size",
-        "seeders": "Seeders",
-        "leechers": "Leechers",
-        "completed": "Completed/Snatched",
+        "seeders": "S",
+        "leechers": "L",
+        "completed": "C",
         "time": "Time(≈)",
         "action": "Action"
       },

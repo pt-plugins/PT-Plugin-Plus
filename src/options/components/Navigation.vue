@@ -1,6 +1,6 @@
 <template>
   <!-- 导航栏 -->
-  <v-navigation-drawer clipped fixed v-model="drawer" app>
+  <v-navigation-drawer clipped fixed v-model="drawer" app width="220">
     <v-list v-for="(group,index) in navs" :key="index" dense>
       <v-subheader v-if="group.title" class="grey--text text--darken-1">{{ $t(group.title) }}</v-subheader>
       <template v-for="(item, index) in group.items">
@@ -12,7 +12,7 @@
           :target="item.url?'_blank':''"
           rel="noopener noreferrer nofollow"
         >
-          <v-list-tile-action class="ml-3">
+          <v-list-tile-action style="min-width: 42px;margin-left: 13px;">
             <v-icon>{{item.icon}}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
@@ -128,22 +128,6 @@ export default Vue.extend({
               title: "navigation.thanks.specialThanksTo",
               icon: "people",
               key: "/dev-team"
-            }
-          ]
-        },
-        {
-          title: "navigation.support.title",
-          items: [
-            {
-              title: "navigation.support.bugReport",
-              icon: "bug_report",
-              key: "",
-              url: "https://github.com/ronggang/PT-Plugin-Plus/issues"
-            },
-            {
-              title: "navigation.support.donate",
-              icon: "free_breakfast",
-              key: "/donate"
             }
           ]
         }

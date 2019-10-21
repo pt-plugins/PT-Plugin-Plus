@@ -1,5 +1,5 @@
 <template>
-  <div style="display: inline-flex;">
+  <div class="torrent-actions">
     <v-btn
       flat
       icon
@@ -118,3 +118,8 @@ export default Vue.extend({
   }
 });
 </script>
+<style lang="scss" >
+.torrent-actions {
+  display: inline-flex;
+}
+</style>
