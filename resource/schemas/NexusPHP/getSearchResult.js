@@ -357,6 +357,12 @@ if (!"".getQueryString) {
                 .text();
               break;
 
+            case "whu.pt":
+            case "hudbt.hust.edu.cn":
+              subTitle = $('h3', row)
+                .text();
+              break;
+
             default:
               subTitle = "";
               break;
