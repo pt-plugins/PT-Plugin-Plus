@@ -1,18 +1,18 @@
 <template>
   <v-dialog v-model="dialog" persistent scrollable max-width="1024">
     <template v-slot:activator="{ on }">
-      <v-btn color="success" dark v-on="on" small>{{label}}</v-btn>
+      <v-btn color="success" dark v-on="on" small>{{ label || $t('keepUploadTask.keepUpload')}}</v-btn>
     </template>
     <v-card>
       <v-toolbar dark color="blue-grey darken-2">
-        <v-toolbar-title>辅种验证</v-toolbar-title>
+        <v-toolbar-title>{{ $t('keepUploadTask.verification') }}</v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
       <v-card-text style="max-height: 500px;">
         <v-list two-line subheader dense>
           <template v-for="(item, index) in verifiedItems">
-            <v-subheader v-if="index==0" :key="index">基准文件</v-subheader>
-            <v-subheader v-if="index==1" :key="index">辅种文件</v-subheader>
+            <v-subheader v-if="index==0" :key="index">{{ $t('keepUploadTask.baseTorrent') }}</v-subheader>
+            <v-subheader v-if="index==1" :key="index">{{ $t('keepUploadTask.otherTorrent') }}</v-subheader>
             <v-list-tile :key="item.title">
               <v-list-tile-avatar>
                 <v-avatar size="18">
@@ -22,7 +22,7 @@
 
               <v-list-tile-content>
                 <v-list-tile-title>{{ item.data.title }}</v-list-tile-title>
-                <v-list-tile-sub-title>大小：{{ item.data.size | formatSize}}, 文件数：{{ item.torrent?item.torrent.files.length: '-' }}, 状态：{{ item.status }}</v-list-tile-sub-title>
+                <v-list-tile-sub-title>{{ $t('keepUploadTask.size') }}{{ item.data.size | formatSize}}, {{ $t('keepUploadTask.fileCount') }}{{ item.torrent?item.torrent.files.length: '-' }}, {{ $t('keepUploadTask.status.label') }}{{ item.status }}</v-list-tile-sub-title>
               </v-list-tile-content>
 
               <v-list-tile-action>
@@ -37,29 +37,51 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <template v-if="items.length>0">
+        <template v-if="verifiedCount>1">
           <DownloadTo
             flat
             get-options-only
-            :label="downloadOptions?`${downloadOptions.clientName} -> ${downloadOptions.savePath}`:'设置保存路径'"
+            :label="downloadOptions?`${downloadOptions.clientName} -> ${downloadOptions.savePath}`: $t('keepUploadTask.setSavePath')"
             @itemClick="setDownloadOptions"
             :downloadOptions="items[0]"
           />
-          <v-btn flat @click="create" v-if="downloadOptions && verifiedItems.length>0">生成辅种任务</v-btn>
+          <v-btn
+            flat
+            @click="create"
+            v-if="downloadOptions && verifiedItems.length>0"
+            :loading="creating"
+            color="info"
+          >
+            <v-icon>date_range</v-icon>
+            <span class="ml-2">{{ $t('keepUploadTask.create') }}</span>
+          </v-btn>
         </template>
 
         <v-spacer></v-spacer>
-        <v-btn color="error" flat @click="dialog = false">关闭</v-btn>
+        <v-btn color="error" flat @click="dialog = false">{{ $t('common.close') }}</v-btn>
       </v-card-actions>
     </v-card>
+
+    <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
+    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{ successMsg }}</v-snackbar>
   </v-dialog>
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { SearchResultItem, EAction } from "@/interface/common";
+import { SearchResultItem, EAction, IKeepUploadTask } from "@/interface/common";
 import DownloadTo from "@/options/components/DownloadTo.vue";
 import Extension from "@/service/extension";
+import { PPF } from "@/service/public";
 const extension = new Extension();
+
+interface IVerifiedItem {
+  data: any;
+  torrent: any;
+  loading: boolean;
+  verified: boolean;
+  status: string;
+  error: boolean;
+}
 
 export default Vue.extend({
   components: {
@@ -72,14 +94,17 @@ export default Vue.extend({
       baseTorrent: null as any,
       loading: false,
       verifiedItems: [] as any[],
-      downloadOptions: null as any
+      downloadOptions: null as any,
+      creating: false,
+      errorMsg: "",
+      haveError: false,
+      haveSuccess: false,
+      successMsg: "",
+      verifiedCount: 0
     };
   },
   props: {
-    label: {
-      type: String,
-      default: "辅种"
-    },
+    label: String,
     items: {
       type: Array as () => SearchResultItem[],
       default: () => {
@@ -93,31 +118,76 @@ export default Vue.extend({
       if (this.dialog) {
         this.start();
       }
+    },
+    successMsg() {
+      this.haveSuccess = this.successMsg != "";
+    },
+    errorMsg() {
+      this.haveError = this.errorMsg != "";
     }
   },
   methods: {
     setDownloadOptions(options: any) {
       console.log(options);
-      this.downloadOptions = options;
+      this.downloadOptions = options.downloadOptions;
     },
+    /**
+     * 生成辅种任务
+     */
     create() {
       if (this.verifiedItems.length == 0 || !this.downloadOptions) {
         return;
       }
-      let result = {
+      this.creating = true;
+      let task = {
         title: this.verifiedItems[0].data.title,
+        size: this.verifiedItems[0].data.size,
         downloadOptions: this.downloadOptions,
-        items: this.verifiedItems.filter((item: any) => {
-          return item.verified === true;
-        })
+        items: [] as any[]
       };
 
-      console.log(result);
+      let items: any[] = [];
+
+      this.verifiedItems.forEach((item: IVerifiedItem) => {
+        if (item.verified) {
+          let _item = PPF.clone(item);
+          if (_item.data.site) {
+            _item.data.host = _item.data.site.host;
+            delete _item.data.site;
+          }
+          items.push(_item.data);
+        }
+      });
+
+      if (items.length == 0) {
+        this.errorMsg = this.$t("keepUploadTask.noItem").toString();
+        this.creating = false;
+        return;
+      }
+
+      task.items = items;
+
+      console.log(task);
+
+      extension
+        .sendRequest(EAction.createKeepUploadTask, null, task)
+        .then(result => {
+          this.successMsg = this.$t("keepUploadTask.createSuccess").toString();
+          setTimeout(() => {
+            this.creating = false;
+            this.dialog = false;
+          }, 3000);
+          console.log("createKeepUploadTask", result);
+        })
+        .catch(() => {
+          this.creating = false;
+          this.errorMsg = this.$t("keepUploadTask.createError").toString();
+        });
     },
     start() {
-      let requests: Promise<any>[] = [];
       this.baseTorrent = null;
       this.verifiedItems = [];
+      this.verifiedCount = 0;
 
       this.items.forEach((item: SearchResultItem, index: number) => {
         if (item.url) {
@@ -126,49 +196,67 @@ export default Vue.extend({
             torrent: null,
             loading: true,
             verified: false,
-            status: "正在下载"
+            status: this.$t("keepUploadTask.status.downloading").toString()
           });
-          requests.push(this.getTorrent(item.url, index));
+          // requests.push(this.getTorrent(item.url, index));
+          this.getTorrent(item.url, index)
+            .then((result: any) => {
+              this.verification(result, index);
+            })
+            .catch(() => {
+              this.verification(null, index);
+            });
         }
       });
-
-      Promise.all(requests)
-        .then(results => {
-          this.verification(results);
-        })
-        .catch(error => {
-          console.log(error);
-        });
     },
     /**
      * 验证
      */
-    verification(items: any[]) {
-      if (items.length == 1) {
-        this.verified = true;
-        return;
-      }
+    verification(item: IVerifiedItem | null, index: number) {
+      if (index == 0) {
+        if (!this.baseTorrent) {
+          this.baseTorrent = item;
 
-      if (!this.baseTorrent) {
-        this.baseTorrent = items[0];
-      }
-
-      const baseTorrent = this.baseTorrent.torrent;
-
-      this.verifiedItems[0].loading = false;
-      this.verifiedItems[0].torrent = baseTorrent;
-      this.verifiedItems[0].verified = true;
-      this.verifiedItems[0].status = "下载完成";
-
-      for (let i = 1; i < items.length; i++) {
-        const item = items[i];
-        const torrent = item.torrent;
-
+          this.verifiedItems[0].loading = false;
+          if (item) {
+            this.verifiedItems[0].torrent = this.baseTorrent.torrent;
+            this.verifiedItems[0].verified = true;
+            this.verifiedItems[0].status = this.$t(
+              "keepUploadTask.status.downloaded"
+            ).toString();
+            this.verifiedCount++;
+          } else {
+            this.verifiedItems[0].verified = false;
+          }
+        }
+      } else {
+        // 如果基准种子未下载完成，则等待
+        if (this.verifiedItems[0].loading) {
+          setTimeout(() => {
+            this.verification(item, index);
+          }, 200);
+          return;
+        }
         let result: any = {
           verified: false,
-          torrent,
+          torrent: null,
           loading: false
         };
+
+        if (!this.verifiedItems[0].verified) {
+          result.status = this.$t("keepUploadTask.status.failed").toString();
+        }
+
+        if (!item || !this.verifiedItems[0].verified) {
+          this.verifiedItems[index] = Object.assign(
+            this.verifiedItems[index],
+            result
+          );
+          return;
+        }
+
+        const torrent = item.torrent;
+        const baseTorrent = this.baseTorrent.torrent;
 
         // 验证名称、长度、及文件列表内容是否相同
         if (
@@ -187,9 +275,19 @@ export default Vue.extend({
           );
         }
 
-        result.status = result.verified ? "校验成功" : "校验失败";
+        result.torrent = torrent;
+        if (result.verified) {
+          this.verifiedCount++;
+        }
 
-        this.verifiedItems[i] = Object.assign(this.verifiedItems[i], result);
+        result.status = result.verified
+          ? this.$t("keepUploadTask.status.success").toString()
+          : this.$t("keepUploadTask.status.failed").toString();
+
+        this.verifiedItems[index] = Object.assign(
+          this.verifiedItems[index],
+          result
+        );
       }
     },
     /**
@@ -204,14 +302,23 @@ export default Vue.extend({
           })
           .then(result => {
             console.log(result);
-            this.verifiedItems[index].status = "等待校验";
+            this.verifiedItems[index].status = this.$t(
+              "keepUploadTask.status.waiting"
+            ).toString();
             resolve(result);
           })
           .catch(result => {
-            this.verifiedItems[index].status = "下载失败";
+            this.verifiedItems[index].status = this.$t(
+              "keepUploadTask.status.failed"
+            ).toString();
+            this.verifiedItems[index].error = true;
             reject(result);
           });
       });
+    },
+    clearMessage() {
+      this.successMsg = "";
+      this.errorMsg = "";
     }
   }
 });

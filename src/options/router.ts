@@ -140,6 +140,11 @@ export default new Router({
       path: "/search-result-snapshot",
       name: "search-result-snapshot",
       component: () => import("./views/search/SearchResultSnapshot.vue")
+    },
+    {
+      path: "/keep-upload-task",
+      name: "keep-upload-task",
+      component: () => import("./views/keepUpload/KeepUploadTasks.vue")
     }
   ]
 });

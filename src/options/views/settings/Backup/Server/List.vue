@@ -122,6 +122,20 @@ export default Vue.extend({
         }
       });
 
+      menus.push({});
+
+      menus.push({
+        title: this.$t("settings.backup.restoreKeepUploadTask"),
+        fn: () => {
+          this.$emit(
+            "download",
+            this.server,
+            item,
+            ERestoreContent.keepUploadTask
+          );
+        }
+      });
+
       PPF.showContextMenu(menus, event);
     }
   }

@@ -1,0 +1,381 @@
+<template>
+  <div>
+    <v-alert :value="true" type="info">{{ $t("keepUploadTask.title") }}</v-alert>
+    <v-card>
+      <v-card-title>
+        <v-btn color="error" :disabled="selected.length==0">
+          <v-icon class="mr-2">remove</v-icon>
+          {{ $t("common.remove") }}
+        </v-btn>
+
+        <v-btn color="error" @click="clear" :disabled="items.length==0">
+          <v-icon class="mr-2">clear</v-icon>
+          {{ $t("common.clear") }}
+        </v-btn>
+        <v-spacer></v-spacer>
+
+        <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+      </v-card-title>
+
+      <v-data-table
+        v-model="selected"
+        :headers="headers"
+        :items="items"
+        :pagination.sync="pagination"
+        item-key="id"
+        select-all
+        class="elevation-1"
+      >
+        <template slot="items" slot-scope="props">
+          <tr @click="props.expanded = !props.expanded">
+            <td style="width:20px;">
+              <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+            </td>
+            <td class="text-xs-center">
+              <v-avatar size="18">
+                <img :src="props.item.site.icon" />
+              </v-avatar>
+              <br />
+              <span class="caption">{{ props.item.site.name }}</span>
+            </td>
+            <!-- 标题 -->
+            <td class="py-2">
+              <a
+                class="subheading"
+                :href="props.item.items[0].link"
+                target="_blank"
+                v-html="props.item.title"
+                :title="props.item.title"
+                rel="noopener noreferrer nofollow"
+              ></a>
+              <div class="body-1 mb-2">
+                <span v-if="props.item.items[0].subTitle">{{props.item.items[0].subTitle}}</span>
+              </div>
+
+              <div class="caption">
+                {{ $t("keepUploadTask.savePath") }}{{ props.item.downloadOptions.clientName }} -> {{ props.item.downloadOptions.savePath || $t("keepUploadTask.defaultPath")}}
+                <DownloadTo
+                  flat
+                  icon
+                  :title="$t('keepUploadTask.setSavePath')"
+                  iconText="edit"
+                  get-options-only
+                  @itemClick="setDownloadOptions"
+                  :payload="props.item"
+                  :downloadOptions="props.item.items[0]"
+                />
+              </div>
+              <div
+                class="caption"
+              >{{ $t('keepUploadTask.torrentCount') }}{{ props.item.items.length }}</div>
+            </td>
+            <!-- 大小 -->
+            <td class="text-xs-right">{{ props.item.size | formatSize }}</td>
+            <td>{{ props.item.time | formatDate }}</td>
+            <td>
+              <v-btn
+                small
+                color="success"
+                icon
+                flat
+                :title="$t('keepUploadTask.sendBaseTorrent')"
+                class="mx-0"
+                @click.stop="sendBaseTorrent(props.item)"
+              >
+                <v-icon small>filter_1</v-icon>
+              </v-btn>
+              <v-btn
+                small
+                color="info"
+                icon
+                flat
+                :title="$t('keepUploadTask.sendOtherTorrents')"
+                class="mx-0"
+                @click.stop="sendOtherTorrents(props.item)"
+              >
+                <v-icon small>filter_2</v-icon>
+              </v-btn>
+
+              <v-btn
+                small
+                color="primary"
+                icon
+                flat
+                :title="$t('keepUploadTask.sendAllTorrents')"
+                class="mx-0"
+                @click.stop="sendAllTorrents(props.item)"
+              >
+                <v-icon small>save_alt</v-icon>
+              </v-btn>
+
+              <v-btn
+                small
+                color="error"
+                icon
+                flat
+                @click.stop="removeConfirm(props.item)"
+                class="mx-0"
+              >
+                <v-icon small>delete</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+        </template>
+
+        <template slot="expand" slot-scope="props">
+          <v-list subheader dense class="ml-5">
+            <template v-for="(item) in props.item.items">
+              <v-list-tile :key="item.link" class="ml-5">
+                <v-list-tile-avatar>
+                  <v-avatar size="18">
+                    <img :src="item.site.icon" />
+                  </v-avatar>
+                </v-list-tile-avatar>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>
+                    <a
+                      :href="item.link"
+                      target="_blank"
+                      v-html="item.title"
+                      :title="item.title"
+                      rel="noopener noreferrer nofollow"
+                    ></a>
+                  </v-list-tile-title>
+                  <v-list-tile-sub-title>{{ item.subTitle }}</v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </template>
+          </v-list>
+        </template>
+      </v-data-table>
+    </v-card>
+
+    <!-- 删除确认 -->
+    <v-dialog v-model="dialogRemoveConfirm" width="300">
+      <v-card>
+        <v-card-title class="headline red lighten-2">{{ $t('keepUploadTask.removeConfirmTitle') }}</v-card-title>
+
+        <v-card-text>{{ $t('keepUploadTask.removeConfirm') }}</v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat color="info" @click="dialogRemoveConfirm=false">
+            <v-icon>cancel</v-icon>
+            <span class="ml-1">{{ $t('common.cancel') }}</span>
+          </v-btn>
+          <v-btn color="error" flat @click="remove">
+            <v-icon>check_circle_outline</v-icon>
+            <span class="ml-1">{{ $t('common.ok') }}</span>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
+    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{ successMsg }}</v-snackbar>
+  </div>
+</template>
+<script lang="ts">
+import Vue from "vue";
+import {
+  EAction,
+  DownloadOptions,
+  Site,
+  Dictionary,
+  IKeepUploadTask
+} from "@/interface/common";
+import Extension from "@/service/extension";
+import { PPF } from "@/service/public";
+import DownloadTo from "@/options/components/DownloadTo.vue";
+
+const extension = new Extension();
+export default Vue.extend({
+  components: {
+    DownloadTo
+  },
+  data() {
+    return {
+      selected: [],
+      selectedItem: {} as any,
+      pagination: {
+        rowsPerPage: 10,
+        sortBy: "time",
+        descending: true
+      },
+      items: [] as any[],
+      dialogRemoveConfirm: false,
+      options: this.$store.state.options,
+      errorMsg: "",
+      haveError: false,
+      haveSuccess: false,
+      successMsg: "",
+      siteCache: {} as Dictionary<any>
+    };
+  },
+
+  methods: {
+    setDownloadOptions(options: any) {
+      console.log(options);
+      options.payload.downloadOptions = options.downloadOptions;
+
+      extension.sendRequest(
+        EAction.updateKeepUploadTask,
+        null,
+        options.payload
+      );
+    },
+    clear() {
+      if (confirm(this.$t("keepUploadTask.clearConfirm").toString())) {
+        extension
+          .sendRequest(EAction.clearKeepUploadTask)
+          .then((result: any) => {
+            console.log("clearKeepUploadTask", result);
+            this.items = [];
+          });
+      }
+    },
+    remove() {
+      extension
+        .sendRequest(EAction.removeKeepUploadTask, null, [this.selectedItem])
+        .then((result: any) => {
+          console.log("removeKeepUploadTask", result);
+          this.resetItems(result);
+        });
+      this.dialogRemoveConfirm = false;
+    },
+
+    removeConfirm(item: any) {
+      this.selectedItem = item;
+      this.dialogRemoveConfirm = true;
+    },
+    resetItems(result: any[]) {
+      this.items = [];
+      result.forEach((data: any) => {
+        data.items.forEach((item: any) => {
+          item.site = PPF.getSiteFromHost(item.host, this.options);
+        });
+
+        data.site = PPF.getSiteFromHost(data.items[0].host, this.options);
+
+        this.items.push(data);
+      });
+    },
+    loadKeepUploadTask() {
+      extension
+        .sendRequest(EAction.loadKeepUploadTask)
+        .then((result: any[]) => {
+          console.log(result);
+          this.resetItems(result);
+        });
+    },
+    getInfos(item: IKeepUploadTask) {
+      let result = "";
+
+      return result;
+    },
+    clearMessage() {
+      this.successMsg = "";
+      this.errorMsg = "";
+    },
+    sendBaseTorrent(source: any) {
+      this.sendTorrentsInBackground(source.downloadOptions);
+    },
+    sendOtherTorrents(source: any) {
+      let items: DownloadOptions[] = [];
+      source.items.slice(1).forEach((item: any) => {
+        let downloadOptions = PPF.clone(source.downloadOptions);
+        downloadOptions = Object.assign(downloadOptions, {
+          title: item.title,
+          url: item.url,
+          link: item.link
+        });
+        items.push(downloadOptions);
+      });
+
+      this.sendTorrentsInBackground(items);
+    },
+    sendAllTorrents(source: any) {
+      let items: DownloadOptions[] = [];
+      source.items.forEach((item: any) => {
+        let downloadOptions = PPF.clone(source.downloadOptions);
+        downloadOptions = Object.assign(downloadOptions, {
+          title: item.title,
+          url: item.url,
+          link: item.link
+        });
+        items.push(downloadOptions);
+      });
+
+      this.sendTorrentsInBackground(items);
+    },
+    /**
+     * 发送下载任务到后台
+     */
+    sendTorrentsInBackground(items: DownloadOptions[]) {
+      console.log(items);
+      extension
+        .sendRequest(EAction.sendTorrentsInBackground, null, items)
+        .then((result: any) => {
+          this.successMsg = this.$t("keepUploadTask.sendSuccess").toString();
+          console.log("命令执行完成", result);
+
+          this.$emit("success", result);
+        })
+        .catch((result: any) => {
+          console.log(result);
+          this.errorMsg = this.$t("keepUploadTask.sendError").toString();
+        })
+        .finally(() => {});
+    }
+  },
+
+  created() {
+    this.loadKeepUploadTask();
+  },
+
+  computed: {
+    headers(): Array<any> {
+      return [
+        {
+          text: this.$t("keepUploadTask.headers.site"),
+          align: "center",
+          width: "60px",
+          value: "data.title"
+        },
+        {
+          text: this.$t("keepUploadTask.headers.title"),
+          align: "left",
+          value: "data.title"
+        },
+        {
+          text: this.$t("keepUploadTask.headers.size"),
+          align: "right",
+          value: "data.size"
+        },
+        {
+          text: this.$t("keepUploadTask.headers.time"),
+          align: "left",
+          value: "time"
+        },
+        {
+          text: this.$t("history.headers.action"),
+          value: "name",
+          sortable: false
+        }
+      ];
+    }
+  },
+
+  watch: {
+    successMsg() {
+      this.haveSuccess = this.successMsg != "";
+    },
+    errorMsg() {
+      this.haveError = this.errorMsg != "";
+    }
+  }
+});
+</script>

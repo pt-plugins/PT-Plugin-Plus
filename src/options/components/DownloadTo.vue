@@ -6,7 +6,7 @@
     :loading="loading"
     @click.stop="showSiteContentMenus"
     :class="[mini?'btn-mini':'']"
-    :title="$t('searchTorrent.sendToClient')"
+    :title="title||$t('searchTorrent.sendToClient')"
     :color="color"
   >
     <v-icon v-if="haveSuccess" color="success" small>done</v-icon>
@@ -53,7 +53,9 @@ export default Vue.extend({
       }
     },
     getOptionsOnly: Boolean,
-    label: String
+    label: String,
+    title: String,
+    payload: [Object, Array, String, Number]
   },
 
   data() {
@@ -204,15 +206,15 @@ export default Vue.extend({
                 };
 
                 if (this.getOptionsOnly) {
-                  this.$emit(
-                    "itemClick",
-                    Object.assign(
+                  this.$emit("itemClick", {
+                    payload: this.payload,
+                    downloadOptions: Object.assign(
                       {
                         clientName: item.client.name
                       },
                       downloadOptions
                     )
-                  );
+                  });
                   return;
                 }
                 this.sendToClient(downloadOptions);

@@ -46,7 +46,8 @@
       "orderMode": {
         "asc": "升序",
         "desc": "降序"
-      }
+      },
+      "close": "关闭"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -59,10 +60,12 @@
     "navigation": {
       "dashboard": {
         "title": "概览",
+        "userData": "我的数据",
         "searchResults": "搜索结果",
         "history": "下载历史",
         "collection": "我的收藏",
-        "searchResultSnapshot": "搜索结果快照"
+        "searchResultSnapshot": "搜索结果快照",
+        "keepUploadTask": "辅种任务"
       },
       "settings": {
         "title": "参数设置",
@@ -144,8 +147,8 @@
       }
     },
     "home": {
-      "title": "概览",
-      "getInfos": "刷新用户数据",
+      "title": "我的数据",
+      "getInfos": "刷新我的数据",
       "cancelRequest": "取消请求",
       "requesting": "正在请求",
       "siteName": "网站名称",
@@ -356,6 +359,7 @@
         "restoreCollection": "仅恢复收藏数据",
         "restoreCookies": "仅恢复站点Cookies",
         "restoreSearchResultSnapshot": "仅恢复搜索结果快照",
+        "restoreKeepUploadTask": "仅恢复辅种任务",
         "contentNotExist": {
           "cookies": "备份文件中不存在Cookies",
           "collection": "备份文件中不存在收藏信息"
@@ -365,7 +369,8 @@
           "userDatas": "站点数据",
           "collection": "我的收藏",
           "cookies": "Cookies",
-          "searchResultSnapshot": "搜索结果快照"
+          "searchResultSnapshot": "搜索结果快照",
+          "keepUploadTask": "辅种任务"
         }
       },
       "base": {
@@ -860,6 +865,46 @@
       "snapshotTime": "快照时间: {time}",
       "headers": {
         "key": "搜索内容",
+        "time": "时间"
+      }
+    },
+    "keepUploadTask": {
+      "title": "辅种任务",
+      "keepUpload": "辅种",
+      "removeConfirmTitle": "删除辅种任务确认",
+      "removeConfirm": "确认要删除这个辅种任务吗？",
+      "clearConfirm": "确认要清除所有辅种任务吗？",
+      "create": "生成辅种任务",
+      "createSuccess": "辅种任务创建完成，请到辅种任务列表中进行后续操作",
+      "createError": "辅种任务创建失败",
+      "noItem": "没有符合条件的种子",
+      "savePath": "保存目录：",
+      "defaultPath": "默认目录",
+      "setSavePath": "设置保存目录",
+      "torrentCount": "辅种数量：",
+      "sendBaseTorrent": "发送基准种子到下载服务器",
+      "sendOtherTorrents": "发送除基准外的其他种子到下载服务器",
+      "sendAllTorrents": "发送所有辅种到下载服务器",
+      "sendSuccess": "任务已发送",
+      "sendError": "任务发送失败",
+      "verification": "辅种验证",
+      "baseTorrent": "基准文件",
+      "otherTorrent": "辅种文件",
+      "size": "大小：",
+      "fileCount": "文件数：",
+      "status": {
+        "label": "状态：",
+        "downloading": "正在下载",
+        "downloaded": "下载完成",
+        "failed": "校验失败",
+        "success": "校验成功",
+        "waiting": "等待校验",
+        "downloadFailed": "下载失败"
+      },
+      "headers": {
+        "site": "站点",
+        "title": "标题",
+        "size": "大小",
         "time": "时间"
       }
     }

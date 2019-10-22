@@ -585,4 +585,13 @@ export interface IBackupRawData {
   collection: any;
   cookies?: any;
   searchResultSnapshot?: any;
+  keepUploadTask?: any;
+}
+
+export interface IKeepUploadTask {
+  id: string;
+  time: number;
+  title: string;
+  downloadOptions: DownloadOptions;
+  items: any[];
 }

@@ -299,122 +299,128 @@
       </v-card-title>
 
       <!-- 操作按钮列表 -->
-      <div class="mt-3">
-        <!-- 保种 -->
-        <KeepUpload :items="selected" v-if="selected.length>0" :label="`辅种 (${selected.length})`" />
-        <!-- 添加到收藏 -->
-        <AddToCollectionGroup
-          :disabled="selected.length==0"
-          :label="$t('collection.add')+` (${selected.length})`"
-          @add="addSelectedToCollection"
-          small
-        />
-        <!-- 复制下载链接 -->
-        <v-btn
-          :disabled="selected.length==0"
-          color="success"
-          small
-          :title="$t('searchTorrent.copyToClipboardTip')"
-          @click="copySelectedToClipboard()"
-        >
-          <v-icon class="mr-2" small>file_copy</v-icon>
-          {{$t('searchTorrent.copyToClipboard')}} ({{selected.length}})
-        </v-btn>
-        <!-- 发送到下载服务器 -->
-        <v-btn
-          :disabled="selected.length==0"
-          color="success"
-          small
-          :title="$t('searchTorrent.sendToClientTip')"
-          @click.stop="showAllContentMenus($event)"
-        >
-          <v-icon class="mr-2" small>cloud_download</v-icon>
-          {{$t('searchTorrent.sendToClient')}} ({{selected.length}})
-        </v-btn>
+      <div ref="divToolbar" id="divToolbar">
+        <div :class="toolbarClass">
+          <!-- 辅种 -->
+          <KeepUpload
+            :items="selected"
+            v-if="selected.length>0"
+            :label="`${$t('keepUploadTask.keepUpload')} (${selected.length})`"
+          />
+          <!-- 添加到收藏 -->
+          <AddToCollectionGroup
+            :disabled="selected.length==0"
+            :label="$t('collection.add')+` (${selected.length})`"
+            @add="addSelectedToCollection"
+            small
+          />
+          <!-- 复制下载链接 -->
+          <v-btn
+            :disabled="selected.length==0"
+            color="success"
+            small
+            :title="$t('searchTorrent.copyToClipboardTip')"
+            @click="copySelectedToClipboard()"
+          >
+            <v-icon class="mr-2" small>file_copy</v-icon>
+            {{$t('searchTorrent.copyToClipboard')}} ({{selected.length}})
+          </v-btn>
+          <!-- 发送到下载服务器 -->
+          <v-btn
+            :disabled="selected.length==0"
+            color="success"
+            small
+            :title="$t('searchTorrent.sendToClientTip')"
+            @click.stop="showAllContentMenus($event)"
+          >
+            <v-icon class="mr-2" small>cloud_download</v-icon>
+            {{$t('searchTorrent.sendToClient')}} ({{selected.length}})
+          </v-btn>
 
-        <!-- 文件发送进度 -->
-        <v-progress-circular
-          v-if="sending.count>0"
-          :rotate="-90"
-          :size="60"
-          :width="10"
-          :value="sending.progress"
-          color="primary"
-        >{{ sending.progress.toFixed(0) }}%</v-progress-circular>
+          <!-- 文件发送进度 -->
+          <v-progress-circular
+            v-if="sending.count>0"
+            :rotate="-90"
+            :size="60"
+            :width="10"
+            :value="sending.progress"
+            color="primary"
+          >{{ sending.progress.toFixed(0) }}%</v-progress-circular>
 
-        <v-btn
-          :disabled="selected.length==0"
-          @click="downloadSelected"
-          color="success"
-          small
-          :title="$t('searchTorrent.save')"
-          v-if="$vuetify.breakpoint.mdAndUp"
-        >
-          <v-icon class="mr-2" small>get_app</v-icon>
-          {{$t('searchTorrent.download')}} ({{selected.length}})
-        </v-btn>
-        <!-- 文件下载进度 -->
-        <v-progress-circular
-          v-if="downloading.count>0"
-          :rotate="-90"
-          :size="60"
-          :width="10"
-          :value="downloading.progress"
-          color="primary"
-        >{{ downloading.progress.toFixed(0) }}%</v-progress-circular>
+          <v-btn
+            :disabled="selected.length==0"
+            @click="downloadSelected"
+            color="success"
+            small
+            :title="$t('searchTorrent.save')"
+            v-if="$vuetify.breakpoint.mdAndUp"
+          >
+            <v-icon class="mr-2" small>get_app</v-icon>
+            {{$t('searchTorrent.download')}} ({{selected.length}})
+          </v-btn>
+          <!-- 文件下载进度 -->
+          <v-progress-circular
+            v-if="downloading.count>0"
+            :rotate="-90"
+            :size="60"
+            :width="10"
+            :value="downloading.progress"
+            color="primary"
+          >{{ downloading.progress.toFixed(0) }}%</v-progress-circular>
 
-        <!-- 下载失败的种子 -->
-        <v-btn
-          v-if="downloadFailedTorrents.length>0"
-          class="error"
-          @click="reDownloadFailedTorrents"
-          small
-          :title="$t('searchTorrent.downloadFailed')"
-          :loading="downloading.count>0"
-        >
-          <v-icon class="mr-2" small>get_app</v-icon>
-          {{ $t('searchTorrent.downloadFailed') }} ({{downloadFailedTorrents.length}})
-        </v-btn>
+          <!-- 下载失败的种子 -->
+          <v-btn
+            v-if="downloadFailedTorrents.length>0"
+            class="error"
+            @click="reDownloadFailedTorrents"
+            small
+            :title="$t('searchTorrent.downloadFailed')"
+            :loading="downloading.count>0"
+          >
+            <v-icon class="mr-2" small>get_app</v-icon>
+            {{ $t('searchTorrent.downloadFailed') }} ({{downloadFailedTorrents.length}})
+          </v-btn>
 
-        <!-- 保存搜索结果快照 -->
-        <v-btn
-          :disabled="loading || !datas.length"
-          color="success"
-          small
-          :title="$t('searchResultSnapshot.create')"
-          @click.stop="createSearchResultSnapshot()"
-        >
-          <v-icon class="mr-2" small>add_a_photo</v-icon>
-          {{$t('searchResultSnapshot.create')}}
-        </v-btn>
+          <!-- 保存搜索结果快照 -->
+          <v-btn
+            :disabled="loading || !datas.length"
+            color="success"
+            small
+            :title="$t('searchResultSnapshot.create')"
+            @click.stop="createSearchResultSnapshot()"
+          >
+            <v-icon class="mr-2" small>add_a_photo</v-icon>
+            {{$t('searchResultSnapshot.create')}}
+          </v-btn>
 
-        <!-- 设置 -->
-        <v-menu :close-on-content-click="false" offset-y class="ml-2">
-          <template v-slot:activator="{ on }">
-            <v-btn color="blue" dark v-on="on" :title="$t('home.settings')" small>
-              <v-icon small>settings</v-icon>
-            </v-btn>
-          </template>
+          <!-- 设置 -->
+          <v-menu :close-on-content-click="false" offset-y class="ml-2">
+            <template v-slot:activator="{ on }">
+              <v-btn color="blue" dark v-on="on" :title="$t('home.settings')" small>
+                <v-icon small>settings</v-icon>
+              </v-btn>
+            </template>
 
-          <v-card>
-            <v-container grid-list-xs>
-              <!-- 显示多选框 -->
-              <v-switch
-                color="success"
-                v-model="checkBox"
-                :label="$t('searchTorrent.showCheckbox')"
-                @change="updateViewOptions"
-              ></v-switch>
-              <!-- 显示资源分类标签 -->
-              <v-switch
-                color="success"
-                v-model="showCategory"
-                :label="$t('searchTorrent.showCategory')"
-                @change="updateViewOptions"
-              ></v-switch>
-            </v-container>
-          </v-card>
-        </v-menu>
+            <v-card>
+              <v-container grid-list-xs>
+                <!-- 显示多选框 -->
+                <v-switch
+                  color="success"
+                  v-model="checkBox"
+                  :label="$t('searchTorrent.showCheckbox')"
+                  @change="updateViewOptions"
+                ></v-switch>
+                <!-- 显示资源分类标签 -->
+                <v-switch
+                  color="success"
+                  v-model="showCategory"
+                  :label="$t('searchTorrent.showCategory')"
+                  @change="updateViewOptions"
+                ></v-switch>
+              </v-container>
+            </v-card>
+          </v-menu>
+        </div>
       </div>
 
       <!-- 数据表格 -->

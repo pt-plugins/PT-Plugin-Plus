@@ -719,7 +719,8 @@ class Config {
             groups: this.service.collection.groups
           },
           cookies: undefined,
-          searchResultSnapshot: this.service.searchResultSnapshot.items
+          searchResultSnapshot: this.service.searchResultSnapshot.items,
+          keepUploadTask: this.service.keepUploadTask.items
         };
 
         // 是否备份站点 Cookies
