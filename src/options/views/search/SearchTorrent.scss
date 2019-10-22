@@ -151,4 +151,15 @@
       }
     }
   }
+
+  .isFixedToolbar {
+    position: fixed;
+    background-color: #fff;
+    top: 64px;
+    z-index: 10;
+    width: 100%;
+    margin-left: -3px;
+    padding: 5px;
+    box-shadow: 0px 5px 5px -1px rgba(0, 0, 0, 0.2);
+  }
 }

@@ -1310,4 +1310,32 @@ export default class Controller {
   public resetSearchResultSnapshot(datas: any): Promise<any> {
     return this.service.searchResultSnapshot.reset(datas);
   }
+
+  public createKeepUploadTask(options: any): Promise<any> {
+    return this.service.keepUploadTask.add(options);
+  }
+
+  public getKeepUploadTask(id: string): Promise<any> {
+    return this.service.keepUploadTask.get(id);
+  }
+
+  public loadKeepUploadTask(): Promise<any> {
+    return this.service.keepUploadTask.load();
+  }
+
+  public removeKeepUploadTask(options: any): Promise<any> {
+    return this.service.keepUploadTask.remove(options);
+  }
+
+  public clearKeepUploadTask(): Promise<any> {
+    return this.service.keepUploadTask.clear();
+  }
+
+  public resetKeepUploadTask(datas: any): Promise<any> {
+    return this.service.keepUploadTask.reset(datas);
+  }
+
+  public updateKeepUploadTask(options: any): Promise<any> {
+    return this.service.keepUploadTask.update(options);
+  }
 }

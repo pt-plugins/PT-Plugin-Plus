@@ -50,7 +50,7 @@ export default Vue.extend({
           key: "group-",
           items: [
             {
-              title: "navigation.dashboard.title",
+              title: "navigation.dashboard.userData",
               icon: "dashboard",
               key: "/home"
             },
@@ -73,6 +73,11 @@ export default Vue.extend({
               title: "navigation.dashboard.collection",
               icon: "favorite",
               key: "/collection"
+            },
+            {
+              title: "navigation.dashboard.keepUploadTask",
+              icon: "date_range",
+              key: "/keep-upload-task"
             }
           ]
         },

@@ -46,7 +46,8 @@
       "orderMode": {
         "asc": "ASC",
         "desc": "DESC"
-      }
+      },
+      "close": "Close"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -59,10 +60,12 @@
     "navigation": {
       "dashboard": {
         "title": "Overview",
+        "userData": "My Data",
         "searchResults": "Search Results",
         "history": "Download History",
         "collection": "Collection",
-        "searchResultSnapshot": "Search Snapshot"
+        "searchResultSnapshot": "Search Snapshot",
+        "keepUploadTask": "Reseed Task"
       },
       "settings": {
         "title": "Settings",
@@ -144,8 +147,8 @@
       }
     },
     "home": {
-      "title": "Overview",
-      "getInfos": "Refresh user data",
+      "title": "My Data",
+      "getInfos": "Refresh my data",
       "cancelRequest": "Cancel request",
       "requesting": "Requesting",
       "siteName": "Site name",
@@ -356,6 +359,7 @@
         "restoreCollection": "Restore Collection Only",
         "restoreCookies": "Restore Cookies Only",
         "restoreSearchResultSnapshot": "Restore Search Result Snapshot Only",
+        "restoreKeepUploadTask": "Restore Reseed Task Only",
         "contentNotExist": {
           "cookies": "Cookies not exist in the backup file",
           "collection": "Collection not exists in the backup file"
@@ -365,7 +369,8 @@
           "userDatas": "User Datas",
           "collection": "Collection",
           "cookies": "Cookies",
-          "searchResultSnapshot": "Search Result Snapshot"
+          "searchResultSnapshot": "Search Result Snapshot",
+          "keepUploadTask": "Reseed Task"
         }
       },
       "base": {
@@ -860,6 +865,45 @@
       "snapshotTime": "Snapshot Time: {time}",
       "headers": {
         "key": "Search Key",
+        "time": "Time"
+      }
+    },
+    "keepUploadTask": {
+      "title": "Reseed Task",
+      "keepUpload": "Reseed",
+      "removeConfirmTitle": "Delete confirmation",
+      "removeConfirm": "Are you sure you want to delete this Task?",
+      "clearConfirm": "Are you sure you want to delete all Task?",
+      "create": "Create Reseed Task",
+      "createSuccess": "Task creation completed",
+      "createError": "Task creation failed",
+      "noItem": "No matching seeds",
+      "savePath": "Save Path: ",
+      "defaultPath": "Default Path",
+      "setSavePath": "Set Save Path",
+      "torrentCount": "Reseed count",
+      "sendBaseTorrent": "Send First Torrent",
+      "sendOtherTorrents": "Send Other Torrents",
+      "sendAllTorrents": "Send All Torrents",
+      "sendSuccess": "Send Success",
+      "sendError": "Send Error",
+      "verification": "Verification",
+      "baseTorrent": "Base Torrent",
+      "otherTorrent": "Other Torrent",
+      "size": "Size: ",
+      "fileCount": "Files: ",
+      "status": {
+        "label": "Status: ",
+        "downloading": "Downloading",
+        "failed": "Verification failed",
+        "success": "Verify successful",
+        "waiting": "Waiting for verification",
+        "downloadFailed": "Download Failed"
+      },
+      "headers": {
+        "site": "Site",
+        "title": "Title",
+        "size": "Size",
         "time": "Time"
       }
     }

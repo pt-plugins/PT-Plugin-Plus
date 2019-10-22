@@ -76,6 +76,14 @@ export class BackupFileParser {
           );
         }
 
+        // 辅种任务
+        if (rawData.keepUploadTask) {
+          zip.file(
+            "keepUploadTask.json",
+            JSON.stringify(rawData.keepUploadTask)
+          );
+        }
+
         zip.generateAsync({ type: "blob" }).then((blob: any) => {
           resolve(blob);
         });
@@ -109,6 +117,10 @@ export class BackupFileParser {
           if (zip.file("searchResultSnapshot.json")) {
             requests.push(zip.file("searchResultSnapshot.json").async("text"));
           }
+
+          if (zip.file("keepUploadTask.json")) {
+            requests.push(zip.file("keepUploadTask.json").async("text"));
+          }
           return Promise.all(requests);
         })
         .then(results => {
@@ -128,6 +140,10 @@ export class BackupFileParser {
 
           if (results.length > 5) {
             result["searchResultSnapshot"] = JSON.parse(results[5]);
+          }
+
+          if (results.length > 6) {
+            result["keepUploadTask"] = JSON.parse(results[6]);
           }
 
           if (this.checkData(result.manifest, results[1] + results[2])) {

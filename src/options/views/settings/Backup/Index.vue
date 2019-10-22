@@ -599,7 +599,67 @@ export default Vue.extend({
               });
           }
 
-          // 恢复Cookies
+          // 恢复搜索快照
+          if (
+            infos.searchResultSnapshot &&
+            (restoreContent == ERestoreContent.all ||
+              restoreContent == ERestoreContent.searchResultSnapshot)
+          ) {
+            this.workingStatus.add({
+              key: "searchResultSnapshot",
+              title: this.t("settings.backup.backupItem.searchResultSnapshot")
+            });
+            extension
+              .sendRequest(
+                EAction.resetSearchResultSnapshot,
+                null,
+                infos.searchResultSnapshot
+              )
+              .then(() => {
+                this.workingStatus.update(
+                  "searchResultSnapshot",
+                  EWorkingStatus.success
+                );
+              })
+              .catch(() => {
+                this.workingStatus.update(
+                  "searchResultSnapshot",
+                  EWorkingStatus.error
+                );
+              });
+          }
+
+          // 恢复辅种任务
+          if (
+            infos.keepUploadTask &&
+            (restoreContent == ERestoreContent.all ||
+              restoreContent == ERestoreContent.keepUploadTask)
+          ) {
+            this.workingStatus.add({
+              key: "keepUploadTask",
+              title: this.t("settings.backup.backupItem.keepUploadTask")
+            });
+            extension
+              .sendRequest(
+                EAction.resetKeepUploadTask,
+                null,
+                infos.keepUploadTask
+              )
+              .then(() => {
+                this.workingStatus.update(
+                  "keepUploadTask",
+                  EWorkingStatus.success
+                );
+              })
+              .catch(() => {
+                this.workingStatus.update(
+                  "keepUploadTask",
+                  EWorkingStatus.error
+                );
+              });
+          }
+
+          // 恢复Cookies，需要放到最后一项
           if (
             infos.cookies &&
             (restoreContent == ERestoreContent.all ||
@@ -634,36 +694,6 @@ export default Vue.extend({
                 this.workingStatus.update("cookies", EWorkingStatus.error);
               });
             return;
-          }
-
-          // 恢复搜索快照
-          if (
-            infos.searchResultSnapshot &&
-            (restoreContent == ERestoreContent.all ||
-              restoreContent == ERestoreContent.searchResultSnapshot)
-          ) {
-            this.workingStatus.add({
-              key: "searchResultSnapshot",
-              title: this.t("settings.backup.backupItem.searchResultSnapshot")
-            });
-            extension
-              .sendRequest(
-                EAction.resetSearchResultSnapshot,
-                null,
-                infos.searchResultSnapshot
-              )
-              .then(() => {
-                this.workingStatus.update(
-                  "searchResultSnapshot",
-                  EWorkingStatus.success
-                );
-              })
-              .catch(() => {
-                this.workingStatus.update(
-                  "searchResultSnapshot",
-                  EWorkingStatus.error
-                );
-              });
           }
 
           this.successMsg = this.$t(

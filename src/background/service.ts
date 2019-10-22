@@ -21,6 +21,8 @@ import { i18nService } from "./i18n";
 import DownloadQuene from "./downloadQuene";
 import Collection from "./collection";
 import SearchResultSnapshot from "./searchResultSnapshot";
+import KeepUploadTask from "./keepUploadTask";
+
 /**
  * PT 助手后台服务类
  */
@@ -49,6 +51,8 @@ export default class PTPlugin {
   public collection: Collection = new Collection();
   // 搜索结果快照
   public searchResultSnapshot: SearchResultSnapshot = new SearchResultSnapshot();
+  // 辅种任务
+  public keepUploadTask: KeepUploadTask = new KeepUploadTask();
 
   private reloadCount: number = 0;
   private autoRefreshUserDataTimer: number = 0;

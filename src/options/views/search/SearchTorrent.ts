@@ -128,7 +128,8 @@ export default Vue.extend({
       headerOrderClickCount: 0,
 
       currentOrderMode: EResourceOrderMode.asc,
-      rawDatas: [] as any[]
+      rawDatas: [] as any[],
+      toolbarClass: "mt-3"
     };
   },
   created() {
@@ -166,6 +167,10 @@ export default Vue.extend({
     $(".search-torrent").on(upEvent, e => {
       this.shiftKey = false;
     });
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
   },
   beforeRouteUpdate(to: Route, from: Route, next: any) {
     if (!to.params.key) {
@@ -1803,6 +1808,22 @@ export default Vue.extend({
           showCategory: this.showCategory
         }
       });
+    },
+    handleScroll() {
+      const divToolbar: any = $("#divToolbar");
+      if (!divToolbar) {
+        return;
+      }
+      const scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      const offsetTop = divToolbar.offset().top;
+      if (scrollTop + 64 > offsetTop) {
+        this.toolbarClass = "isFixedToolbar";
+      } else {
+        this.toolbarClass = "mt-3";
+      }
     }
   },
   computed: {

@@ -220,7 +220,22 @@ export enum EAction {
   // 清除搜索结果快照
   clearSearchResultSnapshot = "clearSearchResultSnapshot",
   // 重置搜索结果快照
-  resetSearchResultSnapshot = "resetSearchResultSnapshot"
+  resetSearchResultSnapshot = "resetSearchResultSnapshot",
+
+  // 创建辅种任务
+  createKeepUploadTask = "createKeepUploadTask",
+  // 加载辅种任务
+  loadKeepUploadTask = "loadKeepUploadTask",
+  // 获取辅种任务内容
+  getKeepUploadTask = "getKeepUploadTask",
+  // 删除辅种任务
+  removeKeepUploadTask = "removeKeepUploadTask",
+  // 清除辅种任务
+  clearKeepUploadTask = "clearKeepUploadTask",
+  // 重置辅种任务
+  resetKeepUploadTask = "resetKeepUploadTask",
+  // 更新辅种任务
+  updateKeepUploadTask = "updateKeepUploadTask"
 }
 
 /**
@@ -242,7 +257,8 @@ export enum EConfigKey {
   cache = "PT-Plugin-Plus-Cache-Contents",
   userDatas = "PT-Plugin-Plus-User-Datas",
   collection = "PT-Plugin-Plus-Collection",
-  searchResultSnapshot = "PT-Plugin-Plus-SearchResultSnapshot"
+  searchResultSnapshot = "PT-Plugin-Plus-SearchResultSnapshot",
+  keepUploadTask = "PT-Plugin-Plus-KeepUploadTask"
 }
 
 /**
@@ -369,7 +385,8 @@ export enum ERestoreContent {
   userDatas = "userDatas",
   collection = "collection",
   cookies = "cookies",
-  searchResultSnapshot = "searchResultSnapshot"
+  searchResultSnapshot = "searchResultSnapshot",
+  keepUploadTask = "keepUploadTask"
 }
 
 export enum EBrowserType {
