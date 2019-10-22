@@ -309,7 +309,7 @@ export default Vue.extend({
           })
           .catch(result => {
             this.verifiedItems[index].status = this.$t(
-              "keepUploadTask.status.failed"
+              "keepUploadTask.status.downloadFailed"
             ).toString();
             this.verifiedItems[index].error = true;
             reject(result);
