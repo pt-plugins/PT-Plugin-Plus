@@ -37,7 +37,9 @@
 			"libs/types.expand.js",
 			"libs/jquery/jquery-3.3.1.min.js",
 			"libs/Base64.js",
-			"js/background.js"
+			"js/service/libs.js",
+			"js/service/utils.js",
+			"js/service/background.js"
 		]
 	},
 	"content_scripts": [{
@@ -58,7 +60,9 @@
 			"libs/Base64.js",
 			"libs/notice/notice.js",
 			"libs/basicContext/basicContext.min.js",
-			"js/content.js"
+			"js/service/libs.js",
+			"js/service/utils.js",
+			"js/service/content.js"
 		]
 	}],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
