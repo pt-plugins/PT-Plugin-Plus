@@ -1,0 +1,12 @@
+{
+  "name": "Reseed",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "辅种页面",
+    "pages": ["/"],
+    "scripts": ["/schemas/NexusPHP/common.js", "reseed.js"]
+  }],
+  "schema": "publicSite",
+  "host": "reseed.tongyifan.me",
+  "path": "reseed.tongyifan.me"
+}

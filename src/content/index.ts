@@ -21,6 +21,7 @@ import { filters } from "@/service/filters";
 import { PathHandler } from "@/service/pathHandler";
 import i18n from "i18next";
 import { InfoParser } from "@/background/infoParser";
+import { PPF } from "@/service/public";
 
 /**
  * 插件背景脚本，会插入到每个页面
@@ -906,5 +907,6 @@ class PTPContent {
 
 // 暴露到 window 对象
 Object.assign(window, {
-  PTService: new PTPContent()
+  PTService: new PTPContent(),
+  PPF
 });
