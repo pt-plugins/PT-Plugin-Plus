@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar :color="baseColor" app fixed clipped-left>
+  <v-toolbar :color="baseColor" app fixed clipped-left id="system-topbar">
     <v-toolbar-side-icon @click.stop="drawer = !drawer" :title="$t('topbar.navBarTip')"></v-toolbar-side-icon>
     <v-toolbar-title style="width: 220px;" class="hidden-md-and-down">
       <span>{{ $t("topbar.title") }}</span>

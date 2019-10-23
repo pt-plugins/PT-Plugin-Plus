@@ -300,7 +300,7 @@
 
       <!-- 操作按钮列表 -->
       <div ref="divToolbar" id="divToolbar">
-        <div :class="toolbarClass">
+        <div id="divToobarInner" :class="toolbarClass">
           <!-- 辅种 -->
           <KeepUpload
             :items="selected"

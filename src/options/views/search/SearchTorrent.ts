@@ -1814,13 +1814,18 @@ export default Vue.extend({
       if (!divToolbar) {
         return;
       }
+      const sysTopBar: any = $("#system-topbar");
+      const top = sysTopBar.height();
       const scrollTop =
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
       const offsetTop = divToolbar.offset().top;
-      if (scrollTop + 64 > offsetTop) {
+      if (scrollTop + top > offsetTop) {
         this.toolbarClass = "isFixedToolbar";
+        $("#divToobarInner").css({
+          top: top
+        });
       } else {
         this.toolbarClass = "mt-3";
       }
