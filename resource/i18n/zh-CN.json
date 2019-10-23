@@ -26,6 +26,7 @@
       "remove": "删除",
       "clear": "清除",
       "removeConfirm": "确认要删除这条记录吗？",
+      "removeSelectedConfirm": "确认要删除这些已选中的 {count} 条记录吗？",
       "removeConfirmTitle": "删除确认",
       "clearConfirm": "确认要删除所有记录吗？",
       "id": "ID",
@@ -892,6 +893,7 @@
       "otherTorrent": "辅种文件",
       "size": "大小：",
       "fileCount": "文件数：",
+      "sendConfirm": "是否确认要发送这 {count} 个种子？",
       "status": {
         "label": "状态：",
         "downloading": "正在下载",

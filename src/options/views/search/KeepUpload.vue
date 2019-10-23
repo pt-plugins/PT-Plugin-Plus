@@ -1,5 +1,11 @@
 <template>
-  <v-dialog v-model="dialog" persistent scrollable max-width="1024">
+  <v-dialog
+    v-model="dialog"
+    persistent
+    scrollable
+    max-width="1024"
+    :fullscreen="$vuetify.breakpoint.smAndDown"
+  >
     <template v-slot:activator="{ on }">
       <v-btn color="success" dark v-on="on" small>{{ label || $t('keepUploadTask.keepUpload')}}</v-btn>
     </template>
@@ -7,8 +13,19 @@
       <v-toolbar dark color="blue-grey darken-2">
         <v-toolbar-title>{{ $t('keepUploadTask.verification') }}</v-toolbar-title>
         <v-spacer></v-spacer>
+        <v-btn
+          icon
+          flat
+          color="success"
+          href="https://github.com/ronggang/PT-Plugin-Plus/wiki/keep-upload-task"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          :title="$t('common.help')"
+        >
+          <v-icon>help</v-icon>
+        </v-btn>
       </v-toolbar>
-      <v-card-text style="max-height: 500px;">
+      <v-card-text style="max-height: 80vh;">
         <v-list two-line subheader dense>
           <template v-for="(item, index) in verifiedItems">
             <v-subheader v-if="index==0" :key="index">{{ $t('keepUploadTask.baseTorrent') }}</v-subheader>
@@ -35,24 +52,31 @@
           </template>
         </v-list>
       </v-card-text>
+      <v-divider v-if="$vuetify.breakpoint.smAndDown"></v-divider>
+      <div
+        v-if="$vuetify.breakpoint.smAndDown && downloadOptions"
+        class="caption ml-1 py-2"
+      >{{ $t("keepUploadTask.savePath") }}{{downloadOptions?`${downloadOptions.clientName} -> ${downloadOptions.savePath}`:''}}</div>
       <v-divider></v-divider>
       <v-card-actions>
         <template v-if="verifiedCount>1">
           <DownloadTo
             flat
             get-options-only
-            :label="downloadOptions?`${downloadOptions.clientName} -> ${downloadOptions.savePath}`: $t('keepUploadTask.setSavePath')"
+            small
+            :label="$vuetify.breakpoint.smAndDown?$t('keepUploadTask.setSavePath'):downloadOptions?`${downloadOptions.clientName} -> ${downloadOptions.savePath}`: $t('keepUploadTask.setSavePath')"
             @itemClick="setDownloadOptions"
             :downloadOptions="items[0]"
           />
           <v-btn
             flat
+            small
             @click="create"
             v-if="downloadOptions && verifiedItems.length>0"
             :loading="creating"
             color="info"
           >
-            <v-icon>date_range</v-icon>
+            <v-icon small>date_range</v-icon>
             <span class="ml-2">{{ $t('keepUploadTask.create') }}</span>
           </v-btn>
         </template>
@@ -188,6 +212,8 @@ export default Vue.extend({
       this.baseTorrent = null;
       this.verifiedItems = [];
       this.verifiedCount = 0;
+      this.downloadOptions = null;
+      this.clearMessage();
 
       this.items.forEach((item: SearchResultItem, index: number) => {
         if (item.url) {

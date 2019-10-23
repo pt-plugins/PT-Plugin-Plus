@@ -26,6 +26,7 @@
       "remove": "Remove",
       "clear": "Clear",
       "removeConfirm": "Are you sure you want to delete this record?",
+      "removeSelectedConfirm": "Are you sure you want to delete these {count} selected records?",
       "removeConfirmTitle": "Delete confirmation",
       "clearConfirm": "Are you sure you want to delete all records?",
       "id": "ID",
@@ -892,6 +893,7 @@
       "otherTorrent": "Other Torrent",
       "size": "Size: ",
       "fileCount": "Files: ",
+      "sendConfirm": "Are you sure you want to send these {count} torrents?",
       "status": {
         "label": "Status: ",
         "downloading": "Downloading",

@@ -3,7 +3,7 @@
     <v-alert :value="true" type="info">{{ $t("keepUploadTask.title") }}</v-alert>
     <v-card>
       <v-card-title>
-        <v-btn color="error" :disabled="selected.length==0">
+        <v-btn color="error" :disabled="selected.length==0" @click="removeSelected">
           <v-icon class="mr-2">remove</v-icon>
           {{ $t("common.remove") }}
         </v-btn>
@@ -11,6 +11,16 @@
         <v-btn color="error" @click="clear" :disabled="items.length==0">
           <v-icon class="mr-2">clear</v-icon>
           {{ $t("common.clear") }}
+        </v-btn>
+
+        <v-btn
+          color="info"
+          href="https://github.com/ronggang/PT-Plugin-Plus/wiki/keep-upload-task"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          <v-icon class="mr-2">help</v-icon>
+          {{ $t('settings.searchSolution.index.help') }}
         </v-btn>
         <v-spacer></v-spacer>
 
@@ -57,6 +67,7 @@
                 <DownloadTo
                   flat
                   icon
+                  small
                   :title="$t('keepUploadTask.setSavePath')"
                   iconText="edit"
                   get-options-only
@@ -115,6 +126,7 @@
                 flat
                 @click.stop="removeConfirm(props.item)"
                 class="mx-0"
+                :title="$t('common.remove')"
               >
                 <v-icon small>delete</v-icon>
               </v-btn>
@@ -151,6 +163,17 @@
       </v-data-table>
     </v-card>
 
+    <v-alert :value="true" color="warning">
+      <div>
+        警告：
+        <ul>
+          <li>辅种前请确认下载服务器已关闭类似于 “自动开始下载” 的选项（如果有）。</li>
+          <li>助手仅对种子文件做简单验证，不保证辅种成功，请自行斟酌是否要使用辅种功能！</li>
+          <li>如出现因辅种失败造成的爆仓，由用户自行负责！别找我，别找我，别找我。</li>
+        </ul>
+      </div>
+    </v-alert>
+
     <!-- 删除确认 -->
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
@@ -166,7 +189,7 @@
             <v-icon>cancel</v-icon>
             <span class="ml-1">{{ $t('common.cancel') }}</span>
           </v-btn>
-          <v-btn color="error" flat @click="remove">
+          <v-btn color="error" flat @click="remove()">
             <v-icon>check_circle_outline</v-icon>
             <span class="ml-1">{{ $t('common.ok') }}</span>
           </v-btn>
@@ -237,9 +260,28 @@ export default Vue.extend({
           });
       }
     },
-    remove() {
+
+    removeSelected() {
+      if (this.selected && this.selected.length > 0) {
+        if (
+          confirm(
+            this.$t("common.removeSelectedConfirm", {
+              count: this.selected.length
+            }).toString()
+          )
+        ) {
+          this.remove(this.selected);
+        }
+      }
+    },
+
+    remove(items: any) {
+      if (!items) {
+        items = [this.selectedItem];
+      }
+
       extension
-        .sendRequest(EAction.removeKeepUploadTask, null, [this.selectedItem])
+        .sendRequest(EAction.removeKeepUploadTask, null, items)
         .then((result: any) => {
           console.log("removeKeepUploadTask", result);
           this.resetItems(result);
@@ -316,6 +358,19 @@ export default Vue.extend({
      */
     sendTorrentsInBackground(items: DownloadOptions[]) {
       console.log(items);
+
+      if (items.length > 1) {
+        if (
+          !confirm(
+            this.$t("keepUploadTask.sendConfirm", {
+              count: items.length
+            }).toString()
+          )
+        ) {
+          return;
+        }
+      }
+
       extension
         .sendRequest(EAction.sendTorrentsInBackground, null, items)
         .then((result: any) => {

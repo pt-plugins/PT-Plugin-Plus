@@ -3,7 +3,7 @@
     <v-alert :value="true" type="info">{{ $t("searchResultSnapshot.title") }}</v-alert>
     <v-card>
       <v-card-title>
-        <v-btn color="error" :disabled="selected.length==0">
+        <v-btn color="error" :disabled="selected.length==0" @click="removeSelected">
           <v-icon class="mr-2">remove</v-icon>
           {{ $t("common.remove") }}
         </v-btn>
@@ -11,6 +11,16 @@
         <v-btn color="error" @click="clear" :disabled="items.length==0">
           <v-icon class="mr-2">clear</v-icon>
           {{ $t("common.clear") }}
+        </v-btn>
+
+        <v-btn
+          color="info"
+          href="https://github.com/ronggang/PT-Plugin-Plus/wiki/search-result-snapshot"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          <v-icon class="mr-2">help</v-icon>
+          {{ $t('settings.searchSolution.index.help') }}
         </v-btn>
         <v-spacer></v-spacer>
 
@@ -22,7 +32,7 @@
         :headers="headers"
         :items="items"
         :pagination.sync="pagination"
-        item-key="data.id"
+        item-key="id"
         select-all
         class="elevation-1"
       >
@@ -42,10 +52,20 @@
               :title="$t('searchResultSnapshot.show')"
               :to="`/search-torrent/show-snapshot-${props.item.id}`"
             >
-              <v-icon small>search</v-icon>
+              <v-icon small>image_search</v-icon>
             </v-btn>
 
-            <v-icon small color="error" @click="removeConfirm(props.item)">delete</v-icon>
+            <v-btn
+              flat
+              icon
+              small
+              class="mx-0"
+              color="error"
+              :title="$t('common.remove')"
+              @click="removeConfirm(props.item)"
+            >
+              <v-icon small>delete</v-icon>
+            </v-btn>
           </td>
         </template>
       </v-data-table>
@@ -68,7 +88,7 @@
             <v-icon>cancel</v-icon>
             <span class="ml-1">{{ $t('common.cancel') }}</span>
           </v-btn>
-          <v-btn color="error" flat @click="remove">
+          <v-btn color="error" flat @click="remove()">
             <v-icon>check_circle_outline</v-icon>
             <span class="ml-1">{{ $t('common.ok') }}</span>
           </v-btn>
@@ -124,11 +144,28 @@ export default Vue.extend({
           });
       }
     },
-    remove() {
+
+    removeSelected() {
+      if (this.selected && this.selected.length > 0) {
+        if (
+          confirm(
+            this.$t("common.removeSelectedConfirm", {
+              count: this.selected.length
+            }).toString()
+          )
+        ) {
+          this.remove(this.selected);
+        }
+      }
+    },
+
+    remove(items: any) {
+      if (!items) {
+        items = [this.selectedItem];
+      }
+
       extension
-        .sendRequest(EAction.removeSearchResultSnapshot, null, [
-          this.selectedItem
-        ])
+        .sendRequest(EAction.removeSearchResultSnapshot, null, items)
         .then((result: any) => {
           console.log("removeSearchResultSnapshot", result);
           this.items = result;
