@@ -1149,9 +1149,11 @@
         menus.push({
           title: title,
           fn: () => {
+            // 克隆是为了多次选择时，不覆盖原来的值
+            let _item = PPF.clone(item);
             console.log(item);
             let savePath = PTService.pathHandler.getSavePath(
-              item.path,
+              _item.path,
               PTService.site
             );
             if (savePath === false) {
@@ -1159,8 +1161,8 @@
               error(_this.t("userCanceled"));
               return;
             }
-            item.path = savePath;
-            _this.startDownloadURLs(success, error, item);
+            _item.path = savePath;
+            _this.startDownloadURLs(success, error, _item);
           }
         });
       }
