@@ -1150,10 +1150,16 @@
           title: title,
           fn: () => {
             console.log(item);
-            item.path = PTService.pathHandler.getSavePath(
+            let savePath = PTService.pathHandler.getSavePath(
               item.path,
               PTService.site
             );
+            if (savePath === false) {
+              // "用户取消操作"
+              error(_this.t("userCanceled"));
+              return;
+            }
+            item.path = savePath;
             _this.startDownloadURLs(success, error, item);
           }
         });
