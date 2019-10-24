@@ -1,4 +1,4 @@
-(function (options) {
+(function(options) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -9,6 +9,29 @@
       }
       options.isLogged = true;
       this.haveData = true;
+      this.authkey = "";
+      this.passkey = "";
+    }
+
+    start() {
+      this.getAuthKey()
+        .then(() => {
+          options.resolve(this.getResult());
+        })
+        .catch(() => {
+          options.reject({
+            success: false,
+            msg: options.searcher.getErrorMessage(
+              options.site,
+              ESearchResultParseStatus.parseError,
+              options.errorMsg
+            ),
+            data: {
+              site: options.site,
+              isLogged: options.isLogged
+            }
+          });
+        });
     }
 
     /**
@@ -26,8 +49,8 @@
         return [];
       }
       let results = [];
-      let authkey = options.page.AuthKey;
-      let passkey = options.page.PassKey;
+      let authkey = this.authkey;
+      let passkey = this.passkey;
       console.log("groups.length", groups.length);
       try {
         groups.forEach(group => {
@@ -35,7 +58,8 @@
             let torrents = group.torrents;
             torrents.forEach(torrent => {
               let data = {
-                title: group.artist +
+                title:
+                  group.artist +
                   " - " +
                   group.groupName +
                   " [" +
@@ -43,7 +67,8 @@
                   "] [" +
                   group.releaseType +
                   "]",
-                subTitle: torrent.format +
+                subTitle:
+                  torrent.format +
                   " / " +
                   torrent.encoding +
                   " / " +
@@ -52,7 +77,11 @@
                   (torrent.hasCue ? " / Cue" : "") +
                   (torrent.remastered ? ` / ${torrent.remasterYear}` : "") +
                   (torrent.scene ? " / Scene" : "") +
-                  ((torrent.isFreeleech || torrent.isNeutralLeech || torrent.isPersonalFreeleech) ? " / Freeleech" : ""),
+                  (torrent.isFreeleech ||
+                  torrent.isNeutralLeech ||
+                  torrent.isPersonalFreeleech
+                    ? " / Freeleech"
+                    : ""),
                 link: `${site.url}torrents.php?id=${group.groupId}&torrentid=${torrent.torrentId}`,
                 url: `${site.url}torrents.php?action=download&id=${torrent.torrentId}&authkey=${authkey}&torrent_pass=${passkey}`,
                 size: parseFloat(torrent.size),
@@ -63,9 +92,9 @@
                 site: site,
                 entryName: options.entry.name,
                 category: group.releaseType
-              }
+              };
               results.push(data);
-            })
+            });
           } else {
             let data = {
               title: group.groupName,
@@ -82,10 +111,10 @@
               tags: group.tags,
               entryName: options.entry.name,
               category: group.category
-            }
+            };
             results.push(data);
           }
-        })
+        });
         console.log("results.length", results.length);
         if (results.length == 0) {
           options.status = ESearchResultParseStatus.noTorrents;
@@ -97,9 +126,34 @@
       }
       return results;
     }
+
+    /**
+     * 获取 AuthKey ，用于组合完整的下载链接
+     */
+    getAuthKey() {
+      const url = (options.site.activeURL + "/ajax.php?action=index")
+        .replace("://", "****")
+        .replace(/\/\//g, "/")
+        .replace("****", "://");
+
+      return new Promise((resolve, reject) => {
+        $.get(url)
+          .done(result => {
+            if (result && result.status === "success" && result.response) {
+              this.authkey = result.response.authkey;
+              this.passkey = result.response.passkey;
+              resolve();
+            } else {
+              reject();
+            }
+          })
+          .fail(() => {
+            reject();
+          });
+      });
+    }
   }
 
   let parser = new Parser(options);
-  options.results = parser.getResult();
-  console.log(options.results);
+  parser.start();
 })(options);

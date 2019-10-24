@@ -11,6 +11,7 @@
     "page": "/ajax.php",
     "resultType": "json",
     "parseScriptFile": "/schemas/GazelleJSONAPI/getSearchResult.js",
+    "asyncParse": true,
     "queryString": "action=browse&searchstr=$key$"
   },
   "searchEntry": [{

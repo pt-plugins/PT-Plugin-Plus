@@ -223,6 +223,7 @@ export class Searcher {
           entry.resultSelector =
             searchEntryConfig.resultSelector || entry.resultSelector;
           entry.headers = searchEntryConfig.headers || entry.headers;
+          entry.asyncParse = searchEntryConfig.asyncParse || entry.asyncParse;
         }
 
         // 判断是否指定了搜索页和用于获取搜索结果的脚本
@@ -430,7 +431,7 @@ export class Searcher {
               return;
             }
 
-            const options = {
+            let options: any = {
               results: [],
               responseText: result,
               site,
@@ -448,7 +449,20 @@ export class Searcher {
             // 执行获取结果的脚本
             try {
               if (entry.parseScript) {
-                eval(entry.parseScript);
+                // 异步脚本，由脚本负责调用 reject 和 resolve
+                if (entry.asyncParse) {
+                  options = Object.assign(
+                    {
+                      reject,
+                      resolve
+                    },
+                    options
+                  );
+                  eval(entry.parseScript);
+                  return;
+                } else {
+                  eval(entry.parseScript);
+                }
               }
               if (
                 options.errorMsg ||

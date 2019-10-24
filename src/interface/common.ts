@@ -366,6 +366,8 @@ export interface SearchEntryConfig {
   queryString?: string;
   parseScriptFile?: string;
   parseScript?: string;
+  // 是否异步解析脚本
+  asyncParse?: boolean;
   resultSelector?: string;
   area?: SearchEntryConfigArea[];
   headers?: Dictionary<any>;
@@ -380,6 +382,8 @@ export interface SearchEntry {
   resultType?: ERequestResultType;
   parseScriptFile?: string;
   parseScript?: string;
+  // 是否异步解析脚本
+  asyncParse?: boolean;
   resultSelector?: string;
   enabled?: boolean;
   tagSelectors?: any[];
