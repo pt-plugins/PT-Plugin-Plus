@@ -1,5 +1,19 @@
 <template>
   <div class="torrent-actions">
+    <!-- 下载到 -->
+    <DownloadTo
+      :downloadOptions="item"
+      flat
+      icon
+      small
+      :mini="$vuetify.breakpoint.smAndDown"
+      class="mx-0"
+      color="grey darken-1"
+      @error="downloadError"
+      @success="downloadSuccess"
+    />
+
+    <!-- 复制下载链接 -->
     <v-btn
       flat
       icon
@@ -14,19 +28,6 @@
       >file_copy</v-icon>
     </v-btn>
 
-    <!-- 下载到 -->
-    <DownloadTo
-      :downloadOptions="item"
-      flat
-      icon
-      small
-      :mini="$vuetify.breakpoint.smAndDown"
-      class="mx-0"
-      color="grey darken-1"
-      @error="downloadError"
-      @success="downloadSuccess"
-    />
-
     <!-- 下载种子文件 -->
     <v-btn
       v-if="downloadMethod=='POST'"
@@ -36,7 +37,7 @@
       :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
       color="grey darken-1"
     >
-      <v-icon @click.stop="saveTorrentFile" small :title="$t('searchTorrent.save')">get_app</v-icon>
+      <v-icon @click.stop="saveTorrentFile" small :title="$t('searchTorrent.saveTip')">save</v-icon>
     </v-btn>
 
     <v-btn
@@ -48,10 +49,10 @@
       :href="url"
       target="_blank"
       rel="noopener noreferrer nofollow"
-      :title="$t('searchTorrent.save')"
+      :title="$t('searchTorrent.saveTip')"
       color="grey darken-1"
     >
-      <v-icon small>get_app</v-icon>
+      <v-icon small>save</v-icon>
     </v-btn>
 
     <!-- 收藏 -->
@@ -63,6 +64,7 @@
       :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
       color="grey darken-1"
       @click="addToCollection"
+      :title="$t('collection.add')"
     >
       <v-icon small>favorite_border</v-icon>
     </v-btn>
@@ -75,6 +77,7 @@
       :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
       color="pink"
       @click="deleteCollection"
+      :title="$t('collection.remove')"
     >
       <v-icon small>favorite</v-icon>
     </v-btn>

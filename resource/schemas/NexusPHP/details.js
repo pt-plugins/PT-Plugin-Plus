@@ -48,6 +48,7 @@
 
       if (!url) {
         url =
+          $("td.rowfollow:contains('&passkey='):last").text() ||
           $("a[href*='download'][href*='?id']:first").attr("href") ||
           $("a[href*='download.php?']:first").attr("href");
       }
@@ -72,14 +73,7 @@
         return "";
       }
 
-      if (url.substr(0, 2) === "//") {
-        // 首先尝试适配HUDBT、WHU这样以相对链接开头
-        url = `${location.protocol}${url}`;
-      } else if (url.substr(0, 1) === "/") {
-        url = `${location.origin}${url}`;
-      } else if (url.substr(0, 4) !== "http") {
-        url = `${location.origin}/${url}`;
-      }
+      url = this.getFullURL(url);
 
       if (url.indexOf("https=1") === -1) {
         url += "&https=1";

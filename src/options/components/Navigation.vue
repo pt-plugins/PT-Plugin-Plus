@@ -76,7 +76,7 @@ export default Vue.extend({
             },
             {
               title: "navigation.dashboard.keepUploadTask",
-              icon: "date_range",
+              icon: "merge_type",
               key: "/keep-upload-task"
             }
           ]
