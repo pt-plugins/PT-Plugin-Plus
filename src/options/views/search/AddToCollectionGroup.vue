@@ -7,10 +7,13 @@
     :color="color"
     :disabled="disabled"
     @click.stop="showContentMenus"
+    :class="$vuetify.breakpoint.smAndUp?'':'mini'"
+    :title="$t('collection.add')"
+    :dark="dark"
   >
     <v-icon v-if="haveSuccess" color="success" small>done</v-icon>
     <v-icon v-else-if="haveError" color="red" small>close</v-icon>
-    <v-icon v-else small :title="$t('collection.addToGroup')">{{ iconText }}</v-icon>
+    <v-icon v-else small>{{ iconText }}</v-icon>
     <span class="ml-2">{{ label }}</span>
   </v-btn>
 </template>
@@ -34,6 +37,7 @@ export default Vue.extend({
     flat: Boolean,
     icon: Boolean,
     small: Boolean,
+    dark: Boolean,
     iconText: {
       type: String,
       default: "favorite_border"

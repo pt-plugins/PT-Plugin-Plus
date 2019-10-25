@@ -129,7 +129,8 @@ export default Vue.extend({
 
       currentOrderMode: EResourceOrderMode.asc,
       rawDatas: [] as any[],
-      toolbarClass: "mt-3"
+      toolbarClass: "mt-3",
+      toolbarIsFixed: false
     };
   },
   created() {
@@ -192,6 +193,7 @@ export default Vue.extend({
 
     this.host = this.$route.params["host"];
     this.loadTorrentCollections();
+    this.handleScroll();
   },
   watch: {
     key() {
@@ -227,6 +229,11 @@ export default Vue.extend({
     currentOrderMode() {
       this.pagination.descending =
         this.currentOrderMode === EResourceOrderMode.desc;
+    },
+    checkBox() {
+      if (this.checkBox === false) {
+        this.selected = [];
+      }
     }
   },
   methods: {
@@ -1474,11 +1481,14 @@ export default Vue.extend({
       let _this = this;
 
       function addMenu(item: any) {
-        let title = _this
-          .$t("searchTorrent.downloadTo", {
-            path: `${item.client.name} -> ${item.client.address}`
-          })
-          .toString();
+        let title = _this.$vuetify.breakpoint.xs
+          ? item.client.name
+          : _this
+              .$t("searchTorrent.downloadTo", {
+                path: `${item.client.name} -> ${item.client.address}`
+              })
+              .toString();
+
         if (item.path) {
           title += ` -> ${item.path}`;
         }
@@ -1811,7 +1821,7 @@ export default Vue.extend({
     },
     handleScroll() {
       const divToolbar: any = $("#divToolbar");
-      if (!divToolbar) {
+      if (!divToolbar || !divToolbar.offset()) {
         return;
       }
       const sysTopBar: any = $("#system-topbar");
@@ -1823,11 +1833,23 @@ export default Vue.extend({
       const offsetTop = divToolbar.offset().top;
       if (scrollTop + top > offsetTop) {
         this.toolbarClass = "isFixedToolbar";
+        this.toolbarIsFixed = true;
+        const height = $("#divToobarInner").height() || 0;
+        $("#divToobarHeight").height(height);
         $("#divToobarInner").css({
           top: top
         });
       } else {
+        this.toolbarIsFixed = false;
         this.toolbarClass = "mt-3";
+      }
+    },
+    changeSelectAllStatus() {
+      // 如有已有部分选中，则取消所有已选择的内容
+      if (this.selected.length > 0) {
+        this.selected = [];
+      } else {
+        this.selected = this.datas;
       }
     }
   },
@@ -1915,6 +1937,15 @@ export default Vue.extend({
           value: EResourceOrderMode.desc
         }
       ];
+    },
+    indeterminate(): boolean {
+      if (
+        this.selected.length > 0 &&
+        this.selected.length < this.datas.length
+      ) {
+        return true;
+      }
+      return false;
     }
   }
 });

@@ -4,7 +4,7 @@
       <v-text-field
         flat
         solo-inverted
-        prepend-icon="search"
+        :prepend-icon="$vuetify.breakpoint.smAndUp?'search':''"
         :label="$t('searchBox.searchTip')"
         class="mt-2 mb-0"
         v-model="searchKey"
@@ -64,7 +64,7 @@
             :title="$t('searchBox.searchThisKey', { key: item.title })"
           >
             <v-list-tile-avatar class="album" :size="75">
-              <img :src="item.images.small">
+              <img :src="item.images.small" />
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title class="mb-1">
@@ -87,7 +87,7 @@
                 :title="$t('searchBox.toDouban')"
                 @click.stop
               >
-                <img src="https://img3.doubanio.com/favicon.ico" width="16">
+                <img src="https://img3.doubanio.com/favicon.ico" width="16" />
                 {{ parseFloat(item.rating.average).toFixed(1) }}
               </a>
               <v-rating
@@ -257,6 +257,7 @@ export default Vue.extend({
       }
 
       this.showMenu = false;
+      clearTimeout(this.timer);
 
       this.$store.dispatch("saveConfig", {
         lastSearchKey: this.searchKey

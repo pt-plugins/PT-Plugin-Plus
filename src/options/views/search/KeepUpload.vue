@@ -7,7 +7,17 @@
     :fullscreen="$vuetify.breakpoint.smAndDown"
   >
     <template v-slot:activator="{ on }">
-      <v-btn color="success" dark v-on="on" small>{{ label || $t('keepUploadTask.keepUpload')}}</v-btn>
+      <v-btn
+        dark
+        v-on="on"
+        small
+        :class="$vuetify.breakpoint.smAndUp?'':'mini'"
+        :title="$t('keepUploadTask.keepUpload')"
+        :color="color"
+      >
+        <v-icon small>merge_type</v-icon>
+        <span class="ml-2">{{ label || $t('keepUploadTask.keepUpload')}}</span>
+      </v-btn>
     </template>
     <v-card>
       <v-toolbar dark color="blue-grey darken-2">
@@ -129,6 +139,7 @@ export default Vue.extend({
   },
   props: {
     label: String,
+    color: String,
     items: {
       type: Array as () => SearchResultItem[],
       default: () => {

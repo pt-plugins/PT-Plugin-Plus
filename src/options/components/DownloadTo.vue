@@ -6,7 +6,7 @@
     :loading="loading"
     @click.stop="showSiteContentMenus"
     :class="[mini?'btn-mini':'']"
-    :title="title||$t('searchTorrent.sendToClient')"
+    :title="title||$t('searchTorrent.sendToClientTip')"
     :color="color"
   >
     <v-icon v-if="haveSuccess" color="success" small>done</v-icon>
@@ -179,20 +179,20 @@ export default Vue.extend({
 
       items.forEach((item: any) => {
         if (item.client && item.client.name) {
+          let title = this.$vuetify.breakpoint.xs
+            ? item.client.name
+            : this.$t("searchTorrent.downloadTo", {
+                path: `${item.client.name} -> ${item.client.address}`
+              });
+
+          if (item.path) {
+            title += ` ->${this.pathHandler.replacePathKey(
+              item.path,
+              this.site
+            )}`;
+          }
           menus.push({
-            title: this.$t("searchTorrent.downloadTo", {
-              path:
-                `${item.client.name}` +
-                (this.$vuetify.breakpoint.smAndDown
-                  ? ""
-                  : ` -> ${item.client.address}`) +
-                (item.path
-                  ? ` -> ${this.pathHandler.replacePathKey(
-                      item.path,
-                      this.site
-                    )}`
-                  : "")
-            }).toString(),
+            title,
             fn: () => {
               if (options.url) {
                 console.log(options, item);
