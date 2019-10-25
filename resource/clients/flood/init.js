@@ -135,11 +135,7 @@
       let url = data.url;
 
       // 处理magent链接
-      if (url.match(/^[0-9a-f]{40}$/i) || /^magnet:\?xt=urn:btih:/.test(url)) {
-        if (url.match(/^[0-9a-f]{40}$/i)) {
-          url = 'magnet:?xt=urn:btih:' + url;
-        }
-
+      if (url.startsWith('magnet:')) {
         this.addTorrentUrl({
           destination: data.savePath || '',
           /** isBasePath
