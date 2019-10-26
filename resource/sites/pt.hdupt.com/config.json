@@ -108,5 +108,16 @@
         "name": "Games/游戏"
       }
     ]
-  }]
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowhead:contains('魔力值') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/\\(([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+        }
+      }
+    }
+  }
 }
