@@ -40,6 +40,10 @@
         }
       });
 
+      if (urls.length == 0) {
+        return this.t("getDownloadURLsFailed");
+      }
+
       return urls;
     }
 

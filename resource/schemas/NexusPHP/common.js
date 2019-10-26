@@ -1007,7 +1007,7 @@
 
       const savePath = downloadOptions
         ? PTService.pathHandler.getSavePath(
-            downloadOptions.savePath,
+            downloadOptions.savePath || downloadOptions.path,
             PTService.site
           )
         : "";
