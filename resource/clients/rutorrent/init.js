@@ -4,7 +4,7 @@
  *
  */
 
-(function ($) {
+(function($) {
   // ruTorrent
   class Client {
     /**
@@ -21,14 +21,13 @@
       let url = PTServiceFilters.parseURL(this.options.address);
       let address = [url.protocol, "://", url.host];
       if (url.port) {
-        address.push(`:${url.port}`)
+        address.push(`:${url.port}`);
       }
       address.push(url.path);
       if (url.path.substr(-1) !== "/") {
         address.push("/");
       }
       this.options.address = address.join("");
-
 
       console.log("ruTorrent.init", this.options.address);
     }
@@ -44,7 +43,7 @@
       return new Promise((resolve, reject) => {
         switch (action) {
           case "addTorrentFromURL":
-            this.addTorrentFromUrl(data, (result) => {
+            this.addTorrentFromUrl(data, result => {
               if (result.status === "success") {
                 resolve(result);
               } else {
@@ -55,15 +54,17 @@
 
           // 测试是否可连接
           case "testClientConnectivity":
-            this.testClientConnectivity().then(result => {
-              resolve(true);
-            }).catch((code, msg) => {
-              reject({
-                status: "error",
-                code,
-                msg
+            this.testClientConnectivity()
+              .then(result => {
+                resolve(true);
+              })
+              .catch((code, msg) => {
+                reject({
+                  status: "error",
+                  code,
+                  msg
+                });
               });
-            });
             break;
         }
       });
@@ -81,21 +82,23 @@
     testClientConnectivity(callback) {
       return new Promise((resolve, reject) => {
         $.ajax({
-          type: 'GET',
-          url: this.options.address + 'php/getsettings.php',  // ping_addr
+          type: "GET",
+          url: this.options.address + "php/getsettings.php", // ping_addr
           username: this.options.loginName,
           password: this.options.loginPwd,
           timeout: PTBackgroundService.options.connectClientTimeout
-        }).done((resultData, textStatus, request) => {
-          this.isInitialized = true;
-          if (callback) {
-            callback(resultData);
-          }
-          resolve();
-        }).fail((jqXHR, textStatus, errorThrown) => {
-          reject(jqXHR.status, textStatus)
         })
-      })
+          .done((resultData, textStatus, request) => {
+            this.isInitialized = true;
+            if (callback) {
+              callback(resultData);
+            }
+            resolve();
+          })
+          .fail((jqXHR, textStatus, errorThrown) => {
+            reject(jqXHR.status, textStatus);
+          });
+      });
     }
 
     /**
@@ -107,13 +110,16 @@
       let url = data.url;
 
       // 磁性连接
-      if (url.startsWith('magnet:')) {
-        this.addTorrent({
-          dir_edit: data.savePath,
-          paused: !data.autoStart,
-          url: url,
-          json: 1,  // 输出json格式
-        }, callback);
+      if (url.startsWith("magnet:")) {
+        this.addTorrent(
+          {
+            dir_edit: data.savePath,
+            paused: !data.autoStart,
+            url: url,
+            json: 1 // 输出json格式
+          },
+          callback
+        );
         return;
       }
 
@@ -122,16 +128,20 @@
         action: "getTorrentDataFromURL",
         data: url
       })
-        .then((result) => {
+        .then(result => {
           let formData = new FormData();
-          formData.append("json", 1);  // 输出json格式
-          formData.append("dir_edit", data.savePath);
+          formData.append("json", 1); // 输出json格式
+          // 如果有传值时，则设置路径参数
+          if (data.savePath) {
+            formData.append("dir_edit", data.savePath);
+          }
+
           formData.append("paused", !data.autoStart);
           formData.append("torrent_file", result, "file.torrent");
 
           this.addTorrent(formData, callback);
         })
-        .catch((result) => {
+        .catch(result => {
           callback && callback(result);
         });
     }
@@ -153,7 +163,7 @@
     addTorrent(data, callback) {
       $.ajax({
         type: "POST",
-        url: this.options.address + 'php/addtorrent.php',
+        url: this.options.address + "php/addtorrent.php",
         username: this.options.loginName,
         password: this.options.loginPwd,
         timeout: PTBackgroundService.options.connectClientTimeout,
@@ -164,12 +174,11 @@
           if (callback) {
             callback(resultData);
           }
-        },
-      })
+        }
+      });
     }
   }
 
   // 添加到 window 对象，用于客户页面调用
   window.ruTorrent = Client;
-
 })(jQuery, window);
