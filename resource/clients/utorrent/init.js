@@ -176,12 +176,16 @@
       $.ajax(settings);
     }
 
-    // 添加种子
+    /**
+     * 添加种子链接
+     * @param {*} data
+     * @param {*} callback
+     */
     addTorrentFromUrl(data, callback) {
       let url = data.url;
-      // 磁性连接（代码来自原版WEBUI）
-      if (url.match(/^[0-9a-f]{40}$/i)) {
-        url = "magnet:?xt=urn:btih:" + url;
+
+      // 磁性连接
+      if (url.startsWith('magnet:')) {
         this.addTorrent({
           action: "add-url",
           s: url,

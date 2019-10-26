@@ -168,27 +168,28 @@
 
     /**
      * 添加种子链接
-     * @param {*} url
+     * @param {*} data
      * @param {*} callback
      */
     addTorrentFromUrl(data, callback) {
       let url = data.url;
+
       // 磁性连接（代码来自原版WEBUI）
-      if (url.match(/^[0-9a-f]{40}$/i)) {
-        url = "magnet:?xt=urn:btih:" + url;
+      if (url.startsWith('magnet:')) {
         this.addTorrent({
-          method: "core.add_torrent_url",
-          params: [
-            url,
-            {
-              download_location: data.savePath
-            }
-          ]
-        },
+            method: "core.add_torrent_url",
+            params: [
+              url,
+              {
+                download_location: data.savePath
+              }
+            ]
+          },
           callback
         );
         return;
       }
+
       PTBackgroundService.requestMessage({
         action: "getTorrentDataFromURL",
         data: url

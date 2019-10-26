@@ -195,18 +195,9 @@
         options.arguments["download-dir"] = savePath;
       }
 
-      let magnet = "";
-
-      // 磁性连接（代码来自原版WEBUI）
-      if (url.match(/^[0-9a-f]{40}$/i)) {
-        magnet = 'magnet:?xt=urn:btih:' + url;
-      } else if (/^magnet:\?xt=urn:btih:/.test(url)) {
-        magnet = url;
-      }
-
-      // 是否为磁性连接
-      if (magnet) {
-        options.arguments["filename"] = magnet;
+      // 磁性连接
+      if (url.startsWith('magnet:')) {
+        options.arguments["filename"] = url;
         this.addTorrent(options, callback)
       } else {
         PTBackgroundService.requestMessage({
