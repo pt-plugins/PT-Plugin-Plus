@@ -12,6 +12,7 @@
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
     "queryString": "searchstr=$key$&group_results=0&searchsubmit=1",
+    "asyncParse": false,
     "area": [{
       "name": "IMDB",
       "keyAutoMatch": "^(tt\\d+)$",
