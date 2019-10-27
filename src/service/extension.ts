@@ -1,22 +1,8 @@
-/**
- * 导入这个是为了本地测试，对于 Chrome 插件实际运行时不起作用
- */
-import PTPlugin from "@/background/service";
 import { EAction, EDataResultType } from "@/interface/common";
 import { APP } from "./api";
 
 export default class Extension {
-  public isExtensionMode: boolean = false;
-  constructor() {
-    try {
-      this.isExtensionMode = !!(chrome.runtime && chrome.extension);
-    } catch (error) {
-      console.log("is not extension mode.", error);
-    }
-    // if (window["chrome"] && window.chrome.extension) {
-    //   this.isExtensionMode = true;
-    // }
-  }
+  public isExtensionMode: boolean = APP.isExtensionMode;
 
   /**
    * 向背景页发送指令
@@ -102,18 +88,31 @@ export default class Extension {
         return;
       }
 
-      const PTService = new PTPlugin(true);
-      PTService.requestMessage({
-        action,
-        data
-      })
-        .then((result: any) => {
-          callback && callback.call(this, result);
-          resolve(result);
-        })
-        .catch((error: any) => {
-          reject(error);
-        });
+      /**
+       * 仅对调试界面时使用
+       */
+      if (process.env.NODE_ENV === "test") {
+        // 使用 import() 方法是为了在打包时减少不必要的代码依赖
+        import("@/background/service")
+          .then((result: any) => {
+            console.log(result);
+            const PTService = new result.default(true);
+            PTService.requestMessage({
+              action,
+              data
+            })
+              .then((result: any) => {
+                callback && callback.call(this, result);
+                resolve(result);
+              })
+              .catch((error: any) => {
+                reject(error);
+              });
+          })
+          .catch(error => {
+            console.log("sendRequest.error", error);
+          });
+      }
     });
   }
 }

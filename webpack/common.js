@@ -1,5 +1,4 @@
 const path = require("path");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 // 因第三方库中可能会包含一些特殊字符，导致编译后 Chrome 无法加载的问题，故引入 terser-webpack-plugin 插件
 // Chrome 会报以下错误：无法为内容脚本加载“xxx.js”文件。该文件采用的不是 UTF-8 编码。
 // @see https://stackoverflow.com/questions/55601774/chrome-extension-has-a-content-js-error-about-utf-8
@@ -11,15 +10,6 @@ function resolve(dir) {
 }
 
 module.exports = {
-  entry: {
-    popup: path.join(__dirname, "../src/popup/index.ts"),
-    background: path.join(__dirname, "../src/background/index.ts"),
-    content: path.join(__dirname, "../src/content/index.ts")
-  },
-  output: {
-    path: path.join(__dirname, "../dist/js/service"),
-    filename: "[name].js"
-  },
   optimization: {
     // 将第三方库和主程序分离
     // 参考配置：https://yi-jy.com/2018/06/09/webpack-split-chunks/
@@ -72,15 +62,6 @@ module.exports = {
       "@": resolve("src")
     }
   },
-  plugins: [
-    new CopyWebpackPlugin([
-      {
-        from: resolve("/resource/"),
-        to: path.join(resolve("/dist/"), "resource"),
-        ignore: [".DS_Store", "README.md", "testSearchData.json"]
-      }
-    ])
-  ],
   // 防止一些模块中使用了fs时无法编译的错误
   node: {
     fs: "empty"
