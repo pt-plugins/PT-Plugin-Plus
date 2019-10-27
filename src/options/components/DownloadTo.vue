@@ -206,6 +206,10 @@ export default Vue.extend({
                 };
 
                 if (this.getOptionsOnly) {
+                  downloadOptions.savePath = this.pathHandler.getSavePath(
+                    downloadOptions.savePath,
+                    this.site
+                  );
                   this.$emit("itemClick", {
                     payload: this.payload,
                     downloadOptions: Object.assign(
