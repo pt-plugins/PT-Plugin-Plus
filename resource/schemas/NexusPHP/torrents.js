@@ -35,17 +35,19 @@
       }
 
       let urls = $.map(links, item => {
-        let url =
-          $(item)
-            .attr("href")
-            .replace(/details\.php/gi, "download.php") +
-          (PTService.site.passkey ? "&passkey=" + PTService.site.passkey : "");
+        let url = $(item)
+          .attr("href")
+          .replace(/details\.php/gi, "download.php");
         if (url) {
           if (url.substr(0, 2) === "//") {
             // 适配HUDBT、WHU这样以相对链接开头
             url = location.protocol + url;
           } else if (url.substr(0, 4) !== "http") {
             url = siteURL + url;
+          }
+
+          if (url.indexOf("passkey=") === -1 && PTService.site.passkey) {
+            url += "&passkey=" + PTService.site.passkey;
           }
 
           if (
