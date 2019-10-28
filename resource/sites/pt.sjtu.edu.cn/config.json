@@ -123,5 +123,17 @@
         "name": "其他"
       }
     ]
-  }]
+  }],
+  "selectors": {
+    "userSeedingTorrents": {
+      "merge": true,
+      "page": "/viewusertorrents.php?id=$user.id$&show=seeding",
+      "fields": {
+        "seedingSize": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td.rowfollow:eq(1)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    }
+  }
 }
