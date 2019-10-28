@@ -60,5 +60,17 @@
   "supportedFeatures": {
     "imdbSearch": false,
     "userData": "◐"
+  },
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["div.tline1, div.tline2"],
+        "filters": ["query.attr('style')||''", "query.match(/width:([ \\d.]+)%/)", "(query && query.length>=2)?query[1]:null"]
+      },
+      "status": {
+        "selector": ["> td:eq(4), > td:eq(5), > td:eq(6)"],
+        "filters": ["query.map(function(){return $(this).attr('style') || ''}).get()","query[0] ? 2 : (query[2] ? 255: (query[1] ? 1 : null))"]
+      }
+    }
   }
 }

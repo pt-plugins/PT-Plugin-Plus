@@ -568,7 +568,7 @@
                 <TorrentProgress
                   class="progress"
                   style="position: unset; padding-top:2px;"
-                  v-if="props.item.progress!=null"
+                  v-if="props.item.progress!=null || props.item.status!=null"
                   :progress="parseInt(props.item.progress)"
                   :status="props.item.status"
                 ></TorrentProgress>
@@ -606,7 +606,7 @@
             {{props.item.size | formatSize}}
             <TorrentProgress
               class="progress"
-              v-if="props.item.progress!=null"
+              v-if="props.item.progress!=null || props.item.status!=null"
               :progress="parseInt(props.item.progress)"
               :status="props.item.status"
             ></TorrentProgress>

@@ -1,4 +1,4 @@
-(function(options) {
+(function(options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -206,7 +206,9 @@
             category:
               fieldIndex.category == -1
                 ? null
-                : this.getCategory(cells.eq(fieldIndex.category))
+                : this.getCategory(cells.eq(fieldIndex.category)),
+            progress: Searcher.getFieldValue(site, row, "progress"),
+            status: Searcher.getFieldValue(site, row, "status")
           };
           results.push(data);
         }
@@ -301,4 +303,4 @@
   let parser = new Parser(options);
   options.results = parser.getResult();
   console.log(options.results);
-})(options);
+})(options, options.searcher);
