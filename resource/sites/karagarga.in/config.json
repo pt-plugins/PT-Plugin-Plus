@@ -1,0 +1,86 @@
+{
+  "name": "karagarga",
+  "description": "karagarga",
+  "url": "https://karagarga.in/",
+  "icon": "https://karagarga.in/favicon.ico",
+  "tags": ["影视"],
+  "schema": "karagarga",
+  "host": "karagarga.in",
+  "collaborator": "luckiestone",
+  "searchEntryConfig": {
+    "page": "/browse.php",
+    "queryString": "search=$key$&search_type=torrent",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table[id='browse']:last > tbody > tr",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "replaceKey": ["tt", ""],
+      "queryString": "search_type=imdb&search=$key$"
+    }]
+  },
+  "searchEntry": [{
+    "name": "All",
+    "enabled": true
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": "a[title='click to see your details page']:last",
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": "a[title='click to see your details page']:last"
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        },
+        "messageCount": {
+          "selector": ["td[style*='background: #DF0101'] a[href*='messages.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "bonus":{
+          "value": "N/A"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.rowhead:contains('Uploaded') + td"],
+          "filters": ["query.text().sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ["td.rowhead:contains('Downloaded') + td"],
+          "filters": ["query.text().sizeToNumber()"]
+        },
+        "ratio": {
+          "selector": "td.rowhead:contains('Share ratio') + td",
+          "filters": ["parseFloat(query.text())"]
+        },
+        "levelName": {
+          "selector": ["td.rowhead:contains('Class') + td"]
+        },
+        "joinTime": {
+          "selector": ["td.rowhead:contains('Join'):contains('date') + td"],
+          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "value": "N/A"
+        },
+        "seedingSize": {
+          "value": -1
+        }
+      }
+    }
+  },
+  "supportedFeatures": {
+    "userData": "◐"
+  }
+}
