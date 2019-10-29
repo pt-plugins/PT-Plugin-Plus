@@ -12,7 +12,13 @@
     "queryString": "search=$key$&search_type=torrent",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "table#browse:last"
+    "resultSelector": "table[id='browse']:last > tbody > tr",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "replaceKey": ["tt", ""],
+      "queryString": "search_type=imdb&search=$key$"
+    }]
   },
   "searchEntry": [{
     "name": "All",
@@ -75,9 +81,6 @@
     }
   },
   "supportedFeatures": {
-    "search": false,
-    "imdbSearch": false,
-    "userData": "◐",
-    "sendTorrent": false
+    "userData": "◐"
   }
 }
