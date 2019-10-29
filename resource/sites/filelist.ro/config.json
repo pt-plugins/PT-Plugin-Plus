@@ -84,7 +84,7 @@
           "filters": ["query.first().text().match(/([\\d.]+)/)", "(query && query.length>=1)?query[0]:''"]
         },
         "seedingSize": {
-          "selector": ["td.colhead:contains('Seed'):contains('bonus') + td > div > b"],
+          "selector": ["td.colhead:contains('Seed'):contains('bonus') + td > div > b:nth-child(2)"],
           "filters": ["query.last().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         }
       }
