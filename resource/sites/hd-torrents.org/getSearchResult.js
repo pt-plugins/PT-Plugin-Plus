@@ -1,4 +1,4 @@
-(function(options) {
+(function(options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -97,7 +97,9 @@
           site: site,
           entryName: options.entry.name,
           category: this.getCategory(cells.eq(fieldIndex.category)),
-          tags: this.getTags(row, options.torrentTagSelectors)
+          tags: this.getTags(row, options.torrentTagSelectors),
+          progress: Searcher.getFieldValue(site, row, "progress"),
+          status: Searcher.getFieldValue(site, row, "status")
         };
         results.push(data);
       }
@@ -159,4 +161,4 @@
   let parser = new Parser(options);
   options.results = parser.getResult();
   console.log(options.results);
-})(options);
+})(options, options.searcher);

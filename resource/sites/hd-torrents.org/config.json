@@ -32,7 +32,17 @@
     }],
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "table.mainblockcontenttt:last > tbody > tr"
+    "resultSelector": "table.mainblockcontenttt:last > tbody > tr",
+    "fieldSelector": {
+      "progress": {
+        "selector": ["td.mainblockcontentpeersall, td.mainblockcontentpeersseed, td.mainblockcontentpeersleech"],
+        "filters": ["query.is('.mainblockcontentpeersall')? null : query.is('.mainblockcontentpeersseed')? 100: 0"]
+      },
+      "status": {
+        "selector": ["td.mainblockcontentpeersall, td.mainblockcontentpeersseed, td.mainblockcontentpeersleech"],
+        "filters": ["query.is('.mainblockcontentpeersall')? null : query.is('.mainblockcontentpeersseed')? 2: 1"]
+      }
+    }
   },
   "searchEntry": [{
     "name": "全部",
