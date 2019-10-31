@@ -34,9 +34,9 @@
           <td style="text-align: center;">
             <div v-if="!!props.item.site">
               <v-avatar size="18">
-                <img :src="props.item.site.icon">
+                <img :src="props.item.site.icon" />
               </v-avatar>
-              <br>
+              <br />
               <span class="captionText">{{ props.item.site.name }}</span>
             </div>
           </td>
@@ -51,8 +51,8 @@
             <span
               v-else
               :title="props.item.data.url"
-            >{{ props.item.data.title || $t("history.clear").unknown }}</span>
-            <br>
+            >{{ props.item.data.title || props.item.data.url }}</span>
+            <br />
             <span
               class="sub-title"
             >[ {{ getClientName(props.item.data.clientId||props.item.clientId) }} ] -> {{ props.item.data.savePath || $t("history.defaultPath") }}</span>
@@ -67,13 +67,32 @@
           </td>
           <td>{{ props.item.time | formatDate }}</td>
           <td>
-            <v-icon
+            <!-- 重新下载 -->
+            <v-btn icon flat small @click="download(props.item)" :title="$t('history.download')">
+              <v-icon small>save_alt</v-icon>
+            </v-btn>
+
+            <!-- 下载到 -->
+            <DownloadTo
+              :downloadOptions="{host: props.item.host, url: props.item.data.url}"
+              flat
+              icon
               small
-              class="mr-2"
-              @click="download(props.item)"
-              :title="$t('history.download')"
-            >cloud_download</v-icon>
-            <v-icon small color="error" @click="removeConfirm(props.item)">delete</v-icon>
+              class="mx-0"
+              @error="onError"
+              @success="onSuccess"
+            />
+
+            <v-btn
+              icon
+              flat
+              small
+              color="error"
+              @click="removeConfirm(props.item)"
+              :title="$t('common.remove')"
+            >
+              <v-icon small>delete</v-icon>
+            </v-btn>
           </td>
         </template>
       </v-data-table>
@@ -110,9 +129,13 @@
 import Vue from "vue";
 import { EAction, DownloadOptions, Site, Dictionary } from "@/interface/common";
 import Extension from "@/service/extension";
+import DownloadTo from "@/options/components/DownloadTo.vue";
 
 const extension = new Extension();
 export default Vue.extend({
+  components: {
+    DownloadTo
+  },
   data() {
     return {
       selected: [],
@@ -211,6 +234,14 @@ export default Vue.extend({
             this.errorMsg = result.msg;
           }
         });
+    },
+
+    onError(msg: string) {
+      this.errorMsg = msg;
+    },
+
+    onSuccess(msg: string) {
+      this.successMsg = msg;
     }
   },
 

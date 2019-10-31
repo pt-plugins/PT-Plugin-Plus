@@ -55,6 +55,8 @@ export default class Controller {
   private imageBase64Cache: Dictionary<any> = {};
   // 下载重试次数
   private downloadFailedRetriesCache: Dictionary<any> = {};
+  // 种子链接对应的名称缓存
+  private torrentInfosCache: Dictionary<any> = {};
 
   constructor(public service: Service) {}
 
@@ -261,6 +263,14 @@ export default class Controller {
             }), // `下载服务器${clientConfig.options.name}处理[${ EAction.addTorrentFromURL}]命令完成`,
             data: result
           });
+
+          // 如果未指定标题，则尝试从种子信息缓存中获取名称
+          if (
+            !downloadOptions.title &&
+            this.torrentInfosCache[downloadOptions.url]
+          ) {
+            downloadOptions.title = this.torrentInfosCache[downloadOptions.url];
+          }
 
           if (result && (result.code === 0 || result.success === false)) {
             if (
@@ -886,22 +896,32 @@ export default class Controller {
           file.content &&
           /octet-stream|x-bittorrent/gi.test(file.content.type)
         ) {
-          // 是否解析种子文件
-          if (options.parseTorrent) {
-            parseTorrent.remote(file.content, (err, torrent) => {
-              if (err) {
-                console.log("parse.error", err);
+          parseTorrent.remote(file.content, (err, torrent) => {
+            if (err) {
+              console.log("parse.error", err);
+              // 是否解析种子文件
+              if (options.parseTorrent) {
                 reject(err);
               } else {
+                resolve(file.content);
+              }
+            } else {
+              // 缓存种子文件名称
+              if (torrent) {
+                this.torrentInfosCache[url] = torrent.name;
+              }
+
+              // 是否解析种子文件
+              if (options.parseTorrent) {
                 resolve({
                   url,
                   torrent
                 });
+              } else {
+                resolve(file.content);
               }
-            });
-          } else {
-            resolve(file.content);
-          }
+            }
+          });
         } else {
           // "无效的种子文件"
           reject(
