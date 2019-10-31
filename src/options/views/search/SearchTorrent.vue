@@ -401,7 +401,7 @@
 
             <!-- 保存搜索结果快照 -->
             <v-btn
-              :disabled="loading || !datas.length"
+              :loading="loading"
               color="cyan"
               small
               dark
