@@ -298,7 +298,8 @@
       "torrentStatus": {
         "downloading": "Downloading",
         "sending": "Sending",
-        "completed": "Completed"
+        "completed": "Completed",
+        "inactive": "Inactive"
       }
     },
     "settings": {

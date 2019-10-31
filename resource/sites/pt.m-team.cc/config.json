@@ -26,8 +26,8 @@
         "filters": ["query.text()==='--'?null:parseFloat(query.text())"]
       },
       "status": {
-        "selector": [".peer-active"],
-        "filters": ["query.length===0?255:(parseFloat(query.text())==100?2:1)"]
+        "selector": ["> td:eq(8)"],
+        "filters": ["query.text()==='--'?null:query.is('.peer-active')?(parseFloat(query.text())==100?2:1):(parseFloat(query.text())==100?255:3)"]
       }
     }
   },

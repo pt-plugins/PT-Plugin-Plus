@@ -33,6 +33,7 @@ export default Vue.extend({
           break;
 
         case ETorrentStatus.completed:
+        case ETorrentStatus.inactive:
           result = "grey";
           break;
 
@@ -53,6 +54,10 @@ export default Vue.extend({
           result = "done";
           break;
 
+        case ETorrentStatus.inactive:
+          result = "wifi_off";
+          break;
+
         case ETorrentStatus.sending:
         default:
           break;
@@ -70,6 +75,10 @@ export default Vue.extend({
 
         case ETorrentStatus.completed:
           result = this.$t("searchTorrent.torrentStatus.completed").toString();
+          break;
+
+        case ETorrentStatus.inactive:
+          result = this.$t("searchTorrent.torrentStatus.inactive").toString();
           break;
 
         case ETorrentStatus.sending:

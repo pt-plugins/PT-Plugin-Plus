@@ -350,7 +350,9 @@ export enum ETorrentStatus {
   // 正在做种
   sending = 2,
   // 已完成，未做种
-  completed = 255
+  completed = 255,
+  // 未活动（曾经下载过，但未完成）
+  inactive = 3
 }
 
 /**
