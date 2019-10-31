@@ -788,8 +788,15 @@ export default Vue.extend({
           delete _item.site;
         }
         this.rawDatas.push(_item);
+
+        // 将 // 替换为 /
+        item.link = (item.link as string)
+          .replace("://", "****")
+          .replace(/\/\//g, "/")
+          .replace("****", "://");
+
         // 忽略重复的搜索结果
-        if (this.getLinks.indexOf(item.link) !== -1) {
+        if (this.getLinks.includes(item.link)) {
           // 跳过本次循环进行下一个元素
           return;
         }
@@ -843,12 +850,6 @@ export default Vue.extend({
             item.completed = 0;
           }
         }
-
-        // 将 // 替换为 /
-        item.link = (item.link as string)
-          .replace("://", "****")
-          .replace(/\/\//g, "/")
-          .replace("****", "://");
 
         if (item.url) {
           item.url = item.url
