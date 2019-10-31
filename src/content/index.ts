@@ -882,10 +882,9 @@ class PTPContent {
   }
 
   /**
-   * 从当前行中获取指定字段的值
-   * @param site 当前站点
-   * @param row 当前行
+   * 从当前页面或指定DOM中获取指定字段的内容
    * @param fieldName 字段名称
+   * @param content 指定的父元素，默认为 body
    * @return null 表示没有获取到内容
    */
   public getFieldValue(fieldName: string = "", content: any = $("body")) {

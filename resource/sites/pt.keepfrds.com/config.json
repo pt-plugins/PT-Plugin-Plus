@@ -108,6 +108,14 @@
           "filters": ["query.text().replace(/,/g,'').match(/魔力值:.+?([\\d.]+)/)[1]", "parseFloat(query)"]
         }
       }
+    },
+    "/details.php": {
+      "fields": {
+        "downloadURL": {
+          "selector": ["input#download_link"],
+          "filters": ["query.val()"]
+        }
+      }
     }
   }
 }

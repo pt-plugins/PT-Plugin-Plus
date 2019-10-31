@@ -35,42 +35,45 @@
      * 获取下载链接
      */
     getDownloadURL() {
-      let query = $("a[href*='passkey'][href*='https']");
-      let url = "";
-      if (query.length > 0) {
-        url = query.attr("href");
-      } else {
-        query = $("a[href*='passkey']");
+      let url = PTService.getFieldValue("downloadURL");
+      if (!url) {
+        let query = $("a[href*='passkey'][href*='https']");
         if (query.length > 0) {
           url = query.attr("href");
+        } else {
+          query = $("a[href*='passkey']");
+          if (query.length > 0) {
+            url = query.attr("href");
+          }
         }
-      }
 
-      if (!url) {
-        url =
-          $("td.rowfollow:contains('&passkey='):last").text() ||
-          $("a[href*='download'][href*='?id']:first").attr("href") ||
-          $("a[href*='download.php?']:first").attr("href");
-      }
-
-      // 如果还是没有获取到下载链接地址，则尝试 passkey 来生成下载链接
-      if (!url && PTService.site.passkey) {
-        let id = location.href.getQueryString("id");
-        if (id) {
-          // 如果站点没有配置禁用https，则默认添加https链接
-          return (
-            location.origin +
-            "/download.php?id=" +
-            id +
-            "&passkey=" +
-            PTService.site.passkey +
-            (PTService.site.disableHttps ? "" : "&https=1")
-          );
+        if (!url) {
+          url =
+            $("td.rowfollow:contains('&passkey='):last").text() ||
+            $("a[href*='download'][href*='?id']:first").attr("href") ||
+            $("a[href*='download.php?']:first").attr("href");
         }
-      }
 
-      if (!url) {
-        return "";
+        // 如果链接地址中不包含passkey，且站点已配置 passkey 信息
+        // 则尝试 passkey 来生成下载链接
+        if (!(url + "").getQueryString("passkey") && PTService.site.passkey) {
+          let id = location.href.getQueryString("id");
+          if (id) {
+            // 如果站点没有配置禁用https，则默认添加https链接
+            return (
+              location.origin +
+              "/download.php?id=" +
+              id +
+              "&passkey=" +
+              PTService.site.passkey +
+              (PTService.site.disableHttps ? "" : "&https=1")
+            );
+          }
+        }
+
+        if (!url) {
+          return "";
+        }
       }
 
       url = this.getFullURL(url);
