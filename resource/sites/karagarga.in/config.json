@@ -1,9 +1,9 @@
 {
-  "name": "karagarga",
-  "description": "karagarga",
+  "name": "KaraGarga",
+  "description": "KG",
   "url": "https://karagarga.in/",
   "icon": "https://karagarga.in/favicon.ico",
-  "tags": ["影视"],
+  "tags": ["影视","音乐","文学"],
   "schema": "karagarga",
   "host": "karagarga.in",
   "collaborator": "luckiestone",
@@ -54,14 +54,14 @@
       "fields": {
         "uploaded": {
           "selector": ["td.rowhead:contains('Uploaded') + td"],
-          "filters": ["query.text().sizeToNumber()"]
+          "filters": ["query.text().replace(/,|\\r|\\n|\\s/g,'').match(/.*?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "downloaded": {
           "selector": ["td.rowhead:contains('Downloaded') + td"],
-          "filters": ["query.text().sizeToNumber()"]
+          "filters": ["query.text().replace(/,|\\r|\\n|\\s/g,'').match(/.*?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "ratio": {
-          "selector": "td.rowhead:contains('Share ratio') + td",
+          "selector": "td.rowhead:contains('Share ratio') + td > table > tbody > tr > td:nth-child(1) > font",
           "filters": ["parseFloat(query.text())"]
         },
         "levelName": {
