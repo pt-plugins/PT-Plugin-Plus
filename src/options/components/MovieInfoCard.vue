@@ -71,12 +71,15 @@
       </v-img>
       <v-divider light></v-divider>
       <v-card-actions class="px-3">
+        <!-- 豆瓣评分 -->
         <v-btn
           color="success"
           :href="info.mobile_link"
           target="_blank"
           rel="noopener noreferrer nofollow"
         >豆瓣 {{ info.rating.average }}</v-btn>
+
+        <!-- IMDb评分 -->
         <v-btn
           color="amber"
           :href="`https://www.imdb.com/title/${this.IMDbId}/`"
@@ -84,6 +87,7 @@
           rel="noopener noreferrer nofollow"
         >IMDb {{ ratings.imdbRating }}</v-btn>
 
+        <!-- 烂番茄新鲜度 -->
         <v-btn
           v-if="tomatoRating>0"
           color="red lighten-3"
@@ -97,6 +101,22 @@
           </v-avatar>
           {{ tomatoRating }}%
         </v-btn>
+
+        <!-- Metacritic评分 -->
+        <v-btn
+          v-if="metascore>0"
+          :color="metascore>60?'success':metascore>40?'warning':'error'"
+          :href="`https://www.metacritic.com/search/movie/${info.title}/results`"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          style="min-width: unset;"
+        >
+          <v-avatar size="20" class="mr-2">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Metacritic_M.png" />
+          </v-avatar>
+          {{ metascore }}
+        </v-btn>
+
         <v-spacer></v-spacer>
         <v-layout v-if="$vuetify.breakpoint.mdAndUp">
           <v-flex xs6>
@@ -244,6 +264,19 @@ export default Vue.extend({
         this.ratings.Ratings.some((item: any) => {
           if (item.Source == "Rotten Tomatoes") {
             ratings = parseInt(item.Value);
+            return true;
+          }
+        });
+        return ratings;
+      }
+      return 0;
+    },
+    metascore(): number {
+      if (this.ratings && this.ratings.Ratings) {
+        let ratings = 0;
+        this.ratings.Ratings.some((item: any) => {
+          if (item.Source == "Metacritic") {
+            ratings = parseInt(item.Value.split("/")[0]);
             return true;
           }
         });
