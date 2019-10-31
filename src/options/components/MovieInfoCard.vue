@@ -19,31 +19,31 @@
         <v-layout style="margin-left: 220px;" v-if="$vuetify.breakpoint.mdAndUp">
           <v-card-title class="pt-0">
             <v-flex xs12>
-              <span>又名：</span>
+              <span>{{ $t("movieInfoCard.alias") }}</span>
               <span class="caption">{{ info.alt_title }}</span>
             </v-flex>
             <v-flex xs12>
-              <span>导演：</span>
+              <span>{{ $t("movieInfoCard.director") }}</span>
               <span class="caption">{{ formatArray(info.attrs.director) }}</span>
             </v-flex>
             <v-flex xs12>
-              <span>编剧：</span>
+              <span>{{ $t("movieInfoCard.writer") }}</span>
               <span class="caption">{{ formatArray(info.attrs.writer) }}</span>
             </v-flex>
             <v-flex xs12>
-              <span>主演：</span>
+              <span>{{ $t("movieInfoCard.cast") }}</span>
               <span class="caption">{{ formatArray(info.attrs.cast) }}</span>
             </v-flex>
             <v-flex xs12>
-              <span>类型：</span>
+              <span>{{ $t("movieInfoCard.type") }}</span>
               <span class="caption">{{ formatArray(info.attrs.movie_type) }}</span>
             </v-flex>
             <v-flex xs12>
-              <span>上映：</span>
+              <span>{{ $t("movieInfoCard.pubdate") }}</span>
               <span class="caption">{{ formatArray(info.attrs.pubdate) }}</span>
             </v-flex>
             <v-flex xs12>
-              <span>片长：</span>
+              <span>{{ $t("movieInfoCard.duration") }}</span>
               <span class="caption">{{ formatArray(info.attrs.movie_duration) }}</span>
             </v-flex>
             <v-flex xs12 class="my-2">
@@ -129,7 +129,9 @@
               half-increments
               size="30"
             ></v-rating>
-            <span class="ma-2">豆瓣 {{ info.rating.average }} 共 {{ info.rating.numRaters }} 人参与评价</span>
+            <span
+              class="ma-2"
+            >{{ $t("movieInfoCard.ratings.douban", {average: info.rating.average, numRaters: info.rating.numRaters}) }}</span>
           </v-flex>
           <v-flex xs6>
             <v-rating
@@ -143,7 +145,7 @@
             ></v-rating>
             <span
               class="ma-2"
-            >IMDb {{ ratings.imdbRating }} 共 {{ ratings.imdbVotes.replace(/,/g, "") }} 人参与评价</span>
+            >{{ $t("movieInfoCard.ratings.imdb", {average: ratings.imdbRating, numRaters: ratings.imdbVotes.replace(/,/g, "")}) }}</span>
           </v-flex>
         </v-layout>
       </v-card-actions>
@@ -208,6 +210,11 @@ export default Vue.extend({
   methods: {
     reset() {
       this.visible = false;
+      this.ratings = {
+        imdbRating: "",
+        Ratings: [],
+        imdbVotes: ""
+      };
       if (this.IMDbId) {
         extension
           .sendRequest(EAction.getMovieInfos, null, this.IMDbId)

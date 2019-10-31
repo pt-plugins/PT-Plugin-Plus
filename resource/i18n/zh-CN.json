@@ -912,6 +912,19 @@
         "size": "大小",
         "time": "时间"
       }
+    },
+    "movieInfoCard": {
+      "alias": "又名：",
+      "director": "导演：",
+      "writer": "编剧：",
+      "cast": "主演：",
+      "type": "类型：",
+      "pubdate": "上映：",
+      "duration": "片长：",
+      "ratings": {
+        "douban": "豆瓣 {average} 共 {numRaters} 人参与评价",
+        "imdb": "IMDb {average} 共 {numRaters} 人参与评价"
+      }
     }
   }
 }

@@ -911,6 +911,19 @@
         "size": "Size",
         "time": "Time"
       }
+    },
+    "movieInfoCard": {
+      "alias": "Alias: ",
+      "director": "Director: ",
+      "writer": "Writer: ",
+      "cast": "Cast: ",
+      "type": "Type: ",
+      "pubdate": "Pubdate: ",
+      "duration": "Duration: ",
+      "ratings": {
+        "douban": "Douban {average} ({numRaters})",
+        "imdb": "IMDb {average} ({numRaters})"
+      }
     }
   }
 }
