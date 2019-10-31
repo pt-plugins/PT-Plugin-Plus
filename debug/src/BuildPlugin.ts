@@ -139,7 +139,7 @@ export class BuildPlugin {
     let list = FS.readdirSync(parentFolder);
 
     let itemTemplate =
-      "| $schema$ | $name$ | $search$ | $imdbSearch$ | $userData$ | $sendTorrent$ | $collaborator$ |";
+      "| $schema$ | $name$ | $search$ | $imdbSearch$ | $userData$ | $sendTorrent$ | $torrentProgress$ | $collaborator$ |";
 
     list.forEach((path: string) => {
       let file = PATH.join(parentFolder, path);
@@ -180,6 +180,12 @@ export class BuildPlugin {
               ? ""
               : supportedFeatures.userData,
           sendTorrent: supportedFeatures.sendTorrent === true ? "√" : "",
+          torrentProgress:
+            content.searchEntryConfig &&
+            content.searchEntryConfig.fieldSelector &&
+            content.searchEntryConfig.fieldSelector.progress
+              ? "√"
+              : "",
           collaborator: this.getCollaborator(content.collaborator)
         });
         schemas[schema].push(item);
