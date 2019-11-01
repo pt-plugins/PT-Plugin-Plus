@@ -1,0 +1,12 @@
+{
+  "name": "Good Movies List",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "best-movies",
+    "pages": ["/best-movies/"],
+    "scripts": ["/publicSites/douban.com/common.js", "best-movies.js"]
+  }],
+  "schema": "publicSite",
+  "host": "goodmovieslist.com",
+  "path": "goodmovieslist.com"
+}

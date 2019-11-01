@@ -414,6 +414,9 @@ export default Vue.extend({
       if (/^[a-z0-9]{32}$/.test(this.host)) {
         searchSolutionId = this.host;
         this.host = "";
+      } else if (this.host === "all") {
+        searchSolutionId = "all";
+        this.host = "";
       }
 
       // 是否指定了站点
@@ -478,10 +481,7 @@ export default Vue.extend({
         this.options.sites.forEach((item: Site) => {
           if (item.offline) return false;
 
-          if (
-            item.allowSearch ||
-            this.options.defaultSearchSolutionId == "all"
-          ) {
+          if (item.allowSearch || searchSolutionId == "all") {
             let siteSchema: SiteSchema = this.getSiteSchema(item);
             if (
               siteSchema &&
