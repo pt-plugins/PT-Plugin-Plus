@@ -10,7 +10,8 @@ import {
   EBeforeSearchingItemSearchMode,
   EBackupServerType,
   EPluginPosition,
-  EWorkingStatus
+  EWorkingStatus,
+  EEncryptMode
 } from "./enum";
 
 /**
@@ -154,6 +155,12 @@ export interface Options {
   defaultCollectionGroupId?: string;
   // 允许备份站点 cookies
   allowBackupCookies?: boolean;
+  // 加密备份的数据
+  encryptBackupData?: boolean;
+  // 加密密钥，本项内容备份时清除
+  encryptSecretKey?: string;
+  // 加密方式
+  encryptMode?: EEncryptMode;
 }
 
 // 在搜索之前一些选项配置
@@ -485,6 +492,7 @@ export interface IManifest {
   version: string;
   time: number;
   hash?: string;
+  encryptMode?: EEncryptMode;
 }
 
 /**

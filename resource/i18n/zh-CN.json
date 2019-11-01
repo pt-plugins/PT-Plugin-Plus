@@ -305,7 +305,7 @@
     "settings": {
       "backup": {
         "title": "参数备份与恢复",
-        "subTitle": "注：备份文件为明文，其中可能包含个人信息，请注意保管。",
+        "subTitle": "注：除非设置加密，否则备份文件为明文，其中可能包含个人信息，请注意保管。",
         "backup": "备份",
         "restore": "恢复",
         "backupToGoogle": "备份到Google",
@@ -375,7 +375,12 @@
           "cookies": "Cookies",
           "searchResultSnapshot": "搜索结果快照",
           "keepUploadTask": "辅种任务"
-        }
+        },
+        "restoreErrorType": {
+          "needSecretKey": "需要密钥",
+          "errorSecretKey": "密钥错误"
+        },
+        "enterSecretKey": "请输入密钥："
       },
       "base": {
         "title": "常规设置",
@@ -438,7 +443,12 @@
           "left": "页面左侧",
           "right": "页面右侧"
         },
-        "allowBackupCookies": "当进行备份操作时，同时备份已配置站点的 Cookies；（不支持备份到Google）"
+        "allowBackupCookies": "当进行备份操作时，同时备份已配置站点的 Cookies；（不支持备份到Google）",
+        "encryptBackupData": "当进行备份时，对备份数据进行加密",
+        "encryptMode": "加密方式：",
+        "encryptSecretKey": "密钥：",
+        "encryptTip": "注意：密钥仅保存在当前浏览器，不会备份，请妥善保存；加密后如密钥丢失将无法恢复数据。",
+        "createSecretKey": "随机生成"
       },
       "downloadClients": {
         "add": {

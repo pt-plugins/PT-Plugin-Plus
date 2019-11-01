@@ -82,7 +82,7 @@
                       v-model="options.connectClientTimeout"
                       :max="60000"
                       :min="500"
-                      :step="500"
+                      :step="1"
                     ></v-slider>
                   </v-flex>
 
@@ -184,6 +184,45 @@
                       v-model="options.allowBackupCookies"
                       :label="$t('settings.base.allowBackupCookies')"
                     ></v-switch>
+
+                    <!-- 加密备份数据 -->
+                    <v-switch
+                      color="success"
+                      v-model="options.encryptBackupData"
+                      :label="$t('settings.base.encryptBackupData')"
+                    ></v-switch>
+
+                    <!-- 加密备份数据 -->
+                    <v-flex xs12 v-if="options.encryptBackupData">
+                      <div style="margin: -20px 0 10px 45px;">
+                        <v-text-field
+                          v-model="options.encryptSecretKey"
+                          :label="$t('settings.base.encryptSecretKey')"
+                          :placeholder="$t('settings.base.encryptTip')"
+                          :type="showEncryptSecretKey ? 'text' : 'password'"
+                          class="d-inline-flex"
+                          style="width: 500px;max-height: 30px;"
+                        >
+                          <template v-slot:append>
+                            <v-icon
+                              @click="showEncryptSecretKey = !showEncryptSecretKey"
+                            >{{showEncryptSecretKey ? 'visibility_off' : 'visibility'}}</v-icon>
+                            <v-btn
+                              flat
+                              small
+                              color="primary"
+                              @click="createSecretKey"
+                            >{{ $t('settings.base.createSecretKey') }}</v-btn>
+                          </template>
+                        </v-text-field>
+
+                        <v-alert
+                          :value="true"
+                          type="info"
+                          class="mt-2"
+                        >{{ $t('settings.base.encryptTip') }}</v-alert>
+                      </div>
+                    </v-flex>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -432,7 +471,8 @@ import {
   ESizeUnit,
   EAction,
   Options,
-  EBeforeSearchingItemSearchMode
+  EBeforeSearchingItemSearchMode,
+  EEncryptMode
 } from "@/interface/common";
 import Extension from "@/service/extension";
 import { MovieInfoService } from "@/service/movieInfoService";
@@ -472,7 +512,10 @@ export default Vue.extend({
         batchDownloadInterval: 0,
         enableBackgroundDownload: false,
         position: "right",
-        allowBackupCookies: false
+        allowBackupCookies: false,
+        encryptBackupData: false,
+        encryptMode: EEncryptMode.AES,
+        encryptSecretKey: ""
       } as Options,
       units: [] as any,
       hours: [] as any,
@@ -494,7 +537,8 @@ export default Vue.extend({
         douban: [] as any
       },
       apiKeyVerifying: false,
-      showVerifyingStatus: false
+      showVerifyingStatus: false,
+      showEncryptSecretKey: false
     };
   },
   methods: {
@@ -651,6 +695,13 @@ export default Vue.extend({
         this.apiKeyVerifying = false;
         this.showVerifyingStatus = false;
       }
+    },
+
+    /**
+     * 随机生成一个密钥
+     */
+    createSecretKey() {
+      this.options.encryptSecretKey = PPF.getRandomString();
     }
   },
   created() {

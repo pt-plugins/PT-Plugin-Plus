@@ -1,7 +1,15 @@
 import JSZip from "jszip";
 import md5 from "blueimp-md5";
+import * as CryptoJS from "crypto-js";
 
-import { Dictionary, IManifest, IHashData } from "@/interface/common";
+import {
+  Dictionary,
+  IManifest,
+  IHashData,
+  EEncryptMode,
+  Options,
+  ERestoreError
+} from "@/interface/common";
 import { PPF } from "./public";
 
 export class BackupFileParser {
@@ -42,8 +50,15 @@ export class BackupFileParser {
           delete rawData.options.system;
         }
 
-        const options = JSON.stringify(rawData.options);
-        const userData = JSON.stringify(rawData.userData);
+        const _options = rawData.options as Options;
+        const secretKey = _options.encryptBackupData
+          ? _options.encryptSecretKey
+          : "";
+        if (_options.encryptBackupData && _options.encryptSecretKey) {
+          delete rawData.options.encryptSecretKey;
+        }
+        const options = this.encryptData(rawData.options, secretKey);
+        const userData = this.encryptData(rawData.userData, secretKey);
 
         // 配置
         zip.file("options.json", options);
@@ -54,25 +69,32 @@ export class BackupFileParser {
         const manifest = {
           checkInfo: this.createHash(options + userData),
           version: PPF.getVersion(),
-          time: new Date().getTime()
+          time: new Date().getTime(),
+          encryptMode: secretKey ? EEncryptMode.AES : ""
         };
         zip.file("manifest.json", JSON.stringify(manifest));
 
         // 用户收藏
         if (rawData.collection) {
-          zip.file("collection.json", JSON.stringify(rawData.collection));
+          zip.file(
+            "collection.json",
+            this.encryptData(rawData.collection, secretKey)
+          );
         }
 
         // 站点Cookies
         if (rawData.cookies) {
-          zip.file("cookies.json", JSON.stringify(rawData.cookies));
+          zip.file(
+            "cookies.json",
+            this.encryptData(rawData.cookies, secretKey)
+          );
         }
 
         // 搜索结果快照
         if (rawData.searchResultSnapshot) {
           zip.file(
             "searchResultSnapshot.json",
-            JSON.stringify(rawData.searchResultSnapshot)
+            this.encryptData(rawData.searchResultSnapshot, secretKey)
           );
         }
 
@@ -80,7 +102,7 @@ export class BackupFileParser {
         if (rawData.keepUploadTask) {
           zip.file(
             "keepUploadTask.json",
-            JSON.stringify(rawData.keepUploadTask)
+            this.encryptData(rawData.keepUploadTask, secretKey)
           );
         }
 
@@ -97,7 +119,10 @@ export class BackupFileParser {
    * 加载备份数据
    * @param data
    */
-  public loadZipData(data: any): Promise<any> {
+  public loadZipData(
+    data: any,
+    secretKeyTitle: string = "请输入密钥："
+  ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       JSZip.loadAsync(data)
         .then(zip => {
@@ -124,26 +149,45 @@ export class BackupFileParser {
           return Promise.all(requests);
         })
         .then(results => {
+          const manifest: IManifest = JSON.parse(results[0]);
+          let secretKey: string | null = "";
+          if (manifest.encryptMode) {
+            secretKey = window.prompt(secretKeyTitle);
+            if (!secretKey) {
+              reject(ERestoreError.needSecretKey);
+              return;
+            }
+
+            const test = this.decryptData(results[1], secretKey);
+            if (test === null) {
+              reject(ERestoreError.errorSecretKey);
+              return;
+            }
+          }
+
           const result: Dictionary<any> = {
-            manifest: JSON.parse(results[0]),
-            options: JSON.parse(results[1]),
-            datas: JSON.parse(results[2])
+            manifest,
+            options: this.decryptData(results[1], secretKey),
+            datas: this.decryptData(results[2], secretKey)
           };
 
           if (results.length > 3) {
-            result["collection"] = JSON.parse(results[3]);
+            result["collection"] = this.decryptData(results[3], secretKey);
           }
 
           if (results.length > 4) {
-            result["cookies"] = JSON.parse(results[4]);
+            result["cookies"] = this.decryptData(results[4], secretKey);
           }
 
           if (results.length > 5) {
-            result["searchResultSnapshot"] = JSON.parse(results[5]);
+            result["searchResultSnapshot"] = this.decryptData(
+              results[5],
+              secretKey
+            );
           }
 
           if (results.length > 6) {
-            result["keepUploadTask"] = JSON.parse(results[6]);
+            result["keepUploadTask"] = this.decryptData(results[6], secretKey);
           }
 
           if (this.checkData(result.manifest, results[1] + results[2])) {
@@ -195,5 +239,51 @@ export class BackupFileParser {
     } catch (error) {}
 
     return false;
+  }
+
+  /**
+   * 加密数据
+   * @param data 原始数据，JS对象
+   * @param secretKey 密钥，如果不指定，则不加密
+   */
+  public encryptData(data: any, secretKey: string = "") {
+    if (!secretKey) {
+      return JSON.stringify(data);
+    }
+    return this.encrypt(JSON.stringify(data), secretKey);
+  }
+
+  /**
+   * 解密数据
+   * @param data 已加密的数据
+   * @param secretKey 密钥，如果不指定，则直接使用 JSON.parse 返回
+   */
+  public decryptData(data: string, secretKey: string = "") {
+    if (!secretKey) {
+      return JSON.parse(data);
+    }
+    try {
+      return JSON.parse(this.decrypt(data, secretKey));
+    } catch (error) {
+      return null;
+    }
+  }
+
+  /**
+   * 以 AES 方式加密数据
+   * @param data 原数据
+   * @param secretKey 密钥
+   */
+  public encrypt(data: string, secretKey: string = "") {
+    return CryptoJS.AES.encrypt(data, secretKey).toString();
+  }
+
+  /**
+   * 以 AES 方式解密数据
+   * @param data 已加密的数据
+   * @param secretKey 密钥
+   */
+  public decrypt(data: string, secretKey: string = "") {
+    return CryptoJS.AES.decrypt(data, secretKey).toString(CryptoJS.enc.Utf8);
   }
 }

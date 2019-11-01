@@ -20,6 +20,7 @@
   "dependencies": {
     "basiccontext": "^3.5.1",
     "blueimp-md5": "^2.10.0",
+    "crypto-js": "^3.1.9-1",
     "dayjs": "^1.8.11",
     "extend": "^3.0.2",
     "file-saver": "^2.0.0",
@@ -43,6 +44,7 @@
   "devDependencies": {
     "@types/blueimp-md5": "^2.7.0",
     "@types/chrome": "^0.0.75",
+    "@types/crypto-js": "^3.1.43",
     "@types/extend": "^3.0.0",
     "@types/file-saver": "^2.0.0",
     "@types/html2canvas": "^0.0.35",

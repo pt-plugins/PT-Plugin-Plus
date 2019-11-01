@@ -328,6 +328,7 @@ export default Vue.extend({
         let file = restoreFile.files[0];
         if (file.name.substr(-4) === ".zip") {
           this.restoreFromZipFile(file);
+          restoreFile.value = "";
           return;
         }
         var r = new FileReader();
@@ -483,13 +484,21 @@ export default Vue.extend({
      */
     restoreFromZipFile(file: any) {
       backupFileParser
-        .loadZipData(file)
+        .loadZipData(file, this.$t("settings.backup.enterSecretKey").toString())
         .then(result => {
           console.log(result);
           this.restoreConfirm(result);
         })
         .catch(error => {
           console.log(error);
+          if (typeof error === "string") {
+            if (this.$te(`settings.backup.restoreErrorType.${error}`)) {
+              this.errorMsg = this.$t(
+                `settings.backup.restoreErrorType.${error}`
+              ).toString();
+              return;
+            }
+          }
           this.errorMsg = this.$t("settings.backup.restoreError").toString();
         });
     },

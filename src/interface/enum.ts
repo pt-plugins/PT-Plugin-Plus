@@ -412,3 +412,13 @@ export enum EResourceOrderMode {
   desc = "desc",
   asc = "asc"
 }
+
+// 加密方式
+export enum EEncryptMode {
+  AES = "AES"
+}
+
+export enum ERestoreError {
+  needSecretKey = "needSecretKey",
+  errorSecretKey = "errorSecretKey"
+}

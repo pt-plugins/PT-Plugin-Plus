@@ -305,7 +305,7 @@
     "settings": {
       "backup": {
         "title": "Parameter backup and recovery",
-        "subTitle": "Note: The backup file is in plain text and may contain personal information. Please take care of it.",
+        "subTitle": "Note: Unless encryption is set, the backup file is in plain text and may contain personal information. Please take care of it.",
         "backup": "Backup",
         "restore": "Restore",
         "backupToGoogle": "Backup To Google",
@@ -375,7 +375,12 @@
           "cookies": "Cookies",
           "searchResultSnapshot": "Search Result Snapshot",
           "keepUploadTask": "Reseed Task"
-        }
+        },
+        "restoreErrorType": {
+          "needSecretKey": "Need Secret Key",
+          "errorSecretKey": "Error Secret Key"
+        },
+        "enterSecretKey": "Please enter a Secret key:"
       },
       "base": {
         "title": "General",
@@ -438,7 +443,12 @@
           "left": " Left side of page",
           "right": "Rigth side of page"
         },
-        "allowBackupCookies": "Backup cookies of the configured site. (Backup to Google is not supported)"
+        "allowBackupCookies": "Backup cookies of the configured site. (Backup to Google is not supported)",
+        "encryptBackupData": "Encrypt backup data",
+        "encryptMode": "Encryption: ",
+        "encryptSecretKey": "Secret Key:",
+        "encryptTip": "Note: The key is only saved in the current browser and will not be backed up. Please save it properly. If the key is lost after encryption, the data will not be recovered.",
+        "createSecretKey": "Create"
       },
       "downloadClients": {
         "add": {

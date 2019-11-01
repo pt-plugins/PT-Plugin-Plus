@@ -106,7 +106,9 @@ class Config {
     // 启用后台下载任务
     enableBackgroundDownload: false,
     // 助手工具栏显示位置
-    position: EPluginPosition.right
+    position: EPluginPosition.right,
+    // 是否加密存储备份数据
+    encryptBackupData: false
   };
 
   public uiOptions: UIOptions = {};
