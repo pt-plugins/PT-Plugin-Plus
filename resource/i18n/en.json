@@ -48,7 +48,8 @@
         "asc": "ASC",
         "desc": "DESC"
       },
-      "close": "Close"
+      "close": "Close",
+      "copyed": "Copyed"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -444,7 +445,7 @@
           "right": "Rigth side of page"
         },
         "allowBackupCookies": "Backup cookies of the configured site. (Backup to Google is not supported)",
-        "encryptBackupData": "Encrypt backup data",
+        "encryptBackupData": "Encrypt backup data. (Backup to Google is not supported)",
         "encryptMode": "Encryption: ",
         "encryptSecretKey": "Secret Key:",
         "encryptTip": "Note: The key is only saved in the current browser and will not be backed up. Please save it properly. If the key is lost after encryption, the data will not be recovered.",

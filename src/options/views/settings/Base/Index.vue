@@ -201,7 +201,7 @@
                           :placeholder="$t('settings.base.encryptTip')"
                           :type="showEncryptSecretKey ? 'text' : 'password'"
                           class="d-inline-flex"
-                          style="width: 500px;max-height: 30px;"
+                          style="min-width: 800px;"
                         >
                           <template v-slot:append>
                             <v-icon
@@ -212,15 +212,20 @@
                               small
                               color="primary"
                               @click="createSecretKey"
+                              style="min-width:unset;"
                             >{{ $t('settings.base.createSecretKey') }}</v-btn>
+
+                            <v-btn
+                              flat
+                              small
+                              color="success"
+                              @click="copySecretKeyToClipboard"
+                              style="min-width:unset;"
+                            >{{ $t('common.copy') }}</v-btn>
                           </template>
                         </v-text-field>
 
-                        <v-alert
-                          :value="true"
-                          type="info"
-                          class="mt-2"
-                        >{{ $t('settings.base.encryptTip') }}</v-alert>
+                        <v-alert :value="true" type="info">{{ $t('settings.base.encryptTip') }}</v-alert>
                       </div>
                     </v-flex>
                   </v-flex>
@@ -702,6 +707,23 @@ export default Vue.extend({
      */
     createSecretKey() {
       this.options.encryptSecretKey = PPF.getRandomString();
+    },
+
+    /**
+     * 复制密钥到剪切板
+     */
+    copySecretKeyToClipboard() {
+      this.successMsg = "";
+      extension
+        .sendRequest(
+          EAction.copyTextToClipboard,
+          null,
+          this.options.encryptSecretKey
+        )
+        .then(result => {
+          this.successMsg = this.$t("common.copyed").toString();
+        })
+        .catch(() => {});
     }
   },
   created() {

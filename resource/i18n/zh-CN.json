@@ -48,7 +48,8 @@
         "asc": "升序",
         "desc": "降序"
       },
-      "close": "关闭"
+      "close": "关闭",
+      "copyed": "已复制"
     },
     "topbar": {
       "title": "@:(app.name)",
@@ -444,7 +445,7 @@
           "right": "页面右侧"
         },
         "allowBackupCookies": "当进行备份操作时，同时备份已配置站点的 Cookies；（不支持备份到Google）",
-        "encryptBackupData": "当进行备份时，对备份数据进行加密",
+        "encryptBackupData": "当进行备份时，对备份数据进行加密；（不支持备份到Google）",
         "encryptMode": "加密方式：",
         "encryptSecretKey": "密钥：",
         "encryptTip": "注意：密钥仅保存在当前浏览器，不会备份，请妥善保存；加密后如密钥丢失将无法恢复数据。",

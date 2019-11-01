@@ -484,7 +484,11 @@ export default Vue.extend({
      */
     restoreFromZipFile(file: any) {
       backupFileParser
-        .loadZipData(file, this.$t("settings.backup.enterSecretKey").toString())
+        .loadZipData(
+          file,
+          this.$t("settings.backup.enterSecretKey").toString(),
+          this.$store.state.options.encryptSecretKey
+        )
         .then(result => {
           console.log(result);
           this.restoreConfirm(result);
@@ -555,6 +559,8 @@ export default Vue.extend({
             });
 
             infos.options.sites = sites;
+            // 不覆盖当前的密钥值
+            infos.options.encryptSecretKey = this.$store.state.options.encryptSecretKey;
 
             this.$store.dispatch("resetRunTimeOptions", infos.options);
             this.workingStatus.update("options", EWorkingStatus.success);

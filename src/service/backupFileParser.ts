@@ -121,7 +121,8 @@ export class BackupFileParser {
    */
   public loadZipData(
     data: any,
-    secretKeyTitle: string = "请输入密钥："
+    secretKeyTitle: string = "请输入密钥：",
+    secretKey: string = ""
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       JSZip.loadAsync(data)
@@ -150,18 +151,29 @@ export class BackupFileParser {
         })
         .then(results => {
           const manifest: IManifest = JSON.parse(results[0]);
-          let secretKey: string | null = "";
+
           if (manifest.encryptMode) {
-            secretKey = window.prompt(secretKeyTitle);
-            if (!secretKey) {
-              reject(ERestoreError.needSecretKey);
-              return;
+            // 如果已指定了密钥，则先尝试是否正确
+            if (secretKey) {
+              if (this.decryptData(results[1], secretKey) === null) {
+                secretKey = "";
+              }
             }
 
-            const test = this.decryptData(results[1], secretKey);
-            if (test === null) {
-              reject(ERestoreError.errorSecretKey);
-              return;
+            if (!secretKey) {
+              let tmpSecretKey = window.prompt(secretKeyTitle);
+              if (!tmpSecretKey) {
+                reject(ERestoreError.needSecretKey);
+                return;
+              }
+
+              secretKey = tmpSecretKey;
+
+              let test = this.decryptData(results[1], secretKey);
+              if (test === null) {
+                reject(ERestoreError.errorSecretKey);
+                return;
+              }
             }
           }
 

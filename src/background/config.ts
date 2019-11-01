@@ -1026,7 +1026,11 @@ class Config {
           .get(path)
           .then(data => {
             this.backupFileParser
-              .loadZipData(data)
+              .loadZipData(
+                data,
+                this.service.i18n.t("settings.backup.enterSecretKey"),
+                this.service.options.encryptSecretKey
+              )
               .then((result: any) => {
                 resolve(result);
               })
