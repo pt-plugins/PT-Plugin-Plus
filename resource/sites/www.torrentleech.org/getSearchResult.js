@@ -21,6 +21,7 @@
       }
       let site = options.site;
       if (!options.page.numFound) {
+        options.status = ESearchResultParseStatus.noTorrents;
         return [];
       }
       let torrentList = options.page.torrentList;
