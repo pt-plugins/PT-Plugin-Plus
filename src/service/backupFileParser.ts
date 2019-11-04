@@ -54,7 +54,7 @@ export class BackupFileParser {
         const secretKey = _options.encryptBackupData
           ? _options.encryptSecretKey
           : "";
-        if (_options.encryptBackupData && _options.encryptSecretKey) {
+        if (_options.encryptSecretKey) {
           delete rawData.options.encryptSecretKey;
         }
         const options = this.encryptData(rawData.options, secretKey);
