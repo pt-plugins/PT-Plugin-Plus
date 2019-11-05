@@ -13,8 +13,13 @@
     "name": "explore",
     "pages": ["/explore", "/tv/"],
     "scripts": ["common.js", "explore.js"]
+  }, {
+    "name": "doulist",
+    "pages": ["\/doulist\/\\d+\/"],
+    "scripts": ["common.js", "doulist.js"]
   }],
   "schema": "publicSite",
   "host": "movie.douban.com",
-  "path": "douban.com"
+  "path": "douban.com",
+  "cdn": ["www.douban.com"]
 }
