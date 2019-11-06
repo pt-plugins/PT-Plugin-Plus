@@ -1,9 +1,9 @@
 {
   "name": "TLFBits",
   "schema": "NexusPHP",
-  "url": "http://pt.eastgame.org/",
+  "url": "https://pt.eastgame.org/",
   "description": "水管虽小，坚持则大！宛如TLF，虽弱却奢华",
-  "icon": "http://pt.eastgame.org/favicon.ico",
+  "icon": "https://pt.eastgame.org/favicon.ico",
   "tags": ["影视"],
   "host": "pt.eastgame.org",
   "collaborator": "waldens"

@@ -1,9 +1,9 @@
 {
   "name": "备胎",
   "schema": "NexusPHP",
-  "url": "http://www.beitai.pt/",
+  "url": "https://www.beitai.pt/",
   "description": "找不到家时，接纳无家可归的人",
-  "icon": "http://www.beitai.pt/favicon.ico",
+  "icon": "https://www.beitai.pt/favicon.ico",
   "tags": ["综合"],
   "host": "www.beitai.pt",
   "collaborator": "wyx1818"
