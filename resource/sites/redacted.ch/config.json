@@ -50,6 +50,19 @@
       "enabled": false
     }
   ],
+  "selectors": {
+    "userSeedingTorrents": {
+      "merge": true,
+        "page": "/ajax.php?action=community_stats&userid=$user.id$",
+        "dataType": "json",
+        "fields": {
+          "seedingSize": {
+            "selector": ["response.seedingsize"],
+            "filters": ["query.sizeToNumber()"]
+          }
+        }
+      }
+  },
   "supportedFeatures": {
     "imdbSearch": false,
     "userData": "◐"
