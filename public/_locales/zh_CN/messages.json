@@ -6,6 +6,6 @@
 		"message": "PT Plugin Plus"
 	},
 	"manifest_appDescription": {
-		"message": "本插件可以帮助你在各PT站实现一键下载、聚合搜索。一键下载已支持客户端：Transmission、μTorrent、qBittorrent v4.1+、Synology Download Station、ruTorrent。"
+		"message": "PT 助手，一个可以提升 PT 站点使用效率的工具。"
 	}
 }
