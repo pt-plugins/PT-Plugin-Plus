@@ -60,16 +60,17 @@
   "selectors": {
     "userSeedingTorrents": {
       "page": "/torrents.php?type=seeding&userid=$user.id$",
+      "parser": "getUserSeedingTorrents.js",
       "fields": {
-        "seedingSize": {
-          "selector": ["td.number_column.nobr"],
-          "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
-        },
         "bonus": {
           "selector": ["[href='bonus.php']+span"],
           "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": ["td.number_column.nobr"],
+          "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          }
         }
       }
-    }
   }
 }
