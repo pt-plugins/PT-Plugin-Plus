@@ -62,7 +62,7 @@ export default Vue.extend({
           title: "permissions.details.allSites",
           isOrigin: true
         },
-        { key: "tabs", title: "permissions.details.tabs" },
+        // { key: "tabs", title: "permissions.details.tabs" },
         { key: "downloads", title: "permissions.details.downloads" },
         { key: "cookies", title: "permissions.details.cookies" }
       ],

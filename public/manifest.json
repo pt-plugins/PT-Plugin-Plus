@@ -21,7 +21,7 @@
 		"https://*/*",
 		"unlimitedStorage"
 	],
-	"optional_permissions": ["tabs", "downloads", "cookies"],
+	"optional_permissions": ["downloads", "cookies"],
 	"icons": {
 		"16": "assets/icon.png",
 		"19": "assets/icon-19.png",
