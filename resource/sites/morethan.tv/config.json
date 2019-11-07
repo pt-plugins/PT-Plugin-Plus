@@ -7,21 +7,29 @@
   "tags": ["剧集"],
   "host": "www.morethan.tv",
   "collaborator": "luckiestone",
+  "searchEntryConfig": {
+    "page": "/ajax.php",
+    "resultType": "json",
+    "parseScriptFile": "/schemas/GazelleJSONAPI/getSearchResult.js",
+    "asyncParse": true,
+    "queryString": "action=browse&searchstr=$key$"
+  },
   "searchEntry": [{
-    "name": "All",
+    "name": "all",
     "enabled": true
   }],
   "selectors": {
     "userSeedingTorrents": {
-      "merge": true,
+      "page": "/torrents.php?type=seeding&userid=$user.id$",
+      "parser": "getUserSeedingTorrents.js",
       "fields": {
-        "seedingSize": {
-          "selector": ["td.number_column.nobr"],
-          "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
-        },
         "bonus": {
           "selector": "li#stats_seedpoints > span.stat",
           "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": ["td.number_column.nobr"],
+          "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
       }
     }
