@@ -23,10 +23,12 @@ export class i18nService {
   public onReplaced: Function = () => {};
 
   private initialized = false;
+  public vuei18n = i18n;
 
   constructor() {
     // 加载英文内容
     this.loadLangResource("en");
+    this.loadLangResource("zh-CN");
   }
 
   /**

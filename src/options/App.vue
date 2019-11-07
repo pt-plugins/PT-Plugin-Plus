@@ -1,7 +1,16 @@
 <template>
   <v-app id="inspire">
-    <v-alert :value="initializing" type="info">{{ $t("app.initializing") }}</v-alert>
-    <template v-if="!initializing">
+    <template v-if="initializing">
+      <v-progress-linear :indeterminate="true" color="info" height="5" class="pa-0 ma-0"></v-progress-linear>
+      <v-alert :value="true" type="info">
+        <div>
+          <div>{{ $t("app.initializing", "zh-CN") }}</div>
+          <div>{{ $t("app.initializing", "en") }}</div>
+        </div>
+      </v-alert>
+    </template>
+
+    <template v-else>
       <v-alert :value="!$store.state.initialized" type="error">{{ $t("app.initError") }}</v-alert>
       <template v-if="$store.state.initialized && havePermissions">
         <!-- 导航栏 -->
@@ -43,21 +52,7 @@ export default {
     };
   },
   created() {
-    if (chrome && chrome.permissions) {
-      // 查询当前权限
-      chrome.permissions.contains(
-        {
-          origins: ["http://*/*", "https://*/*"]
-        },
-        result => {
-          this.havePermissions = result;
-          this.initializing = false;
-        }
-      );
-    } else {
-      this.havePermissions = true;
-      this.initializing = false;
-    }
+    // this.init();
   },
   watch: {
     drawer() {
@@ -69,6 +64,24 @@ export default {
     }
   },
   methods: {
+    init() {
+      console.log("APP init.");
+      if (chrome && chrome.permissions) {
+        // 查询当前权限
+        chrome.permissions.contains(
+          {
+            origins: ["http://*/*", "https://*/*"]
+          },
+          result => {
+            this.havePermissions = result;
+            this.initializing = false;
+          }
+        );
+      } else {
+        this.havePermissions = true;
+        this.initializing = false;
+      }
+    },
     reload(havePermissions) {
       this.havePermissions = havePermissions;
     }
