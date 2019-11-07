@@ -70,17 +70,22 @@
         "joinTime": {
           "selector": ["td.rowhead:contains('Join'):contains('date') + td"],
           "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
-        },
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/current.php?id=$user.id$",
+      "fields": {
         "seeding": {
-          "value": "N/A"
+          "selector": ["table[id='browse'] > tbody > tr[style*='padding-top:0px']"],
+          "filters": ["query.length"]
         },
         "seedingSize": {
-          "value": -1
+          "selector": ["table[id='browse'] > tbody > tr[style*='padding-top:0px']"],
+          "filters": ["jQuery.map(query.find('td:eq(9)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
       }
     }
-  },
-  "supportedFeatures": {
-    "userData": "◐"
+
   }
 }
