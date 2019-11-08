@@ -52,9 +52,6 @@ if ("".getQueryString === undefined) {
 
       if (results) {
         this.result.seedingSize += results.seedingSize;
-        this.result.bonus = this.body
-        .find("[href='bonus.php']+span")
-        .text();
       }
 
       // 是否已到最后一页
@@ -62,6 +59,11 @@ if ("".getQueryString === undefined) {
         this.pageInfo.current++;
         this.load();
       } else {
+        if (results) {
+          this.result.bonus = this.body
+          .find("[href='bonus.php']+span")
+          .text();
+        }
         this.done();
       }
     }

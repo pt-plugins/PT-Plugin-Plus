@@ -1,19 +1,12 @@
 {
   "name": "MTV",
-  "schema": "GazelleJSONAPI",
-  "url": "https://www.morethan.tv/",
-  "icon": "https://www.morethan.tv/favicon.ico",
   "description": "Morethan.tv",
+  "icon": "https://www.morethan.tv/favicon.ico",
+  "schema": "GazelleJSONAPI",
   "tags": ["剧集"],
-  "host": "www.morethan.tv",
+  "url": "https://www.morethan.tv/",
   "collaborator": "luckiestone",
-  "searchEntryConfig": {
-    "page": "/ajax.php",
-    "resultType": "json",
-    "parseScriptFile": "/schemas/GazelleJSONAPI/getSearchResult.js",
-    "asyncParse": true,
-    "queryString": "action=browse&searchstr=$key$"
-  },
+  "host": "www.morethan.tv",
   "searchEntry": [{
     "name": "all",
     "enabled": true
@@ -30,9 +23,9 @@
         "seedingSize": {
           "selector": ["td.number_column.nobr"],
           "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          }
         }
       }
-    }
   },
   "supportedFeatures": {
     "imdbSearch": false

@@ -52,9 +52,6 @@ if ("".getQueryString === undefined) {
 
       if (results) {
         this.result.seedingSize += results.seedingSize;
-        this.result.bonus = this.body
-        .find("li#stats_seedpoints span.stat")
-        .text();
       }
 
       // 是否已到最后一页
@@ -62,6 +59,11 @@ if ("".getQueryString === undefined) {
         this.pageInfo.current++;
         this.load();
       } else {
+        if (results) {
+          this.result.bonus = this.body
+          .find("li#stats_seedpoints span.stat")
+          .text();
+        }
         this.done();
       }
     }
@@ -75,7 +77,7 @@ if ("".getQueryString === undefined) {
       }
       // 获取最大页码
       const infos = this.body
-        .find("a[href*='torrents.php?page=']:contains('Last'):last")
+        .find("a[href*='type=seeding']:contains('Last'):last")
         .attr("href");
 
       if (infos) {
@@ -84,7 +86,7 @@ if ("".getQueryString === undefined) {
         this.pageInfo.count = 2;
       }
     }
-debugger;
+
     /**
      * 加载当前页内容
      */
