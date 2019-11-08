@@ -82,11 +82,18 @@
         "seeding": {
           "selector": ["li:contains('Seeding'):first", "li:contains('Seeds'):first"],
           "filters": ["query.text().replace(/,/g,'').match(/([\\d]+)/)", "(query && query.length>=2)?query[1]:''"]
-        },
-        "seedingSize": {
-          "value": -1
         }
       }
-    }
+    },
+    "userSeedingTorrents": {
+      "page": "/profile/$user.name$/active?order=progress&sort=desc",
+      "fields": {
+        "seedingSize": {
+          "selector": ["table.table > tbody > tr > td:eq(1) span[data-original-title='File Size']"],
+          "filters": ["jQuery.map(query.find('>i').remove().text().replace(/\"|\\n|\\s+/g,''), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          }
+        }
+      }
+
   }
 }
