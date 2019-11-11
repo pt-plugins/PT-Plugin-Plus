@@ -87,13 +87,7 @@
     },
     "userSeedingTorrents": {
       "page": "/profile/$user.name$/active?order=progress&sort=desc",
-      "parser": "/schemas/AvistaZ/getUserSeedingTorrents.js",
-      "fields": {
-        "seedingSize": {
-          "selector": ["table.table > tbody > tr"],
-          "filters": ["jQuery.map(query.find(\"span[title='File Size']\"), (item)=>{return $(item).text().replace(/\"|\\n|\\s+/g,'');})", "_self.getTotalSize(query)"]
-          }
-        }
+      "parser": "/schemas/AvistaZ/getUserSeedingTorrents.js"
       }
 
   }
