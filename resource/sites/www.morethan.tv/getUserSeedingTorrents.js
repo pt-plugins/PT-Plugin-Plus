@@ -61,7 +61,7 @@ if ("".getQueryString === undefined) {
       } else {
         if (results) {
           this.result.bonus = this.body
-          .find("[href='bonus.php']+span")
+          .find("li#stats_seedpoints span.stat")
           .text();
         }
         this.done();
@@ -77,7 +77,7 @@ if ("".getQueryString === undefined) {
       }
       // 获取最大页码
       const infos = this.body
-        .find("a[href*='torrents.php?page=']:contains('Last'):last")
+        .find("a[href*='type=seeding']:contains('Last'):last")
         .attr("href");
 
       if (infos) {

@@ -23,7 +23,6 @@ if ("".getQueryString === undefined) {
       };
       this.result = {
         seedingSize: 0,
-        bonus: 0
       };
       this.load();
     }
@@ -42,28 +41,32 @@ if ("".getQueryString === undefined) {
       const doc = new DOMParser().parseFromString(this.rawData, "text/html");
       // 构造 jQuery 对象
       this.body = $(doc).find("body");
-
       this.getPageInfo();
 
-      let results = new User.InfoParser(User.service).getResult(
-        this.body,
-        this.options.rule
-      );
+      let results = {
+        seedingSize: 0
+      };
 
-      if (results) {
-        this.result.seedingSize += results.seedingSize;
+      let status = this.body
+      .find("table.table > tbody > tr")
+      .find(">td[class*='text-']");
+
+      let torrentsize = this.body.find("table.table > tbody > tr span[title='File Size']");
+      
+      for (let index = 0; index < status.length; index++){
+        let status_i = status.eq(index).text();
+        let torrentsize_i = torrentsize.eq(index).text().replace(/\"+|\n+|\s+/g,'');
+        if (status_i == "seed") {
+          results.seedingSize += torrentsize_i.sizeToNumber();
+        }
       }
+      this.result.seedingSize += results.seedingSize;
 
       // 是否已到最后一页
       if (this.pageInfo.current < this.pageInfo.count) {
         this.pageInfo.current++;
         this.load();
       } else {
-        if (results) {
-          this.result.bonus = this.body
-          .find("[href='bonus.php']+span")
-          .text();
-        }
         this.done();
       }
     }
@@ -77,7 +80,8 @@ if ("".getQueryString === undefined) {
       }
       // 获取最大页码
       const infos = this.body
-        .find("a[href*='torrents.php?page=']:contains('Last'):last")
+        .find("a[href*='/active']:contains('›'):last")
+        .parent().prev().find("a[href*='/active']")
         .attr("href");
 
       if (infos) {
