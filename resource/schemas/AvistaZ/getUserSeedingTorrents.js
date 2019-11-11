@@ -42,16 +42,21 @@ if ("".getQueryString === undefined) {
       // 构造 jQuery 对象
       this.body = $(doc).find("body");
 
+     let status = $(doc).find("body").find("table.table > tbody > tr > td:eq(3)").text();
+     // 这里是seeding页面的status
+
       this.getPageInfo();
 
       let results = new User.InfoParser(User.service).getResult(
         this.body,
         this.options.rule
       );
+      
 
-      if (results) {
+      if (results && status == "seed") {
         this.result.seedingSize += results.seedingSize;
       }
+      // 这里上面要加个遍历，选出status == "seed",不会写:(
 
       // 是否已到最后一页
       if (this.pageInfo.current < this.pageInfo.count) {

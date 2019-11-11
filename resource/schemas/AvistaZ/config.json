@@ -87,10 +87,11 @@
     },
     "userSeedingTorrents": {
       "page": "/profile/$user.name$/active?order=progress&sort=desc",
+      "parser": "/schemas/AvistaZ/getUserSeedingTorrents.js",
       "fields": {
         "seedingSize": {
-          "selector": ["table.table > tbody > tr > td:eq(1) span[data-original-title='File Size']"],
-          "filters": ["jQuery.map(query.find('>i').remove().text().replace(/\"|\\n|\\s+/g,''), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          "selector": ["table.table > tbody > tr"],
+          "filters": ["jQuery.map(query.find(\"span[title='File Size']\"), (item)=>{return $(item).text().replace(/\"|\\n|\\s+/g,'');})", "_self.getTotalSize(query)"]
           }
         }
       }
