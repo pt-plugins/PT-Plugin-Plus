@@ -155,7 +155,19 @@
           }
 
           // 获取下载链接
-          let url = row.find("a[href*='/download/']").attr("href");
+          let url = "";
+
+          let downloadURL = row.find("a[href*='/download/']");
+          if (downloadURL.length == 0) {
+            downloadURL = row.find("a[href*='/download_check/']");
+            if (downloadURL.length > 0) {
+              url = downloadURL
+                .attr("href")
+                .replace("/download_check/", "/download/");
+            }
+          } else {
+            url = downloadURL.attr("href");
+          }
 
           if (url.length == 0) {
             continue;
