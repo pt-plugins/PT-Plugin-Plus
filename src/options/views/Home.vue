@@ -203,6 +203,16 @@ export default Vue.extend({
     this.init();
   },
 
+  /**
+   * 当前组件激活时触发
+   * 因为启用了缓存，所以需要重新加载数据
+   */
+  activated() {
+    if (!this.loading) {
+      this.init();
+    }
+  },
+
   methods: {
     resetSites() {
       this.sites = [];

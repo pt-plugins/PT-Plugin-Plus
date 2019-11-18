@@ -28,7 +28,11 @@ export default new Router({
     {
       path: "/set-sites",
       name: "set-sites",
-      component: () => import("./views/settings/Sites/Index.vue")
+      component: () => import("./views/settings/Sites/Index.vue"),
+      meta: {
+        // 需要被缓存
+        keepAlive: true
+      }
     },
     {
       path: "/set-support-schema",
