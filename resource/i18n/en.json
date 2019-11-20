@@ -718,7 +718,15 @@
       "seedingCount": "Seeding count",
       "size": "Size",
       "count": "Count",
-      "note": "Note: <br>1. Chart history data comes from the overview page, manual or automatic update will be recorded; <br>2. Each tracker only saves one per day;"
+      "note": "Note: <br>1. Chart history data comes from the overview page, manual or automatic update will be recorded; <br>2. Each tracker only saves one per day;",
+      "dateRange": {
+        "7day": "7 days",
+        "30day": "30 days",
+        "60day": "60 days",
+        "90day": "90 days",
+        "180day": "180 days",
+        "all": "All days"
+      }
     },
     "service": {
       "testClientConnectivityFailed": "Test client connection failed[{address}]",

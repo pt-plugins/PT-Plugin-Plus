@@ -31,10 +31,20 @@
       </template>
     </v-autocomplete>
 
-    <v-layout row wrap>
+    <v-layout row wrap class="mb-2">
       <v-btn depressed small to="/home">{{ $t('statistic.goback') }}</v-btn>
       <v-btn depressed small @click.stop="exportRawData">{{ $t('statistic.exportRawData') }}</v-btn>
-      <v-spacer></v-spacer>
+
+      <v-spacer>
+        <v-btn-toggle v-model="dateRange" class="ml-5">
+          <v-btn flat value="7day" v-text="$t('statistic.dateRange.7day')"></v-btn>
+          <v-btn flat value="30day" v-text="$t('statistic.dateRange.30day')"></v-btn>
+          <v-btn flat value="60day" v-text="$t('statistic.dateRange.60day')"></v-btn>
+          <v-btn flat value="90day" v-text="$t('statistic.dateRange.90day')"></v-btn>
+          <v-btn flat value="180day" v-text="$t('statistic.dateRange.180day')"></v-btn>
+          <v-btn flat value="all" v-text="$t('statistic.dateRange.all')"></v-btn>
+        </v-btn-toggle>
+      </v-spacer>
       <v-btn flat icon small @click="share" :title="$t('statistic.share')" v-if="!shareing">
         <v-icon small>share</v-icon>
       </v-btn>
@@ -135,7 +145,10 @@ export default Vue.extend({
       version: "",
       userName: "",
       sites: [] as Site[],
-      rawData: {} as Dictionary<any>
+      rawData: {} as Dictionary<any>,
+      beginDate: "",
+      endDate: "",
+      dateRange: "30day"
     };
   },
 
@@ -175,6 +188,8 @@ export default Vue.extend({
         return item.host == this.host;
       });
 
+      this.resetDateRange();
+
       extension
         .sendRequest(EAction.getUserHistoryData, null, this.host)
         .then((data: any) => {
@@ -211,7 +226,12 @@ export default Vue.extend({
             if (siteData.hasOwnProperty(date)) {
               const data = siteData[date];
 
-              if (data.lastUpdateStatus != EDataResultType.success) {
+              if (
+                !data.uploaded &&
+                !data.downloaded &&
+                !data.seedingSize &&
+                !data.seeding
+              ) {
                 continue;
               }
 
@@ -282,15 +302,22 @@ export default Vue.extend({
     /**
      * 填充数据，将两个日期中间空白的数据由前一天数据填充
      */
-    fillData(result: any) {
+    fillData(result: any, fill: boolean = true) {
       let datas: any = {};
       let lastDate: any = null;
       let lastData: any = null;
       for (const key in result) {
         if (dayjs(key).isValid()) {
           let data = result[key];
+          let isValidDate = true;
+
           // 如果当前数据不可用，则使用上一条数据
-          if (!data.isLogged || data.lastUpdateStatus != "success") {
+          if (
+            !data.uploaded &&
+            !data.downloaded &&
+            !data.seedingSize &&
+            !data.seeding
+          ) {
             data = lastData;
           } else if (lastData && data.id != lastData.id) {
             data = lastData;
@@ -310,18 +337,24 @@ export default Vue.extend({
             lastData = PPF.clone(data);
           }
 
-          let day = date.diff(lastDate, "day");
-          if (day > 1) {
-            for (let index = 0; index < day - 1; index++) {
-              lastDate = lastDate.add(1, "day");
-              datas[lastDate.format("YYYY-MM-DD")] = lastData;
+          if (fill) {
+            let day = date.diff(lastDate, "day");
+            if (day > 1) {
+              for (let index = 0; index < day - 1; index++) {
+                lastDate = lastDate.add(1, "day");
+                if (this.inDateRange(lastDate)) {
+                  datas[lastDate.format("YYYY-MM-DD")] = lastData;
+                }
+              }
             }
           }
 
-          datas[key] = data;
-
           lastData = PPF.clone(data);
           lastDate = date;
+
+          if (this.inDateRange(date)) {
+            datas[key] = data;
+          }
         }
       }
 
@@ -329,14 +362,29 @@ export default Vue.extend({
 
       return datas;
     },
+    inDateRange(date: any) {
+      // 小于起始日期时跳过
+      if (
+        dayjs(this.beginDate).isValid() &&
+        date.diff(this.beginDate, "day") < 0
+      ) {
+        return false;
+      }
+
+      // 大于截止日期时跳过
+      if (dayjs(this.endDate).isValid() && date.diff(this.endDate, "day") > 0) {
+        return false;
+      }
+
+      return true;
+    },
     resetData(result: any) {
       if (this.host) {
-        result = this.fillData(result);
+        result = this.fillData(result, false);
         this.resetBaseData(result);
         this.resetExtData(result);
       } else {
         let data = this.getTotalData(result);
-        console.log(data);
         this.selectedSite = {
           name: this.$t("statistic.allSite").toString(),
           host: ECommonKey.allSite
@@ -400,7 +448,7 @@ export default Vue.extend({
         if (result.hasOwnProperty(date)) {
           const data = result[date];
 
-          if (data.lastUpdateStatus != EDataResultType.success) {
+          if (!data.uploaded && !data.downloaded) {
             continue;
           }
           if (date == EUserDataRange.latest) {
@@ -567,10 +615,7 @@ export default Vue.extend({
         if (result.hasOwnProperty(date)) {
           const data = result[date];
 
-          if (
-            data.lastUpdateStatus != EDataResultType.success ||
-            data.seeding == null
-          ) {
+          if (!data.seedingSize && !data.seeding) {
             continue;
           }
           if (date == EUserDataRange.latest) {
@@ -728,6 +773,43 @@ export default Vue.extend({
         data,
         `PT-Plugin-Plus-Statistic-${this.selectedSite.host}.json`
       );
+    },
+
+    resetDateRange() {
+      const now = dayjs();
+      this.endDate = now.toString();
+      switch (this.dateRange) {
+        case "7day":
+          this.beginDate = now.add(-7, "day").toString();
+          break;
+
+        case "30day":
+          this.beginDate = now.add(-30, "day").toString();
+          break;
+
+        case "60day":
+          this.beginDate = now.add(-60, "day").toString();
+          break;
+
+        case "90day":
+          this.beginDate = now.add(-90, "day").toString();
+          break;
+
+        case "180day":
+          this.beginDate = now.add(-180, "day").toString();
+          break;
+
+        default:
+          this.beginDate = "";
+          break;
+      }
+    }
+  },
+
+  watch: {
+    dateRange() {
+      this.resetDateRange();
+      this.resetData(this.rawData);
     }
   }
 });
