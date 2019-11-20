@@ -119,6 +119,19 @@
                 <v-icon small>save_alt</v-icon>
               </v-btn>
 
+              <!-- 复制下载链接 -->
+              <v-btn
+                color="info"
+                small
+                icon
+                flat
+                :title="$t('searchTorrent.copyToClipboardTip')"
+                @click.stop="copyLinksToClipboard(props.item)"
+                class="mx-0"
+              >
+                <v-icon small>file_copy</v-icon>
+              </v-btn>
+
               <v-btn
                 small
                 color="error"
@@ -384,6 +397,31 @@ export default Vue.extend({
           this.errorMsg = this.$t("keepUploadTask.sendError").toString();
         })
         .finally(() => {});
+    },
+
+    copyLinksToClipboard(source: any) {
+      let urls: string[] = [];
+
+      source.items.forEach((item: any) => {
+        urls.push(item.url);
+      });
+
+      this.clearMessage();
+      extension
+        .sendRequest(EAction.copyTextToClipboard, null, urls.join("\n"))
+        .then(result => {
+          this.successMsg = this.$t(
+            "searchTorrent.copySelectedToClipboardSuccess",
+            {
+              count: urls.length
+            }
+          ).toString();
+        })
+        .catch(() => {
+          this.errorMsg = this.$t(
+            "searchTorrent.copyLinkToClipboardError"
+          ).toString();
+        });
     }
   },
 
