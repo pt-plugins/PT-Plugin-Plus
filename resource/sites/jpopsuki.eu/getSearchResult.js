@@ -136,7 +136,7 @@ if (!"".getQueryString) {
           }
 
           title = title.parent();
-          title.find(">span, div.tags").remove();
+          title.find(">span, div.tags, a[title='View Comments']").remove();
           let time =
             fieldIndex.time == -1
               ? ""
@@ -148,7 +148,7 @@ if (!"".getQueryString) {
           }
 
           let data = {
-            title: title.text(),
+            title: title.text().trim().replace("()",""),
             link,
             url: url,
             size: cells.eq(fieldIndex.size).html() || 0,
