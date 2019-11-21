@@ -106,9 +106,19 @@ export class BackupFileParser {
           );
         }
 
-        zip.generateAsync({ type: "blob" }).then((blob: any) => {
-          resolve(blob);
-        });
+        // 压缩处理
+        zip
+          .generateAsync({
+            type: "blob",
+            compression: "DEFLATE",
+            // level 范围： 1-9 ，9为最高压缩比
+            compressionOptions: {
+              level: 9
+            }
+          })
+          .then((blob: any) => {
+            resolve(blob);
+          });
       } catch (error) {
         reject(error);
       }
