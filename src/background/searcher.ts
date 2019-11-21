@@ -77,7 +77,10 @@ export class Searcher {
         success: false
       };
 
-      let siteServce: SiteService = new SiteService(site, this.options);
+      let siteServce: SiteService = new SiteService(
+        PPF.clone(site),
+        PPF.clone(this.options)
+      );
       let searchConfig: SearchConfig = {};
       let schema = this.getSiteSchema(site);
       let host = site.host as string;
@@ -401,7 +404,7 @@ export class Searcher {
           console.log("getSearchResult.done", url);
           delete this.searchRequestQueue[url];
           if (
-            (result && (typeof result == "string" && result.length > 100)) ||
+            (result && typeof result == "string" && result.length > 100) ||
             typeof result == "object"
           ) {
             let page: any;

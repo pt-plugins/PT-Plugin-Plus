@@ -150,10 +150,21 @@
                   small
                   text-color="white"
                   style="margin-right:-13px;"
-                  class="ml-2 py-3"
+                  class="ml-2 py-3 chip-compact"
                   disabled
                 >
                   <span>{{ item.msg }}</span>
+
+                  <v-btn
+                    flat
+                    icon
+                    small
+                    color="grey lighten-2"
+                    @click.stop="reSearchWithSite(item.site.host);"
+                    :title="$t('searchTorrent.reSearch')"
+                  >
+                    <v-icon small>refresh</v-icon>
+                  </v-btn>
                 </v-chip>
               </v-chip>
             </template>
@@ -193,6 +204,17 @@
                     target="_blank"
                   >{{ item.msg }}</a>
                   <span v-if="!item.url">{{ item.msg }}</span>
+
+                  <v-btn
+                    flat
+                    icon
+                    small
+                    color="grey lighten-2"
+                    @click.stop="reSearchWithSite(item.site.host);"
+                    :title="$t('searchTorrent.reSearch')"
+                  >
+                    <v-icon small>refresh</v-icon>
+                  </v-btn>
                 </v-chip>
               </v-chip>
             </template>

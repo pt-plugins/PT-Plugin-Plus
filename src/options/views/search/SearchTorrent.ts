@@ -1547,6 +1547,39 @@ export default Vue.extend({
     },
 
     /**
+     * 重新搜索指定的站点
+     * @param host
+     */
+    reSearchWithSite(host: string) {
+      // 重新获取站点信息
+      const site = this.options.sites.find((item: Site) => {
+        return item.host === host;
+      });
+
+      if (!site) {
+        return;
+      }
+
+      let index = this.searchResult.failedSites.findIndex((item: any) => {
+        return item.site.host === host;
+      });
+
+      if (index !== -1) {
+        this.searchResult.failedSites.splice(index, 1);
+      }
+
+      index = this.searchResult.noResultsSites.findIndex((item: any) => {
+        return item.site.host === host;
+      });
+
+      if (index !== -1) {
+        this.searchResult.noResultsSites.splice(index, 1);
+      }
+
+      this.doSearchTorrentWithQueue([site]);
+    },
+
+    /**
      * 重新搜索失败的站点
      */
     reSearchFailedSites() {

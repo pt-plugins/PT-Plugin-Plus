@@ -1,4 +1,4 @@
-import { Site, SiteSchema, Options } from "@/interface/common";
+import { Site, SiteSchema, Options, SearchEntry } from "@/interface/common";
 import extend from "extend";
 
 export class SiteService {
@@ -30,7 +30,7 @@ export class SiteService {
   }
 
   private mergeOptions() {
-    let site =
+    let site: Site =
       this.systemOptions.system &&
       this.systemOptions.system.sites &&
       this.systemOptions.system.sites.find((item: Site) => {
@@ -38,7 +38,26 @@ export class SiteService {
       });
 
     if (site) {
+      let customSearchEntry: SearchEntry[] = [];
+      // 单独处理自定义的搜索入口，避免参数合并后错乱
+      if (this.options.searchEntry) {
+        for (
+          let index = this.options.searchEntry.length - 1;
+          index >= 0;
+          index--
+        ) {
+          const item = this.options.searchEntry[index];
+          if (item.isCustom) {
+            customSearchEntry.push(item);
+            this.options.searchEntry.splice(index, 1);
+          }
+        }
+      }
+
       this.options = extend(true, {}, site, this.options);
+      if (this.options.searchEntry && customSearchEntry.length > 0) {
+        this.options.searchEntry.push(...customSearchEntry);
+      }
     }
     console.log(this.options);
   }
