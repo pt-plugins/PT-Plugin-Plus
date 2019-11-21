@@ -190,10 +190,12 @@ export default Vue.extend({
     },
     option: {
       handler() {
-        this.$emit("change", {
-          data: this.option,
-          valid: this.valid
-        });
+        setTimeout(() => {
+          this.$emit("change", {
+            data: this.option,
+            valid: this.valid
+          });
+        }, 100);
       },
       deep: true
     },
