@@ -87,8 +87,6 @@
           <td>
             <a @click="editBackupServer(props.item)">{{ props.item.name }}</a>
           </td>
-          <td>{{ props.item.type }}</td>
-          <td>{{ props.item.lastBackupTime | formatDate }}</td>
           <td>
             <v-btn
               flat
@@ -138,9 +136,11 @@
               <v-icon small>delete</v-icon>
             </v-btn>
           </td>
+          <td>{{ props.item.type }}</td>
+          <td>{{ props.item.lastBackupTime | formatDate }}</td>
         </template>
         <template slot="expand" slot-scope="props">
-          <div class="px-5">
+          <div class="px-5" style="padding-left: 80px !important;">
             <ServerList
               :items="props.item.dataList"
               :server="props.item"
@@ -871,7 +871,13 @@ export default Vue.extend({
         {
           text: this.$t("settings.backup.index.headers.name"),
           align: "left",
+          width: 280,
           value: "name"
+        },
+        {
+          text: this.$t("settings.backup.index.headers.action"),
+          value: "name",
+          sortable: false
         },
         {
           text: this.$t("settings.backup.index.headers.type"),
@@ -882,11 +888,6 @@ export default Vue.extend({
           text: this.$t("settings.backup.index.headers.lastBackupTime"),
           align: "left",
           value: "lastBackupTime"
-        },
-        {
-          text: this.$t("settings.backup.index.headers.action"),
-          value: "name",
-          sortable: false
         }
       ];
     }

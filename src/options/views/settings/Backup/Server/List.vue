@@ -12,7 +12,7 @@
             <v-list-tile-title>{{ item.name }}</v-list-tile-title>
             <v-list-tile-sub-title>
               <div>
-                <span class="caption">
+                <span class="caption mr-2">
                   <span>{{ item.time | formatDate }}</span>
                   <span class="mx-2">{{ item.size | formatSize }}</span>
                 </span>
