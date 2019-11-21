@@ -52,6 +52,16 @@
           {{ $t("collection.addGroup") }}
         </v-btn>
 
+        <v-btn
+          color="info"
+          href="https://github.com/ronggang/PT-Plugin-Plus/wiki/my-collection"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          <v-icon class="mr-2">help</v-icon>
+          {{ $t('settings.searchSolution.index.help') }}
+        </v-btn>
+
         <v-spacer></v-spacer>
 
         <v-text-field
@@ -222,6 +232,32 @@
               @success="onSuccess"
             />
 
+            <!-- 下载种子文件 -->
+            <v-btn
+              v-if="props.item.site.downloadMethod=='POST'"
+              flat
+              icon
+              small
+              class="mx-0"
+              @click.stop="saveTorrentFile(props.item)"
+            >
+              <v-icon small :title="$t('searchTorrent.saveTip')">save</v-icon>
+            </v-btn>
+
+            <v-btn
+              v-else
+              flat
+              icon
+              small
+              class="mx-0"
+              :href="props.item.url"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              :title="$t('searchTorrent.saveTip')"
+            >
+              <v-icon small>save</v-icon>
+            </v-btn>
+
             <!-- 删除 -->
             <v-btn
               flat
@@ -258,13 +294,15 @@ import {
   ICollectionGroup,
   BASE_COLORS,
   ECommonKey,
-  Options
+  Options,
+  ERequestMethod
 } from "@/interface/common";
 import Extension from "@/service/extension";
 import DownloadTo from "@/options/components/DownloadTo.vue";
 import GroupCard from "./GroupCard.vue";
 import AddToGroup from "./AddToGroup.vue";
 import { PPF } from "@/service/public";
+import { FileDownloader } from "@/service/downloader";
 
 const extension = new Extension();
 
@@ -622,6 +660,27 @@ export default Vue.extend({
         });
         return result;
       });
+    },
+
+    /**
+     * 保存种子文件
+     * @param item
+     */
+    saveTorrentFile(item: any) {
+      let requestMethod = ERequestMethod.GET;
+      if (item.site) {
+        requestMethod = item.site.downloadMethod || ERequestMethod.GET;
+      }
+      let url = item.url + "";
+      let file = new FileDownloader({
+        url,
+        timeout: this.options.connectClientTimeout,
+        fileName: `[${item.site.name}][${item.title}].torrent`
+      });
+
+      file.requestMethod = requestMethod;
+      file.onError = (error: any) => {};
+      file.start();
     }
   },
 

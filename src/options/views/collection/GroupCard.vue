@@ -20,16 +20,28 @@
         <span class="ma-1 caption" v-if="count>0">{{ size | formatSize}}</span>
         <v-spacer></v-spacer>
 
-        <!-- 下载到 -->
-        <DownloadTo
-          v-show="hover && count>0"
-          :downloadOptions="items"
-          flat
-          icon
-          class="mx-0 btn-mini"
-          @error="onDownloadError"
-          @success="onDownloadSuccess"
-        />
+        <template v-if="hover && count>0">
+          <!-- 下载到 -->
+          <DownloadTo
+            :downloadOptions="items"
+            flat
+            icon
+            class="mx-0 btn-mini"
+            @error="onDownloadError"
+            @success="onDownloadSuccess"
+          />
+
+          <!-- 复制下载链接 -->
+          <v-btn
+            icon
+            flat
+            :title="$t('searchTorrent.copyToClipboardTip')"
+            @click.stop="copyLinksToClipboard"
+            class="mx-0 btn-mini"
+          >
+            <v-icon>file_copy</v-icon>
+          </v-btn>
+        </template>
 
         <template v-if="!readOnly">
           <template v-if="hover||colorBoxIsOpen">
@@ -93,7 +105,9 @@ import Vue from "vue";
 import { isNumber } from "util";
 import ColorSelector from "@/options/components/ColorSelector.vue";
 import DownloadTo from "@/options/components/DownloadTo.vue";
-import { ICollection } from "@/interface/common";
+import { ICollection, EAction } from "@/interface/common";
+import Extension from "@/service/extension";
+const extension = new Extension();
 
 export default Vue.extend({
   components: {
@@ -103,7 +117,7 @@ export default Vue.extend({
   props: {
     width: {
       type: [String, Number],
-      default: "200px"
+      default: "205px"
     },
     height: {
       type: [String, Number],
@@ -187,6 +201,29 @@ export default Vue.extend({
 
     onDownloadError(msg: any) {
       this.$emit("downloadError", msg);
+    },
+
+    copyLinksToClipboard() {
+      let urls: string[] = [];
+
+      this.items.forEach((item: any) => {
+        urls.push(item.url);
+      });
+
+      extension
+        .sendRequest(EAction.copyTextToClipboard, null, urls.join("\n"))
+        .then(result => {
+          let msg = this.$t("searchTorrent.copySelectedToClipboardSuccess", {
+            count: urls.length
+          }).toString();
+          this.$emit("downloadSuccess", msg);
+        })
+        .catch(() => {
+          let msg = this.$t(
+            "searchTorrent.copyLinkToClipboardError"
+          ).toString();
+          this.$emit("downloadError", msg);
+        });
     }
   },
 
