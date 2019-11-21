@@ -148,7 +148,16 @@
                 :title="$t('home.cancelRequest')"
               >cancel</v-icon>
             </v-progress-circular>
-            <span v-else>{{ props.item.user.lastErrorMsg }}</span>
+            <span v-else>
+              <a
+                :href="props.item.activeURL"
+                v-if="!props.item.user.isLogged"
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                class="nodecoration"
+              >{{ props.item.user.lastErrorMsg }}</a>
+              <span v-else>{{ props.item.user.lastErrorMsg }}</span>
+            </span>
           </td>
         </template>
       </v-data-table>
