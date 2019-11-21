@@ -132,8 +132,6 @@ if (!"".getQueryString) {
             url = `${site.url}${url}`;
           }
 
-          title = title.parent();
-          title.find(">script, div.tags,>div").remove();
           let time =
             fieldIndex.time == -1
               ? ""
@@ -145,7 +143,7 @@ if (!"".getQueryString) {
           }
 
           let data = {
-            title: title.text(),
+            title: title.attr("data-src"),
             link,
             url: url,
             size: cells.eq(fieldIndex.size).find("div").first().text().replace(/,/g,'').trim() || 0,

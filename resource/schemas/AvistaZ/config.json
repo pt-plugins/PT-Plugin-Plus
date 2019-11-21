@@ -82,11 +82,13 @@
         "seeding": {
           "selector": ["li:contains('Seeding'):first", "li:contains('Seeds'):first"],
           "filters": ["query.text().replace(/,/g,'').match(/([\\d]+)/)", "(query && query.length>=2)?query[1]:''"]
-        },
-        "seedingSize": {
-          "value": -1
         }
       }
-    }
+    },
+    "userSeedingTorrents": {
+      "page": "/profile/$user.name$/active?order=progress&sort=desc",
+      "parser": "/schemas/AvistaZ/getUserSeedingTorrents.js"
+      }
+
   }
 }
