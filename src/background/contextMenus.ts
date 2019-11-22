@@ -907,8 +907,7 @@ export class ContextMenus {
       return null;
     }
     let site: Site = this.options.sites.find((item: Site) => {
-      let cdn = item.cdn || [];
-      item.url && cdn.push(item.url);
+      let cdn = [item.url].concat(item.cdn);
       return item.host == url.host || cdn.join("").indexOf(url.host) > -1;
     });
 

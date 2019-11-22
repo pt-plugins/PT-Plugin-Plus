@@ -369,6 +369,8 @@ class Config {
     this.options.sites.forEach((site: Site) => {
       if (site.cdn && site.cdn.length > 0) {
         site.activeURL = site.cdn[0];
+        // 去除重复的地址，由之前的Bug引起
+        site.cdn = this.arrayUnique(site.cdn);
       } else {
         site.activeURL = site.url;
       }
@@ -399,6 +401,25 @@ class Config {
     }
 
     console.log(this.options);
+  }
+
+  /**
+   * 数组去重
+   * @param source 源数组
+   * @see https://www.cnblogs.com/wisewrong/p/9642264.html （性能比较）
+   */
+  private arrayUnique(source: any[]) {
+    let result: any[] = [];
+    let obj: any = {};
+
+    source.forEach((value: any) => {
+      if (!obj[value]) {
+        result.push(value);
+        obj[value] = 1;
+      }
+    });
+
+    return result;
   }
 
   /**

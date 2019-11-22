@@ -453,8 +453,7 @@ export default class Controller {
    */
   public getSiteFromHost(host: string): Site {
     return this.options.sites.find((item: Site) => {
-      let cdn = item.cdn || [];
-      item.url && cdn.push(item.url);
+      let cdn = [item.url].concat(item.cdn);
       return item.host == host || cdn.join("").indexOf(host) > -1;
     });
   }
