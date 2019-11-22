@@ -919,6 +919,8 @@
       "size": "大小：",
       "fileCount": "文件数：",
       "sendConfirm": "是否确认要发送这 {count} 个种子？",
+      "addToKeepUpload": "添加至辅种列表",
+      "addToKeepUploadConfirm": "该种子未能通过初步校验，确认要添加吗？",
       "status": {
         "label": "状态：",
         "downloading": "正在下载",

@@ -919,6 +919,8 @@
       "size": "Size: ",
       "fileCount": "Files: ",
       "sendConfirm": "Are you sure you want to send these {count} torrents?",
+      "addToKeepUpload": "Add to task list",
+      "addToKeepUploadConfirm": "Are you sure want add this torrent to task list?",
       "status": {
         "label": "Status: ",
         "downloading": "Downloading",

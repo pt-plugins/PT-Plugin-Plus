@@ -48,17 +48,36 @@
               </v-list-tile-avatar>
 
               <v-list-tile-content>
-                <v-list-tile-title>{{ item.data.title }}</v-list-tile-title>
-                <v-list-tile-sub-title>{{ $t('keepUploadTask.size') }}{{ item.data.size | formatSize}}, {{ $t('keepUploadTask.fileCount') }}{{ item.torrent?item.torrent.files.length: '-' }}, {{ $t('keepUploadTask.status.label') }}{{ item.status }}</v-list-tile-sub-title>
+                <v-list-tile-title class="list-item">
+                  <a
+                    :href="item.data.link"
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                  >{{ item.data.title }}</a>
+                </v-list-tile-title>
+                <v-list-tile-sub-title>{{ $t('keepUploadTask.size') }}{{ item.data.size | formatSize}}, {{ $t('keepUploadTask.fileCount') }}{{ item.torrent?item.torrent.files.length: 'N/A' }}, {{ $t('keepUploadTask.status.label') }}{{ item.status }}</v-list-tile-sub-title>
               </v-list-tile-content>
 
               <v-list-tile-action>
-                <v-btn icon :loading="item.loading">
-                  <v-icon color="success" v-if="item.verified">done_all</v-icon>
-                  <v-icon color="error" v-else>clear</v-icon>
-                </v-btn>
+                <div>
+                  <v-btn
+                    icon
+                    v-if="verifiedItems[0].verified && !item.loading && !item.verified && index>0"
+                    :title="$t('keepUploadTask.addToKeepUpload')"
+                    @click.stop="addToVerified(item)"
+                    class="mr-1"
+                  >
+                    <v-icon color="info">add</v-icon>
+                  </v-btn>
+
+                  <v-btn icon :loading="item.loading" :title="item.status">
+                    <v-icon color="success" v-if="item.verified">done_all</v-icon>
+                    <v-icon color="error" v-else>clear</v-icon>
+                  </v-btn>
+                </div>
               </v-list-tile-action>
             </v-list-tile>
+            <v-divider v-if="index>0" :key="'d'+index" inset></v-divider>
           </template>
         </v-list>
       </v-card-text>
@@ -356,7 +375,29 @@ export default Vue.extend({
     clearMessage() {
       this.successMsg = "";
       this.errorMsg = "";
+    },
+    addToVerified(item: IVerifiedItem) {
+      if (
+        window.confirm(
+          this.$t("keepUploadTask.addToKeepUploadConfirm").toString()
+        )
+      ) {
+        item.verified = true;
+      }
     }
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.list-item {
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #008c00;
+  }
+}
+</style>
