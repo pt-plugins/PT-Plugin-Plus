@@ -42,7 +42,7 @@ export class WebDAV {
                 name: item.basename,
                 size: item.size,
                 type: item.type,
-                time: new Date(item.lastmod)
+                time: new Date(item.lastmod).getTime()
               });
             });
           }
