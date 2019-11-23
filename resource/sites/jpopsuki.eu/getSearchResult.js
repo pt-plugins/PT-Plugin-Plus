@@ -104,15 +104,47 @@ if (!"".getQueryString) {
       }
 
       try {
-        rows = rows.filter("tr.torrent_redline");
+        let albumRow = null;
+        let albumTitle = null;
         // 遍历数据行
         for (let index = 0; index < rows.length; index++) {
           const row = rows.eq(index);
           let cells = row.find(">td");
+          let subTitle = "";
 
           let title = row.find("a[href*='torrents.php?id=']").first();
           if (title.length == 0) {
             continue;
+          }
+
+          // 判断行类型
+          switch (true) {
+            // 专辑行
+            // 仅获取标题即可
+            case row.is(".group_redline"):
+              albumRow = row;
+              albumTitle = title;
+              continue;
+
+            // 专辑对应的不同格式行
+            case row.is(".group_torrent_redline"):
+              let tmpRow = row.clone().get(0);
+              // 补全前面的单元格，使后续的 fieldIndex 索引位置生效
+              tmpRow.insertCell(0);
+              tmpRow.insertCell(0);
+              tmpRow.insertCell(0);
+              cells = $(tmpRow).find(">td");
+              subTitle = title.text();
+              break;
+
+            // 单种行
+            case row.is(".torrent_redline"):
+              albumRow = row;
+              albumTitle = title;
+              break;
+
+            default:
+              continue;
           }
 
           let link = title.attr("href");
@@ -135,7 +167,7 @@ if (!"".getQueryString) {
             url = `${site.url}${url}`;
           }
 
-          title = title.parent();
+          title = albumTitle.parent();
           title.find(">span, div.tags, a[title='View Comments']").remove();
           let time =
             fieldIndex.time == -1
@@ -148,8 +180,12 @@ if (!"".getQueryString) {
           }
 
           let data = {
-            title: title.text().trim().replace("()",""),
+            title: title
+              .text()
+              .trim()
+              .replace("()", ""),
             link,
+            subTitle: subTitle,
             url: url,
             size: cells.eq(fieldIndex.size).html() || 0,
             time: time,
@@ -177,7 +213,7 @@ if (!"".getQueryString) {
             category:
               fieldIndex.category == -1
                 ? null
-                : this.getCategory(cells.eq(fieldIndex.category))
+                : this.getCategory(albumRow.find(">td").eq(fieldIndex.category))
           };
           results.push(data);
         }
@@ -199,6 +235,9 @@ if (!"".getQueryString) {
         name: "",
         link: ""
       };
+      if (!cell) {
+        return result;
+      }
       let link = cell.find("a:first");
       let img = link.find("img:first");
 
