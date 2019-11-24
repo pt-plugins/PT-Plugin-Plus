@@ -18,5 +18,10 @@
     }],
     "resultType": "html",
     "parseScriptFile": "/sites/yingk.com/getSearchResult.js"
-  }
+  },
+  "plugins": [{
+    "name": "精品区",
+    "pages": ["/torrentshd.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }]
 }
