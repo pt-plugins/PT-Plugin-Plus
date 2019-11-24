@@ -47,6 +47,10 @@
         },
         "seedingSize": {
           "value": -1
+        },
+        "messageCount": {
+          "selector": ["a[href='/m']:contains('You have')"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         }
       }
     },
