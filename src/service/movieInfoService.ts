@@ -51,16 +51,18 @@ export class MovieInfoService {
     "02646d3fb69a52ff072d47bf23cef8fd",
     "0b2bdeda43b5688921839c8ecb20399b",
     "0dad551ec0f84ed02907ff5c42e8ec70",
-    "0df993c66c0c636e29ecbb5344252a4a",
-    "07c78782db00a121175696889101e363"
+    "0df993c66c0c636e29ecbb5344252a4a"
+    // "07c78782db00a121175696889101e363"
   ];
+
+  // 07c78782db00a121175696889101e363 已被禁用 2019.11.23
 
   // 仅用于 search 接口
   // 部分key无法用于 search 接口，故将key分开
   public doubanEntApiKeys = [
     "0dad551ec0f84ed02907ff5c42e8ec70",
-    "02646d3fb69a52ff072d47bf23cef8fd",
-    "07c78782db00a121175696889101e363"
+    "02646d3fb69a52ff072d47bf23cef8fd"
+    // "07c78782db00a121175696889101e363"
   ];
 
   // 信息缓存
