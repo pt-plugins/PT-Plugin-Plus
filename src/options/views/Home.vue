@@ -245,6 +245,10 @@ export default Vue.extend({
             if (_site.user.isLoading === undefined) {
               _site.user.isLoading = false;
             }
+
+            if (_site.user.isLogged === undefined) {
+              _site.user.isLogged = false;
+            }
             this.formatUserInfo(_site.user);
           }
           this.sites.push(_site);
