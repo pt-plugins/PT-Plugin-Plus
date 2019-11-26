@@ -53,6 +53,7 @@
           </v-card>
         </v-menu>
 
+        <AutoSignWarning />
         <v-spacer></v-spacer>
 
         <v-text-field
@@ -184,8 +185,13 @@ import {
 } from "@/interface/common";
 import dayjs from "dayjs";
 
+import AutoSignWarning from "./AutoSignWarning.vue";
+
 const extension = new Extension();
 export default Vue.extend({
+  components: {
+    AutoSignWarning
+  },
   data() {
     return {
       loading: false,
