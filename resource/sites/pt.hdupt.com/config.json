@@ -115,7 +115,7 @@
       "fields": {
         "bonus": {
           "selector": ["td.rowhead:contains('魔力值') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/\\(([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+          "filters": ["query.is(\":contains('魔力值:')\")?query.text().replace(/,/g,'').match(/魔力值.+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')", "parseFloat(query)"]
         }
       }
     }

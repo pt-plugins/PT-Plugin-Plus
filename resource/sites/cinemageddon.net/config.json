@@ -1,0 +1,83 @@
+{
+  "name": "CinemaGeddon",
+  "schema": "CinemaGeddon",
+  "url": "https://cinemageddon.net/",
+  "icon": "https://cinemageddon.net/favicon.ico",
+  "tags": ["影视"],
+  "host": "cinemageddon.net",
+  "collaborator": "DXV5",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/browse.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
+  }],
+  "searchEntryConfig": {
+    "page": "/browse.php",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "queryString": "search=$key$&proj=0",
+    "resultSelector": "table.torrenttable:last > tbody > tr"
+  },
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ".statusbar a[href*='/userdetails.php?id=']",
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ".statusbar a[href*='/userdetails.php?id=']"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.clx > .frames td.rowhead:contains('Uploaded') + td:first"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td.clx > .frames td.rowhead:contains('Downloaded') + td:first"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "levelName": {
+          "selector": "td.clx > .frames td.rowhead:contains('Class') + td:first"
+        },
+        "bonus": {
+          "value": "N/A"
+        },
+        "joinTime": {
+          "selector": "td.clx > .frames td.rowhead:contains('Join') + td:first",
+          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["div#ka2 table:first tr:not(:eq(0))"],
+          "filters": ["query.length"]
+        },
+        "seedingSize": {
+          "selector": ["div#ka2 table:first tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    },
+    "/details.php": {
+      "fields": {
+        "size": {
+          "selector": ["td.rowhead:contains('Size') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        }
+      }
+    }
+  }
+}
