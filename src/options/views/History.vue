@@ -3,7 +3,7 @@
     <v-alert :value="true" type="info">{{ $t("history.title") }}</v-alert>
     <v-card>
       <v-card-title>
-        <v-btn color="error" :disabled="selected.length==0">
+        <v-btn color="error" :disabled="selected.length==0" @click="removeSelected">
           <v-icon class="mr-2">remove</v-icon>
           {{ $t("history.remove") }}
         </v-btn>
@@ -113,7 +113,7 @@
             <v-icon>cancel</v-icon>
             <span class="ml-1">{{ $t('history.cancel') }}</span>
           </v-btn>
-          <v-btn color="error" flat @click="remove">
+          <v-btn color="error" flat @click="remove(null)">
             <v-icon>check_circle_outline</v-icon>
             <span class="ml-1">{{ $t('history.ok') }}</span>
           </v-btn>
@@ -162,17 +162,34 @@ export default Vue.extend({
         extension
           .sendRequest(EAction.clearDownloadHistory)
           .then((result: any) => {
-            console.log("clearDownloadHistory", result);
-            this.items = result;
+            this.getDownloadHistory();
           });
       }
     },
-    remove() {
+
+    removeSelected() {
+      if (this.selected && this.selected.length > 0) {
+        if (
+          confirm(
+            this.$t("common.removeSelectedConfirm", {
+              count: this.selected.length
+            }).toString()
+          )
+        ) {
+          this.remove(this.selected);
+        }
+      }
+    },
+
+    remove(items?: any) {
+      if (!items) {
+        items = [this.selectedItem];
+      }
+
       extension
-        .sendRequest(EAction.removeDownloadHistory, null, [this.selectedItem])
+        .sendRequest(EAction.removeDownloadHistory, null, items)
         .then((result: any) => {
-          console.log("removeDownloadHistory", result);
-          this.items = result;
+          this.getDownloadHistory();
         });
       this.dialogRemoveConfirm = false;
     },
