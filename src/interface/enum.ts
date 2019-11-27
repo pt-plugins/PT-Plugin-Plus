@@ -235,7 +235,10 @@ export enum EAction {
   // 重置辅种任务
   resetKeepUploadTask = "resetKeepUploadTask",
   // 更新辅种任务
-  updateKeepUploadTask = "updateKeepUploadTask"
+  updateKeepUploadTask = "updateKeepUploadTask",
+
+  // 重置下载历史
+  resetDownloadHistory = "resetDownloadHistory"
 }
 
 /**
@@ -388,7 +391,8 @@ export enum ERestoreContent {
   collection = "collection",
   cookies = "cookies",
   searchResultSnapshot = "searchResultSnapshot",
-  keepUploadTask = "keepUploadTask"
+  keepUploadTask = "keepUploadTask",
+  downloadHistory = "downloadHistory"
 }
 
 export enum EBrowserType {

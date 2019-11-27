@@ -598,6 +598,7 @@ export interface IBackupRawData {
   cookies?: any;
   searchResultSnapshot?: any;
   keepUploadTask?: any;
+  downloadHistory?: any;
 }
 
 export interface IKeepUploadTask {

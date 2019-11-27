@@ -365,9 +365,13 @@
         "restoreCookies": "仅恢复站点Cookies",
         "restoreSearchResultSnapshot": "仅恢复搜索结果快照",
         "restoreKeepUploadTask": "仅恢复辅种任务",
+        "restoreDownloadHistory": "仅恢复下载历史",
         "contentNotExist": {
           "cookies": "备份文件中不存在Cookies",
-          "collection": "备份文件中不存在收藏信息"
+          "collection": "备份文件中不存在收藏信息",
+          "searchResultSnapshot": "备份文件中不存在搜索结果快照",
+          "keepUploadTask": "备份文件中不存在辅种任务",
+          "downloadHistory": "备份文件中不存在下载历史"
         },
         "backupItem": {
           "base": "常规设置",
@@ -375,13 +379,15 @@
           "collection": "我的收藏",
           "cookies": "Cookies",
           "searchResultSnapshot": "搜索结果快照",
-          "keepUploadTask": "辅种任务"
+          "keepUploadTask": "辅种任务",
+          "downloadHistory": "下载历史"
         },
         "restoreErrorType": {
           "needSecretKey": "需要密钥",
           "errorSecretKey": "密钥错误"
         },
-        "enterSecretKey": "请输入密钥："
+        "enterSecretKey": "请输入密钥：",
+        "restoreCookiesConfirm": "备份内容包含 Cookies，是否需要恢复Cookies？此操作可能造成一些意想不到的结果。"
       },
       "base": {
         "title": "常规设置",

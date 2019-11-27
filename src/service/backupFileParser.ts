@@ -8,7 +8,8 @@ import {
   IHashData,
   EEncryptMode,
   Options,
-  ERestoreError
+  ERestoreError,
+  IBackupRawData
 } from "@/interface/common";
 import { PPF } from "./public";
 
@@ -41,7 +42,7 @@ export class BackupFileParser {
   /**
    * 获取备份数据
    */
-  public createBackupFileBlob(rawData: any): Promise<any> {
+  public createBackupFileBlob(rawData: IBackupRawData): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       try {
         const zip = new JSZip();
@@ -106,6 +107,14 @@ export class BackupFileParser {
           );
         }
 
+        // 下载历史
+        if (rawData.downloadHistory) {
+          zip.file(
+            "downloadHistory.json",
+            this.encryptData(rawData.downloadHistory, secretKey)
+          );
+        }
+
         // 压缩处理
         zip
           .generateAsync({
@@ -157,10 +166,17 @@ export class BackupFileParser {
           if (zip.file("keepUploadTask.json")) {
             requests.push(zip.file("keepUploadTask.json").async("text"));
           }
+
+          if (zip.file("downloadHistory.json")) {
+            requests.push(zip.file("downloadHistory.json").async("text"));
+          }
+
           return Promise.all(requests);
         })
         .then(results => {
           const manifest: IManifest = JSON.parse(results[0]);
+
+          console.log(manifest);
 
           if (manifest.encryptMode) {
             // 如果已指定了密钥，则先尝试是否正确
@@ -185,6 +201,8 @@ export class BackupFileParser {
                 return;
               }
             }
+          } else {
+            secretKey = "";
           }
 
           const result: Dictionary<any> = {
@@ -210,6 +228,10 @@ export class BackupFileParser {
 
           if (results.length > 6) {
             result["keepUploadTask"] = this.decryptData(results[6], secretKey);
+          }
+
+          if (results.length > 7) {
+            result["downloadHistory"] = this.decryptData(results[7], secretKey);
           }
 
           if (this.checkData(result.manifest, results[1] + results[2])) {

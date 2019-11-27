@@ -743,22 +743,32 @@ class Config {
           },
           cookies: undefined,
           searchResultSnapshot: this.service.searchResultSnapshot.items,
-          keepUploadTask: this.service.keepUploadTask.items
+          keepUploadTask: this.service.keepUploadTask.items,
+          downloadHistory: undefined
         };
+
+        const requests: Promise<any>[] = [];
+
+        // 备份下载历史
+        requests.push(this.service.controller.downloadHistory.load());
 
         // 是否备份站点 Cookies
         if (this.service.options.allowBackupCookies) {
-          this.getAllSiteCookies()
-            .then(result => {
-              rawData.cookies = result;
-              resolve(rawData);
-            })
-            .catch(() => {
-              resolve(rawData);
-            });
-        } else {
-          resolve(rawData);
+          requests.push(this.getAllSiteCookies());
         }
+
+        Promise.all(requests)
+          .then(results => {
+            rawData.downloadHistory = results[0];
+            if (results.length > 1) {
+              rawData.cookies = results[1];
+            }
+
+            resolve(rawData);
+          })
+          .catch(() => {
+            resolve(rawData);
+          });
       } catch (error) {
         reject(error);
       }

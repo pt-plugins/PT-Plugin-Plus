@@ -136,6 +136,20 @@ export default Vue.extend({
         }
       });
 
+      menus.push({});
+
+      menus.push({
+        title: this.$t("settings.backup.restoreDownloadHistory"),
+        fn: () => {
+          this.$emit(
+            "download",
+            this.server,
+            item,
+            ERestoreContent.downloadHistory
+          );
+        }
+      });
+
       PPF.showContextMenu(menus, event);
     }
   }

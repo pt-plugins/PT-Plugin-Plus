@@ -365,9 +365,13 @@
         "restoreCookies": "Restore Cookies Only",
         "restoreSearchResultSnapshot": "Restore Search Result Snapshot Only",
         "restoreKeepUploadTask": "Restore Reseed Task Only",
+        "restoreDownloadHistory": "Restore Download History Only",
         "contentNotExist": {
           "cookies": "Cookies not exist in the backup file",
-          "collection": "Collection not exists in the backup file"
+          "collection": "Collection not exists in the backup file",
+          "searchResultSnapshot": "Search Result Snapshot not exists in the backup file",
+          "keepUploadTask": "Reseed Task not exists in the backup file",
+          "downloadHistory": "Download History not exists in the backup file"
         },
         "backupItem": {
           "base": "General",
@@ -375,13 +379,15 @@
           "collection": "Collection",
           "cookies": "Cookies",
           "searchResultSnapshot": "Search Result Snapshot",
-          "keepUploadTask": "Reseed Task"
+          "keepUploadTask": "Reseed Task",
+          "downloadHistory": "Download History"
         },
         "restoreErrorType": {
           "needSecretKey": "Need Secret Key",
           "errorSecretKey": "Error Secret Key"
         },
-        "enterSecretKey": "Please enter a Secret key:"
+        "enterSecretKey": "Please enter a Secret key:",
+        "restoreCookiesConfirm": "Are you sure you want to restore cookies? This will overwrite current cookies."
       },
       "base": {
         "title": "General",

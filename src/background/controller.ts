@@ -155,6 +155,13 @@ export default class Controller {
   }
 
   /**
+   * 重置下载历史
+   */
+  public resetDownloadHistory(datas: any): Promise<any> {
+    return this.downloadHistory.reset(datas);
+  }
+
+  /**
    * 发送下载信息到指定的客户端
    * @param data
    */

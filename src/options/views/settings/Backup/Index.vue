@@ -532,6 +532,33 @@ export default Vue.extend({
             return;
           }
           break;
+
+        case ERestoreContent.keepUploadTask:
+          if (!infos.keepUploadTask) {
+            this.errorMsg = this.$t(
+              "settings.backup.contentNotExist.keepUploadTask"
+            ).toString();
+            return;
+          }
+          break;
+
+        case ERestoreContent.searchResultSnapshot:
+          if (!infos.searchResultSnapshot) {
+            this.errorMsg = this.$t(
+              "settings.backup.contentNotExist.searchResultSnapshot"
+            ).toString();
+            return;
+          }
+          break;
+
+        case ERestoreContent.downloadHistory:
+          if (!infos.downloadHistory) {
+            this.errorMsg = this.$t(
+              "settings.backup.contentNotExist.downloadHistory"
+            ).toString();
+            return;
+          }
+          break;
       }
 
       if (confirm(this.$t("settings.backup.restoreConfirm").toString())) {
@@ -674,12 +701,54 @@ export default Vue.extend({
               });
           }
 
+          // 恢复下载历史
+          if (
+            infos.downloadHistory &&
+            (restoreContent == ERestoreContent.all ||
+              restoreContent == ERestoreContent.downloadHistory)
+          ) {
+            this.workingStatus.add({
+              key: "downloadHistory",
+              title: this.t("settings.backup.backupItem.downloadHistory")
+            });
+            extension
+              .sendRequest(
+                EAction.resetDownloadHistory,
+                null,
+                infos.downloadHistory
+              )
+              .then(() => {
+                this.workingStatus.update(
+                  "downloadHistory",
+                  EWorkingStatus.success
+                );
+              })
+              .catch(() => {
+                this.workingStatus.update(
+                  "downloadHistory",
+                  EWorkingStatus.error
+                );
+              });
+          }
+
           // 恢复Cookies，需要放到最后一项
           if (
             infos.cookies &&
             (restoreContent == ERestoreContent.all ||
               restoreContent == ERestoreContent.cookies)
           ) {
+            // 当恢复所有内容，并且包含cookies时，需要确认是否恢复
+            if (
+              restoreContent == ERestoreContent.all &&
+              !confirm(
+                this.$t("settings.backup.restoreCookiesConfirm").toString()
+              )
+            ) {
+              this.successMsg = this.$t(
+                "settings.backup.restoreSuccess"
+              ).toString();
+              return;
+            }
             this.workingStatus.add({
               key: "cookies",
               title: this.t("settings.backup.backupItem.cookies")
