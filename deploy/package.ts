@@ -11,21 +11,35 @@ export default class Package {
   private zipFile = "";
   private crxFile = "";
   private rootPath = PATH.join(__dirname, "../");
-  private updateURL = `https://github.com/ronggang/PT-Plugin-Plus/releases/download/${version}/${packageName}.crx`;
+  private crxURL = `https://github.com/ronggang/PT-Plugin-Plus/releases/download/${version}/${packageName}.crx`;
+  private updateURL =
+    "https://raw.githubusercontent.com/ronggang/PT-Plugin-Plus/master/update/index.xml";
+  private manifestFile = "";
 
   constructor() {
     this.zipFile = PATH.join(this.rootPath, `releases/${packageName}.zip`);
     this.crxFile = PATH.join(this.rootPath, `releases/${packageName}.crx`);
+    this.manifestFile = PATH.join(this.rootPath, "dist/manifest.json");
   }
 
   public start(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.zip().then(() => {
+        this.updateManifestFile();
         this.crx().then(() => {
           resolve(this.zipFile);
         });
       });
     });
+  }
+
+  /**
+   * 更新 manifest 文件，增加 update_url 已适配 crx 自动更新
+   */
+  public updateManifestFile() {
+    let content = JSON.parse(fs.readFileSync(this.manifestFile).toString());
+    content.update_url = this.updateURL;
+    fs.writeFileSync(this.manifestFile, JSON.stringify(content));
   }
 
   /**
@@ -63,7 +77,7 @@ export default class Package {
   public crx(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       const crx = new ChromeExtension({
-        codebase: this.updateURL,
+        codebase: this.crxURL,
         privateKey: fs.readFileSync(
           PATH.join(this.rootPath, "releases/key.pem")
         )
@@ -103,7 +117,7 @@ export default class Package {
         crxPath: this.crxFile,
         zipPath: this.zipFile,
         xmlPath: PATH.join(this.rootPath, "update/index.xml"),
-        crxURL: this.updateURL
+        crxURL: this.crxURL
       })
         .then(() => {
           console.log("打包完成 %s", this.crxFile);

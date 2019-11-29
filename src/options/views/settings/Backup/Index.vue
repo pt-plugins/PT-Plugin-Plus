@@ -735,7 +735,8 @@ export default Vue.extend({
           if (
             infos.cookies &&
             (restoreContent == ERestoreContent.all ||
-              restoreContent == ERestoreContent.cookies)
+              restoreContent == ERestoreContent.cookies) &&
+            PPF.checkOptionalPermission("cookies")
           ) {
             // 当恢复所有内容，并且包含cookies时，需要确认是否恢复
             if (
