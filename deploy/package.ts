@@ -24,8 +24,9 @@ export default class Package {
 
   public start(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      this.updateManifestFile();
       this.zip().then(() => {
-        this.updateManifestFile();
+        this.updateManifestFile(false);
         this.crx().then(() => {
           resolve(this.zipFile);
         });
@@ -36,9 +37,14 @@ export default class Package {
   /**
    * 更新 manifest 文件，增加 update_url 已适配 crx 自动更新
    */
-  public updateManifestFile() {
+  public updateManifestFile(isZip: boolean = true) {
     let content = JSON.parse(fs.readFileSync(this.manifestFile).toString());
-    content.update_url = this.updateURL;
+    if (isZip && content.update_url) {
+      delete content.update_url;
+    } else {
+      content.update_url = this.updateURL;
+    }
+
     fs.writeFileSync(this.manifestFile, JSON.stringify(content));
   }
 
