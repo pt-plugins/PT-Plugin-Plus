@@ -18,19 +18,21 @@
               hide-actions
             >
               <template v-slot:items="props">
-                <td>
-                  <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
-                </td>
-                <td>{{ $t(props.item.title) }}</td>
-                <td>
-                  <v-switch
-                    true-value="true"
-                    false-value="false"
-                    :input-value="props.item.enabled?'true':'false'"
-                    hide-details
-                    @click.stop="updatePermissions(props.item)"
-                  ></v-switch>
-                </td>
+                <tr v-if="props.item.visible">
+                  <td>
+                    <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+                  </td>
+                  <td>{{ $t(props.item.title) }}</td>
+                  <td>
+                    <v-switch
+                      true-value="true"
+                      false-value="false"
+                      :input-value="props.item.enabled?'true':'false'"
+                      hide-details
+                      @click.stop="updatePermissions(props.item)"
+                    ></v-switch>
+                  </td>
+                </tr>
               </template>
             </v-data-table>
           </div>
@@ -60,11 +62,16 @@ export default Vue.extend({
         {
           origins: ["http://*/*", "https://*/*"],
           title: "permissions.details.allSites",
+          visible: true,
           isOrigin: true
         },
         // { key: "tabs", title: "permissions.details.tabs" },
-        { key: "downloads", title: "permissions.details.downloads" },
-        { key: "cookies", title: "permissions.details.cookies" }
+        {
+          key: "downloads",
+          visible: true,
+          title: "permissions.details.downloads"
+        },
+        { key: "cookies", visible: true, title: "permissions.details.cookies" }
       ],
       selected: [] as any,
       cancelled: false,
@@ -82,6 +89,9 @@ export default Vue.extend({
           origins: [] as any
         };
         this.selected.forEach((item: any) => {
+          if (!item.visible) {
+            return;
+          }
           if (item.isOrigin) {
             options.origins.push(...item.origins);
           } else {
@@ -100,6 +110,9 @@ export default Vue.extend({
       this.cancelled = true;
     },
     updatePermissions(item: any) {
+      if (!item.visible) {
+        return;
+      }
       item.enabled = !(<boolean>item.enabled);
       let options = {};
       if (item.isOrigin) {
@@ -130,6 +143,9 @@ export default Vue.extend({
       this.items = this.permissions;
       return;
     }
+
+    let manifest = chrome.runtime.getManifest();
+
     this.permissions.forEach(item => {
       let options = {};
       if (item.isOrigin) {
@@ -137,14 +153,20 @@ export default Vue.extend({
           origins: item.origins
         };
       } else {
+        if (manifest.optional_permissions && item.key) {
+          item.visible = manifest.optional_permissions.includes(item.key);
+        }
+
         options = {
           permissions: [item.key]
         };
       }
-      // 查询当前权限
-      chrome.permissions.contains(options, result => {
-        this.items.push(Object.assign({ enabled: result }, item));
-      });
+      if (item.visible) {
+        // 查询当前权限
+        chrome.permissions.contains(options, result => {
+          this.items.push(Object.assign({ enabled: result }, item));
+        });
+      }
     });
   },
   computed: {
