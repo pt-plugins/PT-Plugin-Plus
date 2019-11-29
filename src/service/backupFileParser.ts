@@ -215,7 +215,7 @@ export class BackupFileParser {
             result["collection"] = this.decryptData(results[3], secretKey);
           }
 
-          if (results.length > 4) {
+          if (results.length > 4 && PPF.checkOptionalPermission("cookies")) {
             result["cookies"] = this.decryptData(results[4], secretKey);
           }
 

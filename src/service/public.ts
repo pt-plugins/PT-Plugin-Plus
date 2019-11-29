@@ -7,6 +7,11 @@ import { UAParser } from "ua-parser-js";
 class HelpFunctions {
   public isExtensionMode: boolean = false;
   public browserName: string = "";
+  public manifest: chrome.runtime.Manifest = {
+    manifest_version: 2,
+    name: "",
+    version: ""
+  };
   constructor() {
     try {
       this.isExtensionMode = !!(
@@ -14,6 +19,8 @@ class HelpFunctions {
         chrome.extension &&
         chrome.runtime.getManifest
       );
+
+      this.manifest = chrome.runtime.getManifest();
     } catch (error) {
       console.log("HelpFunctions: is not extension mode.", error);
     }
@@ -66,8 +73,7 @@ class HelpFunctions {
    */
   public getVersion() {
     if (this.isExtensionMode) {
-      const manifest = chrome.runtime.getManifest();
-      return "v" + (manifest.version_name || manifest.version);
+      return "v" + (this.manifest.version_name || this.manifest.version);
     } else {
       return "localVersion";
     }
@@ -409,6 +415,22 @@ class HelpFunctions {
       }
     }
     return result;
+  }
+
+  /**
+   * 检查指定的可选权限是否有被声明
+   * @param key
+   */
+  public checkOptionalPermission(key: string): boolean {
+    if (
+      this.isExtensionMode &&
+      this.manifest &&
+      this.manifest.optional_permissions
+    ) {
+      return this.manifest.optional_permissions.includes(key);
+    }
+
+    return false;
   }
 }
 

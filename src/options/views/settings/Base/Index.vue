@@ -180,6 +180,7 @@
 
                     <!-- 允许备份Cookies -->
                     <v-switch
+                      v-if="checkOptionalPermission('cookies')"
                       color="success"
                       v-model="options.allowBackupCookies"
                       :label="$t('settings.base.allowBackupCookies')"
@@ -724,6 +725,10 @@ export default Vue.extend({
           this.successMsg = this.$t("common.copyed").toString();
         })
         .catch(() => {});
+    },
+
+    checkOptionalPermission(key: string): boolean {
+      return PPF.checkOptionalPermission(key);
     }
   },
   created() {

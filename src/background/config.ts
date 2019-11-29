@@ -753,7 +753,10 @@ class Config {
         requests.push(this.service.controller.downloadHistory.load());
 
         // 是否备份站点 Cookies
-        if (this.service.options.allowBackupCookies) {
+        if (
+          this.service.options.allowBackupCookies &&
+          PPF.checkOptionalPermission("cookies")
+        ) {
           requests.push(this.getAllSiteCookies());
         }
 
