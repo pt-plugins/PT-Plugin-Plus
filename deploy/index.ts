@@ -24,7 +24,7 @@ class Deployer {
   private init() {
     // 打包
     if (this.options.package) {
-      new Package().run().then(file => {
+      new Package().start().then(file => {
         this.publish(file);
       });
     } else {

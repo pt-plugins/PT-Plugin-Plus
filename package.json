@@ -72,6 +72,8 @@
     "babel-eslint": "^10.0.1",
     "chrome-webstore-upload": "^0.2.2",
     "copy-webpack-plugin": "^4.6.0",
+    "crx": "^5.0.1",
+    "crx3": "^1.1.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
     "node-sass": "^4.10.0",
