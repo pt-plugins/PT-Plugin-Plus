@@ -8,6 +8,15 @@
   "host": "ptsbao.club",
   "collaborator": "laizony, ted423",
   "selectors": {
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "messageCount": {
+          "selector": ["td[style*='background: indigo'] a[href*='messages.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        }
+      }
+    },
     "userExtendInfo": {
       "merge": true,
       "fields": {

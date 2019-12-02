@@ -39,9 +39,9 @@
         datas.forEach(item => {
           // item[7] 是否已完成
           // item[8] 活动状态
-          if (item[7] == 1 && item[8] == "Yes") {
+          if (item[7] >= 1 && item[8] == "Yes") {
             results.seeding++;
-            results.seedingSize += item[3].sizeToNumber();
+            results.seedingSize += item[1].replace('<span class=\"torrent_name2\">',"").replace('</span>',"").sizeToNumber();
           }
         });
       }
