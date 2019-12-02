@@ -120,5 +120,16 @@
         "filters": ["query.is('.uploading') ? 2 : query.is('.downloading') ? 1: null"]
       }
     }
+  },
+  "selectors": {
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "messageCount": {
+          "selector": ["a[href*='messages.php'][style*='background: red']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        }
+      }
+    }
   }
 }
