@@ -290,7 +290,14 @@ if (!"".getQueryString) {
      * 获取标题
      */
     getTitle(row) {
-      let title = row.find("a[href*='hit'][title]").first();
+      let title =
+        Searcher.getFieldValue(site, row, "title") ||
+        row.find("a[href*='hit'][title]").first();
+
+      if (typeof title === "string") {
+        return title;
+      }
+
       if (title.length == 0) {
         title = row.find("a[href*='hit']:has(b)").first();
       }

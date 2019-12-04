@@ -9,6 +9,14 @@
   "formerHosts": [
     "pter.club"
   ],
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "title": {
+        "selector": ["a[href*='details.php?id='][title]:first"],
+        "filters": ["query"]
+      }
+    }
+  },
   "searchEntry": [{
     "name": "综合",
     "enabled": true
