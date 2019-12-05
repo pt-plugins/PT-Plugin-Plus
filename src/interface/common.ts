@@ -263,6 +263,8 @@ export interface Request {
   data?: any;
 }
 
+export interface IRequest extends Request {}
+
 export interface NoticeOptions {
   msg?: string;
   type?: string;

@@ -87,7 +87,8 @@
       "support": {
         "title": "支持本项目",
         "bugReport": "Bug反馈",
-        "donate": "捐赠"
+        "donate": "捐赠",
+        "debugger": "调试信息"
       }
     },
     "permissions": {

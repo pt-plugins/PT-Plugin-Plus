@@ -238,7 +238,11 @@ export enum EAction {
   updateKeepUploadTask = "updateKeepUploadTask",
 
   // 重置下载历史
-  resetDownloadHistory = "resetDownloadHistory"
+  resetDownloadHistory = "resetDownloadHistory",
+
+  // 添加调试信息
+  pushDebugMsg = "pushDebugMsg",
+  updateDebuggerTabId = "updateDebuggerTabId"
 }
 
 /**
@@ -282,7 +286,8 @@ export enum EModule {
   background = "background",
   content = "content",
   options = "options",
-  popup = "popup"
+  popup = "popup",
+  debugger = "debugger"
 }
 
 /**

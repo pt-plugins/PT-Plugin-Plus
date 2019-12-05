@@ -5,7 +5,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
 
 export class InfoParser {
-  constructor() {}
+  constructor(public service?: any) {}
   /**
    * 根据指定规则和原始获取需要的数据
    * @param content 原始内容
@@ -29,6 +29,14 @@ export class InfoParser {
     }
 
     return results;
+  }
+
+  private debug(...msg: any[]) {
+    if (this.service) {
+      this.service.debug(...msg);
+    } else {
+      PPF.debug(...msg);
+    }
   }
 
   /**
@@ -78,7 +86,12 @@ export class InfoParser {
 
         selectorIndex++;
       } catch (error) {
-        PPF.debug("InfoParser.getFieldData.Error", selector, error);
+        this.debug(
+          "InfoParser.getFieldData.Error",
+          selector,
+          error.message,
+          error.stack
+        );
         return true;
       }
     });
@@ -107,7 +120,12 @@ export class InfoParser {
             try {
               query = eval(filter);
             } catch (error) {
-              PPF.debug("InfoParser.filter.Error", filter, error);
+              this.debug(
+                "InfoParser.filter.Error",
+                filter,
+                error.message,
+                error.stack
+              );
               query = null;
               return false;
             }

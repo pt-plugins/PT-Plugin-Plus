@@ -74,18 +74,17 @@
       <v-icon small>assignment</v-icon>
       <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">{{ $t("common.systemLog") }}</span>
     </v-btn>
-
     <v-btn
       v-if="$vuetify.breakpoint.mdAndUp"
       flat
       small
-      href="https://github.com/ronggang/PT-Plugin-Plus/issues"
+      href="/debugger.html"
       target="_blank"
       rel="noopener noreferrer nofollow"
-      :title="$t('navigation.support.bugReport')"
+      :title="$t('navigation.support.debugger')"
     >
       <v-icon small>bug_report</v-icon>
-      <span class="ml-1">{{ $t("navigation.support.bugReport") }}</span>
+      <span class="ml-1">{{ $t("navigation.support.debugger") }}</span>
     </v-btn>
 
     <v-snackbar

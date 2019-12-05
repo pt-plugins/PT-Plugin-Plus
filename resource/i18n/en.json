@@ -87,7 +87,8 @@
       "support": {
         "title": "Support This Project",
         "bugReport": "Bug Report",
-        "donate": "Donate"
+        "donate": "Donate",
+        "debugger": "Debugger"
       }
     },
     "permissions": {

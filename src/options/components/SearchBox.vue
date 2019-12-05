@@ -194,7 +194,9 @@ export default Vue.extend({
       if (this.items.length > 0) {
         this.showMenu = true;
       } else if (this.searchKey) {
-        this.getDoubanInfos(this.searchKey);
+        this.timer = setTimeout(() => {
+          this.getDoubanInfos(this.searchKey);
+        }, 750);
       }
     },
     /**

@@ -12,7 +12,6 @@ import {
   Request,
   EModule,
   ERequestMethod,
-  UserInfo,
   EUserDataRange,
   i18nResource,
   IBackupServer,
@@ -51,6 +50,9 @@ export default class Controller {
   public isInitialized: boolean = false;
 
   public contentPages: any[] = [];
+
+  public debuggerTabId: number | undefined = 0;
+  public debuggerPort: chrome.runtime.Port | undefined;
 
   private imageBase64Cache: Dictionary<any> = {};
   // 下载重试次数
@@ -1363,5 +1365,32 @@ export default class Controller {
 
   public updateKeepUploadTask(options: any): Promise<any> {
     return this.service.keepUploadTask.update(options);
+  }
+
+  public updateDebuggerTabId(id: number): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.debuggerTabId = id;
+      this.debuggerPort = chrome.tabs.connect(id, {
+        name: EModule.debugger
+      });
+      resolve();
+    });
+  }
+
+  public pushDebugMsg(msg: any): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      console.log(msg);
+      if (this.debuggerTabId) {
+        chrome.tabs.get(this.debuggerTabId, (tab: chrome.tabs.Tab) => {
+          if (this.debuggerPort) {
+            this.debuggerPort.postMessage({
+              action: EAction.pushDebugMsg,
+              data: msg
+            });
+          }
+        });
+      }
+      resolve();
+    });
   }
 }

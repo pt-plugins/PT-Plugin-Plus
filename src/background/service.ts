@@ -78,7 +78,7 @@ export default class PTPlugin {
    * @param callback 回调函数
    */
   public requestMessage(request: Request, sender?: any): Promise<any> {
-    console.log("requestMessage", request.action);
+    this.debug(request.action);
     return new Promise<any>((resolve?: any, reject?: any) => {
       let result: any;
       // if (
@@ -437,8 +437,9 @@ export default class PTPlugin {
                   new Date().getTime() + failedRetryInterval * 60000;
                 this.debug(
                   "数据刷新失败, 下次重试时间",
-                  new Date(this.options
-                    .autoRefreshUserDataNextTime as number).toLocaleString()
+                  new Date(
+                    this.options.autoRefreshUserDataNextTime as number
+                  ).toLocaleString()
                 );
               } else {
                 this.debug("数据刷新失败, 重试次数已超限制");
@@ -488,8 +489,10 @@ export default class PTPlugin {
    * 输出调试信息
    * @param msg
    */
-  public debug(...msg: any) {
-    console.log(new Date().toLocaleString(), ...msg);
+  public debug(...msgs: any[]) {
+    msgs.forEach((msg: any) => {
+      this.controller.pushDebugMsg(msg);
+    });
   }
 
   /**

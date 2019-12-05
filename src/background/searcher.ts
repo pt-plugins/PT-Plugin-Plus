@@ -71,7 +71,7 @@ export class Searcher {
     key: string = "",
     payload?: ISearchPayload
   ): Promise<any> {
-    console.log("searchTorrent: start");
+    this.service.debug("searchTorrent: start");
     return new Promise<any>((resolve?: any, reject?: any) => {
       let result: DataResult = {
         success: false
@@ -119,7 +119,7 @@ export class Searcher {
         ); //`该站点[${site.name}]未配置搜索页面，请先配置`;
         result.type = EDataResultType.error;
         reject(result);
-        console.log("searchTorrent: tip");
+        this.service.debug("searchTorrent: tip");
         return;
       }
 
@@ -287,10 +287,13 @@ export class Searcher {
           entry.parseScript = this.parseScriptCache[scriptPath];
 
           if (!entry.parseScript) {
-            console.log("searchTorrent: getScriptContent", scriptPath);
+            this.service.debug("searchTorrent: getScriptContent", scriptPath);
             APP.getScriptContent(scriptPath)
               .done((script: string) => {
-                console.log("searchTorrent: getScriptContent done", scriptPath);
+                this.service.debug(
+                  "searchTorrent: getScriptContent done",
+                  scriptPath
+                );
                 this.parseScriptCache[scriptPath] = script;
                 entry.parseScript = script;
                 this.getSearchResult(
@@ -300,7 +303,10 @@ export class Searcher {
                   searchConfig.torrentTagSelectors
                 )
                   .then((result: any) => {
-                    console.log("searchTorrent: getSearchResult done", url);
+                    this.service.debug(
+                      "searchTorrent: getSearchResult done",
+                      url
+                    );
                     if (result && result.length) {
                       results.push(...result);
                     }
@@ -311,7 +317,7 @@ export class Searcher {
                     }
                   })
                   .catch((result: any) => {
-                    console.log(
+                    this.service.debug(
                       "searchTorrent: getSearchResult catch",
                       url,
                       result
@@ -328,7 +334,10 @@ export class Searcher {
                   });
               })
               .fail(error => {
-                console.log("searchTorrent: getScriptContent fail", error);
+                this.service.debug(
+                  "searchTorrent: getScriptContent fail",
+                  error
+                );
               });
           } else {
             this.getSearchResult(
@@ -374,7 +383,7 @@ export class Searcher {
         reject(result);
       }
 
-      console.log("searchTorrent: quene done");
+      this.service.debug("searchTorrent: quene done");
     });
   }
 
@@ -391,7 +400,12 @@ export class Searcher {
     entry: SearchEntry,
     torrentTagSelectors?: any[]
   ): Promise<any> {
-    console.log("getSearchResult.start", url);
+    this.service.debug("getSearchResult.start", {
+      url,
+      site: site.host,
+      entry
+    });
+    let logId = "";
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.searchRequestQueue[url] = $.ajax({
         url: url,
@@ -401,7 +415,7 @@ export class Searcher {
         headers: entry.headers
       })
         .done((result: any) => {
-          console.log("getSearchResult.done", url);
+          this.service.debug("getSearchResult.done", url);
           delete this.searchRequestQueue[url];
           if (
             (result && typeof result == "string" && result.length > 100) ||
@@ -422,6 +436,13 @@ export class Searcher {
                   break;
               }
             } catch (error) {
+              logId = this.service.logger.add({
+                module: EModule.background,
+                event:
+                  "service.searcher.getSearchResult.siteSearchResultParseFailed",
+                msg: error
+              });
+
               reject({
                 success: false,
                 msg: this.service.i18n.t(
@@ -429,7 +450,10 @@ export class Searcher {
                   {
                     site
                   }
-                ) //`[${site.name}]数据解析失败！`
+                ), //`[${site.name}]数据解析失败！`
+                data: {
+                  logId
+                }
               });
               return;
             }
@@ -488,6 +512,11 @@ export class Searcher {
               }
             } catch (error) {
               console.error(error);
+              logId = this.service.logger.add({
+                module: EModule.background,
+                event: "service.searcher.getSearchResult.siteEvalScriptFailed",
+                msg: error
+              });
               reject({
                 success: false,
                 msg: this.service.i18n.t(
@@ -495,10 +524,18 @@ export class Searcher {
                   {
                     site
                   }
-                ) //`[${site.name}]脚本执行出错！`
+                ), //`[${site.name}]脚本执行出错！`
+                data: {
+                  logId
+                }
               });
             }
           } else {
+            logId = this.service.logger.add({
+              module: EModule.background,
+              event: "service.searcher.getSearchResult.siteSearchResultError",
+              msg: result
+            });
             reject({
               success: false,
               msg: this.service.i18n.t(
@@ -506,12 +543,15 @@ export class Searcher {
                 {
                   site
                 }
-              ) //`[${site.name}]没有返回预期的数据。`
+              ), //`[${site.name}]没有返回预期的数据。`
+              data: {
+                logId
+              }
             });
           }
         })
         .fail((result: any) => {
-          console.log("getSearchResult.fail", url);
+          this.service.debug("getSearchResult.fail", url);
           delete this.searchRequestQueue[url];
           reject(result);
         });
@@ -626,7 +666,7 @@ export class Searcher {
         });
     }
 
-    return schema;
+    return PPF.clone(schema);
   }
 
   /**
@@ -677,7 +717,7 @@ export class Searcher {
       return null;
     }
 
-    const parser = new InfoParser();
+    const parser = new InfoParser(this.service);
     return parser.getFieldData(
       row,
       selector,

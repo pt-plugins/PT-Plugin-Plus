@@ -1,5 +1,6 @@
 import { EConfigKey, LogItem } from "@/interface/common";
 import localStorage from "@/service/localStorage";
+import { PPF } from "./public";
 
 export class Logger {
   public maxLength: number = 1000;
@@ -27,12 +28,13 @@ export class Logger {
    * 添加日志
    * @param data 日志信息
    */
-  public add(data: LogItem) {
+  public add(data: LogItem): string {
     let time: number = new Date().getTime();
     let saveData: LogItem = Object.assign(
       {
         module: "",
-        time
+        time,
+        id: PPF.getNewId()
       },
       data
     );
@@ -49,6 +51,7 @@ export class Logger {
       this.items.push(saveData);
       this.storage.set(this.configKey, this.items);
     }
+    return saveData.id as string;
   }
 
   /**
