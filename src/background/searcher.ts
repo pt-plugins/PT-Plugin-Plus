@@ -400,10 +400,14 @@ export class Searcher {
     entry: SearchEntry,
     torrentTagSelectors?: any[]
   ): Promise<any> {
+    let _entry = PPF.clone(entry);
+    if (_entry.parseScript) {
+      delete _entry.parseScript;
+    }
     this.service.debug("getSearchResult.start", {
       url,
       site: site.host,
-      entry
+      entry: _entry
     });
     let logId = "";
     return new Promise<any>((resolve?: any, reject?: any) => {
@@ -664,6 +668,10 @@ export class Searcher {
         this.options.system.schemas.find((item: SiteSchema) => {
           return item.name == site.schema;
         });
+
+      if (schema === undefined) {
+        return schema;
+      }
     }
 
     return PPF.clone(schema);

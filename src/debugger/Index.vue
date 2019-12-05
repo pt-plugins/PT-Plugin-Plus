@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-toolbar :color="baseColor" app fixed clipped-left id="system-topbar">
       <v-toolbar-title style="width: 220px;" class="hidden-md-and-down">
-        <span>Debugger</span>
+        <span>Debugger Beta</span>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -24,7 +24,9 @@
             <tr v-for="(item, index) in items" :key="index">
               <td class="id">{{ index+1 }}</td>
               <td class="time">{{ item.time }}</td>
-              <td class="msg">{{ item.msg }}</td>
+              <td class="msg">
+                <div>{{ item.msg }}</div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -46,10 +48,7 @@ export default Vue.extend({
     add(msg: any) {
       this.items.push({
         time: new Date().toLocaleString(),
-        msg: (typeof msg === "string" ? msg : JSON.stringify(msg)).replace(
-          "\n",
-          "<br>"
-        )
+        msg: typeof msg === "string" ? msg : JSON.stringify(msg)
       });
     }
   }
@@ -87,10 +86,13 @@ export default Vue.extend({
 
   .msg {
     max-width: 70%;
-    word-wrap: break-word;
-    word-break: break-all;
-    max-height: 120px;
-    overflow-y: auto;
+    div {
+      width: 100%;
+      word-wrap: break-word;
+      word-break: break-all;
+      max-height: 120px;
+      overflow-y: auto;
+    }
   }
 }
 </style>

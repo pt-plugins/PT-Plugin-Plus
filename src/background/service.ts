@@ -78,7 +78,7 @@ export default class PTPlugin {
    * @param callback 回调函数
    */
   public requestMessage(request: Request, sender?: any): Promise<any> {
-    this.debug(request.action);
+    this.debug(`${ELogEvent.requestMessage}.${request.action}`);
     return new Promise<any>((resolve?: any, reject?: any) => {
       let result: any;
       // if (
