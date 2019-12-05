@@ -1,11 +1,11 @@
 <template>
   <div class="home">
-    <v-alert :value="true" type="info">{{ $t('home.title') }}</v-alert>
+    <v-alert :value="true" type="info">{{ $t("home.title") }}</v-alert>
     <v-card>
       <v-card-title>
         <v-btn color="success" @click="getInfos" :loading="loading" :title="$t('home.getInfos')">
           <v-icon class="mr-2">cached</v-icon>
-          {{$t('home.getInfos')}}
+          {{ $t("home.getInfos") }}
         </v-btn>
         <v-btn to="/user-data-timeline" color="success" :title="$t('home.timeline')">
           <v-icon>timeline</v-icon>
@@ -81,9 +81,15 @@
             <v-badge color="red messageCount" overlap>
               <template
                 v-slot:badge
-                v-if="props.item.user.messageCount>0"
+                v-if="props.item.user.messageCount > 0"
                 :title="$t('home.newMessage')"
-              >{{ props.item.user.messageCount>10?"":props.item.user.messageCount }}</template>
+              >
+                {{
+                props.item.user.messageCount > 10
+                ? ""
+                : props.item.user.messageCount
+                }}
+              </template>
               <v-btn
                 flat
                 icon
@@ -358,6 +364,7 @@ export default Vue.extend({
 
       let user = site.user;
       user.isLoading = true;
+      user.isLogged = false;
       user.lastErrorMsg = "";
 
       this.requestQueue.push(Object.assign({}, site));
@@ -503,7 +510,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .home {
   table.v-table thead tr:not(.v-datatable__progress) th,
   table.v-table tbody tr td {
