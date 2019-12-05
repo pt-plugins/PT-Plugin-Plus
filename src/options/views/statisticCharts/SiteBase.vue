@@ -319,7 +319,7 @@ export default Vue.extend({
             !data.seeding
           ) {
             data = lastData;
-          } else if (lastData && data.id != lastData.id) {
+          } else if (lastData && !data.id && !data.name) {
             data = lastData;
           }
 
