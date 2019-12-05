@@ -868,6 +868,9 @@ export default Vue.extend({
         if (!item.site) {
           let host = item.host || "";
           item.site = PPF.getSiteFromHost(host, this.options);
+          if (!item.site) {
+            return;
+          }
         }
 
         let siteName = item.site.name;

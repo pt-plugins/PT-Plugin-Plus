@@ -372,7 +372,7 @@ class HelpFunctions {
     }
 
     let site = sites.find((item: Site) => {
-      let cdn = [item.url].concat(item.cdn);
+      let cdn = [item.url].concat(item.cdn, item.formerHosts);
       return item.host == host || cdn.join("").indexOf(host) > -1;
     });
 
