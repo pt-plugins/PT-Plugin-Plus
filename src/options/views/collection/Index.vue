@@ -332,7 +332,8 @@ export default Vue.extend({
       siteCache: {} as Dictionary<any>,
       activeGroupId: ECommonKey.all as any,
       defaultGroupId: "" as any,
-      filterKey: ""
+      filterKey: "",
+      loading: false
     };
   },
   /**
@@ -374,11 +375,14 @@ export default Vue.extend({
     },
 
     getTorrentCollections() {
+      if (this.loading) {
+        return;
+      }
       const requests: any[] = [];
 
       requests.push(extension.sendRequest(EAction.getTorrentCollectionGroups));
       requests.push(extension.sendRequest(EAction.getTorrentCollections));
-
+      this.loading = true;
       return Promise.all(requests).then(results => {
         console.log("getTorrentCollections", results);
         this.items = [];
@@ -394,9 +398,7 @@ export default Vue.extend({
         results[1].forEach((item: any) => {
           let site = this.siteCache[item.host];
           if (!site) {
-            site = this.options.sites.find((site: Site) => {
-              return site.host === item.host;
-            });
+            site = PPF.getSiteFromHost(item.host, this.options);
             this.siteCache[item.host] = site;
           }
 
@@ -429,6 +431,7 @@ export default Vue.extend({
         if (this.activeGroupId !== ECommonKey.all) {
           this.filterCollections();
         }
+        this.loading = false;
       });
     },
 
