@@ -1382,11 +1382,16 @@ export default class Controller {
       console.log(msg);
       if (this.debuggerTabId) {
         chrome.tabs.get(this.debuggerTabId, (tab: chrome.tabs.Tab) => {
-          if (this.debuggerPort) {
+          if (tab && this.debuggerPort) {
             this.debuggerPort.postMessage({
               action: EAction.pushDebugMsg,
               data: msg
             });
+          }
+          if (chrome.runtime.lastError) {
+            console.log(chrome.runtime.lastError.message);
+            this.debuggerTabId = 0;
+            this.debuggerPort = undefined;
           }
         });
       }
