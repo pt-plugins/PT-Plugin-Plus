@@ -12,15 +12,15 @@
   },
   "selectors": {
     "userSeedingTorrents": {
-      "page": "/torrents.php?type=seeding&userid=$user.id$",
+      "page": "/bonus.php?action=bprates",
       "fields": {
         "seedingSize": {
-          "selector": ["td.td_size.number_column.nobr"],
-          "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          "selector": ["table#bprates_overview > tbody > tr > td:eq(1)"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "bonus": {
-          "selector": ["[href='bonus.php']"],
-          "filters": ["query.text().replace(/,/g,'')", "query.match(/积分.+?\\(([\\d.]+)\\)/)", "(query && query.length>=2)?query[1]:0"]
+          "selector": ["div#content > div.header > h3"],
+          "filters": ["query.text().replace(/,/g,'').match(/.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
         }
       }
     }
