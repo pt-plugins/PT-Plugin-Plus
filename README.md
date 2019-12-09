@@ -20,8 +20,8 @@ PT 助手 Plus，是一款浏览器插件（Web Extensions），一个可以提�
 > 注意：`1.0.0` 以下的配置不能直接用于该版本，请勿将 `1.0.0` 以下的版本配置进行导入操作。
 
 ## 已支持的浏览器
-- <a href="https://chrome.google.com/webstore/detail/abkdiiddckphbigmakaojlnmakpllenb" title="已在 Chrome Web Store 市场上发布的版本">![](https://img.shields.io/chrome-web-store/v/abkdiiddckphbigmakaojlnmakpllenb.svg?label=Google%20Chrome)</a>
-- <a href="https://addons.mozilla.org/zh-CN/firefox/addon/pt-plugin-plus/" title="已在 Mozilla Add-on 上发布的版本">![](https://img.shields.io/amo/v/pt-plugin-plus.svg?label=Mozilla%20Firefox)</a>
+- <a href="https://chrome.google.com/webstore/detail/abkdiiddckphbigmakaojlnmakpllenb" title="已在 Chrome Web Store 市场上发布的版本">![Google Chrome](https://img.shields.io/chrome-web-store/v/abkdiiddckphbigmakaojlnmakpllenb.svg?label=Google%20Chrome)</a>
+- <a href="https://addons.mozilla.org/zh-CN/firefox/addon/pt-plugin-plus/" title="已在 Mozilla Add-on 上发布的版本">![Mozilla Firefox](https://img.shields.io/amo/v/pt-plugin-plus.svg?label=Mozilla%20Firefox)</a>
 - [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/ekhingnlcjebipkdcgkkheigmljefepn)
 - 及其他基于 `Chromium` 内核的浏览器
 
