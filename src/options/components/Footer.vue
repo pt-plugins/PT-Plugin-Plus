@@ -1,11 +1,13 @@
 <template>
   <v-footer app fixed>
     <span class="pl-2 grey--text text--darken-1">
-      &copy; {{ $t("app.author") }} 2019, {{ $t("common.version") }} {{version}}
+      &copy; {{ $t("app.author") }} {{ year }}, {{ $t("common.version") }}
+      {{ version }}
       <span
         v-if="isDevelopmentMode && $vuetify.breakpoint.mdAndUp"
         class="deep-orange--text"
-      >{{ words.developmentMode }}</span>
+        >{{ words.developmentMode }}</span
+      >
       <v-chip
         label
         outline
@@ -13,7 +15,8 @@
         disabled
         small
         v-if="isDebugMode && $vuetify.breakpoint.mdAndUp"
-      >{{ $t("common.debugMode") }}</v-chip>
+        >{{ $t("common.debugMode") }}</v-chip
+      >
       <v-btn
         outline
         color="success"
@@ -22,7 +25,8 @@
         href="https://github.com/ronggang/PT-Plugin-Plus/releases"
         target="_blank"
         rel="noopener noreferrer nofollow"
-      >{{ $t("common.haveNewReleases") }}, {{ releasesVersion }}</v-btn>
+        >{{ $t("common.haveNewReleases") }}, {{ releasesVersion }}</v-btn
+      >
     </span>
     <v-spacer></v-spacer>
     <v-btn
@@ -37,7 +41,7 @@
       <v-img
         src="./assets/telegram.svg"
         width="16"
-        :style="$vuetify.breakpoint.smAndDown?'max-width:16px':null"
+        :style="$vuetify.breakpoint.smAndDown ? 'max-width:16px' : null"
       />
       <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">Telegram</span>
     </v-btn>
@@ -46,7 +50,9 @@
       <template v-slot:activator="{ on }">
         <v-btn flat small v-on="on" :icon="$vuetify.breakpoint.smAndDown">
           <v-icon small>language</v-icon>
-          <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">{{ $t("common.changeLanguage" )}}</span>
+          <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">{{
+            $t("common.changeLanguage")
+          }}</span>
         </v-btn>
       </template>
 
@@ -59,10 +65,21 @@
       <v-divider></v-divider>
 
       <v-list dense>
-        <v-list-tile v-for="(item, index) in languages" :key="index" @click="changeLanguage(item)">
-          <v-list-tile-title :class="currentLanguage==item.code?'primary--text':''">
+        <v-list-tile
+          v-for="(item, index) in languages"
+          :key="index"
+          @click="changeLanguage(item)"
+        >
+          <v-list-tile-title
+            :class="currentLanguage == item.code ? 'primary--text' : ''"
+          >
             <span>
-              <v-icon small class="mr-1 primary--text" v-if="currentLanguage==item.code">check</v-icon>
+              <v-icon
+                small
+                class="mr-1 primary--text"
+                v-if="currentLanguage == item.code"
+                >check</v-icon
+              >
               <span v-else class="mr-4"></span>
             </span>
             {{ item.name }}
@@ -72,7 +89,9 @@
     </v-menu>
     <v-btn flat small to="/system-logs" :icon="$vuetify.breakpoint.smAndDown">
       <v-icon small>assignment</v-icon>
-      <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">{{ $t("common.systemLog") }}</span>
+      <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">{{
+        $t("common.systemLog")
+      }}</span>
     </v-btn>
     <v-btn
       v-if="$vuetify.breakpoint.mdAndUp"
@@ -87,12 +106,9 @@
       <span class="ml-1">{{ $t("navigation.support.debugger") }}</span>
     </v-btn>
 
-    <v-snackbar
-      v-model="invalidFile"
-      top
-      :timeout="3000"
-      color="error"
-    >{{ $t('footer.invalidFile') }}</v-snackbar>
+    <v-snackbar v-model="invalidFile" top :timeout="3000" color="error">{{
+      $t("footer.invalidFile")
+    }}</v-snackbar>
   </v-footer>
 </template>
 <script lang="ts">
@@ -114,7 +130,8 @@ export default Vue.extend({
       languages: [] as Array<any>,
       fileInput: null as any,
       currentLanguage: "",
-      invalidFile: false
+      invalidFile: false,
+      year: new Date().getFullYear()
     };
   },
   created() {

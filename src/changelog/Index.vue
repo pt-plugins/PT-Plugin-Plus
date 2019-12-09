@@ -1,13 +1,17 @@
 <template>
-  <div class="main">
-    <div class="header">{{ version }} 更新日志</div>
-    <div v-html="content" class="markdown-body"></div>
-    <div class="footer">
-      <div v-html="footer"></div>
-      <div>PT-Plugin-Plus {{ version }}</div>
-      <img src="/assets/donate.png" />
+  <v-app id="inspire">
+    <div :class="$vuetify.breakpoint.smAndDown ? '' : 'mx-5'">
+      <div class="header">{{ version }} 更新日志</div>
+      <div v-html="content" class="markdown-body"></div>
+      <div class="footer">
+        <div v-html="footer" class="mt-2"></div>
+        <div>&copy; 栽培者 {{ year }}, 版本 {{ version }}</div>
+        <div class="mt-1">
+          <img src="/assets/donate.png" />
+        </div>
+      </div>
     </div>
-  </div>
+  </v-app>
 </template>
 <script lang="ts">
 import Vue from "vue";
@@ -22,7 +26,8 @@ export default Vue.extend({
         "[项目主页](https://github.com/ronggang/PT-Plugin-Plus) - [使用说明](https://github.com/ronggang/PT-Plugin-Plus/wiki) - [常见问题](https://github.com/ronggang/PT-Plugin-Plus/wiki/frequently-asked-questions) - [意见反馈](https://github.com/ronggang/PT-Plugin-Plus/issues) - [打开助手](index.html)",
       version: PPF.getVersion(),
       failContent:
-        "更新日志加载失败，请前往 https://github.com/ronggang/PT-Plugin-Plus/releases/ 查看发布说明"
+        "更新日志加载失败，请前往 https://github.com/ronggang/PT-Plugin-Plus/releases/ 查看发布说明",
+      year: new Date().getFullYear()
     };
   },
 
@@ -70,10 +75,6 @@ a:hover {
   color: #008c00;
 }
 
-.main {
-  padding: 0 50px;
-}
-
 .header {
   padding: 10px;
   font-size: 30px;
@@ -88,5 +89,9 @@ a:hover {
   margin: 10px;
   text-align: center;
   line-height: 30px;
+
+  p {
+    margin: 0;
+  }
 }
 </style>
