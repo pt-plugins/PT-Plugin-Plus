@@ -100,6 +100,14 @@
     ]
   }],
   "selectors": {
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "messageCount": {
+          "selector": ["a[href*='messages.php'] b span[style*='color: red']"]
+        }
+      }
+    },
     "userExtendInfo": {
       "merge": true,
       "fields": {
