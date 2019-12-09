@@ -10,7 +10,7 @@
   "homepage": "https://github.com/ronggang/PT-Plugin-Plus",
   "scripts": {
     "serve": "vue-cli-service serve --mode=test",
-    "build": "yarn build:index && yarn build:background && yarn build:content && yarn resource && yarn package",
+    "build": "yarn build:index && yarn build:background && yarn build:content && yarn resource",
     "lint": "vue-cli-service lint",
     "background": "webpack --config webpack/prod-background.js && webpack --config webpack/prod-content.js",
     "dev-background": "webpack --config webpack/dev-background.js && webpack --config webpack/dev-content.js",
@@ -21,6 +21,7 @@
     "build:background": "webpack --config webpack/prod-background.js",
     "build:content": "webpack --config webpack/prod-content.js",
     "package": "ts-node --skip-project ./deploy/index.ts -p",
+    "release": "yarn build && yarn package",
     "deploy:chrome": "ts-node --skip-project ./deploy/index.ts -pc",
     "deploy": "yarn build:index && yarn build:background && yarn build:content && yarn resource && yarn deploy:chrome"
   },
@@ -78,7 +79,7 @@
     "crx3": "^1.1.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
-    "node-sass": "^4.10.0",
+    "sass": "^1.23.7",
     "sass-loader": "^7.1.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
