@@ -534,11 +534,20 @@ export default class PTPlugin {
       console.log("chrome.runtime.onInstalled", details);
       // 版本更新时
       if (details.reason == "update") {
-        setTimeout(() => {
-          this.userData.upgrade();
-        }, 1000);
+        this.upgrade();
       }
     });
+  }
+
+  /**
+   * 升级相关内容
+   */
+  public upgrade() {
+    // 显示更新日志
+    this.controller.openURL("changelog.html");
+    setTimeout(() => {
+      this.userData.upgrade();
+    }, 1000);
   }
 
   /**

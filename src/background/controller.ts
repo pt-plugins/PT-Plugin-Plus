@@ -724,7 +724,7 @@ export default class Controller {
     }
 
     if (this.optionsTabId == 0) {
-      this.createOptionTab(url);
+      this.openURL(url);
     } else {
       chrome.tabs.get(this.optionsTabId as number, tab => {
         if (!chrome.runtime.lastError && tab) {
@@ -733,7 +733,7 @@ export default class Controller {
             url: "index.html#" + url
           });
         } else {
-          this.createOptionTab(url);
+          this.openURL(url);
         }
       });
     }
@@ -743,7 +743,7 @@ export default class Controller {
    * 创建配置页面选项卡
    * @param url
    */
-  private createOptionTab(url: string = "") {
+  public openURL(url: string = "") {
     if (!url) {
       return;
     }
