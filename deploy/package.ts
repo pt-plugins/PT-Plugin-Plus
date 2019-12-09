@@ -39,10 +39,10 @@ export default class Package {
    */
   public updateManifestFile(isZip: boolean = true) {
     let content = JSON.parse(fs.readFileSync(this.manifestFile).toString());
-    if (isZip && content.update_url) {
-      delete content.update_url;
-    } else {
+    if (!isZip) {
       content.update_url = this.updateURL;
+    } else if (content.update_url) {
+      delete content.update_url;
     }
 
     fs.writeFileSync(this.manifestFile, JSON.stringify(content));

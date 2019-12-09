@@ -12,6 +12,7 @@ class Deployer {
     program
       .version("0.0.1")
       .option("-p, --package", "打包文件")
+      .option("-z, --zip", "打包文件")
       .option("-c, --chrome", "发布至 Chrome Web Store")
       .action(options => {
         this.options = options;
@@ -27,6 +28,8 @@ class Deployer {
       new Package().start().then(file => {
         this.publish(file);
       });
+    } else if (this.options.zip) {
+      new Package().zip();
     } else {
       this.publish();
     }

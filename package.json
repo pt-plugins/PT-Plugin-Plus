@@ -20,6 +20,7 @@
     "build:index": "yarn install && vue-cli-service build",
     "build:background": "webpack --config webpack/prod-background.js",
     "build:content": "webpack --config webpack/prod-content.js",
+    "zip": "ts-node --skip-project ./deploy/index.ts -z",
     "package": "ts-node --skip-project ./deploy/index.ts -p",
     "release": "yarn build && yarn package",
     "deploy:chrome": "ts-node --skip-project ./deploy/index.ts -pc",
