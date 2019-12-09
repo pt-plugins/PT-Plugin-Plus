@@ -3,8 +3,6 @@
 <a href="https://github.com/ronggang/PT-Plugin-Plus/releases/latest" title="GitHub Releases"><img src="https://img.shields.io/github/release/ronggang/PT-Plugin-Plus.svg?label=Latest%20Release"></a>
 <a href="https://github.com/ronggang/PT-Plugin-Plus/releases" title="GitHub All Releases"><img alt="" src="https://img.shields.io/github/downloads/ronggang/PT-Plugin-Plus/total.svg?label=Downloads"></a>
 <img src="https://img.shields.io/badge/Used-TypeScript%20Vue-blue.svg">
-<a href="https://chrome.google.com/webstore/detail/abkdiiddckphbigmakaojlnmakpllenb" title="已在 Chrome Web Store 市场上发布的版本"><img src="https://img.shields.io/chrome-web-store/v/abkdiiddckphbigmakaojlnmakpllenb.svg?label=Chrome"></a>
-<a href="https://addons.mozilla.org/zh-CN/firefox/addon/pt-plugin-plus/" title="已在 Mozilla Add-on 上发布的版本"><img src="https://img.shields.io/amo/v/pt-plugin-plus.svg?label=Firefox"></a>
 <a href="https://github.com/ronggang/PT-Plugin-Plus/LICENSE" title="GitHub license"><img src="https://img.shields.io/github/license/ronggang/PT-Plugin-Plus.svg?label=License"></a>
 <a href="https://t.me/joinchat/NZ9NCxPKXyby8f35rn_QTw"><img src="https://img.shields.io/badge/Telegram-Chat-blue.svg?logo=telegram"></a>
 </p>
@@ -13,13 +11,19 @@
 
 ## 关于
 
-PT 助手 Plus，是一款 Google Chrome 和 Firefox 浏览器插件（Web Extensions），主要用于辅助下载 PT 站的种子。
+PT 助手 Plus，是一款浏览器插件（Web Extensions），一个可以提升 PT 站点使用效率的工具。
 
 适用于各 PT 站，可使下载种子等各项操作变化更简单、快捷。配合下载服务器（如 Transmission、µTorrent 等），可一键下载指定的种子。
 
 该版本是对原来的 [PT 助手](https://github.com/ronggang/PT-Plugin) 进行了重构，去掉了繁琐的配置，以获得更好的使用体验；
 
 > 注意：`1.0.0` 以下的配置不能直接用于该版本，请勿将 `1.0.0` 以下的版本配置进行导入操作。
+
+## 已支持的浏览器
+- <a href="https://chrome.google.com/webstore/detail/abkdiiddckphbigmakaojlnmakpllenb" title="已在 Chrome Web Store 市场上发布的版本">![](https://img.shields.io/chrome-web-store/v/abkdiiddckphbigmakaojlnmakpllenb.svg?label=Google%20Chrome)</a>
+- <a href="https://addons.mozilla.org/zh-CN/firefox/addon/pt-plugin-plus/" title="已在 Mozilla Add-on 上发布的版本">![](https://img.shields.io/amo/v/pt-plugin-plus.svg?label=Mozilla%20Firefox)</a>
+- [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/ekhingnlcjebipkdcgkkheigmljefepn)
+- 及其他基于 `Chromium` 内核的浏览器
 
 ## 功能
 
@@ -45,6 +49,7 @@ PT 助手 Plus，是一款 Google Chrome 和 Firefox 浏览器插件（Web Exten
 - 保存下载历史记录（默认关闭）；
 - `豆瓣` 电影页面、[Top250](https://movie.douban.com/top250)、[选电影](https://movie.douban.com/explore) 一键搜索 PT 种子支持；
 - `IMDb` 电影页面、[Top250](https://www.imdb.com/chart/top?ref_=nv_mv_250) 一键搜索 PT 种子支持；
+- 更多功能请参考 [Wiki](https://github.com/ronggang/PT-Plugin-Plus/wiki) ；
 
 ## 安装及使用
 
