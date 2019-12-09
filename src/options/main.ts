@@ -180,11 +180,15 @@ class Main {
   }
 
   public init() {
+    const requests: any[] = [];
+
     // 读取配置信息
-    store
-      .dispatch("readConfig")
-      .then((result: Options) => {
-        this.options = result;
+    requests.push(store.dispatch("readConfig"));
+    requests.push(store.dispatch("readUIOptions"));
+
+    Promise.all(requests)
+      .then((results: any) => {
+        this.options = results[0];
 
         // 设置语言信息
         this.i18n.init(this.options.locale || "zh-CN").then((i18n: any) => {
@@ -208,7 +212,6 @@ class Main {
         }
         console.log(error);
       });
-    store.dispatch("readUIOptions");
   }
 }
 (function main() {

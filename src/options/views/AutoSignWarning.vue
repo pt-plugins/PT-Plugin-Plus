@@ -7,7 +7,13 @@
     :fullscreen="$vuetify.breakpoint.smAndDown"
   >
     <template v-slot:activator="{ on }">
-      <v-btn v-if="showButton" dark v-on="on" title="一键签到？" color="warning">
+      <v-btn
+        v-if="showButton"
+        dark
+        v-on="on"
+        title="一键签到？"
+        color="warning"
+      >
         <v-icon>how_to_reg</v-icon>
         <span class="ml-2">一键签到？</span>
       </v-btn>
@@ -33,11 +39,12 @@
           <div>
             感谢您使用助手，抱歉这里没有自动签到功能，如果您愿意，请阅读以下内容：
             <br />
-            <br />- 首先，自动签到对站点来说属于“作弊”行为；
-            <br />- 其次，签到功能对站点来说目的是用来活跃人气，如果自动签到了，对站点来说没有任何作用；
-            <br />- 再次，签到功能一般具有奖励作用，如签到后给予一定的积分（魔力）；
-            <br />- 最后，本人痛恨任何“薅羊毛”行为；
-            <br />- 综上所述，助手不会添加任何可以自动获取奖励的功能，现在不会有，将来也不会有；
+            <br />- 首先，自动签到对站点来说属于“作弊”行为； <br />-
+            其次，签到功能对站点来说目的是用来活跃人气，如果自动签到了，对站点来说没有任何作用；
+            <br />-
+            再次，签到功能一般具有奖励作用，如签到后给予一定的积分（魔力）；
+            <br />- 最后，本人痛恨任何“薅羊毛”行为； <br />-
+            综上所述，助手不会添加任何可以自动获取奖励的功能，现在不会有，将来也不会有；
             <br />
             <br />PS：如果您喜欢一个站点，请用行动表示支持，而不是把一切交给自动化脚本；
             <br />
@@ -50,7 +57,9 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="success" flat @click="hideButton">不再显示该按钮</v-btn>
-        <v-btn color="error" flat @click="dialog = false">{{ $t('common.close') }}</v-btn>
+        <v-btn color="error" flat @click="dialog = false">{{
+          $t("common.close")
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -71,7 +80,7 @@ export default Vue.extend({
       this.$store.dispatch("updateViewOptions", {
         key: "AutoSignWarning",
         options: {
-          showButton: this.showButton
+          showButton: false
         }
       });
       this.dialog = false;

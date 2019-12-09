@@ -357,12 +357,19 @@ export default new Vuex.Store({
         });
     },
 
-    readUIOptions({ commit }) {
-      extension
-        .sendRequest(EAction.readUIOptions, (options: UIOptions) => {
-          commit("updateUIOptions", options);
-        })
-        .catch();
+    readUIOptions({ commit }): Promise<any> {
+      return new Promise<any>((resolve?: any, reject?: any) => {
+        extension
+          .sendRequest(EAction.readUIOptions)
+          .then((options: UIOptions) => {
+            commit("updateUIOptions", options);
+            resolve(options);
+          })
+          .catch(error => {
+            console.log("store.saveConfig.error", error);
+            reject(error);
+          });
+      });
     },
 
     saveUIOptions({ commit, state }, options: UIOptions) {
