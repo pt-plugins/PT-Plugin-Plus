@@ -25,7 +25,7 @@ class Deployer {
   private init() {
     // 打包
     if (this.options.package) {
-      new Package().start().then(file => {
+      new Package(process.env.CRX_PRIVATE_KEY).start().then(file => {
         this.publish(file);
       });
     } else if (this.options.zip) {

@@ -5,9 +5,43 @@ import * as webstore from "chrome-webstore-upload";
 export default class ChromeWebStore {
   private webStore;
   private configFile = "./.env.local";
+  private isInitialized = false;
   constructor(
     public zipFile = `./releases/${process.env.npm_package_archiverName}-v${process.env.npm_package_version}.zip`
   ) {}
+
+  public init() {
+    if (this.isInitialized) {
+      return this;
+    }
+
+    let env: any = null;
+    if (fs.existsSync(this.configFile)) {
+      env = dotenv.parse(fs.readFileSync(this.configFile));
+    } else {
+      env = process.env;
+    }
+
+    if (
+      env &&
+      env.CHROME_EXTENSION_ID &&
+      env.CHROME_CLIENT_ID &&
+      env.CHROME_CLIENT_SECRET &&
+      env.CHROME_REFRESH_TOKEN
+    ) {
+      this.webStore = webstore({
+        extensionId: env.CHROME_EXTENSION_ID,
+        clientId: env.CHROME_CLIENT_ID,
+        clientSecret: env.CHROME_CLIENT_SECRET,
+        refreshToken: env.CHROME_REFRESH_TOKEN
+      });
+      this.isInitialized = true;
+    } else {
+      console.log("关键参数未指定");
+    }
+
+    return this;
+  }
 
   /**
    * 上传压缩包
@@ -15,7 +49,8 @@ export default class ChromeWebStore {
    */
   public upload(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      if (!fs.existsSync(this.configFile)) {
+      this.init();
+      if (!this.webStore) {
         reject(
           "Chrome Web Store 配置文件不存在，不能完成自动上传和发布，请手工上传。"
         );
@@ -29,13 +64,6 @@ export default class ChromeWebStore {
 
       console.log("正在将压缩包上传至 Chrome Web Store，请稍候……");
       const file = fs.createReadStream(this.zipFile);
-      const envConfig = dotenv.parse(fs.readFileSync(this.configFile));
-      this.webStore = new webstore({
-        extensionId: envConfig.CHROME_EXTENSION_ID,
-        clientId: envConfig.CHROME_CLIENT_ID,
-        clientSecret: envConfig.CHROME_CLIENT_SECRET,
-        refreshToken: envConfig.CHROME_REFRESH_TOKEN
-      });
 
       this.webStore
         .uploadExisting(file)
@@ -57,6 +85,7 @@ export default class ChromeWebStore {
    */
   public publish(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
+      this.init();
       console.log("正在执行发布操作，请稍候……");
       this.webStore
         .publish()
@@ -70,5 +99,10 @@ export default class ChromeWebStore {
           reject(error);
         });
     });
+  }
+
+  public fetchToken(): Promise<any> {
+    this.init();
+    return this.webStore.fetchToken();
   }
 }

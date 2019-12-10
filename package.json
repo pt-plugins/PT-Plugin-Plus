@@ -24,7 +24,7 @@
     "package": "ts-node --skip-project ./deploy/index.ts -p",
     "release": "yarn build && yarn package",
     "deploy:chrome": "ts-node --skip-project ./deploy/index.ts -pc",
-    "deploy": "yarn build:index && yarn build:background && yarn build:content && yarn resource && yarn deploy:chrome"
+    "deploy": "yarn build && yarn deploy:chrome"
   },
   "dependencies": {
     "archiver": "^3.1.1",

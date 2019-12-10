@@ -10,16 +10,38 @@ const packageName = `${process.env.npm_package_archiverName}-${version}`;
 export default class Package {
   private zipFile = "";
   private crxFile = "";
+  private keyFile = "";
+  private privateKey = "";
   private rootPath = PATH.join(__dirname, "../");
   private crxURL = `https://github.com/ronggang/PT-Plugin-Plus/releases/download/${version}/${packageName}.crx`;
   private updateURL =
     "https://raw.githubusercontent.com/ronggang/PT-Plugin-Plus/master/update/index.xml";
   private manifestFile = "";
 
-  constructor() {
+  constructor(privateKey: string = "") {
+    this.initReleasePath();
+    this.initPrivateKey(privateKey);
     this.zipFile = PATH.join(this.rootPath, `releases/${packageName}.zip`);
     this.crxFile = PATH.join(this.rootPath, `releases/${packageName}.crx`);
     this.manifestFile = PATH.join(this.rootPath, "dist/manifest.json");
+  }
+
+  /**
+   * 初始化发布目录
+   */
+  private initReleasePath() {
+    const path = PATH.join(this.rootPath, "releases");
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path, { recursive: true });
+    }
+  }
+
+  private initPrivateKey(privateKey: string = "") {
+    this.keyFile = PATH.join(this.rootPath, "releases/key.pem");
+    this.privateKey = privateKey;
+    if (!privateKey && fs.existsSync(this.keyFile)) {
+      this.privateKey = fs.readFileSync(this.keyFile).toString();
+    }
   }
 
   public start(): Promise<any> {
@@ -84,9 +106,7 @@ export default class Package {
     return new Promise<any>((resolve?: any, reject?: any) => {
       const crx = new ChromeExtension({
         codebase: this.crxURL,
-        privateKey: fs.readFileSync(
-          PATH.join(this.rootPath, "releases/key.pem")
-        )
+        privateKey: this.privateKey
       });
 
       crx
