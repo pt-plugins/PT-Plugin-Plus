@@ -72,31 +72,31 @@ if (!"".getQueryString) {
 
         // 发布时间
         if (cell.find("a[href*='order_by=time']").length) {
-          fieldIndex.time = index;
+          fieldIndex.time = index + 1;
           continue;
         }
 
         // 大小
         if (cell.find("a[href*='order_by=size']").length) {
-          fieldIndex.size = index;
+          fieldIndex.size = index + 1;
           continue;
         }
 
         // 种子数
         if (cell.find("a[href*='order_by=seeders']").length) {
-          fieldIndex.seeders = index;
+          fieldIndex.seeders = index + 1;
           continue;
         }
 
         // 下载数
         if (cell.find("a[href*='order_by=leechers']").length) {
-          fieldIndex.leechers = index;
+          fieldIndex.leechers = index + 1;
           continue;
         }
 
         // 完成数
         if (cell.find("a[href*='order_by=snatched']").length) {
-          fieldIndex.completed = index;
+          fieldIndex.completed = index + 1;
           continue;
         }
       }

@@ -2,11 +2,49 @@
   "name": "Oppaitime",
   "description": "成人动漫站",
   "icon": "https://oppaiti.me/favicon.ico",
-  "schema": "Gazelle",
+  "schema": "GazelleJSONAPI",
   "tags": ["动画", "漫画", "游戏", "影视"],
   "url": "https://oppaiti.me/",
   "host": "oppaiti.me",
   "collaborator": "bimzcy",
+  "searchEntryConfig": {
+    "skipIMDbId": true
+  },
+  "searchEntry": [{
+      "name": "all",
+      "enabled": true
+    },
+    {
+      "queryString": "filter_cat[1]=1",
+      "name": "Movies",
+      "enabled": true
+    },
+    {
+      "queryString": "filter_cat[2]=1",
+      "name": "Anime",
+      "enabled": true
+    },
+    {
+      "queryString": "filter_cat[3]=1",
+      "name": "Manga",
+      "enabled": true
+    },
+    {
+      "queryString": "filter_cat[4]=1",
+      "name": "Games",
+      "enabled": true
+    },
+    {
+      "queryString": "filter_cat[5]=1",
+      "name": "Audio",
+      "enabled": true
+    },
+    {
+      "queryString": "filter_cat[6]=1",
+      "name": "Other",
+      "enabled": true
+    }
+  ],
   "supportedFeatures": {
     "imdbSearch": false,
     "userData": "◐"
