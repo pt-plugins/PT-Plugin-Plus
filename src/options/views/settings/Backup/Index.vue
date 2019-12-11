@@ -453,15 +453,10 @@ export default Vue.extend({
      */
     createBackupFile() {
       switch (PPF.browserName) {
-        case EBrowserType.Firefox:
+        case EBrowserType.Chrome:
           extension
-            .sendRequest(EAction.getBackupRawData)
+            .sendRequest(EAction.createBackupFile)
             .then(result => {
-              backupFileParser
-                .createBackupFileBlob(result)
-                .then((blob: any) => {
-                  FileSaver.saveAs(blob, PPF.getNewBackupFileName());
-                });
               console.log(result);
             })
             .catch(error => {
@@ -472,8 +467,13 @@ export default Vue.extend({
 
         default:
           extension
-            .sendRequest(EAction.createBackupFile)
+            .sendRequest(EAction.getBackupRawData)
             .then(result => {
+              backupFileParser
+                .createBackupFileBlob(result)
+                .then((blob: any) => {
+                  FileSaver.saveAs(blob, PPF.getNewBackupFileName());
+                });
               console.log(result);
             })
             .catch(error => {
