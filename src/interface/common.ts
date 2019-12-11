@@ -610,3 +610,9 @@ export interface IKeepUploadTask {
   downloadOptions: DownloadOptions;
   items: any[];
 }
+
+export interface ISiteIcon {
+  origin: string;
+  host: string;
+  data: string;
+}

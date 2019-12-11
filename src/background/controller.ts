@@ -1307,6 +1307,10 @@ export default class Controller {
     return this.service.config.getFavicons();
   }
 
+  public resetFavicon(url: string): Promise<any> {
+    return this.service.config.getFavicon(url, true);
+  }
+
   public getBackupRawData(): Promise<any> {
     return this.service.config.getBackupRawData();
   }

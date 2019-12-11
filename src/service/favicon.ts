@@ -9,7 +9,7 @@ const NOIMAGE =
 export class Favicon {
   private cache: Dictionary<any> = {};
 
-  constructor() {
+  constructor(public service?: any) {
     this.loadCache();
   }
 
@@ -49,20 +49,28 @@ export class Favicon {
       urls.forEach((url: string) => {
         requests.push(this.get(url));
       });
-      Promise.all(requests).then((results: any[]) => {
-        resolve(results);
-      });
+      Promise.all(requests)
+        .then((results: any[]) => {
+          resolve(results);
+        })
+        .catch(e => {
+          reject(e);
+        });
     });
   }
 
-  public get(url: string): Promise<any> {
+  public get(url: string, reset: boolean = false): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let URL = filters.parseURL(url);
       let cache = this.cache[URL.host];
-      if (!cache) {
-        this.cacheFavicon(URL.origin, URL.host).then((result: any) => {
-          resolve(result);
-        });
+      if (!cache || reset) {
+        this.cacheFavicon(URL.origin, URL.host)
+          .then((result: any) => {
+            resolve(result);
+          })
+          .catch(e => {
+            reject(e);
+          });
         return;
       }
       return resolve(cache);
@@ -79,15 +87,31 @@ export class Favicon {
       this.download(`${url}/favicon.ico`)
         .then(result => {
           if (result && /image/gi.test(result.type)) {
-            this.transformBlob(result, "base64").then(base64 => {
-              resolve(this.set(url, base64));
-            });
+            this.transformBlob(result, "base64")
+              .then(base64 => {
+                resolve(this.set(url, base64));
+              })
+              .catch(e => {
+                reject(e);
+              });
+          } else {
+            this.cacheFromIndex(url, host)
+              .then((result: any) => {
+                resolve(result);
+              })
+              .catch(e => {
+                reject(e);
+              });
           }
         })
         .catch(() => {
-          this.cacheFromIndex(url, host).then((result: any) => {
-            resolve(result);
-          });
+          this.cacheFromIndex(url, host)
+            .then((result: any) => {
+              resolve(result);
+            })
+            .catch(e => {
+              reject(e);
+            });
         });
     });
   }
@@ -114,39 +138,59 @@ export class Favicon {
       this.download(url)
         .then(result => {
           if (result && /text/gi.test(result.type)) {
-            this.transformBlob(result, "text").then(text => {
-              try {
-                const doc = new DOMParser().parseFromString(text, "text/html");
-                // 构造 jQuery 对象
-                const head = $(doc).find("head");
-                let query = head.find("link[rel*=icon]:first");
-                if (query && query.length > 0) {
-                  let URL = filters.parseURL(url);
-                  let link = query.attr("href") + "";
+            this.transformBlob(result, "text")
+              .then(text => {
+                try {
+                  const doc = new DOMParser().parseFromString(
+                    text,
+                    "text/html"
+                  );
+                  // 构造 jQuery 对象
+                  const head = $(doc).find("head");
+                  let query = head.find("link[rel*=icon]:first");
+                  if (query && query.length > 0) {
+                    let URL = filters.parseURL(url);
+                    let link = query.attr("href") + "";
 
-                  if (link.substr(0, 2) === "//") {
-                    link = `${URL.protocol}:${link}`;
-                  } else if (link.substr(0, 4) !== "http") {
-                    link = `${URL.origin}/${link}`;
+                    if (link.substr(0, 2) === "//") {
+                      link = `${URL.protocol}:${link}`;
+                    } else if (link.substr(0, 4) !== "http") {
+                      link = `${URL.origin}/${link}`;
+                    }
+
+                    this.download(`${url}/${link}`)
+                      .then(result => {
+                        if (result && /image/gi.test(result.type)) {
+                          this.transformBlob(result, "base64")
+                            .then(base64 => {
+                              resolve(this.set(url, base64));
+                            })
+                            .catch(e => {
+                              this.debug(e);
+                              reject(e);
+                            });
+                        } else {
+                          resolve(this.set(url, NOIMAGE));
+                        }
+                      })
+                      .catch(() => {
+                        resolve(this.set(url, NOIMAGE));
+                      });
+                  } else {
+                    resolve(this.set(url, NOIMAGE));
                   }
-
-                  this.download(`${url}/${link}`)
-                    .then(result => {
-                      if (result && /image/gi.test(result.type)) {
-                        this.transformBlob(result, "base64").then(base64 => {
-                          resolve(this.set(url, base64));
-                        });
-                      }
-                    })
-                    .catch(() => {
-                      resolve(this.set(url, NOIMAGE));
-                    });
+                } catch (error) {
+                  console.log(error);
+                  this.debug(error);
+                  resolve(this.set(url, NOIMAGE));
                 }
-              } catch (error) {
-                console.log(error);
-                resolve(this.set(url, NOIMAGE));
-              }
-            });
+              })
+              .catch(e => {
+                this.debug(e);
+                reject(e);
+              });
+          } else {
+            reject();
           }
         })
         .catch(() => {
@@ -196,10 +240,17 @@ export class Favicon {
 
       file.onError = (e: any) => {
         console.log("Favicon.download.error", e);
+        this.debug(e);
         reject(e);
       };
 
       file.start();
     });
+  }
+
+  private debug(...msg: any[]) {
+    if (this.service) {
+      this.service.debug(...msg);
+    }
   }
 }

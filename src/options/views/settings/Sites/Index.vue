@@ -62,12 +62,22 @@
           <td style="width:20px;">
             <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
           </td>
-          <td>
-            <a @click="edit(props.item)">
-              <v-avatar size="18">
+          <td class="text-xs-center pb-1">
+            <v-btn
+              flat
+              icon
+              :title="$t('settings.sites.index.resetFavicons')"
+              @click.stop="resetFavicon(props.item)"
+              :loading="loadingIconSites.includes(props.item.host)"
+              class="siteIcon"
+            >
+              <v-avatar :size="18" v-if="!loadingIconSites.includes(props.item.host)">
                 <img :src="props.item.icon" />
               </v-avatar>
-              <span class="ml-2">{{ props.item.name }}</span>
+            </v-btn>
+            <br />
+            <a @click="edit(props.item)">
+              <span>{{ props.item.name }}</span>
             </a>
           </td>
           <td>{{ props.item.tags && props.item.tags.join(", ") }}</td>
@@ -228,7 +238,8 @@ export default Vue.extend({
       haveError: false,
       haveSuccess: false,
       successMsg: "",
-      faviconReseting: false
+      faviconReseting: false,
+      loadingIconSites: [] as string[]
     };
   },
   methods: {
@@ -617,6 +628,33 @@ export default Vue.extend({
         .finally(() => {
           this.faviconReseting = false;
         });
+    },
+
+    resetFavicon(site: Site) {
+      if (!site.host) {
+        return;
+      }
+      const host = site.host;
+      if (!this.loadingIconSites.includes(host)) {
+        this.loadingIconSites.push(host);
+      }
+
+      extension
+        .sendRequest(EAction.resetFavicon, null, site.activeURL || site.url)
+        .then(options => {
+          // 重新加载配置信息
+          this.$store.commit("readConfig");
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          let index = this.loadingIconSites.indexOf(host);
+          console.log("host: %s, index: %s", host, index);
+          if (index != -1) {
+            this.loadingIconSites.splice(index, 1);
+          }
+        });
     }
   },
   created() {
@@ -633,7 +671,6 @@ export default Vue.extend({
         msg: "系统配置网站信息丢失"
       });
     }
-    // this.sites = this.$store.state.options.sites;
   },
   mounted() {
     this.fileImport = this.$refs.fileImport;
@@ -647,8 +684,9 @@ export default Vue.extend({
       return [
         {
           text: this.$t("settings.sites.index.headers.name"),
-          align: "left",
-          value: "name"
+          align: "center",
+          value: "name",
+          width: "110px"
         },
         {
           text: this.$t("settings.sites.index.headers.tags"),
@@ -698,6 +736,13 @@ export default Vue.extend({
 .set-sites {
   .search {
     max-width: 400px;
+  }
+
+  .siteIcon {
+    margin: 0;
+    margin-top: 5px;
+    height: 30px;
+    width: 30px;
   }
 }
 </style>

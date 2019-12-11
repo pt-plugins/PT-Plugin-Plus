@@ -203,8 +203,10 @@ export enum EAction {
   getAllTorrentCollectionLinks = "getAllTorrentCollectionLinks",
   // 恢复Cookies
   restoreCookies = "restoreCookies",
-  // 重置站点图标缓存
+  // 重置所有站点图标缓存
   resetFavicons = "resetFavicons",
+  // 重置单个站点图标缓存
+  resetFavicon = "resetFavicon",
   // 获取备份文件原始数据
   getBackupRawData = "getBackupRawData",
   // 测试备份服务器是否可连接

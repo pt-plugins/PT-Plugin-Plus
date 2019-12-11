@@ -13,7 +13,8 @@ import {
   EBackupServerType,
   EUserDataRange,
   EPluginPosition,
-  IBackupRawData
+  IBackupRawData,
+  ISiteIcon
 } from "@/interface/common";
 import { API, APP } from "@/service/api";
 import localStorage from "@/service/localStorage";
@@ -36,7 +37,7 @@ class Config {
   private name: string = EConfigKey.default;
   private localStorage: localStorage = new localStorage();
   public syncStorage: SyncStorage = new SyncStorage();
-  public favicon: Favicon = new Favicon();
+  public favicon: Favicon = new Favicon(this.service);
 
   public schemas: any[] = [];
   public sites: any[] = [];
@@ -140,21 +141,62 @@ class Config {
         });
       }
 
-      this.favicon.gets(urls).then((results: any[]) => {
-        results.forEach((result: any) => {
+      this.favicon
+        .gets(urls)
+        .then((results: any[]) => {
+          results.forEach((result: any) => {
+            let site = this.options.sites.find((item: Site) => {
+              let cdn = [item.url].concat(item.cdn, item.formerHosts);
+              return (
+                item.host == result.host ||
+                cdn.join("").indexOf(result.host) > -1
+              );
+            });
+
+            if (site) {
+              site.icon = result.data;
+            }
+          });
+
+          this.save();
+          this.service.options = this.options;
+          resolve(this.options);
+        })
+        .catch(error => {
+          this.service.debug(error);
+          reject(error);
+        });
+    });
+  }
+
+  /**
+   * 获取单个站点图标
+   * @param url
+   */
+  public getFavicon(url: string, reset: boolean = false): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.favicon
+        .get(url, reset)
+        .then((result: ISiteIcon) => {
           let site = this.options.sites.find((item: Site) => {
-            return item.host === result.host;
+            let cdn = [item.url].concat(item.cdn, item.formerHosts);
+            return (
+              item.host == result.host || cdn.join("").indexOf(result.host) > -1
+            );
           });
 
           if (site) {
             site.icon = result.data;
+            this.save();
+            this.service.options = this.options;
           }
-        });
 
-        this.save();
-        this.service.options = this.options;
-        resolve(this.options);
-      });
+          resolve(result);
+        })
+        .catch(error => {
+          this.service.debug(error);
+          reject(error);
+        });
     });
   }
 
