@@ -423,6 +423,7 @@
 
             <!-- 保存搜索结果快照 -->
             <v-btn
+              v-if="options.allowSaveSnapshot"
               :loading="loading"
               color="cyan"
               small

@@ -456,7 +456,8 @@
         "encryptMode": "Encryption: ",
         "encryptSecretKey": "Secret Key:",
         "encryptTip": "Note: The key is only saved in the current browser and will not be backed up. Please save it properly. If the key is lost after encryption, the data will not be recovered.",
-        "createSecretKey": "Create"
+        "createSecretKey": "Create",
+        "allowSaveSnapshot": "Allow saving search results snapshots"
       },
       "downloadClients": {
         "add": {

@@ -109,7 +109,8 @@ class Config {
     // 助手工具栏显示位置
     position: EPluginPosition.right,
     // 是否加密存储备份数据
-    encryptBackupData: false
+    encryptBackupData: false,
+    allowSaveSnapshot: true
   };
 
   public uiOptions: UIOptions = {};

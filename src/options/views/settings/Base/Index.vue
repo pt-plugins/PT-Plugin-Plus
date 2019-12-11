@@ -272,6 +272,12 @@
 
                     <v-switch
                       color="success"
+                      v-model="options.allowSaveSnapshot"
+                      :label="$t('settings.base.allowSaveSnapshot')"
+                    ></v-switch>
+
+                    <v-switch
+                      color="success"
                       v-model="options.showMoiveInfoCardOnSearch"
                       :label="$t('settings.base.showMoiveInfoCardOnSearch')"
                     ></v-switch>
@@ -521,7 +527,8 @@ export default Vue.extend({
         allowBackupCookies: false,
         encryptBackupData: false,
         encryptMode: EEncryptMode.AES,
-        encryptSecretKey: ""
+        encryptSecretKey: "",
+        allowSaveSnapshot: true
       } as Options,
       units: [] as any,
       hours: [] as any,

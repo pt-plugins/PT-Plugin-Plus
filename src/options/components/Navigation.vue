@@ -43,8 +43,12 @@ export default Vue.extend({
   },
   data() {
     return {
-      drawer: this.$store.state.options.navBarIsOpen,
-      navs: [
+      drawer: this.$store.state.options.navBarIsOpen
+    };
+  },
+  computed: {
+    navs() {
+      return [
         {
           title: "navigation.dashboard.title",
           key: "group-",
@@ -62,12 +66,14 @@ export default Vue.extend({
             {
               title: "navigation.dashboard.searchResultSnapshot",
               icon: "add_a_photo",
-              key: "/search-result-snapshot"
+              key: "/search-result-snapshot",
+              visible: (this.$store as any).state.options.allowSaveSnapshot
             },
             {
               title: "navigation.dashboard.history",
               icon: "history",
-              key: "/history"
+              key: "/history",
+              visible: (this.$store as any).state.options.saveDownloadHistory
             },
             {
               title: "navigation.dashboard.collection",
@@ -136,8 +142,8 @@ export default Vue.extend({
             }
           ]
         }
-      ]
-    };
+      ];
+    }
   }
 });
 </script>

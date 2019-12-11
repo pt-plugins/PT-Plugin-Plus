@@ -161,6 +161,8 @@ export interface Options {
   encryptSecretKey?: string;
   // 加密方式
   encryptMode?: EEncryptMode;
+  // 允许保存搜索结果快照
+  allowSaveSnapshot?: boolean;
 }
 
 // 在搜索之前一些选项配置

@@ -456,7 +456,8 @@
         "encryptMode": "加密方式：",
         "encryptSecretKey": "密钥：",
         "encryptTip": "注意：密钥仅保存在当前浏览器，不会备份，请妥善保存；加密后如密钥丢失将无法恢复数据。",
-        "createSecretKey": "随机生成"
+        "createSecretKey": "随机生成",
+        "allowSaveSnapshot": "允许保存搜索结果快照"
       },
       "downloadClients": {
         "add": {
