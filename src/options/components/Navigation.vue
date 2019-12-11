@@ -1,19 +1,21 @@
 <template>
   <!-- 导航栏 -->
   <v-navigation-drawer clipped fixed v-model="drawer" app width="220">
-    <v-list v-for="(group,index) in navs" :key="index" dense>
-      <v-subheader v-if="group.title" class="grey--text text--darken-1">{{ $t(group.title) }}</v-subheader>
+    <v-list v-for="(group, index) in navs" :key="index" dense>
+      <v-subheader v-if="group.title" class="grey--text text--darken-1">{{
+        $t(group.title)
+      }}</v-subheader>
       <template v-for="(item, index) in group.items">
         <v-list-tile
-          v-if="item.visible!==false"
+          v-if="item.visible !== false"
           :to="item.key"
           :key="index"
           :href="item.url"
-          :target="item.url?'_blank':''"
+          :target="item.url ? '_blank' : ''"
           rel="noopener noreferrer nofollow"
         >
           <v-list-tile-action style="min-width: 42px;margin-left: 13px;">
-            <v-icon>{{item.icon}}</v-icon>
+            <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>{{ $t(item.title) }}</v-list-tile-title>
@@ -29,22 +31,22 @@ export default Vue.extend({
   props: {
     value: Boolean
   },
+  data() {
+    return {
+      drawer: this.$store.state.options.navBarIsOpen
+    };
+  },
   model: {
     prop: "value",
     event: "change"
   },
   watch: {
     drawer() {
-      this.$emit("change", this.drawer);
+      (this as any).$emit("change", this.drawer);
     },
     value() {
       this.drawer = this.value;
     }
-  },
-  data() {
-    return {
-      drawer: this.$store.state.options.navBarIsOpen
-    };
   },
   computed: {
     navs() {
