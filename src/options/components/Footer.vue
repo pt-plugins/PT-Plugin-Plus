@@ -6,8 +6,7 @@
       <span
         v-if="isDevelopmentMode && $vuetify.breakpoint.mdAndUp"
         class="deep-orange--text"
-        >{{ words.developmentMode }}</span
-      >
+      >{{ words.developmentMode }}</span>
       <v-chip
         label
         outline
@@ -15,8 +14,7 @@
         disabled
         small
         v-if="isDebugMode && $vuetify.breakpoint.mdAndUp"
-        >{{ $t("common.debugMode") }}</v-chip
-      >
+      >{{ $t("common.debugMode") }}</v-chip>
       <v-btn
         outline
         color="success"
@@ -25,8 +23,7 @@
         href="https://github.com/ronggang/PT-Plugin-Plus/releases"
         target="_blank"
         rel="noopener noreferrer nofollow"
-        >{{ $t("common.haveNewReleases") }}, {{ releasesVersion }}</v-btn
-      >
+      >{{ $t("common.haveNewReleases") }}, {{ releasesVersion }}</v-btn>
     </span>
     <v-spacer></v-spacer>
     <v-btn
@@ -50,9 +47,11 @@
       <template v-slot:activator="{ on }">
         <v-btn flat small v-on="on" :icon="$vuetify.breakpoint.smAndDown">
           <v-icon small>language</v-icon>
-          <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">{{
+          <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">
+            {{
             $t("common.changeLanguage")
-          }}</span>
+            }}
+          </span>
         </v-btn>
       </template>
 
@@ -65,21 +64,10 @@
       <v-divider></v-divider>
 
       <v-list dense>
-        <v-list-tile
-          v-for="(item, index) in languages"
-          :key="index"
-          @click="changeLanguage(item)"
-        >
-          <v-list-tile-title
-            :class="currentLanguage == item.code ? 'primary--text' : ''"
-          >
+        <v-list-tile v-for="(item, index) in languages" :key="index" @click="changeLanguage(item)">
+          <v-list-tile-title :class="currentLanguage == item.code ? 'primary--text' : ''">
             <span>
-              <v-icon
-                small
-                class="mr-1 primary--text"
-                v-if="currentLanguage == item.code"
-                >check</v-icon
-              >
+              <v-icon small class="mr-1 primary--text" v-if="currentLanguage == item.code">check</v-icon>
               <span v-else class="mr-4"></span>
             </span>
             {{ item.name }}
@@ -89,9 +77,11 @@
     </v-menu>
     <v-btn flat small to="/system-logs" :icon="$vuetify.breakpoint.smAndDown">
       <v-icon small>assignment</v-icon>
-      <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">{{
+      <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">
+        {{
         $t("common.systemLog")
-      }}</span>
+        }}
+      </span>
     </v-btn>
     <v-btn
       v-if="$vuetify.breakpoint.mdAndUp"
@@ -106,9 +96,11 @@
       <span class="ml-1">{{ $t("navigation.support.debugger") }}</span>
     </v-btn>
 
-    <v-snackbar v-model="invalidFile" top :timeout="3000" color="error">{{
+    <v-snackbar v-model="invalidFile" top :timeout="3000" color="error">
+      {{
       $t("footer.invalidFile")
-    }}</v-snackbar>
+      }}
+    </v-snackbar>
   </v-footer>
 </template>
 <script lang="ts">
@@ -150,9 +142,17 @@ export default Vue.extend({
     APP.getInstallType()
       .then(result => {
         console.log(result, EInstallType.development);
-        this.isDevelopmentMode = result == EInstallType.development;
+        this.isDevelopmentMode = [
+          EInstallType.development,
+          EInstallType.crx
+        ].includes(result);
+        if (result === EInstallType.crx) {
+          this.words.developmentMode = EInstallType.crx;
+        }
       })
-      .catch(() => {});
+      .catch(() => {
+        console.log("获取安装方式失败");
+      });
   },
   mounted() {
     this.fileInput = this.$refs.fileLanguage;

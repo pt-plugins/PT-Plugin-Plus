@@ -49,9 +49,14 @@ export default class Package {
       this.updateManifestFile();
       this.zip().then(() => {
         this.updateManifestFile(false);
-        this.crx().then(() => {
-          resolve(this.zipFile);
-        });
+        this.crx()
+          .then(() => {
+            resolve(this.zipFile);
+          })
+          .finally(() => {
+            // 清除 update_url
+            this.updateManifestFile();
+          });
       });
     });
   }

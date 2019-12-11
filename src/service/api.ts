@@ -1,6 +1,11 @@
 import localStorage from "./localStorage";
 import md5 from "blueimp-md5";
-import { EConfigKey, DataResult, EDataResultType } from "@/interface/common";
+import {
+  EConfigKey,
+  DataResult,
+  EDataResultType,
+  EInstallType
+} from "@/interface/common";
 import { PPF } from "./public";
 import "./favicon";
 
@@ -271,7 +276,15 @@ export const APP = {
     return new Promise<any>((resolve?: any, reject?: any) => {
       if (chrome && chrome.management) {
         chrome.management.getSelf(result => {
-          resolve(result.installType);
+          // 判断是否为 crx 方式
+          if (
+            result.updateUrl &&
+            result.updateUrl.indexOf("ronggang/PT-Plugin-Plus") > 0
+          ) {
+            resolve(EInstallType.crx);
+          } else {
+            resolve(result.installType);
+          }
         });
       } else {
         reject();

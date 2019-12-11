@@ -343,8 +343,11 @@ export enum ECommonKey {
  * 插件安装方式
  */
 export enum EInstallType {
+  // 相当于 zip 解压方式安装
   development = "development",
-  normal = "normal"
+  normal = "normal",
+  // crx 自定义类型，官方api中无此状态
+  crx = "crx"
 }
 
 // 当点击预选条目时，搜索模式

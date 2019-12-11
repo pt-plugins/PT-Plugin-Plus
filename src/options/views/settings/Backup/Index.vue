@@ -182,7 +182,8 @@ import {
   EBrowserType,
   IWorkingStatusItem,
   EWorkingStatus,
-  Site
+  Site,
+  EInstallType
 } from "@/interface/common";
 import { PPF } from "@/service/public";
 import { FileDownloader } from "@/service/downloader";
@@ -193,6 +194,7 @@ import ServerList from "./Server/List.vue";
 
 import { BackupFileParser } from "@/service/backupFileParser";
 import WorkingStatus from "@/options/components/WorkingStatus.vue";
+import { APP } from "@/service/api";
 
 interface IBackupServerPro extends IBackupServer {
   loading?: boolean;
@@ -226,7 +228,7 @@ export default Vue.extend({
         restoreFromGoogle: false,
         clearFromGoogle: false
       },
-      isDevelopmentMode: false,
+      isDevelopmentMode: true,
       pagination: {
         rowsPerPage: -1
       },
@@ -256,14 +258,16 @@ export default Vue.extend({
     this.fileInput.removeEventListener("change", this.restoreFile);
   },
   created() {
-    if (chrome && chrome.management) {
-      chrome.management.getSelf(result => {
-        // 安装于开发者模式
-        if (result.installType == "development") {
-          this.isDevelopmentMode = true;
-        }
+    APP.getInstallType()
+      .then(result => {
+        this.isDevelopmentMode = [
+          EInstallType.development,
+          EInstallType.crx
+        ].includes(result);
+      })
+      .catch(() => {
+        console.log("获取安装方式失败");
       });
-    }
 
     this.initBackupServers();
   },
