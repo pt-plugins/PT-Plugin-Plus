@@ -119,7 +119,7 @@
 
         <v-spacer></v-spacer>
         <v-layout v-if="$vuetify.breakpoint.mdAndUp">
-          <v-flex xs6>
+          <v-flex xs6 v-if="rating>0">
             <v-rating
               v-model="rating"
               background-color="white"
@@ -133,7 +133,7 @@
               class="ma-2"
             >{{ $t("movieInfoCard.ratings.douban", {average: info.rating.average, numRaters: info.rating.numRaters}) }}</span>
           </v-flex>
-          <v-flex xs6>
+          <v-flex xs6 v-if="imdbRating>0">
             <v-rating
               v-model="imdbRating"
               background-color="white"
