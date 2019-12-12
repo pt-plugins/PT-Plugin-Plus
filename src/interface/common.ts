@@ -483,6 +483,7 @@ export interface ISearchPayload {
   doubanId?: string;
   cn?: string;
   en?: string;
+  key?: string;
 }
 
 export interface IHashData {

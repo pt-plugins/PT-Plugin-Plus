@@ -172,7 +172,7 @@ export default Vue.extend({
       switch (searchMode) {
         case EBeforeSearchingItemSearchMode.id:
           if (item && item.id) {
-            key = `douban${item.id}|${item.title}|${item.original_title}`;
+            key = `douban${item.id}|${item.title}|${item.original_title}|${key}`;
           }
           break;
 
@@ -313,6 +313,22 @@ export default Vue.extend({
       this.timer = setTimeout(() => {
         this.getDoubanInfos(this.searchKey);
       }, 750);
+    },
+    /**
+     * 监控最后的搜索关键字，前显示当前搜索框
+     */
+    "$store.state.options.lastSearchKey"() {
+      if (this.searchKey != this.$store.state.options.lastSearchKey) {
+        console.log("key change: %s", this.$store.state.options.lastSearchKey);
+        this.searchKey = this.$store.state.options.lastSearchKey;
+        if (this.searchKey) {
+          this.isLoading = true;
+          this.items = [];
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1000);
+        }
+      }
     }
   },
   created() {

@@ -337,17 +337,19 @@ export default Vue.extend({
       let searchKeys = {
         id: "",
         cn: "",
-        en: ""
+        en: "",
+        key: this.key
       };
 
       // 当搜索关键字包含|时表示指定了多个内容，格式如下
-      // doubanid|中文名|英文名
-      // imdbid|中文名|英文名
+      // doubanid|中文名|英文名|原始搜索关键字
+      // imdbid|中文名|英文名|原始搜索关键字
       if (this.key.indexOf("|") !== -1) {
         let tmp = (this.key + "||").split("|");
         searchKeys.id = tmp[0];
         searchKeys.cn = tmp[1];
         searchKeys.en = tmp[2];
+        searchKeys.key = tmp[3];
 
         if (/(douban\d+)/.test(searchKeys.id)) {
           this.searchPayload.doubanId = (searchKeys.id as any).match(
@@ -359,6 +361,7 @@ export default Vue.extend({
 
         this.searchPayload.cn = searchKeys.cn;
         this.searchPayload.en = searchKeys.en;
+        this.searchPayload.key = searchKeys.key;
       }
 
       // 豆瓣ID
@@ -518,6 +521,11 @@ export default Vue.extend({
         data: {
           key: this.key
         }
+      });
+
+      // 保存搜索关键字
+      this.$store.dispatch("saveConfig", {
+        lastSearchKey: this.searchPayload.key || this.key
       });
 
       this.pagination.page = 1;
