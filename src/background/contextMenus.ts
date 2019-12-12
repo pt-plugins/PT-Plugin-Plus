@@ -626,7 +626,11 @@ export class ContextMenus {
             tab: chrome.tabs.Tab
           ) => {
             let data = info.menuItemId.split("**");
-            if (info.linkUrl) {
+            this.service.debug(
+              this.service.i18n.t("service.contextMenus.searchInSite"),
+              info
+            );
+            if (contexts.includes("link") && info.linkUrl) {
               let link = info.linkUrl.match(match);
               if (link && link.length >= 2) {
                 this.service.controller.searchTorrent(
@@ -669,8 +673,12 @@ export class ContextMenus {
             info: chrome.contextMenus.OnClickData,
             tab: chrome.tabs.Tab
           ) => {
+            this.service.debug(
+              this.service.i18n.t("service.contextMenus.searchInSolution"),
+              info
+            );
             let data = info.menuItemId.split("**");
-            if (info.linkUrl) {
+            if (contexts.includes("link") && info.linkUrl) {
               let link = info.linkUrl.match(match);
               if (link && link.length >= 2) {
                 this.service.controller.searchTorrent(
@@ -701,7 +709,7 @@ export class ContextMenus {
       ) => {
         if (info.linkUrl) {
           let link = info.linkUrl.match(match);
-          if (link && link.length >= 2) {
+          if (contexts.includes("link") && link && link.length >= 2) {
             this.service.controller.searchTorrent(keyPrefix + link[1], "all");
           }
         } else {
