@@ -38,6 +38,8 @@ module.exports = {
         }
       }
     },
+    // 打包为 Chrome 商店版时不对代码进行压缩混淆
+    minimize: !process.env.CHROME_WEB_STORE,
     minimizer: [
       new TerserPlugin({
         // 防止因编码问题导致Chrome无法加载插件

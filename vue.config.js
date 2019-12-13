@@ -15,5 +15,11 @@ module.exports = {
       title: "PT-Plugin-Plus ChangeLog"
     }
   },
-  productionSourceMap: false
+  productionSourceMap: false,
+  configureWebpack: {
+    optimization: {
+      // 打包为 Chrome 商店版时不对代码进行压缩混淆
+      minimize: !process.env.CHROME_WEB_STORE
+    }
+  }
 };
