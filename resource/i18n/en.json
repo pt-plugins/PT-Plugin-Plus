@@ -648,7 +648,8 @@
           "cdnTip": "If you use a different URL than the system definition, you can fill in the currently used website address, fill in one address per line, the first one will be used as the address used for the search.",
           "priority": "Priority",
           "priorityTip": "Can be used for search sorting",
-          "offline": "Site is offline (downtime\/shutdown)"
+          "offline": "Site is offline (downtime\/shutdown)",
+          "timezone": "Timezone"
         },
         "index": {
           "importAll": "One-click import site",

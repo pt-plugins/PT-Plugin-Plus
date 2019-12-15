@@ -130,7 +130,10 @@
           <td class="number">{{ props.item.user.seeding }}</td>
           <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>
           <td class="number">{{ props.item.user.bonus | formatNumber }}</td>
-          <td class="number">{{ props.item.user.joinTime | timeAgo(showWeek) }}</td>
+          <td
+            class="number"
+            :title="props.item.user.joinDateTime"
+          >{{ props.item.user.joinTime | timeAgo(showWeek) }}</td>
           <td class="number">
             <v-btn
               depressed
@@ -192,6 +195,11 @@ import {
 import dayjs from "dayjs";
 
 import AutoSignWarning from "./AutoSignWarning.vue";
+import { PPF } from "@/service/public";
+
+interface UserInfoEx extends UserInfo {
+  joinDateTime?: string;
+}
 
 const extension = new Extension();
 export default Vue.extend({
@@ -255,7 +263,7 @@ export default Vue.extend({
             if (_site.user.isLogged === undefined) {
               _site.user.isLogged = false;
             }
-            this.formatUserInfo(_site.user);
+            this.formatUserInfo(_site.user, _site);
           }
           this.sites.push(_site);
         }
@@ -342,7 +350,7 @@ export default Vue.extend({
     /**
      * 格式化一些用户信息
      */
-    formatUserInfo(user: UserInfo) {
+    formatUserInfo(user: UserInfoEx, site: Site) {
       let downloaded = user.downloaded as number;
       let uploaded = user.uploaded as number;
       // 没有下载量时设置分享率为无限
@@ -353,6 +361,11 @@ export default Vue.extend({
       else if (downloaded > 0) {
         user.ratio = uploaded / downloaded;
       }
+
+      // 如果设置了时区，则进行转换
+      user.joinTime = PPF.transformTime(user.joinTime, site.timezoneOffset);
+
+      user.joinDateTime = dayjs(user.joinTime).format("YYYY-MM-DD HH:mm:ss");
     },
     /**
      * 获取站点用户信息
@@ -374,7 +387,7 @@ export default Vue.extend({
           console.log(result);
           if (result && result.name) {
             user = Object.assign(user, result);
-            this.formatUserInfo(user);
+            this.formatUserInfo(user, site);
           }
         })
         .catch(result => {

@@ -258,6 +258,10 @@ export interface Site {
   offline?: boolean;
   // 是否为自定义
   isCustom?: boolean;
+  // 时区偏移量，用于解决时差问题，如：+08:00, -08:00, +0800, UTC+0800, UTC+08:00
+  // @see https://zh.wikipedia.org/wiki/各國時區列表
+  // @see https://zh.wikipedia.org/wiki/时区
+  timezoneOffset?: string;
 }
 
 export interface Request {

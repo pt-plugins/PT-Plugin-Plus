@@ -809,6 +809,14 @@ export default Vue.extend({
           return;
         }
 
+        if (!item.site) {
+          let host = item.host || "";
+          item.site = PPF.getSiteFromHost(host, this.options);
+          if (!item.site) {
+            return;
+          }
+        }
+
         if (dayjs(item.time).isValid()) {
           let val: number | string = item.time + "";
           // 标准时间戳需要 * 1000
@@ -818,6 +826,9 @@ export default Vue.extend({
             // 转成整数是为了排序
             item.time = dayjs(val).valueOf();
           }
+
+          // 尝试转换本地时间
+          item.time = PPF.transformTime(item.time, item.site.timezoneOffset);
         } else if (typeof item.time == "string") {
           let time = filters.timeAgoToNumber(item.time);
           if (time > 0) {
@@ -872,14 +883,6 @@ export default Vue.extend({
         this.searchMsg = this.$t("searchTorrent.searchProgress", {
           count: this.datas.length
         }).toString();
-
-        if (!item.site) {
-          let host = item.host || "";
-          item.site = PPF.getSiteFromHost(host, this.options);
-          if (!item.site) {
-            return;
-          }
-        }
 
         let siteName = item.site.name;
         if (!this.searchResult.sites[siteName]) {

@@ -432,6 +432,27 @@ class HelpFunctions {
 
     return false;
   }
+
+  /**
+   * 转换时间
+   * @param time 待转换的时间
+   * @param timezoneOffset 时区偏移量，用于解决时差问题，如：+08:00, -08:00, +0800, UTC+0800, UTC+08:00
+   * @see https://zh.wikipedia.org/wiki/各國時區列表
+   * @see https://zh.wikipedia.org/wiki/时区
+   */
+  public transformTime(time?: number, timezoneOffset?: string) {
+    if (!timezoneOffset || !time) {
+      return time;
+    }
+    let result = time;
+    // 标准时间戳需要 * 1000
+    if (/^(\d){10}$/.test(result + "")) {
+      result = parseInt(result + "") * 1000;
+    }
+    let datetime = dayjs(result).format("YYYY-MM-DD HH:mm:ss");
+    result = new Date(`${datetime} ${timezoneOffset}`).getTime();
+    return result;
+  }
 }
 
 /**
