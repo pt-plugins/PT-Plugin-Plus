@@ -80,6 +80,10 @@
         "levelName": {
           "selector": "div.content span.badge-user"
         },
+        "messageCount": {
+            "selector": ["ul.left-navbar a[href*='/mail/inbox'] .point"],
+            "filters": ["query.length?'11':'0'"]
+        },
         "joinTime": {
           "selector": "div.content h4:contains('Registration date')",
           "filters": ["query.text().trim().replace('Registration date ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
