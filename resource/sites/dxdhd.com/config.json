@@ -47,7 +47,7 @@
       "fields": {
         "name": {
           "selector": ["a[href*='/users/']:first"],
-          "filters": ["query.replace('https://dxdhd.com/users/','')"]
+          "filters": ["query[0].href.replace('https://dxdhd.com/users/','')"]
         },
         "uploaded": {
           "selector": ["div.ratio-bar i.fa-arrow-up"],
