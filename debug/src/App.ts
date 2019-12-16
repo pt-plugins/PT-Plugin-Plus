@@ -5,6 +5,7 @@ import * as BodyParser from "body-parser";
 import * as PATH from "path";
 import * as FS from "fs";
 import { BuildPlugin } from "./BuildPlugin";
+import { SearchData } from "./SearchData";
 
 /**
  * 默认APP
@@ -53,6 +54,11 @@ class App {
 
     this.express.get("/i18n.json", (req, res) => {
       res.send(this.i18n);
+    });
+
+    const config = JSON.parse(this.systemConfig);
+    this.express.get("/test/searchData.json", (req, res) => {
+      res.send(new SearchData(config).generate());
     });
 
     this.express.get("/test/*.*", (req, res) => {
