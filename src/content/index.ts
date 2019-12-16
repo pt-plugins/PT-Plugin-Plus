@@ -608,7 +608,8 @@ class PTPContent {
       }
     }
 
-    return path;
+    // 替换目录中的关键字后再返回
+    return this.pathHandler.replacePathKey(path, this.site);
   }
 
   /**
