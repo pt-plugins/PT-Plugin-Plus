@@ -184,8 +184,8 @@ export class ContextMenus {
     client: DownloadClient,
     parentId: string
   ) {
-    paths.forEach((path: string) => {
-      let id = `${client.id}**${site.host}**${path}`;
+    paths.forEach((path: string, index: number) => {
+      let id = `${client.id}**${site.host}**${path}**${index}`;
       this.add({
         id,
         title: this.pathHandler.replacePathKey(path, site),
