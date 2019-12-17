@@ -415,7 +415,7 @@ export class Searcher {
         url: url,
         dataType: "text",
         contentType: "text/plain",
-        timeout: (this.options.search && this.options.search.timeout) || 30000,
+        timeout: this.options.connectClientTimeout || 30000,
         headers: entry.headers
       })
         .done((result: any) => {

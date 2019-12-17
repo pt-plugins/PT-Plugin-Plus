@@ -293,10 +293,7 @@ export class User {
         method: rule.requestMethod || ERequestMethod.GET,
         dataType: "text",
         data: requestData,
-        timeout:
-          (this.service.options.search &&
-            this.service.options.search.timeout) ||
-          30000
+        timeout: this.service.options.connectClientTimeout || 30000
       })
         .done(result => {
           this.removeQueue(host, url);
