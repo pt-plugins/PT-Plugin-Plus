@@ -74,14 +74,18 @@
       "page": "/$user.name$.$user.id$",
       "fields": {
         "seedingSize": {
-          "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Seeding Size') + td"],
+          "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Seeding Size') + td","table.table-condensed.table-striped.table-bordered:first td:contains('做种体积') + td","table.table-condensed.table-striped.table-bordered:first td:contains('做種體積') + td"],
           "filters": ["query.text().trim().sizeToNumber()"]
         },
         "levelName": {
           "selector": "div.content span.badge-user"
         },
+        "messageCount": {
+            "selector": ["ul.left-navbar a[href*='/mail/inbox'] .point"],
+            "filters": ["query.length?'11':'0'"]
+        },
         "joinTime": {
-          "selector": "div.content h4:contains('Registration date')",
+          "selector": ["div.content h4:contains('Registration date')","div.content h4:contains('注册日期')","div.content h4:contains('註冊日期')"],
           "filters": ["query.text().trim().replace('Registration date ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         }
       }
