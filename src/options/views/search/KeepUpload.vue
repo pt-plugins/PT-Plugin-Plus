@@ -443,6 +443,7 @@ export default Vue.extend({
         )
       ) {
         item.verified = true;
+        this.verifiedCount++;
       }
     }
   }
