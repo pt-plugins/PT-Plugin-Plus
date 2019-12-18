@@ -322,7 +322,7 @@
               v-show="checkBox && toolbarIsFixed"
               :indeterminate="indeterminate"
               style="margin: 8px 0 0 3px;padding: 0;height: 32px;flex: unset;"
-              @click.stop="changeSelectAllStatus"
+              @click.stop="toggleAll"
               :value="selected.length>0 && selected.length==datas.length"
             ></v-checkbox>
             <template v-if="selected.length>0">

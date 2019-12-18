@@ -114,6 +114,8 @@ export default Vue.extend({
       siteContentMenus: {} as any,
       clientContentMenus: [] as any,
       filterKey: "",
+      // 已过滤的数据
+      filteredDatas: [] as any,
       showFailedSites: false,
       showNoResultsSites: false,
       pathHandler: new PathHandler(),
@@ -1642,12 +1644,13 @@ export default Vue.extend({
      */
     searchResultFilter(items: any[], search: string) {
       search = search.toString().toLowerCase();
+      this.filteredDatas = [];
       if (search.trim() === "") return items;
 
       // 以空格分隔要过滤的关键字
       let searchs = search.split(" ");
 
-      return items.filter((item: SearchResultItem) => {
+      this.filteredDatas = items.filter((item: SearchResultItem) => {
         // 过滤标题和副标题
         let source = (item.title + (item.subTitle || "")).toLowerCase();
         let result = true;
@@ -1658,6 +1661,7 @@ export default Vue.extend({
         });
         return result;
       });
+      return this.filteredDatas;
     },
 
     getIMDbIdFromDouban(doubanId: string) {
@@ -1813,9 +1817,20 @@ export default Vue.extend({
     isCollectioned(link: string): boolean {
       return this.torrentCollectionLinks.includes(PPF.getCleaningURL(link));
     },
+    /**
+     * 全选/反选
+     */
     toggleAll() {
-      if (this.selected.length) this.selected = [];
-      else this.selected = this.datas.slice();
+      // 当有内容被选中时，取消选择
+      if (this.selected.length > 0) {
+        this.selected = [];
+
+        // 当有过滤数据时，返回已过滤的数据
+      } else if (this.filteredDatas.length > 0) {
+        this.selected = this.filteredDatas.slice();
+      } else {
+        this.selected = this.datas.slice();
+      }
     },
     changeSort(column: string) {
       if (this.pagination.sortBy === column) {
@@ -1890,14 +1905,6 @@ export default Vue.extend({
       } else {
         this.toolbarIsFixed = false;
         this.toolbarClass = "mt-3";
-      }
-    },
-    changeSelectAllStatus() {
-      // 如有已有部分选中，则取消所有已选择的内容
-      if (this.selected.length > 0) {
-        this.selected = [];
-      } else {
-        this.selected = this.datas;
       }
     }
   },
