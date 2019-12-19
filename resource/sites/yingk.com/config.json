@@ -1,5 +1,6 @@
 {
   "name": "影客",
+  "timezoneOffset": "+0800",
   "description": "影客，原美盒子。如果搜索结果出现优惠信息显示不正确，请在网站设置中将“促销种子”设置为添加图标",
   "url": "https://yingk.com/",
   "icon": "https://yingk.cache.ejcdn.com/favicon.ico",

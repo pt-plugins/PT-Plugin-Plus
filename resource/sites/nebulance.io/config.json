@@ -1,86 +1,87 @@
 {
-    "name": "Nebulance",
-    "description": "NBL",
-    "url": "https://nebulance.io/",
-    "icon": "https://nebulance.io/favicon.ico",
-    "tags": ["剧集"],
-    "schema": "Gazelle",
-    "host": "nebulance.io",
-    "collaborator": "luckiestone",
-    "searchEntryConfig": {
-      "page": "/torrents.php",
-      "resultType": "html",
-      "parseScriptFile": "getSearchResult.js",
-      "queryString": "searchtext=$key$"
+  "name": "Nebulance",
+  "timezoneOffset": "+0000",
+  "description": "NBL",
+  "url": "https://nebulance.io/",
+  "icon": "https://nebulance.io/favicon.ico",
+  "tags": ["剧集"],
+  "schema": "Gazelle",
+  "host": "nebulance.io",
+  "collaborator": "luckiestone",
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "queryString": "searchtext=$key$"
+  },
+  "searchEntry": [{
+      "name": "All",
+      "enabled": true
     },
-    "searchEntry": [{
-        "name": "All",
-        "enabled": true
-      },
-      {
-        "name": "Episodes",
-        "queryString": "filter_cat[1]=1",
-        "enabled": false
-      },
-      {
-        "name": "Season",
-        "queryString": "filter_cat[3]=1",
-        "enabled": false
-      }
-    ],
-
-    "selectors": {
-        "userBaseInfo": {
-          "page": "/ajax.php?action=index",
-          "dataType": "json",
-          "fields": {
-            "id": {
-              "selector": ["response.id"]
-            },
-            "name": {
-              "selector": ["response.username"]
-            },
-            "uploaded": {
-              "selector": ["response.userstats.uploaded"]
-            },
-            "downloaded": {
-              "selector": ["response.userstats.downloaded"]
-            },
-            "ratio": {
-              "selector": ["response.userstats.ratio"]
-            },
-            "levelName": {
-              "selector": ["response.userstats.class"]
-            }
-          }
-        },
-        "userExtendInfo": {
-            "page": "/user.php?id=$user.id$",
-            "fields": {
-              "messageCount": {
-                "selector": ["div.alertbar a[href*='inbox.php']"],
-                "filters": ["query.text().replace(/\\s+/g,'').match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
-              },      
-              "seeding": {
-                "selector": "ul.stats.nobullet > li:contains('Seeding:')",
-                "filters": ["query.text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
-              },
-              "seedingSize": {
-                "selector": "ul.stats.nobullet > li:contains('Seeding Size:')",
-                "filters": ["query.text().trim().replace(/,/g,'').match(/Seeding Size:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
-              },
-              "bonus": {
-                "selector": "ul#userinfo_major > li > a:contains('Cubits:')",
-                "filters": ["query.text().replace(/,|\\n|\\s+/g,'').match(/Cubits:.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
-              },
-              "joinTime": {
-                "selector": ["ul.stats.nobullet > li:contains('Joined:') > span"],
-                "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
-              }
-            }
-          }
-      },
-    "supportedFeatures": {
-      "imdbSearch": false
+    {
+      "name": "Episodes",
+      "queryString": "filter_cat[1]=1",
+      "enabled": false
+    },
+    {
+      "name": "Season",
+      "queryString": "filter_cat[3]=1",
+      "enabled": false
     }
+  ],
+
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/ajax.php?action=index",
+      "dataType": "json",
+      "fields": {
+        "id": {
+          "selector": ["response.id"]
+        },
+        "name": {
+          "selector": ["response.username"]
+        },
+        "uploaded": {
+          "selector": ["response.userstats.uploaded"]
+        },
+        "downloaded": {
+          "selector": ["response.userstats.downloaded"]
+        },
+        "ratio": {
+          "selector": ["response.userstats.ratio"]
+        },
+        "levelName": {
+          "selector": ["response.userstats.class"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/user.php?id=$user.id$",
+      "fields": {
+        "messageCount": {
+          "selector": ["div.alertbar a[href*='inbox.php']"],
+          "filters": ["query.text().replace(/\\s+/g,'').match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "seeding": {
+          "selector": "ul.stats.nobullet > li:contains('Seeding:')",
+          "filters": ["query.text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+        },
+        "seedingSize": {
+          "selector": "ul.stats.nobullet > li:contains('Seeding Size:')",
+          "filters": ["query.text().trim().replace(/,/g,'').match(/Seeding Size:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "bonus": {
+          "selector": "ul#userinfo_major > li > a:contains('Cubits:')",
+          "filters": ["query.text().replace(/,|\\n|\\s+/g,'').match(/Cubits:.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "joinTime": {
+          "selector": ["ul.stats.nobullet > li:contains('Joined:') > span"],
+          "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false
   }
+}

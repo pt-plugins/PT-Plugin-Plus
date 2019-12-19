@@ -1,5 +1,6 @@
 {
   "name": "HDChina",
+  "timezoneOffset": "+0800",
   "description": "高清影音人士分享乐园",
   "url": "https://hdchina.org/",
   "icon": "https://hdchina.org/favicon.ico",

@@ -1,5 +1,6 @@
 {
   "name": "TTG",
+  "timezoneOffset": "+0800",
   "description": "ToTheGlory",
   "url": "https://totheglory.im/",
   "icon": "https://totheglory.im/favicon.ico",

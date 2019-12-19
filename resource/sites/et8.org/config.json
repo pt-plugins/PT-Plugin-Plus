@@ -1,5 +1,6 @@
 {
   "name": "TorrentCCF",
+  "timezoneOffset": "+0800",
   "description": "兼有学习资源和软件资源的影视PT站点",
   "url": "https://et8.org/",
   "icon": "https://et8.org/favicon.ico",

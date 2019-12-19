@@ -1,5 +1,6 @@
 {
   "name": "HDTime",
+  "timezoneOffset": "+0800",
   "description": "HDTime, time to forever!",
   "url": "https://hdtime.org/",
   "icon": "https://hdtime.org/favicon.ico",

@@ -1,5 +1,6 @@
 {
   "name": "STSPT",
+  "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "url": "https://www.sts.tw/",
   "description": "STSPT",

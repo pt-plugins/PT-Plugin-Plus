@@ -1,5 +1,6 @@
 {
   "name": "Oppaitime",
+  "timezoneOffset": "+0000",
   "description": "成人动漫站",
   "icon": "https://oppaiti.me/favicon.ico",
   "schema": "GazelleJSONAPI",

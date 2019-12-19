@@ -1,5 +1,6 @@
 {
   "name": "PTMSG",
+  "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "url": "https://pt.msg.vg/",
   "description": "PT速递",

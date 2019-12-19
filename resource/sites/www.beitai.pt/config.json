@@ -1,5 +1,6 @@
 {
   "name": "备胎",
+  "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "url": "https://www.beitai.pt/",
   "description": "找不到家时，接纳无家可归的人",

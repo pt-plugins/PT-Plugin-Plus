@@ -1,5 +1,6 @@
 {
   "name": "hdstreet",
+  "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "url": "https://hdstreet.club/",
   "description": "高清剧集",

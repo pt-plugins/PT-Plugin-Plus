@@ -1,5 +1,6 @@
 {
   "name": "SkyeySnow",
+  "timezoneOffset": "+0800",
   "schema": "Discuz",
   "url": "https://www.skyey2.com/",
   "description": "天雪",
@@ -69,7 +70,7 @@
       },
       "status": {
         "selector": ["> td:eq(4), > td:eq(5), > td:eq(6)"],
-        "filters": ["query.map(function(){return $(this).attr('style') || ''}).get()","query[0] ? 2 : (query[2] ? 255: (query[1] ? 1 : null))"]
+        "filters": ["query.map(function(){return $(this).attr('style') || ''}).get()", "query[0] ? 2 : (query[2] ? 255: (query[1] ? 1 : null))"]
       }
     }
   }

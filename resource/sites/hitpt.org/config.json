@@ -1,5 +1,6 @@
 {
   "name": "清影PT",
+  "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "url": "https://hitpt.org/",
   "description": "哈尔滨工业大学维护的PT站",

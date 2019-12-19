@@ -1,5 +1,6 @@
 {
   "name": "HD4FANS",
+  "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "url": "https://pt.hd4fans.org",
   "icon": "https://pt.hd4fans.org/favicon.ico",

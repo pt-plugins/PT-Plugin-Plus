@@ -1,9 +1,10 @@
 {
   "name": "KaraGarga",
+  "timezoneOffset": "+0000",
   "description": "KG",
   "url": "https://karagarga.in/",
   "icon": "https://karagarga.in/favicon.ico",
-  "tags": ["影视","音乐","文学"],
+  "tags": ["影视", "音乐", "文学"],
   "schema": "karagarga",
   "host": "karagarga.in",
   "collaborator": "luckiestone",
@@ -44,7 +45,7 @@
           "selector": ["td[style*='background: #DF0101'] a[href*='messages.php']"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         },
-        "bonus":{
+        "bonus": {
           "value": "N/A"
         }
       }

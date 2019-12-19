@@ -1,5 +1,6 @@
 {
   "name": "蝴蝶-HUDBT",
+  "timezoneOffset": "+0800",
   "description": "HUDBT,教育网高速IPv6BT下载站。",
   "url": "https://hudbt.hust.edu.cn/",
   "icon": "https://hudbt.hust.edu.cn/favicon.ico",

@@ -1,5 +1,6 @@
 {
   "name": "圣城家园PT",
+  "timezoneOffset": "+0800",
   "description": "hdscg，cnscg圣城家园PT站点",
   "url": "https://www.cnscg.club/",
   "icon": "https://www.cnscg.club/favicon.ico",

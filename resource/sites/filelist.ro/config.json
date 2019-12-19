@@ -1,9 +1,10 @@
 {
   "name": "FileList",
+  "timezoneOffset": "+0000",
   "description": "FileList",
   "url": "https://filelist.ro/",
   "icon": "https://filelist.ro/favicon.ico",
-  "tags": ["影视","综合"],
+  "tags": ["影视", "综合"],
   "schema": "FileList",
   "plugins": [{
     "name": "种子详情页面",

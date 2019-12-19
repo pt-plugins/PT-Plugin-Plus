@@ -1,5 +1,6 @@
 {
   "name": "烧包",
+  "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "url": "https://ptsbao.club/",
   "description": "烧包 - 扬帆远航 风雨同路",

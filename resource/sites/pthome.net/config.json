@@ -1,5 +1,6 @@
 {
   "name": "PTHome",
+  "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "url": "https://pthome.net/",
   "description": "只为成为您的家，快乐下载，分享至美！",

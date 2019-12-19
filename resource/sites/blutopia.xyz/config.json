@@ -1,5 +1,6 @@
 {
   "name": "Bluetopia",
+  "timezoneOffset": "+0000",
   "schema": "UNIT3D",
   "url": "https://blutopia.xyz/",
   "icon": "https://blutopia.xyz/favicon.ico",

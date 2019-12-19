@@ -1,5 +1,6 @@
 {
   "name": "HDHome",
+  "timezoneOffset": "+0800",
   "description": "HDHome",
   "url": "https://hdhome.org/",
   "icon": "https://hdhome.org/favicon.ico",

@@ -1,5 +1,6 @@
 {
   "name": "CGPeers",
+  "timezoneOffset": "+0000",
   "schema": "GazelleJSONAPI",
   "url": "https://www.cgpeers.com/",
   "icon": "https://www.cgpeers.com/favicon.ico",

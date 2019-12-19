@@ -1,5 +1,6 @@
 {
   "name": "HD4Free",
+  "timezoneOffset": "+0000",
   "icon": "https://hd4.xyz/favicon.ico",
   "schema": "UNIT3D",
   "tags": ["影视", "综合"],

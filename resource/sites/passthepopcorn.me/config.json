@@ -1,8 +1,9 @@
 {
-  "name":"PTP",
+  "name": "PTP",
+  "timezoneOffset": "+0000",
   "description": "电影",
-  "url":"https://passthepopcorn.me/",
-  "icon":"https://passthepopcorn.me/favicon.ico",
+  "url": "https://passthepopcorn.me/",
+  "icon": "https://passthepopcorn.me/favicon.ico",
   "tags": ["电影"],
   "schema": "Gazelle",
   "host": "passthepopcorn.me",
@@ -44,11 +45,11 @@
       "fields": {
         "uploaded": {
           "selector": ["a.user-info-bar__link[href*='type=seeding']:first"],
-          "filters": ["query.attr('title').sizeToNumber()"] 
+          "filters": ["query.attr('title').sizeToNumber()"]
         },
         "downloaded": {
           "selector": ["a.user-info-bar__link[href*='type=leeching']:first"],
-          "filters": ["query.attr('title').sizeToNumber()"] 
+          "filters": ["query.attr('title').sizeToNumber()"]
         },
         "ratio": {
           "selector": "ul.list > li:contains('Ratio:')",

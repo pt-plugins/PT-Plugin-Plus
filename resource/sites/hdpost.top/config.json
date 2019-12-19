@@ -1,5 +1,6 @@
 {
   "name": "HDPOST",
+  "timezoneOffset": "+0800",
   "description": "HDPOST",
   "url": "https://hdpost.top/",
   "icon": "https://hdpost.top/favicon.ico",

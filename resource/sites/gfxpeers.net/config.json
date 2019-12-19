@@ -1,5 +1,6 @@
 {
   "name": "GFXPeers",
+  "timezoneOffset": "+0000",
   "icon": "https://gfxpeers.net/favicon.ico",
   "url": "https://gfxpeers.net/",
   "schema": "Gazelle",

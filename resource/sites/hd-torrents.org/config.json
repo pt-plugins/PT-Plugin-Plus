@@ -1,5 +1,6 @@
 {
   "name": "HD-Torrents",
+  "timezoneOffset": "+0000",
   "description": "HD-Torrents.org - Index",
   "url": "https://hd-torrents.org/",
   "icon": "https://hd-torrents.org/favicon.ico",

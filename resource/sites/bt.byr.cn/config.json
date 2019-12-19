@@ -1,5 +1,6 @@
 {
   "name": "BYRBT",
+  "timezoneOffset": "+0800",
   "description": "著名教育网PT站点（仅支持ipv6访问与下载），有10大类资源，资源更新快，保种好。",
   "url": "https://bt.byr.cn/",
   "icon": "https://bt.byr.cn/favicon.ico",
@@ -11,8 +12,7 @@
   "schema": "NexusPHP",
   "host": "bt.byr.cn",
   "collaborator": "Rhilip",
-  "searchEntry": [
-    {
+  "searchEntry": [{
       "entry": "/torrents.php?search=$key$&notnewword=1",
       "name": "全站",
       "resultType": "html",
@@ -101,52 +101,49 @@
       "enabled": false
     }
   ],
-  "categories": [
-    {
-      "entry": "torrents.php",
-      "result": "&cat=$id$&cat$id$=1",
-      "category": [
-        {
-          "id": 408,
-          "name": "电影"
-        },
-        {
-          "id": 401,
-          "name": "剧集"
-        },
-        {
-          "id": 404,
-          "name": "动漫"
-        },
-        {
-          "id": 402,
-          "name": "音乐"
-        },
-        {
-          "id": 405,
-          "name": "综艺"
-        },
-        {
-          "id": 403,
-          "name": "游戏"
-        },
-        {
-          "id": 406,
-          "name": "软件"
-        },
-        {
-          "id": 407,
-          "name": "资料"
-        },
-        {
-          "id": 409,
-          "name": "体育"
-        },
-        {
-          "id": 410,
-          "name": "纪录"
-        }
-      ]
-    }
-  ]
+  "categories": [{
+    "entry": "torrents.php",
+    "result": "&cat=$id$&cat$id$=1",
+    "category": [{
+        "id": 408,
+        "name": "电影"
+      },
+      {
+        "id": 401,
+        "name": "剧集"
+      },
+      {
+        "id": 404,
+        "name": "动漫"
+      },
+      {
+        "id": 402,
+        "name": "音乐"
+      },
+      {
+        "id": 405,
+        "name": "综艺"
+      },
+      {
+        "id": 403,
+        "name": "游戏"
+      },
+      {
+        "id": 406,
+        "name": "软件"
+      },
+      {
+        "id": 407,
+        "name": "资料"
+      },
+      {
+        "id": 409,
+        "name": "体育"
+      },
+      {
+        "id": 410,
+        "name": "纪录"
+      }
+    ]
+  }]
 }

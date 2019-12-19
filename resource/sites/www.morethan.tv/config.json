@@ -1,5 +1,6 @@
 {
   "name": "MTV",
+  "timezoneOffset": "+0000",
   "description": "Morethan.tv",
   "icon": "https://www.morethan.tv/favicon.ico",
   "schema": "GazelleJSONAPI",
@@ -23,9 +24,9 @@
         "seedingSize": {
           "selector": ["td.number_column.nobr"],
           "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
-          }
         }
       }
+    }
   },
   "supportedFeatures": {
     "imdbSearch": false

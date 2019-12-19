@@ -1,5 +1,6 @@
 {
   "name": "UHDBits",
+  "timezoneOffset": "+0000",
   "description": "HD",
   "icon": "https://uhdbits.org/favicon.ico",
   "schema": "GazelleJSONAPI",
@@ -69,8 +70,8 @@
         "seedingSize": {
           "selector": ["td.number_column.nobr"],
           "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
-          }
         }
       }
+    }
   }
 }

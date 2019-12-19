@@ -1,5 +1,6 @@
 {
   "name": "CinemaZ",
+  "timezoneOffset": "+0000",
   "description": "Movies Obscure Foreign",
   "icon": "https://cinemaz.to/favicon.ico",
   "schema": "AvistaZ",

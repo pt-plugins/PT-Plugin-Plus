@@ -1,5 +1,6 @@
 {
   "name": "TorrentLeech",
+  "timezoneOffset": "+0000",
   "description": "TorrentLeech",
   "url": "https://www.torrentleech.org/",
   "icon": "https://www.torrentleech.org/favicon.ico",

@@ -1,5 +1,6 @@
 {
   "name": "CinemaGeddon",
+  "timezoneOffset": "+0000",
   "schema": "CinemaGeddon",
   "url": "https://cinemageddon.net/",
   "icon": "https://cinemageddon.net/favicon.ico",

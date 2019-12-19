@@ -1,5 +1,6 @@
 {
   "name": "HDB",
+  "timezoneOffset": "+0000",
   "description": "HDB",
   "url": "https://hdbits.org/",
   "icon": "https://hdbits.org/favicon.ico",
@@ -28,84 +29,86 @@
     }]
   },
   "searchEntry": [{
-    "name": "全部",
-    "enabled": true
-  },
-  {
-    "queryString": "cat=1",
-    "name": "Movie",
-    "enabled": false
-  },
-  {
-    "queryString": "cat=2",
-    "name": "TV",
-    "enabled": false
-  },
-  {
-    "queryString": "cat=3",
-    "name": "Documentary",
-    "enabled": false
-  },
-  {
-    "queryString": "cat=4",
-    "name": "Music",
-    "enabled": false
-  },
-  {
-    "queryString": "cat=5",
-    "name": "Sport",
-    "enabled": false
-  },
-  {
-    "queryString": "cat=6",
-    "name": "Audio Track",
-    "enabled": false
-  },
-  {
-    "queryString": "cat=7",
-    "name": "XXX",
-    "enabled": false
-  },
-  {
-    "queryString": "cat=8",
-    "name": "Misc/Demo",
-    "enabled": false
-  }],
+      "name": "全部",
+      "enabled": true
+    },
+    {
+      "queryString": "cat=1",
+      "name": "Movie",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=2",
+      "name": "TV",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=3",
+      "name": "Documentary",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=4",
+      "name": "Music",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=5",
+      "name": "Sport",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=6",
+      "name": "Audio Track",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=7",
+      "name": "XXX",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=8",
+      "name": "Misc/Demo",
+      "enabled": false
+    }
+  ],
   "categories": [{
     "entry": "browse.php?",
     "result": "cat=$id$",
     "category": [{
-      "id": 1,
-      "name": "Movie"
-    },
-    {
-      "id": 2,
-      "name": "TV"
-    },
-    {
-      "id": 3,
-      "name": "Documentary"
-    },
-    {
-      "id": 4,
-      "name": "Music"
-    },
-    {
-      "id": 5,
-      "name": "Sport"
-    },
-    {
-      "id": 6,
-      "name": "Audio Track"
-    },
-    {
-      "id": 7,
-      "name": "XXX"
-    },
-    {
-      "id": 8,
-      "name": "Misc/Demo"
-    }]
+        "id": 1,
+        "name": "Movie"
+      },
+      {
+        "id": 2,
+        "name": "TV"
+      },
+      {
+        "id": 3,
+        "name": "Documentary"
+      },
+      {
+        "id": 4,
+        "name": "Music"
+      },
+      {
+        "id": 5,
+        "name": "Sport"
+      },
+      {
+        "id": 6,
+        "name": "Audio Track"
+      },
+      {
+        "id": 7,
+        "name": "XXX"
+      },
+      {
+        "id": 8,
+        "name": "Misc/Demo"
+      }
+    ]
   }],
   "torrentTagSelectors": [{
     "name": "Free",

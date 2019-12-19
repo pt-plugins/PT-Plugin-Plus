@@ -1,5 +1,6 @@
 {
   "name": "keepfrds",
+  "timezoneOffset": "+0800",
   "url": "https://pt.keepfrds.com/",
   "icon": "https://pt.keepfrds.com/static/favicon-64x64.png",
   "tags": [

@@ -1,5 +1,6 @@
 {
   "name": "CHDBits",
+  "timezoneOffset": "+0800",
   "description": "CHDBits",
   "url": "https://chdbits.co/",
   "icon": "https://chdbits.co/favicon.ico",
@@ -9,8 +10,7 @@
   ],
   "schema": "NexusPHP",
   "host": "chdbits.co",
-  "searchEntry": [
-    {
+  "searchEntry": [{
       "name": "全站",
       "resultType": "html",
       "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
@@ -98,52 +98,49 @@
       "enabled": false
     }
   ],
-  "categories": [
-    {
-      "entry": "torrents.php",
-      "result": "&cat=$id$&cat$id$=1",
-      "category": [
-        {
-          "id": 401,
-          "name": "Movies"
-        },
-        {
-          "id": 404,
-          "name": "Documentaries"
-        },
-        {
-          "id": 405,
-          "name": "Animations"
-        },
-        {
-          "id": 402,
-          "name": "TV Series"
-        },
-        {
-          "id": 403,
-          "name": "TV Shows"
-        },
-        {
-          "id": 406,
-          "name": "Music"
-        },
-        {
-          "id": 407,
-          "name": "Sports"
-        },
-        {
-          "id": 409,
-          "name": "Demo"
-        },
-        {
-          "id": 408,
-          "name": "HQ Audio"
-        },
-        {
-          "id": 410,
-          "name": "Game"
-        }
-      ]
-    }
-  ]
+  "categories": [{
+    "entry": "torrents.php",
+    "result": "&cat=$id$&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "Movies"
+      },
+      {
+        "id": 404,
+        "name": "Documentaries"
+      },
+      {
+        "id": 405,
+        "name": "Animations"
+      },
+      {
+        "id": 402,
+        "name": "TV Series"
+      },
+      {
+        "id": 403,
+        "name": "TV Shows"
+      },
+      {
+        "id": 406,
+        "name": "Music"
+      },
+      {
+        "id": 407,
+        "name": "Sports"
+      },
+      {
+        "id": 409,
+        "name": "Demo"
+      },
+      {
+        "id": 408,
+        "name": "HQ Audio"
+      },
+      {
+        "id": 410,
+        "name": "Game"
+      }
+    ]
+  }]
 }

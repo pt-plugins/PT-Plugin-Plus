@@ -1,5 +1,6 @@
 {
   "name": "MoeCat",
+  "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "url": "https://moecat.best/",
   "description": "让我成为你的双眼，把那世界万千，描绘在你面前。",

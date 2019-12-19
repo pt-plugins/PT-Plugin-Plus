@@ -1,5 +1,6 @@
 {
   "name": "麦田PT",
+  "timezoneOffset": "+0800",
   "description": "西北农林科技大学ipv6资源分享平台",
   "url": "https://pt.nwsuaf6.edu.cn/",
   "icon": "https://pt.nwsuaf6.edu.cn/favicon.ico",

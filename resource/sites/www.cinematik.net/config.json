@@ -1,5 +1,6 @@
 {
   "name": "Cinematik",
+  "timezoneOffset": "+0000",
   "schema": "Cinematik",
   "url": "https://www.cinematik.net/",
   "icon": "https://www.cinematik.net/favicon.ico",

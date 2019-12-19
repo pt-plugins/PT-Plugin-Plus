@@ -1,5 +1,6 @@
 {
   "name": "HDSky",
+  "timezoneOffset": "+0800",
   "description": "高清发烧友后花园PT",
   "url": "https://hdsky.me/",
   "icon": "https://hdsky.me/favicon.ico",

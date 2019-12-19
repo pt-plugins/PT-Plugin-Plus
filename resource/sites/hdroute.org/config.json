@@ -1,5 +1,6 @@
 {
   "name": "HDRoute",
+  "timezoneOffset": "+0800",
   "description": "HDRoute",
   "url": "http://hdroute.org/",
   "icon": "http://hdroute.org/favicon.ico",

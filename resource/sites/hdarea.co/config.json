@@ -1,5 +1,6 @@
 {
   "name": "HDArea",
+  "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "url": "https://hdarea.co/",
   "description": "高清世界",

@@ -1,5 +1,6 @@
 {
   "name": "PrivateHD",
+  "timezoneOffset": "+0000",
   "description": "欧美影视",
   "icon": "https://privatehd.to/favicon.ico",
   "schema": "AvistaZ",
