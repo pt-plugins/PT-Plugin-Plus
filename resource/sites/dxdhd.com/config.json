@@ -6,6 +6,34 @@
   "tags": ["综合"],
   "schema": "UNIT3D",
   "host": "dxdhd.com",
+  "searchEntryConfig": {
+    "page": "/torrents/filter",
+    "queryString": "search=$key$",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "imdb=$key$",
+      "replaceKey": [
+        "tt", ""
+      ]
+    }],
+    "resultType": "html",
+    "parseScriptFile": "/schemas/UNIT3D/getSearchResult.js",
+    "resultSelector": "div.table-responsive > table:first"
+  },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "i.fas fa-star text-gold",
+    "color": "blue"
+  }, {
+    "name": "2xUp",
+    "selector": "i.fas fa-gem text-green",
+    "color": "lime"
+  }],
   "categories": [{
     "entry": "*",
     "result": "&categories[]=$id$",
