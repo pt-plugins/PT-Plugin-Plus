@@ -21,6 +21,11 @@
      */
     getDownloadURLs() {
       let links = $("a[href*='/download/']").toArray();
+
+      if (links.length == 0) {
+        links = $("a[href*='/download_check/']").toArray();
+      }
+
       let siteURL = PTService.site.url;
       if (siteURL.substr(-1) != "/") {
         siteURL += "/";
@@ -36,7 +41,7 @@
         if (link && link.substr(0, 4) != "http") {
           link = siteURL + link;
         }
-        return link;
+        return link.replace("/download_check/", "/download/");
       });
 
       return urls;
