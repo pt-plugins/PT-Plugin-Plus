@@ -533,7 +533,6 @@ export default Vue.extend({
       units: [] as any,
       hours: [] as any,
       minutes: [] as any,
-      downloadHistory: [] as any,
       haveError: false,
       haveSuccess: false,
       successMsg: "",
@@ -752,11 +751,6 @@ export default Vue.extend({
     for (let index = 0; index < 60; index += 5) {
       this.minutes.push(`0${index}`.substr(-2));
     }
-
-    extension.sendRequest(EAction.getDownloadHistory).then((result: any) => {
-      console.log("downloadHistory", result);
-      this.downloadHistory = result;
-    });
 
     if (this.options.apiKey) {
       if (this.options.apiKey.omdb && this.options.apiKey.omdb.length > 0) {
