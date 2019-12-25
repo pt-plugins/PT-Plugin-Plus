@@ -13,6 +13,12 @@
       this.initDetailButtons();
 
       let sayThanksButton = $("input#saythanks:not(:disabled)");
+
+      // NPUBits 修改部分
+      if (sayThanksButton.length === 0) {
+        sayThanksButton = $("button.saythanks:not(:disabled)");
+      }
+
       if (sayThanksButton.length) {
         // 说谢谢
         PTService.addButton({
@@ -52,6 +58,16 @@
             $("td.rowfollow:contains('&passkey='):last").text() ||
             $("a[href*='download'][href*='?id']:first").attr("href") ||
             $("a[href*='download.php?']:first").attr("href");
+        }
+
+        // NPUBits 修改部分
+        // 如果链接地址以 javascript: 开头，则使用正则提取实际种子链接
+        if (url && url.substr(0, 11) === "javascript:") {
+          let reg = /https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g;
+          let urls = url.match(reg);
+          if (urls.length > 0) {
+            url = urls[0];
+          }
         }
 
         // 如果链接地址中不包含passkey，且站点已配置 passkey 信息
