@@ -9,14 +9,81 @@
   ],
   "schema": "NexusPHP",
   "host": "npupt.com",
-  "collaborator": "Rhilip",
-  "searchEntry": [{
-    "entry": "/torrents.php?search=$key$&notnewword=1",
-    "name": "全部",
-    "resultType": "html",
-    "parseScriptFile": "getSearchResult.js",
-    "enabled": true
-  }],
+  "collaborator": "Rhilip, xfl03",
+  "searchEntryConfig": {
+    "parseScriptFile": "getSearchResult.js"
+  },
+  "searchEntry": [
+    {
+      "name": "全部",
+      "enabled": true
+    },
+    {
+      "name": "资料",
+      "queryString": "cat=411",
+      "enabled": false
+    },
+    {
+      "name": "电影",
+      "queryString": "cat=401",
+      "enabled": false
+    },
+    {
+      "name": "动漫",
+      "queryString": "cat=405",
+      "enabled": false
+    },
+    {
+      "name": "剧集",
+      "queryString": "cat=402",
+      "enabled": false
+    },
+    {
+      "name": "综艺",
+      "queryString": "cat=403",
+      "enabled": false
+    },
+    {
+      "name": "体育",
+      "queryString": "cat=407",
+      "enabled": false
+    },
+    {
+      "name": "纪录",
+      "queryString": "cat=404",
+      "enabled": false
+    },
+    {
+      "name": "音乐",
+      "queryString": "cat=414",
+      "enabled": false
+    },
+    {
+      "name": "MV",
+      "queryString": "cat=406",
+      "enabled": false
+    },
+    {
+      "name": "软件",
+      "queryString": "cat=408",
+      "enabled": false
+    },
+    {
+      "name": "游戏",
+      "queryString": "cat=410",
+      "enabled": false
+    },
+    {
+      "name": "校园",
+      "queryString": "cat=412",
+      "enabled": false
+    },
+    {
+      "name": "其他",
+      "queryString": "cat=409",
+      "enabled": false
+    }
+  ],
   "selectors": {
     "userBaseInfo": {
       "page": "/index.php",
@@ -24,14 +91,20 @@
         "id": {
           "selector": "span#curuser a[href*='userdetails.php'][class*='Name']:first",
           "attribute": "href",
-          "filters": ["query ? query.getQueryString('id'):''"]
+          "filters": [
+            "query ? query.getQueryString('id'):''"
+          ]
         },
         "name": {
           "selector": "span#curuser a[href*='userdetails.php'][class*='Name']:first"
         },
         "isLogged": {
-          "selector": ["a[href*='logout.php']"],
-          "filters": ["query.length>0"]
+          "selector": [
+            "a[href*='logout.php']"
+          ],
+          "filters": [
+            "query.length>0"
+          ]
         }
       }
     },
@@ -39,28 +112,53 @@
       "page": "/userdetails.php?id=$user.id$",
       "fields": {
         "uploaded": {
-          "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/上[传傳]量.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "selector": [
+            "td.rowfollow:contains('分享率')",
+            "td.rowhead:contains('传输') + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/上[传傳]量.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
         },
         "downloaded": {
-          "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/下[载載]量.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "selector": [
+            "td.rowfollow:contains('分享率')",
+            "td.rowhead:contains('传输') + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/下[载載]量.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
         },
         "ratio": {
           "selector": "td.rowfollow:contains('分享率')",
-          "filters": ["query.text().replace(/,/g,'').match(/分享率.+?([\\d.]+|无限)/)", "(query && query.length>=2)?query[1]:0"]
+          "filters": [
+            "query.text().replace(/,/g,'').match(/分享率.+?([\\d.]+|无限)/)",
+            "(query && query.length>=2)?query[1]:0"
+          ]
         },
         "levelName": {
           "selector": "td.rowhead:contains('等級'), td.rowhead:contains('等级')",
-          "filters": ["query.next().find('img').attr('title')"]
+          "filters": [
+            "query.next().find('img').attr('title')"
+          ]
         },
         "bonus": {
-          "selector": ["td.rowhead:contains('沙粒') + td"],
-          "filters": ["query.is(\":contains('沙粒:')\")?query.text().replace(/,/g,'').match(/沙粒.+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')", "parseFloat(query)"]
+          "selector": [
+            "td.rowhead:contains('沙粒') + td"
+          ],
+          "filters": [
+            "query.is(\":contains('沙粒:')\")?query.text().replace(/,/g,'').match(/沙粒.+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')",
+            "parseFloat(query)"
+          ]
         },
         "joinTime": {
           "selector": "td.rowhead:contains('加入日期')",
-          "filters": ["query.next().text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+          "filters": [
+            "query.next().text().split(' (')[0]",
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
         }
       }
     },
@@ -68,12 +166,34 @@
       "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
       "fields": {
         "seeding": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(2)').length"]
+          "selector": [
+            "tr:not(:eq(0))"
+          ],
+          "filters": [
+            "query.find('td.rowfollow:eq(2)').length"
+          ]
         },
         "seedingSize": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          "selector": [
+            "tr:not(:eq(0))"
+          ],
+          "filters": [
+            "jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})",
+            "_self.getTotalSize(query)"
+          ]
+        }
+      }
+    },
+    "/details.php": {
+      "fields": {
+        "downloadURL": {
+          "selector": [
+            "a[href*='passkey'][href*='https']"
+          ],
+          "filters": [
+            "query.attr('href').match(/https?:\\/\\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g)",
+            "(query && query.length > 0) ? query[0] : ''"
+          ]
         }
       }
     }
