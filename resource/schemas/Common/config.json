@@ -1,0 +1,12 @@
+{
+  "name": "Common",
+  "ver": "0.0.1",
+  "searchEntryConfig": {
+    "resultType": "html",
+    "parseScriptFile": "/schemas/Common/getSearchResult.js"
+  },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }]
+}

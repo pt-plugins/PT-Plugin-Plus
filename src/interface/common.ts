@@ -373,6 +373,29 @@ export interface SearchEntryConfigArea {
   page?: string;
 }
 
+export interface ISearchFieldIndex {
+  // 发布时间
+  time?: number;
+  // 大小
+  size?: number;
+  // 上传数量
+  seeders?: number;
+  // 下载数量
+  leechers?: number;
+  // 完成数量
+  completed?: number;
+  // 评论数量
+  comments?: number;
+  // 发布人
+  author?: number;
+  // 分类
+  category?: number;
+  link?: number;
+  url?: number;
+  subTitle?: number;
+  title?: number;
+}
+
 // 搜索入口默认配置
 export interface SearchEntryConfig {
   page: string;
@@ -383,12 +406,23 @@ export interface SearchEntryConfig {
   parseScript?: string;
   // 是否异步解析脚本
   asyncParse?: boolean;
+  // 数据表选择器
   resultSelector?: string;
   area?: SearchEntryConfigArea[];
+  // 数据请求头信息
   headers?: Dictionary<any>;
-  fieldSelector?: Dictionary<any>;
   // 跳过IMDb搜索
   skipIMDbId?: boolean;
+  // 搜索解析字段索引
+  fieldIndex?: ISearchFieldIndex;
+  // 数据字段选择器
+  fieldSelector?: Dictionary<any>;
+  // 第一行数据行
+  firstDataRowIndex?: number;
+  // 数据行选择器，默认：> tbody > tr
+  dataRowSelector?: string;
+  // 验证已登录正则表达式
+  loggedRegex?: string;
 }
 
 export interface SearchEntry {
