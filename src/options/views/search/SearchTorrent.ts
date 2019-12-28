@@ -198,11 +198,15 @@ export default Vue.extend({
     this.handleScroll();
   },
   watch: {
-    key() {
-      this.doSearch();
+    key(newValue, oldValue) {
+      if (newValue && newValue != oldValue) {
+        this.doSearch();
+      }
     },
-    host() {
-      this.doSearch();
+    host(newValue, oldValue) {
+      if (newValue && newValue != oldValue) {
+        this.doSearch();
+      }
     },
     successMsg() {
       this.haveSuccess = this.successMsg != "";
@@ -210,9 +214,11 @@ export default Vue.extend({
     errorMsg() {
       this.haveError = this.errorMsg != "";
     },
-    "$store.state.options.defaultSearchSolutionId"() {
-      this.doSearch();
-      // console.log(this.options.defaultSearchSolutionId);
+    "$store.state.options.defaultSearchSolutionId"(newValue, oldValue) {
+      // 设置为<默认>时，newValue 为空，故与 key, host 处理方式不同
+      if (newValue != oldValue) {
+        this.doSearch();
+      }
     },
     loading() {
       this.$store.commit("updateSearchStatus", this.loading);

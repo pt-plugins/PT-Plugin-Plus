@@ -1,4 +1,4 @@
-(function ($, window) {
+(function($, window) {
   console.log("this is details.js");
   class App extends window.NexusPHPCommon {
     init() {
@@ -17,14 +17,19 @@
      * 获取下载链接
      */
     getDownloadURL() {
-      let query = $("a.btn[href*='/download/']");
       let url = "";
-      if (query.length > 0) {
+      let query = $("a.btn[href*='/download/']");
+      if (query.length == 0) {
+        query = $("a[href*='/download_check/']");
+        if (query.length > 0) {
+          url = query.attr("href").replace("/download_check/", "/download/");
+        }
+      } else {
         url = query.attr("href");
       }
 
       return url;
     }
-  };
-  (new App()).init();
+  }
+  new App().init();
 })(jQuery, window);
