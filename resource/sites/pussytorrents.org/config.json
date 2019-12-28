@@ -5,7 +5,7 @@
   "url": "https://pussytorrents.org/",
   "icon": "https://pussytorrents.org/favicon.ico",
   "tags": ["xxx"],
-  "schema": "TorrentLeech",
+  "schema": "common",
   "host": "pussytorrents.org",
   "plugins": [{
     "name": "种子详情页面",
