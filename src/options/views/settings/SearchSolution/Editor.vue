@@ -301,7 +301,9 @@ export default Vue.extend({
     .bottom {
       position: absolute;
       bottom: 0;
-      width: 100%;
+      width: 99%;
+      max-height: 80px;
+      overflow-y: auto;
     }
   }
 }

@@ -92,9 +92,9 @@
     </v-card>
 
     <!-- 新增 -->
-    <AddItem v-model="showAddDialog" @save="addItem" :site="site"/>
+    <AddItem v-model="showAddDialog" @save="addItem" :site="site" />
     <!-- 编辑 -->
-    <EditItem v-model="showEditDialog" :site="site" :data="selectedItem" @save="updateItem"/>
+    <EditItem v-model="showEditDialog" :site="site" :data="selectedItem" @save="updateItem" />
 
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
@@ -134,6 +134,7 @@ import AddItem from "./Add.vue";
 import EditItem from "./Edit.vue";
 
 import { filters } from "@/service/filters";
+import { PPF } from "@/service/public";
 export default Vue.extend({
   components: {
     AddItem,
@@ -219,16 +220,17 @@ export default Vue.extend({
       this.reloadEntry(this.site.host);
     },
     reloadEntry(host: string | undefined) {
-      this.site = this.$store.state.options.sites.find((item: Site) => {
+      let site = this.$store.state.options.sites.find((item: Site) => {
         return item.host == host;
       });
 
-      if (this.site) {
+      if (site) {
+        this.site = PPF.clone(site);
         let systemSite = this.options.system.sites.find((item: Site) => {
           return item.host == host;
         });
         if (systemSite) {
-          this.site.categories = systemSite.categories;
+          this.site.categories = PPF.clone(systemSite.categories);
         }
         let searchEntry: any[] = [];
 
@@ -248,7 +250,7 @@ export default Vue.extend({
           }
         }
 
-        this.searchEntry = searchEntry;
+        this.searchEntry = PPF.clone(searchEntry);
       }
     },
     getCategory(entry: SearchEntry): string[] {
