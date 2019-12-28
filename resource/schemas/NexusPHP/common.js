@@ -1210,6 +1210,9 @@
      * @param {string} url
      */
     getFullURL(url) {
+      if (!url) {
+        return "";
+      }
       if (url.substr(0, 2) === "//") {
         url = `${location.protocol}${url}`;
       } else if (url.substr(0, 1) === "/") {
