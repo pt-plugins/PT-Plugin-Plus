@@ -1,0 +1,76 @@
+{
+  "name": "GGN",
+  "timezoneOffset": "+0000",
+  "description": "Game",
+  "url": "https://gazellegames.net/",
+  "icon": "https://gazellegames.net/favicon.ico",
+  "tags": ["Game"],
+  "schema": "Gazelle",
+  "host": "gazellegames.net",
+  "collaborator": "ted423",
+  "searchEntryConfig": {
+    "skipIMDbId": true
+  },
+  "searchEntry": [{
+      "name": "all",
+      "enabled": true
+    },
+    {
+      "queryString": "artistname=Windows",
+      "name": "Windows",
+      "enabled": false
+    },
+    {
+      "queryString": "artistname=Games",
+      "name": "Games",
+      "enabled": false
+    },
+    {
+      "queryString": "artistname=E-Books",
+      "name": "E-Books",
+      "enabled": false
+    },
+    {
+      "queryString": "artistname=OST",
+      "name": "OST",
+      "enabled": false
+    }
+  ],
+  "selectors": {
+    "userExtendInfo": {
+      "page": "/user.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["#upload .stat.tooltip"],
+          "filters": ["query.text().sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ["#download .stat.tooltip"],
+          "filters": ["query.text().sizeToNumber()"]
+        },
+        "levelName": {
+          "selector": "div:contains('Personal') + ul.stats > li:contains('Class:')",
+          "filters": ["query.text().match(/Class:.+?(.+)/)", "(query && query.length>=2)?query[1]:''"]
+        },
+        "bonus": {
+          "selector": ["#gold .stat.tooltip"]
+        },
+        "joinTime": {
+          "selector": [".box_personal_history ul.stats li:nth-child(2) span.time"],
+          "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["#seeding"]
+        },
+        "seedingSize": {
+          "selector": ["#seeding_size"],
+          "filters": ["query.text().sizeToNumber()"]
+        }
+      }
+    }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  }
+}
