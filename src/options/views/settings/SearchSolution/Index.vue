@@ -62,9 +62,9 @@
     </v-card>
 
     <!-- 新增 -->
-    <EditItem v-model="showAddDialog" @save="updateItem"/>
+    <EditItem v-model="showAddDialog" @save="updateItem" />
     <!-- 编辑 -->
-    <EditItem v-model="showEditDialog" :option="selectedItem" @save="updateItem"/>
+    <EditItem v-model="showEditDialog" :option="selectedItem" @save="updateItem" />
 
     <!-- 删除确认 -->
     <v-dialog v-model="dialogRemoveConfirm" width="300">
@@ -104,6 +104,7 @@
 import Vue from "vue";
 import EditItem from "./Edit.vue";
 import { SearchSolution, Site, SearchEntry, Options } from "@/interface/common";
+import { PPF } from "@/service/public";
 export default Vue.extend({
   components: {
     EditItem
@@ -143,10 +144,7 @@ export default Vue.extend({
       });
 
       if (index !== -1) {
-        this.selectedItem = Object.assign(
-          {},
-          this.options.searchSolutions[index]
-        );
+        this.selectedItem = PPF.clone(this.options.searchSolutions[index]);
         this.showEditDialog = true;
       }
     },

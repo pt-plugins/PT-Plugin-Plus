@@ -7,7 +7,7 @@
       >{{ $t("settings.searchSolution.edit.title") }}</v-card-title>
 
       <v-card-text class="body">
-        <Editor :option="defaultItem" :initSites="sites" @change="change"/>
+        <Editor :option="defaultItem" :initSites="sites" @change="change" />
       </v-card-text>
 
       <v-divider></v-divider>
@@ -35,6 +35,7 @@ import {
   SearchSolutionRange,
   SearchEntry
 } from "@/interface/common";
+import { PPF } from "@/service/public";
 export default Vue.extend({
   components: {
     Editor
@@ -92,7 +93,7 @@ export default Vue.extend({
       this.valid = !!value.name;
     },
     resetSites() {
-      let sites: Site[] = Object.assign([], this.$store.state.options.sites);
+      let sites: Site[] = PPF.clone(this.$store.state.options.sites);
       // this.sites = JSON.parse(JSON.stringify(options.sites)) as Site[];
       this.sites = [];
       sites.forEach((item: Site) => {
