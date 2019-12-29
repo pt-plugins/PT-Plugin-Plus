@@ -22,7 +22,7 @@ if (!"".getQueryString) {
       options.isLogged = true;
 
       if (
-        /没有种子|Your search did not match anything|用准确的关键字重试/.test(
+        /没有种子|No [Tt]orrents\?|Your search did not match anything|用准确的关键字重试/.test(
           options.responseText
         )
       ) {
@@ -128,7 +128,7 @@ if (!"".getQueryString) {
             time += ":00";
           }
           let data = {
-            title: movienames[groupid]+"&nbsp;/&nbsp;"+title.text(),
+            title: title.text(),
             subTitle: subTitle.text(),
             link,
             url: url,

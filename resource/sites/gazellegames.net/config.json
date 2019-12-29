@@ -76,7 +76,6 @@
     }
   },
   "supportedFeatures": {
-    "imdbSearch": false,
-    "userData": "◐"
+    "imdbSearch": false
   }
 }
