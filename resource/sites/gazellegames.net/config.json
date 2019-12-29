@@ -11,19 +11,13 @@
   "searchEntryConfig": {
     "skipIMDbId": true
   },
-  "searchEntryConfig": {
-    "page": "/torrents.php",
-    "resultType": "html",
-    "parseScriptFile": "getSearchResult.js",
-    "queryString": "searchstr=$key$"
-  },
   "searchEntry": [{
       "name": "all",
       "enabled": true
     },
     {
-      "queryString": "artistname=My+Platforms",
-      "name": "My Platforms",
+      "queryString": "artistname=Windows",
+      "name": "Windows",
       "enabled": false
     },
     {
