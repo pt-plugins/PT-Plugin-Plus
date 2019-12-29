@@ -71,7 +71,7 @@ export class Searcher {
     key: string = "",
     payload?: ISearchPayload
   ): Promise<any> {
-    this.service.debug("searchTorrent: start");
+    this.service.debug("searchTorrent: start", key, payload);
     return new Promise<any>((resolve?: any, reject?: any) => {
       let result: DataResult = {
         success: false
@@ -299,7 +299,7 @@ export class Searcher {
                 this.getSearchResult(
                   url,
                   site,
-                  PPF.clone(entry),
+                  Object.assign(PPF.clone(searchEntryConfig), PPF.clone(entry)),
                   searchConfig.torrentTagSelectors
                 )
                   .then((result: any) => {
@@ -343,7 +343,7 @@ export class Searcher {
             this.getSearchResult(
               url,
               site,
-              PPF.clone(entry),
+              Object.assign(PPF.clone(searchEntryConfig), PPF.clone(entry)),
               searchConfig.torrentTagSelectors
             )
               .then((result: any) => {

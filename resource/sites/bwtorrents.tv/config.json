@@ -1,0 +1,151 @@
+{
+  "name": "BWT",
+  "timezoneOffset": "+0000",
+  "description": "bwtorrents",
+  "url": "https://bwtorrents.tv/",
+  "icon": "https://bwtorrents.tv/favicon.ico",
+  "tags": ["综合", "印度"],
+  "schema": "Common",
+  "host": "bwtorrents.tv",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/index.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+  }],
+  "searchEntryConfig": {
+    "page": "/index.php",
+    "resultType": "html",
+    "queryString": "search=$key$&blah=0&cat=0&incldead=1",
+    "parseScriptFile": "/schemas/Common/getSearchResult.js",
+    "resultSelector": "table.pager:first + table",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "parseScript": "(payload && payload.en)?payload.en:key"
+    }],
+    "firstDataRowIndex": 1,
+    "fieldIndex": {
+      "title": 1,
+      "time": 4,
+      "size": 5,
+      "seeders": 7,
+      "leechers": 8,
+      "completed": 9,
+      "comments": 3,
+      "author": 10,
+      "category": 0,
+      "url": 6,
+      "link": 1
+    },
+    "loggedRegex": "logout\\.php",
+    "fieldSelector": {
+      "title": {
+        "selector": ["a:first"]
+      },
+      "url": {
+        "selector": ["a:first"],
+        "filters": ["query.attr('href')"]
+      },
+      "link": {
+        "selector": ["a:first"],
+        "filters": ["query.attr('href')"]
+      },
+      "time": {
+        "selector": ["nobr"],
+        "filters": ["query.text().replace(/(\\d{2})-(\\d{2})-(\\d{4})\\n?(\\d{2}:\\d{2}:\\d{2})/,'$3-$2-$1 $4')"]
+      },
+      "category": {
+        "selector": ["img:first"],
+        "filters": ["query.attr('alt')"]
+      }
+    }
+  },
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "font[color='red']:contains('[FreeLeech]')",
+    "color": "blue"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ["a[href*='userdetails.php']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["a[href*='userdetails.php']:first"],
+          "filters": ["query && query.attr('href').getQueryString('id') > 0 ? query.text(): ''"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetailsmore.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.rowhead:contains('Uploaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td.rowhead:contains('Downloaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "levelName": {
+          "selector": "td.rowhead:contains('Class') + td"
+        },
+        "joinTime": {
+          "selector": "td.rowhead:contains('Join') + td",
+          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["#ka1 table.main > tbody > tr"],
+          "filters": ["query.length-1"]
+        },
+        "seedingSize": {
+          "selector": ["#ka1 table.main > tbody > tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td:eq(6)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        },
+        "bonus": {
+          "value": "N/A"
+        }
+      }
+    },
+    "/details.php": {
+      "fields": {
+        "size": {
+          "selector": ["span[title='File Size']"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        },
+        "downloadURL": {
+          "selector": ["a[href*='download.php/']:first"],
+          "filters": ["query.attr('href')"]
+        }
+      }
+    },
+    "/index.php": {
+      "fields": {
+        "downloadURLs": {
+          "selector": ["a[href*='download.php']"],
+          "filters": ["query.toArray()"]
+        },
+        "confirmSize": {
+          "selector": ["table.pager:first + table"],
+          "filters": ["query.find(\"td:contains('MB'),td:contains('GB'),td:contains('TB')\")"]
+        }
+      }
+    }
+  }
+}
