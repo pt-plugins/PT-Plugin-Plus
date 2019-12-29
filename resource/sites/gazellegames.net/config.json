@@ -27,6 +27,11 @@
       "enabled": false
     },
     {
+      "queryString": "artistname=Applications",
+      "name": "Applications",
+      "enabled": false
+    },
+    {
       "queryString": "artistname=Games",
       "name": "Games",
       "enabled": false
