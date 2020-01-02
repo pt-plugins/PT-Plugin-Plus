@@ -11,13 +11,24 @@
   "searchEntryConfig": {
     "skipIMDbId": true
   },
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "queryString": "searchstr=$key$"
+  },
   "searchEntry": [{
       "name": "all",
       "enabled": true
     },
     {
-      "queryString": "artistname=Windows",
-      "name": "Windows",
+      "queryString": "artistname=My+Platforms",
+      "name": "My Platforms",
+      "enabled": false
+    },
+    {
+      "queryString": "artistname=Applications",
+      "name": "Applications",
       "enabled": false
     },
     {
@@ -70,7 +81,6 @@
     }
   },
   "supportedFeatures": {
-    "imdbSearch": false,
-    "userData": "◐"
+    "imdbSearch": false
   }
 }

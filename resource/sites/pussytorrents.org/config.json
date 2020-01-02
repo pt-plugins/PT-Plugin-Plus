@@ -1,0 +1,131 @@
+{
+  "name": "pussytorrents",
+  "timezoneOffset": "+0000",
+  "description": "pussytorrents",
+  "url": "https://pussytorrents.org/",
+  "icon": "https://pussytorrents.org/favicon.ico",
+  "tags": ["xxx"],
+  "schema": "common",
+  "host": "pussytorrents.org",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["^/torrent/(\\d+)$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents/browse"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "searchEntryConfig": {
+    "page": "/torrents/browse",
+    "queryString": "query=$key$&page=1&inclusions=&exclusions=&inclusionsOp=ALL&order=&orderby=",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "#torrenttable"
+  },
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ["#memberBar .span8 a[href*='/profile/']"]
+        },
+        "name": {
+          "selector": ["#memberBar .span8 a[href*='/profile/']"]
+        },
+        "uploaded": {
+          "selector": ["#memberBar .span8 span[title='Uploaded']"],
+          "filters": ["$(query[0].nextSibling).text().trim().replace(/,/g,'').sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ["#memberBar .span8 span[title='Downloaded']"],
+          "filters": ["$(query[0].nextSibling).text().trim().replace(/,/g,'').sizeToNumber()"]
+        },
+        "messageCount": {
+          "selector": ["a[href='/users/messages'] i.news-notify"],
+          "filters": ["query.length>0? 255: 0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/profile/$user.name$",
+      "fields": {
+        "levelName": {
+          "selector": ["#profileTable td:contains('Class') + td"]
+        },
+        "joinTime": {
+          "selector": ["#profileTable td:contains('Join Date') + td"],
+          "filters": ["dateTime(query.text().split(' ').slice(1).join(' '), 'Do MMMM YYYY').valueOf()"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/user/account/snatchlist",
+      "dataType": "json",
+      "parser": "getUserSeedingTorrents.js",
+      "requestMethod": "POST",
+      "requestData": {
+        "userID": "$user.id$",
+        "sEcho": 0,
+        "iColumns": "9",
+        "sColumns": ",,,,,,,,",
+        "iDisplayStart": "0",
+        "iDisplayLength": "50",
+        "mDataProp_0": "0",
+        "sSearch_0": "",
+        "bRegex_0": "false",
+        "bSearchable_0": "true",
+        "bSortable_0": "true",
+        "mDataProp_1": "1",
+        "sSearch_1": "",
+        "bRegex_1": "false",
+        "bSearchable_1": "true",
+        "bSortable_1": "true",
+        "mDataProp_2": "2",
+        "sSearch_2": "",
+        "bRegex_2": "false",
+        "bSearchable_2": "true",
+        "bSortable_2": "true",
+        "mDataProp_3": "3",
+        "sSearch_3": "",
+        "bRegex_3": "false",
+        "bSearchable_3": "true",
+        "bSortable_3": "true",
+        "mDataProp_4": "4",
+        "sSearch_4": "",
+        "bRegex_4": "false",
+        "bSearchable_4": "true",
+        "bSortable_4": "true",
+        "mDataProp_5": "5",
+        "sSearch_5": "",
+        "bRegex_5": "false",
+        "bSearchable_5": "true",
+        "bSortable_5": "true",
+        "mDataProp_6": "6",
+        "sSearch_6": "",
+        "bRegex_6": "false",
+        "bSearchable_6": "true",
+        "bSortable_6": "true",
+        "mDataProp_7": "7",
+        "sSearch_7": "",
+        "bRegex_7": "false",
+        "bSearchable_7": "true",
+        "bSortable_7": "true",
+        "mDataProp_8": "8",
+        "sSearch_8": "",
+        "bRegex_8": "false",
+        "bSearchable_8": "true",
+        "bSortable_8": "true",
+        "sSearch": "",
+        "bRegex": "false",
+        "iSortCol_0": "0",
+        "sSortDir_0": "desc",
+        "iSortingCols": "1"
+      }
+    }
+  }
+}
