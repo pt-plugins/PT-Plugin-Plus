@@ -55,8 +55,13 @@
         "levelName": {
           "selector": "td.clx > .frames td.rowhead:contains('Class') + td:first"
         },
+        "messageCount": {
+          "selector": ["div.alert a[href*='messages.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
         "bonus": {
-          "value": "N/A"
+          "selector": ["a[href='/credits.php']"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?query[1]:''"]
         },
         "joinTime": {
           "selector": "td.clx > .frames td.rowhead:contains('Join') + td:first",
