@@ -849,7 +849,8 @@
         "noTorrents": "[{siteName}] did not find the relevant torrent",
         "torrentTableIsEmpty": "[{siteName}] is not targeting the torrent list, or there is no related torrent",
         "parseError": "[{siteName}] Error getting seed information: {error}"
-      }
+      },
+      "dragTitle": "Press and hold to drag and drop; double click to reset"
     },
     "downloadClient": {
       "timeout": "Access timed out",

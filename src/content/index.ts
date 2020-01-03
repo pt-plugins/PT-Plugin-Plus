@@ -23,6 +23,12 @@ import i18n from "i18next";
 import { InfoParser } from "@/background/infoParser";
 import { PPF } from "@/service/public";
 
+declare global {
+  interface Window {
+    Drag: any;
+  }
+}
+
 /**
  * 插件背景脚本，会插入到每个页面
  */
@@ -55,7 +61,6 @@ class PTPContent {
     "<div style='display:none;' class='pt-plugin-droper'/>"
   );
   private buttons: any[] = [];
-  private buttonBarHeight: number = 0;
   private logo: JQuery = <any>null;
 
   // 插件是否被重新启用过（暂不可用），onSuspend 事件无法执行。
@@ -73,6 +78,11 @@ class PTPContent {
   public infoParser: InfoParser = new InfoParser();
   // 当前页面选择器配置
   public pageSelector: any = {};
+  // 自动确定工具栏位置
+  public autoPosition: boolean = true;
+
+  // 保存当前工具栏位置key
+  private positionStorageKey = "";
 
   constructor() {
     this.extension = new Extension();
@@ -191,6 +201,8 @@ class PTPContent {
     } else {
       return;
     }
+
+    this.positionStorageKey = `pt-plugin-${this.site.host}-position`;
 
     this.scripts = [];
     this.styles = [];
@@ -395,20 +407,89 @@ class PTPContent {
       $(".pt-plugin-body").remove();
     }
     this.buttonBar = $("<div class='pt-plugin-body'/>").appendTo(document.body);
-    if (this.options.position == EPluginPosition.left) {
-      this.buttonBar.css({
-        right: "unset"
+
+    // 启用拖放功能
+    if (window.Drag) {
+      let dragTitle = $(
+        "<div class='pt-plugin-drag-title' title='" + i18n.t("dragTitle") + "'>"
+      ).appendTo(this.buttonBar);
+
+      new window.Drag(this.buttonBar.get(0), {
+        handle: dragTitle.get(0),
+        onStop: (result: any) => {
+          console.log(result);
+          this.saveButtonBarPosition(result);
+        }
+      });
+
+      // 双击重置位置
+      dragTitle.on("dblclick", () => {
+        this.resetButtonBarPosition();
       });
     }
+
     this.logo = $(
       "<div class='pt-plugin-logo' title='" + i18n.t("pluginTitle") + "'/>"
     ).appendTo(this.buttonBar);
     this.logo.on("click", () => {
       this.call(EAction.openOptions);
     });
-    this.buttonBarHeight = this.buttonBar.get(0).scrollHeight - 3;
-    // console.log(this.buttonBarHeight);
+    this.initButtonBarPosition();
     this.buttonBar.hide();
+  }
+
+  /**
+   * 初始化工具栏位置
+   */
+  private initButtonBarPosition() {
+    let result = window.localStorage.getItem(this.positionStorageKey);
+    if (result) {
+      try {
+        let position = JSON.parse(result);
+
+        this.buttonBar.css({
+          top: position.top,
+          left: position.left
+        });
+        this.autoPosition = false;
+        return;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    this.buttonBar.css({
+      top: window.innerHeight / 2,
+      left: "unset"
+    });
+
+    if (this.options.position == EPluginPosition.left) {
+      this.buttonBar.css({
+        right: "unset",
+        left: "5px"
+      });
+    }
+  }
+
+  /**
+   * 重置工具栏位置
+   */
+  private resetButtonBarPosition() {
+    window.localStorage.removeItem(this.positionStorageKey);
+    this.autoPosition = true;
+    this.initButtonBarPosition();
+    this.recalculateButtonBarPosition();
+  }
+
+  /**
+   * 保存工具栏位置
+   * @param position
+   */
+  private saveButtonBarPosition(position: any) {
+    window.localStorage.setItem(
+      this.positionStorageKey,
+      JSON.stringify(position)
+    );
+    this.autoPosition = false;
   }
 
   /**
@@ -500,13 +581,8 @@ class PTPContent {
       this.addDroper(button, options.onDrop, onSuccess, onError);
     }
 
-    let offset = <any>line.outerHeight(true) + <any>button.outerHeight(true);
-    this.buttonBarHeight += offset;
-
     this.buttons.push(button);
-
-    // console.log(this.buttonBarHeight, offset);
-    this.buttonBar.height(this.buttonBarHeight).show();
+    this.recalculateButtonBarPosition();
   }
 
   /**
@@ -521,17 +597,32 @@ class PTPContent {
     if (index != -1) {
       let button = this.buttons[index];
 
-      let offset = <any>button.outerHeight(true);
-      this.buttonBarHeight -= offset;
       let line = button.data("line");
       if (line) {
-        this.buttonBarHeight -= <any>line.outerHeight(true);
         line.remove();
       }
       button.remove();
       this.buttons.splice(index, 1);
-      this.buttonBar.height(this.buttonBarHeight).show();
     }
+
+    this.recalculateButtonBarPosition();
+  }
+
+  /**
+   * 重新计算工具栏位置
+   */
+  public recalculateButtonBarPosition() {
+    if (this.buttons.length > 0) {
+      this.buttonBar.show();
+    } else {
+      this.buttonBar.hide();
+    }
+    if (!this.autoPosition) {
+      return;
+    }
+    this.buttonBar.css({
+      top: window.innerHeight / 2 - <any>this.buttonBar.outerHeight(true) / 2
+    });
   }
 
   /**

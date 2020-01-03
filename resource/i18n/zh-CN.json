@@ -849,7 +849,8 @@
         "noTorrents": "[{siteName}]没有搜索到相关的种子",
         "torrentTableIsEmpty": "[{siteName}]没有定位到种子列表，或没有相关的种子",
         "parseError": "[{siteName}]获取种子信息出错: {error}"
-      }
+      },
+      "dragTitle": "按住拖放；双击复位"
     },
     "downloadClient": {
       "timeout": "连接超时",

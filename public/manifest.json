@@ -59,6 +59,7 @@
 			"libs/Base64.js",
 			"libs/notice/notice.js",
 			"libs/basicContext/basicContext.min.js",
+			"libs/drag.js",
 			"js/content/libs.js",
 			"js/content/content.js"
 		]

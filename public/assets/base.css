@@ -5,12 +5,18 @@
   width: 80px;
   position: fixed;
   right: 5px;
-  margin: auto;
-  top: 50%;
-  bottom: 50%;
   opacity: .3;
   z-index: 100;
   font-size: 12px;
+}
+
+.pt-plugin-body .pt-plugin-drag-title {
+  cursor: move;
+  width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: #ccc;
+  height: 10px;
 }
 
 .pt-plugin-body:hover,
