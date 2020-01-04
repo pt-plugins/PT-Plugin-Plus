@@ -1,0 +1,11 @@
+{
+  "name": "HD Dolby",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "url": "https://www.hddolby.com/",
+  "description": "高清杜比",
+  "icon": "https://www.hddolby.com/favicon.ico",
+  "tags": ["影视", "综合"],
+  "host": "hddolby.com",
+  "collaborator": "iceyuamao0510"
+}

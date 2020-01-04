@@ -1,0 +1,15 @@
+{
+  "name": "聆音Club",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "url": "https://pt.soulvoice.club/",
+  "description": "致力于建设一个有声资源，电子书为主，学习资料，影视资源为辅的PT分享站。",
+  "tags": ["综合", "电子书", "有声书"],
+  "host": "pt.soulvoice.club",
+  "collaborator": "Gold John King",
+  "plugins": [{
+    "name": "阅听专区",
+    "pages": ["/live.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }]
+}
