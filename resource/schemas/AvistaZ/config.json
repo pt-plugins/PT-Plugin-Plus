@@ -88,7 +88,14 @@
     "userSeedingTorrents": {
       "page": "/profile/$user.name$/active?order=progress&sort=desc",
       "parser": "/schemas/AvistaZ/getUserSeedingTorrents.js"
+    },
+    "common": {
+      "fields": {
+        "sayThanksButton": {
+          "selector": ["button#btn-torrent-thank"],
+          "filters": ["query"]
+        }
       }
-
+    }
   }
 }

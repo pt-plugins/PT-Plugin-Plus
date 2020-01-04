@@ -7,6 +7,17 @@
   "tags": ["Adult"],
   "schema": "AvistaZ",
   "host": "exoticaz.to",
+  "selectors": {
+    "common": {
+      "merge": true,
+      "fields": {
+        "sayThanksButton": {
+          "selector": ["button[data-action='Thank']"],
+          "filters": ["query"]
+        }
+      }
+    }
+  },
   "supportedFeatures": {
     "imdbSearch": false,
     "userData": "◐"
