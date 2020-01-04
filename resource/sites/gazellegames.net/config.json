@@ -9,9 +9,7 @@
   "host": "gazellegames.net",
   "collaborator": "ted423",
   "searchEntryConfig": {
-    "skipIMDbId": true
-  },
-  "searchEntryConfig": {
+    "skipIMDbId": true,
     "page": "/torrents.php",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
