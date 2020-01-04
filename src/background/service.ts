@@ -593,9 +593,10 @@ export default class PTPlugin {
   ): Dictionary<any> | null {
     let host = typeof hostOrSite == "string" ? hostOrSite : hostOrSite.host;
     let system = this.clone(this.options.system);
-
-    // 由于选择器可能会更新，所以需要从系统配置中加载
-    let site: Site | undefined = system.sites.find((item: Site) => {
+    // 由于选择器可能会更新，所以优先从系统配置中加载
+    // 增加 this.options.sites 是为了兼顾自定义站点
+    let sites = system.sites.concat(this.options.sites);
+    let site: Site | undefined = sites.find((item: Site) => {
       return item.host === host;
     });
 

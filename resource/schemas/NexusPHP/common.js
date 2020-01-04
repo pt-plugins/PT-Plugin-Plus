@@ -65,10 +65,14 @@
       // 添加复制下载链接按钮
       this.addCopyTextToClipboardButton();
 
+      // 初始化可用空间按钮
       this.initFreeSpaceButton();
 
       // 初始化收藏按钮
       this.initCollectionButton();
+
+      // 初始化说谢谢按钮
+      this.initSayThanksButton();
     }
 
     /**
@@ -1221,6 +1225,30 @@
         url = `${location.origin}/${url}`;
       }
       return url;
+    }
+
+    /**
+     * 初始化说谢谢按钮
+     */
+    initSayThanksButton() {
+      let sayThanksButton = PTService.getFieldValue("sayThanksButton");
+      console.log("sayThanksButton");
+      if (sayThanksButton && sayThanksButton.length) {
+        // 说谢谢
+        PTService.addButton({
+          title: this.t("buttons.sayThanksTip"),
+          icon: "thumb_up",
+          label: this.t("buttons.sayThanks"),
+          key: "sayThanks",
+          click: (success, error) => {
+            sayThanksButton.click();
+            success();
+            setTimeout(() => {
+              PTService.removeButton("sayThanks");
+            }, 1000);
+          }
+        });
+      }
     }
   }
 

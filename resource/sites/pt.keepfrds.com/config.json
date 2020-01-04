@@ -119,6 +119,7 @@
       }
     },
     "/details.php": {
+      "merge": true,
       "fields": {
         "downloadURL": {
           "selector": ["input#download_link"],

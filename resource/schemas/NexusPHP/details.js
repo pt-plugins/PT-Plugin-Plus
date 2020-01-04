@@ -11,24 +11,6 @@
      */
     initButtons() {
       this.initDetailButtons();
-
-      let sayThanksButton = $("input#saythanks:not(:disabled)");
-      if (sayThanksButton.length) {
-        // 说谢谢
-        PTService.addButton({
-          title: this.t("buttons.sayThanksTip"), // "对当前种子说谢谢",
-          icon: "thumb_up",
-          label: this.t("buttons.sayThanks"), //"感谢发布者",
-          key: "sayThanks",
-          click: (success, error) => {
-            sayThanksButton.click();
-            success();
-            setTimeout(() => {
-              PTService.removeButton("sayThanks");
-            }, 1000);
-          }
-        });
-      }
     }
 
     /**

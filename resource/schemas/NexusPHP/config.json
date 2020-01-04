@@ -136,6 +136,10 @@
           "selector": ["a[href*='www.imdb.com/title/']:first"],
           "attribute": "href",
           "filters": ["query.match(/(tt\\d+)/)", "(query && query.length>=2)?query[1]:null"]
+        },
+        "sayThanksButton": {
+          "selector": ["input#saythanks:not(:disabled)"],
+          "filters": ["query"]
         }
       }
     }
