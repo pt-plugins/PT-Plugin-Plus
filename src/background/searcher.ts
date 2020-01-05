@@ -229,6 +229,7 @@ export class Searcher {
             searchEntryConfig.resultSelector || entry.resultSelector;
           entry.headers = searchEntryConfig.headers || entry.headers;
           entry.asyncParse = searchEntryConfig.asyncParse || entry.asyncParse;
+          entry.requestData = searchEntryConfig.requestData;
         }
 
         // 判断是否指定了搜索页和用于获取搜索结果的脚本
@@ -263,15 +264,42 @@ export class Searcher {
           // 支除重复的参数
           url = PPF.removeDuplicateQueryString(url);
 
+          let searchKey =
+            key +
+            (entry.appendToSearchKeyString
+              ? ` ${entry.appendToSearchKeyString}`
+              : "");
           url = this.replaceKeys(url, {
-            key:
-              key +
-              (entry.appendToSearchKeyString
-                ? ` ${entry.appendToSearchKeyString}`
-                : ""),
+            key: searchKey,
             rows: rows,
             passkey: site.passkey ? site.passkey : ""
           });
+
+          // 替换要提交数据中包含的关键字内容
+          if (entry.requestData) {
+            try {
+              for (const key in entry.requestData) {
+                if (entry.requestData.hasOwnProperty(key)) {
+                  const value = entry.requestData[key];
+                  entry.requestData[key] = PPF.replaceKeys(value, {
+                    key: searchKey,
+                    passkey: site.passkey ? site.passkey : ""
+                  });
+
+                  if (site.user) {
+                    entry.requestData[key] = PPF.replaceKeys(
+                      value,
+                      site.user,
+                      "user"
+                    );
+                  }
+                }
+              }
+            } catch (error) {
+              this.service.writeErrorLog(error);
+              this.service.debug(error);
+            }
+          }
 
           // 替换用户相关信息
           if (site.user) {
