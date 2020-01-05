@@ -6,7 +6,7 @@
   position: fixed;
   right: 5px;
   opacity: .3;
-  z-index: 100;
+  z-index: 10000;
   font-size: 12px;
 }
 
