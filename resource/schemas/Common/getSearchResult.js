@@ -115,7 +115,7 @@
       }
 
       // 没有搜索到相关的种子
-      if (results.length == 0) {
+      if (results.length == 0 && !options.errorMsg) {
         options.status = ESearchResultParseStatus.noTorrents;
       }
 
