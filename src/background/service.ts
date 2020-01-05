@@ -7,7 +7,8 @@ import {
   Site,
   SiteSchema,
   Dictionary,
-  EUserDataRequestStatus
+  EUserDataRequestStatus,
+  LogItem
 } from "@/interface/common";
 import Config from "./config";
 import Controller from "./controller";
@@ -492,6 +493,18 @@ export default class PTPlugin {
   public debug(...msgs: any[]) {
     msgs.forEach((msg: any) => {
       this.controller.pushDebugMsg(msg);
+    });
+  }
+
+  public writeLog(msg: LogItem) {
+    this.logger.add(msg);
+  }
+
+  public writeErrorLog(msg: any) {
+    this.logger.add({
+      module: EModule.background,
+      event: "一般错误",
+      msg: typeof msg === "string" ? msg : JSON.stringify(msg)
     });
   }
 

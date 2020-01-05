@@ -12,7 +12,8 @@ import {
   SearchEntryConfig,
   ISearchPayload,
   SiteCategories,
-  SiteCategory
+  SiteCategory,
+  ERequestMethod
 } from "@/interface/common";
 import { APP } from "@/service/api";
 import { SiteService } from "./site";
@@ -20,6 +21,7 @@ import PTPlugin from "./service";
 import extend from "extend";
 import { InfoParser } from "./infoParser";
 import { PPF } from "@/service/public";
+import { PageParser } from "./pageParser";
 
 export type SearchConfig = {
   site?: Site;
@@ -400,10 +402,97 @@ export class Searcher {
     entry: SearchEntry,
     torrentTagSelectors?: any[]
   ): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      // 是否有需要搜索前处理的数据
+      if (entry.beforeSearch) {
+        let pageParser = new PageParser(
+          entry.beforeSearch,
+          site,
+          this.service.options.connectClientTimeout
+        );
+        pageParser
+          .getInfos()
+          .then(beforeSearchData => {
+            this.addSearchRequestQueue(
+              url,
+              site,
+              entry,
+              torrentTagSelectors,
+              beforeSearchData
+            )
+              .then(result => {
+                resolve(result);
+              })
+              .catch(error => {
+                reject(error);
+              });
+          })
+          .catch(error => {
+            this.service.writeErrorLog(error);
+            this.addSearchRequestQueue(url, site, entry, torrentTagSelectors)
+              .then(result => {
+                resolve(result);
+              })
+              .catch(error => {
+                reject(error);
+              });
+          });
+      } else {
+        this.addSearchRequestQueue(url, site, entry, torrentTagSelectors)
+          .then(result => {
+            resolve(result);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      }
+    });
+  }
+
+  /**
+   * 获取搜索结果
+   * @param url
+   * @param site
+   * @param entry
+   * @param torrentTagSelectors
+   */
+  public addSearchRequestQueue(
+    url: string,
+    site: Site,
+    entry: SearchEntry,
+    torrentTagSelectors?: any[],
+    beforeSearchData?: any
+  ): Promise<any> {
     let _entry = PPF.clone(entry);
     if (_entry.parseScript) {
       delete _entry.parseScript;
     }
+
+    // 是否包含搜索前处理的数据
+    if (beforeSearchData) {
+      this.service.debug("beforeSearchData", beforeSearchData);
+      url = this.replaceKeys(url, beforeSearchData, "beforeSearchData");
+
+      // 替换要提交数据中包含的关键字内容
+      if (entry.requestData) {
+        try {
+          for (const key in entry.requestData) {
+            if (entry.requestData.hasOwnProperty(key)) {
+              const value = entry.requestData[key];
+              entry.requestData[key] = PPF.replaceKeys(
+                value,
+                beforeSearchData,
+                "beforeSearchData"
+              );
+            }
+          }
+        } catch (error) {
+          this.service.writeErrorLog(error);
+          this.service.debug(error);
+        }
+      }
+    }
+
     this.service.debug("getSearchResult.start", {
       url,
       site: site.host,
@@ -416,7 +505,9 @@ export class Searcher {
         dataType: "text",
         contentType: "text/plain",
         timeout: this.options.connectClientTimeout || 30000,
-        headers: entry.headers
+        headers: entry.headers,
+        method: entry.requestMethod || ERequestMethod.GET,
+        data: entry.requestData
       })
         .done((result: any) => {
           this.service.debug("getSearchResult.done", url);
@@ -556,6 +647,11 @@ export class Searcher {
         })
         .fail((result: any) => {
           this.service.debug("getSearchResult.fail", url);
+          this.service.logger.add({
+            module: EModule.background,
+            event: "service.searcher.getSearchResult.fail",
+            msg: result
+          });
           delete this.searchRequestQueue[url];
           reject(result);
         });

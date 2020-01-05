@@ -396,6 +396,34 @@ export interface ISearchFieldIndex {
   title?: number;
 }
 
+/**
+ * 通用页面解析
+ */
+export interface IPageSelector {
+  // 需要请求的页面
+  page: string;
+  // 返回的数据类型，可用值：html，json ；默认为 html
+  dataType?: ERequestResultType;
+  // 用于解析数据的脚本文件路径；当指定该内容时，则执行该解析器，由解析器处理指定页面返回的内容，可用于请求多个页面等操作；
+  parser?: string;
+  // 请求方法，默认为 GET
+  requestMethod?: ERequestMethod;
+  // 数据请求头信息
+  headers?: Dictionary<any>;
+  // 需要提交的数据
+  requestData?: Dictionary<any>;
+  // 选择器列表
+  fields?: Dictionary<any>;
+  // 执行该规则的前提条件（条件表达式），合法的 js 语句；
+  prerequisites?: string;
+  // 是否合并 schema 已定义的内容，默认为 false
+  merge?: boolean;
+  // 指定用于获取内容的顶级 DOM 对象，默认为 body
+  topElement?: string;
+  // 缓存时间，单位：秒，0 及空表示不缓存
+  dataCacheTime?: number;
+}
+
 // 搜索入口默认配置
 export interface SearchEntryConfig {
   page: string;
@@ -423,25 +451,33 @@ export interface SearchEntryConfig {
   dataRowSelector?: string;
   // 验证已登录正则表达式
   loggedRegex?: string;
+  // 在搜索前需要处理的脚本
+  beforeSearch?: IPageSelector;
+  // 请求方法，默认为 GET
+  requestMethod?: ERequestMethod;
+  // 需要提交的数据
+  requestData?: Dictionary<any>;
 }
 
-export interface SearchEntry {
+/**
+ * 具体搜索入口配置
+ */
+export interface SearchEntry extends SearchEntryConfig {
+  // 搜索入口名称
   name?: string;
-  entry?: string;
-  resultType?: ERequestResultType;
-  parseScriptFile?: string;
-  parseScript?: string;
-  // 是否异步解析脚本
-  asyncParse?: boolean;
-  resultSelector?: string;
+  // 是否启用
   enabled?: boolean;
+  // 标签选择器配置
   tagSelectors?: any[];
+  // 是否为自定义
   isCustom?: boolean;
+  // id，自动生成
   id?: string;
-  queryString?: string;
+  // 分类目录
   categories?: string[];
+  // 追加到搜索关键字的内容
   appendToSearchKeyString?: string;
-  headers?: Dictionary<any>;
+  // 追加到查询字符串的内容
   appendQueryString?: string;
 }
 
