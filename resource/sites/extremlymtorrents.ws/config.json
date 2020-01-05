@@ -1,0 +1,156 @@
+{
+  "name": "XTR",
+  "timezoneOffset": "+0000",
+  "description": "extremlymtorrents",
+  "url": "https://extremlymtorrents.ws/",
+  "icon": "https://extremlymtorrents.ws/favicon.ico",
+  "tags": ["综合"],
+  "schema": "Common",
+  "host": "extremlymtorrents.ws",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/file.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents.php", "/torrents-search.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+  }],
+  "searchEntryConfig": {
+    "page": "/torrents-search.php",
+    "resultType": "html",
+    "queryString": "search=$key$&cat=0&lang=0&sort=id&order=desc",
+    "parseScriptFile": "/schemas/Common/getSearchResult.js",
+    "resultSelector": "table.xtrz",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "parseScript": "(payload && payload.en)?payload.en:key"
+    }],
+    "firstDataRowIndex": 1,
+    "fieldIndex": {
+      "title": 1,
+      "time": 8,
+      "size": 5,
+      "seeders": 6,
+      "leechers": 7,
+      "completed": -1,
+      "comments": -1,
+      "author": 3,
+      "category": 0,
+      "url": 2,
+      "link": 1
+    },
+    "loggedRegex": "account-logout\\.php",
+    "fieldSelector": {
+      "title": {
+        "selector": ["a:first > b"]
+      },
+      "url": {
+        "selector": ["a:first"],
+        "filters": ["query.attr('href')"]
+      },
+      "link": {
+        "selector": ["a:first"],
+        "filters": ["query.attr('href')"]
+      },
+      "time": {
+        "selector": [""],
+        "filters": ["query.text().replace(/(\\d{2}).(\\d{2}).(\\d{4})\\n?(\\d{2}:\\d{2}:\\d{2})/,'$3-$2-$1 $4')"]
+      },
+      "category": {
+        "selector": ["img:first"],
+        "filters": ["query.attr('alt')"]
+      }
+    }
+  },
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "img[title='Free Torrents']",
+    "color": "blue"
+  }, {
+    "name": "VIP",
+    "selector": "img[alt='Only VIP']",
+    "color": "orange"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ["a[href*='account-details.php']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["a[href*='account-details.php']:first"],
+          "filters": ["query && query.attr('href').getQueryString('id') > 0 ? query.text(): ''"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='account-logout.php']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/account-details.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.ttable_col2:contains('Uploaded:') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td.ttable_col2:contains('Downloaded:') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "levelName": {
+          "selector": "td.ttable_col2:contains('User Class:') + td"
+        },
+        "joinTime": {
+          "selector": "td.ttable_col2:contains('Joined:') + td"
+        },
+        "seeding": {
+          "value": "N/A"
+        },
+        "seedingSize": {
+          "value": "N/A"
+        },
+        "bonus": {
+          "value": "N/A"
+        }
+      }
+    },
+    "/file.php": {
+      "fields": {
+        "size": {
+          "selector": ["extremlymsmall3"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        },
+        "downloadURL": {
+          "selector": ["a[href*='download.php']:first"],
+          "filters": ["query.attr('href')"]
+        },
+        "sayThanksButton": {
+          "selector": ["input[type=submit][value='Thanks!']"],
+          "filters": ["query"]
+        }
+      }
+    },
+    "/torrents.php": {
+      "fields": {
+        "downloadURLs": {
+          "selector": ["a[href*='download.php']"],
+          "filters": ["query.toArray()"]
+        },
+        "confirmSize": {
+          "selector": ["table.xtrz"],
+          "filters": ["query.find(\"td:contains('MB'),td:contains('GB'),td:contains('TB')\")"]
+        }
+      }
+    }
+  }
+}

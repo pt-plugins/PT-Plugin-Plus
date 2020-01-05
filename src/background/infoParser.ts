@@ -64,7 +64,9 @@ export class InfoParser {
       try {
         switch (rule.dataType) {
           case ERequestResultType.JSON:
-            if (selector.substr(0, 1) == "[") {
+            if (selector == "") {
+              query = content;
+            } else if (selector.substr(0, 1) == "[") {
               query = eval("content" + selector);
             } else {
               query = eval("content." + selector);
@@ -77,7 +79,12 @@ export class InfoParser {
           case ERequestResultType.TEXT:
           case ERequestResultType.HTML:
           default:
-            query = content.find(selector);
+            if (selector == "") {
+              query = content;
+            } else {
+              query = content.find(selector);
+            }
+
             if (query.length > 0) {
               return true;
             }
