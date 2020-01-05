@@ -19,7 +19,17 @@
   "host": "hd-torrents.org",
   "searchEntryConfig": {
     "page": "/torrents.php",
-    "queryString": "csrfToken=$user.csrfToken$&search=$key$",
+    "beforeSearch": {
+      "page": "/torrents.php",
+      "fields": {
+        "csrfToken": {
+          "selector": ["input[name='csrfToken']:first"],
+          "filters": ["query.val()"]
+        }
+      },
+      "dataCacheTime": 60
+    },
+    "queryString": "csrfToken=$beforeSearchData.csrfToken$&search=$key$",
     "area": [{
       "name": "标题",
       "appendQueryString": "&options=0"
