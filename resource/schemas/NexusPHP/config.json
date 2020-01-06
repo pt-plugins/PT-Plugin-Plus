@@ -78,7 +78,7 @@
           "filters": ["query && query.attr('href').getQueryString('id') > 0 ? query.text(): ''"]
         },
         "isLogged": {
-          "selector": ["a[href*='logout.php']"],
+          "selector": ["a[href*='usercp.php']"],
           "filters": ["query.length>0"]
         },
         "messageCount": {
