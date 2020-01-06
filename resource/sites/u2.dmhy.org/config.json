@@ -14,12 +14,21 @@
     "merge": true,
     "fieldSelector": {
       "progress": {
-        "selector": ["td[class*='seedhlc_'],.leechhlc_inactive,.leechhlc_current"],
-        "filters": ["query.attr('class').indexOf('rowfollow seedhlc')!=-1?100:(query[0]?query[0].innerHTML.split('<br>')[1]:null)"]
+        "selector": ["td[class*='seedhlc_']","td[class*='leechhlc_']",""],
+        "switchFilters": [
+          ["100"],
+          ["query[0].innerHTML.split('<br>')[1]"],
+          ["null"]
+        ]
       },
       "status": {
-        "selector": ["td[class*='seedhlc_'],.leechhlc_inactive,.leechhlc_current"],
-        "filters": ["query.attr('class')", "query=='rowfollow seedhlc_current'?2:(query.indexOf('rowfollow seedhlc')!=-1?255:(query=='rowfollow leechhlc_current'?1:3))"]
+        "selector": ["td[class*='seedhlc_ever']",".seedhlc_current",".leechhlc_inactive",".leechhlc_current"],
+        "switchFilters": [
+          ["255"],
+          ["2"],
+          ["3"],
+          ["1"]
+        ]
       }
     }
   },
