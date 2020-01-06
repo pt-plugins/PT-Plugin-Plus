@@ -439,6 +439,7 @@ class HelpFunctions {
    * @param timezoneOffset 时区偏移量，用于解决时差问题，如：+08:00, -08:00, +0800, UTC+0800, UTC+08:00
    * @see https://zh.wikipedia.org/wiki/各國時區列表
    * @see https://zh.wikipedia.org/wiki/时区
+   * @see https://zh.wikipedia.org/wiki/ISO_8601
    */
   public transformTime(time?: number, timezoneOffset?: string) {
     if (!timezoneOffset || !time) {
@@ -449,8 +450,9 @@ class HelpFunctions {
     if (/^(\d){10}$/.test(result + "")) {
       result = parseInt(result + "") * 1000;
     }
-    let datetime = dayjs(result).format("YYYY-MM-DD HH:mm:ss");
-    result = new Date(`${datetime} ${timezoneOffset}`).getTime();
+    // 时间格式按 ISO 8601 标准设置，如：2020-01-01T00:00:01+0800
+    let datetime = dayjs(result).format("YYYY-MM-DDTHH:mm:ss");
+    result = new Date(`${datetime}${timezoneOffset}`).getTime();
     return result;
   }
 }
