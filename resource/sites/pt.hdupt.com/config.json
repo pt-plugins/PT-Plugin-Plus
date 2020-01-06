@@ -10,7 +10,7 @@
   ],
   "schema": "NexusPHP",
   "host": "pt.hdupt.com",
-    "searchEntryConfig": {
+  "searchEntryConfig": {
     "merge": true,
     "fieldSelector": {
       "progress": {
