@@ -301,6 +301,7 @@ export class User {
         method: rule.requestMethod || ERequestMethod.GET,
         dataType: "text",
         data: requestData,
+        headers: rule.headers,
         timeout: this.service.options.connectClientTimeout || 30000
       })
         .done(result => {
