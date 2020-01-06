@@ -17,6 +17,7 @@
     "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
   }],
   "searchEntryConfig": {
+    "skipIMDbId": true,
     "page": "/ajax/torrents_data.php",
     "queryString": "total=3&search=$key$&SearchSubmit=&page=1",
     "resultType": "html",
@@ -82,17 +83,27 @@
         "joinTime": {
           "selector": "tr.dataOdd > td:contains('Join date') + td:first",
           "filters": ["query.text().split(' [')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
-        },
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/ajax/user-active-torrents.php?uid=$user.id$",
+      "headers": {
+        "x-requested-with": "XMLHttpRequest"
+      },
+      "fields": {
         "seeding": {
-          "value": -1
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["query.length"]
         },
         "seedingSize": {
-          "value": -1
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
       }
     }
   },
   "supportedFeatures": {
-    "userData": "◐"
+    "imdbSearch": false
   }
 }

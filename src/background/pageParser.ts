@@ -136,6 +136,7 @@ export class PageParser {
         url: this.url,
         method: this.options.requestMethod || ERequestMethod.GET,
         dataType: "text",
+        headers: this.options.headers,
         data: this.requestData,
         timeout: this.timeout
       })

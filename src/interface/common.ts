@@ -11,7 +11,8 @@ import {
   EBackupServerType,
   EPluginPosition,
   EWorkingStatus,
-  EEncryptMode
+  EEncryptMode,
+  ETorrentStatus
 } from "./enum";
 
 /**
@@ -355,7 +356,7 @@ export interface SearchResultItem {
   // 进度（100表示完成）
   progress?: number;
   // 状态
-  status?: number;
+  status?: ETorrentStatus;
   host?: string;
 }
 

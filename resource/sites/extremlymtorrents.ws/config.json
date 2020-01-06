@@ -111,7 +111,8 @@
           "selector": "td.ttable_col2:contains('User Class:') + td"
         },
         "joinTime": {
-          "selector": "td.ttable_col2:contains('Joined:') + td"
+          "selector": "td.ttable_col2:contains('Joined:') + td",
+          "filters": ["query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         },
         "seeding": {
           "value": "N/A"

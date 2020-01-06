@@ -8,7 +8,6 @@
   "schema": "AvistaZ",
   "host": "avistaz.to",
   "supportedFeatures": {
-    "imdbSearch": false,
-    "userData": "◐"
+    "imdbSearch": false
   }
 }

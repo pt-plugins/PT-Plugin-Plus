@@ -116,7 +116,15 @@ export class User {
         .then((result: any) => {
           console.log("userBaseInfo", host, result);
           userInfo = Object.assign({}, result);
-          if (userInfo.name || userInfo.id) {
+          // 是否已定义已登录选择器
+          if (rule && rule.fields && rule.fields.isLogged) {
+            // 如果已定义则以选择器匹配为准
+            if (userInfo.isLogged && (userInfo.name || userInfo.id)) {
+              userInfo.isLogged = true;
+            } else {
+              userInfo.isLogged = false;
+            }
+          } else if (userInfo.name || userInfo.id) {
             userInfo.isLogged = true;
           }
 
@@ -293,6 +301,7 @@ export class User {
         method: rule.requestMethod || ERequestMethod.GET,
         dataType: "text",
         data: requestData,
+        headers: rule.headers,
         timeout: this.service.options.connectClientTimeout || 30000
       })
         .done(result => {
