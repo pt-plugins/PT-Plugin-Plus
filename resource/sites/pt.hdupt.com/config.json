@@ -10,6 +10,19 @@
   ],
   "schema": "NexusPHP",
   "host": "pt.hdupt.com",
+  "searchEntryConfig": {
+    "merge": true,
+    "fieldSelector": {
+      "progress": {
+        "selector": ["td[class='embedded'][style*='color: blue;font-weight: bold'],td[class='embedded'] img[src*='zuozhong.gif']"],
+        "filters": ["query.attr('src')?100:(query.text()?query.text():null)"]
+      },
+      "status": {
+        "selector": ["td[class='embedded'][style*='color: blue;font-weight: bold'],td[class='embedded'] img[src*='zuozhong.gif']"],
+        "filters": ["query.attr('src')?2:(query.text()=='100%'?255:3)"]
+      }
+    }
+  },
   "searchEntry": [{
       "name": "全站",
       "enabled": true
