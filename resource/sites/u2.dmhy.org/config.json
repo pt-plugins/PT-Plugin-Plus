@@ -14,7 +14,7 @@
     "merge": true,
     "fieldSelector": {
       "progress": {
-        "selector": ["td[class*='seedhlc_']","td[class*='leechhlc_']",""],
+        "selector": ["td[class*='seedhlc_']", "td[class*='leechhlc_']", ""],
         "switchFilters": [
           ["100"],
           ["query[0].innerHTML.split('<br>')[1]"],
@@ -22,13 +22,17 @@
         ]
       },
       "status": {
-        "selector": ["td[class*='seedhlc_ever']",".seedhlc_current",".leechhlc_inactive",".leechhlc_current"],
+        "selector": ["td[class*='seedhlc_ever']", ".seedhlc_current", ".leechhlc_inactive", ".leechhlc_current"],
         "switchFilters": [
           ["255"],
           ["2"],
           ["3"],
           ["1"]
         ]
+      },
+      "leechers": {
+        "selector": ["a:first", ""],
+        "filters": ["query.text()"]
       }
     }
   },
