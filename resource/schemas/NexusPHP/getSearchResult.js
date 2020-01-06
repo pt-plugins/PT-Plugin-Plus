@@ -1,15 +1,6 @@
-if (!"".getQueryString) {
-  String.prototype.getQueryString = function(name, split) {
-    if (split == undefined) split = "&";
-    var reg = new RegExp(
-        "(^|" + split + "|\\?)" + name + "=([^" + split + "]*)(" + split + "|$)"
-      ),
-      r;
-    if ((r = this.match(reg))) return decodeURI(r[2]);
-    return null;
-  };
-}
-
+/**
+ * NexusPHP 默认搜索结果解析类
+ */
 (function(options, Searcher) {
   class Parser {
     constructor() {
@@ -31,6 +22,7 @@ if (!"".getQueryString) {
       }
 
       this.haveData = true;
+      this.site = options.site;
     }
 
     /**
@@ -146,6 +138,10 @@ if (!"".getQueryString) {
         }
       }
 
+      if (options.entry.fieldIndex) {
+        fieldIndex = Object.assign(fieldIndex, options.entry.fieldIndex);
+      }
+
       try {
         // 遍历数据行
         for (let index = beginRowIndex; index < rows.length; index++) {
@@ -202,41 +198,31 @@ if (!"".getQueryString) {
             subTitle: this.getSubTitle(title, row),
             link,
             url,
-            size: cells.eq(fieldIndex.size).html() || 0,
+            size: this.getFieldValue(row, cells, fieldIndex, "size") || 0,
             time:
               fieldIndex.time == -1
                 ? ""
                 : this.getTime(cells.eq(fieldIndex.time)),
-            author:
-              fieldIndex.author == -1
-                ? ""
-                : cells.eq(fieldIndex.author).text() || "",
-            seeders:
-              fieldIndex.seeders == -1
-                ? ""
-                : cells.eq(fieldIndex.seeders).text() || 0,
+            author: this.getFieldValue(row, cells, fieldIndex, "author") || "",
+            seeders: this.getFieldValue(row, cells, fieldIndex, "seeders") || 0,
             leechers:
-              fieldIndex.leechers == -1
-                ? ""
-                : cells.eq(fieldIndex.leechers).text() || 0,
+              this.getFieldValue(row, cells, fieldIndex, "leechers") || 0,
             completed:
-              fieldIndex.completed == -1
-                ? ""
-                : cells.eq(fieldIndex.completed).text() || 0,
+              this.getFieldValue(row, cells, fieldIndex, "completed") || 0,
             comments:
-              fieldIndex.comments == -1
-                ? ""
-                : cells.eq(fieldIndex.comments).text() || 0,
+              this.getFieldValue(row, cells, fieldIndex, "comments") || 0,
             site: site,
             tags: this.getTags(row, options.torrentTagSelectors),
             entryName: options.entry.name,
             category:
               fieldIndex.category == -1
                 ? null
-                : this.getCategory(cells.eq(fieldIndex.category)),
-            progress: Searcher.getFieldValue(site, row, "progress"),
-            status: Searcher.getFieldValue(site, row, "status")
+                : this.getFieldValue(row, cells, fieldIndex, "category") ||
+                  this.getCategory(cells.eq(fieldIndex.category)),
+            progress: this.getFieldValue(row, cells, fieldIndex, "progress"),
+            status: this.getFieldValue(row, cells, fieldIndex, "status")
           };
+
           results.push(data);
         }
       } catch (error) {
@@ -246,6 +232,38 @@ if (!"".getQueryString) {
       }
 
       return results;
+    }
+
+    /**
+     * 获取指定字段内容
+     * @param {*} row
+     * @param {*} cells
+     * @param {*} fieldIndex
+     * @param {*} fieldName
+     */
+    getFieldValue(row, cells, fieldIndex, fieldName, returnCell) {
+      let parent = row;
+      let cell = null;
+      if (
+        cells &&
+        fieldIndex &&
+        fieldIndex[fieldName] !== undefined &&
+        fieldIndex[fieldName] !== -1
+      ) {
+        cell = cells.eq(fieldIndex[fieldName]);
+        parent = cell || row;
+      }
+
+      let result = Searcher.getFieldValue(this.site, parent, fieldName);
+
+      if (!result && cell) {
+        if (returnCell) {
+          return cell;
+        }
+        result = cell.text();
+      }
+
+      return result;
     }
 
     /**
