@@ -21,7 +21,7 @@
       }
       let site = options.site;
       let selector =
-        options.resultSelector || "div.table-responsive > table:last";
+        options.resultSelector || "div.table-torrents > table:first";
       let table = options.page.find(selector);
       // 获取种子列表行
       let rows = table.find("> tbody > tr");

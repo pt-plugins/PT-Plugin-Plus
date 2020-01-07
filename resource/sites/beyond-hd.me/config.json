@@ -12,7 +12,7 @@
     "page": "/torrents",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "div.table-responsive > table:last",
+    "resultSelector": "div.table-torrents > table:last",
     "queryString": "search=$key$",
     "area": [{
       "name": "IMDB",
@@ -54,12 +54,12 @@
           ]
         },
         "uploaded": {
-          "selector": ["div.ratio-bar i.fa-arrow-up"],
-          "filters": ["query.parent().text().trim().replace(/,/g,'').match(/:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "selector": ["a[href*='uploads']:first"],
+          "filters": ["query.parent().text().trim().replace(/,|\\n|\\s+/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "downloaded": {
-          "selector": ["div.ratio-bar i.fa-arrow-down"],
-          "filters": ["query.parent().text().trim().replace(/,/g,'').match(/:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "selector": ["a[href*='downloads']:first"],
+          "filters": ["query.parent().text().trim().replace(/,|\\n|\\s+/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "bonus": {
           "selector": ["a[href*='bonus']:first"],
@@ -75,11 +75,11 @@
       "page": "/$user.name$.$user.id$",
       "fields": {
         "seedingSize": {
-          "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Seeding Size') + td"],
+          "selector": ["td:contains('Active Seed Size') + td"],
           "filters": ["query.text().trim().sizeToNumber()"]
         },
         "levelName": {
-          "selector": "div.button-holder span.badge-user.badge-star.text-bold.font-stat"
+          "selector": "div.button-holder span.badge-faded"
         },
         "joinTime": {
           "selector": "div.button-holder h5:contains('Since: ')",
