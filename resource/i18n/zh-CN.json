@@ -181,7 +181,8 @@
         "lastUpdateTime": "数据更新于",
         "status": "状态"
       },
-      "tip": "N/A 表示暂不支持"
+      "tip": "N/A 表示暂不支持",
+      "nodata": "您还没有添加站点，请前往『站点设置』里添加站点。"
     },
     "systemLog": {
       "title": "系统日志",

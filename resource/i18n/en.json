@@ -181,7 +181,8 @@
         "lastUpdateTime": "Update at",
         "status": "Status"
       },
-      "tip": "N/A means no support"
+      "tip": "N/A means no support",
+      "nodata": "You have not added a site, please go to [Sites] to add a site."
     },
     "systemLog": {
       "title": "System Log",

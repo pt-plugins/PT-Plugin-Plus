@@ -2,7 +2,7 @@
   <div class="home">
     <v-alert :value="true" type="info">{{ $t("home.title") }}</v-alert>
     <v-card>
-      <v-card-title>
+      <v-card-title v-if="sites && sites.length > 0">
         <v-btn color="success" @click="getInfos" :loading="loading" :title="$t('home.getInfos')">
           <v-icon class="mr-2">cached</v-icon>
           {{ $t("home.getInfos") }}
@@ -53,7 +53,7 @@
           </v-card>
         </v-menu>
 
-        <AutoSignWarning />
+        <!-- <AutoSignWarning /> -->
         <v-spacer></v-spacer>
 
         <v-text-field
@@ -74,6 +74,7 @@
         item-key="host"
         class="elevation-1"
         ref="userDataTable"
+        :no-data-text="$t('home.nodata')"
       >
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
