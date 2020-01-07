@@ -15,8 +15,13 @@
         "filters": ["query.attr('style')||''", "query.match(/width:([ \\d.]+)%/)", "(query && query.length>=2)?query[1]:null"]
       },
       "status": {
-        "selector": [".progress:eq(0) > div"],
-        "filters": ["query.attr('class')", "query=='progress_seeding'?2:(query=='progress_completed'?255:1)"]
+        "selector": ["div.progress_seeding", "div.progress_completed, div.progress_completed_hr", "div.progress_no_downloading", "div.progress_downloading"],
+        "switchFilters": [
+          [2],
+          [255],
+          [3],
+          [1]
+        ]
       }
     }
   },
