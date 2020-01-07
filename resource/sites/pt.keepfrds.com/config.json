@@ -9,6 +9,27 @@
   ],
   "schema": "NexusPHP",
   "host": "pt.keepfrds.com",
+  "searchEntryConfig": {
+    "merge": true,
+    "fieldSelector": {
+      "progress": {
+        "selector": ["img[src='/static/pic/newpic/2s_dl.gif']", "img[src='/static/pic/newpic/2s_up.gif'], img[src='/static/pic/newpic/2s_dled.gif']", ""],
+        "switchFilters": [
+          ["query.parent().parent().next().attr('style').split(';')[0].replace('width: ','').replace('px','')/3"],
+          ["100"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["img[src='/static/pic/newpic/2s_dl.gif']", "img[src='/static/pic/newpic/2s_up.gif']", "img[src='/static/pic/newpic/2s_dled.gif']"],
+        "switchFilters": [
+          ["3"],
+          ["2"],
+          ["255"]
+        ]
+      }
+    }
+  },
   "searchEntry": [{
       "name": "全站",
       "enabled": true
