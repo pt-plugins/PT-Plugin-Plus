@@ -768,7 +768,8 @@
         "siteEvalScriptFailed": "[{site.name}]脚本执行出错！",
         "siteSearchResultError": "[{site.name}]没有返回预期的数据。",
         "siteAbortSearch": "正在取消[{site.host}]的搜索请求",
-        "siteAbortSearchError": "[{site.host}]取消搜索请求失败！"
+        "siteAbortSearchError": "[{site.host}]取消搜索请求失败！",
+        "siteNetworkFailed": "[{site.name}]网络请求失败！({msg})"
       },
       "controller": {
         "invalidAddress": "无效的地址",

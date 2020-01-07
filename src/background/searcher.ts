@@ -566,6 +566,7 @@ export class Searcher {
                 msg: error
               });
 
+              // 数据解析失败
               reject({
                 success: false,
                 msg: this.service.i18n.t(
@@ -573,7 +574,7 @@ export class Searcher {
                   {
                     site
                   }
-                ), //`[${site.name}]数据解析失败！`
+                ),
                 data: {
                   logId
                 }
@@ -640,6 +641,7 @@ export class Searcher {
                 event: "service.searcher.getSearchResult.siteEvalScriptFailed",
                 msg: error
               });
+              // 脚本执行出错
               reject({
                 success: false,
                 msg: this.service.i18n.t(
@@ -647,7 +649,7 @@ export class Searcher {
                   {
                     site
                   }
-                ), //`[${site.name}]脚本执行出错！`
+                ),
                 data: {
                   logId
                 }
@@ -659,6 +661,7 @@ export class Searcher {
               event: "service.searcher.getSearchResult.siteSearchResultError",
               msg: result
             });
+            // 没有返回预期的数据
             reject({
               success: false,
               msg: this.service.i18n.t(
@@ -666,22 +669,49 @@ export class Searcher {
                 {
                   site
                 }
-              ), //`[${site.name}]没有返回预期的数据。`
+              ),
               data: {
                 logId
               }
             });
           }
         })
-        .fail((result: any) => {
-          this.service.debug("getSearchResult.fail", url);
-          this.service.logger.add({
+        .fail((jqXHR, textStatus, errorThrown) => {
+          delete this.searchRequestQueue[url];
+
+          this.service.debug(
+            "getSearchResult.fail",
+            url,
+            jqXHR,
+            textStatus,
+            errorThrown
+          );
+          logId = this.service.logger.add({
             module: EModule.background,
             event: "service.searcher.getSearchResult.fail",
-            msg: result
+            msg: errorThrown,
+            data: {
+              url,
+              code: jqXHR.status,
+              textStatus,
+              errorThrown,
+              responseText: jqXHR.responseText
+            }
           });
-          delete this.searchRequestQueue[url];
-          reject(result);
+
+          // 网络请求失败
+          reject({
+            data: {
+              logId,
+              textStatus
+            },
+            msg: this.service.i18n.t("service.searcher.siteNetworkFailed", {
+              site,
+              msg: `(${jqXHR.status} ${errorThrown}, ${textStatus})`
+            }),
+            success: false,
+            type: EDataResultType.error
+          });
         });
     });
   }

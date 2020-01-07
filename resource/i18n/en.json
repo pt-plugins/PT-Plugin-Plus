@@ -768,7 +768,8 @@
         "siteEvalScriptFailed": "[{site.name}] Script execution error!",
         "siteSearchResultError": "[{site.name}] No expected data was returned.",
         "siteAbortSearch": "Deactivating search request for [{site.host}]",
-        "siteAbortSearchError": "[{site.host}] Failed to cancel search request!"
+        "siteAbortSearchError": "[{site.host}] Failed to cancel search request!",
+        "siteNetworkFailed": "[{site.name}]Network request failed! ({msg})"
       },
       "controller": {
         "invalidAddress": "Invalid Address",

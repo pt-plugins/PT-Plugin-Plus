@@ -23,7 +23,8 @@ import {
   ISearchPayload,
   EResourceOrderMode,
   ICollectionGroup,
-  EViewKey
+  EViewKey,
+  EDataResultType
 } from "@/interface/common";
 import { filters } from "@/service/filters";
 import dayjs from "dayjs";
@@ -672,11 +673,20 @@ export default Vue.extend({
               color: "grey"
             });
           } else {
-            this.searchResult.noResultsSites.push({
-              site: site,
-              msg: this.errorMsg,
-              color: "light-blue darken-2"
-            });
+            if (result.type === EDataResultType.error) {
+              this.searchResult.failedSites.push({
+                site: site,
+                url: site.url,
+                msg: result.msg || result.data || result,
+                color: "grey"
+              });
+            } else {
+              this.searchResult.noResultsSites.push({
+                site: site,
+                msg: result.msg || result.data || result,
+                color: "light-blue darken-2"
+              });
+            }
           }
         })
         .finally(() => {
