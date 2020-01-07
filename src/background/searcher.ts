@@ -193,6 +193,7 @@ export class Searcher {
 
       const KEY = "$key$";
 
+      // 遍历需要搜索的入口
       searchConfig.entry.forEach((entry: SearchEntry) => {
         let searchPage = entry.entry || siteSearchPage;
 
@@ -530,6 +531,7 @@ export class Searcher {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.searchRequestQueue[url] = $.ajax({
         url: url,
+        cache: false,
         dataType: "text",
         contentType: "text/plain",
         timeout: this.options.connectClientTimeout || 30000,
@@ -679,19 +681,20 @@ export class Searcher {
         .fail((jqXHR, textStatus, errorThrown) => {
           delete this.searchRequestQueue[url];
 
-          this.service.debug(
-            "getSearchResult.fail",
+          this.service.debug({
+            title: "getSearchResult.fail",
             url,
-            jqXHR,
+            entry,
             textStatus,
             errorThrown
-          );
+          });
           logId = this.service.logger.add({
             module: EModule.background,
             event: "service.searcher.getSearchResult.fail",
             msg: errorThrown,
             data: {
               url,
+              entry,
               code: jqXHR.status,
               textStatus,
               errorThrown,
@@ -707,7 +710,7 @@ export class Searcher {
             },
             msg: this.service.i18n.t("service.searcher.siteNetworkFailed", {
               site,
-              msg: `(${jqXHR.status} ${errorThrown}, ${textStatus})`
+              msg: `${jqXHR.status} ${errorThrown}, ${textStatus}`
             }),
             success: false,
             type: EDataResultType.error
