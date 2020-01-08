@@ -15,6 +15,25 @@
       "title": {
         "selector": ["a[href*='details.php?id='][title]:first"],
         "filters": ["query"]
+      },
+      "progress": {
+        "selector": [".progbargreen", ".progbarred + .progbarrest", ".progbarred", ".progbarrest", ""],
+        "switchFilters": [
+          ["100"],
+          ["query.prev().attr('style').replace('width: ','').replace('%;','')"],
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": [".progbargreen", ".progbarred + .progbarrest", ".progbarred", ".progbarrest"],
+        "switchFilters": [
+          ["2"],
+          ["3"],
+          ["255"],
+          ["3"]
+        ]
       }
     }
   },
