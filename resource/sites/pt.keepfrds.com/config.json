@@ -148,5 +148,11 @@
         }
       }
     }
-  }
+  },
+  "mergeSchemaTagSelectors": true,
+  "torrentTagSelectors": [{
+    "name": "⛔️",
+    "selector": "td.embedded b > font.recommended",
+    "color": "deep-orange darken-1"
+  }]
 }
