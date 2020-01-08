@@ -167,6 +167,13 @@ export class BuildPlugin {
           );
         }
 
+        // 判断是否有跳过 IMDb 选项，有则定为不支持 IMDb
+        if (content.searchEntryConfig) {
+          if (content.searchEntryConfig.skipIMDbId === true) {
+            supportedFeatures.imdbSearch = false;
+          }
+        }
+
         let count = schemas[schema].length;
         let item = this.replaceKeys(itemTemplate, {
           schema: count == 0 ? schema : "",

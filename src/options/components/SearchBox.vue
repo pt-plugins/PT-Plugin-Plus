@@ -51,6 +51,9 @@
               <span class="title ml-1">{{ $t('searchBox.searchThisKey', { key: this.searchKey }) }}</span>
             </v-list-tile-title>
           </v-list-tile-content>
+          <v-list-tile-action>
+            <v-icon>forward</v-icon>
+          </v-list-tile-action>
         </v-list-tile>
         <v-divider v-if="!isLoading"></v-divider>
         <v-progress-linear :indeterminate="true" v-else color="secondary" height="2"></v-progress-linear>
