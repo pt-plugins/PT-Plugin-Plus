@@ -21,7 +21,7 @@
       },
       "status": {
         "selector": [".progress:eq(0) > div"],
-        "filters": ["query.attr('class')", "query=='progress_seeding'?2:(query=='progress_completed'?255:1)"]
+        "filters": ["query.attr('class')", "query=='progress_seeding'?2:(query=='progress_completed'?255:(query=='progress_no_downloading'?3:1))"]
       }
     }
   },
