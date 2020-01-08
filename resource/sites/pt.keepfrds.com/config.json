@@ -23,7 +23,7 @@
       "status": {
         "selector": ["img[src='/static/pic/newpic/2s_dl.gif']", "img[src='/static/pic/newpic/2s_up.gif']", "img[src='/static/pic/newpic/2s_dled.gif']"],
         "switchFilters": [
-          ["3"],
+          ["1"],
           ["2"],
           ["255"]
         ]
