@@ -64,7 +64,7 @@
             <v-timeline-item v-for="(site, i) in datas" :key="i" color="transparent" large>
               <template v-slot:icon>
                 <v-avatar size="38">
-                  <img :src="site.icon">
+                  <img :src="site.icon" />
                 </v-avatar>
               </template>
               <template v-slot:opposite>
@@ -123,6 +123,7 @@ import { Site, Dictionary, EAction, Options } from "@/interface/common";
 import html2canvas from "html2canvas";
 import FileSaver from "file-saver";
 import Extension from "@/service/extension";
+import dayjs from "dayjs";
 
 const extension = new Extension();
 
@@ -137,7 +138,7 @@ export default Vue.extend({
         joinTimeInfo: {
           site: {} as Site,
           time: new Date().getTime(),
-          years: 0
+          years: 0 as number | string
         },
         maxUploadedInfo: {
           site: {} as Site,
@@ -260,9 +261,10 @@ export default Vue.extend({
       });
 
       if (result.joinTimeInfo.time > 0) {
-        let now = new Date();
-        result.joinTimeInfo.years =
-          now.getFullYear() - new Date(result.joinTimeInfo.time).getFullYear();
+        // 计算P龄，带小数
+        result.joinTimeInfo.years = dayjs(new Date())
+          .diff(result.joinTimeInfo.time, "year", true)
+          .toFixed(2);
       }
 
       this.infos = result;
