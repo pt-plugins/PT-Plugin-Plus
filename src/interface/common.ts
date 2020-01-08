@@ -263,6 +263,8 @@ export interface Site {
   // @see https://zh.wikipedia.org/wiki/各國時區列表
   // @see https://zh.wikipedia.org/wiki/时区
   timezoneOffset?: string;
+  // 是否合并 Schema 的标签选择器
+  mergeSchemaTagSelectors?: boolean;
 }
 
 export interface Request {

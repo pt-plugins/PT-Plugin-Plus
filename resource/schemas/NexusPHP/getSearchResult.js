@@ -212,7 +212,7 @@
             comments:
               this.getFieldValue(row, cells, fieldIndex, "comments") || 0,
             site: site,
-            tags: this.getTags(row, options.torrentTagSelectors),
+            tags: Searcher.getRowTags(this.site, row),
             entryName: options.entry.name,
             category:
               fieldIndex.category == -1
@@ -278,30 +278,6 @@
           .text();
       }
       return time || "";
-    }
-
-    /**
-     * 获取标签
-     * @param {*} row
-     * @param {*} selectors
-     * @return array
-     */
-    getTags(row, selectors) {
-      let tags = [];
-      if (selectors && selectors.length > 0) {
-        selectors.forEach(item => {
-          if (item.selector) {
-            let result = row.find(item.selector);
-            if (result.length) {
-              tags.push({
-                name: item.name,
-                color: item.color
-              });
-            }
-          }
-        });
-      }
-      return tags;
     }
 
     /**

@@ -79,7 +79,7 @@ export class Searcher {
         success: false
       };
 
-      let siteServce: SiteService = new SiteService(
+      let siteService: SiteService = new SiteService(
         PPF.clone(site),
         PPF.clone(this.options)
       );
@@ -91,25 +91,36 @@ export class Searcher {
       // 当前站点默认搜索配置信息
       let searchEntryConfig: SearchEntryConfig | undefined = extend(
         true,
-        {},
+        {
+          torrentTagSelectors: []
+        },
         schema && schema.searchEntryConfig ? schema.searchEntryConfig : {},
-        siteServce.options.searchEntryConfig
+        siteService.options.searchEntryConfig
       );
       let searchEntryConfigQueryString = "";
 
-      if (siteServce.options.searchEntry) {
+      if (siteService.options.searchEntry) {
         searchConfig.rootPath = `sites/${host}/`;
-        searchConfig.entry = siteServce.options.searchEntry;
+        searchConfig.entry = siteService.options.searchEntry;
       } else if (schema && schema.searchEntry) {
         searchConfig.rootPath = `schemas/${schema.name}/`;
         searchConfig.entry = schema.searchEntry;
       }
 
-      if (siteServce.options.torrentTagSelectors) {
-        searchConfig.torrentTagSelectors =
-          siteServce.options.torrentTagSelectors;
-      } else if (schema && schema.torrentTagSelectors) {
+      if (schema && schema.torrentTagSelectors) {
         searchConfig.torrentTagSelectors = schema.torrentTagSelectors;
+      }
+
+      if (siteService.options.torrentTagSelectors) {
+        // 是否合并 Schema 的标签选择器
+        if (siteService.options.mergeSchemaTagSelectors) {
+          searchConfig.torrentTagSelectors = siteService.options.torrentTagSelectors.concat(
+            searchConfig.torrentTagSelectors
+          );
+        } else {
+          searchConfig.torrentTagSelectors =
+            siteService.options.torrentTagSelectors;
+        }
       }
 
       if (!searchConfig.entry) {
@@ -934,5 +945,33 @@ export class Searcher {
       email += String.fromCharCode(i);
     }
     return email;
+  }
+
+  /**
+   * 获取指定站点当前行标签列表
+   * @param site
+   * @param row
+   */
+  public getRowTags(site: Site, row: JQuery<HTMLElement>) {
+    let tags: {}[] = [];
+    if (site && site.host) {
+      let config = this.searchConfigs[site.host];
+      let selectors = config.torrentTagSelectors;
+
+      if (selectors && selectors.length > 0) {
+        selectors.forEach((item: any) => {
+          if (item.selector) {
+            let result = row.find(item.selector);
+            if (result.length) {
+              tags.push({
+                name: item.name,
+                color: item.color
+              });
+            }
+          }
+        });
+      }
+    }
+    return tags;
   }
 }
