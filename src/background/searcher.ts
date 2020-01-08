@@ -193,6 +193,9 @@ export class Searcher {
 
       const KEY = "$key$";
 
+      // 转换 uri
+      key = encodeURIComponent(key);
+
       // 遍历需要搜索的入口
       searchConfig.entry.forEach((entry: SearchEntry) => {
         let searchPage = entry.entry || siteSearchPage;

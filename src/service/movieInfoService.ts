@@ -291,9 +291,9 @@ export class MovieInfoService {
     count: number = 5
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      let url = `${
-        this.doubanApiURL
-      }/movie/search?q=${key}&count=${count}&apikey=${this.getDoubanEntApiKey()}`;
+      let url = `${this.doubanApiURL}/movie/search?q=${encodeURIComponent(
+        key
+      )}&count=${count}&apikey=${this.getDoubanEntApiKey()}`;
       $.ajax({
         url: url,
         timeout: this.timeout
