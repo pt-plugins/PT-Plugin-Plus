@@ -31,8 +31,8 @@
         ]
       },
       "leechers": {
-        "selector": ["a:first", ""],
-        "filters": ["query.text()"]
+        "selector": [""],
+        "filters": ["query.get(0).firstChild", "query.nodeValue||query.innerText||0"]
       }
     }
   },
