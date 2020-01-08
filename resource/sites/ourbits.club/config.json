@@ -141,5 +141,11 @@
     "name": "保种列表",
     "pages": ["/rescue.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }],
+  "mergeSchemaTagSelectors": true,
+  "torrentTagSelectors": [{
+    "name": "⛔️",
+    "selector": "div.tag-jz",
+    "color": "deep-orange darken-1"
   }]
 }
