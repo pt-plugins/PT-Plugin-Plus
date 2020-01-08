@@ -72,6 +72,24 @@
       "enabled": false
     }
   ],
+  "searchEntryConfig": {
+    "merge": true,
+    "fieldSelector": {
+      "progress": {
+        "selector": [".rowfollow[title='Downloading'], .rowfollow[title='Seeding'], .rowfollow[title='Stopped'], .rowfollow[title='Completed']"],
+        "filters": ["query.text()?query.text():null"]
+      },
+      "status": {
+        "selector": [".rowfollow[title='Downloading']", ".rowfollow[title='Seeding']", ".rowfollow[title='Stopped']", ".rowfollow[title='Completed']"],
+        "switchFilters": [
+          ["1"],
+          ["2"],
+          ["3"],
+          ["255"]
+        ]
+      }
+    }
+  },
   "categories": [{
     "entry": "torrents.php",
     "result": "&cat$id$=1",
@@ -120,5 +138,11 @@
         "name": "其他"
       }
     ]
+  }],
+  "mergeSchemaTagSelectors": true,
+  "torrentTagSelectors": [{
+    "name": "⛔️",
+    "selector": "td.embedded > a[title] > b > font[color='red']",
+    "color": "deep-orange darken-1"
   }]
 }
