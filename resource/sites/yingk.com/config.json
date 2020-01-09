@@ -18,7 +18,26 @@
     }],
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "table.torrents:last > tbody > tr"
+    "resultSelector": "table.torrents:last > tbody > tr",
+    "fieldSelector": {
+      "progress": {
+        "selector": ["td.rowfollow[title='做种中']，td.rowfollow[title='已完成']", "td.rowfollow[title='未完成'], td.rowfollow[title='下载中']", ""],
+        "switchFilters": [
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["td.rowfollow[title='做种中']", "td.rowfollow[title='已完成']", "td.rowfollow[title='下载中']", "td.rowfollow[title='未完成']"],
+        "switchFilters": [
+          ["2"],
+          ["255"],
+          ["1"],
+          ["3"]
+        ]
+      }
+    }
   },
   "searchEntry": [{
     "name": "全部",
@@ -83,5 +102,11 @@
   }],
   "supportedFeatures": {
     "imdbSearch": false
-  }
+  },
+  "mergeSchemaTagSelectors": true,
+  "torrentTagSelectors": [{
+    "name": "⛔️",
+    "selector": "span.tag.monopoly, span.tag.noshare",
+    "color": "deep-orange darken-1"
+  }]
 }
