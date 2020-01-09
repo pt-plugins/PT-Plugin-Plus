@@ -18,7 +18,7 @@
     }],
     "fieldSelector": {
       "progress": {
-        "selector": ["td.rowfollow[title='做种中']，td.rowfollow[title='已完成']", "td.rowfollow[title='未完成'], td.rowfollow[title='下载中']", ""],
+        "selector": ["td.rowfollow[title='做种中'], td.rowfollow[title='已完成']", "td.rowfollow[title='未完成'], td.rowfollow[title='下载中']", ""],
         "switchFilters": [
           ["100"],
           ["0"],
@@ -53,7 +53,7 @@
   "mergeSchemaTagSelectors": true,
   "torrentTagSelectors": [{
     "name": "⛔️",
-    "selector": "td.embedded span.tag.noshare",
+    "selector": "td.embedded div.tag.noshare",
     "color": "deep-orange darken-1"
   }]
 }

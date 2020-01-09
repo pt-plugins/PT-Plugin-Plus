@@ -1,7 +1,7 @@
 /**
  * @see https://github.com/Rhilip/PT-help/blob/master/docs/js/ptsearch.user.js
  */
-(function(options) {
+(function(options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -22,6 +22,7 @@
       }
 
       this.haveData = true;
+      this.site = options.site;
     }
 
     /**
@@ -109,18 +110,35 @@
             size: _tag_size.text() || 0,
             time: _date,
             author,
-            seeders: _tag_seeders.text().replace(",", "") || 0,
-            leechers: _tag_leechers.text().replace(",", "") || 0,
-            completed: _tag_completed.text().replace(",", "") || 0,
+            seeders:
+              this.getFieldValue(
+                torrent_data_raw_1,
+                _tag_seeders,
+                "seeders"
+              ).replace(",", "") || 0,
+            leechers:
+              this.getFieldValue(
+                torrent_data_raw_1,
+                _tag_leechers,
+                "leechers"
+              ).replace(",", "") || 0,
+            completed:
+              this.getFieldValue(
+                torrent_data_raw_1,
+                _tag_completed,
+                "completed"
+              ).replace(",", "") || 0,
             comments:
               _tag_date
                 .prev("td")
                 .text()
                 .replace(",", "") || 0,
             site: site,
-            tags: this.getTags(torrent_data_raw_1, options.torrentTagSelectors),
+            tags: Searcher.getRowTags(this.site, torrent_data_raw_1),
             entryName: options.entry.name,
-            category: this.getCategory(torrent_data_raw_1.find("td:first"))
+            category: this.getCategory(torrent_data_raw_1.find("td:first")),
+            progress: this.getFieldValue(torrent_data_raw_1, null, "progress"),
+            status: this.getFieldValue(torrent_data_raw_1, null, "status")
           };
           results.push(data);
         }
@@ -134,6 +152,23 @@
       }
 
       return results;
+    }
+
+    /**
+     * 获取指定字段内容
+     * @param {*} row
+     * @param {*} cells
+     * @param {*} fieldIndex
+     * @param {*} fieldName
+     */
+    getFieldValue(row, cell, fieldName) {
+      let result = Searcher.getFieldValue(this.site, cell || row, fieldName);
+
+      if (!result && cell) {
+        result = cell.text();
+      }
+
+      return result;
     }
 
     /**
@@ -212,4 +247,4 @@
   let parser = new Parser(options);
   options.results = parser.getResult();
   console.log(options.results);
-})(options);
+})(options, options.searcher);

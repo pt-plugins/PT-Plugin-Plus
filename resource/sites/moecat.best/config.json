@@ -21,7 +21,7 @@
     "parseScriptFile": "/sites/yingk.com/getSearchResult.js",
     "fieldSelector": {
       "progress": {
-        "selector": ["td.rowfollow[title='做种中']，td.rowfollow[title='已完成']", "td.rowfollow[title='未完成'], td.rowfollow[title='下载中']", ""],
+        "selector": ["td.rowfollow[title='做种中'], td.rowfollow[title='已完成']", "td.rowfollow[title='未完成'], td.rowfollow[title='下载中']", ""],
         "switchFilters": [
           ["100"],
           ["0"],
