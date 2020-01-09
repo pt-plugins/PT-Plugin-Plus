@@ -44,10 +44,26 @@
     "pages": ["/torrentshd.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
   }],
-  "mergeSchemaTagSelectors": true,
   "torrentTagSelectors": [{
     "name": "⛔️",
-    "selector": "td.embedded span[style='background-color:#D74D4D;color:white;border-radius:15%']",
-    "color": "deep-orange darken-1"
+    "selector": "td.embedded span[style='background-color:#D74D4D;color:white;border-radius:15%']"
+  }, {
+    "name": "Free",
+    "selector": "img.pro_free"
+  }, {
+    "name": "2xFree",
+    "selector": "img.pro_free2up"
+  }, {
+    "name": "2xUp",
+    "selector": "img.pro_2up"
+  }, {
+    "name": "2x50%",
+    "selector": "img.pro_50pctdown2up"
+  }, {
+    "name": "30%",
+    "selector": "img.pro_30pctdown"
+  }, {
+    "name": "50%",
+    "selector": "img.pro_50pctdown"
   }]
 }

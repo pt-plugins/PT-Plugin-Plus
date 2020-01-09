@@ -77,7 +77,6 @@
   "mergeSchemaTagSelectors": true,
   "torrentTagSelectors": [{
     "name": "⛔️",
-    "selector": "a[href*='torrents.php?tag_exclusive=yes']",
-    "color": "deep-orange darken-1"
+    "selector": "a[href*='torrents.php?tag_exclusive=yes']"
   }]
 }

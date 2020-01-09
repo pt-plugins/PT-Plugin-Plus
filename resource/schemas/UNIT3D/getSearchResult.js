@@ -1,4 +1,4 @@
-(function(options) {
+(function(options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -217,7 +217,7 @@
                 ? ""
                 : cells.eq(fieldIndex.comments).text() || 0,
             site: site,
-            tags: this.getTags(row, options.torrentTagSelectors),
+            tags: Searcher.getRowTags(site, row),
             entryName: options.entry.name,
             category:
               fieldIndex.category == -1
@@ -290,4 +290,4 @@
   let parser = new Parser(options);
   options.results = parser.getResult();
   console.log(options.results);
-})(options);
+})(options, options.searcher);

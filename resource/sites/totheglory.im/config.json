@@ -147,16 +147,13 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "img[alt='free']",
-    "color": "blue"
+    "selector": "img[alt='free']"
   }, {
     "name": "30%",
-    "selector": "img[alt='30%']",
-    "color": "indigo"
+    "selector": "img[alt='30%']"
   }, {
     "name": "50%",
-    "selector": "img[alt='50%']",
-    "color": "orange"
+    "selector": "img[alt='50%']"
   }],
   "selectors": {
     "userBaseInfo": {

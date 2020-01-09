@@ -70,8 +70,7 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "font[color='red']:contains('[FreeLeech]')",
-    "color": "blue"
+    "selector": "font[color='red']:contains('[FreeLeech]')"
   }],
   "selectors": {
     "userBaseInfo": {

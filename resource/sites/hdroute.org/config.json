@@ -39,8 +39,7 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "figure.sprite_dlp000",
-    "color": "blue"
+    "selector": "figure.sprite_dlp000"
   }, {
     "name": "~Free",
     "selector": "figure.sprite_tempo_free",
@@ -48,16 +47,13 @@
     "color": "teal"
   }, {
     "name": "30%",
-    "selector": "figure.sprite_dlp030",
-    "color": "indigo"
+    "selector": "figure.sprite_dlp030"
   }, {
     "name": "50%",
-    "selector": "figure.sprite_dlp050",
-    "color": "orange"
+    "selector": "figure.sprite_dlp050"
   }, {
     "name": "70%",
-    "selector": "figure.sprite_dlp070",
-    "color": "blue-grey"
+    "selector": "figure.sprite_dlp070"
   }],
   "selectors": {
     "userBaseInfo": {

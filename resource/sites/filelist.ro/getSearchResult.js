@@ -1,4 +1,4 @@
-(function(options) {
+(function(options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -33,7 +33,8 @@
       let site = options.site;
       // 获取种子列表行
       let rows = options.page.find(
-        options.resultSelector || "div.visitedlinks:last > div[class=torrentrow]"
+        options.resultSelector ||
+          "div.visitedlinks:last > div[class=torrentrow]"
       );
       let time_regex = /(\d{2}:\d{2}:\d{2}[^\d]+?\d{2}\/\d{2}\/\d{4})/;
       let time_regen_replace1 = /(\d{2}:\d{2}:\d{2})[^\d]+?(\d{2}\/\d{2}\/\d{4})/;
@@ -70,7 +71,10 @@
       for (let index = 1; index < rows.length; index++) {
         const row = rows.eq(index);
         let cells = row.find(">div");
-        let title = cells.eq(fieldIndex.title).find("a").first();
+        let title = cells
+          .eq(fieldIndex.title)
+          .find("a")
+          .first();
         if (title.length == 0) {
           continue;
         }
@@ -84,11 +88,14 @@
         if (site.passkey && id) {
           url = `https://${site.host}/download.php?id=${id}&passkey=${site.passkey}`;
         } else {
-          url = cells.eq(fieldIndex.downloadlink).find("a").first().attr("href");
+          url = cells
+            .eq(fieldIndex.downloadlink)
+            .find("a")
+            .first()
+            .attr("href");
           if (url && url.substr(0, 4) !== "http") {
             url = `${site.url}/${url}`;
           }
-
         }
 
         if (!url) {
@@ -103,12 +110,13 @@
           link,
           url: url,
           size: cells.eq(fieldIndex.size).text() || 0,
-          time:
-          cells
-          .eq(fieldIndex.time)
-          .html().replace("<br>", " ").match(time_regex)[1]
-          .replace(time_regen_replace1,"$2 $1")
-          .replace(time_regen_replace2,"$3-$2-$1"),
+          time: cells
+            .eq(fieldIndex.time)
+            .html()
+            .replace("<br>", " ")
+            .match(time_regex)[1]
+            .replace(time_regen_replace1, "$2 $1")
+            .replace(time_regen_replace2, "$3-$2-$1"),
           author: cells.eq(fieldIndex.author).text() || "",
           seeders:
             cells
@@ -125,7 +133,7 @@
           site: site,
           entryName: options.entry.name,
           category: this.getCategory(cells.eq(fieldIndex.category)),
-          tags: this.getTags(row, options.torrentTagSelectors)
+          tags: Searcher.getRowTags(site, row)
         };
         results.push(data);
       }
@@ -157,34 +165,8 @@
       result.name = img.attr("alt");
       return result;
     }
-
-    /**
-     * 获取标签
-     * @param {*} row
-     * @param {*} selectors
-     * @return array
-     */
-    getTags(row, selectors) {
-      let tags = [];
-      if (selectors && selectors.length > 0) {
-        // 使用 some 避免错误的背景类名返回多个标签
-        selectors.some(item => {
-          if (item.selector) {
-            let result = row.find(item.selector);
-            if (result.length) {
-              tags.push({
-                name: item.name,
-                color: item.color
-              });
-              return true;
-            }
-          }
-        });
-      }
-      return tags;
-    }
   }
   let parser = new Parser(options);
   options.results = parser.getResult();
   console.log(options.results);
-})(options);
+})(options, options.searcher);

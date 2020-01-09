@@ -145,7 +145,6 @@
   "mergeSchemaTagSelectors": true,
   "torrentTagSelectors": [{
     "name": "⛔️",
-    "selector": "div.tag-jz",
-    "color": "deep-orange darken-1"
+    "selector": "div.tag-jz"
   }]
 }

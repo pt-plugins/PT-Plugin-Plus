@@ -29,8 +29,7 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "img[alt='FreeLeech']",
-    "color": "blue"
+    "selector": "img[alt='FreeLeech']"
   }],
   "selectors": {
     "userBaseInfo": {

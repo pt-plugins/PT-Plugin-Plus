@@ -28,12 +28,10 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "i.fas fa-star text-gold",
-    "color": "blue"
+    "selector": "i.fas fa-star text-gold"
   }, {
     "name": "2xUp",
-    "selector": "i.fas fa-gem text-green",
-    "color": "lime"
+    "selector": "i.fas fa-gem text-green"
   }],
   "categories": [{
     "entry": "*",

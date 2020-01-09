@@ -1,4 +1,4 @@
-(function(options) {
+(function(options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -64,7 +64,7 @@
             completed: -1,
             comments: 0,
             site: site,
-            tags: this.getTags(row, options.torrentTagSelectors),
+            tags: Searcher.getRowTags(site, row),
             entryName: options.entry.name,
             category: null
           };
@@ -97,37 +97,9 @@
         .text();
       return time || "";
     }
-
-    /**
-     * 获取标签
-     * @param {*} row
-     * @param {*} selectors
-     * @return array
-     */
-    getTags(row, selectors) {
-      let tags = [];
-      if (selectors && selectors.length > 0) {
-        selectors.forEach(item => {
-          if (item.selector) {
-            let result = row.find(item.selector);
-            if (result.length) {
-              let data = {
-                name: item.name,
-                color: item.color
-              };
-              if (item.title && result.attr(item.title)) {
-                data.title = result.attr(item.title);
-              }
-              tags.push(data);
-            }
-          }
-        });
-      }
-      return tags;
-    }
   }
 
   let parser = new Parser(options);
   options.results = parser.getResult();
   console.log(options.results);
-})(options);
+})(options, options.searcher);

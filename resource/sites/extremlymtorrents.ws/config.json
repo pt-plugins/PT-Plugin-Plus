@@ -70,12 +70,10 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "img[title='Free Torrents']",
-    "color": "blue"
+    "selector": "img[title='Free Torrents']"
   }, {
     "name": "VIP",
-    "selector": "img[alt='Only VIP']",
-    "color": "orange"
+    "selector": "img[alt='Only VIP']"
   }],
   "selectors": {
     "userBaseInfo": {

@@ -33,16 +33,13 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "img[alt='Gold Torrent']",
-    "color": "blue"
+    "selector": "img[alt='Gold Torrent']"
   }, {
     "name": "2xUp",
-    "selector": "img[alt='2x Multiplier Torrent']",
-    "color": "lime"
+    "selector": "img[alt='2x Multiplier Torrent']"
   }, {
     "name": "50%",
-    "selector": "img[alt='Silver Torrent']",
-    "color": "orange"
+    "selector": "img[alt='Silver Torrent']"
   }],
   "selectors": {
     "userBaseInfo": {

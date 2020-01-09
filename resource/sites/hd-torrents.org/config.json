@@ -61,20 +61,16 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "img[src*='free.png']",
-    "color": "blue"
+    "selector": "img[src*='free.png']"
   }, {
     "name": "25%",
-    "selector": "img[src*='25.png']",
-    "color": "indigo"
+    "selector": "img[src*='25.png']"
   }, {
     "name": "50%",
-    "selector": "img[src*='50.png']",
-    "color": "orange"
+    "selector": "img[src*='50.png']"
   }, {
     "name": "75%",
-    "selector": "img[src*='75.png']",
-    "color": "lime"
+    "selector": "img[src*='75.png']"
   }],
   "selectors": {
     "userBaseInfo": {

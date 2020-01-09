@@ -41,28 +41,22 @@
   },
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "img.pro_free, .free_bg, font.free",
-    "color": "blue"
+    "selector": "img.pro_free, .free_bg, font.free"
   }, {
     "name": "2xFree",
-    "selector": "img.pro_free2up, .twoupfree_bg, font.twoupfree",
-    "color": "green"
+    "selector": "img.pro_free2up, .twoupfree_bg, font.twoupfree"
   }, {
     "name": "2xUp",
-    "selector": "img.pro_2up, .twoup_bg, font.twoup",
-    "color": "lime"
+    "selector": "img.pro_2up, .twoup_bg, font.twoup"
   }, {
     "name": "2x50%",
-    "selector": "img.pro_50pctdown2up, .twouphalfdown_bg, font.twouphalfdown",
-    "color": "light-green"
+    "selector": "img.pro_50pctdown2up, .twouphalfdown_bg, font.twouphalfdown"
   }, {
     "name": "30%",
-    "selector": "img.pro_30pctdown, .thirtypercentdown_bg, font.thirtypercent",
-    "color": "indigo"
+    "selector": "img.pro_30pctdown, .thirtypercentdown_bg, font.thirtypercent"
   }, {
     "name": "50%",
-    "selector": "img.pro_50pctdown, .halfdown_bg, font.halfdown",
-    "color": "orange"
+    "selector": "img.pro_50pctdown, .halfdown_bg, font.halfdown"
   }],
   "selectors": {
     "userBaseInfo": {

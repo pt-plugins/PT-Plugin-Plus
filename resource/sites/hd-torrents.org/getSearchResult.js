@@ -86,9 +86,7 @@
           link,
           url: url,
           size: cells.eq(fieldIndex.size).html() || 0,
-          time: `${dayStringArray[2]}-${dayStringArray[1]}-${
-            dayStringArray[0]
-          } ${time}`,
+          time: `${dayStringArray[2]}-${dayStringArray[1]}-${dayStringArray[0]} ${time}`,
           author: cells.eq(fieldIndex.author).text() || "",
           seeders: cells.eq(fieldIndex.seeders).text() || 0,
           leechers: cells.eq(fieldIndex.leechers).text() || 0,
@@ -97,7 +95,7 @@
           site: site,
           entryName: options.entry.name,
           category: this.getCategory(cells.eq(fieldIndex.category)),
-          tags: this.getTags(row, options.torrentTagSelectors),
+          tags: Searcher.getRowTags(site, row),
           progress: Searcher.getFieldValue(site, row, "progress"),
           status: Searcher.getFieldValue(site, row, "status")
         };
@@ -130,32 +128,6 @@
 
       result.name = img.attr("alt");
       return result;
-    }
-
-    /**
-     * 获取标签
-     * @param {*} row
-     * @param {*} selectors
-     * @return array
-     */
-    getTags(row, selectors) {
-      let tags = [];
-      if (selectors && selectors.length > 0) {
-        // 使用 some 避免错误的背景类名返回多个标签
-        selectors.some(item => {
-          if (item.selector) {
-            let result = row.find(item.selector);
-            if (result.length) {
-              tags.push({
-                name: item.name,
-                color: item.color
-              });
-              return true;
-            }
-          }
-        });
-      }
-      return tags;
     }
   }
   let parser = new Parser(options);

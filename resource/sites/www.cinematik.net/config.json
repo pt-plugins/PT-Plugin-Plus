@@ -33,16 +33,13 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "img[src*='freedownload.png']",
-    "color": "blue"
+    "selector": "img[src*='freedownload.png']"
   }, {
     "name": "2xFree",
-    "selector": "img[src*='platinumdownload.png']",
-    "color": "green"
+    "selector": "img[src*='platinumdownload.png']"
   }, {
     "name": "25%",
-    "selector": "img[src*='silverdownload.png']",
-    "color": "indigo"
+    "selector": "img[src*='silverdownload.png']"
   }],
   "selectors": {
     "userBaseInfo": {

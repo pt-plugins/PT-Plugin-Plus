@@ -1,16 +1,4 @@
-if (!"".getQueryString) {
-  String.prototype.getQueryString = function(name, split) {
-    if (split == undefined) split = "&";
-    var reg = new RegExp(
-        "(^|" + split + "|\\?)" + name + "=([^" + split + "]*)(" + split + "|$)"
-      ),
-      r;
-    if ((r = this.match(reg))) return decodeURI(r[2]);
-    return null;
-  };
-}
-
-(function(options) {
+(function(options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -40,8 +28,10 @@ if (!"".getQueryString) {
       let site = options.site;
       let results = [];
       //判断是否为IMDB搜索跳转界面
-      let imdbpage = options.page.find("div.linkbox > a[href ^='upload.php?imdbid']");
-      let imdbflag = imdbpage.length !=0;
+      let imdbpage = options.page.find(
+        "div.linkbox > a[href ^='upload.php?imdbid']"
+      );
+      let imdbflag = imdbpage.length != 0;
       // 获取种子列表行
       let rows = options.page.find(
         options.resultSelector || "table.torrent_table:first > tbody > tr"
@@ -56,28 +46,55 @@ if (!"".getQueryString) {
       let movienames = {};
       let categories = {};
       let groupid;
-      if(imdbflag){
-        imdlink = imdbpage.first().attr("href").replace("upload.php?imdbid","torrents.php?id");
-        moviename = options.page.find("div.thin > h2").first().text();
+      if (imdbflag) {
+        imdlink = imdbpage
+          .first()
+          .attr("href")
+          .replace("upload.php?imdbid", "torrents.php?id");
+        moviename = options.page
+          .find("div.thin > h2")
+          .first()
+          .text();
       } else {
         let torrentinforows = options.page.find("tr.torrent, tr.group");
-        for(let index = 0; index < torrentinforows.length; index++){
+        for (let index = 0; index < torrentinforows.length; index++) {
           let torrentinforow = torrentinforows.eq(index);
           let torrentinfo = torrentinforow.find("td.center.cats_col").first();
-          let torrenttitle = torrentinforow.find("a[title='View Torrent'][href ^='torrents.php?id=']").first();
+          let torrenttitle = torrentinforow
+            .find("a[title='View Torrent'][href ^='torrents.php?id=']")
+            .first();
 
           groupid = torrenttitle.attr("href").getQueryString("id");
-          movienames[groupid] = torrenttitle.parent().text().replace(/[\r\n]/g,"").replace(/Bookmark.*/g,"").trim();
-          if(!movienames[groupid] || new RegExp("\t[DL	| RP]\t").test(movienames[groupid])){
-            movienames[groupid] = torrenttitle.parent().text().replace(/[\r\n]/g,"").replace(/\t+/g,"\t").replace("\t[DL	| RP]\t","").split('\t')[0];
+          movienames[groupid] = torrenttitle
+            .parent()
+            .text()
+            .replace(/[\r\n]/g, "")
+            .replace(/Bookmark.*/g, "")
+            .trim();
+          if (
+            !movienames[groupid] ||
+            new RegExp("\t[DL	| RP]\t").test(movienames[groupid])
+          ) {
+            movienames[groupid] = torrenttitle
+              .parent()
+              .text()
+              .replace(/[\r\n]/g, "")
+              .replace(/\t+/g, "\t")
+              .replace("\t[DL	| RP]\t", "")
+              .split("\t")[0];
           }
-          categories[groupid] = torrentinfo.find("div").first().attr("class").split(" ")[0].replace("cats_","");
+          categories[groupid] = torrentinfo
+            .find("div")
+            .first()
+            .attr("class")
+            .split(" ")[0]
+            .replace("cats_", "");
         }
       }
 
       // 用于定位每个字段所列的位置
       let fieldIndex;
-      if(imdbflag){
+      if (imdbflag) {
         fieldIndex = {
           time: -1,
           size: 1,
@@ -99,38 +116,42 @@ if (!"".getQueryString) {
           const row = rows.eq(index);
           let cells = row.find(">td");
 
-          let title = imdbflag ? row.find("a[onclick *='#torrent']").first() : row.find("a[href*='torrents.php?id=']").first();
+          let title = imdbflag
+            ? row.find("a[onclick *='#torrent']").first()
+            : row.find("a[href*='torrents.php?id=']").first();
           if (title.length == 0) {
             continue;
           }
           let subTitle = row.find("div.torrent_info").first();
 
           // 获取下载链接
-          let url = row.find("a[href*='torrents.php?action=download']").first();                        
+          let url = row.find("a[href*='torrents.php?action=download']").first();
           if (url.length == 0) {
             continue;
           }
 
           let column = cells.length;
-          if(!imdbflag ) {
-            if(column >5) {
+          if (!imdbflag) {
+            if (column > 5) {
               fieldIndex = {
-                time: column -5,
-                size: column -4,
-                seeders: column -2,
-                leechers: column -1,
-                completed: column -3,
+                time: column - 5,
+                size: column - 4,
+                seeders: column - 2,
+                leechers: column - 1,
+                completed: column - 3,
                 comments: -1,
                 author: -1
               };
-            }else {
+            } else {
               continue;
-           }
-          } 
+            }
+          }
 
           url = url.attr("href");
           let torrentid = url.getQueryString("id");
-          let link = imdbflag ? imdlink+"&torrentid="+torrentid : title.attr("href");
+          let link = imdbflag
+            ? imdlink + "&torrentid=" + torrentid
+            : title.attr("href");
           if (link && link.substr(0, 4) !== "http") {
             link = `${site.url}${link}`;
           }
@@ -140,27 +161,33 @@ if (!"".getQueryString) {
           }
 
           let time = "";
-          if(imdbflag) {
-            let timerow = rows.eq(index+1);
-            time = timerow.find("td > blockquote > span:contains('ago')").attr("title");
+          if (imdbflag) {
+            let timerow = rows.eq(index + 1);
+            time = timerow
+              .find("td > blockquote > span:contains('ago')")
+              .attr("title");
           } else {
             groupid = title.attr("href").getQueryString("id");
             time =
-            fieldIndex.time == -1
-              ? ""
-              : cells
-                  .eq(fieldIndex.time)
-                  .find("span[title],time[title]")
-                  .attr("title") ||
-                cells.eq(fieldIndex.time).text() ||
-                "";
+              fieldIndex.time == -1
+                ? ""
+                : cells
+                    .eq(fieldIndex.time)
+                    .find("span[title],time[title]")
+                    .attr("title") ||
+                  cells.eq(fieldIndex.time).text() ||
+                  "";
           }
 
           if (time) {
             time += ":00";
           }
           let data = {
-            title: imdbflag ? moviename+title.text().replace("» ","&nbsp;/&nbsp;"): new RegExp(title.text()).test(movienames[groupid]) ? movienames[groupid] : movienames[groupid]+"&nbsp;/&nbsp;"+title.text(),
+            title: imdbflag
+              ? moviename + title.text().replace("» ", "&nbsp;/&nbsp;")
+              : new RegExp(title.text()).test(movienames[groupid])
+              ? movienames[groupid]
+              : movienames[groupid] + "&nbsp;/&nbsp;" + title.text(),
             subTitle: subTitle.text(),
             link,
             url: url,
@@ -188,8 +215,8 @@ if (!"".getQueryString) {
                 : cells.eq(fieldIndex.comments).text() || 0,
             site: site,
             entryName: options.entry.name,
-            tags: this.getTags(row, options.torrentTagSelectors),
-            category: imdbflag ? "":categories[groupid]
+            tags: Searcher.getRowTags(site, row),
+            category: imdbflag ? "" : categories[groupid]
           };
           results.push(data);
         }
@@ -204,35 +231,9 @@ if (!"".getQueryString) {
 
       return results;
     }
-
-    /**
-     * 获取标签
-     * @param {*} row
-     * @param {*} selectors
-     * @return array
-     */
-    getTags(row, selectors) {
-      let tags = [];
-      if (selectors && selectors.length > 0) {
-        selectors.forEach(item => {
-          if (item.selector) {
-            let result = row.find(item.selector);
-            if (result.length) {
-              tags.push({
-                name: item.name,
-                color: item.color
-              });
-            }
-          }
-        });
-      }
-      return tags;
-    }
-
-
   }
 
   let parser = new Parser(options);
   options.results = parser.getResult();
   console.log(options.results);
-})(options);
+})(options, options.searcher);

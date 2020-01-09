@@ -1,4 +1,4 @@
-(function(options) {
+(function(options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -179,7 +179,7 @@
                 ? ""
                 : cells.eq(fieldIndex.comments).text() || 0,
             site: site,
-            tags: this.getTags(row, options.torrentTagSelectors),
+            tags: Searcher.getRowTags(site, row),
             entryName: options.entry.name,
             category:
               fieldIndex.category == -1
@@ -212,30 +212,6 @@
     }
 
     /**
-     * 获取标签
-     * @param {*} row
-     * @param {*} selectors
-     * @return array
-     */
-    getTags(row, selectors) {
-      let tags = [];
-      if (selectors && selectors.length > 0) {
-        selectors.forEach(item => {
-          if (item.selector) {
-            let result = row.find(item.selector);
-            if (result.length) {
-              tags.push({
-                name: item.name,
-                color: item.color
-              });
-            }
-          }
-        });
-      }
-      return tags;
-    }
-
-    /**
      * 获取副标题
      * @param {*} title
      * @param {*} row
@@ -260,4 +236,4 @@
   let parser = new Parser(options);
   options.results = parser.getResult();
   console.log(options.results);
-})(options);
+})(options, options.searcher);

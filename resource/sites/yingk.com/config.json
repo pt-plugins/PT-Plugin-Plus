@@ -77,32 +77,25 @@
   }],
   "torrentTagSelectors": [{
     "name": "⛔️",
-    "selector": "span.tag.monopoly, span.tag.noshare",
-    "color": "deep-orange darken-1"
+    "selector": "span.tag.monopoly, span.tag.noshare"
   }, {
     "name": "Free",
-    "selector": "img.pro_free",
-    "color": "blue"
+    "selector": "img.pro_free"
   }, {
     "name": "2xFree",
-    "selector": "img.pro_free2up",
-    "color": "green"
+    "selector": "img.pro_free2up"
   }, {
     "name": "2xUp",
-    "selector": "img.pro_2up",
-    "color": "lime"
+    "selector": "img.pro_2up"
   }, {
     "name": "2x50%",
-    "selector": "img.pro_50pctdown2up",
-    "color": "light-green"
+    "selector": "img.pro_50pctdown2up"
   }, {
     "name": "30%",
-    "selector": "img.pro_30pctdown",
-    "color": "indigo"
+    "selector": "img.pro_30pctdown"
   }, {
     "name": "50%",
-    "selector": "img.pro_50pctdown",
-    "color": "orange"
+    "selector": "img.pro_50pctdown"
   }],
   "supportedFeatures": {
     "imdbSearch": false

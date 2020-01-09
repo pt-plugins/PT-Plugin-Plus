@@ -326,7 +326,6 @@
   "mergeSchemaTagSelectors": true,
   "torrentTagSelectors": [{
     "name": "⛔️",
-    "selector": "img[src*='pic/share_rule_1.gif']",
-    "color": "deep-orange darken-1"
+    "selector": "img[src*='pic/share_rule_1.gif']"
   }]
 }

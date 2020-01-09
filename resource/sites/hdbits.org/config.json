@@ -112,16 +112,13 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "a[title^='100% FL:']",
-    "color": "blue"
+    "selector": "a[title^='100% FL:']"
   }, {
     "name": "50%",
-    "selector": "a[title^='50% Free Leech:']",
-    "color": "orange"
+    "selector": "a[title^='50% Free Leech:']"
   }, {
     "name": "25%",
-    "selector": "a[title^='25% Free Leech:']",
-    "color": "indigo"
+    "selector": "a[title^='25% Free Leech:']"
   }],
   "selectors": {
     "userBaseInfo": {

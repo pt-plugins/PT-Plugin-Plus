@@ -1,15 +1,3 @@
-if (!"".getQueryString) {
-  String.prototype.getQueryString = function(name, split) {
-    if (split == undefined) split = "&";
-    var reg = new RegExp(
-        "(^|" + split + "|\\?)" + name + "=([^" + split + "]*)(" + split + "|$)"
-      ),
-      r;
-    if ((r = this.match(reg))) return decodeURI(r[2]);
-    return null;
-  };
-}
-
 (function(options) {
   class Parser {
     constructor() {
@@ -127,7 +115,7 @@ if (!"".getQueryString) {
             site: site,
             entryName: options.entry.name,
             category: this.getCategory(cells.eq(fieldIndex.category)),
-            tags: this.getTags(row, options.torrentTagSelectors)
+            tags: options.searcher.getRowTags(site, row)
           };
           results.push(data);
         }
@@ -162,32 +150,6 @@ if (!"".getQueryString) {
 
       result.name = img.attr("alt");
       return result;
-    }
-
-    /**
-     * 获取标签
-     * @param {*} row
-     * @param {*} selectors
-     * @return array
-     */
-    getTags(row, selectors) {
-      let tags = [];
-      if (selectors && selectors.length > 0) {
-        // 使用 some 避免错误的背景类名返回多个标签
-        selectors.some(item => {
-          if (item.selector) {
-            let result = row.find(item.selector);
-            if (result.length) {
-              tags.push({
-                name: item.name,
-                color: item.color
-              });
-              return true;
-            }
-          }
-        });
-      }
-      return tags;
     }
   }
 

@@ -13,7 +13,8 @@ import {
   ISearchPayload,
   SiteCategories,
   SiteCategory,
-  ERequestMethod
+  ERequestMethod,
+  BASE_TAG_COLORS
 } from "@/interface/common";
 import { APP } from "@/service/api";
 import { SiteService } from "./site";
@@ -963,10 +964,17 @@ export class Searcher {
           if (item.selector) {
             let result = row.find(item.selector);
             if (result.length) {
-              tags.push({
+              let color = item.color || BASE_TAG_COLORS[item.name] || "";
+
+              let data: Dictionary<any> = {
                 name: item.name,
-                color: item.color
-              });
+                color
+              };
+
+              if (item.title && result.attr(item.title)) {
+                data.title = result.attr(item.title);
+              }
+              tags.push(data);
             }
           }
         });

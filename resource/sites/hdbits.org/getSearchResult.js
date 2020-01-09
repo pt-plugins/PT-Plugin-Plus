@@ -1,4 +1,4 @@
-(function(options) {
+(function(options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -9,11 +9,7 @@
       }
       options.isLogged = true;
 
-      if (
-        /Nothing found/.test(
-          options.responseText
-        )
-      ) {
+      if (/Nothing found/.test(options.responseText)) {
         options.status = ESearchResultParseStatus.noTorrents;
         return;
       }
@@ -76,7 +72,7 @@
         let url = row.find("a.js-download").attr("href");
         if (url && url.substr(0, 4) !== "http") {
           url = `${site.url}${url}`;
-        }    
+        }
         if (!url) {
           continue;
         }
@@ -88,7 +84,12 @@
             .text();
         }
 
-        let time = cells.eq(fieldIndex.time).text().replace(/([a-zA-Z]+)/g,"$1 ").replace(/^\s+|\s+$/g,'')+".";
+        let time =
+          cells
+            .eq(fieldIndex.time)
+            .text()
+            .replace(/([a-zA-Z]+)/g, "$1 ")
+            .replace(/^\s+|\s+$/g, "") + ".";
         let data = {
           title: $("<span>")
             .html(titleStrings[0])
@@ -114,7 +115,7 @@
           site: site,
           entryName: options.entry.name,
           category: this.getCategory(cells.eq(fieldIndex.category)),
-          tags: this.getTags(row, options.torrentTagSelectors)
+          tags: Searcher.getRowTags(site, row)
         };
         results.push(data);
       }
@@ -147,7 +148,10 @@
 
     getCategoryName(id) {
       if ($.isEmptyObject(this.categories)) {
-        let cells = options.page.find("table.bottom > tbody > tr").eq(1).find("td");
+        let cells = options.page
+          .find("table.bottom > tbody > tr")
+          .eq(1)
+          .find("td");
         cells.each((i, dom) => {
           let id = $(dom)
             .find("input")
@@ -162,35 +166,9 @@
         });
       }
       return this.categories ? this.categories[id] : "";
-  }
-
-    /**
-     * 获取标签
-     * @param {*} row
-     * @param {*} selectors
-     * @return array
-     */
-    getTags(row, selectors) {
-      let tags = [];
-      if (selectors && selectors.length > 0) {
-        // 使用 some 避免错误的背景类名返回多个标签
-        selectors.some(item => {
-          if (item.selector) {
-            let result = row.find(item.selector);
-            if (result.length) {
-              tags.push({
-                name: item.name,
-                color: item.color
-              });
-              return true;
-            }
-          }
-        });
-      }
-      return tags;
     }
   }
   let parser = new Parser(options);
   options.results = parser.getResult();
   console.log(options.results);
-})(options);
+})(options, options.searcher);

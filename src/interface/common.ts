@@ -640,6 +640,34 @@ export const BASE_COLORS = [
   "black"
 ];
 
+/**
+ * 通用标签颜色
+ */
+export const BASE_TAG_COLORS: Dictionary<any> = {
+  // 免费下载
+  Free: "blue",
+  // 免费下载 + 2x 上传
+  "2xFree": "green",
+  // 2x 上传
+  "2xUp": "lime",
+  // 2x 上传 + 50% 下载
+  "2x50%": "light-green",
+  // 30% 下载
+  "30%": "indigo",
+  // 35% 下载
+  "35%": "indigo darken-3",
+  // 50% 下载
+  "50%": "orange",
+  // 70% 下载
+  "70%": "blue-grey",
+  // 75% 下载
+  "75%": "lime darken-3",
+  // 仅 VIP 可下载
+  VIP: "orange darken-2",
+  // 禁止转载
+  "⛔️": "deep-orange darken-1"
+};
+
 export interface ICookies {
   host: string;
   url: string;
