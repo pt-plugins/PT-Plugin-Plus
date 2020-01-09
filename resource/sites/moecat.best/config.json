@@ -18,11 +18,36 @@
       "parseScript": "(payload && payload.doubanId)?payload.doubanId:key"
     }],
     "resultType": "html",
-    "parseScriptFile": "/sites/yingk.com/getSearchResult.js"
+    "parseScriptFile": "/sites/yingk.com/getSearchResult.js",
+    "fieldSelector": {
+      "progress": {
+        "selector": ["td.rowfollow[title='做种中']，td.rowfollow[title='已完成']", "td.rowfollow[title='未完成'], td.rowfollow[title='下载中']", ""],
+        "switchFilters": [
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["td.rowfollow[title='做种中']", "td.rowfollow[title='已完成']", "td.rowfollow[title='下载中']", "td.rowfollow[title='未完成']"],
+        "switchFilters": [
+          ["2"],
+          ["255"],
+          ["1"],
+          ["3"]
+        ]
+      }
+    }
   },
   "plugins": [{
     "name": "精品区",
     "pages": ["/torrentshd.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }],
+  "mergeSchemaTagSelectors": true,
+  "torrentTagSelectors": [{
+    "name": "⛔️",
+    "selector": "td.embedded span[style='background-color:#D74D4D;color:white;border-radius:15%']",
+    "color": "deep-orange darken-1"
   }]
 }
