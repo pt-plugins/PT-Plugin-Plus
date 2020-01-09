@@ -7,5 +7,20 @@
   "icon": "https://pthome.net/favicon.ico",
   "tags": ["综合", "影视", "游戏"],
   "host": "pthome.net",
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["td:not(.rowfollow):not(.colhead):not(.embedded)"],
+        "filters": ["query.text()=='-'?null:query.text()"]
+      },
+      "status": {
+        "selector": [".torrents-progress", ".torrents-progress2"],
+        "switchFilters": [
+          ["query.attr('style').indexOf('100%')!=-1?2:3"],
+          ["255"]
+        ]
+      }
+    }
+  },
   "collaborator": "waldens"
 }
