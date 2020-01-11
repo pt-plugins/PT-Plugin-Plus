@@ -652,6 +652,8 @@ export const BASE_TAG_COLORS: Dictionary<any> = {
   "2xUp": "lime",
   // 2x 上传 + 50% 下载
   "2x50%": "light-green",
+  // 25% 下载
+  "25%": "purple",
   // 30% 下载
   "30%": "indigo",
   // 35% 下载
