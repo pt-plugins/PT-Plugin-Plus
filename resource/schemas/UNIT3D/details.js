@@ -17,18 +17,20 @@
      * 获取下载链接
      */
     getDownloadURL() {
-      let url = "";
-      let query = $("a.btn[href*='/download/']");
-      if (query.length == 0) {
-        query = $("a[href*='/download_check/']");
-        if (query.length > 0) {
-          url = query.attr("href").replace("/download_check/", "/download/");
+      let url = PTService.getFieldValue("downloadURL");
+      if (!url) {
+        let query = $("a.btn[href*='/download/']");
+        if (query.length == 0) {
+          query = $("a[href*='/download_check/']");
+          if (query.length > 0) {
+            url = query.attr("href").replace("/download_check/", "/download/");
+          }
+        } else {
+          url = query.attr("href");
         }
-      } else {
-        url = query.attr("href");
       }
 
-      return url;
+      return this.getFullURL(url);
     }
   }
   new App().init();

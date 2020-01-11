@@ -1,4 +1,4 @@
-(function ($, window) {
+(function($, window) {
   console.log("this is details.js");
   class App extends window.NexusPHPCommon {
     init() {
@@ -17,17 +17,22 @@
      * 获取下载链接
      */
     getDownloadURL() {
-      let query = $("a.btn[href*='/download/torrent/']");
-      let url = "";
-      if (query.length > 0) {
-        url = query.attr("href");
-        if (PTService.site.passkey) {
-          url = url.replace('/download/torrent/', `/rss/download/${PTService.site.passkey}/`);
+      let url = PTService.getFieldValue("downloadURL");
+      if (!url) {
+        let query = $("a.btn[href*='/download/torrent/']");
+        if (query.length > 0) {
+          url = query.attr("href");
+          if (PTService.site.passkey) {
+            url = url.replace(
+              "/download/torrent/",
+              `/rss/download/${PTService.site.passkey}/`
+            );
+          }
         }
       }
 
-      return url;
+      return this.getFullURL(url);
     }
-  };
-  (new App()).init();
+  }
+  new App().init();
 })(jQuery, window);
