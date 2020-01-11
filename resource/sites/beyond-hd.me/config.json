@@ -64,8 +64,8 @@
           "filters": ["query.parent().text().trim().replace(/,|\\n|\\s+/g,'').replace(/BP:/g,'')"]
         },
         "seeding": {
-          "selector": ["div.ratio-bar i.fa-upload"],
-          "filters": ["query.parent().text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+          "selector": ["#beta-stats i.fa-seedling"],
+          "filters": ["query.parent().text().trim()"]
         }
       }
     },
