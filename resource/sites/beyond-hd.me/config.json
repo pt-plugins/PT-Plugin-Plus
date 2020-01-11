@@ -18,7 +18,20 @@
       "name": "IMDB",
       "keyAutoMatch": "^(tt\\d+)$",
       "queryString": "imdb=$key$"
-    }]
+    }],
+    "fieldSelector": {
+      "progress": {
+        "selector": ["i.fal.fa-seedling, i.fal.fa-check[title='Snatched']"],
+        "filters": ["query.attr('title')?100:null"]
+      },
+      "status": {
+        "selector": ["i.fal.fa-seedling", "i.fal.fa-check[title='Snatched']"],
+        "switchFilters": [
+          ["2"],
+          ["255"]
+        ]
+      }
+    }
   },
   "searchEntry": [{
     "name": "全部",
