@@ -16,6 +16,10 @@
         "selector": ["a[href*='details.php?id='][title]:first"],
         "filters": ["query"]
       },
+      "subTitle": {
+        "selector": ["a[href*='details.php?id='][title]:first"],
+        "filters": ["query.parent().find('a, b, div').replaceWith(null).end().text().trim()"]
+      },
       "progress": {
         "selector": [".progbargreen", ".progbarred + .progbarrest", ".progbarred", ".progbarrest", ""],
         "switchFilters": [
