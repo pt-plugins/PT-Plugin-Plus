@@ -84,6 +84,16 @@
           "filters": ["query.text().trim().replace('Since: ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         }
       }
+    },
+    "common": {
+	  "page": "/torrent/",
+      "merge": true,
+      "fields": {
+        "downloadURL": {
+          "selector": ["a.bhd-fl-button[href*='/download/']"],
+          "filters": ["query.attr('href')"]
+        }
+      }
     }
   }
 }
