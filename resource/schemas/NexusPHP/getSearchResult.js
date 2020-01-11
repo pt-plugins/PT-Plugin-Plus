@@ -285,7 +285,7 @@
      */
     getTitle(row) {
       let title =
-        Searcher.getFieldValue(site, row, "title") ||
+        Searcher.getFieldValue(this.site, row, "title") ||
         row.find("a[href*='hit'][title]").first();
 
       if (typeof title === "string") {
@@ -322,8 +322,13 @@
      * @param {*} row
      */
     getSubTitle(title, row) {
+      let subTitle = Searcher.getFieldValue(this.site, row, "subTitle");
+      if (subTitle) {
+        return subTitle;
+      }
+
       try {
-        let subTitle = title
+        subTitle = title
           .parent()
           .html()
           .split("<br>");
