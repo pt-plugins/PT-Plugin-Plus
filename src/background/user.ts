@@ -333,11 +333,15 @@ export class User {
             }
           }
         })
-        .fail(error => {
+        .fail((jqXHR, textStatus, errorThrown) => {
           this.removeQueue(host, url);
           PPF.updateBadge(--this.requestQueueCount);
-          this.service.debug(error);
-          reject(error);
+          let msg = this.service.i18n.t("service.searcher.siteNetworkFailed", {
+            site,
+            msg: `${jqXHR.status} ${errorThrown}, ${textStatus}`
+          });
+          this.service.debug(msg, host, url, jqXHR.responseText);
+          reject(msg);
         });
 
       this.addQueue(host, url, request);
