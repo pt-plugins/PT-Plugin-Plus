@@ -18,7 +18,20 @@
       "name": "IMDB",
       "keyAutoMatch": "^(tt\\d+)$",
       "queryString": "imdb=$key$"
-    }]
+    }],
+    "fieldSelector": {
+      "progress": {
+        "selector": ["i.fal.fa-seedling, i.fal.fa-check[title='Snatched']"],
+        "filters": ["query.attr('title')?100:null"]
+      },
+      "status": {
+        "selector": ["i.fal.fa-seedling", "i.fal.fa-check[title='Snatched']"],
+        "switchFilters": [
+          ["2"],
+          ["255"]
+        ]
+      }
+    }
   },
   "searchEntry": [{
     "name": "全部",
@@ -82,6 +95,16 @@
         "joinTime": {
           "selector": "div.button-holder h5:contains('Since: ')",
           "filters": ["query.text().trim().replace('Since: ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    },
+    "common": {
+	  "page": "/torrent/",
+      "merge": true,
+      "fields": {
+        "downloadURL": {
+          "selector": ["a.bhd-fl-button[href*='/download/']"],
+          "filters": ["query.attr('href')"]
         }
       }
     }
