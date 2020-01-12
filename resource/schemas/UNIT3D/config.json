@@ -84,7 +84,7 @@
         },
         "joinTime": {
           "selector": ["div.content h4:contains('Registration date')", "div.content h4:contains('注册日期')", "div.content h4:contains('註冊日期')"],
-          "filters": ["query.text().trim().replace('Registration date ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+          "filters": ["query.text().replace(/(Registration date|注册日期|註冊日期)/g, '').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         }
       }
     },
