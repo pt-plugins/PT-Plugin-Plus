@@ -94,7 +94,7 @@
         },
         "joinTime": {
           "selector": "div.button-holder h5:contains('Since: ')",
-          "filters": ["query.text().trim().replace('Since: ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+          "filters": ["query.text().trim().replace('Since: ', '').replace('Member ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         }
       }
     },
