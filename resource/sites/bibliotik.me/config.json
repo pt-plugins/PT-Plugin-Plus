@@ -1,0 +1,144 @@
+{
+  "name": "Bibliotik",
+  "timezoneOffset": "+0000",
+  "description": "Bibliotik",
+  "url": "https://bibliotik.me/",
+  "icon": "https://bibliotik.me/favicon.ico",
+  "tags": ["电子书"],
+  "schema": "Common",
+  "host": "bibliotik.me",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["^/torrents/(\\d+)/$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents/"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+  }],
+  "searchEntryConfig": {
+    "page": "/torrents/",
+    "resultType": "html",
+    "queryString": "search=$key$&y1=&y2=&p1=&p2=&d1=&d2=&size1=&size2=&retail=any&freeleech=any&img=&my=&bm=&sd=&lch=&sn=&ad1=&ad2=&orderby=added&order=desc",
+    "parseScriptFile": "/schemas/Common/getSearchResult.js",
+    "resultSelector": "table#torrents_table:first",
+    "skipIMDbId": true,
+    "firstDataRowIndex": 1,
+    "fieldIndex": {
+      "title": 1,
+      "time": 4,
+      "size": 4,
+      "seeders": 7,
+      "leechers": 8,
+      "completed": 6,
+      "comments": 5,
+      "author": 9,
+      "category": 1,
+      "url": 2,
+      "link": 1
+    },
+    "loggedRegex": "logout\\?authkey=",
+    "fieldSelector": {
+      "title": {
+        "selector": ["span.title a:first"]
+      },
+      "url": {
+        "selector": ["a:first"],
+        "filters": ["query.attr('href')"]
+      },
+      "link": {
+        "selector": ["span.title a:first"],
+        "filters": ["query.attr('href')"]
+      },
+      "time": {
+        "selector": ["time"],
+        "filters": ["query.attr('datetime')"]
+      },
+      "category": {
+        "selector": ["span.torFormat"],
+        "filters": ["query.text()"]
+      },
+      "size": {
+        "selector": [""],
+        "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)[1]"]
+      }
+    }
+  },
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "td:contains('[100% free!]')"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ["#pre_header_status a[href*='/users/']"],
+          "attribute": "href",
+          "filters": ["query ? query.match(/(\\d+)/)[1]"]
+        },
+        "name": {
+          "selector": ["#pre_header_status a[href*='/users/']"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout?authkey']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/users/$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["#pre_header_status li:contains('Up: ')"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["#pre_header_status li:contains('Down: ')"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "levelName": {
+          "selector": ["#detailsbox p:contains('Class: ')"],
+          "filters": ["query.text().replace(/Class: /g,'')"]
+        },
+        "joinTime": {
+          "selector": "#detailsbox p:contains('Joined ') time",
+          "filters": ["query.attr('datetime')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "value": "N/A"
+        },
+        "seedingSize": {
+          "value": "N/A"
+        },
+        "bonus": {
+          "value": "N/A"
+        }
+      }
+    },
+    "common": {
+      "fields": {
+        "size": {
+          "selector": ["p#details_file_info"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        },
+        "downloadURL": {
+          "selector": ["a[href*='/download']"],
+          "filters": ["query.attr('href')"]
+        },
+        "downloadURLs": {
+          "selector": ["a[href*='/download']"],
+          "filters": ["query.toArray()"]
+        },
+        "confirmSize": {
+          "selector": ["table#torrents_table:first"],
+          "filters": ["query.find('td.t_files_size_added')"]
+        }
+      }
+    }
+  }
+}
