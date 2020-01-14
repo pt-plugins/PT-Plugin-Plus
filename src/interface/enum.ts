@@ -244,7 +244,9 @@ export enum EAction {
 
   // 添加调试信息
   pushDebugMsg = "pushDebugMsg",
-  updateDebuggerTabId = "updateDebuggerTabId"
+  updateDebuggerTabId = "updateDebuggerTabId",
+  // 获取热门搜索
+  getTopSearches = "getTopSearches"
 }
 
 /**

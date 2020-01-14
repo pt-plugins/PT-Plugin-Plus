@@ -65,6 +65,9 @@ export class MovieInfoService {
     // "07c78782db00a121175696889101e363"
   ];
 
+  // 用于获取特定接口数据
+  public omitApiKeys = ["kiqMY6MC"];
+
   // 信息缓存
   public cache: MovieInfoCache = {
     base: {},
@@ -409,6 +412,29 @@ export class MovieInfoService {
           }
         })
         .fail(error => {
+          reject(error);
+        });
+    });
+  }
+
+  /**
+   * 获取热门搜索
+   * @param count 需要获取的数量，最多为100
+   */
+  public getTopSearches(count: number = 9): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      $.ajax({
+        url: `${this.omitApiURL}/movie/top/${count}?apikey=${this.omitApiKeys[0]}`,
+        timeout: this.timeout
+      })
+        .then(result => {
+          if (result && result.data) {
+            resolve(result.data);
+          } else {
+            reject();
+          }
+        })
+        .catch(error => {
           reject(error);
         });
     });

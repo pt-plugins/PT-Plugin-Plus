@@ -60,7 +60,7 @@ export default class Controller {
   // 种子链接对应的名称缓存
   private torrentInfosCache: Dictionary<any> = {};
 
-  constructor(public service: Service) {}
+  constructor(public service: Service) { }
 
   public init(options: Options) {
     this.reset(options);
@@ -513,9 +513,9 @@ export default class Controller {
           }) +
           (downloadOptions.savePath
             ? this.service.i18n.t("service.controller.torrentSavePath", {
-                path: downloadOptions.savePath,
-                interpolation: { escapeValue: false }
-              })
+              path: downloadOptions.savePath,
+              interpolation: { escapeValue: false }
+            })
             : ""), //`${downloadOptions.title || ""} 种子已添加完成。` +
         // (downloadOptions.savePath
         //   ? `<br/>保存至 ${downloadOptions.savePath}`
@@ -1131,7 +1131,7 @@ export default class Controller {
           }
 
           items.forEach(item => {
-            chrome.downloads.download(item, function(downloadId) {
+            chrome.downloads.download(item, function (downloadId) {
               console.log(downloadId);
             });
           });
@@ -1401,5 +1401,9 @@ export default class Controller {
       }
       resolve();
     });
+  }
+
+  public getTopSearches(count: number = 9): Promise<any> {
+    return this.movieInfoService.getTopSearches(count);
   }
 }

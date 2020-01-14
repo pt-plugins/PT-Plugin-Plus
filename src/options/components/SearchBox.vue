@@ -14,6 +14,77 @@
         :loading="loadStatus"
         v-on:keyup.13="searchTorrent()"
       >
+        <!-- 近期热门 -->
+        <v-menu
+          slot="prepend-inner"
+          offset-y
+          class="top-searches"
+          nudge-bottom="8"
+          nudge-left="12"
+          v-if="topSearches.length>0"
+        >
+          <v-btn slot="activator" flat small color="grey lighten-2">{{ $t('common.hot') }}</v-btn>
+
+          <div
+            :style="($vuetify.breakpoint.smAndUp?'width: 550px':'width: 300px')+';background-color: #fff;'"
+          >
+            <v-container fluid grid-list-lg class="pa-3">
+              <v-layout row wrap>
+                <v-flex v-for="(item, index) in topSearches" :key="index" xs4>
+                  <v-card
+                    @click="searchHotItem(item)"
+                    style="cursor: pointer;"
+                    :title="$t('searchBox.searchThisKey', { key: item.title })"
+                  >
+                    <v-img :src="item.image" :height="$vuetify.breakpoint.smAndUp?'230px':'110px'">
+                      <div class="top-searches-item px-1">
+                        <div>
+                          <span class="caption">{{ item.title }}</span>
+                          <span
+                            v-if="$vuetify.breakpoint.smAndUp"
+                            class="caption ml-2 grey--text"
+                          >({{ item.year }})</span>
+
+                          <!-- 评分，点击可前往豆瓣页面 -->
+                          <a
+                            v-if="item.doubanRating"
+                            class="caption orange--text rating"
+                            :href="item.link"
+                            rel="noopener noreferrer nofollow"
+                            target="_blank"
+                            :title="$t('searchBox.toDouban')"
+                            @click.stop
+                          >{{ parseFloat(item.doubanRating).toFixed(1) }}</a>
+                        </div>
+                        <div
+                          v-if="$vuetify.breakpoint.smAndUp"
+                          class="caption grey--text alt-title"
+                        >{{ item.alt_title }}</div>
+                      </div>
+                    </v-img>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+            </v-container>
+            <v-divider></v-divider>
+
+            <div class="pa-1 top-searches text-sm-right">
+              <v-btn
+                flat
+                small
+                class="caption grey--text"
+                :title="$t('common.refresh')"
+                @click.stop="getTopSearches"
+                :loading="topSearchesLoading"
+              >
+                <v-icon style="font-size: 20px;">update</v-icon>
+                <span class="ml-2">{{ $t("common.lastUpdate", { time: topSearchesUpdateTime }) }}</span>
+              </v-btn>
+            </div>
+          </div>
+        </v-menu>
+
+        <!-- 搜索方案 -->
         <v-menu slot="append" offset-y class="search-solution">
           <v-btn slot="activator" flat small color="grey lighten-2">{{selectedSearchSolutionName}}</v-btn>
           <v-list dense>
@@ -42,6 +113,7 @@
         </v-menu>
       </v-text-field>
     </template>
+    <!-- 预选结果 -->
     <div>
       <v-list class="pb-0">
         <v-list-tile @click.stop="itemClick(null)">
@@ -131,24 +203,13 @@ import {
 } from "@/interface/common";
 
 import Extension from "@/service/extension";
+import dayjs from "dayjs";
 
 const extension = new Extension();
 
 export default Vue.extend({
   data() {
     return {
-      words: {
-        searchTip: "输入种子关键字、IMDb编号，按回车进行搜索",
-        default: "<默认>",
-        defaultTip: "仅搜索已允许的站点",
-        all: "<所有站点>",
-        noSearchSolution: "暂无方案，请添加",
-        noAllowSearchSites: "暂未配置允许搜索的站点，请先配置",
-        searchThisKey: "搜索 “$key$”",
-        doubanTip:
-          "以上数据来自©豆瓣电影 API v2 查询接口；如不想显示这些结果进行预选，可在“常规设置”中进行关闭",
-        toDouban: "在豆瓣进行查看"
-      },
       isLoading: false,
       items: [] as any[],
       selected: {} as any,
@@ -161,11 +222,22 @@ export default Vue.extend({
         id: "all",
         name: "<所有站点>"
       },
-      initialized: false
+      initialized: false,
+      topSearches: [] as any[],
+      topSearchesUpdateTime: "N/A" as any,
+      topSearchesLoading: false
     };
   },
 
   methods: {
+    searchHotItem(item: any) {
+      console.log(item);
+      let key =
+        item.imdbId || `douban${item.doubanId}|${item.title}|${item.alt_title}`;
+
+      this.searchTorrent(key);
+    },
+
     itemClick(item: any) {
       console.log(item);
       let key = this.searchKey;
@@ -294,6 +366,21 @@ export default Vue.extend({
       this.$store.dispatch("saveConfig", {
         lastSearchKey: ""
       });
+    },
+    getTopSearches() {
+      this.topSearchesLoading = true;
+      extension
+        .sendRequest(EAction.getTopSearches)
+        .then(result => {
+          this.topSearches = result;
+          this.topSearchesUpdateTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.topSearchesLoading = false;
+        });
     }
   },
   watch: {
@@ -335,7 +422,7 @@ export default Vue.extend({
     }
   },
   created() {
-    this.selectedSearchSolutionName = this.words.default;
+    this.selectedSearchSolutionName = this.$t("searchBox.default").toString();
     if (this.options.defaultSearchSolutionId == this.allSite.id) {
       this.selectedSearchSolutionName = this.allSite.name;
     } else if (
@@ -361,13 +448,11 @@ export default Vue.extend({
           count++;
         }
       });
-      if (count == 0) {
-        this.words.searchTip = this.words.noAllowSearchSites;
-      }
     }
     if (this.options.search && this.options.search.saveKey) {
       this.searchKey = this.options.lastSearchKey || "";
     }
+    this.getTopSearches();
     // 防止初始化时进行信息获取
     setTimeout(() => {
       this.initialized = true;
@@ -395,6 +480,38 @@ export default Vue.extend({
     margin-top: 18px;
     border-radius: 0px;
     margin-right: 10px;
+  }
+}
+
+.top-searches {
+  button {
+    min-width: unset;
+    margin: 0;
+  }
+}
+
+.top-searches-item {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  max-height: 50px;
+  background-color: #fff;
+  opacity: 0.85;
+  padding: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  .alt-title {
+    display: inline;
+  }
+
+  .rating {
+    position: absolute;
+    text-decoration: none;
+    right: 0px;
+    background-color: #fff;
+    padding: 1px 3px;
   }
 }
 </style>

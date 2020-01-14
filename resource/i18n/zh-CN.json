@@ -49,7 +49,11 @@
         "desc": "降序"
       },
       "close": "关闭",
-      "copyed": "已复制"
+      "copyed": "已复制",
+      "hot": "热门",
+      "loading": "正在加载……",
+      "lastUpdate": "数据更新于 {time}",
+      "refresh": "刷新"
     },
     "topbar": {
       "title": "@:(app.name)",

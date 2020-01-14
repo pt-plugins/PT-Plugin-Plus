@@ -49,7 +49,11 @@
         "desc": "DESC"
       },
       "close": "Close",
-      "copyed": "Copyed"
+      "copyed": "Copyed",
+      "hot": "HOT",
+      "loading": "Loading...",
+      "lastUpdate": "last updated on {time}",
+      "refresh": "Refresh"
     },
     "topbar": {
       "title": "@:(app.name)",
