@@ -1,10 +1,10 @@
 <p align="center">
 <img src="https://github.com/ronggang/PT-Plugin-Plus/raw/master/public/assets/icon-128.png"><br/>
 <a href="https://github.com/ronggang/PT-Plugin-Plus/releases/latest" title="GitHub Releases"><img src="https://img.shields.io/github/release/ronggang/PT-Plugin-Plus.svg?label=Latest%20Release"></a>
-<a href="https://github.com/ronggang/PT-Plugin-Plus/releases" title="GitHub All Releases"><img alt="" src="https://img.shields.io/github/downloads/ronggang/PT-Plugin-Plus/total.svg?label=Downloads"></a>
+<a href="https://github.com/ronggang/PT-Plugin-Plus/releases" title="GitHub All Releases"><img alt="Releases" src="https://img.shields.io/github/downloads/ronggang/PT-Plugin-Plus/total.svg?label=Downloads"></a>
 <img src="https://img.shields.io/badge/Used-TypeScript%20Vue-blue.svg">
-<a href="https://github.com/ronggang/PT-Plugin-Plus/LICENSE" title="GitHub license"><img src="https://img.shields.io/github/license/ronggang/PT-Plugin-Plus.svg?label=License"></a>
-<a href="https://t.me/joinchat/NZ9NCxPKXyby8f35rn_QTw"><img src="https://img.shields.io/badge/Telegram-Chat-blue.svg?logo=telegram"></a>
+<a href="https://github.com/ronggang/PT-Plugin-Plus/LICENSE" title="GitHub license"><img src="https://img.shields.io/github/license/ronggang/PT-Plugin-Plus.svg?label=License" alt="GitHub license"/></a>
+<a href="https://t.me/joinchat/NZ9NCxPKXyby8f35rn_QTw"><img src="https://img.shields.io/badge/Telegram-Chat-blue.svg?logo=telegram" alt="Telegram"/></a>
 </p>
 
 ---
