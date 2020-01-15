@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <gupdate xmlns='http://www.google.com/update2/response' protocol='2.0'>
   <app appid='dmmjlmbkigbgpnjfiimhlnbnmppjhpea'>
-    <updatecheck codebase='https://github.com/ronggang/PT-Plugin-Plus/releases/download/v1.4.6/PT-Plugin-Plus-v1.4.6.crx' version='1.4.6' prodversionmin='1.0.0' />
+    <updatecheck codebase='https://github.com/ronggang/PT-Plugin-Plus/releases/download/v1.4.7/PT-Plugin-Plus-v1.4.7.crx' version='1.4.7' prodversionmin='1.0.0' />
   </app>
 </gupdate>
