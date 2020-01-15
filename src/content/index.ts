@@ -246,7 +246,7 @@ class PTPContent {
     }
 
     // 获取系统定义的网站信息
-    let site =
+    let systemSite =
       this.options.system &&
       this.options.system.sites &&
       this.options.system.sites.find((item: Site) => {
@@ -255,7 +255,7 @@ class PTPContent {
 
     if (!this.site.plugins) {
       this.site.plugins = [];
-    } else if (this.site.schema !== "publicSite") {
+    } else if (this.site.schema !== "publicSite" && systemSite) {
       for (let index = this.site.plugins.length - 1; index >= 0; index--) {
         const item = this.site.plugins[index];
         // 删除非自定义的插件，从系统定义中重新获取
@@ -265,9 +265,9 @@ class PTPContent {
       }
     }
 
-    if (site && site.plugins) {
+    if (systemSite && systemSite.plugins) {
       // 将系统定义的内容添加到最前面，确保基本库优先加载
-      this.site.plugins = site.plugins.concat(this.site.plugins);
+      this.site.plugins = systemSite.plugins.concat(this.site.plugins);
     }
 
     // 网站指定的脚本
@@ -644,8 +644,8 @@ class PTPContent {
       typeof options === "string"
         ? { msg: options }
         : typeof options.msg === "object"
-        ? options.msg
-        : options
+          ? options.msg
+          : options
     );
 
     options.text = options.text || options.msg;
