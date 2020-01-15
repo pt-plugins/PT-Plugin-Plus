@@ -9,11 +9,11 @@
   "host": "bibliotik.me",
   "plugins": [{
     "name": "种子详情页面",
-    "pages": ["^/torrents/(\\d+)/$"],
+    "pages": ["^/torrents/(\\d+)$"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
   }, {
     "name": "种子列表",
-    "pages": ["/torrents/"],
+    "pages": ["^/torrents/$"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
   }],
   "searchEntryConfig": {
@@ -79,7 +79,7 @@
         "id": {
           "selector": ["#pre_header_status a[href*='/users/']"],
           "attribute": "href",
-          "filters": ["query ? query.match(/(\\d+)/)[1]"]
+          "filters": ["query ? query.match(/(\\d+)/)[1]: ''"]
         },
         "name": {
           "selector": ["#pre_header_status a[href*='/users/']"]
@@ -109,12 +109,6 @@
           "selector": "#detailsbox p:contains('Joined ') time",
           "filters": ["query.attr('datetime')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         },
-        "seeding": {
-          "value": "N/A"
-        },
-        "seedingSize": {
-          "value": "N/A"
-        },
         "bonus": {
           "value": "N/A"
         }
@@ -137,6 +131,20 @@
         "confirmSize": {
           "selector": ["table#torrents_table:first"],
           "filters": ["query.find('td.t_files_size_added')"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/users/$user.id$/seeding",
+      "parser": "getUserSeedingTorrents.js",
+      "fields": {
+        "seeding": {
+          "selector": ["table#torrents_table:first tbody > tr"],
+          "filters": ["query.length"]
+        },
+        "seedingSize": {
+          "selector": ["table#torrents_table:first tbody > tr"],
+          "filters": ["jQuery.map(query.find('td.t_files_size_added'), (item)=>{return $(item).text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)[1];})", "_self.getTotalSize(query)"]
         }
       }
     }
