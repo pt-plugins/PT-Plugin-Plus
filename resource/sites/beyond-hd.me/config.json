@@ -79,6 +79,10 @@
         "seeding": {
           "selector": ["#beta-stats i.fa-seedling"],
           "filters": ["query.parent().text().trim()"]
+        },
+        "messageCount": {
+          "selector": [".notify"],
+          "filters": ["query[0]?11:0"]
         }
       }
     },
