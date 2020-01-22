@@ -13,7 +13,26 @@
     "page": "/torrents.php",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "queryString": "searchstr=$key$"
+    "queryString": "searchstr=$key$",
+    "fieldSelector": {
+      "progress": {
+        "selector": ["#color_seeding, #color_snatched", "#color_leeching, #color_downloaded", ""],
+        "switchFilters": [
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["#color_seeding", "#color_snatched", "#color_leeching", "#color_downloaded"],
+        "switchFilters": [
+          ["2"],
+          ["255"],
+          ["1"],
+          ["3"]
+        ]
+      }
+    }
   },
   "searchEntry": [{
       "name": "all",
@@ -46,6 +65,16 @@
     }
   ],
   "selectors": {
+	"userBaseInfo": {
+      "merge": true,
+      "page": "/index.php",
+      "fields": {
+        "messageCount": {
+          "selector": [".newnoti"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        }
+      }
+    },
     "userExtendInfo": {
       "page": "/user.php?id=$user.id$",
       "fields": {
