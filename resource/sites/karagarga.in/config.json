@@ -8,6 +8,15 @@
   "schema": "karagarga",
   "host": "karagarga.in",
   "collaborator": "luckiestone",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/browse.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
+  }],
   "searchEntryConfig": {
     "page": "/browse.php",
     "queryString": "search=$key$&search_type=torrent",
