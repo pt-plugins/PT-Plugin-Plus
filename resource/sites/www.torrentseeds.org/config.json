@@ -9,6 +9,12 @@
     "schema": "torrentseeds",
     "host": "www.torrentseeds.org",
     "collaborator": "ian",
+    "supportedFeatures": {
+        "search": true,
+        "imdbSearch": false,
+        "userData": true,
+        "sendTorrent": true
+    },
     "selectors": {
         "userBaseInfo": {
             "page": "/",
