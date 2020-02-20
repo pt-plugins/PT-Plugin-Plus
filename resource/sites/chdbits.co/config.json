@@ -98,6 +98,19 @@
       "enabled": false
     }
   ],
+  "searchEntryConfig": {
+	"merge": true,
+    "fieldSelector": {
+      "progress": {
+        "selector": ["td.rowfollow:last-child"],
+        "filters": ["query.text()=='--'?null:query"]
+      },
+      "status": {
+        "selector": ["td.rowfollow:last-child"],
+        "filters": ["query.text()=='100%'?255:3"]
+      }
+    }
+  },
   "categories": [{
     "entry": "torrents.php",
     "result": "&cat=$id$&cat$id$=1",
