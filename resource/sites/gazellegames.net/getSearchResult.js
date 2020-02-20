@@ -10,7 +10,7 @@ if (!"".getQueryString) {
   };
 }
 
-(function(options) {
+(function(options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -157,7 +157,9 @@ if (!"".getQueryString) {
             site: site,
             entryName: options.entry.name,
             tags: this.getTags(row, options.torrentTagSelectors),
-            category: categories[groupid]
+            category: categories[groupid],
+            status: Searcher.getFieldValue(site, cells, "status"),
+            progress: Searcher.getFieldValue(site, cells, "progress")
           };
           results.push(data);
         }
@@ -203,4 +205,4 @@ if (!"".getQueryString) {
   let parser = new Parser(options);
   options.results = parser.getResult();
   console.log(options.results);
-})(options);
+})(options, options.searcher);
