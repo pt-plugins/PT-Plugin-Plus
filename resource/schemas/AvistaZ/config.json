@@ -18,7 +18,27 @@
     "parseScriptFile": "/schemas/AvistaZ/getSearchResult.js",
     "resultSelector": "div.table-responsive > table:first",
     "enabled": true
-  }],
+  }], 
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["tr[class*='success'], tr[class*='warning'], tr[class*='danger']", "tr[class*='info']",""],
+        "switchFilters": [
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["tr[class*='warning'], tr[class*='danger']", "tr[class*='success']", "tr[class*='tr.info']"],
+        "switchFilters": [
+          ["3"],
+          ["2"],
+          ["1"]
+        ]
+      }
+    }
+  },
   "torrentTagSelectors": [{
     "name": "Free",
     "selector": "i.fa-star"
