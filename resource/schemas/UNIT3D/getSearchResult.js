@@ -222,7 +222,9 @@
             category:
               fieldIndex.category == -1
                 ? null
-                : this.getCategory(cells.eq(fieldIndex.category))
+                : this.getCategory(cells.eq(fieldIndex.category)),
+            progress: this.getFieldValue(row, cells, fieldIndex, "progress"),
+            status: this.getFieldValue(row, cells, fieldIndex, "status")
           };
           results.push(data);
         }
@@ -283,6 +285,31 @@
       if (result.name) {
         result.name = result.name.replace(" torrent", "");
       }
+      return result;
+    }
+
+    getFieldValue(row, cells, fieldIndex, fieldName, returnCell) {
+      let parent = row;
+      let cell = null;
+      if (
+        cells &&
+        fieldIndex &&
+        fieldIndex[fieldName] !== undefined &&
+        fieldIndex[fieldName] !== -1
+      ) {
+        cell = cells.eq(fieldIndex[fieldName]);
+        parent = cell || row;
+      }
+
+      let result = Searcher.getFieldValue(site, parent, fieldName);
+
+      if (!result && cell) {
+        if (returnCell) {
+          return cell;
+        }
+        result = cell.text();
+      }
+
       return result;
     }
   }
