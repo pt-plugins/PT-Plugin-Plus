@@ -1,0 +1,151 @@
+{
+    "name": "Pornbits",
+    "description": "Pornbits",
+    "url": "https://pornbits.net/",
+    "icon": "https://pornbits.net/favicon.ico",
+    "tags": [
+        "XXX"
+    ],
+    "schema": "pornbits",
+    "host": "pornbits.net",
+    "collaborator": "ian",
+    "supportedFeatures": {
+        "search": true,
+        "imdbSearch": false,
+        "userData": true,
+        "sendTorrent": true
+    },
+    "selectors": {
+        "userBaseInfo": {
+            "page": "/",
+            "fields": {
+                "name": {
+                    "selector": [
+                        "#subnav > div > div > ul > li.dropdown.pull-right > a > span.hidden-sm"
+                    ],
+                    "filters": [
+                        "query.text()"
+                    ]
+                },
+                "uploaded": {
+                    "selector": [
+                        "#header > div > div > div > span.navbar-text.stats.hidden-sm"
+                    ],
+                    "filters": [
+                        "query.text().split(':')[1].split('D')[0].trim()",
+                        "query.replace(/,/g,'').sizeToNumber()"
+                    ]
+                },
+                "downloaded": {
+                    "selector": [
+                        "#header > div > div > div > span.navbar-text.stats.hidden-sm"
+                    ],
+                    "filters": [
+                        "query.text().split(':')[2].split('R')[0].replace(/Bytes/g,'').trim()",
+                        "query.replace(/,/g,'').sizeToNumber()"
+                    ]
+                }
+            }
+        },
+        "userExtendInfo": {
+            "page": "/user/details",
+            "fields": {
+                "levelName": {
+                    "selector": [
+                        "#content > div > div.col-md-3 > div:nth-child(3) > span"
+                    ],
+                    "filters": [
+                        "query.text().trim()"
+                    ]
+                },
+                "joinTime": {
+                    "selector": [
+                        "#content > div > div.col-md-3 > div:nth-child(5)"
+                    ],
+                    "filters": [
+                        "query.text().split(':')[1].trim()",
+                        "dateTime(query).isValid()?dateTime(query).valueOf():query"
+                    ]
+                },
+                "seeding": {
+                    "selector": [
+                        "#content > div > div.col-md-9 > div:nth-child(5) > div.panel-heading > h4"
+                    ],
+                    "filters": [
+                        "query.text().split(':')[1].split('L')[0].trim()"
+                    ]
+                }
+            }
+        }
+    },
+    "searchEntryConfig": {
+        "page": "/browse/search/date/name_tags/$key$",
+        "resultType": "html",
+        "loggedRegex": "\\/logout",
+        "parseScriptFile": "getSearchResult.js",
+        "resultSelector": "#content > table",
+        "firstDataRowIndex": 0,
+        "fieldIndex": {
+            "title": 2,
+            "seeders": 6,
+            "size": 4,
+            "leechers": 7,
+            "link": 2,
+            "url": 0,
+            "completed": 5,
+            "category": 1,
+            "time": 3
+        },
+        "fieldSelector": {
+            "title": {
+                "selector": [
+                    "div > div.torrent-name > b > a"
+                ],
+                "filters": [
+                    "query.text()"
+                ]
+            },
+            "link": {
+                "selector": [
+                    "div > div.torrent-name > b > a"
+                ],
+                "attribute": "href"
+            },
+            "url": {
+                "selector": [
+                    "a"
+                ],
+                "attribute": "href"
+            },
+            "size": {
+                "selector": [
+                    "div:eq(0)"
+                ]
+            },
+            "category": {
+                "selector": [
+                    "a > div > img"
+                ],
+                "attribute": "src",
+                "filters": [
+                    "query.split('/')",
+                    "query[query.length-1].split('.')[0].trim()"
+                ]
+            },
+            "time": {
+                "selector": [
+                    "div:eq(1)"
+                ],
+                "filters": [
+                    "query.text().split('m')[1].trim()"
+                ]
+            }
+        }
+    },
+    "searchEntry": [
+        {
+            "name": "全部",
+            "enabled": true
+        }
+    ]
+}
