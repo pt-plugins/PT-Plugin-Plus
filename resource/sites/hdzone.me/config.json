@@ -1,0 +1,32 @@
+{
+    "name": "HDZone",
+    "description": "",
+    "url": "https://hdzone.me/",
+    "icon": "https://hdzone.me/favicon.ico",
+    "tags": [
+        "电影"
+    ],
+    "schema": "NexusPHP",
+    "host": "hdzone.me",
+    "collaborator": "ian",
+    "searchEntryConfig": {
+        "fieldSelector": {
+            "progress": {
+                "selector": [
+                    "> td:eq(8)"
+                ],
+                "filters": [
+                    "query.text()==='-'?null:parseFloat(query.text())"
+                ]
+            },
+            "status": {
+                "selector": [
+                    ""
+                ],
+                "filters": [
+                    "3"
+                ]
+            }
+        }
+    }
+}

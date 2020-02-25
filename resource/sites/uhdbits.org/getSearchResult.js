@@ -53,52 +53,17 @@ if (!"".getQueryString) {
 
       // 用于定位每个字段所列的位置
       let fieldIndex = {
-        time: -1,
-        size: -1,
-        seeders: -1,
-        leechers: -1,
-        completed: -1,
-        comments: -1,
-        author: -1
+        time: 4,
+        size: 5,
+        seeders: 7,
+        leechers: 8,
+        completed: 6,
+        comments: 3,
+        author: 9
       };
 
       if (site.url.lastIndexOf("/") != site.url.length - 1) {
         site.url += "/";
-      }
-
-      // 获取字段所在的列
-      for (let index = 0; index < header.length; index++) {
-        const cell = header.eq(index);
-
-        // 发布时间
-        if (cell.find("a[href*='order_by=time']").length) {
-          fieldIndex.time = index + 1;
-          continue;
-        }
-
-        // 大小
-        if (cell.find("a[href*='order_by=size']").length) {
-          fieldIndex.size = index + 1;
-          continue;
-        }
-
-        // 种子数
-        if (cell.find("a[href*='order_by=seeders']").length) {
-          fieldIndex.seeders = index + 1;
-          continue;
-        }
-
-        // 下载数
-        if (cell.find("a[href*='order_by=leechers']").length) {
-          fieldIndex.leechers = index + 1;
-          continue;
-        }
-
-        // 完成数
-        if (cell.find("a[href*='order_by=snatched']").length) {
-          fieldIndex.completed = index + 1;
-          continue;
-        }
       }
 
       try {

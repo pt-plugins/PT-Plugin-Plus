@@ -55,7 +55,9 @@
         // 发布人
         author: header.length - 1,
         // 分类
-        category: 0
+        category: 0,
+        progress: null,
+        status: null
       };
 
       if (site.url.lastIndexOf("/") != site.url.length - 1) {
@@ -191,7 +193,9 @@
             category:
               fieldIndex.category == -1
                 ? null
-                : this.getCategory(cells.eq(fieldIndex.category))
+                : this.getCategory(cells.eq(fieldIndex.category)),
+            progress: this.getProgress(row, "progress"),
+            status: this.getStatus(row, "status")
           };
           results.push(data);
         }
@@ -216,6 +220,23 @@
       return "";
     }
 
+    getProgress(row, fieldName, returnCell) {
+      let result  =null;
+      if(row.attr('class').indexOf('success')!=-1) result = 100;
+      else if(row.attr('class').indexOf('warning')!=-1) result = 100;
+      else if(row.attr('class').indexOf('danger')!=-1) result = 100;
+      else if(row.attr('class').indexOf('info')!=-1) result = 0;
+      return result;
+    }
+
+    getStatus(row, fieldName, returnCell) {
+      let result  =null;
+      if(row.attr('class').indexOf('success')!=-1) result = 2;
+      else if(row.attr('class').indexOf('warning')!=-1) result = 3;
+      else if(row.attr('class').indexOf('danger')!=-1) result = 3;
+      else if(row.attr('class').indexOf('info')!=-1) result = 1;
+      return result;
+    }
     /**
      * 获取分类
      * @param {*} cell 当前列
