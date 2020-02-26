@@ -53,11 +53,6 @@
         "enabled": false
       },
       {
-        "queryString": "cat414=1",
-        "name": "Movies DVD",
-        "enabled": false
-      },
-      {
         "queryString": "cat412=1",
         "name": "Movies WEB-DL",
         "enabled": false
@@ -75,6 +70,11 @@
       {
         "queryString": "cat415=1",
         "name": "Movies REMUX",
+        "enabled": false
+      },
+      {
+        "queryString": "cat416=1",
+        "name": "Movies 3D",
         "enabled": false
       },
       {
@@ -157,10 +157,6 @@
           "name": "Movies 720p"
         },
         {
-          "id": 414,
-          "name": "Movies DVD"
-        },
-        {
           "id": 412,
           "name": "Movies WEB-DL"
         },
@@ -177,6 +173,10 @@
           "name": "Movies REMUX"
         },
         {
+          "id": 416,
+          "name": "Movies 3D"
+        },
+        {
           "id": 417,
           "name": "Movies iPad"
         },
@@ -187,10 +187,6 @@
         {
           "id": 419,
           "name": "VIU WEB-DL"
-        },
-        {
-          "id": 411,
-          "name": "Movies 720p"
         },
         {
           "id": 404,
