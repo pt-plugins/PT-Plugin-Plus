@@ -11,6 +11,29 @@
   ],
   "host": "www.hdarea.co",
   "collaborator": "lzl20110",
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "table[title='downloading'] > tbody > tr > td > div",
+          "table[title='seeding'] > tbody > tr > td > div",
+          "table[title='Stopped'] > tbody > tr > td > div"
+        ],
+        "filters": ["query.attr('style')||''", "query.match(/width:.?(\\d.+)%/)", "(query && query.length>=2)?query[1]:null"]
+      },
+      "status": {
+        "selector": [
+          "table[title='downloading']",
+          "table[title='seeding']",
+          "table[title='Stopped']"
+        ],
+        "switchFilters": [
+          ["query.attr('title')||''", "query=='seeding'?2:1"],
+          ["255"]
+        ]
+      }
+    }
+  },
   "searchEntry": [{
       "name": "全站",
       "enabled": true
