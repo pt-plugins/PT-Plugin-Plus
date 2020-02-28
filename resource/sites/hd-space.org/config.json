@@ -86,7 +86,7 @@
       "fields": {
         "joinTime": {
           "selector": ["td.header:contains('Joined on') + td"],
-          "filters": ["dateTime(query.text())"]
+          "filters": ["query[0].innerHTML.replace('&nbsp;', '').replace('&nbsp;', '')", "dateTime(query).valueOf()"]
         }
       }
     }
