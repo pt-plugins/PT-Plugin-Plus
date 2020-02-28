@@ -5,9 +5,27 @@
   "url": "https://orpheus.network/",
   "icon": "https://orpheus.network/favicon.ico",
   "tags": ["音乐"],
-  "schema": "Gazelle",
+  "schema": "GazelleJSONAPI",
   "host": "orpheus.network",
-  "collaborator": "ylxb2016",
+  "collaborator": "ylxb2016, enigmaz",
+  "searchEntryConfig": {
+    "skipIMDbId": true
+  },
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/bonus.php?action=bprates",
+      "fields": {
+        "seedingSize": {
+          "selector": ["div#content > table > tbody > tr > td:eq(1)"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "bonus": {
+          "selector": ["div#content > div.header > h3"],
+          "filters": ["query.text().replace(/,/g,'').match(/.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        }
+      }
+    }
+  },
   "supportedFeatures": {
     "imdbSearch": false,
     "userData": "◐"
