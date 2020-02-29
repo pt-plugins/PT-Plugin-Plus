@@ -1,0 +1,225 @@
+{
+    "name": "LeagueHD",
+    "timezoneOffset": "+0800",
+    "schema": "NexusPHP",
+    "url": "https://leaguehd.com/",
+    "description": "LeagueHD",
+    "icon": "https://leaguehd.com/favicon.ico",
+    "tags": [
+      "影视",
+      "综合"
+    ],
+    "host": "leaguehd.com",
+    "collaborator": "enigmaz",
+    "searchEntryConfig": {
+      "fieldSelector": {
+        "progress": {
+          "selector": ["> td:eq(8)"],
+          "filters": ["query.text()==='--'?null:parseFloat(query.text())"]
+        },
+        "status": {
+          "selector": ["> td:eq(8)"],
+          "filters": ["query.text()==='--'?null:query.is('.peer-active')?(parseFloat(query.text())==100?2:1):(parseFloat(query.text())==100?255:3)"]
+        }
+      }
+    },
+    "searchEntry": [{
+        "name": "全站",
+        "enabled": true
+      },
+      {
+        "queryString": "cat300=1",
+        "name": "Movies UHD-4K",
+        "enabled": false
+      },
+      {
+        "queryString": "cat301=1",
+        "name": "Movies 2160p",
+        "enabled": false
+      },
+      {
+        "queryString": "cat401=1",
+        "name": "Movies Blu-ray",
+        "enabled": false
+      },
+      {
+        "queryString": "cat410=1",
+        "name": "Movies 1080p",
+        "enabled": false
+      },
+      {
+        "queryString": "cat411=1",
+        "name": "Movies 720p",
+        "enabled": false
+      },
+      {
+        "queryString": "cat412=1",
+        "name": "Movies WEB-DL",
+        "enabled": false
+      },
+      {
+        "queryString": "cat413=1",
+        "name": "Movies HDTV",
+        "enabled": false
+      },
+      {
+        "queryString": "cat414=1",
+        "name": "Movies DVD",
+        "enabled": false
+      },
+      {
+        "queryString": "cat415=1",
+        "name": "Movies REMUX",
+        "enabled": false
+      },
+      {
+        "queryString": "cat416=1",
+        "name": "Movies 3D",
+        "enabled": false
+      },
+      {
+        "queryString": "cat417=1",
+        "name": "Movies iPad",
+        "enabled": false
+      },
+      {
+        "queryString": "cat418=1",
+        "name": "NF WEB-DL",
+        "enabled": false
+      },
+      {
+        "queryString": "cat419=1",
+        "name": "VIU WEB-DL",
+        "enabled": false
+      },
+      {
+        "queryString": "cat404=1",
+        "name": "Documentaries",
+        "enabled": false
+      },
+      {
+        "queryString": "cat405=1",
+        "name": "Animations",
+        "enabled": false
+      },
+      {
+        "queryString": "cat402=1",
+        "name": "TV Series",
+        "enabled": false
+      },
+      {
+        "queryString": "cat403=1",
+        "name": "TV Shows",
+        "enabled": false
+      },
+      {
+        "queryString": "cat406=1",
+        "name": "Music Videos",
+        "enabled": false
+      },
+      {
+        "queryString": "cat407=1",
+        "name": "Sports",
+        "enabled": false
+      },
+      {
+        "queryString": "cat409=1",
+        "name": "Misc",
+        "enabled": false
+      },
+      {
+        "queryString": "cat408=1",
+        "name": "HQ Audio",
+        "enabled": false
+      }
+    ],
+    "categories": [{
+      "entry": "torrents.php",
+      "result": "&cat$id$=1",
+      "category": [{
+          "id": 300,
+          "name": "Movies UHD-4K"
+        },
+        {
+          "id": 301,
+          "name": "Movies 2160p"
+        },
+        {
+          "id": 401,
+          "name": "Movies Blu-ray"
+        },
+        {
+          "id": 410,
+          "name": "Movies 1080p"
+        },
+        {
+          "id": 411,
+          "name": "Movies 720p"
+        },
+        {
+          "id": 412,
+          "name": "Movies WEB-DL"
+        },
+        {
+          "id": 413,
+          "name": "Movies HDTV"
+        },
+        {
+          "id": 414,
+          "name": "Movies DVD"
+        },
+        {
+          "id": 415,
+          "name": "Movies REMUX"
+        },
+        {
+          "id": 416,
+          "name": "Movies 3D"
+        },
+        {
+          "id": 417,
+          "name": "Movies iPad"
+        },
+        {
+          "id": 418,
+          "name": "NF WEB-DL"
+        },
+        {
+          "id": 419,
+          "name": "VIU WEB-DL"
+        },
+        {
+          "id": 404,
+          "name": "Documentaries"
+        },
+        {
+          "id": 405,
+          "name": "Animations"
+        },
+        {
+          "id": 402,
+          "name": "TV Series"
+        },
+        {
+          "id": 403,
+          "name": "TV Shows"
+        },
+        {
+          "id": 406,
+          "name": "Music Videos"
+        },
+        {
+          "id": 407,
+          "name": "Sports"
+        },
+        {
+          "id": 409,
+          "name": "Misc"
+        },
+        {
+          "id": 408,
+          "name": "HQ Audio"
+        }
+      ]
+    }]
+  }

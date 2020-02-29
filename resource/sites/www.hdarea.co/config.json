@@ -2,15 +2,42 @@
   "name": "HDArea",
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
-  "url": "https://hdarea.co/",
+  "url": "https://www.hdarea.co/",
   "description": "高清世界",
-  "icon": "https://hdarea.co/favicon.ico",
+  "icon": "https://www.hdarea.co/favicon.ico",
   "tags": [
     "影视",
     "综合"
   ],
-  "host": "hdarea.co",
+  "host": "www.hdarea.co",
   "collaborator": "lzl20110",
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "table[title='downloading'] > tbody > tr > td > div",
+          "table[title='seeding'] > tbody > tr > td > div",
+          "table[title='Stopped'] > tbody > tr > td > div",
+          "table[title='completed'] > tbody > tr > td > div"
+        ],
+        "filters": ["query.attr('style')||''", "query.match(/width:.?(\\d.+)%/)", "(query && query.length>=2)?query[1]:null"]
+      },
+      "status": {
+        "selector": [
+          "table[title='downloading']",
+          "table[title='seeding']",
+          "table[title='Stopped']",                         
+          "table[title='completed']"
+        ],
+        "switchFilters": [
+          ["1"],
+          ["2"],
+          ["3"],
+          ["255"]
+        ]
+      }
+    }
+  },
   "searchEntry": [{
       "name": "全站",
       "enabled": true
