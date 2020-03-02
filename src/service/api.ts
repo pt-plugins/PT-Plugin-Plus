@@ -151,19 +151,40 @@ export const APP = {
             }
 
             let content = this.cache.get(url);
-            if (content) {
-              this.runScript(content);
-              resolve();
-            } else {
-              $.get(
-                url,
-                result => {
-                  this.runScript(result);
-                  this.cache.set(url, result);
-                  resolve();
-                },
-                "text"
-              );
+            try {
+              if (content) {
+                this.runScript(content);
+                resolve();
+              } else {
+                console.log("execScript: %s", url);
+                $.ajax({
+                  url,
+                  dataType: "text"
+                })
+                  .done(result => {
+                    this.runScript(result);
+                    this.cache.set(url, result);
+                    resolve();
+                  })
+                  .fail((jqXHR, status, text) => {
+                    if (
+                      jqXHR.responseJSON &&
+                      jqXHR.responseJSON.code &&
+                      jqXHR.responseJSON.msg
+                    ) {
+                      reject(
+                        jqXHR.responseJSON.msg +
+                          " (" +
+                          jqXHR.responseJSON.code +
+                          ")"
+                      );
+                    } else {
+                      reject(status + ", " + text);
+                    }
+                  });
+              }
+            } catch (error) {
+              reject(error);
             }
           }
 

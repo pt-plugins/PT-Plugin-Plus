@@ -154,6 +154,9 @@
   }, {
     "name": "50%",
     "selector": "img[alt='50%']"
+  }, {
+    "name": "⛔️",
+    "selector": "span.browse.excl"
   }],
   "selectors": {
     "userBaseInfo": {

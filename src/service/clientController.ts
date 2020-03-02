@@ -54,18 +54,26 @@ export class ClientController {
         APP.execScript({
           type: "file",
           content: `clients/${clientOptions.type}/init.js`
-        }).then(() => {
-          let client: any;
-          eval(`client = new ${clientOptions.type}()`);
-          client.init({
-            loginName: clientOptions.loginName,
-            loginPwd: clientOptions.loginPwd,
-            address: clientOptions.address,
-            name: clientOptions.name
+        })
+          .then(() => {
+            let client: any;
+            eval(`client = new ${clientOptions.type}()`);
+            client.init({
+              loginName: clientOptions.loginName,
+              loginPwd: clientOptions.loginPwd,
+              address: clientOptions.address,
+              name: clientOptions.name
+            });
+            this.clients[clientOptions.id] = client;
+            resolve({ client, options: clientOptions });
+          })
+          .catch((e: any) => {
+            console.log(e);
+            reject({
+              initFailed: true,
+              msg: e
+            });
           });
-          this.clients[clientOptions.id] = client;
-          resolve({ client, options: clientOptions });
-        });
       } else {
         let client: any;
         eval(`client = new ${clientOptions.type}()`);
@@ -91,22 +99,28 @@ export class ClientController {
         type: EDataResultType.unknown,
         success: false
       };
-      this.getClient(options).then((clientOptions: any) => {
-        clientOptions.client
-          .call(EAction.testClientConnectivity, options)
-          .then((result: boolean) => {
-            dataResult.success = result;
-            if (result) {
-              dataResult.type = EDataResultType.success;
-            }
-            resolve(dataResult);
-          })
-          .catch((result: any) => {
-            dataResult.data = result;
-            dataResult.type = EDataResultType.error;
-            reject(dataResult);
-          });
-      });
+      this.getClient(options)
+        .then((clientOptions: any) => {
+          clientOptions.client
+            .call(EAction.testClientConnectivity, options)
+            .then((result: boolean) => {
+              dataResult.success = result;
+              if (result) {
+                dataResult.type = EDataResultType.success;
+              }
+              resolve(dataResult);
+            })
+            .catch((result: any) => {
+              dataResult.data = result;
+              dataResult.type = EDataResultType.error;
+              reject(dataResult);
+            });
+        })
+        .catch((e: any) => {
+          dataResult.data = e;
+          dataResult.type = EDataResultType.error;
+          reject(dataResult);
+        });
     });
   }
 }
