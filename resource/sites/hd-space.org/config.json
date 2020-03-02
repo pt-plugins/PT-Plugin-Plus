@@ -31,6 +31,8 @@
     "fieldIndex": {
 	    "category": 0,
 	    "title": 1,
+	    "link": 1,
+	    "url": 3,
         "completed": 2,
         "time": 4,
         "size": 5,
@@ -40,8 +42,18 @@
         "completed”=": 9
 	},
 	"fieldSelector": {
-		"title" :{
-		}
+	  "title": {
+		"selector": [""],
+        "filters": ["query.get(0).firstChild", "query.nodeValue||query.innerText||0"]
+	  },
+	  "link": {
+		"selector": [""],
+        "filters": ["query.children().attr('href')", "'https://hd-space.org/'+query"]
+	  },
+	  "url": {
+		"selector": [""],
+        "filters": ["query.children().attr('href')", "'https://hd-space.org/'+query"]
+	  }
 	}
   },
   "searchEntry": [{
