@@ -10,7 +10,88 @@
     "综合"
   ],
   "host": "www.hdarea.co",
-  "collaborator": "lzl20110",
+  "collaborator": [
+    "lzl20110",
+    "ian"
+  ],
+  "supportedFeatures": {
+    "search": true,
+    "imdbSearch": false,
+    "userData": true,
+    "sendTorrent": true
+  },
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": [
+            "#info_block > tbody > tr > td > table > tbody > tr > td:nth-child(1) > span > span > a"
+          ],
+          "attribute": "href",
+          "filters": [
+            "query ? query.getQueryString('id'):''"
+          ]
+        },
+        "name": {
+          "selector": [
+            "#info_block > tbody > tr > td > table > tbody > tr > td:nth-child(1) > span > span > a > b"
+          ],
+          "filters": [
+            "query.text().trim()"
+          ]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "bonus": {
+          "selector": [
+            "td.rowhead.nowrap:contains('魔力值')"
+          ],
+          "filters": [
+            "parseFloat(query.next().text().trim())"
+          ]
+        },
+        "levelName": {
+          "selector": [
+            "td.rowhead.nowrap:contains('等级')"
+          ],
+          "filters": [
+            "query.next().find('img').attr('title').trim()"
+          ]
+        },
+        "uploaded": {
+          "selector": [
+            "td.rowhead.nowrap:contains('传输')"
+          ],
+          "filters": [
+            "query.next().find('td.embedded:eq(0)').text().split(':')[1].trim()",
+            "query.replace(/,/g,'').sizeToNumber()"
+          ]
+        },
+        "downloaded": {
+          "selector": [
+            "td.rowhead.nowrap:contains('传输')"
+          ],
+          "filters": [
+            "query.next().find('td.embedded:eq(1)').text().split(':')[1].trim()",
+            "query.replace(/,/g,'').sizeToNumber()"
+          ]
+        },
+        "joinTime": {
+          "selector": [
+            "td.rowhead.nowrap:contains('加入日期')"
+          ],
+          "filters": [
+            "query.next().text().split('(')[0].trim()",
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        }
+      }
+    }
+  },
   "searchEntryConfig": {
     "fieldSelector": {
       "progress": {
@@ -20,25 +101,38 @@
           "table[title='Stopped'] > tbody > tr > td > div",
           "table[title='completed'] > tbody > tr > td > div"
         ],
-        "filters": ["query.attr('style')||''", "query.match(/width:.?(\\d.+)%/)", "(query && query.length>=2)?query[1]:null"]
+        "filters": [
+          "query.attr('style')||''",
+          "query.match(/width:.?(\\d.+)%/)",
+          "(query && query.length>=2)?query[1]:null"
+        ]
       },
       "status": {
         "selector": [
           "table[title='downloading']",
           "table[title='seeding']",
-          "table[title='Stopped']",                         
+          "table[title='Stopped']",
           "table[title='completed']"
         ],
         "switchFilters": [
-          ["1"],
-          ["2"],
-          ["3"],
-          ["255"]
+          [
+            "1"
+          ],
+          [
+            "2"
+          ],
+          [
+            "3"
+          ],
+          [
+            "255"
+          ]
         ]
       }
     }
   },
-  "searchEntry": [{
+  "searchEntry": [
+    {
       "name": "全站",
       "enabled": true
     },
@@ -128,77 +222,80 @@
       "enabled": false
     }
   ],
-  "categories": [{
-    "entry": "torrents.php",
-    "result": "&cat$id$=1",
-    "category": [{
-        "id": 401,
-        "name": "Movies Blu-ray"
-      },
-      {
-        "id": 415,
-        "name": "Movies REMUX"
-      },
-      {
-        "id": 416,
-        "name": "Movies 3D"
-      },
-      {
-        "id": 410,
-        "name": "Movies 1080p"
-      },
-      {
-        "id": 411,
-        "name": "Movies 720p"
-      },
-      {
-        "id": 414,
-        "name": "Movies DVD"
-      },
-      {
-        "id": 412,
-        "name": "Movies WEB-DL"
-      },
-      {
-        "id": 413,
-        "name": "Movies HDTV"
-      },
-      {
-        "id": 417,
-        "name": "Movies iPad"
-      },
-      {
-        "id": 404,
-        "name": "Documentaries"
-      },
-      {
-        "id": 405,
-        "name": "Animations"
-      },
-      {
-        "id": 402,
-        "name": "TV Series"
-      },
-      {
-        "id": 403,
-        "name": "TV Shows"
-      },
-      {
-        "id": 406,
-        "name": "Music Videos"
-      },
-      {
-        "id": 407,
-        "name": "Sports"
-      },
-      {
-        "id": 409,
-        "name": "Misc"
-      },
-      {
-        "id": 408,
-        "name": "HQ Audio"
-      }
-    ]
-  }]
+  "categories": [
+    {
+      "entry": "torrents.php",
+      "result": "&cat$id$=1",
+      "category": [
+        {
+          "id": 401,
+          "name": "Movies Blu-ray"
+        },
+        {
+          "id": 415,
+          "name": "Movies REMUX"
+        },
+        {
+          "id": 416,
+          "name": "Movies 3D"
+        },
+        {
+          "id": 410,
+          "name": "Movies 1080p"
+        },
+        {
+          "id": 411,
+          "name": "Movies 720p"
+        },
+        {
+          "id": 414,
+          "name": "Movies DVD"
+        },
+        {
+          "id": 412,
+          "name": "Movies WEB-DL"
+        },
+        {
+          "id": 413,
+          "name": "Movies HDTV"
+        },
+        {
+          "id": 417,
+          "name": "Movies iPad"
+        },
+        {
+          "id": 404,
+          "name": "Documentaries"
+        },
+        {
+          "id": 405,
+          "name": "Animations"
+        },
+        {
+          "id": 402,
+          "name": "TV Series"
+        },
+        {
+          "id": 403,
+          "name": "TV Shows"
+        },
+        {
+          "id": 406,
+          "name": "Music Videos"
+        },
+        {
+          "id": 407,
+          "name": "Sports"
+        },
+        {
+          "id": 409,
+          "name": "Misc"
+        },
+        {
+          "id": 408,
+          "name": "HQ Audio"
+        }
+      ]
+    }
+  ]
 }
