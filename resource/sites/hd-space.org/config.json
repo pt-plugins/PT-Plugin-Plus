@@ -20,7 +20,8 @@
     "page": "/index.php?page=torrents",
     "queryString": "search=$key$",
     "resultType": "html",
-    "resultSelector": "#bodyarea > table >tbody > tr > td:nth-child(2) > table >tbody > tr:nth-child(3) > td > table > tbody > tr",
+    "resultSelector": "#bodyarea > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(3) > td > table > tbody > tr:not(:first-child)",
+    "dataRowSelector": " > tbody > tr:not(:first-child)",
     "area": [{
       "name": "IMDB",
       "keyAutoMatch": "^(tt\\d+)$",
