@@ -20,8 +20,7 @@
     "page": "/index.php?page=torrents",
     "queryString": "search=$key$",
     "resultType": "html",
-    "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "table.lista table table.lista > tbody > tr",
+    "resultSelector": "#bodyarea > table >tbody > tr > td:nth-child(2) > table >tbody > tr:nth-child(3) > td > table > tbody > tr",
     "area": [{
       "name": "IMDB",
       "keyAutoMatch": "^(tt\\d+)$",
@@ -29,9 +28,26 @@
         "tt", "IMDB"
       ]
     }],
-    "resultType": "html",
-    "parseScriptFile": "getSearchResult.js"
+    "fieldIndex": {
+	    "category": 0,
+	    "title": 1,
+        "completed": 2,
+        "time": 4,
+        "size": 5,
+        "author": 6,
+        "seeders": 7,
+        "leechers": 8,
+        "completed”=": 9
+	},
+	"fieldSelector": {
+		"title" :{
+		}
+	}
   },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
   "torrentTagSelectors": [{
     "name": "Free",
     "selector": "img[src='gold/gold.png'], img[src='images/sf.png']"
