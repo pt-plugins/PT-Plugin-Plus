@@ -106,7 +106,10 @@
         },
         "bonus": {
           "selector": ["td.green:contains('Bonus')"],
-          "filters": ["parseFloat(query.text().replace('Bonus: ',''))"]
+          "filters": ["query.text().replace('Bonus: ','')"]
+        },
+        "seeding": {
+	      "selector": ["#menu + table > tbody > tr > td:nth-child(4) b > font:nth-child(2)"]
         }
       }
     },
