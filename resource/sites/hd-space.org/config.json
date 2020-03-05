@@ -8,12 +8,12 @@
   "schema": "Common",
   "plugins": [{
     "name": "种子详情页面",
-    "pages": ["/index.php?page=torrent-details"],
-    "scripts": ["common.js", "details.js"]
+    "pages": ["/index.php?page=torrent-details&id="],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
   }, {
     "name": "种子列表",
     "pages": ["/index.php?page=torrents"],
-    "scripts": ["common.js", "/libs/album/album.js", "browse.js"]
+    "scripts": ["/schemas/NexusPHP/common.js", "/libs/album/album.js", "/schemas/Common/torrents.js"]
   }],
   "host": "hd-space.org",
   "searchEntryConfig": {
@@ -119,6 +119,16 @@
         "joinTime": {
           "selector": ["td.header:contains('Joined on') + td"],
           "filters": ["query[0].innerHTML.replace('&nbsp;', '').replace('&nbsp;', '')", "dateTime(query).valueOf()"]
+        }
+      }
+    },
+    "common": {
+	  "page": "/index.php?page=torrent-details",
+      "merge": true,
+      "fields": {
+        "downloadURL": {
+          "selector": ["a.[href*='download.php?id=']"],
+          "filters": ["query.attr('href')"]
         }
       }
     }
