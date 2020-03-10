@@ -15,11 +15,11 @@
     "pages": ["/torrents-today.php", "/torrents-search.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
   }],
-  "host": "hd-space.org",
+  "host": "aidoru-online.me",
   "searchEntryConfig": {
     "page": "/get_ttable.php?pcat=Show+All&scat=&subbed=&fl=&resd=&p=0&searchstr=$key$&deadlive=1&sortcol=id&sortorder=desc&startdt=&enddt=",
     "resultType": "json",
-    "resultSelector": "table"
+    "resultSelector": "table",
     "fieldIndex": {
 	    "category": 0,
 	    "title": 1,
@@ -40,11 +40,11 @@
 	  },
 	  "link": {
 		"selector": [""],
-        "filters": ["query.children().attr('href')", "'https://hd-space.org/'+query"]
+        "filters": ["query.children().attr('href')", "'https://aidoru-online.me/'+query"]
 	  },
 	  "url": {
 		"selector": [""],
-        "filters": ["query.children().attr('href')", "'https://hd-space.org/'+query"]
+        "filters": ["query.children().attr('href')", "'https://aidoru-online.me/'+query"]
 	  }
 	}
   },
@@ -86,6 +86,9 @@
         "levelName": {
           "selector": [".myBlock-content td:contains('Class:') + td"],
           "filters":  ["query.text()"]
+        },
+        "bonus": {
+          "value": "N/A"
         }
       }
     },
@@ -94,7 +97,14 @@
       "fields": {
         "joinTime": {
           "selector": ["td.prof-lbl:contains('Joined:') + td"],
-          "filters": ["dateTime(querytext()).valueOf()"]
+          "filters": ["dateTime(query.text()).valueOf()"]
+        },
+        "seeding": {
+	      "selector": ["b:contains('Currently seeding')"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "seedingSize": {
+	        "selector": ["b:contains('Currently seeding') + br + table tr:not(:first-child) > td:nth-child(4)"]
         }
       }
     },
