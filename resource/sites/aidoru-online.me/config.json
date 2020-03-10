@@ -3,7 +3,7 @@
   "timezoneOffset": "+0000",
   "description": "AO",
   "url": "https://aidoru-online.me/",
-  "icon": "https://aidoru-online.me/themes/default/images/favicon.ico",
+  "icon": "/themes/default/images/favicon.ico",
   "tags": ["偶像"],
   "schema": "Common",
   "plugins": [{
@@ -18,7 +18,7 @@
   "host": "aidoru-online.me",
   "searchEntryConfig": {
     "page": "/get_ttable.php?pcat=Show+All&scat=&subbed=&fl=&resd=&p=0&searchstr=$key$&deadlive=1&sortcol=id&sortorder=desc&startdt=&enddt=",
-    "resultType": "json",
+    "resultType": "html",
     "resultSelector": "table",
     "fieldIndex": {
 	    "category": 0,
@@ -36,7 +36,7 @@
 	"fieldSelector": {
 	  "title": {
 		"selector": [""],
-        "filters": ["query.get(0).firstChild", "query.nodeValue||query.innerText||0"]
+        "filters": ["query.text()"]
 	  },
 	  "link": {
 		"selector": [""],
