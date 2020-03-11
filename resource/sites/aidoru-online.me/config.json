@@ -3,7 +3,6 @@
   "timezoneOffset": "+0000",
   "description": "AO",
   "url": "https://aidoru-online.me/",
-  "icon": "/themes/default/images/favicon.ico",
   "tags": ["偶像"],
   "schema": "Common",
   "plugins": [{
@@ -104,7 +103,8 @@
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         },
         "seedingSize": {
-	        "selector": ["b:contains('Currently seeding') + br + table tr:not(:first-child) > td:nth-child(4)"]
+	        "selector": ["b:contains('Currently seeding') + br + table tr:not(:first-child) > td:nth-child(4)"],
+	        "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
       }
     },
