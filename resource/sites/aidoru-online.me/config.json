@@ -34,17 +34,37 @@
 	},
 	"fieldSelector": {
 	  "title": {
-		"selector": [""],
+		"selector": ["a"],
         "filters": ["query.text()"]
 	  },
 	  "link": {
-		"selector": [""],
-        "filters": ["query.children().attr('href')", "'https://aidoru-online.me/'+query"]
+		"selector": ["a"],
+        "filters": ["query.attr('href')", "'https://aidoru-online.me/'+query"]
 	  },
 	  "url": {
 		"selector": [""],
         "filters": ["query.children().attr('href')", "'https://aidoru-online.me/'+query"]
-	  }
+	  },
+	  "time": {
+		"selector": [""],
+        "filters": ["'20'+query.text()"]
+	  },
+	  "progress": {
+        "selector": ["td.ttable_seeding font[color='black']", "td.ttable_seeding font[color='#ff0000']", ""],
+        "switchFilters": [
+          ["query.length > 0 ? 100:null"],
+          ["query.length > 0 ? 0:null"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["td.ttable_seeding font[color='green']", "td.ttable_seeding font[color='black']", "td.ttable_seeding font[color='#ff0000']"],
+        "switchFilters": [
+          ["2"],
+          ["255"],
+          ["1"]
+        ]
+      }
 	}
   },
   "searchEntry": [{
