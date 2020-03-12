@@ -129,12 +129,27 @@
       }
     },
     "common": {
-	  "page": "/index.php?page=torrent-details",
-      "merge": true,
+	  "page": "/torrents-details.php",
       "fields": {
         "downloadURL": {
-          "selector": ["a.[href*='download.php?id=']"],
+          "selector": ["a[href*='download.php?id=']"],
           "filters": ["query.attr('href')"]
+        },
+        "size": {
+          "selector": ["td[align='left']:contains('Total Size:') + td"],
+          "filters": ["query.parent().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        },
+        "sayThanksButton": {
+          "selector": ["#ty-button"],
+          "filters": ["query"]
+        },
+        "downloadURLs": {
+          "selector": ["a[href*='download.php?id=']"],
+          "filters": ["query.toArray()"]
+        },
+        "confirmSize": {
+          "selector": ["table.ttable_headinner"],
+          "filters": ["query.find('td.ttable_size')"]
         }
       }
     }
