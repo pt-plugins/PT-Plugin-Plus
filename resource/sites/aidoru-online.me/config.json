@@ -50,7 +50,7 @@
         "filters": ["'20'+query.text()"]
 	  },
 	  "progress": {
-        "selector": ["td.ttable_seeding font[color='black']", "td.ttable_seeding font[color='#ff0000']", ""],
+        "selector": ["td.ttable_seeding font[color='green'], td.ttable_seeding font[color='black']", "td.ttable_seeding font[color='#ff0000']", ""],
         "switchFilters": [
           ["query.length > 0 ? 100:null"],
           ["query.length > 0 ? 0:null"],
