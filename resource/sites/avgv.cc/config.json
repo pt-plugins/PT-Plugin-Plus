@@ -1,0 +1,10 @@
+{
+  "name": "爱薇网",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "url": "http://avgv.cc/",
+  "description": "新加坡华人PT站，很有特色。",
+  "tags": ["成人", "AV", "GAY", "LES"],
+  "host": "avgv.cc",
+  "collaborator": "xiazhou8"
+}

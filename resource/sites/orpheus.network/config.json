@@ -15,6 +15,10 @@
     "userSeedingTorrents": {
       "page": "/bonus.php?action=bprates",
       "fields": {
+        "seeding": {
+          "selector": ["div#content > table > tbody > tr > td:eq(0)"],
+          "filters": ["parseInt(query.text())"]
+        },
         "seedingSize": {
           "selector": ["div#content > table > tbody > tr > td:eq(1)"],
           "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
@@ -22,6 +26,15 @@
         "bonus": {
           "selector": ["div#content > div.header > h3"],
           "filters": ["query.text().replace(/,/g,'').match(/.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/user.php?id=$user.id$",
+      "fields": {
+        "joinTime": {
+          "selector": ["div:contains('Statistics') + ul.stats > li:contains('Joined:') > span"],
+          "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         }
       }
     }

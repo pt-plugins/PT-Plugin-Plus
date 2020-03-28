@@ -68,7 +68,7 @@
       }
 
       // 遍历数据行
-      for (let index = 1; index < rows.length; index++) {
+      for (let index = 0; index < rows.length; index++) {
         const row = rows.eq(index);
         let cells = row.find(">div");
         let title = cells

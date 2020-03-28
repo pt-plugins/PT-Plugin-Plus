@@ -2,15 +2,18 @@
   "name": "百川PT",
   "timezoneOffset": "+0800",
   "description": "校内10兆高速下载，优质高清资源共享！",
-  "url": "https://pt.ghtt.net/",
-  "icon": "https://pt.ghtt.net/favicon.ico",
+  "url": "https://www.hitpt.com/",
+  "icon": "https://www.hitpt.com/favicon.ico",
   "tags": [
     "教育网",
     "影视",
     "综合"
   ],
   "schema": "NexusPHP",
-  "host": "pt.ghtt.net",
+  "host": "www.hitpt.com",
+  "formerHosts": [
+    "pt.ghtt.net"
+  ],
   "collaborator": "tongyifan",
   "searchEntry": [{
       "entry": "/torrents.php?search=$key$&notnewword=1",
