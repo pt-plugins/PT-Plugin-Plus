@@ -109,6 +109,10 @@
         "downloadURL": {
           "selector": ["a.bhd-fl-button[href*='/download/']"],
           "filters": ["query.attr('href')"]
+        },
+        "sayThanksButton": {
+          "selector": ["a.bhd-fl-button[title*='Thank']"],
+          "filters": ["query"]
         }
       }
     }

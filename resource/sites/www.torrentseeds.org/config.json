@@ -15,6 +15,34 @@
         "userData": true,
         "sendTorrent": true
     },
+    "plugins": [
+        {
+            "name": "种子详情页面",
+            "pages": [
+                "/details.php"
+            ],
+            "scripts": [
+                "/schemas/NexusPHP/common.js",
+                "details.js"
+            ]
+        },
+        {
+            "name": "种子列表",
+            "pages": [
+                "^/$",
+                "/browse.php",
+                "/browse_elastic.php"
+            ],
+            "styles": [
+                "/libs/album/style.css"
+            ],
+            "scripts": [
+                "/schemas/NexusPHP/common.js",
+                "/libs/album/album.js",
+                "torrents.js"
+            ]
+        }
+    ],
     "selectors": {
         "userBaseInfo": {
             "page": "/",

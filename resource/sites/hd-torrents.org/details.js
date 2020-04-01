@@ -10,6 +10,7 @@
      * 初始化按钮列表
      */
     initButtons() {
+	  this.showTorrentSize();
       this.initDetailButtons();
     }
 
@@ -29,6 +30,14 @@
       return url;
     }
 
+    showTorrentSize() {
+      let size = PTService.filters.formatSize(PTService.getFieldValue("size"));
+      PTService.addButton({
+       title: "当前种子大小",
+        icon: "attachment",
+        label: size
+      });
+    }
     /**
      * 获取当前种子标题
      */

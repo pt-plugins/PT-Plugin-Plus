@@ -71,7 +71,7 @@
       "merge": true,
       "fields": {
         "downloadURL": {
-          "selector": ["a[href*='downhash']:first"],
+          "selector": ["a[title][href*='downhash=']:first"],
           "filters": ["query.attr('href')"]
         }
       }
