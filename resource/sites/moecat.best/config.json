@@ -65,5 +65,16 @@
   }, {
     "name": "50%",
     "selector": "img.pro_50pctdown"
-  }]
+  }],
+  "selectors": {
+    "/details.php": {
+      "merge": true,
+      "fields": {
+        "downloadURL": {
+          "selector": ["a[title][href*='downhash=']"],
+          "filters": ["query.attr('href')"]
+        }
+      }
+    }
+  }
 }
