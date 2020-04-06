@@ -106,6 +106,9 @@
         },
         "seeding": {
 	      "selector": ["#menu + table > tbody > tr > td:nth-child(4) b > font:nth-child(2)"]
+        },
+        "seedingSize": {
+	      "value": "N/A"
         }
       }
     },
@@ -136,5 +139,9 @@
         }
       }
     }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
   }
 }
