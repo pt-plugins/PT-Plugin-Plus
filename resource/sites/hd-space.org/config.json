@@ -8,12 +8,8 @@
   "schema": "Common",
   "plugins": [{
     "name": "种子详情页面",
-    "pages": ["^/index\\.php\\?.*$"],
+    "pages": ["/index.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
-  }, {
-    "name": "种子列表",
-    "pages": ["^^/index\\.php\\?page\\=torrents\\&$"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/libs/album/album.js", "/schemas/Common/torrents.js"]
   }],
   "host": "hd-space.org",
   "searchEntryConfig": {
