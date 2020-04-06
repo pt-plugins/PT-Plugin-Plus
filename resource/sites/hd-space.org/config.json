@@ -9,7 +9,7 @@
   "plugins": [{
     "name": "种子详情页面",
     "pages": ["/index.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
   }],
   "host": "hd-space.org",
   "searchEntryConfig": {
@@ -125,6 +125,14 @@
         "downloadURL": {
           "selector": ["a[href*='download.php?id=']"],
           "filters": ["query.attr('href')"]
+        },
+        "size": {
+          "selector": ["td.header:contains('Size') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "sayThanksButton": {
+          "selector": ["#ty"],
+          "filters": ["query"]
         }
       }
     }
