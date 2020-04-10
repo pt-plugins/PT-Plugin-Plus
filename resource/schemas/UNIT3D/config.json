@@ -11,7 +11,7 @@
     "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
   }],
   "searchEntryConfig": {
-    "page": "/filterTorrents",
+    "page": "/torrents/filter",
     "queryString": "search=$key$",
     "area": [{
       "name": "IMDB",
@@ -21,6 +21,24 @@
         "tt", ""
       ]
     }],
+    "fieldSelector": {
+      "progress": {
+        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle, button.btn.btn-info.btn-circle", ""],
+        "switchFilters": [
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle", "button.btn.btn-info.btn-circle"],
+        "switchFilters": [
+          ["2"],
+          ["1"],
+          ["3"]
+        ]
+      }
+    },
     "resultType": "html",
     "parseScriptFile": "/schemas/UNIT3D/getSearchResult.js",
     "resultSelector": "div.table-responsive > table:first"
@@ -40,15 +58,13 @@
     "userBaseInfo": {
       "page": "/",
       "fields": {
-        "id": {
-          "selector": ["a[href*='mail/inbox']:first"],
-          "attribute": "href",
-          "filters": ["query ? query.getQueryString('id'):''"]
-        },
         "name": {
-          "selector": ["a[href*='mail/inbox']:first"],
+          "selector": ["a[href*='settings']:first"],
           "attribute": "href",
-          "filters": ["query ? query.getQueryString('username'):''"]
+          "switchFilters": [
+            ["query.match(/users\\/(.+)\\/settings/)", "(query && query.length>=2)?(query[1]):''"],
+            ["query ? query.getQueryString('id'):''"]
+          ]
         },
         "uploaded": {
           "selector": ["div.ratio-bar i.fa-arrow-up"],
@@ -69,7 +85,7 @@
       }
     },
     "userExtendInfo": {
-      "page": "/$user.name$.$user.id$",
+      "page": "/users/$user.name$",
       "fields": {
         "seedingSize": {
           "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Seeding Size') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('做种体积') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('做種體積') + td"],
