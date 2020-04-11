@@ -29,7 +29,7 @@
       },
       "dataCacheTime": 60
     },
-    "queryString": "csrfToken=$beforeSearchData.csrfToken$&search=$key$",
+    "queryString": "csrfToken=$beforeSearchData.csrfToken$&search=$key$&active=0",
     "area": [{
       "name": "标题",
       "appendQueryString": "&options=0"
