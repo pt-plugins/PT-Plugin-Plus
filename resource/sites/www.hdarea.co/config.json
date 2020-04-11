@@ -200,5 +200,16 @@
         "name": "HQ Audio"
       }
     ]
-  }]
+  }],
+  "selectors": {
+    "/details.php": {
+      "merge": true,
+      "fields": {
+        "downloadURL": {
+          "selector": ["td.rowfollow:contains('&passkey='):last"],
+          "filters": ["query[0].childNodes[0].textContent"]
+        }
+      }
+    }
+  }
 }
