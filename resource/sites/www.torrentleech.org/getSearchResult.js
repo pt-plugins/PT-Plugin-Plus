@@ -1,4 +1,4 @@
-(function(options) {
+(function(options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -42,7 +42,7 @@
               completed: item.completed,
               comments: item.numComments,
               site: site,
-              tags: [],
+              tags: this.getTags(item),
               entryName: options.entry.name,
               category: options.searcher.getCategoryById(
                 site,
@@ -64,9 +64,17 @@
       }
       return results;
     }
+    getTags(item) {
+	  var tag = [{
+	    name: "free",
+        color: "blue"
+	  }]
+      if(item.tags.indexOf("FREELEECH")>-1)return tag;
+    }
   }
+
 
   let parser = new Parser(options);
   options.results = parser.getResult();
   console.log(options.results);
-})(options);
+})(options, Searcher);
