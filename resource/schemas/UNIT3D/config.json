@@ -95,7 +95,7 @@
           "selector": "div.content span.badge-user"
         },
         "messageCount": {
-          "selector": ["ul.left-navbar a[href*='/mail/inbox'] .point"],
+          "selector": [".point"],
           "filters": ["query.length?'11':'0'"]
         },
         "joinTime": {
