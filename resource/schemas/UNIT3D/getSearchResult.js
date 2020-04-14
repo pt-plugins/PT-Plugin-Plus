@@ -20,6 +20,7 @@
         return [];
       }
       let site = options.site;
+      site.searchEntryConfig = options.entry
       let selector =
         options.resultSelector || "div.table-responsive > table:first";
       let table = options.page.find(selector);
