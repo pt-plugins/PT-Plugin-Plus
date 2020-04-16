@@ -35,6 +35,7 @@
   }],
   "selectors": {
     "userBaseInfo": {
+      "merge": true,
       "page": "/",
       "fields": {
         "id": {},
@@ -61,22 +62,6 @@
         "seeding": {
           "selector": ["div.ratio-bar i.fa-upload"],
           "filters": ["query.parent().text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
-        }
-      }
-    },
-    "userExtendInfo": {
-      "page": "/users/$user.name$",
-      "fields": {
-        "seedingSize": {
-          "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Seeding Size') + td"],
-          "filters": ["query.text().trim().sizeToNumber()"]
-        },
-        "levelName": {
-          "selector": "div.content span.badge-user"
-        },
-        "joinTime": {
-          "selector": "div.content h4:contains('Registration date')",
-          "filters": ["query.text().trim().replace('Registration date ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         }
       }
     },

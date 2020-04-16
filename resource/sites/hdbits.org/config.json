@@ -137,8 +137,8 @@
           "filters": ["query.length>0"]
         },
         "messageCount": {
-          "selector": ["span.js-notifications-count"],
-          "filters": ["query ? (query.text().match(/(\\d+)/) ? parseInt(query[0]):'0') : '0'"]
+          "selector": ["a.alert-box--pm, span.js-notifications-count"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         }
       }
     },
