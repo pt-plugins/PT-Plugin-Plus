@@ -6,38 +6,5 @@
   "icon": "https://asiancinema.me/favicon.ico",
   "tags": ["综合"],
   "schema": "UNIT3D",
-  "host": "asiancinema.me",
-  "searchEntryConfig": {
-    "page": "/filterTorrents",
-    "queryString": "search=$key$",
-    "area": [{
-      "name": "IMDB",
-      "keyAutoMatch": "^(tt\\d+)$",
-      "queryString": "imdb=$key$",
-      "replaceKey": [
-        "tt", ""
-      ]
-    }],
-    "fieldSelector": {
-      "progress": {
-        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle, button.btn.btn-info.btn-circle", ""],
-        "switchFilters": [
-          ["100"],
-          ["0"],
-          ["null"]
-        ]
-      },
-      "status": {
-        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle", "button.btn.btn-info.btn-circle"],
-        "switchFilters": [
-          ["2"],
-          ["1"],
-          ["3"]
-        ]
-      }
-    },
-    "resultType": "html",
-    "parseScriptFile": "/schemas/UNIT3D/getSearchResult.js",
-    "resultSelector": "div.table-responsive > table:first"
-  }
+  "host": "asiancinema.me"
 }

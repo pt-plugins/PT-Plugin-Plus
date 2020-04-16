@@ -39,10 +39,16 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "i.fa-star text-gold"
+    "selector": ".fas.fa-star[title*='100%']"
   }, {
-    "name": "2xUp",
-    "selector": "i.fa-globe"
+    "name": "25%",
+    "selector": ".fas.fa-star[title*='25%']"
+  }, {
+    "name": "50%",
+    "selector": ".fas.fa-star[title*='50%']"
+  }, {
+    "name": "75%",
+    "selector": ".fas.fa-star[title*='75%']"
   }],
   "selectors": {
     "userBaseInfo": {
