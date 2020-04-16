@@ -10,6 +10,7 @@
      * 初始化按钮列表
      */
     initButtons() {
+      this.showTorrentSize();
       this.initDetailButtons();
     }
 
@@ -17,7 +18,7 @@
      * 获取下载链接
      */
     getDownloadURL() {
-      let query = $("a[href*='download.php?id=']");
+      let query = $("a.index[href*='download.php?id=']");
       let url = "";
       if (query.length > 0) {
         url = query.attr("href");
@@ -30,12 +31,26 @@
       return `${location.origin}/${url}`;
     }
 
+    showTorrentSize() {
+      let query = $("td.rowhead:contains('Size') + td");
+      let size = "";
+      if (query.length > 0) {
+        size = query.text().match(/^[^\(]+/);
+        // attachment
+        PTService.addButton({
+          title: "当前种子大小",
+          icon: "attachment",
+          label: size
+        });
+      }
+    }
+
     /**
      * 获取当前种子标题
      */
     getTitle() {
       return $(".frames tr:first td.colhead:first")
-        .text()
+        .text()        
         .trim();
     }
   }
