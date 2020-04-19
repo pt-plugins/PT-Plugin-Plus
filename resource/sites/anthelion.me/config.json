@@ -1,0 +1,34 @@
+{
+  "name": "Anthelion",
+  "timezoneOffset": "+0000",
+  "description": "Movies",
+  "url": "https://anthelion.me//",
+  "icon": "https://anthelion.me/favicon.ico",
+  "tags": ["电影"],
+  "schema": "GazelleJSONAPI",
+  "host": "anthelion.me",
+  "collaborator": "enigamz",
+  "searchEntryConfig": {
+    "skipIMDbId": true,
+    "parseScriptFile": "getSearchResult.js"
+  },
+  "searchEntry": [{
+      "name": "all",
+      "enabled": true
+  }],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/torrents.php?type=seeding&userid=$user.id$",
+      "fields": {
+        "seedingSize": {
+          "selector": ["tr.torrent_row > td.nobr"],
+          "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        },
+        "bonus": {
+          "selector": ["a[href*='store.php']"],
+          "filters": ["query.text().replace(/,/g,'').match(/.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        }
+      }
+    }
+  }  
+}
