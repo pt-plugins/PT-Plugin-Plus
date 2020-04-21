@@ -278,8 +278,10 @@
           .text();
       }
       if (options.site.host === "pt.sjtu.edu.cn") {
-        time = Date.now() - this._parseTime(time)
-        time = new Date(time).toLocaleString("zh-CN", {hour12: false}).replace(/\//g,'-')
+        if (time.match(/\d+[分时天月年]/g)) {
+          time = Date.now() - this._parseTime(time)
+          time = new Date(time).toLocaleString("zh-CN", {hour12: false}).replace(/\//g,'-')
+        }
       }
       return time || "";
     }
