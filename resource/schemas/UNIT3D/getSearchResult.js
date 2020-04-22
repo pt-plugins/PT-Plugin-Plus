@@ -195,7 +195,7 @@
                     .eq(fieldIndex.time)
                     .find("span[title]")
                     .attr("title") ||
-                  cells.eq(fieldIndex.time).text() ||
+                  cells.eq(fieldIndex.time).text().replace('分钟前', ' minutes ago').replace('分鐘前', ' minutes ago').replace('天前', ' day ago').replace('小時前', ' hours ago').replace('小时前', ' hours ago')||
                   "",
             author:
               fieldIndex.author == -1
