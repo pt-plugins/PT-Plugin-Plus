@@ -29,7 +29,7 @@
       },
       "dataCacheTime": 60
     },
-    "queryString": "csrfToken=$beforeSearchData.csrfToken$&search=$key$",
+    "queryString": "csrfToken=$beforeSearchData.csrfToken$&search=$key$&active=0",
     "area": [{
       "name": "标题",
       "appendQueryString": "&options=0"
@@ -63,13 +63,13 @@
     "name": "Free",
     "selector": "img[src*='free.png']"
   }, {
-    "name": "25%",
+    "name": "75%",
     "selector": "img[src*='25.png']"
   }, {
     "name": "50%",
     "selector": "img[src*='50.png']"
   }, {
-    "name": "75%",
+    "name": "25%",
     "selector": "img[src*='75.png']"
   }],
   "selectors": {

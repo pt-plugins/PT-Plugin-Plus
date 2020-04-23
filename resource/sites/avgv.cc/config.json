@@ -6,5 +6,22 @@
   "description": "新加坡华人PT站，很有特色。",
   "tags": ["成人", "AV", "GAY", "LES"],
   "host": "avgv.cc",
-  "collaborator": "xiazhou8"
+  "collaborator": "xiazhou8",
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["div.probar_b1, div.probar_b2, div.probar_b3"],
+        "filters": ["query.attr('style')||''", "query.match(/width:([ \\d.]+)%/)", "(query && query.length>=2)?query[1]:null"]
+
+      },
+      "status": {
+        "selector": ["img[src='pic/ZZ.png']","div.probar_b1", "img[src='pic/WWC.png']"],
+        "switchFilters": [
+          ["2"],
+          ["1"],
+          ["255"]
+        ]
+      }
+    }
+  }
 }

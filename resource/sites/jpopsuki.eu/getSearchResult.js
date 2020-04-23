@@ -10,7 +10,7 @@ if (!"".getQueryString) {
   };
 }
 
-(function(options) {
+(function(options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -209,6 +209,7 @@ if (!"".getQueryString) {
               fieldIndex.comments == -1
                 ? ""
                 : cells.eq(fieldIndex.comments).text() || 0,
+            tags: Searcher.getRowTags(site, row),
             site: site,
             category:
               fieldIndex.category == -1
@@ -258,4 +259,4 @@ if (!"".getQueryString) {
   let parser = new Parser(options);
   options.results = parser.getResult();
   console.log(options.results);
-})(options);
+})(options, options.searcher);

@@ -98,6 +98,25 @@
       "enabled": false
     }
   ],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "img.pro_free"
+  }, {
+    "name": "2xFree",
+    "selector": "img.pro_free2up"
+  }, {
+    "name": "2xUp",
+    "selector": "img.pro_2up"
+  }, {
+    "name": "2x50%",
+    "selector": "img.pro_50pctdown2up"
+  }, {
+    "name": "30%",
+    "selector": "img.pro_30pctdown"
+  }, {
+    "name": "50%",
+    "selector": "img.pro_50pctdown"
+  }],
   "searchEntryConfig": {
 	"merge": true,
     "fieldSelector": {
