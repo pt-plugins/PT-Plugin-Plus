@@ -15,6 +15,7 @@
     "page": "torrents.php?searchtext=$key$",
     "resultType": "html",
     "resultSelector": "table.torrent_table.grouping",
+    "dataRowSelector": " > tbody > tr:not(:first-child)",
     "fieldIndex": {
 	    "category": 0,
 	    "title": 1,
@@ -30,7 +31,7 @@
 	},
 	"fieldSelector": {
 	  "title": {
-		"selector": ["a"],
+		"selector": ["a[onmouseout]"],
         "filters": ["query.text()"]
 	  },
 	  "link": {
@@ -38,7 +39,7 @@
         "filters": ["query.attr('href')"]
 	  },
 	  "url": {
-		"selector": [""],
+		"selector": ["a[title='Download Torrent']"],
         "filters": ["query.attr('href')"]
 	  },
 	  "time": {
@@ -69,7 +70,7 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "i.icon_torrent_leeching"
+    "selector": "span[title='Unlimited Freeleech']"
   }],
   "selectors": {
     "userBaseInfo": {
