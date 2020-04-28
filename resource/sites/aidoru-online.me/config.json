@@ -2,6 +2,7 @@
   "name": "Aidoru!Online",
   "timezoneOffset": "+0000",
   "description": "AO",
+  "icon": "https://aidoru-online.me/themes/default/images/favicon.ico",
   "url": "https://aidoru-online.me/",
   "tags": ["偶像"],
   "schema": "Common",
