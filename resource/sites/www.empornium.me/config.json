@@ -51,7 +51,7 @@
         "filters": ["query.text()"]
 	  },
 	  "progress": {
-        "selector": ["a[title='Currently Seeding Torrent']", "a[title='Previously Grabbed Torrent File']", ""],
+        "selector": ["a[title='Currently Seeding Torrent'], a[title='Previously Snatched Torrent']", "a[title='Previously Grabbed Torrent File']", ""],
         "switchFilters": [
           ["100"],
           ["0"],
@@ -59,9 +59,10 @@
         ]
       },
       "status": {
-        "selector": ["a[title='Currently Seeding Torrent']", "a[title='Previously Grabbed Torrent File']"],
+        "selector": ["a[title='Currently Seeding Torrent']", "a[title='Previously Snatched Torrent']", "a[title='Previously Grabbed Torrent File']"],
         "switchFilters": [
           ["2"],
+          ["255"],
           ["1"]
         ]
       }
@@ -122,7 +123,7 @@
       "fields": {
         "joinTime": {
           "selector": ["li:contains('Joined:') > span.time"],
-          "filters": ["dateTime(query.text()).valueOf()"]
+          "filters": ["dateTime(query.attr('title')).valueOf()"]
         },
         "levelName": {
           "selector": ["span.rank"],
