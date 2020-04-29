@@ -30,6 +30,10 @@
         "completed": 6
 	},
 	"fieldSelector": {
+	  "category": {
+		"selector": ["div[title]"],
+        "filters": ["query.attr('title')"]
+	  },
 	  "title": {
 		"selector": ["a[onmouseout]"],
         "filters": ["query.text()"]
@@ -47,18 +51,17 @@
         "filters": ["query.text()"]
 	  },
 	  "progress": {
-        "selector": ["td.ttable_seeding font[color='green'], td.ttable_seeding font[color='black']", "td.ttable_seeding font[color='#ff0000']", ""],
+        "selector": ["a[title='Currently Seeding Torrent']", "a[title='Previously Grabbed Torrent File']", ""],
         "switchFilters": [
-          ["query.length > 0 ? 100:null"],
-          ["query.length > 0 ? 0:null"],
+          ["100"],
+          ["0"],
           ["null"]
         ]
       },
       "status": {
-        "selector": ["td.ttable_seeding font[color='green']", "td.ttable_seeding font[color='black']", "td.ttable_seeding font[color='#ff0000']"],
+        "selector": ["a[title='Currently Seeding Torrent']", "a[title='Previously Grabbed Torrent File']"],
         "switchFilters": [
           ["2"],
-          ["255"],
           ["1"]
         ]
       }
@@ -89,8 +92,8 @@
           "filters": ["query.length>0"]
         },
         "messageCount": {
-          "selector": ["a[href*='/forum/private.php']"],
-          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+          "selector": ["div.alertbar"],
+          "filters": ["(query && query.length>=1)?11:0"]
         },
         "seeding": {
 	      "selector": ["#nav_seeding_r"],
