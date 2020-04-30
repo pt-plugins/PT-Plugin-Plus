@@ -2,8 +2,8 @@
   "name": "FileList",
   "timezoneOffset": "+0000",
   "description": "FileList",
-  "url": "https://filelist.ro/",
-  "icon": "https://filelist.ro/favicon.ico",
+  "url": "https://filelist.io/",
+  "icon": "https://filelist.io/favicon.ico",
   "tags": ["影视", "综合"],
   "schema": "FileList",
   "plugins": [{
@@ -15,7 +15,7 @@
     "pages": ["/browse.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
   }],
-  "host": "filelist.ro",
+  "host": "filelist.io",
   "searchEntryConfig": {
     "page": "/browse.php",
     "queryString": "search=$key$&cat=0&searchin=1&sort=2",
