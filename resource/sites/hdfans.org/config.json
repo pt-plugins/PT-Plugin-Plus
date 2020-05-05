@@ -1,0 +1,14 @@
+{
+  "name": "HDFans",
+  "timezoneOffset": "+0800",
+  "description": "HDFans",
+  "schema": "NexusPHP",
+  "url": "https://hdfans.org/",
+  "icon": "https://hdfans.org/favicon.ico",
+  "tags": [
+    "影视",
+    "综合"
+  ],
+  "host": "hdfans.org",
+  "collaborator": "einverne"
+}
