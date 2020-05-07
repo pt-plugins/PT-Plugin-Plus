@@ -341,6 +341,7 @@
                   v-if="$vuetify.breakpoint.smAndUp"
                 >{{$t('searchTorrent.sendToClient')}} ({{selected.length}})</span>
                 <span class="ml-2" v-else>{{selected.length}}</span>
+                <span class="ml-1">{{ selectedSize | formatSize }}</span>
               </v-btn>
 
               <!-- 文件发送进度 -->

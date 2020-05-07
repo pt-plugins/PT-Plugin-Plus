@@ -164,11 +164,11 @@ export default Vue.extend({
     const upEvent = "mouseUp.torrentSearch";
     $(".search-torrent").off(downEvent);
     $(".search-torrent").off(upEvent);
-    $(".search-torrent").on(downEvent, e => {
+    $(".search-torrent").on(downEvent, (e) => {
       this.shiftKey = e.shiftKey || false;
     });
 
-    $(".search-torrent").on(upEvent, e => {
+    $(".search-torrent").on(upEvent, (e) => {
       this.shiftKey = false;
     });
     window.addEventListener("scroll", this.handleScroll);
@@ -376,7 +376,7 @@ export default Vue.extend({
       // 豆瓣ID
       if (/(douban\d+)/.test(this.key)) {
         this.getIMDbIdFromDouban(this.key)
-          .then(result => {
+          .then((result) => {
             if (typeof result == "string") {
               this.searchPayload.imdbId = result;
               this.key = result;
@@ -394,7 +394,7 @@ export default Vue.extend({
               }
             }
           })
-          .catch(error => {
+          .catch((error) => {
             if (searchKeys.cn) {
               this.key = searchKeys.cn;
               this.search(this.searchPayload);
@@ -454,10 +454,10 @@ export default Vue.extend({
         let searchSolution:
           | SearchSolution
           | undefined = this.options.searchSolutions.find(
-          (solution: SearchSolution) => {
-            return solution.id === searchSolutionId;
-          }
-        );
+            (solution: SearchSolution) => {
+              return solution.id === searchSolutionId;
+            }
+          );
 
         if (searchSolution) {
           searchSolution.range.forEach((range: SearchSolutionRange) => {
@@ -757,7 +757,7 @@ export default Vue.extend({
           searchPayload: this.searchPayload,
           result: this.rawDatas
         })
-        .then(result => {
+        .then((result) => {
           this.successMsg = this.$t(
             "searchResultSnapshot.createSuccess"
           ).toString();
@@ -777,7 +777,7 @@ export default Vue.extend({
       this.loading = true;
       extension
         .sendRequest(EAction.getSearchResultSnapshot, null, id)
-        .then(data => {
+        .then((data) => {
           console.log("loadSearchResultSnapshot", data);
           this.key = data.key;
           this.searchPayload = data.searchPayload;
@@ -1049,7 +1049,7 @@ export default Vue.extend({
       let site = this.options.sites.find((site: Site) => {
         // 当定义了CDN列表时，匹配其中之一即可
         if (site.cdn) {
-          let index = site.cdn.findIndex(cdn => {
+          let index = site.cdn.findIndex((cdn) => {
             return cdn.indexOf(host) > -1;
           });
           if (index > -1) {
@@ -1279,7 +1279,7 @@ export default Vue.extend({
       });
 
       file.requestMethod = requestMethod;
-      file.onError = (error: any) => {};
+      file.onError = (error: any) => { };
       file.start();
     },
     /**
@@ -1334,7 +1334,7 @@ export default Vue.extend({
       this.errorMsg = "";
       extension
         .sendRequest(EAction.copyTextToClipboard, null, url)
-        .then(result => {
+        .then((result) => {
           this.successMsg = this.$t(
             "searchTorrent.copyLinkToClipboardSuccess"
           ).toString();
@@ -1360,7 +1360,7 @@ export default Vue.extend({
       this.clearMessage();
       extension
         .sendRequest(EAction.copyTextToClipboard, null, urls.join("\n"))
-        .then(result => {
+        .then((result) => {
           this.successMsg = this.$t(
             "searchTorrent.copySelectedToClipboardSuccess",
             {
@@ -1472,10 +1472,10 @@ export default Vue.extend({
                 `${item.client.name} -> ${item.client.address}` +
                 (item.path
                   ? ` -> ${this.pathHandler.replacePathKey(
-                      item.path,
-                      options.site
-                    )}`
-                  : "")
+                    item.path,
+                    options.site
+                  )}`
+                  : ""),
             }).toString(),
             fn: () => {
               if (options.url) {
@@ -1517,10 +1517,10 @@ export default Vue.extend({
         let title = _this.$vuetify.breakpoint.xs
           ? item.client.name
           : _this
-              .$t("searchTorrent.downloadTo", {
-                path: `${item.client.name} -> ${item.client.address}`
-              })
-              .toString();
+            .$t("searchTorrent.downloadTo", {
+              path: `${item.client.name} -> ${item.client.address}`
+            })
+            .toString();
 
         if (item.path) {
           title += ` -> ${item.path}`;
@@ -1670,7 +1670,7 @@ export default Vue.extend({
         // 过滤标题和副标题
         let source = (item.title + (item.subTitle || "")).toLowerCase();
         let result = true;
-        searchs.forEach(key => {
+        searchs.forEach((key) => {
           if (key.trim() != "") {
             result = result && source.indexOf(key) > -1;
           }
@@ -1761,7 +1761,7 @@ export default Vue.extend({
       function getObjectValue(obj: any, path: string) {
         return new Function("o", "return o." + path)(obj);
       }
-      return function(object1: any, object2: any) {
+      return function (object1: any, object2: any) {
         var value1 = getObjectValue(object1, field);
         var value2 = getObjectValue(object2, field);
         if (value1 < value2) {
@@ -1809,7 +1809,7 @@ export default Vue.extend({
 
       extension
         .sendRequest(EAction.addTorrentToCollection, null, options)
-        .then(result => {
+        .then((result) => {
           this.loadTorrentCollections();
           console.log(result);
         });
@@ -1819,14 +1819,14 @@ export default Vue.extend({
         .sendRequest(EAction.deleteTorrentFromCollention, null, {
           link: PPF.getCleaningURL(item.link)
         })
-        .then(result => {
+        .then((result) => {
           this.loadTorrentCollections();
         });
     },
     loadTorrentCollections() {
       extension
         .sendRequest(EAction.getAllTorrentCollectionLinks)
-        .then(result => {
+        .then((result) => {
           this.torrentCollectionLinks = result;
         });
     },
@@ -1933,67 +1933,67 @@ export default Vue.extend({
           value: this.$store.state.options.searchResultOrderBySitePriority
             ? "site.priority"
             : "site.host",
-          visible: this.$vuetify.breakpoint.mdAndUp
+          visible: this.$vuetify.breakpoint.mdAndUp,
         },
         {
           text: this.$t("searchTorrent.headers.title"),
           align: "left",
           value: "title",
-          visible: true
+          visible: true,
         },
         {
           text: this.$t("searchTorrent.headers.category"),
           align: "center",
           value: "category.name",
           width: "150px",
-          visible: this.$vuetify.breakpoint.width > 1200
+          visible: this.$vuetify.breakpoint.width > 1200,
         },
         {
           text: this.$t("searchTorrent.headers.size"),
           align: "right",
           value: "size",
           width: "100px",
-          visible: this.$vuetify.breakpoint.smAndUp
+          visible: this.$vuetify.breakpoint.smAndUp,
         },
         {
           text: this.$t("searchTorrent.headers.seeders"),
           align: "right",
           value: "seeders",
           width: "60px",
-          visible: this.$vuetify.breakpoint.smAndUp
+          visible: this.$vuetify.breakpoint.smAndUp,
         },
         {
           text: this.$t("searchTorrent.headers.leechers"),
           align: "right",
           value: "leechers",
           width: "60px",
-          visible: this.$vuetify.breakpoint.mdAndUp
+          visible: this.$vuetify.breakpoint.mdAndUp,
         },
         {
           text: this.$t("searchTorrent.headers.completed"),
           align: "right",
           value: "completed",
           width: "60px",
-          visible: this.$vuetify.breakpoint.mdAndUp
+          visible: this.$vuetify.breakpoint.mdAndUp,
         },
         {
           text: this.$t("searchTorrent.headers.time"),
           align: "left",
           value: "time",
           width: "130px",
-          visible: this.$vuetify.breakpoint.mdAndUp
+          visible: this.$vuetify.breakpoint.mdAndUp,
         },
         {
           text: this.$t("searchTorrent.headers.action"),
           sortable: false,
           width: this.$vuetify.breakpoint.mdAndUp ? "130px" : "80px",
           align: "center",
-          visible: this.$vuetify.breakpoint.smAndUp
-        }
+          visible: this.$vuetify.breakpoint.smAndUp,
+        },
       ];
     },
     orderHeaders(): Array<any> {
-      return this.headers.filter(item => {
+      return this.headers.filter((item) => {
         return item.sortable !== false;
       });
     },
@@ -2017,6 +2017,21 @@ export default Vue.extend({
         return true;
       }
       return false;
+    },
+    // 已选中的种子大小
+    selectedSize(): number {
+      if (this.selected.length > 0) {
+        let totalSize = 0;
+        this.selected.forEach((item: SearchResultItem) => {
+          const size: any = item.size;
+          if (size > 0) {
+            totalSize += size;
+          }
+        });
+
+        return totalSize;
+      }
+      return 0;
     }
   }
 });
