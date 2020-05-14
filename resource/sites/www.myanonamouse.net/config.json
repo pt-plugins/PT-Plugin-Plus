@@ -13,7 +13,7 @@
   "supportedFeatures": {
     "search": true,
     "imdbSearch": false,
-    "userData": "◐",
+    "userData": true,
     "sendTorrent": true
   },
   "plugins": [
@@ -78,7 +78,7 @@
           ],
           "attribute": "href",
           "filters": [
-            "query ? query.match(/(\\d+)/):''"
+            "query ? query.match(/(\\d+)/)[1]:''"
           ]
         },
         "name": {
@@ -154,14 +154,12 @@
             "query.text().split(' (')[0]",
             "dateTime(query).isValid()?dateTime(query).valueOf():query"
           ]
-        },
-        "seeding": {
-          "value": 0
-        },
-        "seedingSize": {
-          "value": -1
         }
       }
+    },
+    "userSeedingTorrents": {
+      "page": "/snatch_summary.php",
+      "parser": "getUserSeedingTorrents.js"
     },
     "common": {
       "fields": {
