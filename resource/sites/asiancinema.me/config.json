@@ -21,19 +21,19 @@
         },
         "uploaded": {
           "selector": ["span[title='Upload']"],
-          "filters": ["query.text().trim().replace(/,/g,'')", "(query && query.length>=2)?query.sizeToNumber():0"]
+          "filters": ["query.text().trim().replace(/,/g,'')", "(query && query.length>=1)?query.sizeToNumber():0"]
         },
         "downloaded": {
           "selector": ["span[title='Download']"],
-          "filters": ["query.text().trim().replace(/,/g,'')", "(query && query.length>=2)?query.sizeToNumber():0"]
+          "filters": ["query.text().trim().replace(/,/g,'')", "(query && query.length>=1)?query.sizeToNumber():0"]
         },
         "bonus": {
           "selector": ["a[title='My Bonus Points']"],
-          "filters": ["query.text().trim().replace(/ /g,'')", "(query && query.length>=2)?parseFloat(query):0"]
+          "filters": ["query.text().trim().replace(/ /g,'')"]
         },
         "seeding": {
           "selector": ["span[title='Seeding']"],
-          "filters": ["query.text().trim().replace(/,|\\n/g,'')", "(query && query.length>=2)?parseFloat(query):0"]
+          "filters": ["query.text().trim().replace(/,|\\n/g,'')"]
         }
       }
     },
