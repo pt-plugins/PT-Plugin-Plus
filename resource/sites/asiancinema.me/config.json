@@ -29,11 +29,11 @@
         },
         "bonus": {
           "selector": ["a[title='My Bonus Points']"],
-          "filters": ["query.text().trim().replace(/ /g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+          "filters": ["query.text().trim().replace(/ /g,'')", "(query && query.length>=2)?parseFloat(query):0"]
         },
         "seeding": {
-          "selector": ["a[title='My Active Torrents']"],
-          "filters": ["query.text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+          "selector": ["span[title='Seeding']"],
+          "filters": ["query.text().trim().replace(/,|\\n/g,'')", "(query && query.length>=2)?parseFloat(query):0"]
         }
       }
     },
