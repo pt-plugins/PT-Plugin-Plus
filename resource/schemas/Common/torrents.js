@@ -25,13 +25,14 @@
         //  "获取下载链接失败，未能正确定位到链接";
         return this.t("getDownloadURLsFailed");
       }
-
-      let urls = $.map(links, item => {
-        let url = $(item).attr("href");
-        return this.getFullURL(url);
-      });
-
-      return urls;
+      if (typeof(links[0])!="string"){
+        let urls = $.map(links, item => {
+          let url = $(item).attr("href");
+          return this.getFullURL(url);
+        });
+        return urls;
+      }
+      return links
     }
 
     /**
