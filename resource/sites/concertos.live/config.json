@@ -33,7 +33,7 @@
 	},
 	"fieldSelector": {
 	  "title": {
-		"selector": ["a"],
+		"selector": ["a.torrents__title"],
         "filters": ["query.text()"]
 	  },
 	  "link": {
@@ -134,7 +134,7 @@
         },
         "downloadURLs": {
 		"selector": ["a.torrents__title"],
-        "filters": ["query.attr('href')", "query.toArray()"]
+        "filters": ["query.toArray()", "query.map((item)=>{return item.href+'/download'})"]
         },
         "confirmSize": {
           "selector": ["table.table.table--bordered-big.torrents"],
