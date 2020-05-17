@@ -1,0 +1,215 @@
+{
+  "name": "MyAnonaMouse",
+  "description": "Friendliness, Warmth and Sharing",
+  "url": "https://www.myanonamouse.net/",
+  "icon": "https://cdn.myanonamouse.net/favicon.ico",
+  "tags": [
+    "电子书",
+    "有声书"
+  ],
+  "schema": "MyAnonaMouse",
+  "host": "www.myanonamouse.net",
+  "collaborator": "tongyifan",
+  "supportedFeatures": {
+    "search": true,
+    "imdbSearch": false,
+    "userData": true,
+    "sendTorrent": true
+  },
+  "plugins": [
+    {
+      "name": "种子详情页面",
+      "pages": [
+        "/t/\\d+"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "details.js"
+      ]
+    },
+    {
+      "name": "种子列表",
+      "pages": [
+        "/tor/browse.php",
+        "/stats/top10Tor.php"
+      ],
+      "styles": [
+        "/libs/album/style.css"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/libs/album/album.js",
+        "/schemas/Common/torrents.js"
+      ]
+    }
+  ],
+  "searchEntryConfig": {
+    "page": "/tor/js/loadSearch2.php",
+    "resultType": "html",
+    "queryString": "tor%5Btext%5D=$key$&tor%5BsrchIn%5D%5Btitle%5D=true&tor%5BsrchIn%5D%5Bauthor%5D=true&tor%5BsearchType%5D=all&tor%5BsearchIn%5D=torrents&tor%5Bcat%5D%5B%5D=0&tor%5BbrowseFlagsHideVsShow%5D=0&tor%5BsortType%5D=default&tor%5BstartNumber%5D=0&thumbnail=true",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table.newTorTable",
+    "skipIMDbId": true,
+    "firstDataRowIndex": 1
+  },
+  "searchEntry": [
+    {
+      "name": "全站",
+      "enabled": true
+    }
+  ],
+  "torrentTagSelectors": [
+    {
+      "name": "Free",
+      "selector": "img[alt='freeleech']"
+    },
+    {
+      "name": "VIP",
+      "selector": "img[alt='VIP']"
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": [
+            "li.myInfo > a"
+          ],
+          "attribute": "href",
+          "filters": [
+            "query ? query.match(/(\\d+)/)[1]:''"
+          ]
+        },
+        "name": {
+          "selector": [
+            "a#userMenu"
+          ],
+          "filters": [
+            "query ? query.text().replace(\"↓\", \"\").trim() : ''"
+          ]
+        },
+        "isLogged": {
+          "selector": [
+            "a[href='/preferences/index.php']"
+          ],
+          "filters": [
+            "query.length>0"
+          ]
+        },
+        "messageCount": {
+          "selector": [
+            "a.tmnb, a.tmn, a.tmng"
+          ],
+          "filters": [
+            "query.text().match(/(\\d+)/g)",
+            "query ? query.map(Number).reduce((sum, current) => {return sum + current;}, 0) : 0"
+          ]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/u/$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": [
+            "td.rowhead:contains('Uploaded'):eq(0) + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length==2)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "downloaded": {
+          "selector": [
+            "td.rowhead:contains('Downloaded'):eq(0) + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length==2)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "levelName": {
+          "selector": [
+            "td.rowhead:contains('Class') + td"
+          ],
+          "filters": [
+            "query.text()"
+          ]
+        },
+        "bonus": {
+          "selector": [
+            "a#tmBP"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/Bonus: ([\\d.]+)/)",
+            "(query && query.length==2)?parseFloat(query[1]):0"
+          ]
+        },
+        "joinTime": {
+          "selector": [
+            "td.rowhead:contains('Join'):contains('date') + td"
+          ],
+          "filters": [
+            "query.text().split(' (')[0]",
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/snatch_summary.php",
+      "parser": "getUserSeedingTorrents.js"
+    },
+    "common": {
+      "fields": {
+        "downloadURLs": {
+          "selector": [
+            "a[href*='/tor/download.php/']"
+          ],
+          "filters": [
+            "query.toArray()"
+          ]
+        },
+        "confirmSize": {
+          "selector": [
+            "table.newTorTable > tbody > tr > td:contains(\"MB\")",
+            "table.newTorTable > tbody > tr > td:contains(\"GB\")",
+            "table.newTorTable > tbody > tr > td:contains(\"KB\")",
+            "table.newTorTable > tbody > tr > td:contains(\"TB\")"
+          ],
+          "filters": [
+            "query.text().match(/\\[(.+ ?[ZEPTGMK]?i?B)\\]/)",
+            "(query && query.length==2)?query[1]:0"
+          ]
+        },
+        "downloadURL": {
+          "selector": [
+            "a#tddl"
+          ],
+          "attribute": "href",
+          "filters": [
+            "query"
+          ]
+        },
+        "size": {
+          "selector": [
+            "div#size > div:eq(1) > span"
+          ],
+          "filters": [
+            "query.text().replace(/[, ]/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>1)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "sayThanksButton": {
+          "selector": [
+            "button#giveThanks"
+          ],
+          "filters": [
+            "query"
+          ]
+        }
+      }
+    }
+  }
+}
