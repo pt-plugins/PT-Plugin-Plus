@@ -12,6 +12,26 @@
   "schema": "NexusPHP",
   "host": "pt.sjtu.edu.cn",
   "collaborator": "Rhilip",
+  "searchEntryConfig": {
+    "merge": true,
+    "fieldSelector": {
+      "progress": {
+        "selector": ["td.snatched_no_yes, td.snatched_yes_yes", "td.snatched_no_no, td.snatched_yes_no", ""],
+        "switchFilters": [
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["td.snatched_no_yes, td.snatched_yes_yes", "td.snatched_no_no, td.snatched_yes_no"],
+        "switchFilters": [
+          ["2"],
+          ["3"]
+        ]
+      }
+    }
+  },
   "categories": [{
     "entry": "*",
     "result": "cat$id$=1",
