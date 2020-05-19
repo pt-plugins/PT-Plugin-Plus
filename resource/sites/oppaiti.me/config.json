@@ -18,12 +18,12 @@
     {
       "queryString": "filter_cat[1]=1",
       "name": "Movies",
-      "enabled": true
+      "enabled": false
     },
     {
       "queryString": "filter_cat[2]=1",
       "name": "Anime",
-      "enabled": true
+      "enabled": false
     },
     {
       "queryString": "filter_cat[3]=1",
@@ -38,16 +38,30 @@
     {
       "queryString": "filter_cat[5]=1",
       "name": "Audio",
-      "enabled": true
+      "enabled": false
     },
     {
       "queryString": "filter_cat[6]=1",
       "name": "Other",
-      "enabled": true
+      "enabled": false
     }
   ],
+  "selectors": {
+    "userSeedingTorrents": {
+	  "page": "/user.php?id=$user.id$",
+	  "fields": {
+		"seedingSize": {
+          "selector": ["li:contains('Total Seeding: ') > span"],
+          "filters": ["query.text().sizeToNumber()"]
+        },
+	    "bonus": {
+          "selector": ["span.stat > a[href]"],
+          "filters": ["query.text().replace(',', '')"]
+        } 
+      }
+    }
+  },
   "supportedFeatures": {
-    "imdbSearch": false,
-    "userData": "◐"
+    "imdbSearch": false
   }
 }
