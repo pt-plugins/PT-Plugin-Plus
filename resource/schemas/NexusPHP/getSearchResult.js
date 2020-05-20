@@ -277,7 +277,42 @@
           .html(cell.html().replace("<br>", " "))
           .text();
       }
+      if (options.site.host === "pt.sjtu.edu.cn") {
+        if (time.match(/\d+[分时天月年]/g)) {
+          time = Date.now() - this._parseTime(time)
+          time = new Date(time).toLocaleString("zh-CN", {hour12: false}).replace(/\//g,'-')
+        }
+      }
       return time || "";
+    }
+
+    _parseTime (timeString) {
+      const timeMatch = timeString.match(/\d+[分时天月年]/g)
+      let length = 0
+      timeMatch.forEach(time => {
+        const timeMatch = time.match(/(\d+)([分时天月年])/)
+        const number = parseInt(timeMatch[1])
+        const unit = timeMatch[2]
+        switch (true) {
+          case unit === '分':
+            length += number
+            break
+          case unit === '时':
+            length += number * 60
+            break
+          case unit === '天':
+            length += number * 60 * 24
+            break
+          case unit === '月':
+            length += number * 60 * 24 * 30
+            break
+          case unit === '年':
+            length += number * 60 * 24 * 365
+            break
+          default:
+        }
+      })
+      return length * 60 * 1000
     }
 
     /**

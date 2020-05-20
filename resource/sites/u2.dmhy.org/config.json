@@ -213,7 +213,7 @@
       "merge": true,
       "fields": {
         "sayThanksButton": {
-          "selector": ["span#thanksbutton input:button:first"],
+          "selector": ["span#thanksbutton input:button:first:not(:disabled)"],
           "filters": ["query"]
         }
       }

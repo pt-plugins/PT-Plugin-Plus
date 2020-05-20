@@ -1,11 +1,11 @@
 {
   "name": "HD-Torrents",
   "timezoneOffset": "+0000",
-  "description": "HD-Torrents.org - Index",
+  "description": "HD-Torrents.org",
   "url": "https://hd-torrents.org/",
   "icon": "https://hd-torrents.org/favicon.ico",
   "tags": ["综合"],
-  "schema": "HD-Torrents",
+  "schema": "Common",
   "plugins": [{
     "name": "种子详情页面",
     "pages": ["/details.php"],
@@ -29,7 +29,7 @@
       },
       "dataCacheTime": 60
     },
-    "queryString": "csrfToken=$beforeSearchData.csrfToken$&search=$key$",
+    "queryString": "csrfToken=$beforeSearchData.csrfToken$&search=$key$&active=0",
     "area": [{
       "name": "标题",
       "appendQueryString": "&options=0"
@@ -63,13 +63,13 @@
     "name": "Free",
     "selector": "img[src*='free.png']"
   }, {
-    "name": "25%",
+    "name": "75%",
     "selector": "img[src*='25.png']"
   }, {
     "name": "50%",
     "selector": "img[src*='50.png']"
   }, {
-    "name": "75%",
+    "name": "25%",
     "selector": "img[src*='75.png']"
   }],
   "selectors": {
@@ -137,6 +137,20 @@
         "seedingSize": {
           "selector": ["tr#SeedingtorrentsHideShowTR table.lista tr:not(:eq(0))"],
           "filters": ["jQuery.map(query.find('td:eq(1)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    },
+    "common": {
+	  "page": "/details.php",
+      "merge": true,
+      "fields": {
+        "size": {
+          "selector": ["td.detailsleft:contains('Size:') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "sayThanksButton": {
+          "selector": ["#ty"],
+          "filters": ["query"]
         }
       }
     }

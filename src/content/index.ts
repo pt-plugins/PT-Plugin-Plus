@@ -166,48 +166,69 @@ class PTPContent {
    * 初始化符合条件的附加页面
    */
   private initPages() {
-    if (!this.options.showToolbarOnContentPage) {
-      return;
-    }
-    // 判断当前页面的所属站点是否已经被定义
-    this.site = this.getSiteFromHost(window.location.hostname);
+    this.initSiteConfig().then(() => {
+      this.initPlugins();
+    }).catch(() => {
+      APP.debugMode && console.log("initPages 失败");
+    });
+  }
 
-    if (this.site) {
-      // 适应多域名
-      this.site.url = window.location.origin + "/";
-    }
-
-    // 如果当前站点未定义，则不再继续操作
-    if (this.site && this.site.name) {
-      if (typeof this.site.schema === "string") {
-        this.schema =
-          this.options.system &&
-          this.options.system.schemas &&
-          this.options.system.schemas.find((item: SiteSchema) => {
-            return item.name == this.site.schema;
-          });
-      } else {
-        let site =
-          this.options.system &&
-          this.options.system.sites &&
-          this.options.system.sites.find((item: Site) => {
-            return item.host == this.site.host;
-          });
-        if (site && site.schema && typeof site.schema !== "string") {
-          this.schema = site.schema;
-          this.schema.siteOnly = true;
-        }
+  /**
+   * 初始化站点配置
+   */
+  private initSiteConfig(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (!this.options.showToolbarOnContentPage) {
+        reject();
+        return;
       }
-    } else {
-      return;
-    }
+      // 判断当前页面的所属站点是否已经被定义
+      this.site = this.getSiteFromHost(window.location.hostname);
 
+      if (this.site) {
+        // 适应多域名
+        this.site.url = window.location.origin + "/";
+      }
+
+      // 如果当前站点未定义，则不再继续操作
+      if (this.site && this.site.name) {
+        if (typeof this.site.schema === "string") {
+          this.schema =
+            this.options.system &&
+            this.options.system.schemas &&
+            this.options.system.schemas.find((item: SiteSchema) => {
+              return item.name == this.site.schema;
+            });
+        } else {
+          let site =
+            this.options.system &&
+            this.options.system.sites &&
+            this.options.system.sites.find((item: Site) => {
+              return item.host == this.site.host;
+            });
+          if (site && site.schema && typeof site.schema !== "string") {
+            this.schema = site.schema;
+            this.schema.siteOnly = true;
+          }
+        }
+        // 等待页面选择器加载完成后，再加载插件内容
+        this.initPageSelector().finally(() => {
+          resolve();
+        });
+      } else {
+        reject();
+      }
+    });
+  }
+
+  /**
+   * 初始化符合条件的插件
+   */
+  private initPlugins() {
     this.positionStorageKey = `pt-plugin-${this.site.host}-position`;
 
     this.scripts = [];
     this.styles = [];
-
-    this.initPageSelector();
     // 初始化插件按钮列表
     this.initButtonBar();
     this.initDroper();
@@ -949,27 +970,35 @@ class PTPContent {
     }
   }
 
-  private initPageSelector() {
-    this.call(EAction.getSiteSelectorConfig, {
-      host: this.site.host,
-      name: location.pathname
-    })
-      .then(result => {
-        this.pageSelector = result;
+  /**
+   * 加载页面选择器
+   */
+  private initPageSelector(): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      this.call(EAction.getSiteSelectorConfig, {
+        host: this.site.host,
+        name: location.pathname
       })
-      .catch(() => {
-        // 如果没有当前页面的选择器，则尝试获取通用的选择器
-        this.call(EAction.getSiteSelectorConfig, {
-          host: this.site.host,
-          name: "common"
+        .then(result => {
+          this.pageSelector = result;
+          resolve();
         })
-          .then(result => {
-            this.pageSelector = result;
+        .catch(() => {
+          // 如果没有当前页面的选择器，则尝试获取通用的选择器
+          this.call(EAction.getSiteSelectorConfig, {
+            host: this.site.host,
+            name: "common"
           })
-          .catch(() => {
-            // 没有选择器
-          });
-      });
+            .then(result => {
+              this.pageSelector = result;
+              resolve();
+            })
+            .catch(() => {
+              // 没有选择器
+              resolve();
+            });
+        });
+    });
   }
 
   /**

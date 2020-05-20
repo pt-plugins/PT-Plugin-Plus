@@ -76,14 +76,6 @@
           "filters": ["jQuery.map(query.find('td:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
       }
-    },
-    "/details.php": {
-      "fields": {
-        "size": {
-          "selector": ["td.rowhead:contains('Size') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
-        }
-      }
     }
   }
 }

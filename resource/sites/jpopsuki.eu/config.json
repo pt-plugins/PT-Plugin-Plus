@@ -18,6 +18,10 @@
     "resultSelector": "table.torrent_table:last > tbody > tr",
     "enabled": true
   }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "strong:contains('Freeleech!')"
+  }],
   "categories": [{
     "entry": "*",
     "result": "&filter_cat[$id$]=1",

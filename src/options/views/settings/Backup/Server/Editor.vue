@@ -128,7 +128,7 @@ export default Vue.extend({
         require: [(v: any) => !!v || "!"],
         url: (v: any) => {
           return (
-            /^(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]$/.test(
+            /^(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;\[\]]+[-A-Za-z0-9+&@#/%=~_|]$/.test(
               v
             ) || this.$t("settings.backup.server.owss.addressTip")
           );

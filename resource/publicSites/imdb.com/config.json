@@ -3,7 +3,7 @@
   "ver": "0.0.1",
   "plugins": [{
     "name": "电影详情页",
-    "pages": ["\/title\/tt\\d+\/"],
+    "pages": ["^\/title\/tt\\d+\/?$"],
     "scripts": ["subject.js"]
   }, {
     "name": "Top",

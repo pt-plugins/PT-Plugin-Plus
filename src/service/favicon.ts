@@ -59,6 +59,11 @@ export class Favicon {
     });
   }
 
+  /**
+   * 获取指定站点的图标
+   * @param url 站点地址
+   * @param reset 是否重置
+   */
   public get(url: string, reset: boolean = false): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let URL = filters.parseURL(url);
@@ -158,7 +163,7 @@ export class Favicon {
                       link = `${URL.origin}/${link}`;
                     }
 
-                    this.download(`${url}/${link}`)
+                    this.download(link)
                       .then(result => {
                         if (result && /image/gi.test(result.type)) {
                           this.transformBlob(result, "base64")

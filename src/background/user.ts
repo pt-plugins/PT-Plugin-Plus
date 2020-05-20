@@ -460,4 +460,24 @@ export class User {
       }
     });
   }
+
+  // MAM需要在访问API时传入存于Cookies中的mam_id，构建这个辅助方法以便获取Cookie
+  public getCookie(site: Site, needle: String): Promise<any> {
+    return new Promise((resolve, reject) => {
+      PPF.checkPermissions(["cookies"]).then(() => {
+        this.service.config.getCookiesFromSite(site).then((result) => {
+          for (const cookie of result.cookies) {
+            if (cookie["name"] === needle) {
+              resolve(cookie["value"]);
+            }
+          }
+          resolve("");
+        }).catch(error => {
+          reject(error);
+        });
+      }).catch(error => {
+        reject(error);
+      });
+    });
+  }
 }
