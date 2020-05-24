@@ -31,6 +31,8 @@
       let site = options.site;
       let results = [];
 
+      const time_regex = /(\d{4}-\d{2}-\d{2}[^\d]+?\d{2}:\d{2}:\d{2})/;
+
       // 以下解析方法修改自 ： https://github.com/Rhilip/PT-help/blob/master/docs/js/ptsearch.user.js#L216_L241
       let tr_list = options.page.find("#torrents_table > tbody > tr:gt(0)");
       for (let i = 0; i < tr_list.length; i++) {
@@ -67,11 +69,11 @@
 
         // 发布时间
         let _date_tag = torrent_data_raw.find("div.small").filter(function() {
-          return /(\d{4}-\d{2}-\d{2}[^\d]+?\d{2}:\d{2}:\d{2})/.test(
+          return time_regex.test(
             $(this).html()
           );
         });
-        let _date = _date_tag.text().trim();
+        let _date = ((_date_tag.html().match(time_regex) || ["", "0000-00-00 00:00:00"] )[1]).trim();
 
         // 做种，评论信息
         let _tag_comments = torrent_data_raw.find("a[href$='#startcomments']");
