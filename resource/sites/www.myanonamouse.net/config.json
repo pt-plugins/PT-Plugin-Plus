@@ -39,7 +39,7 @@
       "scripts": [
         "/schemas/NexusPHP/common.js",
         "/libs/album/album.js",
-        "/schemas/Common/torrents.js"
+        "torrents.js"
       ]
     }
   ],
@@ -173,14 +173,10 @@
         },
         "confirmSize": {
           "selector": [
-            "table.newTorTable > tbody > tr > td:contains(\"MB\")",
-            "table.newTorTable > tbody > tr > td:contains(\"GB\")",
-            "table.newTorTable > tbody > tr > td:contains(\"KB\")",
-            "table.newTorTable > tbody > tr > td:contains(\"TB\")"
+            "table.newTorTable > tbody > tr > td:eq(4)"
           ],
           "filters": [
-            "query.text().match(/\\[(.+ ?[ZEPTGMK]?i?B)\\]/)",
-            "(query && query.length==2)?query[1]:0"
+            "query"
           ]
         },
         "downloadURL": {
