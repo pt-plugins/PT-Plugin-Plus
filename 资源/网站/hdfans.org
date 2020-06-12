@@ -1,9 +1,0 @@
-{
-  "name": "HDFans",
-  "timezoneOffset": "+0800",
-  "schema": "NexusPHP",
-  "url": "https://hdfans.org//",
-  "description": "与志同道合之人前行 分享更多值得珍藏的资源",
-  "tags": ["电影", "电视剧", "纪录片"],
-  "host": "hdfans.org"
-} 
