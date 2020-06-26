@@ -76,6 +76,15 @@
           "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         }
       }
+    },
+    "common": {
+	  "page": "/torrents.php",
+      "fields": {
+        "confirmSize": {
+          "selector": ["tr.basic-movie-list__torrent-row > td:contains('iB')"],
+          "filters": ["query"]
+        }
+      }
     }
   }
 }
