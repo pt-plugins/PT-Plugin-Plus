@@ -8,7 +8,7 @@
   "plugins": [{
     "name": "种子列表",
     "pages": ["/torrents.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Gazelle/torrents.js"]
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
   }],
   "host": "www.empornium.me",
   "searchEntryConfig": {
@@ -136,27 +136,27 @@
       }
     },
     "common": {
-	  "page": "/torrents-details.php",
+	  "page": "/torrents.php",
       "fields": {
         "downloadURL": {
-          "selector": ["a[href*='download.php?id=']"],
+          "selector": ["a[href*='action=download&id=']"],
           "filters": ["query.attr('href')"]
         },
         "size": {
-          "selector": ["td[align='left']:contains('Total Size:') + td"],
+          "selector": ["#content > div > div:nth-child(4)  td:contains('iB')"],
           "filters": ["query.parent().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
         },
         "sayThanksButton": {
-          "selector": ["#ty-button"],
+          "selector": ["#thanksbutton"],
           "filters": ["query"]
         },
         "downloadURLs": {
-          "selector": ["a[href*='download.php?id=']"],
+          "selector": ["a[href*='action=download&id=']"],
           "filters": ["query.toArray()"]
         },
         "confirmSize": {
-          "selector": ["table.ttable_headinner"],
-          "filters": ["query.find('td.ttable_size')"]
+          "selector": ["table#torrent_table"],
+          "filters": ["query.find('td.nobr:contains(\\'iB\\')')"]
         }
       }
     }

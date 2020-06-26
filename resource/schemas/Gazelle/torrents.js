@@ -47,7 +47,7 @@
     confirmWhenExceedSize() {
       return this.confirmSize(
         $("#torrent_table").find(
-          "td:contains('MB'),td:contains('GB'),td:contains('TB')"
+          "td:contains('MB'),td:contains('GB'),td:contains('TB'),td:contains('MiB'),td:contains('GiB'),td:contains('TiB')"
         )
       );
     }
