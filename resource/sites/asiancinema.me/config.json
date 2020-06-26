@@ -56,6 +56,20 @@
           "filters": ["query.text().replace(/(Registration date|注册日期|註冊日期)/g, '').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         }
       }
+    },
+    "common": {
+	  "page": "/torrents/",
+      "merge": true,
+      "fields": {
+	    "size": {
+          "selector": ["td.col-sm-2:contains('Size') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        },
+        "sayThanksButton": {
+          "selector": ["a.btn.btn-xs[data-original-title='Thank']"],
+          "filters": ["query"]
+        }
+      }
     }
   }
 }
