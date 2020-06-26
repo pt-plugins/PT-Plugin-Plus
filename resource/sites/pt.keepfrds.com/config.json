@@ -152,6 +152,6 @@
   "mergeSchemaTagSelectors": true,
   "torrentTagSelectors": [{
     "name": "⛔️",
-    "selector": "td.embedded b > font.recommended"
+    "selector": "td.embedded b > font.recommended:contains('禁转')"
   }]
 }
