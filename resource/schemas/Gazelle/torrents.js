@@ -46,7 +46,7 @@
      */
     confirmWhenExceedSize() {
       return this.confirmSize(
-        $("#torrent_table").find(
+        $("#torrent_table, .torrent_table tr.basic-movie-list__torrent-row").find(
           "td:contains('MB'),td:contains('GB'),td:contains('TB'),td:contains('MiB'),td:contains('GiB'),td:contains('TiB')"
         )
       );
