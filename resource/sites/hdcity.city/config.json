@@ -25,7 +25,7 @@
       "appendQueryString": "&search_area=1"
     }],
     "parseScriptFile": "/schemas/Common/getSearchResult.js",
-    "resultSelector": "div.text, div.text_alt, div.tr_review",
+    "resultSelector": "div.text, div.text_alt, div.tr_review, div.tr_inpro",
     "dataRowSelector": "> table",
     "fieldSelector": {
 	  "title": {
@@ -65,17 +65,19 @@
         "filters": ["$(query[0].childNodes[1]).text()"]
 	  },
       "progress": {
-        "selector": ["div.pbo div.pbc.sd, div.pbo div.pbc.ns",""],
+        "selector": ["div.pbo div.pbc.sd, div.pbo div.pbc.ns", ".pbo div.pbc.dl", ""],
         "switchFilters": [
           ["100"],
+          ["query.attr('style').replace('width:','').replace('%;','')"],
           ["null"]
         ]
       },
       "status": {
-        "selector": ["div.pbo div.pbc.sd","div.pbo div.pbc.ns"],
+        "selector": ["div.pbo div.pbc.sd","div.pbo div.pbc.ns", ".pbo div.pbc.dl"],
         "switchFilters": [
           ["2"],
-          ["255"]
+          ["255"],
+          ["1"]
         ]
       }
     }
