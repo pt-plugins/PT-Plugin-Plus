@@ -39,7 +39,7 @@
       // 首先移除搜索表单，因为里面含有我们使用的selector
       options.page.find("form").remove();
 
-      let tr_list = options.page.find("div.text, div.text_alt");
+      let tr_list = options.page.find("div.text, div.text_alt, div.tr_review");
       for (let i = 0; i < tr_list.length; i++) {
         let torrent_data_raw = tr_list.eq(i);
 
