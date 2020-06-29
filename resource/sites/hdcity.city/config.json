@@ -49,7 +49,7 @@
         "filters": ["query.text()"]
 	  },
 	  "size": {
-		"selector": ["nobr:nth-child(1)"],
+		"selector": ["nobr:contains('B')"],
 		"filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)[0]"]
 	  },
 	  "seeders": {
