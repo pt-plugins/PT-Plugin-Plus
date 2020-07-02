@@ -17,7 +17,7 @@
   }],
   "host": "aidoru-online.me",
   "searchEntryConfig": {
-    "page": "/get_ttable.php?pcat=Show+All&scat=&subbed=&fl=&resd=&p=0&searchstr=$key$&deadlive=1&sortcol=id&sortorder=desc&startdt=&enddt=",
+    "page": "/get_ttable.php?pcat=Show+All&subbed=&fl=&resd=&p=0&searchstr=$key$&deadlive=1&sortcol=id&sortorder=desc&startdt=&enddt=",
     "resultType": "html",
     "resultSelector": "table",
     "fieldIndex": {
@@ -71,6 +71,50 @@
   "searchEntry": [{
     "name": "全部",
     "enabled": true
+  }, {
+    "appendQueryString": "&scat=1",
+    "name": "BD/DVDISO",
+    "enabled": false
+  }, {
+    "appendQueryString": "&scat=2",
+    "name": "BD/DVD-RIP",
+    "enabled": false
+  }, {
+    "appendQueryString": "&scat=3",
+    "name": "TV",
+    "enabled": false
+  }, {
+    "appendQueryString": "&scat=4",
+    "name": "Perf",
+    "enabled": false
+  }, {
+    "appendQueryString": "&scat=5",
+    "name": "PV",
+    "enabled": false
+  }, {
+    "appendQueryString": "&scat=6",
+    "name": "PV",
+    "enabled": false
+  }, {
+    "appendQueryString": "&scat=7",
+    "name": "Image",
+    "enabled": false
+  }, {
+    "appendQueryString": "&scat=8",
+    "name": "Audio",
+    "enabled": false
+  }, {
+    "appendQueryString": "&scat=9",
+    "name": "Album",
+    "enabled": false
+  }, {
+    "appendQueryString": "&scat=10",
+    "name": "Single",
+    "enabled": false
+  }, {
+    "appendQueryString": "&scat=11",
+    "name": "Radio",
+    "enabled": false
   }],
   "torrentTagSelectors": [{
     "name": "Free",
