@@ -20,7 +20,6 @@
 	    "category": 0,
 	    "title": 1,
 	    "link": 1,
-	    "url": 1,
         "comments": 3,
         "time": 4,
         "size": 5,
@@ -43,7 +42,7 @@
         "filters": ["query.attr('href')"]
 	  },
 	  "url": {
-		"selector": ["a[title='Download Torrent']"],
+		"selector": ["a[href*='action=download&id=']"],
         "filters": ["query.attr('href')"]
 	  },
 	  "time": {
