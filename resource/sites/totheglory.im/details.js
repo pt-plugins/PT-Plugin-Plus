@@ -18,7 +18,12 @@
      * 获取下载链接
      */
     getDownloadURL() {
-      let query = $("a[href*='/dl/']:not([class])");
+      // 有一些扩展会为链接添加class，导致选择器失效，因此使用正则来获取链接
+      // let query = $("a[href*='/dl/']:not([class])");
+      let query = $("a[href*='/dl/']").filter(function() {
+        return this.href.match(/\/[0-9a-f]{32}$/)
+      });
+
       let url = "";
       if (query.length > 0) {
         url = query.attr("href");
@@ -52,8 +57,8 @@
     }
 
     getTitle() {
-      return /\"(.*?)\"/.exec($("title").text())[1];
+      return /"(.*?)"/.exec($("title").text())[1];
     }
-  };
+  }
   (new App()).init();
 })(jQuery, window);
