@@ -172,7 +172,7 @@
           }
 
           if (!url) {
-            return;
+            continue;
           }
 
           url = url +
