@@ -111,7 +111,6 @@
       }
     ]
   }],
-  "downloadMethod": "POST",
   "searchEntryConfig": {
     "fieldSelector": {
       "progress": {
@@ -126,6 +125,26 @@
           ["1"],
           ["255"]
         ]
+      }
+    }
+  },
+  "selectors": {
+    "/torrents.php": {
+      "merge": true,
+      "fields": {
+        "downloadURLs": {
+          "selector": "input.download",
+          "filters": ["query.map(function() {return jQuery(this).parent().attr('action')}).toArray()"]
+        }
+      }
+    },
+    "/details.php": {
+      "merge": true,
+      "fields": {
+        "downloadURL": {
+          "selector": "input.dt_download",
+          "filters": ["query.parent().attr('action')"]
+        }
       }
     }
   }

@@ -597,7 +597,7 @@ export default class PTPlugin {
 
   /**
    * 获取指定选择器
-   * @param host
+   * @param hostOrSite
    * @param name
    */
   public getSiteSelector(

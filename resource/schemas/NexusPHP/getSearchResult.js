@@ -1,7 +1,7 @@
 /**
  * NexusPHP 默认搜索结果解析类
  */
-(function(options, Searcher) {
+(function (options, Searcher) {
   class Parser {
     constructor() {
       this.haveData = false;
@@ -163,20 +163,7 @@
           }
 
           // 获取下载链接
-          let url = row.find("img.download").parent();
-
-          if (url.length) {
-            if (url.get(0).tagName !== "A") {
-              let id = link.getQueryString("id");
-              url = `download.php?id=${id}`;
-            } else {
-              url = url.attr("href");
-            }
-          } else {
-            let id = link.getQueryString("id");
-            url = `download.php?id=${id}`;
-          }
-
+          let url = this.getDownloadLink(row,link);
           if (url && url.substr(0, 2) === "//") {
             // 适配HUDBT、WHU这样以相对链接开头
             url = `${site_url_help.protocol}://${url}`;
@@ -185,13 +172,11 @@
           }
 
           if (!url) {
-            continue;
+            return;
           }
 
-          url =
-            url +
-            (site && site.passkey ? "&passkey=" + site.passkey : "") +
-            "&https=1";
+          url = url +
+            (site && site.passkey ? "&passkey=" + site.passkey : "");
 
           let data = {
             title: title.attr("title") || title.text(),
@@ -218,7 +203,7 @@
               fieldIndex.category == -1
                 ? null
                 : this.getFieldValue(row, cells, fieldIndex, "category") ||
-                  this.getCategory(cells.eq(fieldIndex.category)),
+                this.getCategory(cells.eq(fieldIndex.category)),
             progress: this.getFieldValue(row, cells, fieldIndex, "progress"),
             status: this.getFieldValue(row, cells, fieldIndex, "status")
           };
@@ -280,13 +265,13 @@
       if (options.site.host === "pt.sjtu.edu.cn") {
         if (time.match(/\d+[分时天月年]/g)) {
           time = Date.now() - this._parseTime(time)
-          time = new Date(time).toLocaleString("zh-CN", {hour12: false}).replace(/\//g,'-')
+          time = new Date(time).toLocaleString("zh-CN", {hour12: false}).replace(/\//g, '-')
         }
       }
       return time || "";
     }
 
-    _parseTime (timeString) {
+    _parseTime(timeString) {
       const timeMatch = timeString.match(/\d+[分时天月年]/g)
       let length = 0
       timeMatch.forEach(time => {
@@ -421,6 +406,39 @@
       } catch (error) {
         return "";
       }
+    }
+
+    // 很
+    getDownloadLink(row, link) {
+      let url;
+      switch (options.site.host) {
+        case 'hdsky.me': {
+          let url_another = row.find('form[action*="download.php"]:eq(0)')
+          if (url_another) {
+            url = url_another.attr('action')
+          }
+          break;
+        }
+
+        default: {
+          let url_another = row.find("img.download").parent();
+
+          if (url_another.length) {
+            if (url_another.get(0).tagName !== "A") {
+              let id = link.getQueryString("id");
+              url = `download.php?id=${id}`;
+            } else {
+              url = url_another.attr("href");
+            }
+          } else {
+            let id = link.getQueryString("id");
+            url = `download.php?id=${id}`;
+          }
+          url = url + "&https=1"
+        }
+      }
+
+      return url;
     }
 
     /**

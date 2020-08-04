@@ -10,7 +10,7 @@
      * 初始化按钮列表
      */
     initButtons() {
-	  this.showTorrentSize();
+      this.showTorrentSize();
       this.initDetailButtons();
     }
 

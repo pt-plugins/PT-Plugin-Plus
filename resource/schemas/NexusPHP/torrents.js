@@ -19,47 +19,45 @@
      * 获取下载链接
      */
     getDownloadURLs() {
-      let links = $("a[href*='download']").toArray();
-      let siteURL = PTService.site.url;
-      if (siteURL.substr(-1) != "/") {
-        siteURL += "/";
-      }
+      let urls = PTService.getFieldValue("downloadURLs");
+      if (!urls) {
+        let links = $("a[href*='download']").toArray();
 
-      if (links.length == 0) {
-        links = $(".torrentname a[href*='details.php']").toArray();
-      }
-
-      if (links.length == 0) {
-        //  "获取下载链接失败，未能正确定位到链接";
-        return this.t("getDownloadURLsFailed");
-      }
-
-      let urls = $.map(links, item => {
-        let url = $(item)
-          .attr("href")
-          .replace(/details\.php/gi, "download.php");
-        if (url) {
-          if (url.substr(0, 2) === "//") {
-            // 适配HUDBT、WHU这样以相对链接开头
-            url = location.protocol + url;
-          } else if (url.substr(0, 4) !== "http") {
-            url = siteURL + url;
-          }
-
-          if (url.indexOf("passkey=") === -1 && PTService.site.passkey) {
-            url += "&passkey=" + PTService.site.passkey;
-          }
-
-          if (
-            url &&
-            url.indexOf("https=1") === -1 &&
-            !PTService.site.disableHttps
-          ) {
-            url += "&https=1";
-          }
+        if (links.length === 0) {
+          links = $(".torrentname a[href*='details.php']").toArray();
         }
-        return url;
-      });
+
+        if (links.length === 0) {
+          //  "获取下载链接失败，未能正确定位到链接";
+          return this.t("getDownloadURLsFailed");
+        }
+
+        urls = $.map(links, item => {
+          let url = $(item)
+            .attr("href")
+            .replace(/details\.php/gi, "download.php");
+          if (url) {
+            if (url.indexOf("passkey=") === -1 && PTService.site.passkey) {
+              url += "&passkey=" + PTService.site.passkey;
+            }
+
+            if (
+              url &&
+              url.indexOf("https=1") === -1 &&
+              !PTService.site.disableHttps
+            ) {
+              url += "&https=1";
+            }
+          }
+          return url;
+        });
+      }
+
+      if (urls) {
+        urls = urls.map((x) => {
+          return this.getFullURL(x)
+        })
+      }
 
       return urls;
     }
