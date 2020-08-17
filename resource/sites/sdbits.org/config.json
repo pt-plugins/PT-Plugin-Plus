@@ -1,0 +1,173 @@
+{
+  "name": "SDBits",
+  "timezoneOffset": "+0000",
+  "description": "SDB, HDB姊妹站",
+  "url": "https://sdbits.org/",
+  "icon": "https://sdbits.org/favicon.ico",
+  "tags": ["影视", "综合"],
+  "schema": "SDB",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["^/t/(\\d+)/$", "/details.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/browse.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
+  }],
+  "host": "sdbits.org",
+  "collaborator": "luckiestone",
+  "searchEntryConfig": {
+    "page": "/browse.php",
+    "queryString": "search=$key$",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table#torrent-list:last > tbody > tr:not(:eq(0))",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "imdb=$key$"
+    }]
+  },
+  "searchEntry": [{
+      "name": "全部",
+      "enabled": true
+    },
+    {
+      "queryString": "cat=1",
+      "name": "Movie",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=2",
+      "name": "TV",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=3",
+      "name": "Documentary",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=4",
+      "name": "Music",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=5",
+      "name": "Sports",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=6",
+      "name": "Audio",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=7",
+      "name": "Stand-up Comedy",
+      "enabled": false
+    }
+  ],
+  "categories": [{
+    "entry": "browse.php?",
+    "result": "cat=$id$",
+    "category": [{
+        "id": 1,
+        "name": "Movie"
+      },
+      {
+        "id": 2,
+        "name": "TV"
+      },
+      {
+        "id": 3,
+        "name": "Documentary"
+      },
+      {
+        "id": 4,
+        "name": "Music"
+      },
+      {
+        "id": 5,
+        "name": "Sports"
+      },
+      {
+        "id": 6,
+        "name": "Audio"
+      },
+      {
+        "id": 7,
+        "name": "Stand-up Comedy"
+      }
+    ]
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "a[style^='color:#000099']"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": "a[href*='userdetails.php']:first",
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": "a[href*='userdetails.php']:first"
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        },
+        "messageCount": {
+          "selector": ["table[bgcolor*='red'] a[href*='inbox.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.rowhead:contains('Uploaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td.rowhead:contains('Downloaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "font:contains('Ratio') +",
+          "filters": ["parseFloat(query.text())"]
+        },
+        "levelName": {
+          "selector": ["td.rowhead:contains('Class') + td"]
+        },
+        "bonus": {
+          "selector": ["td.heading:contains('Bonus') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?query[1]:''"]
+        },
+        "joinTime": {
+          "selector": ["td.rowhead:contains('JOIN'):contains('date') + td"],
+          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/userdetails.php?id=$user.id$&seeding=1",
+      "fields": {
+        "seedingSize": {
+          "selector": ["td.heading:contains('Currently'):contains('seeding') + td tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td:eq(3)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        },
+        "seeding": {
+          "selector": ["td.heading:contains('Currently'):contains('seeding') + td tr:not(:eq(0))"],
+          "filters": ["query.length"]
+        }
+      }
+    }
+  }
+}
