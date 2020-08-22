@@ -24,7 +24,7 @@
         "filters": ["query.attr('style')||''", "query.match(/width:([ \\d.]+)%/)", "(query && query.length>=2)?query[1]:null"]
       },
       "status": {
-        "selector": ["img[src='pic/ZZ.png']", "div.probar_b1", "img[src='pic/WWC.png']"],
+        "selector": ["img[src='pic/ZZ.png']", "div.probar_b1", "img[src='pic/WWC.png'], img[src='pic/WC.png']"],
         "switchFilters": [
           ["2"],
           ["1"],

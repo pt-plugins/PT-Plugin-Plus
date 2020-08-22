@@ -58,13 +58,7 @@
         }
       }
 
-      url = this.getFullURL(url);
-
-      if (url.indexOf("https=1") === -1) {
-        url += "&https=1";
-      }
-
-      return url;
+      return this.getFullURL(url);
     }
 
     /**

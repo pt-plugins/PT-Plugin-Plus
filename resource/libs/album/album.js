@@ -559,7 +559,7 @@ window.album = function (options) {
         src: item.thumb,
         key: item.key,
         title: item.title,
-        tags: ($.isArray(item.tags) ? item.tags.join(",") : item.tags)
+        tags: (Array.isArray(item.tags) ? item.tags.join(",") : item.tags)
       }).css({
         "max-height": (this.options.listHeight - 10)
       }).click(function () {
@@ -577,7 +577,7 @@ window.album = function (options) {
       let texts = [];
       if (typeof (item.tags) == "string") {
         texts.push(item.tags);
-      } else if ($.isArray(item.tags)) {
+      } else if (Array.isArray(item.tags)) {
         texts = item.tags;
       } else {
         return;

@@ -137,6 +137,8 @@ export class BackupFileParser {
   /**
    * 加载备份数据
    * @param data
+   * @param secretKeyTitle
+   * @param secretKey
    */
   public loadZipData(
     data: any,
@@ -147,28 +149,28 @@ export class BackupFileParser {
       JSZip.loadAsync(data)
         .then(zip => {
           let requests: any[] = [];
-          requests.push(zip.file("manifest.json").async("text"));
-          requests.push(zip.file("options.json").async("text"));
-          requests.push(zip.file("userdatas.json").async("text"));
+          requests.push(zip.file("manifest.json")!.async("text"));
+          requests.push(zip.file("options.json")!.async("text"));
+          requests.push(zip.file("userdatas.json")!.async("text"));
 
           if (zip.file("collection.json")) {
-            requests.push(zip.file("collection.json").async("text"));
+            requests.push(zip.file("collection.json")!.async("text"));
           }
 
           if (zip.file("cookies.json")) {
-            requests.push(zip.file("cookies.json").async("text"));
+            requests.push(zip.file("cookies.json")!.async("text"));
           }
 
           if (zip.file("searchResultSnapshot.json")) {
-            requests.push(zip.file("searchResultSnapshot.json").async("text"));
+            requests.push(zip.file("searchResultSnapshot.json")!.async("text"));
           }
 
           if (zip.file("keepUploadTask.json")) {
-            requests.push(zip.file("keepUploadTask.json").async("text"));
+            requests.push(zip.file("keepUploadTask.json")!.async("text"));
           }
 
           if (zip.file("downloadHistory.json")) {
-            requests.push(zip.file("downloadHistory.json").async("text"));
+            requests.push(zip.file("downloadHistory.json")!.async("text"));
           }
 
           return Promise.all(requests);

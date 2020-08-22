@@ -71,7 +71,7 @@
         },
         "joinTime": {
           "selector": [".dl-horizontal dt:contains('Join Date') + dd"],
-          "filters": ["dateTime(query.text().split(' ').slice(1).join(' '), 'Do MMMM YYYY').valueOf()"]
+          "filters": ["dateTime(query.text().split(' ').slice(1).join(' ').replace('th', '')).valueOf()"]
         }
       }
     },

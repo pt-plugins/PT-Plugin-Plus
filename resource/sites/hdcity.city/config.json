@@ -24,7 +24,63 @@
       "keyAutoMatch": "^(tt\\d+)$",
       "appendQueryString": "&search_area=1"
     }],
-    "parseScriptFile": "getSearchResult.js"
+    "parseScriptFile": "/schemas/Common/getSearchResult.js",
+    "resultSelector": "div.text, div.text_alt, div.tr_review, div.tr_inpro",
+    "dataRowSelector": "> table",
+    "fieldSelector": {
+	  "title": {
+		"selector": ["span[style='color:#777']"],
+        "filters": ["query.text()"]
+	  },
+	  "subTitle": {
+		"selector": ["a.torname"],
+        "filters": ["query.text()"]
+	  },
+	  "link": {
+		"selector": ["a.torname"],
+        "filters": ["query.attr('href')", "'https://hdcity.city/'+query"]
+	  },
+	  "url": {
+		"selector": ["a[href^=download]"],
+        "filters": ["query.attr('href')", "'https://hdcity.city/'+query"]
+	  },
+	  "time": {
+		"selector": ["td:nth-child(8)"],
+        "filters": ["query.text()"]
+	  },
+	  "size": {
+		"selector": ["nobr:contains('B')"],
+		"filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)[0]"]
+	  },
+	  "seeders": {
+		"selector": ["a[href*='#seeders'] font"],
+        "filters": ["query.text()"]
+	  },
+      "leechers": {
+		"selector": ["a[href*='#leechers']"],
+        "filters": ["$(query[0].childNodes[1]).text()"]
+	  },
+      "completed": {
+		"selector": ["a[href^='viewsnatches']:first"],
+        "filters": ["$(query[0].childNodes[1]).text()"]
+	  },
+      "progress": {
+        "selector": ["div.pbo div.pbc.sd, div.pbo div.pbc.ns", ".pbo div.pbc.dl", ""],
+        "switchFilters": [
+          ["100"],
+          ["query.attr('style').replace('width:','').replace('%;','')"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["div.pbo div.pbc.sd","div.pbo div.pbc.ns", ".pbo div.pbc.dl"],
+        "switchFilters": [
+          ["2"],
+          ["255"],
+          ["1"]
+        ]
+      }
+    }
   },
   "searchEntry": [{
     "name": "全部",
@@ -120,6 +176,10 @@
         "bonus": {
           "selector": "div.text:contains('魅力值')",
           "filters": ["query.is(\":contains('魅力值')\") ? query.text().replace(/,/g,'').match(/魅力值.+?([\\d.]+)/)[1] : query.text().replace(/,/g,'')", "parseFloat(query)"]
+        },
+        "messageCount": {
+          "selector": ["li > a[href='messages']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         },
         "joinTime": {
           "selector": "div.text:contains('加入日期')",
