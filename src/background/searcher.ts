@@ -61,7 +61,7 @@ export class Searcher {
 
   private searchRequestQueue: Dictionary<JQueryXHR> = {};
 
-  constructor(public service: PTPlugin) {}
+  constructor(public service: PTPlugin) { }
 
   /**
    * 搜索种子
@@ -187,7 +187,7 @@ export class Searcher {
               if (area.parseScript) {
                 try {
                   key = eval(area.parseScript);
-                } catch (error) {}
+                } catch (error) { }
               }
 
               return true;
@@ -689,7 +689,8 @@ export class Searcher {
               ),
               data: {
                 logId
-              }
+              },
+              type: EDataResultType.error
             });
           }
         })
@@ -938,9 +939,9 @@ export class Searcher {
    */
   public cfDecodeEmail(encodedString: string) {
     let email = "",
-        r = parseInt(encodedString.substr(0, 2), 16),
-        n,
-        i;
+      r = parseInt(encodedString.substr(0, 2), 16),
+      n,
+      i;
     for (n = 2; encodedString.length - n; n += 2) {
       i = parseInt(encodedString.substr(n, 2), 16) ^ r;
       email += String.fromCharCode(i);
