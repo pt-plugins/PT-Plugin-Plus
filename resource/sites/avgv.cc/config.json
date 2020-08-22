@@ -2,20 +2,29 @@
   "name": "爱薇网",
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
-  "url": "http://avgv.cc/",
+  "url": "https://avgv.cc/",
   "description": "新加坡华人PT站，很有特色。",
   "tags": ["成人", "AV", "GAY", "LES"],
   "host": "avgv.cc",
-  "collaborator": "xiazhou8",
+  "collaborator": "xiazhou8, 匿名网友",
+  "plugins": [{
+    "name": "种子列表",
+    "pages": ["/AV.php", "/GV.php", "/LES.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }, {
+    "name": "种子列表封面模式",
+    "pages": ["/torrents.php", "/AV.php", "/GV.php", "/LES.php"],
+    "scripts": ["/libs/album/album.js", "torrents.js"],
+    "styles": ["/libs/album/style.css"]
+  }],
   "searchEntryConfig": {
     "fieldSelector": {
       "progress": {
         "selector": ["div.probar_b1, div.probar_b2, div.probar_b3"],
         "filters": ["query.attr('style')||''", "query.match(/width:([ \\d.]+)%/)", "(query && query.length>=2)?query[1]:null"]
-
       },
       "status": {
-        "selector": ["img[src='pic/ZZ.png']","div.probar_b1", "img[src='pic/WWC.png']"],
+        "selector": ["img[src='pic/ZZ.png']", "div.probar_b1", "img[src='pic/WWC.png']"],
         "switchFilters": [
           ["2"],
           ["1"],
