@@ -1,0 +1,10 @@
+{
+  "name": "HDATMOS",
+  "timezoneOffset": "+0800",
+  "icon": "https://hdatmos.club/favicon.ico",
+  "schema": "NexusPHP",
+  "tags": ["影视", "综合"],
+  "url": "https://hdatmos.club",
+  "host": "hdatmos.club",
+  "collaborator": "luoyefe"
+}
