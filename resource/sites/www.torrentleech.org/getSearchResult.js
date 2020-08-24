@@ -66,7 +66,7 @@
     }
     getTags(item) {
 	  var tag = [{
-	    name: "free",
+	    name: "Free",
         color: "blue"
 	  }]
       if(item.tags.indexOf("FREELEECH")>-1)return tag;
