@@ -538,7 +538,12 @@ export default Vue.extend({
       });
 
       this.pagination.page = 1;
-      if (/^(tt\d+)$/.test(this.key)) {
+      if (/(tt\d+)/.test(this.key)) {
+        // 提取 IMDb 编号，如果带整个网址，则只取编号部分
+        let imdb = this.key.match(/(tt\d+)/);
+        if (imdb && imdb.length >= 2) {
+          this.key = imdb[1];
+        }
         this.IMDbId = this.key;
       } else {
         this.IMDbId = "";
