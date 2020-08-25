@@ -11,5 +11,17 @@
     "name": "阅听专区",
     "pages": ["/live.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
-  }]
+  }],
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["> td:eq(8)"],
+        "filters": ["query.text()=='--'?null:parseFloat(query.text())"]
+      },
+      "status": {
+        "selector": ["> td:eq(8)"],
+        "filters": ["query.text()==='--'?null:(parseFloat(query.text())==100?255:3)"]
+      }
+    }
+  }
 }

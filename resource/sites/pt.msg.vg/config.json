@@ -3,8 +3,29 @@
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "url": "https://pt.msg.vg/",
-  "description": "PT速递",
+  "description": "The Ultimate File Sharing Experience",
   "icon": "https://pt.msg.vg/favicon.ico",
   "host": "pt.msg.vg",
-  "collaborator": "bjgetite"
+  "collaborator": "bjgetite",
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["div.progressarea[title='做种中'], div.progressarea[title='已完成']", "div.progressarea[title='未完成'], div.progressarea[title='下载中']", ""],
+        "switchFilters": [
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["div.progressarea[title='做种中']", "div.progressarea[title='已完成']", "div.progressarea[title='下载中']", "div.progressarea[title='未完成']"],
+        "switchFilters": [
+          ["2"],
+          ["255"],
+          ["1"],
+          ["3"]
+        ]
+      }
+    }
+  }
 }

@@ -7,5 +7,17 @@
     "tags": ["综合", "电影", "电视剧", "纪录片"],
     "schema": "NexusPHP",
     "host": "hdfans.org",
-    "collaborator": "csi0n"
+    "collaborator": "csi0n",
+    "searchEntryConfig": {
+      "fieldSelector": {
+        "progress": {
+          "selector": ["> td:eq(9)"],
+          "filters": ["query.text()=='--'?null:parseFloat(query.text())"]
+        },
+        "status": {
+          "selector": ["> td:eq(9)"],
+          "filters": ["query.text()==='--'?null:(parseFloat(query.text())==100?255:3)"]
+        }
+      }
+    }
 }
