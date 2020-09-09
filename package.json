@@ -39,7 +39,7 @@
     "dotenv": "^8.2.0",
     "extend": "^3.0.2",
     "file-saver": "^2.0.0",
-    "highcharts": "^7.1.1",
+    "highcharts": "^7.2.2",
     "highcharts-vue": "^1.2.0",
     "html2canvas": "^1.0.0-alpha.12",
     "i18next": "^17.0.3",
