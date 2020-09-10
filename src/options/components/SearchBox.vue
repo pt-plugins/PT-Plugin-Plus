@@ -115,6 +115,7 @@
     </template>
     <!-- 预选结果 -->
     <div>
+      <!-- 直接关键字跳转 -->
       <v-list class="pb-0">
         <v-list-tile @click.stop="itemClick(null)">
           <v-list-tile-content>
@@ -131,6 +132,7 @@
         <v-progress-linear :indeterminate="true" v-else color="secondary" height="2"></v-progress-linear>
       </v-list>
 
+      <!-- 预选列表 -->
       <v-list three-line class="py-0">
         <template v-for="(item, index) in items">
           <v-list-tile
@@ -139,7 +141,7 @@
             :title="$t('searchBox.searchThisKey', { key: item.title })"
           >
             <v-list-tile-avatar class="album" :size="75">
-              <img :src="item.images.small" />
+              <img :src="item.images?item.images.small:item.pic?item.pic.normal:''" />
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title class="mb-1">
@@ -147,7 +149,7 @@
                 <span class="ml-1 caption">({{ item.year }})</span>
               </v-list-tile-title>
               <v-list-tile-sub-title>
-                <div>{{ item.original_title }}</div>
+                <div>{{ item.original_title || "" }}</div>
                 <div class="caption">{{ item.genres.join(" | ")}}</div>
               </v-list-tile-sub-title>
             </v-list-tile-content>
@@ -156,17 +158,17 @@
               <a
                 class="grey--text text--darken-1 mt-3 title"
                 style="text-decoration: none;"
-                :href="item.alt"
+                :href="item.alt||item.url"
                 rel="noopener noreferrer nofollow"
                 target="_blank"
                 :title="$t('searchBox.toDouban')"
                 @click.stop
               >
                 <img src="https://img3.doubanio.com/favicon.ico" width="16" />
-                {{ parseFloat(item.rating.average).toFixed(1) }}
+                {{ parseFloat(item.rating.average || item.rating.value).toFixed(1) }}
               </a>
               <v-rating
-                :value="parseInt(item.rating.stars)/10"
+                :value="item.rating.stars?parseInt(item.rating.stars)/10:item.rating.star_count"
                 background-color="grey lighten-2"
                 color="yellow accent-4"
                 dense
@@ -199,7 +201,7 @@ import {
   Options,
   Site,
   EBeforeSearchingItemSearchMode,
-  EAction
+  EAction,
 } from "@/interface/common";
 
 import Extension from "@/service/extension";
@@ -220,12 +222,12 @@ export default Vue.extend({
       selectedSearchSolutionName: "",
       allSite: {
         id: "all",
-        name: "<所有站点>"
+        name: "<所有站点>",
       },
       initialized: false,
       topSearches: [] as any[],
       topSearchesUpdateTime: "N/A" as any,
-      topSearchesLoading: false
+      topSearchesLoading: false,
     };
   },
 
@@ -291,7 +293,7 @@ export default Vue.extend({
       // 本地调试时
       if (window.location.hostname == "localhost") {
         $.ajax("http://localhost:8001/test/beforeSearching.json")
-          .done(result => {
+          .done((result) => {
             console.log(result);
             if (result && result.subjects) {
               this.items = result.subjects;
@@ -299,7 +301,7 @@ export default Vue.extend({
               this.showMenu = true;
             }
           })
-          .fail(err => {
+          .fail((err) => {
             console.log(err);
           })
           .always(() => (this.isLoading = false));
@@ -310,16 +312,16 @@ export default Vue.extend({
         .sendRequest(EAction.queryMovieInfoFromDouban, null, {
           key,
           count: this.$store.state.options.beforeSearchingOptions
-            .maxMovieInformationCount
+            .maxMovieInformationCount,
         })
-        .then(result => {
+        .then((result) => {
           if (result && result.subjects) {
             this.items = result.subjects;
             this.isLoading = false;
             this.showMenu = true;
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         })
         .finally(() => {
@@ -337,14 +339,14 @@ export default Vue.extend({
       clearTimeout(this.timer);
 
       this.$store.dispatch("saveConfig", {
-        lastSearchKey: this.searchKey
+        lastSearchKey: this.searchKey,
       });
 
       this.$router.push({
         name: "search-torrent",
         params: {
-          key: key
-        }
+          key: key,
+        },
       });
     },
     changeSearchSolution(solution?: SearchSolution) {
@@ -359,29 +361,29 @@ export default Vue.extend({
       }
 
       this.$store.dispatch("saveConfig", {
-        defaultSearchSolutionId: defaultSearchSolutionId
+        defaultSearchSolutionId: defaultSearchSolutionId,
       });
     },
     clearSearchKey() {
       this.$store.dispatch("saveConfig", {
-        lastSearchKey: ""
+        lastSearchKey: "",
       });
     },
     getTopSearches() {
       this.topSearchesLoading = true;
       extension
         .sendRequest(EAction.getTopSearches)
-        .then(result => {
+        .then((result) => {
           this.topSearches = result;
           this.topSearchesUpdateTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         })
         .finally(() => {
           this.topSearchesLoading = false;
         });
-    }
+    },
   },
   watch: {
     /**
@@ -419,7 +421,7 @@ export default Vue.extend({
           }, 1000);
         }
       }
-    }
+    },
   },
   created() {
     this.selectedSearchSolutionName = this.$t("searchBox.default").toString();
@@ -465,8 +467,8 @@ export default Vue.extend({
       } else {
         return this.isLoading;
       }
-    }
-  }
+    },
+  },
 });
 </script>
 

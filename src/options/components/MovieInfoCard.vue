@@ -1,23 +1,24 @@
 <template>
   <div class="movieInfoCard" v-if="visible">
     <v-card color="blue-grey darken-2" class="white--text">
+      <!-- 标题 -->
       <v-card-title class="pb-2">
         <div :class="$vuetify.breakpoint.mdAndUp?'headline': 'title'">
-          <span>{{ info.title}}</span>
+          <span>{{ info.title }}</span>
           <span
             :class="['ml-1','grey--text',$vuetify.breakpoint.mdAndUp?'title':'caption']"
-          >({{ info.attrs.year[0] }})</span>
+          >({{ info.year || info.attrs.year[0] }})</span>
         </div>
       </v-card-title>
       <v-img
-        :src="info.image"
+        :src="info.image || info.pic.normal"
         class="ml-3 mb-3"
         contain
         :max-height="maxHeight"
         position="left center"
       >
         <v-layout style="margin-left: 220px;" v-if="$vuetify.breakpoint.mdAndUp">
-          <v-card-title class="pt-0">
+          <v-card-title class="pt-0" v-if="info.attrs">
             <v-flex xs12>
               <span>{{ $t("movieInfoCard.alias") }}</span>
               <span class="caption">{{ info.alt_title }}</span>
@@ -51,20 +52,51 @@
             </v-flex>
             <div class="caption" v-html="`${info.summary} @豆瓣`"></div>
           </v-card-title>
+
+          <v-card-title class="pt-0" v-else>
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.alias") }}</span>
+              <span class="caption">{{ info.original_title }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.director") }}</span>
+              <span class="caption">{{ getArrayValues(info.directors) }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.cast") }}</span>
+              <span class="caption">{{ getArrayValues(info.actors) }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.type") }}</span>
+              <span class="caption">{{ formatArray(info.genres) }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.pubdate") }}</span>
+              <span class="caption">{{ formatArray(info.pubdate) }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.duration") }}</span>
+              <span class="caption">{{ formatArray(info.durations) }}</span>
+            </v-flex>
+            <v-flex xs12 class="my-2">
+              <v-divider light></v-divider>
+            </v-flex>
+            <div class="caption" v-html="`${info.intro} @豆瓣`"></div>
+          </v-card-title>
         </v-layout>
         <v-layout v-else style="margin-left: 75px;">
           <v-card-text class="pt-0">
             <v-flex xs12>
-              <span class="caption">{{ info.alt_title }}</span>
+              <span class="caption">{{ info.original_title || info.alt_title }}</span>
             </v-flex>
             <v-flex xs12>
-              <span class="caption">{{ formatArray(info.attrs.movie_type) }}</span>
+              <span class="caption">{{ formatArray(info.genres || info.attrs.movie_type) }}</span>
             </v-flex>
             <v-flex xs12>
-              <span class="caption">{{ formatArray(info.attrs.pubdate) }}</span>
+              <span class="caption">{{ formatArray(info.pubdate || info.attrs.pubdate) }}</span>
             </v-flex>
             <v-flex xs12>
-              <span class="caption">{{ formatArray(info.attrs.movie_duration) }}</span>
+              <span class="caption">{{ formatArray(info.durations || info.attrs.movie_duration) }}</span>
             </v-flex>
           </v-card-text>
         </v-layout>
@@ -74,10 +106,10 @@
         <!-- 豆瓣评分 -->
         <v-btn
           color="success"
-          :href="info.mobile_link"
+          :href="info.url || info.mobile_link"
           target="_blank"
           rel="noopener noreferrer nofollow"
-        >豆瓣 {{ info.rating.average }}</v-btn>
+        >豆瓣 {{ info.rating.value || info.rating.average }}</v-btn>
 
         <!-- IMDb评分 -->
         <v-btn
@@ -131,7 +163,7 @@
             ></v-rating>
             <span
               class="ma-2"
-            >{{ $t("movieInfoCard.ratings.douban", {average: info.rating.average, numRaters: info.rating.numRaters}) }}</span>
+            >{{ $t("movieInfoCard.ratings.douban", {average: info.rating.value || info.rating.average, numRaters: info.rating.count || info.rating.numRaters}) }}</span>
           </v-flex>
           <v-flex xs6 v-if="imdbRating>0">
             <v-rating
@@ -162,7 +194,8 @@ const extension = new Extension();
 
 export default Vue.extend({
   props: {
-    IMDbId: String
+    IMDbId: String,
+    doubanId: String
   },
   data() {
     return {
@@ -172,7 +205,8 @@ export default Vue.extend({
         image: "",
         rating: {
           average: "",
-          numRaters: 0
+          numRaters: 0,
+          value: ""
         },
         attrs: {
           year: [],
@@ -215,9 +249,10 @@ export default Vue.extend({
         Ratings: [],
         imdbVotes: ""
       };
+      console.log(this.doubanId, this.IMDbId);
       if (this.IMDbId) {
         extension
-          .sendRequest(EAction.getMovieInfos, null, this.IMDbId)
+          .sendRequest(EAction.getMovieInfos, null, this.doubanId ? `douban${this.doubanId}` : this.IMDbId)
           .then(result => {
             console.log(result);
             this.visible = true;
@@ -250,12 +285,23 @@ export default Vue.extend({
         return array.join(splitChar);
       }
       return "";
+    },
+    // 获取数组中指定的字段
+    getArrayValues(array: any, field: string = "name", splitChar: string = " / "): string {
+      if (array && array.length > 0) {
+        const result: string[] = [];
+        array.forEach((item: any) => {
+          result.push(item[field]);
+        });
+        return result.join(splitChar);
+      }
+      return "";
     }
   },
   computed: {
     rating(): number {
       if (this.info && this.info.rating) {
-        return parseFloat(this.info.rating.average) / 2;
+        return parseFloat(this.info.rating.value || this.info.rating.average) / 2;
       }
       return 0;
     },

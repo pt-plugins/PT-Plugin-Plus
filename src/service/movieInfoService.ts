@@ -1,4 +1,5 @@
 import { Dictionary } from "@/interface/common";
+import { PPF } from './public';
 
 export type MovieInfoCache = {
   base: Dictionary<any>;
@@ -10,8 +11,64 @@ export type MovieInfoCache = {
  * 电影信息
  */
 export class MovieInfoService {
-  // 豆瓣
+  // 豆瓣标准接口
   public doubanApiURL = "https://api.douban.com/v2";
+  // 豆瓣 frodo 接口
+  public doubanFrodoApi = "https://frodo.douban.com/api/v2";
+
+  public douban = {
+    frodo: {
+      apiKeys: [
+        "054022eaeae0b00e0fc068c0c0a2102a"
+      ],
+      entApiKeys: [
+        "054022eaeae0b00e0fc068c0c0a2102a"
+      ],
+      // 豆瓣 frodo 接口相关方法
+      methods: {
+        movie: {
+          search: `${this.doubanFrodoApi}/search?q=$key$&count=$count$&apiKey=$apikey$`,
+          /* 
+            数据示例
+            request: https://movie.douban.com/j/subject_suggest?q=tt0120762
+            response:
+            [{
+              "episode": "",
+              "img": "https://img9.doubanio.com\/view\/photo\/s_ratio_poster\/public\/p2443062814.jpg",
+              "title": "花木兰",
+              "url": "https:\/\/movie.douban.com\/subject\/1294833\/?suggest=tt0120762",
+              "type": "movie",
+              "year": "1998",
+              "sub_title": "Mulan",
+              "id": "1294833"
+            }]
+          */
+          imdb: `https://movie.douban.com/j/subject_suggest?q=$imdbid$`,
+          subject: `${this.doubanFrodoApi}/movie/$id$?apiKey=$apikey$`
+        },
+      }
+    },
+    common: {
+      apiKeys: [
+        "02646d3fb69a52ff072d47bf23cef8fd",
+        "0b2bdeda43b5688921839c8ecb20399b",
+        "0dad551ec0f84ed02907ff5c42e8ec70",
+        "0df993c66c0c636e29ecbb5344252a4a"
+      ],
+      entApiKeys: [
+        "0dad551ec0f84ed02907ff5c42e8ec70",
+        "02646d3fb69a52ff072d47bf23cef8fd"
+      ],
+      methods: {
+        movie: {
+          search: `${this.doubanApiURL}/movie/search?q=$key$&count=$count$&apikey=$apikey$`,
+          imdb: `${this.doubanApiURL}/movie/imdb/$imdbid$?apikey=$apikey$`,
+          subject: `${this.doubanApiURL}/movie/subject/$id$?apikey=$apikey$`
+        }
+      },
+    }
+  }
+
   // 用于加载评分信息
   public omdbApiURL = "https://www.omdbapi.com";
   // 用于获取IMDbID
@@ -78,9 +135,16 @@ export class MovieInfoService {
   // 链接超时时间
   public timeout = 3000;
 
+  // 豆瓣当前使用API
+  private doubanApi = this.douban.frodo;
+
   private requsetQueue: Dictionary<any> = {};
 
   public getInfos(key: string): Promise<any> {
+    if (/(douban\d+)/.test(key)) {
+      return this.getInfoFromDoubanId(key.replace("douban", ""));
+    }
+
     if (/^(tt\d+)$/.test(key)) {
       return this.getInfoFromIMDb(key);
     }
@@ -110,9 +174,10 @@ export class MovieInfoService {
           resolve(cache);
           return;
         }
-        let url = `${
-          this.doubanApiURL
-        }/movie/imdb/${IMDbId}?apikey=${this.getDoubanApiKey()}`;
+        let url = PPF.replaceKeys(this.doubanApi.methods.movie.imdb, {
+          imdbid: IMDbId,
+          apikey: this.getDoubanApiKey()
+        });
 
         $.ajax({
           url: url,
@@ -143,9 +208,14 @@ export class MovieInfoService {
           resolve(cache);
           return;
         }
-        let url = `${
-          this.doubanApiURL
-        }/movie/subject/${id}?apikey=${this.getDoubanApiKey()}`;
+        // let url = `${
+        //   this.doubanApiURL
+        // }/movie/subject/${id}?apikey=${this.getDoubanApiKey()}`;
+
+        let url = PPF.replaceKeys(this.doubanApi.methods.movie.subject, {
+          id,
+          apikey: this.getDoubanApiKey()
+        });
 
         $.ajax({
           url: url,
@@ -227,8 +297,8 @@ export class MovieInfoService {
    */
   public getDoubanApiKey() {
     // 随机获取一个key
-    return this.doubanApiKeys[
-      Math.floor(Math.random() * this.doubanApiKeys.length)
+    return this.doubanApi.apiKeys[
+      Math.floor(Math.random() * this.doubanApi.apiKeys.length)
     ];
   }
 
@@ -237,8 +307,8 @@ export class MovieInfoService {
    */
   public getDoubanEntApiKey() {
     // 随机获取一个key
-    return this.doubanEntApiKeys[
-      Math.floor(Math.random() * this.doubanEntApiKeys.length)
+    return this.doubanApi.entApiKeys[
+      Math.floor(Math.random() * this.doubanApi.entApiKeys.length)
     ];
   }
 
@@ -294,9 +364,16 @@ export class MovieInfoService {
     count: number = 5
   ): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      let url = `${this.doubanApiURL}/movie/search?q=${encodeURIComponent(
-        key
-      )}&count=${count}&apikey=${this.getDoubanEntApiKey()}`;
+      // let url = `${this.doubanApiURL}/movie/search?q=${encodeURIComponent(
+      //   key
+      // )}&count=${count}&apikey=${this.getDoubanEntApiKey()}`;
+
+      let url = PPF.replaceKeys(this.doubanApi.methods.movie.search, {
+        key: encodeURIComponent(key),
+        count,
+        apikey: this.getDoubanEntApiKey()
+      });
+
       $.ajax({
         url: url,
         timeout: this.timeout

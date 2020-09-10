@@ -375,6 +375,9 @@ export default Vue.extend({
 
       // 豆瓣ID
       if (/(douban\d+)/.test(this.key)) {
+        this.searchPayload.doubanId = (this.key as any).match(
+          /douban(\d+)/
+        )[1];
         this.getIMDbIdFromDouban(this.key)
           .then((result) => {
             if (typeof result == "string") {

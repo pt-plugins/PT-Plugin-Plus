@@ -2,6 +2,7 @@
   <div class="search-torrent">
     <MovieInfoCard
       :IMDbId="IMDbId"
+      :doubanId="searchPayload.doubanId"
       v-if="!!options.showMoiveInfoCardOnSearch"
     />
     <v-alert :value="true" type="info" style="padding:8px 16px;">
@@ -64,12 +65,7 @@
       <template v-for="(item, index) in searchQueue">
         <v-list-tile :key="item.site.host">
           <v-list-tile-action>
-            <v-progress-circular
-              :size="18"
-              :width="2"
-              indeterminate
-              color="primary"
-            ></v-progress-circular>
+            <v-progress-circular :size="18" :width="2" indeterminate color="primary"></v-progress-circular>
           </v-list-tile-action>
 
           <v-list-tile-content>
@@ -86,14 +82,10 @@
               @click="abortSearch(item.site)"
               color="red"
               :title="$t('searchTorrent.cancelSearch')"
-              >cancel</v-icon
-            >
+            >cancel</v-icon>
           </v-list-tile-action>
         </v-list-tile>
-        <v-divider
-          v-if="index + 1 < searchQueue.length"
-          :key="'line' + item.site.host + index"
-        ></v-divider>
+        <v-divider v-if="index + 1 < searchQueue.length" :key="'line' + item.site.host + index"></v-divider>
       </template>
     </v-list>
 
@@ -114,23 +106,20 @@
                 @click.stop="resetDatas(item)"
                 :disabled="!item.length"
               >
-                <v-icon class="mr-1" left v-if="key === allSitesKey"
-                  >public</v-icon
-                >
+                <v-icon class="mr-1" left v-if="key === allSitesKey">public</v-icon>
                 <template v-else>
                   <v-avatar class="mr-1" v-if="item.length > 0">
-                    <img
-                      :src="item[0].site.icon"
-                      style="width:60%;height:60%;"
-                    />
+                    <img :src="item[0].site.icon" style="width:60%;height:60%;" />
                   </v-avatar>
                   <v-avatar class="mr-1" v-else>
                     <img :src="item.site.icon" style="width:60%;height:60%;" />
                   </v-avatar>
                 </template>
-                <span>{{
+                <span>
+                  {{
                   key === allSitesKey ? $t("searchTorrent.allSites") : key
-                }}</span>
+                  }}
+                </span>
                 <v-chip
                   label
                   :color="item.length ? 'blue-grey' : 'grey'"
@@ -147,9 +136,7 @@
           </div>
 
           <!-- 无结果的站点 -->
-          <div
-            v-if="searchResult.noResultsSites.length > 0 && showNoResultsSites"
-          >
+          <div v-if="searchResult.noResultsSites.length > 0 && showNoResultsSites">
             <template v-for="(item, index) in searchResult.noResultsSites">
               <v-chip
                 :key="index"
@@ -170,8 +157,7 @@
                   :href="item.site.activeURL || item.site.url"
                   rel="noopener noreferrer nofollow"
                   target="_blank"
-                  >{{ item.site.name }}</a
-                >
+                >{{ item.site.name }}</a>
                 <span v-else>{{ item.site.name }}</span>
                 <v-chip
                   label
@@ -231,8 +217,7 @@
                     :href="item.url"
                     rel="noopener noreferrer nofollow"
                     target="_blank"
-                    >{{ item.msg }}</a
-                  >
+                  >{{ item.msg }}</a>
                   <span v-if="!item.url">{{ item.msg }}</span>
 
                   <v-btn
@@ -325,10 +310,7 @@
         <div v-show="toolbarIsFixed" id="divToobarHeight"></div>
         <div id="divToobarInner" :class="toolbarClass">
           <!-- 排序，小屏幕显示 -->
-          <div
-            v-if="$vuetify.breakpoint.smAndDown"
-            style="display: inline-flex;"
-          >
+          <div v-if="$vuetify.breakpoint.smAndDown" style="display: inline-flex;">
             <v-flex xs6 class="px-2" style="height: 50px;">
               <v-select
                 :items="orderHeaders"
@@ -349,9 +331,7 @@
             </v-flex>
           </div>
 
-          <div
-            style="display: inline-flex;overflow-x:auto;width: 100%;overflow-y:hidden;"
-          >
+          <div style="display: inline-flex;overflow-x:auto;width: 100%;overflow-y:hidden;">
             <!-- 行选择框，当工具栏被固定时显示 -->
             <v-checkbox
               v-show="checkBox && toolbarIsFixed"
@@ -371,11 +351,11 @@
                 :class="$vuetify.breakpoint.smAndUp ? '' : 'mini'"
               >
                 <v-icon small>cloud_download</v-icon>
-                <span class="ml-2" v-if="$vuetify.breakpoint.smAndUp"
-                  >{{ $t("searchTorrent.sendToClient") }} ({{
-                    selected.length
-                  }})</span
-                >
+                <span class="ml-2" v-if="$vuetify.breakpoint.smAndUp">
+                  {{ $t("searchTorrent.sendToClient") }} ({{
+                  selected.length
+                  }})
+                </span>
                 <span class="ml-2" v-else>{{ selected.length }}</span>
                 <span class="ml-1">{{ selectedSize | formatSize }}</span>
               </v-btn>
@@ -388,8 +368,7 @@
                 :width="10"
                 :value="sending.progress"
                 color="primary"
-                >{{ sending.progress.toFixed(0) }}%</v-progress-circular
-              >
+              >{{ sending.progress.toFixed(0) }}%</v-progress-circular>
 
               <!-- 复制下载链接 -->
               <v-btn
@@ -401,11 +380,11 @@
                 :class="$vuetify.breakpoint.smAndUp ? '' : 'mini'"
               >
                 <v-icon small>file_copy</v-icon>
-                <span class="ml-2" v-if="$vuetify.breakpoint.smAndUp"
-                  >{{ $t("searchTorrent.copyToClipboard") }} ({{
-                    selected.length
-                  }})</span
-                >
+                <span class="ml-2" v-if="$vuetify.breakpoint.smAndUp">
+                  {{ $t("searchTorrent.copyToClipboard") }} ({{
+                  selected.length
+                  }})
+                </span>
                 <span class="ml-2" v-else>{{ selected.length }}</span>
               </v-btn>
 
@@ -429,8 +408,7 @@
                 :width="10"
                 :value="downloading.progress"
                 color="primary"
-                >{{ downloading.progress.toFixed(0) }}%</v-progress-circular
-              >
+              >{{ downloading.progress.toFixed(0) }}%</v-progress-circular>
 
               <!-- 下载失败的种子 -->
               <v-btn
@@ -443,7 +421,7 @@
               >
                 <v-icon class="mr-2" small>get_app</v-icon>
                 {{ $t("searchTorrent.downloadFailed") }} ({{
-                  downloadFailedTorrents.length
+                downloadFailedTorrents.length
                 }})
               </v-btn>
 
@@ -483,9 +461,11 @@
               :class="$vuetify.breakpoint.smAndUp ? '' : 'mini'"
             >
               <v-icon small>add_a_photo</v-icon>
-              <span class="ml-2" v-if="$vuetify.breakpoint.smAndUp">{{
+              <span class="ml-2" v-if="$vuetify.breakpoint.smAndUp">
+                {{
                 $t("searchResultSnapshot.create")
-              }}</span>
+                }}
+              </span>
             </v-btn>
 
             <!-- 设置 -->
@@ -563,9 +543,7 @@
                 @click="header.sortable !== false && changeSort(header.value)"
                 :style="header.width ? `width:${header.width};` : ''"
               >
-                <v-icon small v-if="header.sortable !== false"
-                  >arrow_upward</v-icon
-                >
+                <v-icon small v-if="header.sortable !== false">arrow_upward</v-icon>
                 {{ header.text }}
               </th>
             </template>
@@ -599,9 +577,7 @@
             </template>
           </td>
           <!-- 标题 -->
-          <td
-            :class="$vuetify.breakpoint.xs ? 'titleCell-mobile' : 'titleCell'"
-          >
+          <td :class="$vuetify.breakpoint.xs ? 'titleCell-mobile' : 'titleCell'">
             <v-avatar
               size="14"
               class="mr-1"
@@ -628,34 +604,28 @@
                   props.item.subTitle
               "
             >
-              <span
-                class="mr-1"
-                v-if="props.item.tags && props.item.tags.length"
-              >
+              <span class="mr-1" v-if="props.item.tags && props.item.tags.length">
                 <span
                   :class="['tag', `${tag.color}`]"
                   v-for="(tag, index) in props.item.tags"
                   :key="index"
                   :title="tag.title"
-                  >{{ tag.name }}</span
-                >
+                >{{ tag.name }}</span>
               </span>
 
               <span v-if="props.item.subTitle">{{ props.item.subTitle }}</span>
             </div>
 
             <v-layout v-if="$vuetify.breakpoint.xs">
-              <v-flex xs3 class="pt-2 captionText">{{
-                props.item.size | formatSize
-              }}</v-flex>
               <v-flex xs3 class="pt-2 captionText">
-                <v-icon style="font-size:12px;margin-bottom: 2px;"
-                  >arrow_upward</v-icon
-                >
+                {{
+                props.item.size | formatSize
+                }}
+              </v-flex>
+              <v-flex xs3 class="pt-2 captionText">
+                <v-icon style="font-size:12px;margin-bottom: 2px;">arrow_upward</v-icon>
                 {{ props.item.seeders }}
-                <v-icon style="font-size:12px;margin-bottom: 2px;"
-                  >arrow_downward</v-icon
-                >
+                <v-icon style="font-size:12px;margin-bottom: 2px;">arrow_downward</v-icon>
                 {{ props.item.leechers }}
               </v-flex>
               <v-flex xs3>
@@ -693,8 +663,7 @@
               v-if="props.item.category && !!props.item.category.name"
               :title="props.item.category.name"
               class="captionText"
-              >{{ props.item.category.name }}</span
-            >
+            >{{ props.item.category.name }}</span>
             <br />
             <span class="captionText">&lt;{{ props.item.entryName }}&gt;</span>
           </td>
@@ -708,19 +677,11 @@
             ></TorrentProgress>
           </td>
           <!-- <td class="center">{{ props.item.comments }}</td> -->
-          <td class="size" v-if="$vuetify.breakpoint.smAndUp">
-            {{ props.item.seeders }}
-          </td>
-          <td class="size" v-if="$vuetify.breakpoint.mdAndUp">
-            {{ props.item.leechers }}
-          </td>
-          <td class="size" v-if="$vuetify.breakpoint.mdAndUp">
-            {{ props.item.completed }}
-          </td>
+          <td class="size" v-if="$vuetify.breakpoint.smAndUp">{{ props.item.seeders }}</td>
+          <td class="size" v-if="$vuetify.breakpoint.mdAndUp">{{ props.item.leechers }}</td>
+          <td class="size" v-if="$vuetify.breakpoint.mdAndUp">{{ props.item.completed }}</td>
           <!-- <td>{{ props.item.author }}</td> -->
-          <td v-if="$vuetify.breakpoint.mdAndUp">
-            {{ props.item.time | formatDate }}
-          </td>
+          <td v-if="$vuetify.breakpoint.mdAndUp">{{ props.item.time | formatDate }}</td>
           <td class="text-xs-center" v-if="$vuetify.breakpoint.smAndUp">
             <template v-if="!!props.item.url">
               <Actions
@@ -742,22 +703,10 @@
       </v-data-table>
     </v-card>
 
-    <v-snackbar
-      v-model="haveError"
-      top
-      :timeout="3000"
-      multi-line
-      color="error"
-    >
+    <v-snackbar v-model="haveError" top :timeout="3000" multi-line color="error">
       <div v-html="errorMsg"></div>
     </v-snackbar>
-    <v-snackbar
-      v-model="haveSuccess"
-      bottom
-      :timeout="3000"
-      multi-line
-      color="success"
-    >
+    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" multi-line color="success">
       <div v-html="successMsg"></div>
     </v-snackbar>
   </div>
