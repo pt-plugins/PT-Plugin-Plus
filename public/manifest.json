@@ -1,7 +1,7 @@
 {
 	"name": "__MSG_manifest_appName__",
 	"short_name": "__MSG_manifest_shortName__",
-	"version": "1.4.9",
+	"version": "1.5.0",
 	"description": "__MSG_manifest_appDescription__",
 	"manifest_version": 2,
 	"default_locale": "zh_CN",
