@@ -183,7 +183,8 @@
         "bonus": "Bonus",
         "joinTime": "Join time",
         "lastUpdateTime": "Update at",
-        "status": "Status"
+        "status": "Status",
+        "comments": "Comments"
       },
       "tip": "N/A means no support",
       "nodata": "You have not added a site, please go to [Sites] to add a site."

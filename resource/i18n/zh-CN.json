@@ -271,7 +271,8 @@
         "leechers": "下载",
         "completed": "完成",
         "time": "发布于(≈)",
-        "action": "操作"
+        "action": "操作",
+        "comments": "评论"
       },
       "optionsIsMissing": "系统参数丢失",
       "sitesIsMissing": "请先设置站点",

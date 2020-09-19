@@ -1985,6 +1985,13 @@ export default Vue.extend({
           visible: this.$vuetify.breakpoint.mdAndUp,
         },
         {
+          text: this.$t("searchTorrent.headers.comments"),
+          align: "right",
+          value: "comments",
+          width: "60px",
+          visible: this.$vuetify.breakpoint.smAndUp,
+        },
+        {
           text: this.$t("searchTorrent.headers.time"),
           align: "left",
           value: "time",
