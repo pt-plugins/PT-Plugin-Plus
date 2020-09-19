@@ -1,4 +1,4 @@
-(function($, window) {
+(function ($, window) {
   class App extends window.DoubanCommon {
     /**
      * 初始化按钮列表
@@ -38,6 +38,9 @@
         return;
       }
       let label = "PT 助手搜索";
+      parent.css({
+        "max-height": "unset"
+      });
       let div = $("<div style='padding: 5px;'/>")
         .attr("title", `搜索 ${title}`)
         .appendTo(parent);
