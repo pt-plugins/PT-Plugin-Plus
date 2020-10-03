@@ -114,6 +114,21 @@
         :label="$t('timeline.userLevel')"
         class="my-0"
       ></v-switch>
+      <v-divider />
+      <h1 style="padding: 5px;">{{ $t('timeline.showSites') }}</h1>
+      <v-layout justify-start row wrap>
+        <v-flex v-for="(site, i) in sites" :key="i" xs3>
+          <v-switch
+                  color="success"
+                  v-model="showSites"
+                  :label="site.name"
+                  :value="site.name"
+                  class="my-0"
+                  :disabled="!site.allowGetUserInfo"
+                  @change="formatData"
+          ></v-switch>
+        </v-flex>
+      </v-layout>
     </div>
   </div>
 </template>
@@ -133,6 +148,7 @@ export default Vue.extend({
       shareMessage: this.$t("timeline.shareMessage").toString(),
       displayUserName: "",
       sites: [] as Site[],
+      showSites: [] as string[],
       infos: {
         nameInfo: { name: "test", maxCount: 0 },
         joinTimeInfo: {
@@ -190,6 +206,9 @@ export default Vue.extend({
           if (this.options.displayUserName) {
             this.displayUserName = this.options.displayUserName;
           }
+          this.showSites = this.sites
+                  .filter((site: Site) => {return site.allowGetUserInfo})
+                  .map((site: Site) => {return site.name});  //  只提取站点名称
           this.formatData();
         })
         .catch();
@@ -207,9 +226,16 @@ export default Vue.extend({
 
       let sites: Site[] = [];
       this.sites.forEach((site: Site) => {
+        // 站点设置不获取用户信息
         if (!site.allowGetUserInfo) {
           return;
         }
+
+        // 展示时不显示该站点信息
+        if (!this.showSites.includes(site.name)) {
+          return;
+        }
+
         let user = site.user;
         if (user && user.name && user.joinTime) {
           sites.push(site);

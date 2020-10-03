@@ -218,6 +218,7 @@
       "siteName": "网站名称",
       "userName": "用户名称",
       "userLevel": "用户等级",
+      "showSites": "展示站点",
       "close": "关闭",
       "shareMessage": "这些年走过的路",
       "total": {

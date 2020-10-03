@@ -218,6 +218,7 @@
       "siteName": "Tracker name",
       "userName": "User name",
       "userLevel": "User level",
+      "showSites": "Show Sites",
       "close": "Close",
       "shareMessage": "Growth process",
       "total": {
