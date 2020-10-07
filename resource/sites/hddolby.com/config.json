@@ -5,7 +5,158 @@
   "url": "https://www.hddolby.com/",
   "description": "高清杜比",
   "icon": "https://www.hddolby.com/favicon.ico",
-  "tags": ["影视", "综合"],
+  "tags": [
+    "影视",
+    "综合"
+  ],
   "host": "hddolby.com",
-  "collaborator": "iceyuamao0510"
+  "collaborator": "iceyuamao0510, tongyifan",
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "> td:eq(8)"
+        ],
+        "filters": [
+          "query.text()==='-'?null:parseFloat(query.text().split('%')[0])"
+        ]
+      },
+      "status": {
+        "selector": [
+          "> td:eq(8)"
+        ],
+        "filters": [
+          "query.text()==='-'?null:(query.is(\"[bgcolor='#CC0066']\")?1:(parseFloat(query.text().split('%')[0])==100?(query.is(\"[bgcolor='#d0d0d0']\")?255:2):3))"
+        ]
+      }
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat401=1",
+      "name": "Movies电影",
+      "enabled": false
+    },
+    {
+      "queryString": "cat402=1",
+      "name": "TV Series电视剧",
+      "enabled": false
+    },
+    {
+      "queryString": "cat404=1",
+      "name": "Documentaries纪录片",
+      "enabled": false
+    },
+    {
+      "queryString": "cat405=1",
+      "name": "Animations动漫",
+      "enabled": false
+    },
+    {
+      "queryString": "cat403=1",
+      "name": "TV Shows综艺",
+      "enabled": false
+    },
+    {
+      "queryString": "cat406=1",
+      "name": "Music Videos",
+      "enabled": false
+    },
+    {
+      "queryString": "cat407=1",
+      "name": "Sports体育",
+      "enabled": false
+    },
+    {
+      "queryString": "cat408=1",
+      "name": "HQ Audio音乐",
+      "enabled": false
+    },
+    {
+      "queryString": "cat410=1",
+      "name": "Games游戏",
+      "enabled": false
+    },
+    {
+      "queryString": "cat411=1",
+      "name": "Study学习",
+      "enabled": false
+    },
+    {
+      "queryString": "cat409=1",
+      "name": "Others其他",
+      "enabled": false
+    }
+  ],
+  "categories": [
+    {
+      "entry": "torrents.php",
+      "result": "&cat$id$=1",
+      "category": [
+        {
+          "id": 401,
+          "name": "Movies电影"
+        },
+        {
+          "id": 402,
+          "name": "TV Series电视剧"
+        },
+        {
+          "id": 404,
+          "name": "Documentaries纪录片"
+        },
+        {
+          "id": 405,
+          "name": "Animations动漫"
+        },
+        {
+          "id": 403,
+          "name": "TV Shows综艺"
+        },
+        {
+          "id": 406,
+          "name": "Music Videos"
+        },
+        {
+          "id": 407,
+          "name": "Sports体育"
+        },
+        {
+          "id": 408,
+          "name": "HQ Audio音乐"
+        },
+        {
+          "id": 410,
+          "name": "Games游戏"
+        },
+        {
+          "id": 411,
+          "name": "Study学习"
+        },
+        {
+          "id": 409,
+          "name": "Others其他"
+        }
+      ]
+    }
+  ],
+  "selectors": {
+    "/details.php": {
+      "merge": true,
+      "fields": {
+        "downloadURL": {
+          "selector": [
+            "a[href*='downhash']"
+          ],
+          "filters": [
+            "query.attr('href')"
+          ]
+        }
+      }
+    }
+  }
 }
