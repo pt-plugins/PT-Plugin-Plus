@@ -316,9 +316,10 @@ export default Vue.extend({
         })
         .then((result) => {
           if (result && result.subjects) {
-            this.items = result.subjects;
+            // issue 615: frodo 接口不止返回电影类型，而模板只考虑了电影类型的展示，把其他都筛掉
+            this.items = result.subjects.filter((x: { type: string; }) => x.type == 'movie');
             this.isLoading = false;
-            this.showMenu = true;
+            this.showMenu = this.items.length > 0;
           }
         })
         .catch((error) => {
