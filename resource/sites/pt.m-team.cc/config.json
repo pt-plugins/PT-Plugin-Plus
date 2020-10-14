@@ -38,7 +38,7 @@
   }, {
     "entry": "/movie.php?search=$key$&notnewword=1",
     "name": "电影",
-    "enabled": true
+    "enabled": false
   }, {
     "entry": "/music.php?search=$key$&notnewword=1",
     "name": "音乐",
