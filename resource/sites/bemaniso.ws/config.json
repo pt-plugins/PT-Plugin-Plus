@@ -4,7 +4,7 @@
   "description": "Game,music",
   "url": "https://bemaniso.ws/",
   "icon": "https://bemaniso.ws/favicon.ico",
-  "tags": ["Game"."Music","sims"],
+  "tags": ["Game","Music","sims"],
   "schema": "GazelleJSONAPI",
   "host": "redacted.ch",
   "collaborator": "ted423",
