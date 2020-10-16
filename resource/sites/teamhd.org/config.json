@@ -1,0 +1,169 @@
+{
+  "name": "TeamHD",
+  "timezoneOffset": "+0000",
+  "description": "俄国站",
+  "url": "https://teamhd.org/",
+  "tags": ["影视"],
+  "schema": "Common",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details/"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/browse"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+  }],
+  "host": "teamhd.org",
+  "searchEntryConfig": {
+    "page": "/browse?search=$key$",
+    "loggedRegex": "/logout.php",
+    "resultType": "html",
+    "resultSelector": ".table.table-borderless.table-hover.browse",
+    "fieldIndex": {
+	    "category": 0,
+	    "title": 1,
+	    "link": 1,
+	    "url": 1,
+        "comments": 2,
+        "time": 1,
+        "size": 4,
+        "author": 4,
+        "seeders": 3,
+        "leechers": 3,
+        "completed": 4
+	},
+	"fieldSelector": {
+	  "title": {
+		"selector": ["a"],
+        "filters": ["query.text()"]
+	  },
+	  "link": {
+		"selector": ["a"],
+        "filters": ["query.attr('href')", "'https://teamhd.org/'+query"]
+	  },
+	  "url": {
+		"selector": ["a[href*='download.php?id=']"],
+        "filters": ["query.attr('href')", "'https://teamhd.org/'+query"]
+	  },
+	  "time": {
+		"selector": ["small"]
+	  },
+	  "size": {
+		"selector": ["br"],
+        "filters": ["$(query[0].previousSibling).text().sizeToNumber()"]
+	  },
+	  "completed": {
+		"selector": ["strong"],
+        "filters": ["query.text()"]
+	  },
+	  "leechers": {
+		"selector": [""],
+        "filters": ["query.text().split('|')[1]"]
+	  },
+	  "progress": {
+        "selector": ["td.ttable_seeding font[color='green'], td.ttable_seeding font[color='black']", "td.ttable_seeding font[color='#ff0000']", ""],
+        "switchFilters": [
+          ["query.length > 0 ? 100:null"],
+          ["query.length > 0 ? 0:null"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["td.ttable_seeding font[color='green']", "td.ttable_seeding font[color='black']", "td.ttable_seeding font[color='#ff0000']"],
+        "switchFilters": [
+          ["2"],
+          ["255"],
+          ["1"]
+        ]
+      }
+	}
+  },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "a[href*='/details'][style='color:#f2b101']"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "name": {
+          "selector": "a[href*='/user/']:first"
+        },
+        "id": {
+          "selector": "a[href*='/user/']",
+          "filters": ["query[0].href.split('/')[4]"]
+        },
+        "isLogged": {
+          "selector": ["a[href='/logout.php']"],
+          "filters": ["query.length>0"]
+        },
+        "messageCount": {
+          "selector": ["#message_box > a > font"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "uploaded": {
+          "selector": ["div.col-8.mb-4 > font[color='green']"],
+          "filters": ["$(query[0].nextSibling).text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["div.col-8.mb-4 > font[color='darkred']"],
+          "filters": ["$(query[0].nextSibling).text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": ["div.col-8.mb-4 > font[color='#1900D1']"],
+          "filters": ["$(query[0].nextSibling).text()"]
+        }, 
+        "bonus": {
+	      "selector": ["a.online[href='/mybonus.php']"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/user/$user.id$",
+      "fields": {
+        "joinTime": {
+          "selector": ["#profile_right > table.inlay > tbody > tr:nth-child(1) > td:nth-child(2)"],
+          "filters": ["dateTime(query.text().split('(')[0]).valueOf()"]
+        },
+        "levelName": {
+          "selector": ["#profile_left > table > tbody > tr > td:nth-child(2) > p:nth-child(1) > u > span"],
+          "filters":  ["query.text()"]
+        },
+        "seeding": {
+	      "selector": ["img[title='Distributes'] + font > font"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "seedingSize": {
+	        "selector": [""],
+	        "filters": [""]
+        }
+      }
+    },
+    "common": {
+	  "page": "/torrents-details.php",
+      "fields": {
+        "downloadURL": {
+          "selector": ["a[href*='download.php?']"],
+          "filters": ["query.attr('href')"]
+        },
+        "size": {
+          "selector": ["td[align='left']:contains('Total Size:') + td"],
+          "filters": ["query.parent().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        },
+        "downloadURLs": {
+          "selector": ["a[href*='download.php?id=']"],
+          "filters": ["query.toArray()"]
+        },
+        "confirmSize": {
+          "selector": ["table.ttable_headinner"],
+          "filters": ["query.find('td.ttable_size')"]
+        }
+      }
+    }
+  }
+}
