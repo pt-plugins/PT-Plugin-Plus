@@ -43,21 +43,21 @@
   }],
   "selectors": {
     "userBaseInfo": {
-      "page": "/itik-include/me.php",
+      "page": "/index.php",
       "fields": {
         "id": {
-          "selector": "div.frname a[href*='userdetails.php']",
+          "selector": "div#menu a[href*='userdetails.php']",
           "attribute": "href",
           "filters": ["query ? query.getQueryString('id'):''"]
-        },
-        "name": {
-          "selector": "div.frname a[href*='userdetails.php']"
         }
       }
     },
     "userExtendInfo": {
       "page": "/userdetails.php?id=$user.id$",
       "fields": {
+        "name": {
+          "selector": "table.mainouter > tbody > tr > td > table.main h1"
+        },
         "uploaded": {
           "selector": ["#user-default td.rowhead:contains('Uploaded') + td"],
           "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
