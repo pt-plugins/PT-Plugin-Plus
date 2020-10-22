@@ -72,7 +72,7 @@ class Config {
     needConfirmWhenExceedSize: true,
     exceedSize: 10,
     search: {
-      rows: 10,
+      rows: 50,
       // 搜索超时
       timeout: 30000,
       saveKey: true
