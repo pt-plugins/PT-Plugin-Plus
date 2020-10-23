@@ -64,11 +64,11 @@
       "fields": {
         "uploaded": {
           "selector": ["tr.dataOdd > td:contains('Uploaded') + td:first"],
-          "filters": ["(query.text()).sizeToNumber()"]
+          "filters": ["(query.text().replace(/,/g,'')).sizeToNumber()"]
         },
         "downloaded": {
           "selector": ["tr.dataOdd > td:contains('Downloaded') + td:first"],
-          "filters": ["(query.text()).sizeToNumber()"]
+          "filters": ["(query.text().replace(/,/g,'')).sizeToNumber()"]
         },
         "levelName": {
           "selector": ["tr.dataOdd > td:contains('Rank') + td:first"]

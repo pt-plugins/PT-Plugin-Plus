@@ -59,7 +59,7 @@
       "fields": {
         "seedingSize": {
           "selector": ["response.seedingsize"],
-          "filters": ["query.sizeToNumber()"]
+          "filters": ["query.replace(/,/g,'').sizeToNumber()"]
         }
       }
     }

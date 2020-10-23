@@ -90,7 +90,7 @@
           ],
           "filters": [
             "query.eq(0)",
-            "query.text().sizeToNumber()"
+            "query.text().replace(/,/g,'').sizeToNumber()"
           ]
         },
         "downloaded": {
@@ -100,7 +100,7 @@
           ],
           "filters": [
             "query.eq(0)",
-            "query.text().sizeToNumber()"
+            "query.text().replace(/,/g,'').sizeToNumber()"
           ]
         },
         "levelName": {

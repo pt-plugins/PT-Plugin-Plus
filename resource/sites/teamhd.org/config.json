@@ -51,7 +51,7 @@
 	  },
 	  "size": {
 		"selector": ["br"],
-        "filters": ["$(query[0].previousSibling).text().sizeToNumber()"]
+        "filters": ["$(query[0].previousSibling).text().replace(/,/g,'').sizeToNumber()"]
 	  },
 	  "completed": {
 		"selector": ["strong"],

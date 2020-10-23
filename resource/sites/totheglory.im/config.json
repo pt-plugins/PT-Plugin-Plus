@@ -185,11 +185,11 @@
       "fields": {
         "uploaded": {
           "selector": ["td.rowhead:contains('上传量') + td", "td.rowhead:contains('上傳量') + td"],
-          "filters": ["query.text().sizeToNumber()"]
+          "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
         },
         "downloaded": {
           "selector": ["td.rowhead:contains('下载量') + td", "td.rowhead:contains('下載量') + td"],
-          "filters": ["query.text().sizeToNumber()"]
+          "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
         },
         "ratio": {
           "selector": "td.rowhead:contains('分享率') + td",

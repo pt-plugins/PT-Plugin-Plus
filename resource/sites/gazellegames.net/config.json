@@ -80,11 +80,11 @@
       "fields": {
         "uploaded": {
           "selector": ["#upload .stat.tooltip"],
-          "filters": ["query.text().sizeToNumber()"]
+          "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
         },
         "downloaded": {
           "selector": ["#download .stat.tooltip"],
-          "filters": ["query.text().sizeToNumber()"]
+          "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
         },
         "levelName": {
           "selector": "div:contains('Personal') + ul.stats > li:contains('Class:')",
@@ -102,7 +102,7 @@
         },
         "seedingSize": {
           "selector": ["#seeding_size"],
-          "filters": ["query.text().sizeToNumber()"]
+          "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
         }
       }
     }
