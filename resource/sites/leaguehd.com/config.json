@@ -26,6 +26,22 @@
         "/schemas/NexusPHP/common.js",
         "/schemas/NexusPHP/torrents.js"
       ]
+    },
+    {
+      "name": "种子详情页面",
+      "pages": [
+        "/details_movie.php",
+        "/details_tv.php",
+        "/details_music.php",
+        "/details_animate.php",
+        "/details_mv.php",
+        "/details_doc.php",
+        "/details_other.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/NexusPHP/details.js"
+      ]
     }
   ],
   "collaborator": "enigmaz",
@@ -105,7 +121,7 @@
             "td.rowfollow:contains('总做种数')"
           ],
           "filters": [
-            "query.text().replace(/,/g,'').match(/(?:总做种数|seedingSize).+?([\\d.]+)/)",
+            "query.text().replace(/,/g,'').match(/(?:总做种数|seeding).+?([\\d.]+)/)",
             "(query && query.length>=2)?query[1]:0"
           ]
         },
