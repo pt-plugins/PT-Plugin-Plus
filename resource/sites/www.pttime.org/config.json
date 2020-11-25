@@ -1,0 +1,10 @@
+{
+  "name": "pttime",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "url": "https://www.pttime.org/",
+  "description": "PT时间",
+  "icon": "https://www.pttime.org/favicon.ico",
+  "tags": ["电影", "成人"],
+  "host": "www.pttime.org"
+}
