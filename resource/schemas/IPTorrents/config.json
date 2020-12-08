@@ -34,9 +34,6 @@
             ["query ? query.getQueryString('id'):''"]
           ]
         },
-        "name": {
-          "selector": ["a[href*='/u/']:first", "a[href*='userdetails.php']:first"]
-        },
         "isLogged": {
           "selector": ["a[href*='logout.php']", "form[action*='lout']"],
           "filters": ["query.length>0"]
@@ -50,6 +47,9 @@
     "userExtendInfo": {
       "page": "/userdetails.php?id=$user.id$",
       "fields": {
+        "name": {
+          "selector": ["h1.c0"]
+        },
         "uploaded": {
           "selector": ["th:contains('Uploaded') + td"],
           "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
