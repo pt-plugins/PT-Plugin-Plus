@@ -1,15 +1,15 @@
 {
-    "name": "LeagueHD",
+    "name": "LemonHD",
     "timezoneOffset": "+0800",
     "schema": "NexusPHP",
-    "url": "https://leaguehd.com/",
-    "description": "LeagueHD",
-    "icon": "https://leaguehd.com/favicon.ico",
+    "url": "https://lemonhd.org/",
+    "description": "LemonHD",
+    "icon": "https://lemonhd.org/favicon.ico",
     "tags": [
       "影视",
       "综合"
     ],
-    "host": "leaguehd.com",
+    "host": "lemonhd.org",
     "collaborator": "enigmaz",
     "searchEntryConfig": {
       "fieldSelector": {
