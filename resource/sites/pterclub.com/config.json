@@ -60,11 +60,11 @@
       }
     },
     "userSeedingTorrents": {
-      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "page": "/getusertorrentlist.php?userid=$user.id$&type=seeding",
       "fields": {
         "seeding": {
           "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(2)').length"]
+          "filters": ["query.find('td.rowfollow:eq(1)').length"]
         },
         "seedingSize": {
           "selector": ["tr:not(:eq(0))"],
