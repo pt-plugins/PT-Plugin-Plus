@@ -10,6 +10,9 @@
     "综合"
   ],
   "host": "lemonhd.org",
+  "formerHosts": [
+    "leaguehd.com"
+  ],
   "plugins": [
     {
       "name": "种子列表",
