@@ -6,7 +6,7 @@
   "description": "新加坡华人PT站，很有特色。",
   "tags": ["成人", "AV", "GAY", "LES"],
   "host": "avgv.cc",
-  "collaborator": "xiazhou8, 匿名网友",
+  "collaborator": ["xiazhou8", "匿名网友"],
   "plugins": [{
     "name": "种子列表",
     "pages": ["/AV.php", "/GV.php", "/LES.php"],

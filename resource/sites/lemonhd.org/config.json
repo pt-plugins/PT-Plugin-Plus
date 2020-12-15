@@ -48,7 +48,7 @@
       ]
     }
   ],
-  "collaborator": "enigmaz, timyuan",
+  "collaborator": ["enigmaz", "timyuan"],
   "searchEntryConfig": {
     "page": "/torrents_movie.php",
     "queryString": "search=$key$",

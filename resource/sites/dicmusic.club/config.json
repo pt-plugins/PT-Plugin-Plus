@@ -7,7 +7,7 @@
   "tags": ["音乐"],
   "schema": "GazelleJSONAPI",
   "host": "dicmusic.club",
-  "collaborator": "ylxb2016, enigmaz",
+  "collaborator": ["ylxb2016", "enigmaz"],
   "searchEntryConfig": {
     "skipIMDbId": true
   },
