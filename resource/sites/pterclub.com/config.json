@@ -54,7 +54,7 @@
       "merge": true,
       "fields": {
         "bonus": {
-          "selector": ["td.rowhead:contains('猫粮') + td"],
+          "selector": ["td.rowhead:contains('猫粮') + td, td.rowhead:contains('Karma Points') + td, td.rowhead:contains('貓糧') + td"],
           "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
         },
         "seeding": {
@@ -62,7 +62,7 @@
           "filters": ["query.text().trim()"]
         },
         "seedingSize": {
-          "selector": ["td.rowhead:contains('做种大小') + td"],
+          "selector": ["td.rowhead:contains('做种大小') + td, td.rowhead:contains('Seeding Size') + td, td.rowhead:contains('做種大小') + td"],
           "filters": ["query.text().trim().sizeToNumber()"]
         }
       }
