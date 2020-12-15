@@ -56,19 +56,14 @@
         "bonus": {
           "selector": ["td.rowhead:contains('猫粮') + td"],
           "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
-        }
-      }
-    },
-    "userSeedingTorrents": {
-      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
-      "fields": {
+        },
         "seeding": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(2)').length"]
+          "selector": ["a[href*='type=seeding']"],
+          "filters": ["query.text().trim()"]
         },
         "seedingSize": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["jQuery.map(query.find('td.rowfollow:eq(3)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          "selector": ["td.rowhead:contains('做种大小') + td"],
+          "filters": ["query.text().trim().sizeToNumber()"]
         }
       }
     }
