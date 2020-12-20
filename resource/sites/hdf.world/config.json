@@ -1,0 +1,83 @@
+{
+  "name": "HD-Forever",
+  "timezoneOffset": "+0100",
+  "description": "HD-F",
+  "icon": "https://hdf.world/favicon.ico",
+  "schema": "GazelleJSONAPI",
+  "tags": ["影视", "综合"],
+  "url": "https://hdf.world/",
+  "collaborator": ["luckiestone"],
+  "host": "hdf.world",
+  "plugins": [{
+    "name": "种子列表",
+    "pages": ["/torrents.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Gazelle/torrents.js"]
+  }],
+  "securityKeyFields": ["authkey", "torrent_pass"],
+  "searchEntryConfig": {
+    "page": "/ajax.php",
+    "resultType": "json",
+    "parseScriptFile": "getSearchResult.js",
+    "asyncParse": true,
+    "queryString": "action=browse&searchstr=$key$"
+  },
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/ajax.php?action=index",
+      "dataType": "json",
+      "fields": {
+        "id": {
+          "selector": ["response.id"]
+        },
+        "name": {
+          "selector": ["response.username"]
+        },
+        "messageCount": {
+          "selector": ["response.notifications.messages"]
+        },
+        "uploaded": {
+          "selector": ["response.userstats.uploaded"]
+        },
+        "downloaded": {
+          "selector": ["response.userstats.downloaded"]
+        },
+        "ratio": {
+          "selector": ["response.userstats.ratio"]
+        },
+        "levelName": {
+          "selector": ["response.userstats.class"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/ajax.php?action=user&id=$user.id$",
+      "dataType": "json",
+      "fields": {
+        "joinTime": {
+          "selector": ["response.stats.joinedDate"],
+          "filters": ["dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["response.community.seeding"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/store.php?action=rate",
+      "fields": {
+        "seedingSize": {
+          "selector": ["table.torrent_table:first td.nobr"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "bonus": {
+          "selector": "li#BonusPoints a[href*='store.php']",
+          "filters": ["query.text().replace(/,|\\n|\\s+/g,'')"]
+        }
+      }
+    }
+  }
+}
