@@ -216,6 +216,7 @@
     "timeline": {
       "share": "Generate a share image",
       "siteName": "Tracker name",
+      "blurSiteIcon": "Blur site icon",
       "userName": "User name",
       "userLevel": "User level",
       "showSites": "Show Sites",

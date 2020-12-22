@@ -216,6 +216,7 @@
     "timeline": {
       "share": "生成分享图片",
       "siteName": "网站名称",
+      "blurSiteIcon": "模糊站点图标",
       "userName": "用户名称",
       "userLevel": "用户等级",
       "showSites": "展示站点",

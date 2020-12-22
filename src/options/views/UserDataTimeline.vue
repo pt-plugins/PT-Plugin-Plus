@@ -64,7 +64,7 @@
             <v-timeline-item v-for="(site, i) in datas" :key="i" color="transparent" large>
               <template v-slot:icon>
                 <v-avatar size="38">
-                  <img :src="site.icon" />
+                  <img :src="site.icon" :class="{'icon-blur': blurSiteIcon}"/>
                 </v-avatar>
               </template>
               <template v-slot:opposite>
@@ -101,6 +101,12 @@
         v-model="showSiteName"
         :label="$t('timeline.siteName')"
         class="my-0"
+      ></v-switch>
+      <v-switch
+          color="success"
+          v-model="blurSiteIcon"
+          :label="$t('timeline.blurSiteIcon')"
+          class="my-0"
       ></v-switch>
       <v-switch
         color="success"
@@ -180,6 +186,7 @@ export default Vue.extend({
       showUserName: true,
       showSiteName: true,
       showUserLevel: true,
+      blurSiteIcon: false,
       iconCache: {} as Dictionary<any>
     };
   },
@@ -433,6 +440,10 @@ export default Vue.extend({
     position: absolute;
     left: 660px;
     top: 0;
+  }
+
+  .icon-blur {
+    filter: blur(4px);
   }
 }
 </style>
