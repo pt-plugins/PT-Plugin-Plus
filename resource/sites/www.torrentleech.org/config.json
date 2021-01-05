@@ -35,10 +35,10 @@
       "page": "/",
       "fields": {
         "id": {
-          "selector": ["span.centerTopBar span[class^=user_]"]
+          "selector": ["span.centerTopBar span[onclick*='/profile/'][onclick*='view']"]
         },
         "name": {
-          "selector": ["span.centerTopBar span[class^=user_]"]
+          "selector": ["span.centerTopBar span[onclick*='/profile/'][onclick*='view']"]
         },
         "uploaded": {
           "selector": ["span.centerTopBar div[title^='Uploaded'] span"],
