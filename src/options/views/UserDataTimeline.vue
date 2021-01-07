@@ -36,7 +36,7 @@
           >
             <v-icon>close</v-icon>
           </v-btn>
-          <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="shareing"></v-progress-circular>
+          <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="shareing" class="by_pass_canvas"></v-progress-circular>
         </v-card-actions>
 
         <v-card-title primary-title>
@@ -141,8 +141,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Site, Dictionary, EAction, Options } from "@/interface/common";
-import html2canvas from "html2canvas";
 import FileSaver from "file-saver";
+import domtoimage from 'dom-to-image';
 import Extension from "@/service/extension";
 import dayjs from "dayjs";
 
@@ -340,18 +340,24 @@ export default Vue.extend({
       return JSON.parse(JSON.stringify(source));
     },
     share() {
-      let div = this.$refs.userDataCard as HTMLDivElement;
       this.shareing = true;
       this.shareTime = new Date();
       this.formatData();
       setTimeout(() => {
-        html2canvas(div, {}).then(canvas => {
-          canvas.toBlob((blob: any) => {
-            if (blob) {
-              FileSaver.saveAs(blob, "PT-Plugin-Plus-UserData.png");
+        let div = this.$refs.userDataCard as HTMLDivElement;
+        domtoimage.toBlob(div, {
+          filter: (node) => {
+            if (node.nodeType === 1) {
+              return !(node as Element).classList.contains('by_pass_canvas')
             }
-            this.shareing = false;
-          });
+
+            return true
+          }
+        }).then((blob: any) => {
+          if (blob) {
+            FileSaver.saveAs(blob, "PT-Plugin-Plus-UserData.png");
+          }
+          this.shareing = false;
         });
       }, 500);
     },
