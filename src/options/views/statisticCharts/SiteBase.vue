@@ -48,7 +48,7 @@
       <v-btn flat icon small @click="share" :title="$t('statistic.share')" v-if="!shareing">
         <v-icon small>share</v-icon>
       </v-btn>
-      <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="shareing"></v-progress-circular>
+      <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="shareing" class="by_pass_canvas"></v-progress-circular>
     </v-layout>
 
     <div ref="charts">
@@ -83,10 +83,10 @@ import {
   Dictionary,
   ECommonKey
 } from "@/interface/common";
-import html2canvas from "html2canvas";
 import FileSaver from "file-saver";
 import { PPF } from "@/service/public";
 import dayjs from "dayjs";
+import domtoimage from "dom-to-image";
 
 const extension = new Extension();
 
@@ -753,13 +753,18 @@ export default Vue.extend({
       let div = this.$refs.charts as HTMLDivElement;
       this.shareing = true;
       this.shareTime = new Date();
-      html2canvas(div, {}).then(canvas => {
-        canvas.toBlob((blob: any) => {
-          if (blob) {
-            FileSaver.saveAs(blob, "PT-Plugin-Plus-Statistic.png");
+      domtoimage.toBlob(div, {
+        filter: (node) => {
+          if (node.nodeType === 1) {
+            return !(node as Element).classList.contains('by_pass_canvas')
           }
-          this.shareing = false;
-        });
+          return true
+        }
+      }).then((blob: any) => {
+        if (blob) {
+          FileSaver.saveAs(blob, "PT-Plugin-Plus-UserData.png");
+        }
+        this.shareing = false;
       });
     },
     /**

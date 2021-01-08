@@ -52,7 +52,7 @@
 	  "fields": {
 		"seedingSize": {
           "selector": ["li:contains('Total Seeding: ') > span"],
-          "filters": ["query.text().sizeToNumber()"]
+          "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
         },
 	    "bonus": {
           "selector": ["span.stat > a[href]"],

@@ -649,7 +649,7 @@ export class Searcher {
                   }
                 });
               } else {
-                resolve(options.results);
+                resolve(PPF.clone(options.results));
               }
             } catch (error) {
               console.error(error);

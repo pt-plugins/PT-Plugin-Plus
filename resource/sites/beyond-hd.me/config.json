@@ -97,7 +97,7 @@
       "fields": {
         "seedingSize": {
           "selector": ["td:contains('Active Seed Size') + td"],
-          "filters": ["query.text().trim().sizeToNumber()"]
+          "filters": ["query.text().trim().replace(/,/g,'').sizeToNumber()"]
         },
         "levelName": {
           "selector": "div.button-holder span.badge-faded"

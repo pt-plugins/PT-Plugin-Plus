@@ -146,10 +146,6 @@
         // 遍历数据行
         for (let index = beginRowIndex; index < rows.length; index++) {
           const row = rows.eq(index);
-
-          // FIX https://github.com/ronggang/PT-Plugin-Plus/issues/347
-          row.attr('id') === 'zhiding' && row.removeAttr('id');
-
           let cells = row.find(">td");
 
           let title = this.getTitle(row);
@@ -211,7 +207,6 @@
             progress: this.getFieldValue(row, cells, fieldIndex, "progress"),
             status: this.getFieldValue(row, cells, fieldIndex, "status")
           };
-
           results.push(data);
         }
       } catch (error) {
@@ -310,7 +305,7 @@
     getTitle(row) {
       let title =
         Searcher.getFieldValue(this.site, row, "title") ||
-        row.find("a[href*='hit'][title]").first();
+        row.find("a[href*='details']").first();
 
       if (typeof title === "string") {
         return title;
@@ -454,15 +449,7 @@
         name: "",
         link: ""
       };
-      let link = cell.find("a:first");
-      let img = link.find("img:first");
-
-      if (link.length) {
-        result.link = link.attr("href");
-        if (result.link.substr(0, 4) !== "http") {
-          result.link = options.site.url + result.link;
-        }
-      }
+      let img = cell.find("img:first");
 
       if (img.length) {
         result.name = img.attr("title") || img.attr("alt");

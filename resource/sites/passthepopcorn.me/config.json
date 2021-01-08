@@ -45,11 +45,11 @@
       "fields": {
         "uploaded": {
           "selector": ["a.user-info-bar__link[href*='type=seeding']:first"],
-          "filters": ["query.attr('title').sizeToNumber()"]
+          "filters": ["query.attr('title').replace(/,/g,'').sizeToNumber()"]
         },
         "downloaded": {
           "selector": ["a.user-info-bar__link[href*='type=leeching']:first"],
-          "filters": ["query.attr('title').sizeToNumber()"]
+          "filters": ["query.attr('title').replace(/,/g,'').sizeToNumber()"]
         },
         "ratio": {
           "selector": "ul.list > li:contains('Ratio:')",

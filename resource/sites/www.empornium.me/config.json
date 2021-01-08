@@ -130,7 +130,7 @@
         },
         "seedingSize": {
 	        "selector": ["ul.stats.nobullet > li:contains('Seeding Size:')"],
-	        "filters": ["query.text().replace('Seeding Size: ', '')","query.sizeToNumber()"]
+	        "filters": ["query.text().replace('Seeding Size: ', '').replace(/,/g,'')","query.sizeToNumber()"]
         }
       }
     },

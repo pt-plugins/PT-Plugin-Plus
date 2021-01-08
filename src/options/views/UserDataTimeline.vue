@@ -36,7 +36,7 @@
           >
             <v-icon>close</v-icon>
           </v-btn>
-          <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="shareing"></v-progress-circular>
+          <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="shareing" class="by_pass_canvas"></v-progress-circular>
         </v-card-actions>
 
         <v-card-title primary-title>
@@ -64,7 +64,7 @@
             <v-timeline-item v-for="(site, i) in datas" :key="i" color="transparent" large>
               <template v-slot:icon>
                 <v-avatar size="38">
-                  <img :src="site.icon" />
+                  <img :src="site.icon" :class="{'icon-blur': blurSiteIcon}"/>
                 </v-avatar>
               </template>
               <template v-slot:opposite>
@@ -103,6 +103,12 @@
         class="my-0"
       ></v-switch>
       <v-switch
+          color="success"
+          v-model="blurSiteIcon"
+          :label="$t('timeline.blurSiteIcon')"
+          class="my-0"
+      ></v-switch>
+      <v-switch
         color="success"
         v-model="showUserName"
         :label="$t('timeline.userName')"
@@ -114,14 +120,29 @@
         :label="$t('timeline.userLevel')"
         class="my-0"
       ></v-switch>
+      <v-divider />
+      <h1 style="padding: 5px;">{{ $t('timeline.showSites') }}</h1>
+      <v-layout justify-start row wrap>
+        <v-flex v-for="(site, i) in sites" :key="i" xs3>
+          <v-switch
+                  color="success"
+                  v-model="showSites"
+                  :label="site.name"
+                  :value="site.name"
+                  class="my-0"
+                  :disabled="!site.allowGetUserInfo"
+                  @change="formatData"
+          ></v-switch>
+        </v-flex>
+      </v-layout>
     </div>
   </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
 import { Site, Dictionary, EAction, Options } from "@/interface/common";
-import html2canvas from "html2canvas";
 import FileSaver from "file-saver";
+import domtoimage from 'dom-to-image';
 import Extension from "@/service/extension";
 import dayjs from "dayjs";
 
@@ -133,6 +154,7 @@ export default Vue.extend({
       shareMessage: this.$t("timeline.shareMessage").toString(),
       displayUserName: "",
       sites: [] as Site[],
+      showSites: [] as string[],
       infos: {
         nameInfo: { name: "test", maxCount: 0 },
         joinTimeInfo: {
@@ -164,6 +186,7 @@ export default Vue.extend({
       showUserName: true,
       showSiteName: true,
       showUserLevel: true,
+      blurSiteIcon: false,
       iconCache: {} as Dictionary<any>
     };
   },
@@ -190,6 +213,9 @@ export default Vue.extend({
           if (this.options.displayUserName) {
             this.displayUserName = this.options.displayUserName;
           }
+          this.showSites = this.sites
+                  .filter((site: Site) => {return site.allowGetUserInfo})
+                  .map((site: Site) => {return site.name});  //  只提取站点名称
           this.formatData();
         })
         .catch();
@@ -207,9 +233,16 @@ export default Vue.extend({
 
       let sites: Site[] = [];
       this.sites.forEach((site: Site) => {
+        // 站点设置不获取用户信息
         if (!site.allowGetUserInfo) {
           return;
         }
+
+        // 展示时不显示该站点信息
+        if (!this.showSites.includes(site.name)) {
+          return;
+        }
+
         let user = site.user;
         if (user && user.name && user.joinTime) {
           sites.push(site);
@@ -307,18 +340,24 @@ export default Vue.extend({
       return JSON.parse(JSON.stringify(source));
     },
     share() {
-      let div = this.$refs.userDataCard as HTMLDivElement;
       this.shareing = true;
       this.shareTime = new Date();
       this.formatData();
       setTimeout(() => {
-        html2canvas(div, {}).then(canvas => {
-          canvas.toBlob((blob: any) => {
-            if (blob) {
-              FileSaver.saveAs(blob, "PT-Plugin-Plus-UserData.png");
+        let div = this.$refs.userDataCard as HTMLDivElement;
+        domtoimage.toBlob(div, {
+          filter: (node) => {
+            if (node.nodeType === 1) {
+              return !(node as Element).classList.contains('by_pass_canvas')
             }
-            this.shareing = false;
-          });
+
+            return true
+          }
+        }).then((blob: any) => {
+          if (blob) {
+            FileSaver.saveAs(blob, "PT-Plugin-Plus-UserData.png");
+          }
+          this.shareing = false;
         });
       }, 500);
     },
@@ -407,6 +446,10 @@ export default Vue.extend({
     position: absolute;
     left: 660px;
     top: 0;
+  }
+
+  .icon-blur {
+    filter: blur(4px);
   }
 }
 </style>

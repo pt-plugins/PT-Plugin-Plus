@@ -62,11 +62,11 @@
       "fields": {
         "uploaded": {
           "selector": ["td.colhead:contains('Uploaded') + td"],
-          "filters": ["query.text().sizeToNumber()"]
+          "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
         },
         "downloaded": {
           "selector": ["td.colhead:contains('Downloaded') + td"],
-          "filters": ["query.text().sizeToNumber()"]
+          "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
         },
         "ratio": {
           "selector": "td.colhead:contains('Share ratio') + td",

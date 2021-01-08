@@ -9,5 +9,386 @@
     "综合"
   ],
   "schema": "NexusPHP",
-  "host": "hdhome.org"
+  "host": "hdhome.org",
+  "collaborator": "tongyifan",
+  "plugins": [
+    {
+      "name": "种子列表",
+      "pages": [
+        "/live.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/NexusPHP/torrents.js"
+      ]
+    }
+  ],
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "> td:eq(8)"
+        ],
+        "filters": [
+          "query.text()==='-'?null:parseFloat(query.text().split('%')[0])"
+        ]
+      },
+      "status": {
+        "selector": [
+          "> td:eq(8)"
+        ],
+        "filters": [
+          "query.text()==='-'?null:(query.is(\"[bgcolor='#CC0066']\")?1:(parseFloat(query.text().split('%')[0])==100?(query.is(\"[bgcolor='#d0d0d0']\")?255:2):3))"
+        ]
+      }
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "种子",
+      "enabled": true
+    },
+    {
+      "entry": "/live.php?search=$key$&notnewword=1",
+      "name": "LIVE",
+      "enabled": true
+    }
+  ],
+  "categories": [
+    {
+      "entry": "torrents.php",
+      "result": "&cat$id$=1",
+      "category": [
+        {
+          "id": 411,
+          "name": "Movies SD"
+        },
+        {
+          "id": 412,
+          "name": "Movies IPad"
+        },
+        {
+          "id": 413,
+          "name": "Movies 720p"
+        },
+        {
+          "id": 414,
+          "name": "Movies 1080p"
+        },
+        {
+          "id": 415,
+          "name": "Movies REMUX"
+        },
+        {
+          "id": 450,
+          "name": "Movies Bluray"
+        },
+        {
+          "id": 499,
+          "name": "Movies UHD Blu-ray"
+        },
+        {
+          "id": 416,
+          "name": "Movies 2160p"
+        },
+        {
+          "id": 417,
+          "name": "Doc SD"
+        },
+        {
+          "id": 418,
+          "name": "Doc IPad"
+        },
+        {
+          "id": 419,
+          "name": "Doc 720p"
+        },
+        {
+          "id": 420,
+          "name": "Doc 1080p"
+        },
+        {
+          "id": 421,
+          "name": "Doc REMUX"
+        },
+        {
+          "id": 451,
+          "name": "Doc Bluray"
+        },
+        {
+          "id": 500,
+          "name": "Doc UHD Blu-ray"
+        },
+        {
+          "id": 422,
+          "name": "Doc 2160p"
+        },
+        {
+          "id": 423,
+          "name": "TVMusic 720p"
+        },
+        {
+          "id": 424,
+          "name": "TVMusic 1080i"
+        },
+        {
+          "id": 425,
+          "name": "TVShow SD"
+        },
+        {
+          "id": 426,
+          "name": "TVShow IPad"
+        },
+        {
+          "id": 471,
+          "name": "TVShow IPad"
+        },
+        {
+          "id": 427,
+          "name": "TVShow 720p"
+        },
+        {
+          "id": 428,
+          "name": "TVShow 1080i"
+        },
+        {
+          "id": 429,
+          "name": "TVShow 1080p"
+        },
+        {
+          "id": 430,
+          "name": "TVShow REMUX"
+        },
+        {
+          "id": 452,
+          "name": "TVShows Bluray"
+        },
+        {
+          "id": 431,
+          "name": "TVShow 2160p"
+        },
+        {
+          "id": 432,
+          "name": "TVSeries SD"
+        },
+        {
+          "id": 433,
+          "name": "TVSeries IPad"
+        },
+        {
+          "id": 434,
+          "name": "TVSeries 720p"
+        },
+        {
+          "id": 435,
+          "name": "TVSeries 1080i"
+        },
+        {
+          "id": 436,
+          "name": "TVSeries 1080p"
+        },
+        {
+          "id": 437,
+          "name": "TVSeries REMUX"
+        },
+        {
+          "id": 453,
+          "name": "TVSereis Bluray"
+        },
+        {
+          "id": 438,
+          "name": "TVSeries 2160p"
+        },
+        {
+          "id": 502,
+          "name": "TVSeries 4K Bluray"
+        },
+        {
+          "id": 439,
+          "name": "Musics APE"
+        },
+        {
+          "id": 440,
+          "name": "Musics FLAC"
+        },
+        {
+          "id": 441,
+          "name": "Musics MV"
+        },
+        {
+          "id": 442,
+          "name": "Sports 720p"
+        },
+        {
+          "id": 443,
+          "name": "Sports 1080i"
+        },
+        {
+          "id": 444,
+          "name": "Anime SD"
+        },
+        {
+          "id": 445,
+          "name": "Anime IPad"
+        },
+        {
+          "id": 446,
+          "name": "Anime 720p"
+        },
+        {
+          "id": 447,
+          "name": "Anime 1080p"
+        },
+        {
+          "id": 448,
+          "name": "Anime REMUX"
+        },
+        {
+          "id": 454,
+          "name": "Anime Bluray"
+        },
+        {
+          "id": 409,
+          "name": "Misc"
+        },
+        {
+          "id": 449,
+          "name": "Anime 2160p"
+        },
+        {
+          "id": 501,
+          "name": "Anime UHD Blu-ray"
+        }
+      ]
+    },
+    {
+      "entry": "live.php",
+      "result": "&cat$id$=1",
+      "category": [
+        {
+          "id": 494,
+          "name": "Movies Bluray"
+        },
+        {
+          "id": 495,
+          "name": "Doc Bluray"
+        },
+        {
+          "id": 469,
+          "name": "TVMusic 1080i"
+        },
+        {
+          "id": 472,
+          "name": "TVShow 720p"
+        },
+        {
+          "id": 473,
+          "name": "TVShow 1080i"
+        },
+        {
+          "id": 474,
+          "name": "TVShow 1080p"
+        },
+        {
+          "id": 475,
+          "name": "TVShow REMUX"
+        },
+        {
+          "id": 496,
+          "name": "TVShows Bluray"
+        },
+        {
+          "id": 476,
+          "name": "TVShow 2160p"
+        },
+        {
+          "id": 477,
+          "name": "TVSeries SD"
+        },
+        {
+          "id": 478,
+          "name": "TVSeries IPad"
+        },
+        {
+          "id": 479,
+          "name": "TVSeries 720p"
+        },
+        {
+          "id": 480,
+          "name": "TVSeries 1080p"
+        },
+        {
+          "id": 481,
+          "name": "TVSeries REMUX"
+        },
+        {
+          "id": 497,
+          "name": "TVSereis Bluray"
+        },
+        {
+          "id": 482,
+          "name": "TVSeries 2160p"
+        },
+        {
+          "id": 483,
+          "name": "Musics APE"
+        },
+        {
+          "id": 484,
+          "name": "Musics FLAC"
+        },
+        {
+          "id": 485,
+          "name": "Musics MV"
+        },
+        {
+          "id": 486,
+          "name": "Sports 720p"
+        },
+        {
+          "id": 487,
+          "name": "Sports 1080i"
+        },
+        {
+          "id": 488,
+          "name": "Anime SD"
+        },
+        {
+          "id": 489,
+          "name": "Anime IPad"
+        },
+        {
+          "id": 490,
+          "name": "Anime 720p"
+        },
+        {
+          "id": 491,
+          "name": "Anime 1080p"
+        },
+        {
+          "id": 492,
+          "name": "Anime REMUX"
+        },
+        {
+          "id": 498,
+          "name": "Anime Bluray"
+        },
+        {
+          "id": 493,
+          "name": "Anime 2160p"
+        }
+      ]
+    }
+  ],
+  "selectors": {
+    "/details.php": {
+      "merge": true,
+      "fields": {
+        "downloadURL": {
+          "selector": ["a[href*='downhash']"],
+          "filters": ["query.attr('href')"]
+        }
+      }
+    }
+  }
 }

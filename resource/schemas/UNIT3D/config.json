@@ -89,7 +89,7 @@
       "fields": {
         "seedingSize": {
           "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Seeding Size') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('做种体积') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('做種體積') + td"],
-          "filters": ["query.text().trim().sizeToNumber()"]
+          "filters": ["query.text().trim().replace(/,/g,'').sizeToNumber()"]
         },
         "levelName": {
           "selector": "div.content span.badge-user"

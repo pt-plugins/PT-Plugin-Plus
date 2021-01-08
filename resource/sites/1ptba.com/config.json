@@ -1,0 +1,12 @@
+{
+  "name": "1PTBar",
+  "schema": "NexusPHP",
+  "url": "https://1ptba.com/",
+  "description": "壹PT吧,PT下载,教育视频,课件资源,发布教育类,学习类,纪录片等资源",
+  "icon": "https://1ptba.com/favicon.ico",
+  "tags": [
+    "影视",
+    "综合"
+  ],
+  "host": "1ptba.com"
+}
