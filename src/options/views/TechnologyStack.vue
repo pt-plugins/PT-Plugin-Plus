@@ -101,9 +101,9 @@ export default Vue.extend({
           url: "https://github.com/Jackett/Jackett"
         },
         {
-          name: "html2canvas",
+          name: "dom-to-image",
           ver: "latest",
-          url: "https://github.com/niklasvh/html2canvas/"
+          url: "https://github.com/tsayen/dom-to-image"
         },
         {
           name: "Highcharts",
