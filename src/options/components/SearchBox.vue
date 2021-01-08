@@ -141,7 +141,7 @@
             :title="$t('searchBox.searchThisKey', { key: item.title })"
           >
             <v-list-tile-avatar class="album" :size="75">
-              <img :src="item.images?item.images.small:item.pic?item.pic.normal:''" />
+              <img :src="item.image || (item.images?item.images.small:item.pic?item.pic.normal:'')" />
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title class="mb-1">
@@ -149,8 +149,8 @@
                 <span class="ml-1 caption">({{ item.year }})</span>
               </v-list-tile-title>
               <v-list-tile-sub-title>
-                <div>{{ item.original_title || "" }}</div>
-                <div class="caption">{{ item.genres.join(" | ")}}</div>
+                <div>{{ item.aka || item.originalTitle || item.original_title || "" }}</div>
+                <div class="caption">{{ item.genre || (item.genres && item.genres.join(" | "))}}</div>
               </v-list-tile-sub-title>
             </v-list-tile-content>
 
@@ -158,17 +158,17 @@
               <a
                 class="grey--text text--darken-1 mt-3 title"
                 style="text-decoration: none;"
-                :href="item.alt||item.url"
+                :href="item.link || item.alt || item.url"
                 rel="noopener noreferrer nofollow"
                 target="_blank"
                 :title="$t('searchBox.toDouban')"
                 @click.stop
               >
                 <img src="https://img3.doubanio.com/favicon.ico" width="16" />
-                {{ parseFloat(item.rating.average || item.rating.value).toFixed(1) }}
+                {{ parseFloat(item.average || item.rating.average || item.rating.value).toFixed(1) }}
               </a>
               <v-rating
-                :value="item.rating.stars?parseInt(item.rating.stars)/10:item.rating.star_count"
+                :value="item.average ? parseFloat(item.average)/2 :item.rating.stars ?parseInt(item.rating.stars)/10:item.rating.star_count"
                 background-color="grey lighten-2"
                 color="yellow accent-4"
                 dense
@@ -249,7 +249,7 @@ export default Vue.extend({
       switch (searchMode) {
         case EBeforeSearchingItemSearchMode.id:
           if (item && item.id) {
-            key = `douban${item.id}|${item.title}|${item.original_title}|${key}`;
+            key = `douban${item.id}|${item.title}|${item.originalTitle || item.aka || item.original_title}|${key}`;
           }
           break;
 
@@ -315,10 +315,15 @@ export default Vue.extend({
             .maxMovieInformationCount,
         })
         .then((result) => {
-          if (result && result.subjects) {
-            this.items = result.subjects;
-            this.isLoading = false;
-            this.showMenu = true;
+          this.isLoading = false;
+          if (result) {
+            if (result.subjects) {
+              this.items = result.subjects;
+              this.showMenu = true;
+            } else if (result.title && result.updateTime) {
+              this.items = [result];
+              this.showMenu = true;
+            }
           }
         })
         .catch((error) => {
@@ -434,10 +439,10 @@ export default Vue.extend({
       let searchSolution:
         | SearchSolution
         | undefined = this.options.searchSolutions.find(
-        (item: SearchSolution) => {
-          return item.id === this.options.defaultSearchSolutionId;
-        }
-      );
+          (item: SearchSolution) => {
+            return item.id === this.options.defaultSearchSolutionId;
+          }
+        );
 
       if (searchSolution) {
         this.selectedSearchSolutionName = searchSolution.name;
