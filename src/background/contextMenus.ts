@@ -165,7 +165,10 @@ export class ContextMenus {
     let documentUrlPatterns: string[] = [`*://${site.host}/*`, `${url}`];
 
     if (site.cdn && site.cdn.length > 0) {
-      documentUrlPatterns.push(...site.cdn);
+      for (let i = 0; i < site.cdn.length; i++) {
+        const url = site.cdn[i]
+        documentUrlPatterns.push(`${url}${url.substr(-1) != '/' ? '/*' : '*'}`, url);
+      }
     }
 
     return documentUrlPatterns;
@@ -215,7 +218,8 @@ export class ContextMenus {
    */
   public createSiteMenus(host: string) {
     let site: Site = this.options.sites.find((item: Site) => {
-      return item.host === host;
+      let cdn = [item.url].concat(item.cdn);
+      return item.host === host || cdn.join("|").indexOf(host) > -1;
     });
 
     if (!site) {
