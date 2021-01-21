@@ -44,7 +44,7 @@
         switch (action) {
           case "addTorrentFromURL":
             this.addTorrentFromUrl(data, result => {
-              if (result.status === "success") {
+              if (result.result === "Success") {
                 resolve(result);
               } else {
                 reject(result);
@@ -170,6 +170,7 @@
         data: data,
         contentType: false,
         processData: false,
+        dataType: 'json',
         success: (resultData, textStatus) => {
           if (callback) {
             callback(resultData);
