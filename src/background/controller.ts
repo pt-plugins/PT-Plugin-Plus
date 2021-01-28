@@ -214,7 +214,10 @@ export default class Controller {
       host = site.host + "";
       let siteDefaultPath = this.getSiteDefaultPath(site);
       let siteClientConfig = this.siteDefaultClients[host];
-      if (siteDefaultPath) {
+
+      // https://github.com/ronggang/PT-Plugin-Plus/issues/681
+      // 在 downloadOptions 中已经有 savePath 的情况下，不覆盖 savePath
+      if (!downloadOptions.savePath && siteDefaultPath) {
         downloadOptions.savePath = siteDefaultPath;
       }
       if (!siteClientConfig) {
