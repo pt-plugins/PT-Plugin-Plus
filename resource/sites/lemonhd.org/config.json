@@ -50,7 +50,7 @@
   ],
   "collaborator": ["enigmaz", "timyuan"],
   "searchEntryConfig": {
-    "page": "/torrents_movie.php",
+    "page": "/torrents.php",
     "queryString": "search=$key$",
     "parseScriptFile": "getSearchResult.js",
     "area": [
@@ -85,44 +85,44 @@
   },
   "searchEntry": [
     {
-      "entry": "/torrents.php?search=$key$",
+      "entry": "/torrents.php?search_area=0&search=$key$",
       "name": "全站",
-      "enabled": false
+      "enabled": true
     },
     {
-      "entry": "/torrents_movie.php?search=$key$",
+      "entry": "/torrents.php?search=$key$",
       "name": "电影",
-      "enabled": true
+      "enabled": false
     },
     {
       "entry": "/torrents_tv.php?search=$key$",
       "name": "电视综艺",
-      "enabled": true
+      "enabled": false
     },
     {
       "entry": "/torrents_music.php?search=$key$",
       "name": "音乐",
-      "enabled": true
+      "enabled": false
     },
     {
       "entry": "/torrents_animate.php?search=$key$",
       "name": "动漫",
-      "enabled": true
+      "enabled": false
     },
     {
       "entry": "/torrents_mv.php?search=$key$",
       "name": "MV",
-      "enabled": true
+      "enabled": false
     },
     {
       "entry": "/torrents_doc.php?search=$key$",
       "name": "纪录片",
-      "enabled": true
+      "enabled": false
     },
     {
       "entry": "/torrents_other.php?search=$key$",
       "name": "其他",
-      "enabled": true
+      "enabled": false
     }
   ],
   "selectors": {
