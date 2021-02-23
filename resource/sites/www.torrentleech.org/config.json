@@ -70,7 +70,7 @@
         },
         "joinTime": {
           "selector": ["table.profileViewTable td:contains('Register date') + td"],
-          "filters": ["dateTime(query.text().split(' ').slice(1).join(' ').replace(/th|st|nd/, '')).valueOf()"]
+          "filters": ["dateTime(query.text().split(' ').slice(1).join(' ').replace(/th|st|nd|rd/, '')).valueOf()"]
         }
       }
     },
