@@ -14,20 +14,38 @@
     }
 
     /**
+     * 通过尝试分析 href 获取真正下载链接
+     */
+
+    _getDownloadUrlByPossibleHrefs() {
+      const possibleHrefs = [
+        // pthome
+        "a[href*='downhash'][href*='https']",
+        // hdchina
+        "a[href*='hash'][href*='https']",
+        // misc
+        "a[href*='passkey'][href*='https']",
+        "a[href*='passkey']"
+      ];
+
+      for (const href of possibleHrefs) {
+        const query = $(href);
+        if (query.length) {
+          return query.attr("href");
+        }
+      }
+      return null;
+    }
+
+
+    /**
      * 获取下载链接
      */
     getDownloadURL() {
       let url = PTService.getFieldValue("downloadURL");
       if (!url) {
-        let query = $("a[href*='passkey'][href*='https']");
-        if (query.length > 0) {
-          url = query.attr("href");
-        } else {
-          query = $("a[href*='passkey']");
-          if (query.length > 0) {
-            url = query.attr("href");
-          }
-        }
+
+        url = this._getDownloadUrlByPossibleHrefs();
 
         if (!url) {
           url =
