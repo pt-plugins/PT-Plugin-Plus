@@ -1,0 +1,12 @@
+{
+    "name": "Aither",
+    "timezoneOffset": "+0800",
+    "schema": "UNIT3D",
+    "url": "https://aither.cc/",
+    "description": "Aither",
+    "tags": [
+        "综合"
+    ],
+    "host": "aither.cc",
+    "collaborator": "MewX"
+}
