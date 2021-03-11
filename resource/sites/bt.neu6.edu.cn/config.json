@@ -1,83 +1,89 @@
 {
-    "name": "六维空间",
-    "description": "东北大学ipv6资源分享平台",
-    "url": "http://bt.neu6.edu.cn/",
-    "icon": "http://bt.neu6.edu.cn/favicon.ico",
-    "tags": [
-      "教育网",
-      "综合"
-    ],
-    "schema": "Discuz",
-    "host": "bt.neu6.edu.cn",
-    "collaborator": "xfl03",
-    "selectors": {
-      "userBaseInfo": {
-        "page": "/forum.php",
-        "fields": {
-          "id": {
-            "selector": ".vwmy a[href*='home.php']:first",
-            "attribute": "href",
-            "filters": [
-              "query ? query.getQueryString('uid'):''"
-            ]
-          },
-          "name": {
-            "selector": ".vwmy a[href*='home.php']:first"
-          },
-          "isLogged": {
-            "selector": [
-              "a[href*='action=logout']"
-            ],
-            "filters": [
-              "query.length>0"
-            ]
-          }
+  "name": "六维空间",
+  "description": "东北大学ipv6资源分享平台",
+  "url": "http://bt.neu6.edu.cn/",
+  "icon": "http://bt.neu6.edu.cn/favicon.ico",
+  "tags": [
+    "教育网",
+    "综合"
+  ],
+  "schema": "Discuz",
+  "supportedFeatures": {
+    "search": false,
+    "imdbSearch": false,
+    "userData": "◐",
+    "sendTorrent": false
+  },
+  "host": "bt.neu6.edu.cn",
+  "collaborator": "xfl03",
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/forum.php",
+      "fields": {
+        "id": {
+          "selector": ".vwmy a[href*='home.php']:first",
+          "attribute": "href",
+          "filters": [
+            "query ? query.getQueryString('uid'):''"
+          ]
+        },
+        "name": {
+          "selector": ".vwmy a[href*='home.php']:first"
+        },
+        "isLogged": {
+          "selector": [
+            "a[href*='action=logout']"
+          ],
+          "filters": [
+            "query.length>0"
+          ]
         }
-      },
-      "userExtendInfo": {
-        "page": "/home.php?mod=space&uid=$user.id$&do=profile",
-        "fields": {
-          "uploaded": {
-            "selector": [
-              "li:contains('上传')"
-            ],
-            "filters": [
-              "query.text().match(/上传.*?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
-              "(query && query.length>=2)?(query[1]).sizeToNumber():0"
-            ]
-          },
-          "downloaded": {
-            "selector": [
-              "li:contains('下载')"
-            ],
-            "filters": [
-              "query.text().match(/下载.*?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
-              "(query && query.length>=2)?(query[1]).sizeToNumber():0"
-            ]
-          },
-          "levelName": {
-            "selector": "li:contains('用户组')",
-            "filters": [
-              "query.text().replace('用户组','')"
-            ]
-          },
-          "bonus": {
-            "selector": [
-              "li:contains('积分')"
-            ],
-            "filters": [
-              "query.text().match(/积分.*?([\\d.]+)/)[1]",
-              "parseFloat(query)"
-            ]
-          },
-          "joinTime": {
-            "selector": "li:contains('注册时间')",
-            "filters": [
-              "query.text().match(/注册时间.*?([\\d.]+-[\\d.]+-[\\d.]+)/)[1]",
-              "dateTime(query).isValid()?dateTime(query).valueOf():query"
-            ]
-          }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/home.php?mod=space&uid=$user.id$&do=profile",
+      "fields": {
+        "uploaded": {
+          "selector": [
+            "li:contains('上传')"
+          ],
+          "filters": [
+            "query.text().match(/上传.*?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "downloaded": {
+          "selector": [
+            "li:contains('下载')"
+          ],
+          "filters": [
+            "query.text().match(/下载.*?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "levelName": {
+          "selector": "li:contains('用户组')",
+          "filters": [
+            "query.text().replace('用户组','')"
+          ]
+        },
+        "bonus": {
+          "selector": [
+            "li:contains('积分')"
+          ],
+          "filters": [
+            "query.text().match(/积分.*?([\\d.]+)/)[1]",
+            "parseFloat(query)"
+          ]
+        },
+        "joinTime": {
+          "selector": "li:contains('注册时间')",
+          "filters": [
+            "query.text().match(/注册时间.*?([\\d.]+-[\\d.]+-[\\d.]+)/)[1]",
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
         }
       }
     }
   }
+}

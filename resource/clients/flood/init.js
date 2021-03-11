@@ -40,7 +40,7 @@
      * @return Promise
      */
     call(action, data) {
-      console.log("ruTorrent.call", action, data);
+      console.log("Flood.call", action, data);
       return new Promise((resolve, reject) => {
         switch (action) {
           case "addTorrentFromURL":
