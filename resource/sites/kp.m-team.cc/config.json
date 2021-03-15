@@ -8,7 +8,7 @@
   "schema": "NexusPHP",
   "host": "kp.m-team.cc",
   "formerHosts": [
-    "tp.m-team.cc"
+    "tp.m-team.cc",
     "pt.m-team.cc"
   ],
   "plugins": [{
