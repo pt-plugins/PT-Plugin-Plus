@@ -10,6 +10,9 @@
   "formerHosts": [
     "pt.m-team.cc"
   ],
+  "formerHosts": [
+    "tp.m-team.cc"
+  ],
   "plugins": [{
     "name": "种子列表",
     "pages": ["/adult.php"],
