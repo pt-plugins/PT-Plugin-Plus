@@ -52,6 +52,7 @@
     </v-layout>
 
     <div ref="charts">
+      <highcharts :options="chartBarData" />
       <highcharts :options="chartBaseData" />
       <highcharts :options="chartExtData" class="mt-4" />
 
@@ -137,6 +138,7 @@ export default Vue.extend({
     return {
       chartBaseData: {},
       chartExtData: {},
+      chartBarData: {},
       host: "",
       options: this.$store.state.options,
       selectedSite: {} as Site,
@@ -244,7 +246,8 @@ export default Vue.extend({
                   seeding: 0,
                   bonus: 0,
                   name: "",
-                  lastUpdateStatus: EDataResultType.success
+                  lastUpdateStatus: EDataResultType.success,
+                  sites: {},
                 };
               }
 
@@ -268,6 +271,10 @@ export default Vue.extend({
                 nameInfo.name = data.name;
                 nameInfo.maxCount = userNames[data.name];
               }
+
+              item.sites[site.name] = {
+                uploaded: this.getNumber(data.uploaded),
+              };
 
               result[date] = item;
 
@@ -391,6 +398,7 @@ export default Vue.extend({
         };
         this.resetBaseData(data);
         this.resetExtData(data);
+        this.resetBarData(data);
       }
     },
     /**
@@ -742,6 +750,71 @@ export default Vue.extend({
       };
 
       this.chartExtData = chart;
+    },
+    /**
+     * Bar数据
+     */
+    resetBarData(result: any) {
+      const categories = Object.keys(result);
+      const seriesMap: any = {};
+      const sites = this.options.sites.filter((site: any) => site.allowGetUserInfo);
+      // -> { siteName: [uploaded]}
+      for (const item of (Object.values(result) as any[])) {
+        for (const site of sites) {
+          seriesMap[site.name] = seriesMap[site.name] || [];
+          const itemSite = item.sites[site.name];
+          seriesMap[site.name].push(itemSite ? itemSite.uploaded : 0);
+        }
+      }
+      // -> [ { name: siteName, data: [ relativeUploaded ]}]
+      const series = Object.entries(seriesMap).map(([siteName, uploads]: [string, any]) => {
+        const data = [0];
+        for (let i=1; i<uploads.length; i++) {
+          const a = uploads[i-1];
+          const b = uploads[i];
+          data.push(b - a);
+        }
+        return { name: siteName, data }
+      })
+
+      const chart = {
+        series,
+        // colors
+        chart: {
+          type: 'column'
+        },
+        credits: {
+          enabled: false
+        },
+        // subtitle,
+        title: {
+          text: '上传情况'
+        },
+        xAxis: {
+          categories: categories,
+        },
+        tooltip: {
+          useHTML: true,
+          formatter: function(): any {
+            const { x: date, y: value, series }: any = this
+            const siteName = series.name
+            const valueDisplay = filters.formatSize(value)
+            return `
+              <div>
+                ${date}<br/>
+                ${siteName}<br/>
+                ${valueDisplay}<br/>
+              </div>
+            `
+          },
+        },
+        plotOptions: {
+          column: {
+            stacking: 'normal',
+          }
+        },
+      };
+      this.chartBarData = chart;
     },
     joinTags(tags: any): string {
       if (tags && tags.join) {
