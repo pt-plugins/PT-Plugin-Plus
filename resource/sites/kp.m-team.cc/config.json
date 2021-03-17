@@ -1,0 +1,214 @@
+{
+  "name": "M-Team",
+  "timezoneOffset": "+0800",
+  "description": "M-Team",
+  "url": "https://kp.m-team.cc/",
+  "icon": "https://kp.m-team.cc/favicon.ico",
+  "tags": ["影视", "综合"],
+  "schema": "NexusPHP",
+  "host": "kp.m-team.cc",
+  "formerHosts": [
+    "tp.m-team.cc"
+  ],
+  "plugins": [{
+    "name": "种子列表",
+    "pages": ["/adult.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }, {
+    "name": "种子列表封面模式",
+    "pages": ["/torrents.php", "/movie.php", "/music.php", "/adult.php"],
+    "scripts": ["/libs/album/album.js", "torrents.js"],
+    "styles": ["/libs/album/style.css"]
+  }],
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["> td:eq(8)"],
+        "filters": ["query.text()==='--'?null:parseFloat(query.text())"]
+      },
+      "status": {
+        "selector": ["> td:eq(8)"],
+        "filters": ["query.text()==='--'?null:query.is('.peer-active')?(parseFloat(query.text())==100?2:1):(parseFloat(query.text())==100?255:3)"]
+      }
+    }
+  },
+  "searchEntry": [{
+    "name": "综合",
+    "enabled": true
+  }, {
+    "entry": "/movie.php?search=$key$&notnewword=1",
+    "name": "电影",
+    "enabled": false
+  }, {
+    "entry": "/music.php?search=$key$&notnewword=1",
+    "name": "音乐",
+    "enabled": true
+  }, {
+    "entry": "/adult.php?search=$key$&notnewword=1",
+    "name": "adult",
+    "enabled": true
+  }],
+  "categories": [{
+    "entry": "torrents.php",
+    "result": "&cat$id$=1",
+    "category": [{
+      "id": 401,
+      "name": "Movie(電影)/SD"
+    }, {
+      "id": 419,
+      "name": "Movie(電影)/HD"
+    }, {
+      "id": 420,
+      "name": "Movie(電影)/DVDiSo"
+    }, {
+      "id": 421,
+      "name": "Movie(電影)/Blu-Ray"
+    }, {
+      "id": 439,
+      "name": "Movie(電影)/Remux"
+    }, {
+      "id": 403,
+      "name": "TV Series(影劇/綜藝)/SD"
+    }, {
+      "id": 402,
+      "name": "TV Series(影劇/綜藝)/HD"
+    }, {
+      "id": 435,
+      "name": "TV Series(影劇/綜藝)/DVDiSo"
+    }, {
+      "id": 438,
+      "name": "TV Series(影劇/綜藝)/BD"
+    }, {
+      "id": 404,
+      "name": "紀錄教育"
+    }, {
+      "id": 405,
+      "name": "Anime(動畫)"
+    }, {
+      "id": 407,
+      "name": "Sports(運動)"
+    }, {
+      "id": 422,
+      "name": "Software(軟體)"
+    }, {
+      "id": 423,
+      "name": "PCGame(PC遊戲)"
+    }, {
+      "id": 427,
+      "name": "eBook(電子書)"
+    }, {
+      "id": 409,
+      "name": "Misc(其他)"
+    }]
+  }, {
+    "entry": "movie.php",
+    "result": "&cat$id$=1",
+    "category": [{
+      "id": 401,
+      "name": "Movie(電影)/SD"
+    }, {
+      "id": 419,
+      "name": "Movie(電影)/HD"
+    }, {
+      "id": 420,
+      "name": "Movie(電影)/DVDiSo"
+    }, {
+      "id": 421,
+      "name": "Movie(電影)/Blu-Ray"
+    }, {
+      "id": 439,
+      "name": "Movie(電影)/Remux"
+    }, {
+      "id": 404,
+      "name": "紀錄教育"
+    }]
+  }, {
+    "entry": "music.php",
+    "result": "&cat$id$=1",
+    "category": [{
+      "id": 406,
+      "name": "MV(演唱)"
+    }, {
+      "id": 408,
+      "name": "Music(AAC/ALAC)"
+    }, {
+      "id": 434,
+      "name": "Music(無損)"
+    }]
+  }, {
+    "entry": "adult.php",
+    "result": "&cat$id$=1",
+    "category": [{
+      "id": 410,
+      "name": "AV(有碼)/HD Censored"
+    }, {
+      "id": 429,
+      "name": "AV(無碼)/HD Uncensored"
+    }, {
+      "id": 424,
+      "name": "AV(有碼)/SD Censored"
+    }, {
+      "id": 430,
+      "name": "AV(無碼)/SD Uncensored"
+    }, {
+      "id": 426,
+      "name": "AV(無碼)/DVDiSo Uncensored"
+    }, {
+      "id": 437,
+      "name": "AV(有碼)/DVDiSo Censored"
+    }, {
+      "id": 431,
+      "name": "AV(有碼)/Blu-Ray Censored"
+    }, {
+      "id": 432,
+      "name": "AV(無碼)/Blu-Ray Uncensored"
+    }, {
+      "id": 436,
+      "name": "AV(網站)/0Day"
+    }, {
+      "id": 425,
+      "name": "IV(寫真影集)/Video Collection"
+    }, {
+      "id": 433,
+      "name": "IV(寫真圖集)/Picture Collection"
+    }, {
+      "id": 411,
+      "name": "H-Game(遊戲)"
+    }, {
+      "id": 412,
+      "name": "H-Anime(動畫)"
+    }, {
+      "id": 413,
+      "name": "H-Comic(漫畫)"
+    }]
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "uploaded": {
+          "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td", "td.rowhead:contains('傳送') + td", "td.rowhead:contains('Transfers') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/(?:上[传傳]量|Uploaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td", "td.rowhead:contains('傳送') + td", "td.rowhead:contains('Transfers') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/(?:下[载載]量|Downloaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlist.php?userid=$user.id$&type=seeding",
+      "parser": "getUserSeedingTorrents.js",
+      "fields": {
+        "seeding": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["query.find('td.rowfollow:eq(2)').length"]
+        },
+        "seedingSize": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    }
+  }
+}
