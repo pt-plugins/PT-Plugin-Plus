@@ -58,17 +58,9 @@
     "userExtendInfo": {
       "page": "/userdetails.php?id=$user.id$",
       "fields": {
-        "uploaded": {
-          "selector": ["to do"],
-          "filters": ["to do"]
-        },
-        "downloaded": {
-          "selector": ["to do"],
-          "filters": ["to do"]
-        },
-        "ratio": {
-          "selector": ["to do"],
-          "filters": ["to do"]
+        "seeding": {
+          "selector": ["div#seeds_div"],
+          "filters": ["query.text().match(/([\\d.]+).*?-/)", "(query && query.length>=2)?query[1]:0"]
         },
         "levelName": {
           "selector": ["td.row2:contains('Tracker'):contains('Class') + td"]
@@ -84,9 +76,17 @@
       }
     },
     "userSeedingTorrents": {
-      "page": "/current.php?id=$user.id$",
+      "page": "/",
       "fields": {
-        "seeding": {
+        "uploaded": {
+          "selector": ["to do"],
+          "filters": ["to do"]
+        },
+        "downloaded": {
+          "selector": ["to do"],
+          "filters": ["to do"]
+        },
+        "ratio": {
           "selector": ["to do"],
           "filters": ["to do"]
         },
