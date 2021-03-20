@@ -247,7 +247,6 @@ export default Vue.extend({
                   bonus: 0,
                   name: "",
                   lastUpdateStatus: EDataResultType.success,
-                  sites: {},
                 };
               }
 
@@ -272,10 +271,6 @@ export default Vue.extend({
                 nameInfo.maxCount = userNames[data.name];
               }
 
-              item.sites[site.name] = {
-                uploaded: this.getNumber(data.uploaded),
-              };
-
               result[date] = item;
 
               if (!days.includes(date)) {
@@ -294,6 +289,43 @@ export default Vue.extend({
       this.userName = nameInfo.name;
 
       return datas;
+    },
+    //-> { site: [ { date, relativeUploaded }] }
+    getRelativeData(source: any) {
+      const result: any = {};
+      for (const [host, siteData] of Object.entries(source)) {
+        const site: Site = this.options.sites.find((item: Site) => item.host == host);
+        if (!site) {
+          continue;
+        }
+        if (!site.allowGetUserInfo) {
+          continue;
+        }
+        const newSiteData = this.fillData(siteData);
+
+        // -> [ { date, uploaded }]
+        const absoluteSiteData = [];
+        for (const [date, item] of (Object.entries(newSiteData) as any[])) {
+          if (date == EUserDataRange.latest) {
+            continue;
+          }
+          absoluteSiteData.push({
+            date: new Date(date),
+            uploaded: item.uploaded,
+          });
+        }
+
+        //-> [ { date, relativeUploaded }]
+        const relativeSiteData = [];
+        for (let i=1; i<absoluteSiteData.length; i++) {
+          const a = absoluteSiteData[i-1];
+          const b = absoluteSiteData[i];
+          relativeSiteData.push({ date: a.date, relativeUploaded: b.uploaded - a.uploaded });
+        }
+
+        result[site.name] = relativeSiteData;
+      }
+      return result;
     },
     getNumber(source: any) {
       if (typeof source === "string") {
@@ -387,9 +419,10 @@ export default Vue.extend({
     },
     resetData(result: any) {
       if (this.host) {
-        result = this.fillData(result, false);
-        this.resetBaseData(result);
-        this.resetExtData(result);
+        const newResult = this.fillData(result, false);
+        this.resetBaseData(newResult);
+        this.resetExtData(newResult);
+        this.resetBarData(this.getRelativeData({[this.host]: result}));
       } else {
         let data = this.getTotalData(result);
         this.selectedSite = {
@@ -398,7 +431,7 @@ export default Vue.extend({
         };
         this.resetBaseData(data);
         this.resetExtData(data);
-        this.resetBarData(data);
+        this.resetBarData(this.getRelativeData(result));
       }
     },
     /**
@@ -755,56 +788,65 @@ export default Vue.extend({
      * Bar数据
      */
     resetBarData(result: any) {
-      const categories = Object.keys(result);
-      const seriesMap: any = {};
-      const sites = this.options.sites.filter((site: any) => site.allowGetUserInfo);
-      // -> { siteName: [uploaded]}
-      for (const item of (Object.values(result) as any[])) {
-        for (const site of sites) {
-          seriesMap[site.name] = seriesMap[site.name] || [];
-          const itemSite = item.sites[site.name];
-          seriesMap[site.name].push(itemSite ? itemSite.uploaded : 0);
-        }
-      }
-      // -> [ { name: siteName, data: [ relativeUploaded ]}]
-      const series = Object.entries(seriesMap).map(([siteName, uploads]: [string, any]) => {
-        const data = [0];
-        for (let i=1; i<uploads.length; i++) {
-          const a = uploads[i-1];
-          const b = uploads[i];
-          data.push(b - a);
-        }
-        return { name: siteName, data }
-      })
+      const $t = this.$t.bind(this);
+
+      // -> [ { name: siteName, data: [ [ date, relativeUploaded ] ]}]
+      const series = Object.entries(result).map(([siteName, data]: any[]) => ({
+        name: siteName,
+        data: data.map((v: any) => ([
+          v.date.getTime(),
+          v.relativeUploaded,
+        ]))
+      }));
 
       const chart = {
         series,
-        // colors
         chart: {
           type: 'column'
         },
         credits: {
           enabled: false
         },
-        // subtitle,
         title: {
-          text: '上传情况'
+          text: this.$t("statistic.barDataTitle", {
+            userName: this.userName,
+            site: this.selectedSite.name
+          }).toString()
         },
         xAxis: {
-          categories: categories,
+          type: "datetime",
+          dateTimeLabelFormats: {
+            day: "%m-%d",
+            week: "%m-%d",
+            month: "%m-%d",
+            year: "%m-%d"
+          },
+          gridLineDashStyle: "ShortDash",
+          gridLineWidth: 1,
+          gridLineColor: "#dddddd"
+        },
+        yAxis: {
+          title: {
+            text: this.$t("statistic.data").toString(),
+          },
+          lineWidth: 1,
+          gridLineDashStyle: "ShortDash"
         },
         tooltip: {
           useHTML: true,
           formatter: function(): any {
-            const { x: date, y: value, series }: any = this
+            const { x, y: value, percentage, total, series }: any = this
             const siteName = series.name
+            const date = dayjs(x).format("YYYY-MM-DD")
             const valueDisplay = filters.formatSize(value)
+            const totalDisplay = filters.formatSize(total)
+            const totalText = $t('statistic.total').toString()
+            const percentText = $t('statistic.percent').toString()
             return `
-              <div>
-                ${date}<br/>
-                ${siteName}<br/>
-                ${valueDisplay}<br/>
-              </div>
+              ${date}<br/>
+              ${siteName}: ${valueDisplay}<br/>
+              ${totalText}: ${totalDisplay}<br/>
+              ${percentText}: ${Math.ceil(percentage)}%<br/>
             `
           },
         },
