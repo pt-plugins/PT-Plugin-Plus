@@ -733,8 +733,11 @@
       "seedingDataSubTitle": "Seeding size: {seedingSize}, count: {count}",
       "seedingSize": "Seeding size",
       "seedingCount": "Seeding count",
+      "barDataTitle": "[{userName}@{site}] Upload Data",
       "size": "Size",
       "count": "Count",
+      "total": "Total",
+      "percent": "Percent",
       "note": "Note: <br>1. Chart history data comes from the overview page, manual or automatic update will be recorded; <br>2. Each tracker only saves one per day;",
       "dateRange": {
         "7day": "7 days",
