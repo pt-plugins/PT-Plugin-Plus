@@ -358,43 +358,6 @@
         } else {
           // 特殊情况处理
           switch (options.site.host) {
-            case "hdchina.org":
-              if (
-                title
-                  .parent()
-                  .next()
-                  .is("h4")
-              ) {
-                subTitle = title
-                  .parent()
-                  .next()
-                  .text();
-              }
-              break;
-
-            case "tp.m-team.cc":
-            case "pt.m-team.cc":
-              title = row.find("a[href*='hit'][title]").last();
-              subTitle = title
-                .parent()
-                .html()
-                .split("<br>");
-              subTitle = $("<span>")
-                .html(subTitle[subTitle.length - 1])
-                .text();
-              break;
-
-            case "u2.dmhy.org":
-              subTitle = $(".torrentname > tbody > tr:eq(1)", row)
-                .find(".tooltip")
-                .text();
-              break;
-
-            case "whu.pt":
-            case "hudbt.hust.edu.cn":
-              subTitle = $("h3", row).text();
-              break;
-
             default:
               subTitle = "";
               break;
