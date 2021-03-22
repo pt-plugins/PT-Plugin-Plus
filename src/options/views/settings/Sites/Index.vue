@@ -87,6 +87,7 @@
               false-value="false"
               :input-value="props.item.allowSearch?'true':'false'"
               hide-details
+              :disabled="props.item.offline"
               @click.stop="updateSearchStatus(props.item)"
             ></v-switch>
           </td>
@@ -96,10 +97,11 @@
               false-value="false"
               :input-value="props.item.allowGetUserInfo?'true':'false'"
               hide-details
+              :disabled="props.item.offline"
               @click.stop="updateAllowGetUserInfo(props.item)"
             ></v-switch>
           </td>
-          <!-- <td>
+          <td>
             <v-switch
               true-value="true"
               false-value="false"
@@ -107,7 +109,7 @@
               hide-details
               @click.stop="updateOfflineStatus(props.item)"
             ></v-switch>
-          </td>-->
+          </td>
           <td>
             <a
               :href="props.item.activeURL"
@@ -703,11 +705,11 @@ export default Vue.extend({
           align: "left",
           value: "allowGetUserInfo"
         },
-        // {
-        //   text: this.$t("settings.sites.index.headers.offline"),
-        //   align: "left",
-        //   value: "offline"
-        // },
+        {
+          text: this.$t("settings.sites.index.headers.offline"),
+          align: "left",
+          value: "offline"
+        },
         {
           text: this.$t("settings.sites.index.headers.activeURL"),
           align: "left",

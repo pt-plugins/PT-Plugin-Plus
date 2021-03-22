@@ -140,10 +140,12 @@
         <v-switch
           :label="$t('settings.sites.editor.allowGetUserInfo')"
           v-model="site.allowGetUserInfo"
+          :disabled="site.offline"
         ></v-switch>
 
         <!-- 允许搜索 -->
-        <v-switch :label="$t('settings.sites.editor.allowSearch')" v-model="site.allowSearch"></v-switch>
+        <v-switch v-model="site.allowSearch" :disabled="site.offline"
+                  :label="$t('settings.sites.editor.allowSearch')"></v-switch>
 
         <!-- 搜索入口设置 v-if="site.allowSearch"  -->
         <template v-if="site.allowSearch">
@@ -156,7 +158,7 @@
                 :key="index"
               >
                 <v-checkbox
-                  :disabled="!site.allowSearch"
+                  :disabled="!site.allowSearch || site.offline"
                   class="ma-0 pa-0"
                   :label="item.name"
                   v-model="item.enabled"
