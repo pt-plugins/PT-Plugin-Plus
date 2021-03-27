@@ -1,0 +1,66 @@
+{
+  "name": "AB",
+  "timezoneOffset": "+0000",
+  "description": "动漫",
+  "url": "https://animebytes.tv/",
+  "icon": "https://animebytes.tv/favicon.ico",
+  "tags": ["动漫"],
+  "schema": "Gazelle",
+  "host": "animebytes.tv",
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": ["#stats_menu > a:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('userid'):''"]
+        },
+        "name": {
+          "selector": ["a.username:first"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='/user/logout']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/user.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["dt:contains('Uploaded:') + dd > span"],
+          "filters": ["query.attr('title').replace(/,/g,'')"]
+        },
+        "downloaded": {
+          "selector": ["dt:contains('Downloaded:') + dd > span"],
+          "filters": ["query.attr('title').replace(/,/g,'')"]
+        },
+        "ratio": {
+          "selector": ["dt:contains('Ratio:') + dd > span"],
+          "filters": ["query.attr('title').replace(/,/g,'')"]
+        },
+        "seeding": {
+          "selector": ["dt:contains('Seeding:') + dd"],
+          "filters": ["query.text().trim().replace(/,|\\n/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+        },
+        "seedingSize": {
+          "selector": ["dt:contains('Total seed size:') + dd > span"],
+          "filters": ["query.text().trim().sizeToNumber()"]
+        },
+        "levelName": {
+          "selector": ["dt:contains('Class:') + dd"],
+          "filters": ["query.text()"]
+        },
+        "bonus": {
+          "selector": ["#yen_count > a"],
+          "filters": ["query.text().replace(/,|\\n|\\s+|¥/g,'')"]
+        },
+        "joinTime": {
+          "selector": ["dt:contains('Joined:') + dd > span"],
+          "filters": ["query.attr('title')||query.text()", "dateTime(query, 'MMM DD YYYY, HH:mm').isValid()?dateTime(query, 'MMM DD YYYY, HH:mm').valueOf():query"]
+        }
+      }
+    }
+  }
+}
