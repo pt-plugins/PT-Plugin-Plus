@@ -7,6 +7,12 @@
   "tags": ["动漫"],
   "schema": "Gazelle",
   "host": "animebytes.tv",
+  "supportedFeatures": {
+    "userData": true,
+    "search": false,
+    "imdbSearch": false,
+    "sendTorrent": false
+  },
   "selectors": {
     "userBaseInfo": {
       "page": "/index.php",
@@ -42,7 +48,10 @@
         },
         "seeding": {
           "selector": ["dt:contains('Seeding:') + dd"],
-          "filters": ["query.text().trim().replace(/,|\\n/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+          "filters": [
+            "query.text().trim().replace(/,|\\n/g,'').match(/([\\d.]+)/)",
+            "(query && query.length>=2)?parseFloat(query[1]):0"
+          ]
         },
         "seedingSize": {
           "selector": ["dt:contains('Total seed size:') + dd > span"],
@@ -58,7 +67,10 @@
         },
         "joinTime": {
           "selector": ["dt:contains('Joined:') + dd > span"],
-          "filters": ["query.attr('title')||query.text()", "dateTime(query, 'MMM DD YYYY, HH:mm').isValid()?dateTime(query, 'MMM DD YYYY, HH:mm').valueOf():query"]
+          "filters": [
+            "query.attr('title')||query.text()",
+            "dateTime(query, 'MMM DD YYYY, HH:mm').isValid()?dateTime(query, 'MMM DD YYYY, HH:mm').valueOf():query"
+          ]
         }
       }
     }
