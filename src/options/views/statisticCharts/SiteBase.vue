@@ -835,18 +835,43 @@ export default Vue.extend({
         tooltip: {
           useHTML: true,
           formatter: function(): any {
-            const { x, y: value, percentage, total, series }: any = this
-            const siteName = series.name
+            const { x, total, color, series: { name: siteName } }: any = this
+            let sites = []
+            for (const site of series) {
+              const siteY = (site.data.find(([a]: any[]) => a === x) || [0, 0])[1]
+              if (siteY === 0) {
+                continue
+              }
+              const percentage = Math.ceil(siteY / total * 100)
+              sites.push({
+                name: site.name,
+                value: siteY,
+                valueDisplay: filters.formatSize(siteY),
+                percentageDisplay: `${percentage}%`,
+                isActive: site.name === siteName,
+              })
+            }
+            sites.sort((a,b) => b.value-a.value)
             const date = dayjs(x).format("YYYY-MM-DD")
-            const valueDisplay = filters.formatSize(value)
             const totalDisplay = filters.formatSize(total)
             const totalText = $t('statistic.total').toString()
-            const percentText = $t('statistic.percent').toString()
+
+            const createTr = ({ name, valueDisplay, percentageDisplay, isActive }: any) => {
+              return `
+                <tr style='color: ${isActive ? color : "inherit"};'>
+                  <td>${name}</td>
+                  <td style='padding-left: 5px;'>${valueDisplay}</td>
+                  <td style='padding-left: 5px;'>${percentageDisplay}</td>
+                </tr>
+              `
+            }
+
             return `
               ${date}<br/>
-              ${siteName}: ${valueDisplay}<br/>
-              ${totalText}: ${totalDisplay}<br/>
-              ${percentText}: ${Math.ceil(percentage)}%<br/>
+              <table>
+                ${createTr({ name: totalText, valueDisplay: totalDisplay, percentageDisplay: '100%' })}
+                ${sites.map(createTr).join('')}
+              </table>
             `
           },
         },
