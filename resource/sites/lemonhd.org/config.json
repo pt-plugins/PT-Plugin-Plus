@@ -85,7 +85,7 @@
   },
   "searchEntry": [
     {
-      "entry": "/torrents.php?search_area=0&search=$key$",
+      "entry": "/torrents.php?search_area=name&search=$key$",
       "name": "全站",
       "enabled": true
     },
