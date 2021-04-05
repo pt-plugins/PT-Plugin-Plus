@@ -1,0 +1,27 @@
+{
+  "name": "HDAI",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "url": "https://www.hd.ai/",
+  "description": "HDAI",
+  "icon": "https://www.hd.ai/favicon.png",
+  "tags": [
+    "影视"
+  ],
+  "host": "hd.ai",
+  "formerHosts": [],
+  "plugins": [],
+  "collaborator": ["indeedsi"],
+  "searchEntryConfig": {
+    "page": "/Torrents.tableList",
+    "queryString": "searchParams={\"keyword\":\"$key$\"}",
+    "parseScriptFile": "getSearchResult.js"
+  },
+  "searchEntry": [
+    {
+      "entry": "/Torrents.tableList?searchParams={\"keyword\":\"$key$\"}",
+      "name": "全站",
+      "enabled": true
+    }
+  ]
+}
