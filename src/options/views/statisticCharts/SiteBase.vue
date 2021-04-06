@@ -54,7 +54,7 @@
     <div ref="charts">
       <highcharts :options="chartBarData" />
       <highcharts :options="chartBaseData" />
-      <highcharts :options="chartExtData" class="mt-4" />
+      <highcharts :options="chartExtData" />
 
       <v-card-actions>
         <v-spacer></v-spacer>
