@@ -51,10 +51,10 @@
       <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="shareing" class="by_pass_canvas"></v-progress-circular>
     </v-layout>
 
-    <div ref="charts">
+    <div ref="charts" class="charts">
       <highcharts :options="chartBarData" />
-      <highcharts :options="chartBaseData" />
-      <highcharts :options="chartExtData" />
+      <highcharts :options="chartBaseData" class="mt-4" />
+      <highcharts :options="chartExtData" class="mt-4" />
 
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -893,16 +893,16 @@ export default Vue.extend({
       let div = this.$refs.charts as HTMLDivElement;
       this.shareing = true;
       this.shareTime = new Date();
-      domtoimage.toBlob(div, {
+      domtoimage.toJpeg(div, {
         filter: (node) => {
           if (node.nodeType === 1) {
             return !(node as Element).classList.contains('by_pass_canvas')
           }
           return true
         }
-      }).then((blob: any) => {
-        if (blob) {
-          FileSaver.saveAs(blob, "PT-Plugin-Plus-UserData.png");
+      }).then((dataUrl: any) => {
+        if (dataUrl) {
+          FileSaver.saveAs(dataUrl, "PT-Plugin-Plus-UserData.jpg");
         }
         this.shareing = false;
       });
@@ -963,6 +963,10 @@ export default Vue.extend({
 .container {
   width: 900px;
   padding: 0;
+
+  .charts {
+    background-color: white;
+  }
 
   .chart {
     min-width: 320px;
