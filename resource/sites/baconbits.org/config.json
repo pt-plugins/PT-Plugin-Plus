@@ -53,6 +53,9 @@
             "(query && query.length>=2)?parseFloat(query[1]):0"
           ]
         },
+        "seedingSize": {
+          "value": -1
+        },
         "levelName": {
           "selector": ["li:contains('Class:')"],
           "filters": ["query.text().match(/Class:(.+)/)", "(query && query.length>=2)?query[1]:''"]
