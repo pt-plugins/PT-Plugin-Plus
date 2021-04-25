@@ -1,0 +1,16 @@
+{
+  "name": "BRKS",
+  "timezoneOffset": "+0000",
+  "description": "Mac Apps",
+  "url": "https://brokenstones.club",
+  "icon": "https://brokenstones.club/favicon.ico",
+  "tags": ["软件"],
+  "schema": "GazelleJSONAPI",
+  "host": "brokenstones.club",
+  "supportedFeatures": {
+    "imdbSearch": false
+  },
+  "searchEntryConfig": {
+    "skipIMDbId": true
+  }
+}
