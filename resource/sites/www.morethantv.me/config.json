@@ -1,0 +1,73 @@
+{
+  "name": "MTV",
+  "timezoneOffset": "+0000",
+  "description": "",
+  "icon": "https://www.morethantv.me/favicon.ico",
+  "schema": "Gazelle",
+  "tags": ["电视剧", "剧集"],
+  "url": "https://www.morethantv.me",
+  "collaborator": "luckiestone",
+  "host": "www.morethantv.me",
+  "formerHosts": [
+    "www.morethan.tv"
+  ],
+  "supportedFeatures": {
+    "search": false,
+    "imdbSearch": false
+  },
+  "selectors": {
+    "userBaseInfo": {
+      "merge": true,
+      "page": "/index.php",
+      "fields": {
+        "isLogged": {
+          "selector": ["form[action='/logout']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/user.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": "ul.stats > li:contains('Uploaded')",
+          "filters": ["query.text().replace(/,/g,'').match(/Uploaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": "ul.stats > li:contains('Downloaded')",
+          "filters": ["query.text().replace(/,/g,'').match(/Downloaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "ul.stats > li:contains('Ratio:')",
+          "filters": ["query.text().replace(/,/g,'').match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+        "levelName": {
+          "selector": "ul.stats > li:contains('Class:')",
+          "filters": ["query.text().match(/Class:.+?(.+)/)", "(query && query.length>=2)?query[1]:''"]
+        },
+        "bonus": {
+          "selector": "#stats_credits",
+          "filters": ["query.text()"]
+        },
+        "joinTime": {
+          "selector": ["ul.stats > li:contains('Joined:') > span"],
+          "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/torrents.php?type=seeding&userid=$user.id$",
+      "parser": "getUserSeedingTorrents.js",
+      "fields": {
+        "bonus": {
+          "selector": "li#stats_seedpoints > span.stat",
+          "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": ["td.number_column.nobr"],
+          "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    }
+  }
+}
