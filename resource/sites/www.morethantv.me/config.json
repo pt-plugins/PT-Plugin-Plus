@@ -3,7 +3,7 @@
   "timezoneOffset": "+0000",
   "description": "",
   "icon": "https://www.morethantv.me/favicon.ico",
-  "schema": "Gazelle",
+  "schema": "Luminance",
   "tags": ["电视剧", "剧集"],
   "url": "https://www.morethantv.me",
   "collaborator": "luckiestone",
@@ -20,6 +20,18 @@
       "merge": true,
       "page": "/index.php",
       "fields": {
+        "id": {
+          "selector": ["a.username[href*='user.php']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["a.username[href*='user.php']:first"]
+        },
+        "messageCount": {
+          "selector": ["div.alert-bar > a[href*='inbox.php']", "div.alertbar > a[href*='inbox.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
         "isLogged": {
           "selector": ["form[action='/logout']"],
           "filters": ["query.length>0"]
@@ -41,6 +53,14 @@
           "selector": "ul.stats > li:contains('Ratio:')",
           "filters": ["query.text().replace(/,/g,'').match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
         },
+        "seeding": {
+          "selector": ["ul.stats > li:contains('Seeding:')"],
+          "filters": [ "query.text().replace(/,/g, '').match(/Seeding:.+?([\\d]+)/)", "(query && query.length>=2)?query[1]:0" ]
+        },
+        "seedingSize": {
+          "selector": ["ul.stats > li:contains('Seeding Size:')"],
+          "filters": ["query.text().replace(/,/g,'').match(/Seeding Size:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
         "levelName": {
           "selector": "ul.stats > li:contains('Class:')",
           "filters": ["query.text().match(/Class:.+?(.+)/)", "(query && query.length>=2)?query[1]:''"]
@@ -52,20 +72,6 @@
         "joinTime": {
           "selector": ["ul.stats > li:contains('Joined:') > span"],
           "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
-        }
-      }
-    },
-    "userSeedingTorrents": {
-      "page": "/torrents.php?type=seeding&userid=$user.id$",
-      "parser": "getUserSeedingTorrents.js",
-      "fields": {
-        "bonus": {
-          "selector": "li#stats_seedpoints > span.stat",
-          "filters": ["query.text()"]
-        },
-        "seedingSize": {
-          "selector": ["td.number_column.nobr"],
-          "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
       }
     }
