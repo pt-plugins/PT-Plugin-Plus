@@ -1,0 +1,62 @@
+{
+  "name": "Snakepop",
+  "timezoneOffset": "+0800",
+  "description": "music",
+  "url": "https://snakepop.art/",
+  "icon": "https://snakepop.art/favicon.ico",
+  "tags": ["音乐"],
+  "schema": "GazelleJSONAPI",
+  "host": "snakepop.art",
+  "collaborator": ["timyuan"],
+  "searchEntryConfig": {
+    "skipIMDbId": true
+  },
+  "searchEntry": [{
+      "name": "all",
+      "enabled": true
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/ajax.php?action=index",
+      "dataType": "json",
+      "fields": {
+        "id": {
+          "selector": ["response.id"]
+        },
+        "name": {
+          "selector": ["response.username"]
+        },
+        "messageCount": {
+          "selector": ["response.notifications.messages"]
+        },
+        "uploaded": {
+          "selector": ["response.userstats.uploaded"]
+        },
+        "downloaded": {
+          "selector": ["response.userstats.downloaded"]
+        },
+        "ratio": {
+          "selector": ["response.userstats.ratio"]
+        },
+        "levelName": {
+          "selector": ["response.userstats.class.match(/(.+(?= [(]))/)[0]"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/torrents.php?type=seeding&userid=$user.id$",
+      "parser": "getUserSeedingTorrents.js",
+      "fields": {
+        "seedingSize": {
+          "selector": ["td.number_column.nobr"],
+          "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  }
+}
