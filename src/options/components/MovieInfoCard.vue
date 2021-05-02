@@ -18,7 +18,43 @@
         position="left center"
       >
         <v-layout style="margin-left: 220px;" v-if="$vuetify.breakpoint.mdAndUp">
-          <v-card-title class="pt-0" v-if="info.attrs">
+          <!-- omit 格式 -->
+          <v-card-title class="pt-0" v-if="info.updateTime">
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.alias") }}</span>
+              <span class="caption">{{ info.aka }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.director") }}</span>
+              <span class="caption">{{ info.director }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.writer") }}</span>
+              <span class="caption">{{ info.scenarist }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.cast") }}</span>
+              <span class="caption">{{ info.cast }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.type") }}</span>
+              <span class="caption">{{ info.genre }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.pubdate") }}</span>
+              <span class="caption">{{ info.releaseDate }}</span>
+            </v-flex>
+            <v-flex xs12>
+              <span>{{ $t("movieInfoCard.duration") }}</span>
+              <span class="caption">{{ info.runtime }}</span>
+            </v-flex>
+            <v-flex xs12 class="my-2">
+              <v-divider light></v-divider>
+            </v-flex>
+            <div class="caption" v-html="`　　${info.summary.replace(/\n/g, '<br>')} @豆瓣`"></div>
+          </v-card-title>
+
+          <v-card-title class="pt-0" v-else-if="info.attrs">
             <v-flex xs12>
               <span>{{ $t("movieInfoCard.alias") }}</span>
               <span class="caption">{{ info.alt_title }}</span>
@@ -106,10 +142,10 @@
         <!-- 豆瓣评分 -->
         <v-btn
           color="success"
-          :href="info.url || info.mobile_link"
+          :href="info.link || info.url || info.mobile_link"
           target="_blank"
           rel="noopener noreferrer nofollow"
-        >豆瓣 {{ info.rating.value || info.rating.average }}</v-btn>
+        >豆瓣 {{ info.average || info.rating.value || info.rating.average }}</v-btn>
 
         <!-- IMDb评分 -->
         <v-btn
@@ -163,7 +199,7 @@
             ></v-rating>
             <span
               class="ma-2"
-            >{{ $t("movieInfoCard.ratings.douban", {average: info.rating.value || info.rating.average, numRaters: info.rating.count || info.rating.numRaters}) }}</span>
+            >{{ $t("movieInfoCard.ratings.douban", {average: info.average || info.rating.value || info.rating.average, numRaters: info.votes || info.rating.count || info.rating.numRaters}) }}</span>
           </v-flex>
           <v-flex xs6 v-if="imdbRating>0">
             <v-rating
@@ -256,7 +292,11 @@ export default Vue.extend({
           .then(result => {
             console.log(result);
             this.visible = true;
-            this.info = result;
+            if (Array.isArray(result)) {
+              this.info = result[0];
+            } else {
+              this.info = result;
+            }
           })
           .catch(error => {
             console.log(error);
@@ -300,8 +340,8 @@ export default Vue.extend({
   },
   computed: {
     rating(): number {
-      if (this.info && this.info.rating) {
-        return parseFloat(this.info.rating.value || this.info.rating.average) / 2;
+      if (this.info && (this.info.rating || this.info.average)) {
+        return parseFloat(this.info.average || this.info.rating.value || this.info.rating.average) / 2;
       }
       return 0;
     },

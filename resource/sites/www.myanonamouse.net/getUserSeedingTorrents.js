@@ -27,6 +27,7 @@
         "sSat",
         "upAct"
       ]
+      let doneCount = 0
       for (const type of types) {
         User.getCookie(options.site, "mam_id").then(mamId => {
           $.getJSON("https://cdn.myanonamouse.net/json/loadUserDetailsTorrents.php", {
@@ -36,13 +37,13 @@
             cacheTime: Math.round(Date.now() / 1000),
             mam_id: decodeURIComponent(mamId)
           }).done(data => {
+            doneCount++
             data.rows.forEach(item => {
               this.result.seeding += 1;
               this.result.seedingSize += item.size.sizeToNumber()
             })
 
-            // 如果到了最后一个type
-            if (type === types[types.length - 1]) {
+            if (doneCount === types.length-1) {
               this.done();
             }
           }).fail(error => {

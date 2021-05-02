@@ -43,8 +43,10 @@ export class MovieInfoService {
               "id": "1294833"
             }]
           */
-          imdb: `https://movie.douban.com/j/subject_suggest?q=$imdbid$`,
-          subject: `${this.doubanFrodoApi}/movie/$id$?apiKey=$apikey$`
+          imdb: `https://omit.mkrobot.org/movie/infos/$imdbid$`,
+          subject: `https://omit.mkrobot.org/movie/infos/douban$id$`
+          // imdb: `https://movie.douban.com/j/subject_suggest?q=$imdbid$`,
+          // subject: `${this.doubanFrodoApi}/movie/$id$?apiKey=$apikey$`
         },
       }
     },
@@ -184,8 +186,13 @@ export class MovieInfoService {
           timeout: this.timeout
         })
           .done(json => {
-            this.cache.base[IMDbId] = json;
-            resolve(json);
+            let result;
+            if (json) {
+              result = json.data || json;
+            }
+
+            this.cache.base[IMDbId] = result;
+            resolve(result);
           })
           .fail(error => {
             reject(error);
@@ -222,8 +229,13 @@ export class MovieInfoService {
           timeout: this.timeout
         })
           .done(json => {
-            this.cache.base[id] = json;
-            resolve(json);
+            let result;
+            if (json) {
+              result = json.data || json;
+            }
+
+            this.cache.base[id] = result;
+            resolve(result);
           })
           .fail(error => {
             reject(error);
@@ -363,6 +375,9 @@ export class MovieInfoService {
     key: string,
     count: number = 5
   ): Promise<any> {
+    if (this.isIMDbId(key)) {
+      return this.getInfoFromIMDb(key);
+    }
     return new Promise<any>((resolve?: any, reject?: any) => {
       // let url = `${this.doubanApiURL}/movie/search?q=${encodeURIComponent(
       //   key

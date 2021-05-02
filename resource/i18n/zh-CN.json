@@ -216,6 +216,7 @@
     "timeline": {
       "share": "生成分享图片",
       "siteName": "网站名称",
+      "blurSiteIcon": "模糊站点图标",
       "userName": "用户名称",
       "userLevel": "用户等级",
       "showSites": "展示站点",
@@ -272,7 +273,8 @@
         "leechers": "下载",
         "completed": "完成",
         "time": "发布于(≈)",
-        "action": "操作"
+        "action": "操作",
+        "comments": "评论"
       },
       "optionsIsMissing": "系统参数丢失",
       "sitesIsMissing": "请先设置站点",
@@ -448,8 +450,8 @@
           "omdb": "OMDb API Key",
           "douban": "豆瓣 API Key"
         },
-        "apiKeyTip": "OMDb API Key 用于获取影片的评分信息；\n豆瓣 API Key 用于获取影片的基本资料，如图片、简介等；\n助手已内置了些一Key，如出现无法正常获取评分或影片资料，可进行设置；多个Key按回车进行区分。",
-        "verifyApiKey": "验证 Api Key",
+        "apiKeyTip": "OMDb API Key 用于获取影片的评分信息；\n豆瓣 API Key 用于获取影片的基本资料，如图片、简介等；\n助手已内置了一些Key，如出现无法正常获取评分或影片资料，可进行设置；多个Key按回车进行区分。",
+        "verifyApiKey": "验证 API Key",
         "batchDownloadInterval": "批量下载（发送）种子时，每个链接时间间隔（秒）",
         "enableBackgroundDownload": "当批量下载（发送）种子时，使用后台任务，完成后再通知我",
         "position": {
@@ -731,8 +733,11 @@
       "seedingDataSubTitle": "做种体积：{seedingSize}, 数量：{count} 个",
       "seedingSize": "做种体积",
       "seedingCount": "做种数",
+      "barDataTitle": "[{userName}@{site}] 上传数据",
       "size": "体积",
       "count": "数量",
+      "total": "总和",
+      "percent": "占比",
       "note": "注：<br>1. 图表历史数据来自概览页，手动刷新或自动更新均会记录；<br>2. 助手从 v1.0.1 版开始正式记录每次刷新的数据，每个站每天仅保存一条；",
       "dateRange": {
         "7day": "近7天",

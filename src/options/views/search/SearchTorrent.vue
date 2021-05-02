@@ -676,10 +676,10 @@
               :status="props.item.status"
             ></TorrentProgress>
           </td>
-          <!-- <td class="center">{{ props.item.comments }}</td> -->
           <td class="size" v-if="$vuetify.breakpoint.smAndUp">{{ props.item.seeders }}</td>
           <td class="size" v-if="$vuetify.breakpoint.mdAndUp">{{ props.item.leechers }}</td>
           <td class="size" v-if="$vuetify.breakpoint.mdAndUp">{{ props.item.completed }}</td>
+          <td class="size" v-if="$vuetify.breakpoint.smAndUp">{{ props.item.comments }}</td>
           <!-- <td>{{ props.item.author }}</td> -->
           <td v-if="$vuetify.breakpoint.mdAndUp">{{ props.item.time | formatDate }}</td>
           <td class="text-xs-center" v-if="$vuetify.breakpoint.smAndUp">

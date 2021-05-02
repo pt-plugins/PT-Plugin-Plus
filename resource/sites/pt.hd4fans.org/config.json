@@ -9,7 +9,7 @@
     "兽组"
   ],
   "host": "pt.hd4fans.org",
-  "collaborator": "lilungpo, tongyifan",
+  "collaborator": ["lilungpo", "tongyifan"],
   "searchEntry": [
     {
       "name": "全站",

@@ -9,7 +9,7 @@
     "综合"
   ],
   "host": "www.beitai.pt",
-  "collaborator": "wyx1818, tongyifan",
+  "collaborator": ["wyx1818", "tongyifan"],
   "searchEntryConfig": {
     "area": [
       {

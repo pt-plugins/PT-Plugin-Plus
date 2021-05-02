@@ -534,7 +534,7 @@
            * 两个事件必需执行一个，可以传递一个参数
            */
           click: (success, error) => {
-            // getDownloadURL 方法有继承者提供
+            // getDownloadURL 方法由继承者提供
             if (!this.getDownloadURL) {
               // "getDownloadURL 方法未定义"
               error(this.t("getDownloadURLisUndefined"));

@@ -7,7 +7,7 @@
   "icon": "https://ptsbao.club/favicon.ico",
   "tags": ["影视", "综合"],
   "host": "ptsbao.club",
-  "collaborator": "laizony, ted423",
+  "collaborator": ["laizony", "ted423"],
   "selectors": {
     "userBaseInfo": {
       "merge": true,

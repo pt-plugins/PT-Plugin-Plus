@@ -12,34 +12,15 @@
      * url: 服务器地址
      */
     init(options) {
-      this.options = Object.assign(
-        {
-          apiVer: "v2"
-        },
-        options
-      );
+      this.options = options;
       this.headers = {};
       this.sessionId = "";
-      this.apiVer = {
-        v1: {
-          login: "/login"
-        },
-        v2: {
-          login: "/api/v2/auth/login",
-          add: "/api/v2/torrents/add"
-        }
-      };
-      this.api = {};
 
       if (this.options.address.substr(-1) == "/") {
         this.options.address = this.options.address.substr(
           0,
           this.options.address.length - 1
         );
-      }
-
-      if (this.options.apiVer) {
-        this.api = this.apiVer[this.options.apiVer];
       }
 
       console.log("qBittorrent.init", this.options.address);
@@ -97,7 +78,7 @@
         // qb 需要禁用『启用跨站请求伪造保护』
         var settings = {
           type: "POST",
-          url: this.options.address + this.api.login,
+          url: this.options.address + "/api/v2/auth/login",
           data: data,
           timeout: PTBackgroundService.options.connectClientTimeout
         };
@@ -176,50 +157,43 @@
      * @param {*} callback
      */
     addTorrentFromUrl(data, callback) {
+      let formData = new FormData();
+
+      if (data.savePath) {
+        formData.append("savepath", data.savePath);
+        // 禁用自动管理种子
+        formData.append("autoTMM", false);
+      }
+
+      if (data.autoStart != undefined) {
+        formData.append("paused", !data.autoStart);
+      }
+
       let url = data.url;
 
       // 磁性连接
       if (url.startsWith('magnet:')) {
-        this.addTorrent(
-          {
-            urls: url,
-            savepath: data.savePath,
-            paused: !data.autoStart
-          },
-          callback
-        );
-        return;
-      }
-
-      PTBackgroundService.requestMessage({
-        action: "getTorrentDataFromURL",
-        data: url
-      })
-        .then(result => {
-          let formData = new FormData();
-          if (data.savePath) {
-            formData.append("savepath", data.savePath);
-            // 禁用自动管理种子
-            formData.append("autoTMM", false);
-          }
-
-          if (data.autoStart != undefined) {
-            formData.append("paused", !data.autoStart);
-          }
-
-          formData.append("torrents", result, "file.torrent");
-
-          this.addTorrent(formData, callback);
+        formData.append('urls', url);
+        this.addTorrent(formData, callback);
+      } else {
+        PTBackgroundService.requestMessage({
+          action: "getTorrentDataFromURL",
+          data: url
         })
-        .catch(result => {
-          callback && callback(result);
-        });
+          .then(result => {
+            formData.append("torrents", result, "file.torrent");
+            this.addTorrent(formData, callback);
+          })
+          .catch(result => {
+            callback && callback(result);
+          });
+      }
     }
 
     addTorrent(params, callback) {
       this.exec(
         {
-          method: this.api.add,
+          method: "/api/v2/torrents/add",
           params: params
         },
         resultData => {

@@ -54,21 +54,21 @@
       "merge": true,
       "fields": {
         "bonus": {
-          "selector": ["td.rowhead:contains('猫粮') + td"],
+          "selector": ["td.rowhead:contains('猫粮') + td, td.rowhead:contains('Karma Points') + td, td.rowhead:contains('貓糧') + td"],
           "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+        },
+        "seedingSize": {
+          "selector": ["td.rowhead:contains('做种大小') + td, td.rowhead:contains('Seeding Size') + td, td.rowhead:contains('做種大小') + td"],
+          "filters": ["query.text().trim().sizeToNumber()"]
         }
       }
     },
     "userSeedingTorrents": {
-      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "page": "/getusertorrentlist.php?userid=$user.id$&type=seeding",
       "fields": {
         "seeding": {
           "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(2)').length"]
-        },
-        "seedingSize": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["jQuery.map(query.find('td.rowfollow:eq(3)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          "filters": ["query.find('td.rowfollow:eq(1)').length"]
         }
       }
     }

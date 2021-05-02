@@ -17,13 +17,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-        with:
-          ref: dev
 
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: '13.x'
+          node-version: '14'
 
       - name: Get yarn cache
         id: yarn-cache
@@ -36,6 +34,10 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+
+      - uses: benjlevesque/short-sha@v1.2
+        id: short-sha
+
       - run: yarn release
         env:
           CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
@@ -43,11 +45,11 @@ jobs:
       - name: Upload dev_build_zip
         uses: actions/upload-artifact@v2
         with:
-          name: dev_build_zip
+          name: dev-build-${{ steps.short-sha.outputs.sha }}-zip
           path: releases/*.zip
 
       - name: Upload dev_build_crx
         uses: actions/upload-artifact@v2
         with:
-          name: dev_build_crx
+          name: dev-build-${{ steps.short-sha.outputs.sha }}-crx
           path: releases/*.crx

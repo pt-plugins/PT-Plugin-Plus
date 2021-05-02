@@ -7,7 +7,7 @@
   "tags": ["剧集"],
   "schema": "Gazelle",
   "host": "broadcasthe.net",
-  "collaborator": "ylxb2016, enigmaz",
+  "collaborator": ["ylxb2016", "enigmaz"],
   "searchEntryConfig": {
     "page": "/torrents.php",
     "resultType": "html",

@@ -10,7 +10,7 @@
     "综合"
   ],
   "host": "hddolby.com",
-  "collaborator": "iceyuamao0510, tongyifan",
+  "collaborator": ["iceyuamao0510", "tongyifan"],
   "searchEntryConfig": {
     "fieldSelector": {
       "progress": {

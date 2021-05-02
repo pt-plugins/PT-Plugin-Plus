@@ -1,0 +1,77 @@
+{
+  "name": "bB",
+  "timezoneOffset": "+0000",
+  "description": "",
+  "url": "https://baconbits.org/",
+  "icon": "https://baconbits.org/favicon.ico",
+  "tags": ["综合"],
+  "schema": "",
+  "host": "baconbits.org",
+  "supportedFeatures": {
+    "userData": true,
+    "search": false,
+    "imdbSearch": false,
+    "sendTorrent": false
+  },
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": [".username"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": [".username"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/user.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["li:contains('Uploaded:') > span"],
+          "filters": ["query.attr('title').replace(/,/g,'').sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ["li:contains('Downloaded:') > span"],
+          "filters": ["query.attr('title').replace(/,/g,'').sizeToNumber()"]
+        },
+        "ratio": {
+          "selector": ["li:contains('Ratio:') > span"],
+          "filters": ["query.attr('title').replace(/,/g,'')"]
+        },
+        "seeding": {
+          "selector": ["li:contains('Seeding:')"],
+          "filters": [
+            "query.text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)",
+            "(query && query.length>=2)?parseFloat(query[1]):0"
+          ]
+        },
+        "seedingSize": {
+          "value": -1
+        },
+        "levelName": {
+          "selector": ["li:contains('Class:')"],
+          "filters": ["query.text().match(/Class:(.+)/)", "(query && query.length>=2)?query[1]:''"]
+        },
+        "bonus": {
+          "selector": ["li:contains('Bonus Points:') > a"],
+          "filters": ["query.text().replace(/,|\\n|\\s+/g,'')"]
+        },
+        "joinTime": {
+          "selector": ["li:contains('Joined:') > span"],
+          "filters": [
+            "query.attr('title')",
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        }
+      }
+    }
+  }
+}

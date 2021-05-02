@@ -127,6 +127,10 @@
       "fields": {
         "messageCount": {
           "selector": ["a[href*='messages.php'] b span[style*='color: red']"]
+        },
+        "seeding": {
+          "selector": ["img[alt='Torrents seeding']"],
+          "filters": ["$(query[0].nextSibling).text().trim()"]
         }
       }
     },
@@ -134,8 +138,12 @@
       "merge": true,
       "fields": {
         "bonus": {
-          "selector": ["td.rowhead:contains('魔力值') + td"],
+          "selector": ["td.rowhead:contains('魔力值') + td, td.rowhead:contains('Karma Points') + td"],
           "filters": ["query.text().replace(/,/g,'').match(/魔力值:.+?([\\d.]+)/)[1]", "parseFloat(query)"]
+        },
+        "seedingSize": {
+          "selector": ["td.rowhead:contains('当前做种') + td, td.rowhead:contains('Current Seeding') + td, td.rowhead:contains('目前做種') + td"],
+          "filters": ["query.text().trim().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         }
       }
     },

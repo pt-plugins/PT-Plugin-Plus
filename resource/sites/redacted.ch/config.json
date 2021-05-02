@@ -7,7 +7,7 @@
   "tags": ["音乐"],
   "schema": "GazelleJSONAPI",
   "host": "redacted.ch",
-  "collaborator": "ylxb2016, enigamz",
+  "collaborator": ["ylxb2016", "enigamz"],
   "searchEntryConfig": {
     "skipIMDbId": true
   },

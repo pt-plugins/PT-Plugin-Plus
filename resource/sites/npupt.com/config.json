@@ -10,7 +10,7 @@
   ],
   "schema": "NexusPHP",
   "host": "npupt.com",
-  "collaborator": "Rhilip, xfl03",
+  "collaborator": ["Rhilip", "xfl03"],
   "searchEntryConfig": {
     "parseScriptFile": "getSearchResult.js"
   },

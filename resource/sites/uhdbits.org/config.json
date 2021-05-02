@@ -6,7 +6,7 @@
   "schema": "GazelleJSONAPI",
   "tags": ["影视"],
   "url": "https://uhdbits.org/",
-  "collaborator": "bimzcy, enigamz",
+  "collaborator": ["bimzcy", "enigamz"],
   "host": "uhdbits.org",
   "searchEntryConfig": {
     "page": "/torrents.php",

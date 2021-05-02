@@ -183,7 +183,8 @@
         "bonus": "Bonus",
         "joinTime": "Join time",
         "lastUpdateTime": "Update at",
-        "status": "Status"
+        "status": "Status",
+        "comments": "Comments"
       },
       "tip": "N/A means no support",
       "nodata": "You have not added a site, please go to [Sites] to add a site."
@@ -216,6 +217,7 @@
     "timeline": {
       "share": "Generate a share image",
       "siteName": "Tracker name",
+      "blurSiteIcon": "Blur site icon",
       "userName": "User name",
       "userLevel": "User level",
       "showSites": "Show Sites",
@@ -731,8 +733,11 @@
       "seedingDataSubTitle": "Seeding size: {seedingSize}, count: {count}",
       "seedingSize": "Seeding size",
       "seedingCount": "Seeding count",
+      "barDataTitle": "[{userName}@{site}] Upload Data",
       "size": "Size",
       "count": "Count",
+      "total": "Total",
+      "percent": "Percent",
       "note": "Note: <br>1. Chart history data comes from the overview page, manual or automatic update will be recorded; <br>2. Each tracker only saves one per day;",
       "dateRange": {
         "7day": "7 days",

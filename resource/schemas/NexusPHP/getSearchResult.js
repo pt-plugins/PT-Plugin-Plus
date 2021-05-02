@@ -146,6 +146,10 @@
         // 遍历数据行
         for (let index = beginRowIndex; index < rows.length; index++) {
           const row = rows.eq(index);
+
+          // FIX https://github.com/ronggang/PT-Plugin-Plus/issues/347
+          row.attr('id') === 'zhiding' && row.removeAttr('id');
+
           let cells = row.find(">td");
 
           let title = this.getTitle(row);
@@ -375,6 +379,7 @@
 
             case "tp.m-team.cc":
             case "pt.m-team.cc":
+            case "kp.m-team.cc":
               title = row.find("a[href*='hit'][title]").last();
               subTitle = title
                 .parent()
