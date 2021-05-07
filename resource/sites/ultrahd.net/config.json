@@ -1,0 +1,46 @@
+{
+  "name": "UltraHD",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "url": "https://ultrahd.net",
+  "description": "韩剧",
+  "icon": "https://ultrahd.net/favicon.ico",
+  "tags": [
+    "电影",
+    "电视剧",
+    "综艺",
+    "纪录片",
+    "动漫"
+  ],
+  "host": "ultrahd.net",
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          ".torrentname td:first-child > div[title]:last-child"
+        ],
+        "filters": [
+          "query ? query.attr('title').match(/([\\d\\.]+)%/) : null",
+          "(query && query.length >= 2) ? parseFloat(query[1]) : null"
+        ]
+      },
+      "status": {
+        "selector": [
+          ".torrentname td:first-child > div[title]:last-child"
+        ],
+        "filters": [
+          "query ? query.attr('title').split(' ')[0] : null",
+          "query === 'leeching' ? 1 : query === 'seeding' ? 2 : query === 'inactivity' ? 255 : null"
+        ]
+      }
+    }
+  },
+  "searchEntry": [
+    { "name": "全站", "enabled": true },
+    { "name": "电影", "queryString": "cat401=1", "enabled": false },
+    { "name": "电视剧", "queryString": "cat402=1", "enabled": false },
+    { "name": "综艺", "queryString": "cat403=1", "enabled": false },
+    { "name": "纪录片", "queryString": "cat404=1", "enabled": false },
+    { "name": "动漫", "queryString": "cat405=1", "enabled": false }
+  ]
+}
