@@ -46,7 +46,7 @@
     "jszip": "^3.4.0",
     "marked": "^0.7.0",
     "parse-torrent": "^7.0.1",
-    "ua-parser-js": "^0.7.20",
+    "ua-parser-js": "^0.7.24",
     "url-parse": "^1.4.4",
     "vue": "^2.5.17",
     "vue-class-component": "^6.3.2",
