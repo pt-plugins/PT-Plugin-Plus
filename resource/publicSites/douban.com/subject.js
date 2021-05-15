@@ -30,17 +30,16 @@
      * 获取 IMDb 编号
      */
     getIMDbId() {
-      let link = $("a[href*='www.imdb.com/title/']:first");
-      if (link.length) {
-        return link.text();
+      const imdbKeyDom = $('#info .pl:contains("IMDb")')[0];
+      if(imdbKeyDom) {
+        return imdbKeyDom.nextSibling.textContent.trim();
       }
-
       return "";
     }
 
     getTitle() {
       return document.title.replace(" (豆瓣)", "");
     }
-  };
+  }
   (new App()).init();
 })(jQuery, window);
