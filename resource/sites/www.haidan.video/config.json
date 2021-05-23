@@ -36,8 +36,7 @@
       "appendQueryString": "&search_area=4"
     }],
     "resultType": "html",
-    "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "table.torrents:last"
+    "parseScriptFile": "getSearchResult.js"
   },
   "searchEntry": [{
     "name": "全站",
