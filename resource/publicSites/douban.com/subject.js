@@ -35,6 +35,13 @@
         return link.text();
       }
 
+      // 尝试从文本中获取
+      link = $("#info").text().match(/IMDb: (tt\d+)/);
+
+      if (link) {
+        return link[1];
+      }
+
       return "";
     }
 
