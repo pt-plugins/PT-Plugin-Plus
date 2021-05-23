@@ -607,6 +607,7 @@
               <span class="mr-1" v-if="props.item.tags && props.item.tags.length">
                 <span
                   :class="['tag', `${tag.color}`]"
+                  :style="{'background-color':`${tag.color}`,'border-color':`${tag.color}`}"
                   v-for="(tag, index) in props.item.tags"
                   :key="index"
                   :title="tag.title"

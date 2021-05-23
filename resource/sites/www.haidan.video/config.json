@@ -1,0 +1,75 @@
+{
+  "name": "HaiDan",
+  "schema": "NexusPHP",
+  "url": "https://www.haidan.video/",
+  "description": "海胆之家",
+  "icon": "https://www.haidan.video/favicon.ico",
+  "tags": [
+    "影视",
+    "综合"
+  ],
+  "host": "www.haidan.video",
+  "collaborator": "rsj",
+  "ver": "1.0",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details.php"],
+    "scripts": ["common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents.php", "/videos.php"],
+    "scripts": ["common.js", "torrents.js"]
+  }],
+  "securityKeyFields": ["passkey"],
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "queryString": "search=$key$",
+    "area": [{
+      "name": "标题",
+      "appendQueryString": "&search_area=0"
+    }, {
+      "name": "简介",
+      "appendQueryString": "&search_area=1"
+    }, {
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "appendQueryString": "&search_area=4"
+    }],
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table.torrents:last"
+  },
+  "searchEntry": [{
+    "name": "全站",
+    "enabled": true
+  }],
+  "checker": {
+    "isLogin": {
+      "page": "/usercp.php",
+      "contains": "logout.php"
+    }
+  },
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "img.pro_free"
+  }, {
+    "name": "2xFree",
+    "selector": "img.pro_free2up"
+  }, {
+    "name": "2xUp",
+    "selector": "img.pro_2up"
+  }, {
+    "name": "2x50%",
+    "selector": "img.pro_50pctdown2up"
+  }, {
+    "name": "30%",
+    "selector": "img.pro_30pctdown"
+  }, {
+    "name": "50%",
+    "selector": "img.pro_50pctdown"
+  }, {
+    "name": "H&R",
+    "color": "black",
+    "selector": "img[src='public/pic/hit_run.gif']"
+  }]
+}
