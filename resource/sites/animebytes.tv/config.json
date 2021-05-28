@@ -36,11 +36,11 @@
       "fields": {
         "uploaded": {
           "selector": ["dt:contains('Uploaded:') + dd > span"],
-          "filters": ["query.attr('title').replace(/,/g,'')"]
+          "filters": ["query.attr('title').replace(/,/g,'')", "parseFloat(query)"]
         },
         "downloaded": {
           "selector": ["dt:contains('Downloaded:') + dd > span"],
-          "filters": ["query.attr('title').replace(/,/g,'')"]
+          "filters": ["query.attr('title').replace(/,/g,'')", "parseFloat(query)"]
         },
         "ratio": {
           "selector": ["dt:contains('Ratio:') + dd > span"],
