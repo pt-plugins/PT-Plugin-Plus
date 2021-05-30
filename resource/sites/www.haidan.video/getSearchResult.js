@@ -29,39 +29,35 @@
       let results = [];
       for (let i = 0; i < torrents.length; i++) {
         let torrent = torrents.eq(i);
-        let items = torrent.find(".torrent_item");
-        let pre_title = torrent.find(".video_name_str").text();
+        let items = torrent.find(".torrent_wrap");
+        let maintitle = Searcher.getFieldValue(site,torrent,"title");
+        let category_link = site.url + site.page + Searcher.getFieldValue(site,torrent,"category_link_parameters");
+        let category_name = Searcher.getFieldValue(site,torrent,"category_name");
         for (let j = 0; j < items.length; j++) {
+          let item = items.eq(j);
           let field = {
-            title: -1,
-            subTitle: -1,
-            link: -1,
-            url: -1,
-            size: -1,
-            time: -1,
-            author: -1,
-            seeders: -1,
-            leechers: -1,
-            completed: -1,
+            title: maintitle,
+            subTitle: Searcher.getFieldValue(site,item,"subTitle"),
+            link: site.url + Searcher.getFieldValue(site,item,"link_path"),
+            url: site.url + Searcher.getFieldValue(site,item,"url_path"),
+            size: Searcher.getFieldValue(site,item,"size"),
+            time: Searcher.getFieldValue(site,item,"time"),
+            author: Searcher.getFieldValue(site,item,"author"),
+            seeders: Searcher.getFieldValue(site,item,"seeders"),
+            leechers: Searcher.getFieldValue(site,item,"leechers"),
+            completed: Searcher.getFieldValue(site,item,"completed"),
             //comments: -1,
             site: site,
-            tags: [],
+            tags: Searcher.getRowTags(site,item),
             entryName: options.entry.name,
-            //category: "当前分类信息，如果指定，则需要一个对象 {name: '分类名称', link: '分类连接地址(可选)'}"
+            category: {
+              link: category_link,
+              name: category_name,
+            },
+            progress: Searcher.getFieldValue(site,item,"progress"),
+            status: Searcher.getFieldValue(site,item,"status"),
           };
-          let item = items.eq(j);
-          field.title = pre_title + "(" + (j + 1).toString() + ")";
-          field.subTitle = item.find(".torrent_name_col a").text();
-          field.link = site.url + item.find(".torrent_name_col a").attr("href");
-          field.seeders = item.find(".seeder_col").text();
-          field.leechers = item.find(".leecher_col").text();
-          field.completed = item.find(".snatched_col").text();
-          field.subTitle = item.find(".torrent_name_col a").text();
-          field.size = item.find(".video_size").text();
-          field.author = item.find(".username-center a b").text();
-          field.url = site.url + item.find(".fa-download").parent().attr("href");
-          field.time = item.find(".time_col span[title]").text();
-          field.tags = Searcher.getRowTags(site, item);
+          //CustomTags
           let listtags = item.find("label");
           for (let k = 0; k < listtags.length; k++) {
             let tag = {
@@ -71,7 +67,7 @@
             }
             field.tags.push(tag);
           }
-          //field.category = item.find(".img_blurry a").attr("href");
+
           results.push(field);
         }
       }
