@@ -1,0 +1,45 @@
+{
+  "name": "SugoiMusic",
+  "timezoneOffset": "+0800",
+  "description": "music",
+  "url": "https://sugoimusic.me/",
+  "icon": "https://sugoimusic.me/favicon.ico",
+  "tags": [
+    "音乐"
+  ],
+  "schema": "GazelleJSONAPI",
+  "host": "sugoimusic.me",
+  "collaborator": [
+    "MewX"
+  ],
+  "searchEntryConfig": {
+    "skipIMDbId": true
+  },
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/user.php?id=$user.id$",
+      "merge": true,
+      "fields": {
+        "seedingSize": {
+          "selector": [
+            "li:contains('Total Seeding:') > span"
+          ],
+          "filters": [
+            "query.text().trim().sizeToNumber()"
+          ]
+        },
+        "bonus": {
+          "selector": [
+            "#bonus_points > span"
+          ],
+          "filters": [
+            "query.text().trim().replace(',', '')"
+          ]
+        }
+      }
+    }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false
+  }
+}
