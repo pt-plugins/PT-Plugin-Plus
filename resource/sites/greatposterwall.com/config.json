@@ -1,0 +1,40 @@
+{
+  "name": "GPW",
+  "timezoneOffset": "+0800",
+  "description": "movie",
+  "url": "https://greatposterwall.com/",
+  "icon": "https://greatposterwall.com/favicon.ico",
+  "tags": [
+    "电影"
+  ],
+  "schema": "GazelleJSONAPI",
+  "host": "greatposterwall.com",
+  "collaborator": [
+    "MewX"
+  ],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/bonus.php?action=bprates",
+      "fields": {
+        "seedingSize": {
+          "selector": [
+            "table#bprates_overview > tbody > tr > td:eq(1)"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "bonus": {
+          "selector": [
+            "div#content > div.header > h3"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/.+?([\\d.]+)/)",
+            "(query && query.length>=2)?query[1]:0"
+          ]
+        }
+      }
+    }
+  }
+}
