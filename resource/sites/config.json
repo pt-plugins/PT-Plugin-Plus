@@ -1,0 +1,51 @@
+{
+  "name": "OpenCD",
+  "description": "皇后，专一的音乐类PT站，是目前国内最大的无损音乐PT",
+  "url": "https://open.cd/",
+  "icon": "https://open.cd/favicon.ico",
+  "tags": ["音乐"],
+  "schema": "NexusPHP",
+  "host": "open.cd",
+  "plugins": [
+    {
+      "name": "特殊插件",
+      "pages": ["/torrents.php"],
+      "scripts": ["/libs/album/album.js", "torrents.js"],
+      "styles": ["/libs/album/style.css"]
+    }
+  ],
+  "searchEntry": [
+    {
+      "entry": "/torrents.php?search=$key$",
+      "name": "全部",
+      "resultType": "html",
+      "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+      "resultSelector": "table.torrent_list:last > tbody > tr"
+    }
+  ],
+  "patterns": {
+    "torrentLinks": ["*://*/*"]
+  },
+  "parser": {
+    "downloadURL": "解析脚本内容"
+  },
+  "torrentTagSelectors": [
+    {
+      "name": "Free",
+      "selector": "img.pro_free",
+      "color": "blue"
+    }
+  ],
+  "categories": [
+    {
+      "entry": "*",
+      "result": "cat$id$=1",
+      "category": [
+        {
+          "id": 20,
+          "name": "原盘(Full BD)"
+        }
+      ]
+    }
+  ]
+}
