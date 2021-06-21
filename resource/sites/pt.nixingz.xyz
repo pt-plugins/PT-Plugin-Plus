@@ -1,0 +1,10 @@
+{
+  "name": "逆行者的百宝箱",
+  "description": "分享--是拥有全世界的第一步",
+  "url": "https://pt.nixingz.xyz/",
+  "icon": "https://pt.nixingz.xyz/favicon.ico",
+  "tags": ["影视", "综合"],
+  "schema": "NexusPHP",
+  "host": "pt.nixingz.xyz",
+  "collaborator": "nixingz"
+}
