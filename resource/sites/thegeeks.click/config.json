@@ -1,0 +1,68 @@
+{
+  "name": "TG",
+  "timezoneOffset": "+0000",
+  "description": "TheGeeks",
+  "url": "https://thegeeks.click",
+  "icon": "https://thegeeks.click/favicon.ico",
+  "tags": ["学习"],
+  "schema": "",
+  "host": "thegeeks.click",
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/main.php",
+      "fields": {
+        "id": {
+          "selector": ["a[href*='userdetails.php?id=']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["a[href*='userdetails.php?id=']:first"]
+        },
+        "messageCount": {
+          "selector": ["a[href='message.php?action=viewmailbox] + b"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": [".embedded td:contains('Uploaded') + td:first"],
+          "filters": ["(query.text().replace(/,|\\(.*\\)/g,'')).sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": [".embedded td:contains('Downloaded') + td:first"],
+          "filters": ["(query.text().replace(/,|\\(.*\\)/g,'')).sizeToNumber()"]
+        },
+        "levelName": {
+          "selector": ["a[href*='userdetails.php?id='] + span:first"],
+          "filters": ["query.text().replace(/\\(|\\)/g, '')"]
+        },
+        "bonus": {
+          "value": "-1"
+        },
+        "joinTime": {
+          "selector": [".embedded td:contains('Join date') + td:first"],
+          "filters": ["query.text().replace(/\\(.*\\)/g, '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/main.php",
+      "fields": {
+        "seeding": {
+          "selector": ["img[title='seeders'] + span:first"]
+        }
+      }
+    }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false
+  }
+}
