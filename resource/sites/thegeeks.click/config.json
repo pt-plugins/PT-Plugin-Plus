@@ -65,6 +65,9 @@
     }
   },
   "supportedFeatures": {
-    "imdbSearch": false
+    "userData": true,
+    "search": false,
+    "imdbSearch": false,
+    "sendTorrent": false
   }
 }
