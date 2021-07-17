@@ -59,7 +59,7 @@
         },
         "joinTime": {
           "selector": [".embedded td:contains('Join date') + td:first"],
-          "filters": ["query.text().replace(/\\(.*\\)/g, '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+          "filters": ["query.text().replace(/\\(.*\\)/g, '').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         }
       }
     }
