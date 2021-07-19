@@ -9,6 +9,10 @@
     "name": "种子列表",
     "pages": ["^/torrents$"],
     "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }, {
+    "name": "个人种子列表页面",
+    "pages": ["^/users/.*?/(uploads|downloads|seeds|active|torrents|unsatisfieds)"],
+    "scripts": ["/schemas/NexusPHP/common.js", "userTorrents.js"]
   }],
   "searchEntryConfig": {
     "page": "/torrents/filter",
