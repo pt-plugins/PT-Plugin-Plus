@@ -294,8 +294,6 @@ export class User {
         return;
       }
 
-      PPF.updateBadge(++this.requestQueueCount);
-
       let request = $.ajax({
         url,
         method: rule.requestMethod || ERequestMethod.GET,
@@ -306,7 +304,6 @@ export class User {
       })
         .done(result => {
           this.removeQueue(host, url);
-          PPF.updateBadge(--this.requestQueueCount);
           let content: any;
           try {
             if (rule.dataType !== ERequestResultType.JSON) {
@@ -335,7 +332,6 @@ export class User {
         })
         .fail((jqXHR, textStatus, errorThrown) => {
           this.removeQueue(host, url);
-          PPF.updateBadge(--this.requestQueueCount);
           let msg = this.service.i18n.t("service.searcher.siteNetworkFailed", {
             site,
             msg: `${jqXHR.status} ${errorThrown}, ${textStatus}`

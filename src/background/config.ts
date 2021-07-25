@@ -649,22 +649,18 @@ class Config {
    * @param api
    */
   public getContentFromApi(api: string): Promise<any> {
-    PPF.updateBadge(++this.requestCount);
     return new Promise<any>((resolve?: any, reject?: any) => {
       let content = APP.cache.get(api);
       if (content) {
         resolve(content);
-        PPF.updateBadge(--this.requestCount);
         return;
       }
       $.getJSON(api)
         .done(result => {
           APP.cache.set(api, result);
-          PPF.updateBadge(--this.requestCount);
           resolve(result);
         })
         .fail(result => {
-          PPF.updateBadge(--this.requestCount);
           reject && reject(result);
         });
     });

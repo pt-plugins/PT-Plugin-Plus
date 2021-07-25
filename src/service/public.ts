@@ -55,13 +55,11 @@ class HelpFunctions {
     try {
       if (count == 0) {
         chrome.browserAction.setBadgeText({ text: "" });
-        chrome.browserAction.enable();
       } else {
         chrome.browserAction.setBadgeText({ text: count.toString() });
         chrome.browserAction.setBadgeBackgroundColor({
-          color: "#aabbcc"
+          color: "#f44336"
         });
-        chrome.browserAction.disable();
       }
     } catch (error) {
       console.log(error);

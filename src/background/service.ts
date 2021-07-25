@@ -359,6 +359,7 @@ export default class PTPlugin {
     this.options.sites.forEach((site: Site) => {
       site.user = this.userData.get(site.host as string);
     });
+    this.updateBadgeForUserData();
   }
 
   /**
@@ -669,5 +670,18 @@ export default class PTPlugin {
    */
   public requestPermissions(permissions: string[]): Promise<any> {
     return PPF.requestPermissions(permissions);
+  }
+
+   public updateBadgeForUserData() {
+    let count = 0
+    for (const site of this.options.sites) {
+      if (!site.allowGetUserInfo || site.offline) {
+        continue
+      }
+      if (site.user && site.user.lastUpdateStatus && site.user.lastUpdateStatus !== EUserDataRequestStatus.success) {
+        count++
+      }
+    }
+    PPF.updateBadge(count);
   }
 }
