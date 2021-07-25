@@ -657,7 +657,8 @@
           "priority": "优先级",
           "priorityTip": "可用于搜索排序",
           "offline": "站点已离线（停机/关闭）",
-          "timezone": "时区"
+          "timezone": "时区",
+          "messageCountToggle": "消息提醒 (打开/关闭)"
         },
         "index": {
           "importAll": "一键导入站点",
