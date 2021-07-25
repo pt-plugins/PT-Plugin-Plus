@@ -170,6 +170,9 @@
 
         <!-- 站点已离线（停机/关闭） -->
         <v-switch :label="$t('settings.sites.editor.offline')" v-model="site.offline"></v-switch>
+
+        <!-- 消息提醒开关 -->
+        <v-switch :label="$t('settings.sites.editor.messageCountToggle')" v-model="site.messageCountToggle"></v-switch>
       </v-form>
     </v-card-text>
   </v-card>
@@ -365,7 +368,9 @@ export default Vue.extend({
     },
     initData() {
       if (this.initData) {
-        this.site = Object.assign({}, this.initData);
+        this.site = Object.assign({
+          messageCountToggle: true,
+        }, this.initData);
         this.valid = this.site.name && this.site.host ? true : false;
       }
     }
