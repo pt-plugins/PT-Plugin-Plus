@@ -807,6 +807,8 @@
       "user": {
         "notSupported": "暂不支持",
         "notLogged": "未登录",
+        "needLogin": "未登录",
+        "unknown": "未知错误",
         "getUserInfoFailed": "获取用户名和编号失败",
         "abortGetUserInfoFailed": "取消获取用户信息请求失败"
       }

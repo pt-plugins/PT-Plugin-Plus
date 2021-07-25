@@ -807,6 +807,8 @@
       "user": {
         "notSupported": "Not Supported",
         "notLogged": "Not logged",
+        "needLogin": "Not logged",
+        "unknown": "Unknown",
         "getUserInfoFailed": "Failed to get username and id",
         "abortGetUserInfoFailed": "Cancel request to get user information failed"
       }
