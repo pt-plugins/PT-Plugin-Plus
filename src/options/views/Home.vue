@@ -527,7 +527,7 @@ export default Vue.extend({
           align: "right",
           value: "user.lastUpdateTime"
         },
-        { text: this.$t("home.headers.status"), align: "center", value: "" }
+        { text: this.$t("home.headers.status"), align: "center", value: "user.lastUpdateStatus" }
       ];
     }
   }
