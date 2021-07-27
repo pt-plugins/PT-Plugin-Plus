@@ -1,5 +1,4 @@
-(function($, window) {
-  console.log("this is details.js");
+(function ($, window) {
   class App extends window.NexusPHPCommon {
     init() {
       this.initButtons();

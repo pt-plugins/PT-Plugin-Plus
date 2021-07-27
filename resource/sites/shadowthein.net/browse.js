@@ -1,5 +1,4 @@
-(function($) {
-  console.log("this is browse.js");
+(function ($) {
   class App extends window.NexusPHPCommon {
     init() {
       this.initButtons();
