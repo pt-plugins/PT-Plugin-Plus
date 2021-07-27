@@ -835,25 +835,27 @@ export default Vue.extend({
         tooltip: {
           useHTML: true,
           formatter: function(): any {
-            const { x, total, color, series: { name: siteName } }: any = this
+            const { x, y, total, color, series: { name: siteName } }: any = this
             let sites = []
             for (const site of series) {
               const siteY = (site.data.find(([a]: any[]) => a === x) || [0, 0])[1]
-              if (siteY === 0) {
-                continue
+              if (
+                (y < 0 && siteY < 0) ||
+                (y > 0 && siteY > 0)
+               ) {
+                const percentage = Math.ceil(siteY / total * 100)
+                sites.push({
+                  name: site.name,
+                  value: siteY,
+                  valueDisplay: filters.formatSizeWithNegative(siteY),
+                  percentageDisplay: `${percentage}%`,
+                  isActive: site.name === siteName,
+                })
               }
-              const percentage = Math.ceil(siteY / total * 100)
-              sites.push({
-                name: site.name,
-                value: siteY,
-                valueDisplay: filters.formatSize(siteY),
-                percentageDisplay: `${percentage}%`,
-                isActive: site.name === siteName,
-              })
             }
             sites.sort((a,b) => b.value-a.value)
             const date = dayjs(x).format("YYYY-MM-DD")
-            const totalDisplay = filters.formatSize(total)
+            const totalDisplay = filters.formatSizeWithNegative(total)
             const totalText = $t('statistic.total').toString()
 
             const createTr = ({ name, valueDisplay, percentageDisplay, isActive }: any) => {
