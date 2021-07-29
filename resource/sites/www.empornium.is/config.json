@@ -2,15 +2,18 @@
   "name": "Empornium",
   "timezoneOffset": "+0000",
   "description": "EMP",
-  "url": "https://www.empornium.me/",
+  "url": "https://www.empornium.is/",
   "tags": ["Adult"],
   "schema": "Common",
   "plugins": [{
     "name": "种子列表",
     "pages": ["/torrents.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
   }],
-  "host": "www.empornium.me",
+  "host": "www.empornium.is",
+  "formerHosts": [
+    "www.empornium.me"
+  ],
   "searchEntryConfig": {
     "page": "torrents.php?searchtext=$key$",
     "resultType": "html",
@@ -137,10 +140,6 @@
     "common": {
 	  "page": "/torrents.php",
       "fields": {
-        "downloadURL": {
-          "selector": ["a[href*='action=download&id=']"],
-          "filters": ["query.attr('href')"]
-        },
         "size": {
           "selector": ["#content > div > div:nth-child(4)  td:contains('iB')"],
           "filters": ["query.parent().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
@@ -150,7 +149,7 @@
           "filters": ["query"]
         },
         "downloadURLs": {
-          "selector": ["a[href*='action=download&id=']"],
+          "selector": ["table.torrent_table a[href*='action=download&id='],a.button.blueButton"],
           "filters": ["query.toArray()"]
         },
         "confirmSize": {
@@ -158,6 +157,7 @@
           "filters": ["query.find('td.nobr:contains(\\'iB\\')')"]
         }
       }
-    }
+    },
+    "cdn": ["https://www.empornium.sx/"]
   }
 }
