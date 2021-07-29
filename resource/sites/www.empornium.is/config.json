@@ -157,7 +157,6 @@
           "filters": ["query.find('td.nobr:contains(\\'iB\\')')"]
         }
       }
-    },
-    "cdn": ["https://www.empornium.sx/"]
+    }
   }
 }
