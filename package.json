@@ -91,6 +91,7 @@
     "ts-node": "^8.5.2",
     "typescript": "^3.0.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
+    "unique-commit-id": "^1.0.0",
     "vue-cli-plugin-vuetify": "^0.4.6",
     "vue-template-compiler": "^2.5.17",
     "vuetify-loader": "^1.0.5",
