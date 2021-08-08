@@ -1,0 +1,32 @@
+{
+    "name": "PeerJunkies",
+    "description": "国外综合影视站",
+    "url": "https://peerjunkies.com/",
+    "icon": "https://peerjunkies.com/favicon.ico",
+    "tags": ["综合", "影视", "动漫"],
+    "schema": "Gazelle",
+    "host": "peerjunkies.com",
+    "patterns": {
+      "torrentLinks": ["https://peerjunkies.com/download.php/*/*"]
+    },
+    "categories": [
+      {
+        "entry": "browse.php",
+        "result": "cat=$id$",
+        "category": [
+          {
+            "id": 1,
+            "name": "动漫(Anime)"
+          },
+          {
+            "id": 21,
+            "name": "音乐(Music)"
+          },
+          {
+            "id": 22,
+            "name": "杂项(MISC)"
+          }
+        ]
+      }
+    ]
+  }
