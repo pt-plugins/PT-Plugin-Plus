@@ -82,7 +82,7 @@
             <v-badge color="red messageCount" overlap>
               <template
                 v-slot:badge
-                v-if="props.item.messageCountToggle && props.item.user.messageCount > 0"
+                v-if="!props.item.disableMessageCount && props.item.user.messageCount > 0"
                 :title="$t('home.newMessage')"
               >
                 {{
