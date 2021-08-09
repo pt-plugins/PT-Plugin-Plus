@@ -658,7 +658,7 @@
           "priorityTip": "Can be used for search sorting",
           "offline": "Site is offline (downtime\/shutdown)",
           "timezone": "Timezone",
-          "messageCountToggle": "Display message count"
+          "disableMessageCount": "Display message count"
         },
         "index": {
           "importAll": "One-click import site",

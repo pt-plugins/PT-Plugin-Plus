@@ -172,7 +172,7 @@
         <v-switch :label="$t('settings.sites.editor.offline')" v-model="site.offline"></v-switch>
 
         <!-- 消息提醒开关 -->
-        <v-switch :label="$t('settings.sites.editor.messageCountToggle')" v-model="site.messageCountToggle"></v-switch>
+        <v-switch :label="$t('settings.sites.editor.disableMessageCount')" v-model="site.disableMessageCount"></v-switch>
       </v-form>
     </v-card-text>
   </v-card>
@@ -368,9 +368,7 @@ export default Vue.extend({
     },
     initData() {
       if (this.initData) {
-        this.site = Object.assign({
-          messageCountToggle: true,
-        }, this.initData);
+        this.site = Object.assign({}, this.initData);
         this.valid = this.site.name && this.site.host ? true : false;
       }
     }
