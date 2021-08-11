@@ -63,7 +63,7 @@
       "fields": {
 	    "uploaded": {
           "selector": "div:contains('Stats') + ul.stats > li:contains('Uploaded'), div:contains('統計情報') + ul.stats > li:contains('アップロード数')",
-          "filters": ["query.text().replace(/,/g,'').match(/Uploaded|アップロード数.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/[\\d.]+ ?[ZEPTGMK]?i?B/)", " query ?(query[0]).sizeToNumber():0"]
         },
         "downloaded": {
           "selector": "div:contains('Stats') + ul.stats > li:contains('Downloaded'), div:contains('統計情報') + ul.stats > li:contains('Downloaded')",
@@ -71,7 +71,7 @@
         },
         "seeding": {
           "selector": "div:contains('Community') + ul.stats > li:contains('Seeding:'), div:contains('コミュニティ') + ul.stats > li:contains('シード中')",
-          "filters": ["query.text().match(/Seeding|シード中.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+          "filters": ["query.text().match(/[\\d.]+/)", " query ?query[0]:0"]
         },
         "bonus": {
           "selector": ["div:contains('Stats') + ul.stats > li:contains('Bonus Points:')", "div:contains('統計情報') + ul.stats > li:contains('ボーナスポイント')"],
@@ -79,7 +79,7 @@
         },
         "levelName": {
           "selector": "div:contains('Personal') + ul.stats > li:contains('Class:'), div:contains('個人情報') + ul.stats > li:contains('階級:')",
-          "filters": ["query.text().match(/Class:|階級:.+?(.+)/)", "(query && query.length>=2)?query[1]:''"]
+          "filters": ["query.text().match(/(Class:|階級:).+?(.+)/)", "(query && query.length>=2)?query[2]:''"]
         },
         "joinTime": {
           "selector": ["div:contains('Stats') + ul.stats > li:contains('Joined:') > span, div:contains('統計情報') + ul.stats > li:contains('Joined:') > span"],
