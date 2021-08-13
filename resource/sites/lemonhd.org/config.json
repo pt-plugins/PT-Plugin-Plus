@@ -67,7 +67,7 @@
     "fieldSelector": {
       "progress": {
         "selector": [
-          "> td:eq(8)"
+          "> td:eq(9)"
         ],
         "filters": [
           "query.text()==='--'?null:parseFloat(query.text())"
@@ -75,7 +75,7 @@
       },
       "status": {
         "selector": [
-          "> td:eq(8)"
+          "> td:eq(9)"
         ],
         "filters": [
           "query.text()==='--'?null:query.is('.peer-active')?(parseFloat(query.text())==100?2:1):(parseFloat(query.text())==100?255:3)"
@@ -85,42 +85,42 @@
   },
   "searchEntry": [
     {
-      "entry": "/torrents.php?search_area=name&search=$key$",
+      "entry": "/torrents.php?search=$key$",
       "name": "全站",
       "enabled": true
     },
     {
-      "entry": "/torrents.php?search=$key$",
+      "entry": "/torrents_movie.php?stype=s&search=$key$",
       "name": "电影",
       "enabled": false
     },
     {
-      "entry": "/torrents_tv.php?search=$key$",
+      "entry": "/torrents_tv.php?stype=s&search=$key$",
       "name": "电视综艺",
       "enabled": false
     },
     {
-      "entry": "/torrents_music.php?search=$key$",
+      "entry": "/torrents_music.php?stype=s&search=$key$",
       "name": "音乐",
       "enabled": false
     },
     {
-      "entry": "/torrents_animate.php?search=$key$",
+      "entry": "/torrents_animate.php?stype=s&search=$key$",
       "name": "动漫",
       "enabled": false
     },
     {
-      "entry": "/torrents_mv.php?search=$key$",
+      "entry": "/torrents_mv.php?stype=s&search=$key$",
       "name": "MV",
       "enabled": false
     },
     {
-      "entry": "/torrents_doc.php?search=$key$",
+      "entry": "/torrents_doc.php?stype=s&search=$key$",
       "name": "纪录片",
       "enabled": false
     },
     {
-      "entry": "/torrents_other.php?search=$key$",
+      "entry": "/torrents_other.php?stype=s&search=$key$",
       "name": "其他",
       "enabled": false
     }
