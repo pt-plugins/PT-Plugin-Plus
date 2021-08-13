@@ -21,6 +21,7 @@
   "searchEntryConfig": {
     "page": "/browse.php",
     "queryString": "s=$key$&dp=0&add=0&action=s&or=1",
+    "asyncParse": true,
     "area": [{
       "name": "IMDB",
       "keyAutoMatch": "^(tt\\d+)$",
