@@ -50,6 +50,7 @@ if (!"".getQueryString) {
           let row = Movies[index];
           let torrent = row.Torrents[0];
           let data = {
+            id: `${torrent.Id}`,
             title:
               row.Title +
               "[" +
