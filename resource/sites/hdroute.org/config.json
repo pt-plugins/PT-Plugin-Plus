@@ -100,6 +100,16 @@
           "filters": ["query.next().text().match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==2)?(query[1]).sizeToNumber():0"]
         }
       }
+    },
+    "userSeedingTorrents": {
+      "page": "/api.php?action=getAllPeeringInfo",
+      "dataType": "json",
+      "fields": {
+        "seedingList": {
+          "selector": ["seeding"],
+          "filters": ["let r=[];query.forEach(q=>{r.push(q.torrentid)});r"]
+        }
+      }
     }
   }
 }
