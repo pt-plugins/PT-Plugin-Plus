@@ -843,6 +843,18 @@ export default Vue.extend({
           }
         }
 
+        if (!item.progress && !item.status) {
+          // 对比用户信息的seedingList修改做种状态信息
+          if (item.site && item.site.user && item.site.user.seedingList) {
+            let seedingList = item.site.user.seedingList;
+            let seeding = seedingList.some(id => item.id && item.id == id);
+            if (seeding) {
+              item.progress = 100;
+              item.status = 2;
+            }
+          }
+        }
+
         if (dayjs(item.time).isValid()) {
           let val: number | string = item.time + "";
           // 标准时间戳需要 * 1000

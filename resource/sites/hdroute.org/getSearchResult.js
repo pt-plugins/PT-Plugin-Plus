@@ -42,6 +42,7 @@
           let link = `${site.url}details.php?id=${id}`;
 
           let data = {
+            id,
             title: row.find(".title_chs").text(),
             subTitle: row.find(".title_eng").text(),
             link,
