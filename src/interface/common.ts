@@ -340,6 +340,7 @@ export interface SearchResultItemCategory {
  * 搜索返回结果
  */
 export interface SearchResultItem {
+  id?: string;
   site: Site;
   title: string;
   titleHTML?: string;
