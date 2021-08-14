@@ -1,0 +1,122 @@
+{
+  "name": "HaiDan",
+  "schema": "NexusPHP",
+  "url": "https://www.haidan.video/",
+  "description": "海胆之家",
+  "icon": "https://www.haidan.video/favicon.ico",
+  "tags": [ "影视", "综合" ],
+  "host": "www.haidan.video",
+  "collaborator": "rsj",
+  "ver": "1.0",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details.php"],
+    "scripts": ["common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents.php", "/videos.php"],
+    "scripts": ["common.js", "torrents.js"]
+  }],
+  "securityKeyFields": ["passkey"],
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "title": {
+        "selector": [".video_name_str"]
+      },
+      "subTitle": {
+        "selector": [".torrent_name_col a"]
+      },
+      "seeders": {
+        "selector": [".seeder_col"]
+      },
+      "leechers": {
+        "selector": [".leecher_col"]
+      },
+      "completed": {
+        "selector": [".snatched_col"]
+      },
+      "size": {
+        "selector": [".video_size"]
+      },
+      "author": {
+        "selector": [".username-center a b"]
+      },
+      "time": {
+        "selector": [".time_col span[title]"],
+        "filters": ["query.attr('title')"]
+      },
+      "link_path": {
+        "selector": [".torrent_name_col a"],
+        "filters": ["query.attr('href')"]
+      },
+      "url_path": {
+        "selector": [".fa-download"],
+        "filters": ["query.parent().attr('href')"]
+      },
+      "category_link_parameters": {
+        "selector": [".img_blurry a"],
+        "filters": ["query.attr('href')"]
+      },
+      "category_name": {
+        "selector": [".img_blurry a img"],
+        "filters": ["query.attr('title')"]
+      },
+      "progress": {
+        "selector": ["progress"],
+        "filters": ["query.attr('data-label')","query==null?null:query.replace('%','')"]
+      },
+      "status": {
+        "selector": ["progress"],
+        "filters": ["query.attr('data-label')","query==null?null:(query.replace('%','')==100?2:1)"]
+      }
+    },
+    "page": "torrents.php",
+    "queryString": "search=$key$",
+    "area": [{
+      "name": "标题",
+      "appendQueryString": "&search_area=0"
+    }, {
+      "name": "简介",
+      "appendQueryString": "&search_area=1"
+    }, {
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "appendQueryString": "&search_area=4"
+    }],
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js"
+  },
+  "searchEntry": [{
+    "name": "全站",
+    "enabled": true
+  }],
+  "checker": {
+    "isLogin": {
+      "page": "/usercp.php",
+      "contains": "logout.php"
+    }
+  },
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "img.pro_free"
+  }, {
+    "name": "2xFree",
+    "selector": "img.pro_free2up"
+  }, {
+    "name": "2xUp",
+    "selector": "img.pro_2up"
+  }, {
+    "name": "2x50%",
+    "selector": "img.pro_50pctdown2up"
+  }, {
+    "name": "30%",
+    "selector": "img.pro_30pctdown"
+  }, {
+    "name": "50%",
+    "selector": "img.pro_50pctdown"
+  }, {
+    "name": "H&R",
+    "color": "black",
+    "selector": "img[src='public/pic/hit_run.gif']"
+  }]
+}

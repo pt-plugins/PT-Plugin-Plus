@@ -8,70 +8,36 @@
   "host": "blutopia.xyz",
   "collaborator": ["bimzcy", "lengmianxia"],
   "searchEntryConfig": {
-    "page": "/torrents/filter",
-    "queryString": "search=$key$",
+    "page": "/torrents",
+    "queryString": "perPage=100&name=$key$",
     "area": [{
       "name": "IMDB",
       "keyAutoMatch": "^(tt\\d+)$",
-      "queryString": "imdb=$key$",
+      "queryString": "perPage=100&imdbId=$key$",
       "replaceKey": [
         "tt", ""
       ]
     }],
+    "fieldSelector": {
+      "progress": {
+        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle, button.btn.btn-info.btn-circle", ""],
+        "switchFilters": [
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle", "button.btn.btn-info.btn-circle"],
+        "switchFilters": [
+          ["2"],
+          ["1"],
+          ["3"]
+        ]
+      }
+    },
     "resultType": "html",
     "parseScriptFile": "/schemas/UNIT3D/getSearchResult.js",
     "resultSelector": "div.table-responsive > table:first"
-  },
-  "searchEntry": [{
-    "name": "全部",
-    "enabled": true
-  }],
-  "torrentTagSelectors": [{
-    "name": "Free",
-    "selector": "i.fas fa-star text-gold"
-  }, {
-    "name": "2xUp",
-    "selector": "i.fas fa-gem text-green"
-  }],
-  "selectors": {
-    "userBaseInfo": {
-      "merge": true,
-      "page": "/",
-      "fields": {
-        "id": {},
-        "name": {
-          "selector": ["a[href*='settings']:first"],
-          "attribute": "href",
-          "switchFilters": [
-            ["query.match(/users\\/(.+)\\/settings/)", "(query && query.length>=2)?(query[1]):''"],
-            ["query ? query.getQueryString('id'):''"]
-          ]
-        },
-        "uploaded": {
-          "selector": ["div.ratio-bar i.fa-arrow-up"],
-          "filters": ["query.parent().text().trim().replace(/,/g,'').match(/:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
-        },
-        "downloaded": {
-          "selector": ["div.ratio-bar i.fa-arrow-down"],
-          "filters": ["query.parent().text().trim().replace(/,/g,'').match(/:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
-        },
-        "bonus": {
-          "selector": ["div.ratio-bar i.fa-coins"],
-          "filters": ["query.parent().text().trim().replace(/ /g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
-        },
-        "seeding": {
-          "selector": ["div.ratio-bar i.fa-upload"],
-          "filters": ["query.parent().text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
-        }
-      }
-    },
-    "common": {
-      "fields": {
-        "size": {
-          "selector": ["td.col-sm-2:contains('Size') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
-        }
-      }
-    }
   }
 }
