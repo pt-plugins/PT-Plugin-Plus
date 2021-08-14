@@ -72,6 +72,9 @@ if (!"".getQueryString) {
           const row = rows.eq(index);
           let cells = row.find(">td");
 
+          let id = row.find("a[href*='#torrent']").first()
+          id = id.attr('href').match(/#torrent(\d+)/)[1]
+
           let title = row.find("a[href*='torrents.php?id=']").first();
           if (title.length == 0) {
             continue;
@@ -113,6 +116,7 @@ if (!"".getQueryString) {
           }
 
           let data = {
+            id,
             title: title.text() + ' / ' +subTitle.text(),
             //subTitle: subTitle.text(),
             link,

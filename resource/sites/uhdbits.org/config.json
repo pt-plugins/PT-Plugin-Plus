@@ -70,6 +70,10 @@
         "seedingSize": {
           "selector": ["td.number_column.nobr"],
           "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        },
+        "seedingList": {
+          "selector": ["a[href*='torrentid=']"],
+          "filters": ["jQuery.map(query, item=>$(item).attr('href').match(/torrentid=(\\d+)/)[1])"]
         }
       }
     }
