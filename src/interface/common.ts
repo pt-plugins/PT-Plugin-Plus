@@ -522,6 +522,8 @@ export interface UserInfo {
   seeding?: number;
   // 做种体积
   seedingSize?: number;
+  // 做种列表
+  seedingList?: string[];
   // 当前下载数量
   leeching?: number;
   // 等级名称
