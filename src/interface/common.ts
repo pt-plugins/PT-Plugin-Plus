@@ -265,6 +265,8 @@ export interface Site {
   timezoneOffset?: string;
   // 是否合并 Schema 的标签选择器
   mergeSchemaTagSelectors?: boolean;
+  // 消息提醒开关
+  disableMessageCount?: boolean;
 }
 
 export interface Request {

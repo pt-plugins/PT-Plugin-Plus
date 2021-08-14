@@ -75,7 +75,7 @@
                   torrent.media +
                   (torrent.hasLog ? ` / Log(${torrent.logScore})` : "") +
                   (torrent.hasCue ? " / Cue" : "") +
-                  (torrent.remastered ? ` / ${torrent.remasterYear}` : "") +
+                  (torrent.remastered ? ` / ${torrent.remasterYear} / ${torrent.remasterTitle}` : "") +
                   (torrent.scene ? " / Scene" : "") +
                   (torrent.isFreeleech ||
                   torrent.isNeutralLeech ||

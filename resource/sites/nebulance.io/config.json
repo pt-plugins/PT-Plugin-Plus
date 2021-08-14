@@ -72,7 +72,7 @@
         },
         "bonus": {
           "selector": "ul#userinfo_major > li > a:contains('Cubits:')",
-          "filters": ["query.text().replace(/,|\\n|\\s+/g,'').match(/Cubits:.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+          "filters": ["query.text().replace(/,/g,'').match(/Cubits:.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
         },
         "joinTime": {
           "selector": ["ul.stats.nobullet > li:contains('Joined:') > span"],
