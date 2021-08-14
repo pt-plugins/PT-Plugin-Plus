@@ -23,7 +23,8 @@ if ("".getQueryString === undefined) {
       };
       this.result = {
         seedingSize: 0,
-        bonus: 0
+        bonus: 0,
+        seedingList: []
       };
       this.load();
     }
@@ -52,6 +53,7 @@ if ("".getQueryString === undefined) {
 
       if (results) {
         this.result.seedingSize += results.seedingSize;
+        this.result.seedingList = this.result.seedingList.concat(results.seedingList)
       }
 
       // 是否已到最后一页
