@@ -58,6 +58,7 @@
             let torrents = group.torrents;
             torrents.forEach(torrent => {
               let data = {
+                id: torrent.torrentId,
                 title:
                   group.artist +
                   " - " +

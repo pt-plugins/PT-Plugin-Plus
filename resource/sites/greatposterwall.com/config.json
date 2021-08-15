@@ -44,6 +44,10 @@
             "query.text().replace(/,/g,'').match(/.+?([\\d.]+)/)",
             "(query && query.length>=2)?query[1]:0"
           ]
+        },
+        "seedingList": {
+          "selector": ["a[href*='torrentid=']"],
+          "filters": ["jQuery.map(query, item=>$(item).attr('href').match(/torrentid=(\\d+)/)[1])"]
         }
       }
     }
