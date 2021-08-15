@@ -12,6 +12,17 @@
   "collaborator": [
     "MewX"
   ],
+  "searchEntryConfig": {
+    "page": "/ajax.php",
+    "resultType": "json",
+    "parseScriptFile": "getSearchResult.js",
+    "asyncParse": true,
+    "queryString": "action=browse&searchstr=$key$"
+  },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
   "selectors": {
     "userSeedingTorrents": {
       "page": "/bonus.php?action=bprates",
