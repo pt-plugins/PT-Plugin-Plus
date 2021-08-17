@@ -98,6 +98,15 @@
           ]
         }
       }
+    },
+    "userSeedingTorrents": {
+      "page": "/bonus.php?action=rate",
+      "fields": {
+        "seedingList": {
+          "selector": ["a[href*='torrentid=']"],
+          "filters": ["jQuery.map(query, item=>$(item).attr('href').match(/torrentid=(\\d+)/)[1])"]
+        }
+      }
     }
   },
   "supportedFeatures": {

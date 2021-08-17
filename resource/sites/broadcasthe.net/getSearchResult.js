@@ -89,6 +89,10 @@
           const row = rows.eq(index);
           let cells = row.find(">td");
 
+          // id
+          let id = row.find("a[href*='torrentid=']").first().attr("href")
+          id = id.match(/torrentid=(\d+)/)[1]
+
           // 标题
           let title = row.find("[style='float:none;']").first().attr("title");
           
@@ -112,6 +116,7 @@
           let timeStr = (timeStrMatch && timeStrMatch.length >=2) ? timeStrMatch[1].trim() : "";
 
           let data = {
+            id,
             title,
             link,
             url,
