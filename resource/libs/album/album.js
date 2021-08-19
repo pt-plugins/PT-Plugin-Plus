@@ -2,7 +2,7 @@
  * 对数字进行四舍五入操作
  * @param {number} precision 
  */
-Number.prototype.toRound = function (precision) {
+ Number.prototype.toRound = function (precision) {
   if (isNaN(precision) || precision == null || precision < 0) {
     precision = 0;
   }
@@ -47,7 +47,7 @@ window.album = function (options) {
       resizeRate: 5,
       listHeight: 160,
       // 保持缩略图栏
-      keepThumbBar: false,
+      keepThumbBar: true,
       maxSize: 100,
       minSize: 5,
       allowContextmenu: false,
@@ -350,9 +350,22 @@ window.album = function (options) {
           self.hideThumbsBar();
         }, 1000);
       } else {
-        // this.listBar.css({
-        // 	opacity: .6
-        // });
+        // 鼠标离开和进入图片列表时
+        this.controlBar.on("mouseenter", () => {
+          self.showThumbsBar();
+          // 鼠标滚轮上一张、下一张
+        }).on("mousewheel DOMMouseScroll", event => {
+          // $.log("mousewheel", event);
+          const v = (event.type == "mousewheel" ? event.originalEvent.wheelDelta : event.originalEvent.detail);
+          if (v < 0) {
+            self.gotoImage("next");
+          } else {
+            self.gotoImage("prev");
+          }
+
+          event.preventDefault();
+          event.stopPropagation();
+        });
       }
 
       // 上一张
