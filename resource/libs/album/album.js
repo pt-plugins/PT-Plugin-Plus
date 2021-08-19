@@ -2,7 +2,7 @@
  * 对数字进行四舍五入操作
  * @param {number} precision 
  */
- Number.prototype.toRound = function (precision) {
+Number.prototype.toRound = function (precision) {
   if (isNaN(precision) || precision == null || precision < 0) {
     precision = 0;
   }
@@ -47,7 +47,7 @@ window.album = function (options) {
       resizeRate: 5,
       listHeight: 160,
       // 保持缩略图栏
-      keepThumbBar: true,
+      keepThumbBar: false,
       maxSize: 100,
       minSize: 5,
       allowContextmenu: false,
@@ -93,6 +93,7 @@ window.album = function (options) {
     theme: "",
     IE: ("v" == "\v"),
     init() {
+      console.log('this\'s album.js');
       this.options = $.extend(this.options, options);
       if (!this.options.parent) {
         this.options.parent = $(document.body);
@@ -328,8 +329,15 @@ window.album = function (options) {
       if (!this.options.keepThumbBar) {
         // 鼠标离开和进入图片列表时
         this.controlBar.on("mouseleave", () => {
-          self.hideThumbsBar();
+          if(self.hideThumbsBarTimer)
+            clearTimeout(self.hideThumbsBarTimer);
+          // 隐藏图片列表
+          self.hideThumbsBarTimer = setTimeout(() => {
+            self.hideThumbsBar();
+          }, 500);
         }).on("mouseenter", () => {
+          if(self.hideThumbsBarTimer)
+            clearTimeout(self.hideThumbsBarTimer);
           self.showThumbsBar();
           // 鼠标滚轮上一张、下一张
         }).on("mousewheel DOMMouseScroll", event => {
@@ -346,9 +354,10 @@ window.album = function (options) {
         });
 
         // 隐藏图片列表
-        setTimeout(() => {
+        self.hideThumbsBarTimer = setTimeout(() => {
           self.hideThumbsBar();
         }, 1000);
+
       } else {
         // 鼠标离开和进入图片列表时
         this.controlBar.on("mouseenter", () => {
@@ -453,7 +462,7 @@ window.album = function (options) {
     },
     hideThumbsBar() {
       const _self = this;
-      this.listBar.animate({
+      this.listBar.stop().animate({
         height: 30,
         opacity: .2
       }, () => {
@@ -466,7 +475,7 @@ window.album = function (options) {
     },
     showThumbsBar() {
       const _self = this;
-      this.listBar.animate({
+      this.listBar.stop().animate({
         height: this.options.listHeight,
         opacity: .8
       }, () => {
