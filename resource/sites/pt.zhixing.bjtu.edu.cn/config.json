@@ -8,6 +8,15 @@
         "综合",
         "影视"
     ],
+    "plugins": [{
+        "name": "种子详情页面",
+        "pages": ["/torrents/"],
+        "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+      }, {
+        "name": "种子列表",
+        "pages": ["/search/"],
+        "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+    }],
     "schema": "Common",
     "host": "pt.zhixing.bjtu.edu.cn",
     "collaborator": "wanicca",
@@ -39,7 +48,16 @@
         {
             "name": "Free",
             "selector": "img[src^='/static/images/btn_free.gif']"
+        },
+        {
+            "name": "50%",
+            "selector": "img[src^='/static/images/btn_50p.gif']"
+        },
+        {
+            "name": "30%",
+            "selector": "img[src^='/static/images/btn_30p.gif']"
         }
+
     ],
     "selectors": {
         "userBaseInfo": {
