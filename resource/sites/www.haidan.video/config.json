@@ -3,7 +3,7 @@
   "schema": "NexusPHP",
   "url": "https://www.haidan.video/",
   "description": "海胆之家",
-  "icon": "https://www.haidan.video/favicon.ico",
+  "icon": "https://www.haidan.video/public/pic/favicon.ico",
   "tags": [ "影视", "综合" ],
   "host": "www.haidan.video",
   "collaborator": "rsj",

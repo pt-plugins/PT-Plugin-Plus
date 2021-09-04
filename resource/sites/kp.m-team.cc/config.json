@@ -4,7 +4,7 @@
   "description": "M-Team",
   "url": "https://kp.m-team.cc/",
   "icon": "https://kp.m-team.cc/favicon.ico",
-  "tags": ["影视", "综合"],
+  "tags": ["影视", "综合","Adult"],
   "schema": "NexusPHP",
   "host": "kp.m-team.cc",
   "formerHosts": [

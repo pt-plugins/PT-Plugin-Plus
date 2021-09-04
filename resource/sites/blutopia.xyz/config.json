@@ -7,6 +7,11 @@
   "tags": ["影视", "综合"],
   "host": "blutopia.xyz",
   "collaborator": ["bimzcy", "lengmianxia"],
+  "plugins": [{
+    "name": "个人种子列表页面",
+    "pages": ["^/users/.*?/(uploads|downloads|seeds|active|torrents|unsatisfieds)"],
+    "scripts": ["/schemas/NexusPHP/common.js", "userTorrents.js"]
+  }],
   "searchEntryConfig": {
     "page": "/torrents",
     "queryString": "perPage=100&name=$key$",

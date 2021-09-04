@@ -5,6 +5,7 @@ export type MovieInfoCache = {
   base: Dictionary<any>;
   ratings: Dictionary<any>;
   doubanToIMDb: Dictionary<any>;
+  search: Dictionary<any>;
 };
 
 /**
@@ -131,7 +132,8 @@ export class MovieInfoService {
   public cache: MovieInfoCache = {
     base: {},
     ratings: {},
-    doubanToIMDb: {}
+    doubanToIMDb: {},
+    search: {}
   };
 
   // 链接超时时间
@@ -379,31 +381,68 @@ export class MovieInfoService {
       return this.getInfoFromIMDb(key);
     }
     return new Promise<any>((resolve?: any, reject?: any) => {
-      // let url = `${this.doubanApiURL}/movie/search?q=${encodeURIComponent(
-      //   key
-      // )}&count=${count}&apikey=${this.getDoubanEntApiKey()}`;
 
-      let url = PPF.replaceKeys(this.doubanApi.methods.movie.search, {
-        key: encodeURIComponent(key),
-        count,
-        apikey: this.getDoubanEntApiKey()
-      });
+      let cache = this.cache.search[key];
+      if (cache) {
+        resolve(cache);
+        return;
+      }
+      let url = `${this.omitApiURL}/movie/search/${key}`;
+
+      if (this.requsetQueue[url]) {
+        reject();
+        return;
+      }
+
+      this.requsetQueue[url] = true;
 
       $.ajax({
         url: url,
         timeout: this.timeout
       })
-        .done((result: any) => {
-          console.log("query", result);
-          if (result.subjects) {
-            resolve(result);
+        .done(json => {
+          console.log("queryMovieInfoFromDouban", json);
+          if (json.data) {
+            this.cache.search[key] = json.data;
+            resolve(json.data);
           } else {
-            reject(result);
+            reject(json);
           }
         })
         .fail(error => {
           reject(error);
+        })
+        .always(() => {
+          delete this.requsetQueue[url];
         });
+
+
+
+      // let url = `${this.doubanApiURL}/movie/search?q=${encodeURIComponent(
+      //   key
+      // )}&count=${count}&apikey=${this.getDoubanEntApiKey()}`;
+
+      // let url = PPF.replaceKeys(this.doubanApi.methods.movie.search, {
+      //   key: encodeURIComponent(key),
+      //   count,
+      //   apikey: this.getDoubanEntApiKey()
+      // });
+
+      // $.ajax({
+      //   url: url,
+      //   timeout: this.timeout
+      // })
+      //   .done((result: any) => {
+      //     console.log("query", result);
+      //     if (result.subjects) {
+      //       resolve(result);
+      //     } else {
+      //       reject(result);
+      //     }
+      //   })
+      //   .fail(error => {
+      //     reject(error);
+      //   });
     });
   }
 

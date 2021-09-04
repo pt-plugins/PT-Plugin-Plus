@@ -1,6 +1,6 @@
 {
   "name": "pt-plugin-plus",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "author": {
     "name": "ronggang",
     "url": "https://github.com/ronggang"
@@ -91,6 +91,7 @@
     "ts-node": "^8.5.2",
     "typescript": "^3.0.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
+    "git-commit-id": "^2.0.1",
     "vue-cli-plugin-vuetify": "^0.4.6",
     "vue-template-compiler": "^2.5.17",
     "vuetify-loader": "^1.0.5",

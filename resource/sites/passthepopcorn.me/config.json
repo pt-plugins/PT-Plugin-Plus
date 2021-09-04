@@ -77,8 +77,18 @@
         }
       }
     },
+    "userSeedingTorrents": {
+      "page": "/torrents.php?type=seeding&userid=$user.id$",
+      "parser": "getUserSeedingTorrents.js",
+      "fields": {
+        "seedingList": {
+          "selector": ["script:last"],
+          "filters": ["query.text()", "[...query.matchAll(/\"TorrentId\":(\\d+)/g)]", "jQuery.map(query, i=>i[1])"]
+        }
+      }
+    },
     "common": {
-	  "page": "/torrents.php",
+	    "page": "/torrents.php",
       "fields": {
         "confirmSize": {
           "selector": ["tr.basic-movie-list__torrent-row > td:contains('iB')"],

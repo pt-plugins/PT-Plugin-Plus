@@ -10,6 +10,26 @@
   ],
   "schema": "NexusPHP",
   "host": "hdtime.org",
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["div[title*='seeding']", "div[title*='inactivity']",""],
+        "switchFilters": [
+          ["100"],
+          ["query.attr('title').split(' ')", "query[1]?parseInt(query[1].substr(0,query[1].length-1)):undefined"],
+          ["undefined"]
+        ]
+      },
+      "status": {
+        "selector": ["div[title*='seeding']", "div[title*='inactivity']",""],
+        "switchFilters": [
+          ["2"],
+          ["3"],
+          ["undefined"]
+        ]
+      }
+    }
+  },
   "searchEntry": [{
       "name": "全站",
       "enabled": true

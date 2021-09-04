@@ -1,15 +1,3 @@
-if ("".getQueryString === undefined) {
-  String.prototype.getQueryString = function(name, split) {
-    if (split == undefined) split = "&";
-    var reg = new RegExp(
-        "(^|" + split + "|\\?)" + name + "=([^" + split + "]*)(" + split + "|$)"
-      ),
-      r;
-    if ((r = this.match(reg))) return decodeURI(r[2]);
-    return null;
-  };
-}
-
 (function(options, User) {
   class Parser {
     constructor(options, dataURL) {
@@ -22,8 +10,6 @@ if ("".getQueryString === undefined) {
         current: 1
       };
       this.result = {
-        seedingSize: 0,
-        bonus: 0,
         seedingList: []
       };
       this.load();
@@ -52,7 +38,6 @@ if ("".getQueryString === undefined) {
       );
 
       if (results) {
-        this.result.seedingSize += results.seedingSize;
         this.result.seedingList = this.result.seedingList.concat(results.seedingList)
       }
 
@@ -61,11 +46,6 @@ if ("".getQueryString === undefined) {
         this.pageInfo.current++;
         this.load();
       } else {
-        if (results) {
-          this.result.bonus = this.body
-          .find("[href='bonus.php']+span")
-          .text();
-        }
         this.done();
       }
     }

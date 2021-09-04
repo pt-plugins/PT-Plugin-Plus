@@ -1,0 +1,73 @@
+{
+  "name": "TG",
+  "timezoneOffset": "+0000",
+  "description": "TheGeeks",
+  "url": "https://thegeeks.click",
+  "icon": "https://thegeeks.click/favicon.ico",
+  "tags": ["学习"],
+  "schema": "",
+  "host": "thegeeks.click",
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/main.php",
+      "fields": {
+        "id": {
+          "selector": ["a[href*='userdetails.php?id=']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["a[href*='userdetails.php?id=']:first"]
+        },
+        "messageCount": {
+          "selector": ["a[href='message.php?action=viewmailbox'] + b"],
+          "filters": ["query.text().match(/(\\d+ New)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        },
+        "uploaded": {
+          "selector": ["td.statuslink span:contains('UL:'):first"],
+          "filters": ["query[0].nextSibling.nodeValue.trim().replace(/,/g,'').sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ["td.statuslink span:contains('DL:'):first"],
+          "filters": ["query[0].nextSibling.nodeValue.trim().replace(/,/g,'').sizeToNumber()"]
+        },
+        "ratio": {
+          "selector": "td.statuslink span:contains('Ratio:') + span",
+          "filters": ["query.text().replace(/,/g,'')", "query === '---' ? 'N/A' : parseFloat(query)"]
+        },
+        "seeding": {
+          "selector": ["img[title='seeders'] + span:first"]
+        },
+        "seedingSize": {
+          "value": -1
+        },
+        "levelName": {
+          "selector": ["a[href*='userdetails.php?id='] + span:first"],
+          "filters": ["query.text().replace(/\\(|\\)/g, '')"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "bonus": {
+          "value": "N/A"
+        },
+        "joinTime": {
+          "selector": [".embedded td:contains('Join date') + td:first"],
+          "filters": ["query.text().replace(/\\(.*\\)/g, '').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    }
+  },
+  "supportedFeatures": {
+    "userData": true,
+    "search": false,
+    "imdbSearch": false,
+    "sendTorrent": false
+  }
+}

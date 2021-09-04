@@ -170,6 +170,9 @@
 
         <!-- 站点已离线（停机/关闭） -->
         <v-switch :label="$t('settings.sites.editor.offline')" v-model="site.offline"></v-switch>
+
+        <!-- 消息提醒开关 -->
+        <v-switch :label="$t('settings.sites.editor.disableMessageCount')" v-model="site.disableMessageCount"></v-switch>
       </v-form>
     </v-card-text>
   </v-card>

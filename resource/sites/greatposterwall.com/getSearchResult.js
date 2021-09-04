@@ -58,6 +58,7 @@
             let torrents = group.torrents;
             torrents.forEach(torrent => {
               let data = {
+                id: torrent.torrentId,
                 title:
                   group.artist +
                   " - " +
@@ -68,14 +69,16 @@
                   group.releaseType +
                   "]",
                 subTitle:
-                  torrent.format +
+                  torrent.codec +
                   " / " +
-                  torrent.encoding +
+                  torrent.source +
                   " / " +
-                  torrent.media +
-                  (torrent.hasLog ? ` / Log(${torrent.logScore})` : "") +
-                  (torrent.hasCue ? " / Cue" : "") +
-                  (torrent.remastered ? ` / ${torrent.remasterYear} / ${torrent.remasterTitle}` : "") +
+                  torrent.resolution +
+                  " / " +
+                  torrent.container +
+                  " / " +
+                  torrent.processing +
+                  (torrent.remasterTitle ? ` / ${torrent.remasterTitle}` : "") +
                   (torrent.scene ? " / Scene" : "") +
                   (torrent.isFreeleech ||
                   torrent.isNeutralLeech ||

@@ -1,6 +1,6 @@
 {
   "name": "BTN",
-  "timezoneOffset": "+0000",
+  "timezoneOffset": "+0800",
   "description": "著名剧集站点，又被戏称为鼻涕妞",
   "url": "https://broadcasthe.net/",
   "icon": "https://broadcasthe.net/favicon.ico",
@@ -96,6 +96,15 @@
             "query.text().replace(/,/g,'').match(/Seeding Size:.+?([\\d.]+ ?[TGMK]?i?B)/)",
             "(query && query.length>=2)?(query[1]).sizeToNumber():0"
           ]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/bonus.php?action=rate",
+      "fields": {
+        "seedingList": {
+          "selector": ["a[href*='torrentid=']"],
+          "filters": ["jQuery.map(query, item=>$(item).attr('href').match(/torrentid=(\\d+)/)[1])"]
         }
       }
     }

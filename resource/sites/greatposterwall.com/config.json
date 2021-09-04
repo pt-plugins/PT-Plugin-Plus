@@ -12,6 +12,17 @@
   "collaborator": [
     "MewX"
   ],
+  "searchEntryConfig": {
+    "page": "/ajax.php",
+    "resultType": "json",
+    "parseScriptFile": "getSearchResult.js",
+    "asyncParse": true,
+    "queryString": "action=browse&searchstr=$key$"
+  },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
   "selectors": {
     "userSeedingTorrents": {
       "page": "/bonus.php?action=bprates",
@@ -33,6 +44,10 @@
             "query.text().replace(/,/g,'').match(/.+?([\\d.]+)/)",
             "(query && query.length>=2)?query[1]:0"
           ]
+        },
+        "seedingList": {
+          "selector": ["a[href*='torrentid=']"],
+          "filters": ["jQuery.map(query, item=>$(item).attr('href').match(/torrentid=(\\d+)/)[1])"]
         }
       }
     }

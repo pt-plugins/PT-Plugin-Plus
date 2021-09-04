@@ -197,7 +197,7 @@
             comments:
               this.getFieldValue(row, cells, fieldIndex, "comments") || 0,
             site: site,
-            tags: Searcher.getRowTags(this.site, row),
+            tags: this.getRowTags(row),
             entryName: options.entry.name,
             category:
               fieldIndex.category == -1
@@ -349,25 +349,27 @@
       try {
         subTitle = title
           .parent()
-          .html()
-          .split("<br>");
-        if (subTitle && subTitle.length > 1) {
-          subTitle = $("<span>")
-            .html(subTitle[subTitle.length - 1])
-            .text();
-        } else {
-          // 特殊情况处理
-          switch (options.site.host) {
-            default:
-              subTitle = "";
-              break;
-          }
-        }
-
+          .next()
+          .text();
         return subTitle || "";
       } catch (error) {
         return "";
       }
+    }
+
+    getRowTags(row) {
+      let tags = []
+      try {
+        if (row.text().trim().match(/免费剩余/)) {
+          tags.push({
+            name: "~Free",
+            color: "teal"
+          })
+        };
+      } catch (error) {
+        return [];
+      }
+      return tags;
     }
 
     // 很

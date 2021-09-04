@@ -265,6 +265,8 @@ export interface Site {
   timezoneOffset?: string;
   // 是否合并 Schema 的标签选择器
   mergeSchemaTagSelectors?: boolean;
+  // 消息提醒开关
+  disableMessageCount?: boolean;
 }
 
 export interface Request {
@@ -338,6 +340,7 @@ export interface SearchResultItemCategory {
  * 搜索返回结果
  */
 export interface SearchResultItem {
+  id?: string;
   site: Site;
   title: string;
   titleHTML?: string;
@@ -520,6 +523,8 @@ export interface UserInfo {
   seeding?: number;
   // 做种体积
   seedingSize?: number;
+  // 做种列表
+  seedingList?: string[];
   // 当前下载数量
   leeching?: number;
   // 等级名称

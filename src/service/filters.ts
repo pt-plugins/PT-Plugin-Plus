@@ -1,6 +1,7 @@
 interface IFilter {
   formatNumber: (source: number, format?: string) => string;
   formatSize: (bytes: any, zeroToEmpty?: boolean, type?: string) => string;
+  formatSizeWithNegative: (bytes: any, zeroToEmpty?: boolean, type?: string) => string;
   formatSpeed: (bytes: any, zeroToEmpty: boolean) => string;
   parseURL: (
     url: string
@@ -200,6 +201,26 @@ export const filters: IFilter = {
     }
 
     return this.formatNumber(r, format) + u;
+  },
+
+  /**
+   * 支持负值
+   */
+  formatSizeWithNegative(
+    sourceBytes: any,
+    zeroToEmpty: boolean = false,
+    type: string = ""
+  ): string {
+    sourceBytes = parseFloat(sourceBytes)
+    let bytes = sourceBytes
+    if (sourceBytes < 0) {
+      bytes = - bytes
+    }
+    let result = this.formatSize(bytes, zeroToEmpty, type)
+    if (sourceBytes < 0) {
+      result = `- ${result}`
+    }
+    return result
   },
 
   /**

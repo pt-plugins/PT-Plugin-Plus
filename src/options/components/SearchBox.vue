@@ -176,7 +176,7 @@
             <v-list-tile-avatar class="album" :size="75">
               <img
                 :src="
-                  item.image ||
+                  item.image || item.img ||
                   (item.images
                     ? item.images.small
                     : item.pic
@@ -215,7 +215,7 @@
                 <img src="https://img3.doubanio.com/favicon.ico" width="16" />
                 {{
                   parseFloat(
-                    item.average || item.rating.average || item.rating.value
+                    item.average ?item.average : item.rating? (item.rating.average || item.rating.value) : null
                   ).toFixed(1)
                 }}
               </a>
@@ -223,9 +223,9 @@
                 :value="
                   item.average
                     ? parseFloat(item.average) / 2
-                    : item.rating.stars
+                    : item.rating? (item.rating.stars
                     ? parseInt(item.rating.stars) / 10
-                    : item.rating.star_count
+                    : item.rating.star_count): 0
                 "
                 background-color="grey lighten-2"
                 color="yellow accent-4"
