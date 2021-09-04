@@ -1,0 +1,143 @@
+{
+    "name": "知行PT",
+    "description": "北京交通大学知行pt",
+    "url": "http://pt.zhixing.bjtu.edu.cn/",
+    "icon": "http://pt.zhixing.bjtu.edu.cn/favicon.ico",
+    "tags": [
+        "教育网",
+        "综合",
+        "影视"
+    ],
+    "schema": "Common",
+    "host": "pt.zhixing.bjtu.edu.cn",
+    "collaborator": "wanicca",
+    "searchEntryConfig": {
+        "page": "/search/x$key$",
+        "resultType": "html",
+        "parseScriptFile": "getSearchResult.js",
+        "resultSelector": "table.torrenttable:last",
+        "fieldIndex": {
+            "title": 1, 
+            "url": 1, 
+            "link":1, 
+            "size":3, 
+            "seeders": 7,
+            "leechers": 8,
+            "completed": 9,
+            "author": 10,
+            "category": 0,
+            "time": 6
+        }
+    },
+    "searchEntry": [
+        {
+            "name": "全部",
+            "enabled": true
+        }
+    ],
+    "torrentTagSelectors": [
+        {
+            "name": "Free",
+            "selector": "img[src^='/static/images/btn_free.gif']"
+        }
+    ],
+    "selectors": {
+        "userBaseInfo": {
+            "page": "/",
+            "fields": {
+                "id": {
+                    "selector": "strong.vwmy > a[href*='/user/']:first",
+                    "attribute": "href",
+                    "filters": [
+                        "query ? query.split('/')[2]:''"
+                    ]
+                },
+                "name": {
+                    "selector": "strong.vwmy > a[href*='/user/']:first"
+                },
+                "isLogged": {
+                    "selector": [
+                        "a[href*='/user/logout']"
+                    ],
+                    "filters": [
+                        "query.length>0"
+                    ]
+                }
+            }
+        },
+        "userExtendInfo": {
+            "page": "/user/$user.id$/",
+            "fields": {
+                "uploaded": {
+                    "selector": [
+                        "p:contains('上传流量:')"
+                    ],
+                    "filters": [
+                        "query.text().replace(/上传流量: /g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+                        "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+                    ]
+                },
+                "downloaded": {
+                    "selector": [
+                        "p:contains('下载流量:')"
+                    ],
+                    "filters": [
+                        "query.text().replace(/下载流量: /g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+                        "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+                    ]
+                },
+                "ratio": {
+                    "selector": "p:contains('共享率')",
+                    "filters": [
+                        "parseFloat(query.text().replace(/共享率: | (下载-虚拟下载小于20G则共享率为0)/,'')"
+                    ]
+                },
+                "levelName": {
+                    "selector": [
+                        "p:contains('用户组：')"
+                    ],
+                    "filters": [
+                        "query.text().match(/用户组：([^ ]+)/)",
+                        "(query && query.length>=2)?(query[1]):''"
+                    ]
+                },
+                "bonus": {
+                    "selector": [
+                        "p:contains('保种积分')"
+                    ],
+                    "filters": [
+                        "query.text().replace(/保种积分: /g,'').match(/([\\d.]+)/)",
+                        "(query && query.length>=2)?query[1]:''"
+                    ]
+                },
+                "joinTime": {
+                    "selector": [
+                        "p:contains('注册时间：')"
+                    ],
+                    "filters": [
+                        "query.text().split('：')[1]",
+                        "dateTime(query).isValid()?dateTime(query).valueOf():query"
+                    ]
+                },
+                "seeding": {
+                    "selector": [
+                        "p:contains('当前保种数量：')"
+                    ],
+                    "filters": [
+                        "query.text().match(/当前保种数量：([\\d.]+)/)",
+                        "(query && query.length>=1)?query[1]:''"
+                    ]
+                },
+                "seedingSize": {
+                    "selector": [
+                        "p:contains('当前保种容量：')"
+                    ],
+                    "filters": [
+                        "query.text().replace(/当前保种容量：/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+                        "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+                    ]
+                }
+            }
+        }
+    }
+}
