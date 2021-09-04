@@ -1,0 +1,175 @@
+{
+    "name": "极速之星PT",
+    "description": "极速之星IPV6资源交流平台",
+    "url": "https://bitpt.cn/",
+    "icon": "https://bitpt.cn/favicon.ico",
+    "tags": [
+        "教育网",
+        "综合",
+        "影视"
+    ],
+    "schema": "NexusPHP",
+    "host": "bitpt.cn",
+    "collaborator": "wanicca",
+    "plugins": [{
+        "name": "种子详情页面",
+        "pages": ["/bbs"],
+        "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+      }, {
+        "name": "种子列表",
+        "pages": ["/browse.php"],
+        "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+      }],
+    "searchEntryConfig": {
+        "page": "/browse.php",
+        "queryString": "s=$key$",
+        "resultType": "html",
+        "parseScriptFile": "getSearchResult.js",
+        "resultSelector": "table.torrenttable:last",
+        "fieldIndex": {
+            "title": 1, 
+            "subTitle": 1,
+            "url": 1, 
+            "link":1, 
+            "size":3, 
+            "seeders": 4,
+            "leechers": 5,
+            "completed": 6,
+            "author": 7,
+            "category": 0,
+            "time":7
+        }
+    },
+    "searchEntry": [
+        {
+            "name": "全部",
+            "enabled": true
+        },
+        {
+            "queryString": "c=1000",
+            "name": "Movie",
+            "enabled": false
+        }
+    ],
+    "categories": [
+        {
+            "entry": "browse.php?",
+            "result": "c=$id$",
+            "category": [
+                {
+                    "id": 1000,
+                    "name": "Movie"
+                }
+            ]
+        }
+    ],
+    "torrentTagSelectors": [
+        {
+            "name": "Free",
+            "selector": "a[title^='该资源不计下载流量']"
+        },
+        {
+            "name": "30%",
+            "selector": "a[title^='该资源计50%流量']"
+        },
+        {
+            "name": "50%",
+            "selector": "a[title^='该资源计30%流量']"
+        }
+    ],
+    "selectors": {
+        "userBaseInfo": {
+            "page": "/index.php",
+            "fields": {
+                "id": {
+                    "selector": "a[href*='userdetails.php']:first",
+                    "attribute": "href",
+                    "filters": [
+                        "query ? query.getQueryString('uid'):''"
+                    ]
+                },
+                "name": {
+                    "selector": "a[href*='userdetails.php']:first"
+                },
+                "isLogged": {
+                    "selector": [
+                        "a[href*='logout.php']"
+                    ],
+                    "filters": [
+                        "query.length>0"
+                    ]
+                }
+            }
+        },
+        "userExtendInfo": {
+            "page": "/userdetails.php?uid=$user.id$",
+            "fields": {
+                "uploaded": {
+                    "selector": [
+                        "td:contains('上传流量') + td"
+                    ],
+                    "filters": [
+                        "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+                        "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+                    ]
+                },
+                "downloaded": {
+                    "selector": [
+                        "td:contains('下载流量') + td"
+                    ],
+                    "filters": [
+                        "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+                        "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+                    ]
+                },
+                "ratio": {
+                    "selector": "td:contains('共享率') + td",
+                    "filters": [
+                        "parseFloat(query.text())"
+                    ]
+                },
+                "levelName": {
+                    "selector": [
+                        "td:contains('用户级别') + td"
+                    ]
+                },
+                "bonus": {
+                    "selector": [
+                        "td:contains('星辰') + td"
+                    ],
+                    "filters": [
+                        "query.text().replace(/,/g,'').match(/([\\d.]+)/)",
+                        "(query && query.length>=2)?query[1]:''"
+                    ]
+                },
+                "joinTime": {
+                    "selector": [
+                        "td:contains('注册时间') + td"
+                    ],
+                    "filters": [
+                        "query.text().split(' (')[0]",
+                        "dateTime(query).isValid()?dateTime(query).valueOf():query"
+                    ]
+                },
+                "seeding": {
+                    "selector": [
+                        "a:contains('当前上传的种子')"
+                    ],
+                    "filters": [
+                        "query.text().match(/([\\d.]+)个/)",
+                        "(query && query.length>=1)?query[1]:''"
+                    ]
+                },
+                "seedingSize": {
+                    "selector": [
+                        "a:contains('当前上传的种子')"
+                    ],
+                    "filters": [
+                        "query.text().replace(/,/g,'').match(/共([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+                        "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+                    ]
+                }
+            }
+        }
+    }
+}
