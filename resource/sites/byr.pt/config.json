@@ -12,6 +12,9 @@
   "schema": "NexusPHP",
   "host": "byr.pt",
   "collaborator": "Rhilip",
+  "formerHosts": [
+    "bt.byr.cn"
+  ],
   "searchEntry": [{
       "entry": "/torrents.php?search=$key$&notnewword=1",
       "name": "全站",
