@@ -28,6 +28,10 @@
         "isLogged": {
           "selector": ["a[href*='/user/logout']"],
           "filters": ["query.length>0"]
+        },
+        "messageCount": {
+          "selector": [".alertbar.message a[href*='inbox.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         }
       }
     },
