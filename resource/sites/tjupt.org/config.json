@@ -150,6 +150,18 @@
           "filters": ["query.attr('data-clipboard-text')"]
         }
       }
+    },
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "uploaded": {
+          "selector": ["td.rowhead:contains('上传量') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "value": 0
+        }
+      }
     }
   },
   "cdn": ["https://www.tjupt.org/"]
