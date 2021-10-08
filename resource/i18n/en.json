@@ -273,6 +273,7 @@
         "seeders": "S",
         "leechers": "L",
         "completed": "C",
+        "comments": "Comments",
         "time": "Time(≈)",
         "action": "Action"
       },
