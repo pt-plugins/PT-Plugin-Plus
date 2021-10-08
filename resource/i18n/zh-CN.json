@@ -272,9 +272,9 @@
         "seeders": "上传",
         "leechers": "下载",
         "completed": "完成",
+        "comments": "评论",
         "time": "发布于(≈)",
-        "action": "操作",
-        "comments": "评论"
+        "action": "操作"
       },
       "optionsIsMissing": "系统参数丢失",
       "sitesIsMissing": "请先设置站点",
