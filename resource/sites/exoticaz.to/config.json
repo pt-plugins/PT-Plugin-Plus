@@ -7,6 +7,14 @@
   "tags": ["Adult"],
   "schema": "AvistaZ",
   "host": "exoticaz.to",
+  "searchEntry": [{
+    "entry": "/torrents?in=1&search=$key$",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "div.table-responsive > table:first",
+    "enabled": true
+  }], 
   "selectors": {
     "common": {
       "merge": true,
