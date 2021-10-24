@@ -594,7 +594,8 @@ export class Searcher {
                 ),
                 data: {
                   logId
-                }
+                },
+                type: EDataResultType.error
               });
               return;
             }
