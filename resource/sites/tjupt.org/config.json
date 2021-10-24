@@ -142,6 +142,15 @@
     }
   },
   "selectors": {
+	"userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "uploaded": {
+          "selector": [".color_uploaded"],
+          "filters": ["$(query[0].nextSibling).text().trim().sizeToNumber()"]
+        }
+      }
+	},
     "/details.php": {
       "merge": true,
       "fields": {
