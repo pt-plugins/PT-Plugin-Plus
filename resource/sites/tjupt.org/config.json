@@ -151,6 +151,19 @@
         }
       }
 	},
+	"userSeedingTorrents": {
+      "merge": true,
+      "fields": {
+        "seeding": {
+          "selector": ["b:first"],
+          "filters": ["query.text().trim()"]
+        },
+        "seedingSize": {
+          "selector": ["b:first"],
+          "filters": ["$(query[0].nextSibling).text().trim().match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==2)?(query[0]).sizeToNumber():0"]
+        }
+      }
+    },
     "/details.php": {
       "merge": true,
       "fields": {
