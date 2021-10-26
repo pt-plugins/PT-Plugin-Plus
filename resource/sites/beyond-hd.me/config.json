@@ -87,7 +87,7 @@
           "filters": ["query.parent().text().trim()"]
         },
         "messageCount": {
-          "selector": [".beta-alert[href$='/mail'] .notify"],
+          "selector": [".beta-alert:not([title='Bets']) .notify"],
           "filters": ["query[0]?11:0"]
         }
       }
