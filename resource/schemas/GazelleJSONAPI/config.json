@@ -63,7 +63,7 @@
       "page": "/torrents.php?type=seeding&userid=$user.id$",
       "fields": {
         "seedingSize": {
-          "selector": ["tr.torrent_row > td.nobr"],
+          "selector": ["tr.torrent_row > td.number_column.nobr"],
           "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         },
         "bonus": {
