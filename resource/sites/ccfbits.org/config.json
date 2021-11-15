@@ -18,7 +18,7 @@
       ],
       "scripts": [
         "/schemas/NexusPHP/common.js",
-        "/sites/totheglory.im/details.js"
+        "details.js"
       ]
     },
     {
@@ -28,7 +28,7 @@
       ],
       "scripts": [
         "/schemas/NexusPHP/common.js",
-        "/sites/totheglory.im/browse.js"
+        "browse.js"
       ]
     }
   ],
