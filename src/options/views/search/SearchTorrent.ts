@@ -1738,7 +1738,7 @@ export default Vue.extend({
         let end = this.lastCheckedIndex;
         let startIndex = Math.min(start, end);
         let endIndex = Math.max(start, end) + 1;
-        let datas = this.clone(this.datas);
+        let datas = this.clone(this.filteredDatas.length > 0 ? this.filteredDatas : this.datas);
 
         datas = datas.sort(
           this.arrayObjectSort(
