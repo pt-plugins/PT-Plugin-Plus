@@ -1,0 +1,45 @@
+{
+  "name": "HaresClub",
+  "timezoneOffset": "+0800",
+  "description": "2160p/4k 及以上的高清资源站点",
+  "url": "https://club.hares.top/",
+  "icon": "https://club.hares.top/favicon.ico",
+  "tags": ["影视", "纪录片","综合"],
+  "schema": "NexusPHP",
+  "host": "club.hares.top",
+  "collaborator": "kevgao",
+  "formerHosts": [],
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "title": {
+        "selector": ["a[href*='details.php?id='][title]:first"],
+        "filters": ["query"]
+      },
+      "subTitle": {
+        "selector": ["a[href*='details.php?id='][title]:first"],
+        "filters": ["query.parent()[0].lastChild", "query.nodeName == '#text'?$(query).text().trim():$(query.previousSibling.previousSibling.previousSibling.previousSibling).text().trim()"]
+      }
+    }
+  },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowhead:contains('奶糖') + td"],
+          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+        }
+      }
+    }
+  },
+  "plugins": [{
+    "name": "官方列表",
+    "pages": ["/official.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }],
+  "mergeSchemaTagSelectors": true
+}
