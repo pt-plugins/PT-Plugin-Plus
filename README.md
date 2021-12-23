@@ -19,7 +19,7 @@ PT 助手 Plus，是一款浏览器插件（Web Extensions），一个可以提�
 
 > 注意：`1.0.0` 以下的配置不能直接用于该版本，请勿将 `1.0.0` 以下的版本配置进行导入操作。
 
-> 最新版本以及功能建议登录后从[Action](https://github.com/ronggang/PT-Plugin-Plus/actions)里获取。
+> 最新版本以及功能建议登录后从[Action](https://github.com/ronggang/PT-Plugin-Plus/actions)里获取。如有问题请参看Wiki
 
 > 提Issue前请务必检查Dev版本、Pull Request以及之前的Issue
 
