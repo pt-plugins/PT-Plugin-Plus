@@ -19,6 +19,10 @@ PT 助手 Plus，是一款浏览器插件（Web Extensions），一个可以提�
 
 > 注意：`1.0.0` 以下的配置不能直接用于该版本，请勿将 `1.0.0` 以下的版本配置进行导入操作。
 
+> 最新版本以及功能建议登录后从[Action](https://github.com/ronggang/PT-Plugin-Plus/actions)里获取。
+
+> 提Issue前请务必检查Dev版本、Pull Request以及之前的Issue
+
 ## 已支持的浏览器
 - <a href="https://chrome.google.com/webstore/detail/abkdiiddckphbigmakaojlnmakpllenb" title="已在 Chrome Web Store 市场上发布的版本">![Google Chrome](https://img.shields.io/chrome-web-store/v/abkdiiddckphbigmakaojlnmakpllenb.svg?label=Google%20Chrome)</a> （已下架，见[原因](https://github.com/ronggang/PT-Plugin-Plus/wiki#%E5%B7%B2%E8%A2%AB%E4%B8%8B%E6%9E%B6%E7%9A%84%E6%B5%8F%E8%A7%88%E5%99%A8)）
 - <a href="https://addons.mozilla.org/zh-CN/firefox/addon/pt-plugin-plus/" title="已在 Mozilla Add-on 上发布的版本">![Mozilla Firefox](https://img.shields.io/amo/v/pt-plugin-plus.svg?label=Mozilla%20Firefox)</a> （已下架，见[原因](https://github.com/ronggang/PT-Plugin-Plus/wiki#%E5%B7%B2%E8%A2%AB%E4%B8%8B%E6%9E%B6%E7%9A%84%E6%B5%8F%E8%A7%88%E5%99%A8)）
