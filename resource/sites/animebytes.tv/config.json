@@ -5,14 +5,36 @@
   "url": "https://animebytes.tv/",
   "icon": "https://animebytes.tv/favicon.ico",
   "tags": ["动漫"],
-  "schema": "Gazelle",
+  "schema": "",
   "host": "animebytes.tv",
+  "collaborator": [
+    "sabersalv",
+    "MewX"
+  ],
   "supportedFeatures": {
     "userData": true,
     "search": false,
     "imdbSearch": false,
     "sendTorrent": false
   },
+  "plugins": [
+    {
+      "name": "Custom Torrent List",
+      "pages": [
+        "/series.php",
+        "/torrents.php",
+        "/torrents2.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "userTorrents.js"
+      ]
+    }
+  ],
+  "securityKeyFields": [
+    "authkey",
+    "torrent_pass"
+  ],
   "selectors": {
     "userBaseInfo": {
       "page": "/index.php",
