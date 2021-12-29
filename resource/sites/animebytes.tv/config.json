@@ -8,12 +8,12 @@
   "schema": "",
   "host": "animebytes.tv",
   "collaborator": [
-    "sabersalv",
-    "MewX"
+    "MewX",
+    "sabersalv"
   ],
   "supportedFeatures": {
     "userData": true,
-    "search": false,
+    "search": true,
     "imdbSearch": false,
     "sendTorrent": false
   },
@@ -34,6 +34,16 @@
   "securityKeyFields": [
     "authkey",
     "torrent_pass"
+  ],
+  "searchEntry": [
+    {
+      "entry": "/torrents.php?searchstr=$key$&force_default=1",
+      "name": "default",
+      "resultType": "html",
+      "parseScriptFile": "getSearchResult.js",
+      "resultSelector": "div.group_cont",
+      "enabled": true
+    }
   ],
   "selectors": {
     "userBaseInfo": {
