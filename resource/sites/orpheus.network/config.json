@@ -24,8 +24,8 @@
           "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "bonus": {
-          "selector": ["div#content > div.header > h3"],
-          "filters": ["query.text().replace(/,/g,'').match(/.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+          "selector": ["div#content > table > tbody > tr > td:eq(2)"],
+          "filters": ["query.text().replace(/,/g,'')"]
         }
       }
     },
