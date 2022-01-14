@@ -3,7 +3,7 @@
   "ver": "0.0.1",
   "plugins": [{
     "name": "种子详情页面",
-    "pages": ["/details.php"],
+    "pages": ["/torrent.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
   }, {
     "name": "种子列表",
