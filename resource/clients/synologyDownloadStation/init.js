@@ -1,5 +1,6 @@
 /**
  * @see https://global.download.synology.com/download/Document/DeveloperGuide/Synology_Download_Station_Web_API.pdf
+ * @backport https://github.com/ronggang/PT-Plugin-Plus/blob/48c2d42a1d05c129c0abbbecf653b1b7d88a8a8e/src/resource/btClients/src/clients/synologyDownloadStation.ts
  */
 (function ($, window) {
   class Client {
@@ -7,7 +8,6 @@
     init(options) {
       this.options = options;
       this.sessionId = "";
-      this.version = 2;
       if (this.options.address.substr(-1) == "/") {
         this.options.address = this.options.address.substr(0, this.options.address.length - 1);
       }
@@ -18,7 +18,7 @@
      */
     getSessionId() {
       return new Promise((resolve, reject) => {
-        let url = `${this.options.address}/webapi/auth.cgi?api=SYNO.API.Auth&version=${this.version}&method=login&account=${encodeURIComponent(this.options.loginName)}&passwd=${encodeURIComponent(this.options.loginPwd)}&session=DownloadStation&format=sid`;
+        let url = `${this.options.address}/webapi/auth.cgi?api=SYNO.API.Auth&version=3&method=login&account=${encodeURIComponent(this.options.loginName)}&passwd=${encodeURIComponent(this.options.loginPwd)}&session=DownloadStation&format=sid`;
         $.ajax({
           url,
           timeout: PTBackgroundService.options.connectClientTimeout,
@@ -83,8 +83,8 @@
 
     /**
      * 添加种子链接
-     * @param {*} options 
-     * @param {*} callback 
+     * @param {*} options
+     * @param {*} callback
      */
     addTorrentFromUrl(options, callback) {
       if (!this.sessionId) {
@@ -102,64 +102,68 @@
         })
         return;
       }
-      // let path = [`${this.options.address}/webapi/DownloadStation/task.cgi?api=SYNO.DownloadStation.Task`,
-      //   `version=${this.version}`,
-      //   `method=create`,
-      //   `_sid=${this.sessionId}`,
-      //   `uri=` + encodeURIComponent(options.url),
-      //   `destination=` + encodeURIComponent(options.savePath)
-      // ];
-      // $.ajax({
-      //   url: path.join("&"),
-      //   timeout: PTBackgroundService.options.connectClientTimeout,
-      //   dataType: "json"
-      // }).done((result) => {
-      //   console.log(result)
-      //   callback(result)
-      // }).fail(() => {
-      //   callback({
-      //     status: "error",
-      //     msg: "服务器连接失败"
-      //   })
-      // })
 
-      PTBackgroundService.requestMessage({
+      let postData = {
+        _sid: this.sessionId,
+        api: 'SYNO.DownloadStation2.Task',
+        method: 'create',
+        version: 2,
+        create_list: false
+      }
+
+      if (options.savePath) {
+        let savePath = options.savePath + "";
+        // 去除路径最后的 / ，以确保可以正常添加目录信息
+        if (savePath.substr(-1) == "/") {
+          savePath = savePath.substr(0, savePath.length - 1);
+        }
+        postData.destination = `"${savePath || ''}"`;
+      }
+
+      if (options.url.startWith('magnet:')) {
+        postData.type = '"url"';
+        postData.url = [options.url];
+
+        this.addTorrent(postData, options, callback);
+      } else {
+        postData.type = '"file"';
+        postData.file = ['torrent'];
+
+        let formData = new FormData();
+        Object.keys(postData).forEach((k) => {
+          let v = postData[k];
+          if (v !== undefined) {
+            if (Array.isArray(v)) {
+              v = JSON.stringify(v);
+            }
+            formData.append(k,v);
+          }
+        });
+
+
+        PTBackgroundService.requestMessage({
           action: "getTorrentDataFromURL",
           data: options.url
         })
-        .then((result) => {
-          let formData = new FormData();
-          formData.append("_sid", this.sessionId);
-          formData.append("api", "SYNO.DownloadStation.Task");
-          formData.append("version", this.version);
-          formData.append("method", "create");
+          .then((result) => {
+            formData.append("file", result, "file.torrent")
 
-          if (options.savePath) {
-            let savePath = options.savePath + "";
-            // 去除路径最后的 / ，以确保可以正常添加目录信息
-            if (savePath.substr(-1) == "/") {
-              savePath = savePath.substr(0, savePath.length - 1);
-            }
-            formData.append("destination", savePath)
-          }
+            this.addTorrent(formData, options, callback);
+          })
+          .catch((result) => {
+            callback && callback(result);
+          });
 
-          formData.append("file", result, "file.torrent")
-
-          this.addTorrent(formData, options, callback);
-        })
-        .catch((result) => {
-          callback && callback(result);
-        });
+      }
     }
 
     addTorrent(formData, options, callback) {
       $.ajax({
-        url: `${this.options.address}/webapi/DownloadStation/task.cgi`,
+        url: `${this.options.address}/webapi/entry.cgi`,
         timeout: PTBackgroundService.options.connectClientTimeout,
         type: "POST",
         processData: false,
         contentType: false,
-        method: "POST",
         data: formData,
         dataType: "json"
       }).done((result) => {
