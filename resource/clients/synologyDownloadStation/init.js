@@ -146,7 +146,7 @@
           data: options.url
         })
           .then((result) => {
-            formData.append("file", result, "file.torrent")
+            formData.append("torrent", result, "file.torrent")
 
             this.addTorrent(formData, options, callback);
           })
