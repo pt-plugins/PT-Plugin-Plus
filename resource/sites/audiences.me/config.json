@@ -1,0 +1,44 @@
+{
+  "name": "Audiences",
+  "timezoneOffset": "+0800",
+  "description": "观众",
+  "url": "https://audiences.me/",
+  "icon": "https://audiences.me/favicon.ico",
+  "tags": [
+    "综合",
+    "影视",
+    "音乐",
+    "电子书",
+    "有声书"
+  ],
+  "schema": "NexusPHP",
+  "host": "audiences.me",
+  "collaborator": "Audiences",
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "td:not(.rowfollow):not(.colhead):not(.embedded)"
+        ],
+        "filters": [
+          "query.text()=='-'?null:query.text()"
+        ]
+      },
+      "status": {
+        "selector": [
+          ".torrents-progress", ".torrents-progress2"
+        ],
+        "switchFilters": [
+          ["query.attr('style').indexOf('100%')!=-1?2:3"],
+          ["255"]
+        ]
+      }
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "全部",
+      "enabled": true
+    }
+  ]
+}
