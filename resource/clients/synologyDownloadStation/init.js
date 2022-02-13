@@ -104,23 +104,21 @@
       }
 
       let postData = {
-        _sid: this.sessionId,
         api: 'SYNO.DownloadStation2.Task',
         method: 'create',
         version: 2,
-        create_list: false
+        create_list: false,
+        _sid: this.sessionId  // fxxk， _sid 参数不能放在第一位，不然会直接 101 报错
       }
 
-      if (options.savePath) {
-        let savePath = options.savePath + "";
-        // 去除路径最后的 / ，以确保可以正常添加目录信息
-        if (savePath.substr(-1) == "/") {
-          savePath = savePath.substr(0, savePath.length - 1);
-        }
-        postData.destination = `"${savePath || ''}"`;
+      // fxxk， 没有 destination 参数也会直接报错
+      let savePath = (options.savePath || "") + "";
+      if (savePath.substr(-1) === "/") {  // 去除路径最后的 / ，以确保可以正常添加目录信息
+        savePath = savePath.substr(0, savePath.length - 1);
       }
+      postData.destination = `"${savePath || ''}"`;
 
-      if (options.url.startWith('magnet:')) {
+      if (options.url.startsWith('magnet:')) {
         postData.type = '"url"';
         postData.url = [options.url];
 
