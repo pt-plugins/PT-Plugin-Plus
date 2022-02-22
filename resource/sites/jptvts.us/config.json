@@ -1,0 +1,280 @@
+{
+  "name": "jptvts.us",
+  "timezoneOffset": "+0000",
+  "description": "JPTVTS",
+  "icon": "https://jptvts.us/themes/default/images/favicon.ico",
+  "url": "https://jptvts.us/",
+  "tags": [
+    "日剧",
+    "综艺"
+  ],
+  "schema": "Common",
+  "plugins": [
+    {
+      "name": "种子详情页面",
+      "pages": [
+        "/torrents-details.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/Common/details.js"
+      ]
+    },
+    {
+      "name": "种子列表",
+      "pages": [
+        "/torrents-today.php",
+        "/torrents-search.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/Common/torrents.js"
+      ]
+    }
+  ],
+  "host": "jptvts.us",
+  "searchEntryConfig": {
+    "page": "/get_ttable.php?pcat=Show+All&subbed=&fl=&resd=&p=0&searchstr=$key$&deadlive=1&sortcol=id&sortorder=desc&startdt=&enddt=",
+    "loggedRegex": "class=\"ttable_headinner\"",
+    "resultType": "html",
+    "resultSelector": "table",
+    "fieldIndex": {
+      "category": 0,
+      "title": 1,
+      "link": 1,
+      "url": 2,
+      "comments": 5,
+      "time": 10,
+      "size": 6,
+      "author": 4,
+      "seeders": 7,
+      "leechers": 8,
+      "completed": 9
+    },
+    "fieldSelector": {
+      "title": {
+        "selector": [
+          "a"
+        ],
+        "filters": [
+          "query.text()"
+        ]
+      },
+      "link": {
+        "selector": [
+          "a"
+        ],
+        "filters": [
+          "query.attr('href')",
+          "'https://jptvts.us/'+query"
+        ]
+      },
+      "url": {
+        "selector": [
+          ""
+        ],
+        "filters": [
+          "query.children().attr('href')",
+          "'https://jptvts.us/'+query"
+        ]
+      },
+      "time": {
+        "selector": [
+          ""
+        ],
+        "filters": [
+          "'20'+query.text()"
+        ]
+      },
+      "progress": {
+        "selector": [
+          "td.ttable_seeding font[color='green'], td.ttable_seeding font[color='black']",
+          "td.ttable_seeding font[color='#ff0000']",
+          ""
+        ],
+        "switchFilters": [
+          [
+            "query.length > 0 ? 100:null"
+          ],
+          [
+            "query.length > 0 ? 0:null"
+          ],
+          [
+            "null"
+          ]
+        ]
+      },
+      "status": {
+        "selector": [
+          "td.ttable_seeding font[color='green']",
+          "td.ttable_seeding font[color='black']",
+          "td.ttable_seeding font[color='#ff0000']"
+        ],
+        "switchFilters": [
+          [
+            "2"
+          ],
+          [
+            "255"
+          ],
+          [
+            "1"
+          ]
+        ]
+      }
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "全部",
+      "enabled": true
+    }
+  ],
+  "torrentTagSelectors": [
+    {
+      "name": "Free",
+      "selector": "img[src='images/freeleech.png']"
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "name": {
+          "selector": "#main > table .myBlock-caption:first"
+        },
+        "isLogged": {
+          "selector": [
+            "a[href*='account-logout.php']"
+          ],
+          "filters": [
+            "query.length>0"
+          ]
+        },
+        "messageCount": {
+          "selector": [
+            "a[href*='/forum/private.php']"
+          ],
+          "filters": [
+            "query.text().match(/(\\d+)/)",
+            "(query && query.length>=2)?parseInt(query[1]):0"
+          ]
+        },
+        "uploaded": {
+          "selector": [
+            ".myBlock-content td:contains('Uploaded:') + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "downloaded": {
+          "selector": [
+            ".myBlock-content td:contains('Downloaded:') + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "ratio": {
+          "selector": [
+            ".myBlock-content td:contains('Ratio:') + td"
+          ],
+          "filters": [
+            "query.text()"
+          ]
+        },
+        "levelName": {
+          "selector": [
+            ".myBlock-content td:contains('Class:') + td"
+          ],
+          "filters": [
+            "query.text()"
+          ]
+        },
+        "bonus": {
+          "value": "N/A"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/account.php",
+      "fields": {
+        "joinTime": {
+          "selector": [
+            "td.prof-lbl:contains('Joined:') + td"
+          ],
+          "filters": [
+            "dateTime(query.text()).valueOf()"
+          ]
+        },
+        "seeding": {
+          "selector": [
+            "b:contains('Currently seeding')"
+          ],
+          "filters": [
+            "query.text().match(/(\\d+)/)",
+            "(query && query.length>=2)?parseInt(query[1]):0"
+          ]
+        },
+        "seedingSize": {
+          "selector": [
+            "b:contains('Currently seeding') + br + table tr:not(:first-child) > td:nth-child(4)"
+          ],
+          "filters": [
+            "jQuery.map(query, (item)=>{return $(item).text();})",
+            "_self.getTotalSize(query)"
+          ]
+        }
+      }
+    },
+    "common": {
+      "page": "/torrents-details.php",
+      "fields": {
+        "downloadURL": {
+          "selector": [
+            "a[href*='download.php?id=']"
+          ],
+          "filters": [
+            "query.attr('href')"
+          ]
+        },
+        "size": {
+          "selector": [
+            "td[align='left']:contains('Total Size:') + td"
+          ],
+          "filters": [
+            "query.parent().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>1)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "sayThanksButton": {
+          "selector": [
+            "#ty-button"
+          ],
+          "filters": [
+            "query"
+          ]
+        },
+        "downloadURLs": {
+          "selector": [
+            "a[href*='download.php?id=']"
+          ],
+          "filters": [
+            "query.toArray()"
+          ]
+        },
+        "confirmSize": {
+          "selector": [
+            "table.ttable_headinner"
+          ],
+          "filters": [
+            "query.find('td.ttable_size')"
+          ]
+        }
+      }
+    }
+  }
+}
