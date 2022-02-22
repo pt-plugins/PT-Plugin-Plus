@@ -44,8 +44,7 @@
       }
     },
     "resultType": "html",
-    "parseScriptFile": "/schemas/UNIT3D/getSearchResult.js",
-    "resultSelector": "div.table-responsive > table:first"
+    "parseScriptFile": "getSearchResult.js"
   },
   "searchEntry": [{
     "name": "全部",
