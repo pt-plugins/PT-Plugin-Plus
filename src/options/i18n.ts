@@ -26,7 +26,7 @@ export class i18nService {
   public vuei18n = i18n;
 
   constructor() {
-    // 加载英文内容
+    // 加载所有语言包
     this.loadLangResource("en");
     this.loadLangResource("zh-CN");
   }

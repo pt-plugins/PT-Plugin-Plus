@@ -2,7 +2,8 @@
   "name": "简体中文 Chinese (Simplified)",
   "code": "zh-CN",
   "authors": [
-    "栽培者"
+    "栽培者",
+    "MewX"
   ],
   "words": {
     "app": {
@@ -222,6 +223,16 @@
       "showSites": "展示站点",
       "close": "关闭",
       "shareMessage": "这些年走过的路",
+      "time": {
+        "year": "年",
+        "month": "月",
+        "day": "日",
+        "hour": "时",
+        "mins": "分",
+        "week": "周",
+        "ago": "前",
+        "lessThanAWeek": "不满一周"
+      },
       "total": {
         "uploaded": "上传总量：",
         "downloaded": "下载总量：",
