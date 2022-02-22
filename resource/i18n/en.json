@@ -2,7 +2,11 @@
   "name": "English (Beta)",
   "code": "en",
   "authors": [
-    "ronggang", "ylxb2016", "xiongqiwei", "jackson008"
+    "ronggang",
+    "ylxb2016",
+    "xiongqiwei",
+    "jackson008",
+    "MewX"
   ],
   "words": {
     "app": {
@@ -223,6 +227,16 @@
       "showSites": "Show Sites",
       "close": "Close",
       "shareMessage": "Growth process",
+      "time": {
+        "year": " year(s) ",
+        "month": " month(s) ",
+        "day": " day(s) ",
+        "hour": " hour(s) ",
+        "mins": " minute(s) ",
+        "week": " week(s) ",
+        "ago": " ago",
+        "lessThanAWeek": "Less than a week"
+      },
       "total": {
         "uploaded": "Total uploads: ",
         "downloaded": "Total download: ",

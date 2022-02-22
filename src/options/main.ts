@@ -20,8 +20,8 @@ class Main {
   private loadCount = 0;
 
   constructor() {
-    this.initVueConfig();
     this.initI18n();
+    this.initVueConfig();
     this.initMainVM();
     this.init();
   }
@@ -68,12 +68,12 @@ class Main {
         return "";
       }
       let unit = {
-        year: "年",
-        month: "月",
-        day: "日",
-        hour: "时",
-        mins: "分",
-        week: "周"
+        year: this.i18n.vuei18n.t("timeline.time.year", this.i18n.currentLanguage).toString(),
+        month: this.i18n.vuei18n.t("timeline.time.month", this.i18n.currentLanguage).toString(),
+        day: this.i18n.vuei18n.t("timeline.time.day", this.i18n.currentLanguage).toString(),
+        hour: this.i18n.vuei18n.t("timeline.time.hour", this.i18n.currentLanguage).toString(),
+        mins: this.i18n.vuei18n.t("timeline.time.minute", this.i18n.currentLanguage).toString(),
+        week: this.i18n.vuei18n.t("timeline.time.week", this.i18n.currentLanguage.toString())
       };
 
       let now = new Date().getTime();
@@ -87,7 +87,7 @@ class Main {
       if (weekOnly) {
         let week = Math.floor(days / 7);
         if (week < 1) {
-          return "不满一周";
+          return this.i18n.vuei18n.t("timeline.time.lessThanAWeek", this.i18n.currentLanguage).toString();
         }
         return `${week}${unit.week}`;
       }
@@ -127,7 +127,7 @@ class Main {
           result = "< 1" + unit["mins"];
       }
 
-      return result + "前";
+      return result + this.i18n.vuei18n.t("timeline.time.ago", this.i18n.currentLanguage).toString();
     });
   }
 
