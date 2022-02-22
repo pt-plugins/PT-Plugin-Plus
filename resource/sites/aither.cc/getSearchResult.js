@@ -90,7 +90,6 @@
         console.log(error);
         options.status = ESearchResultParseStatus.parseError;
         options.errorMsg = error.stack;
-        alert(error.stack);
       }
 
       return results;
