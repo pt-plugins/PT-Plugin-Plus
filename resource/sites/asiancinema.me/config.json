@@ -9,6 +9,9 @@
   "host": "asiancinema.me",
   "searchEntryConfig": {
     "page": "/torrents/filter",
+    "resultType": "html",
+    "parseScriptFile": "/sites/asiancinema.me/getSearchResult.js",
+    "resultSelector": "div.table-responsive > table:first",
     "queryString": "search=$key$",
     "area": [{
       "name": "IMDB",
@@ -35,10 +38,7 @@
           ["3"]
         ]
       }
-    },
-    "resultType": "html",
-    "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "div.table-responsive > table:first"
+    }
   },
   "selectors": {
     "userBaseInfo": {
