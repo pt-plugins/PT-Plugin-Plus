@@ -6,6 +6,10 @@
   "description": "天雪",
   "icon": "https://www.skyey2.com/favicon.ico",
   "tags": ["动漫"],
+  "collaborator": [
+    "栽培者",
+    "MewX"
+  ],
   "host": "www.skyey2.com",
   "selectors": {
     "userBaseInfo": {
@@ -29,12 +33,43 @@
       "page": "/home.php?mod=space&uid=$user.id$",
       "fields": {
         "uploaded": {
-          "selector": ["#psts li:contains('上传量')"],
-          "filters": ["query.text().replace(/,/g,'').match(/上传量+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "selector": [
+            "#psts li:contains('上传量')"
+          ],
+          "filters": [
+            "query.text().match('上传量.*?/\\s*([\\d\\.]+\\s*?[ZEPTGMK]?i?B)')",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
         },
         "downloaded": {
-          "selector": ["#psts li:contains('下载量')"],
-          "filters": ["query.text().replace(/,/g,'').match(/下载量+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "selector": [
+            "#psts li:contains('下载量')"
+          ],
+          "filters": [
+            "query.text().match('下载量.*?/\\s*([\\d\\.]+\\s*?[ZEPTGMK]?i?B)')",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "ratio": {
+          "selector": "ul.bbda",
+          "filters": [
+            "query.text().match('分享率\\s+?([\\d\\.]+)')",
+            "(query && query.length>=2)?(query[1].trim()):0"
+          ]
+        },
+        "seeding": {
+          "selector": "#psts li:contains('做种数估计')",
+          "filters": [
+            "query.text().replace('做种数估计', '').replace(/,/g,'').trim()",
+            "parseFloat(query)"
+          ]
+        },
+        "seedingSize": {
+          "selector": "#psts li:contains('实际保种')",
+          "filters": [
+            "query.text().match('实际保种.*?/\\s*([\\d\\.]+\\s*[ZEPTGMK])')",
+            "(query && query.length>=2)?(query[1].trim()).sizeToNumber():0"
+          ]
         },
         "levelName": {
           "selector": "a[href='home.php?mod=spacecp&ac=usergroup']",
@@ -42,25 +77,23 @@
         },
         "bonus": {
           "selector": ["#ratio"],
-          "filters": ["query.text().replace('论坛积分:', '').replace(/,/g,'').trim()", "parseFloat(query)"]
+          "filters": [
+            "query.text().replace('积分: ', '').replace(/,/g,'').trim()",
+            "parseFloat(query)"
+          ]
         },
         "joinTime": {
           "selector": "#pbbs > li:contains('注册时间')",
-          "filters": ["query.text().replace('注册时间', '').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
-        },
-        "seeding": {
-          "selector": ["#psts li:contains('即时保种数')"],
-          "filters": ["query.text().replace('即时保种数', '').replace(/,/g,'').trim()", "parseFloat(query)"]
-        },
-        "seedingSize": {
-          "value": -1
+          "filters": [
+            "query.text().replace('注册时间', '').trim()",
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
         }
       }
     }
   },
   "supportedFeatures": {
-    "imdbSearch": false,
-    "userData": "◐"
+    "imdbSearch": false
   },
   "searchEntryConfig": {
     "fieldSelector": {
