@@ -6,5 +6,85 @@
   "description": "PT时间",
   "icon": "https://www.pttime.org/favicon.ico",
   "tags": ["电影", "成人"],
-  "host": "www.pttime.org"
+  "host": "www.pttime.org",
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": ["a[href*='userdetails.php'][class*='Name']:first", "a[href*='userdetails.php']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["a[href*='userdetails.php'][class*='Name']:first", "a[href*='userdetails.php']:first"],
+          "filters": ["query && query.attr('href').getQueryString('id') > 0 ? query.text(): ''"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='usercp.php']"],
+          "filters": ["query.length>0"]
+        },
+        "messageCount": {
+          "selector": ["td[style*='background: red'] a[href*='messages.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "seeding": {
+          "selector": ["font.color_active"],
+          "filters": ["query.parent().text().match(/\\d+(\\.\\d+)?/g)", "parseInt(query[0])"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.rowhead:contains('传输') + td", "td.rowhead:contains('傳送') + td", "td.rowhead:contains('Transfers') + td", "td.rowfollow:contains('分享率')"],
+          "filters": ["query.text().replace(/,/g,'').match(/(上[传傳]量|Uploaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==3)?(query[2]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td.rowhead:contains('传输') + td", "td.rowhead:contains('傳送') + td", "td.rowhead:contains('Transfers') + td", "td.rowfollow:contains('分享率')"],
+          "filters": ["query.text().replace(/,/g,'').match(/(下[载載]量|Downloaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==3)?(query[2]).sizeToNumber():0"]
+        },
+        "levelName": {
+          "selector": ["td.rowhead:contains('等级')", "td.rowhead:contains('等級')", "td.rowhead:contains('Class')"],
+          "filters": ["query.next().find('img').attr('title')"]
+        },
+        "bonus": {
+          "selector": ["td.rowhead:contains('魔力') + td", "td.rowhead:contains('Karma'):contains('Points') + td", "td.rowhead:contains('麦粒') + td", "td.rowfollow:contains('魔力值')"],
+          "filters": ["query.is(\":contains('魔力值:')\")?query.text().replace(/,/g,'').match(/魔力值.+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')", "parseFloat(query)"]
+        },
+        "joinTime": {
+          "selector": ["td.rowhead:contains('加入日期')", "td.rowhead:contains('Join'):contains('date')"],
+          "filters": ["query.next().text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seedingSize": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    },
+    "/details.php": {
+      "fields": {
+        "size": {
+          "selector": ["b:contains('大小'):first"],
+          "filters": ["query.parent().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        },
+        "imdbId": {
+          "selector": ["a[href*='www.imdb.com/title/']:first"],
+          "attribute": "href",
+          "filters": ["query.match(/(tt\\d+)/)", "(query && query.length>=2)?query[1]:null"]
+        },
+        "sayThanksButton": {
+          "selector": ["input#saythanks:not(:disabled)"],
+          "filters": ["query"]
+        }
+      }
+    }
+  },
+  "collaborator": "asterisk"
 }
