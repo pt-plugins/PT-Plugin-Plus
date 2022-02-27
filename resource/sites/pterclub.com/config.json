@@ -17,8 +17,8 @@
         "filters": ["query"]
       },
       "subTitle": {
-        "selector": ["a[href*='details.php?id='][title]:first"],
-        "filters": ["query.parent()[0].lastChild", "query.nodeName == '#text'?$(query).text().trim():$(query.previousSibling.previousSibling.previousSibling.previousSibling).text().trim()"]
+        "selector": ["div>span"],
+        "filters": ["query.text().trim()"]
       },
       "progress": {
         "selector": [".progbargreen", ".progbarred + .progbarrest", ".progbarred", ".progbarrest", ""],
