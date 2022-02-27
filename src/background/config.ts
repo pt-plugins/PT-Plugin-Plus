@@ -147,10 +147,10 @@ class Config {
         .then((results: any[]) => {
           results.forEach((result: any) => {
             let site = this.options.sites.find((item: Site) => {
-              let cdn = [item.url].concat(item.cdn, item.formerHosts);
+              let cdn = [item.url].concat(item.cdn, item.formerHosts?.map(x => `//${x}`));
               return (
                 item.host == result.host ||
-                cdn.join("").indexOf(result.host) > -1
+                cdn.join("").indexOf(`//${result.host}`) > -1
               );
             });
 
@@ -180,9 +180,10 @@ class Config {
         .get(url, reset)
         .then((result: ISiteIcon) => {
           let site = this.options.sites.find((item: Site) => {
-            let cdn = [item.url].concat(item.cdn, item.formerHosts);
+            let cdn = [item.url].concat(item.cdn, item.formerHosts?.map(x => `//${x}`));
             return (
-              item.host == result.host || cdn.join("").indexOf(result.host) > -1
+              item.host == result.host ||
+              cdn.join("").indexOf(`//${result.host}`) > -1
             );
           });
 
