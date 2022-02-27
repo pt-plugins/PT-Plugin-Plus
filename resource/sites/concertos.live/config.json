@@ -91,8 +91,8 @@
           "filters": ["query.parent().text().trim().replace('Ratio: ', '')"]
         }, 
         "levelName": {
-          "selector": [".user-info__item > .fa-user"],
-          "filters":  ["query.parent().text().trim().split(' ')[0]"]
+          "selector": [".user-info__item > .fa-bolt"],
+          "filters":  ["query.parent().text().trim().replace(/(?<=.*)\\s[^\\s]*$/,'')"]
         }
       }
     },
