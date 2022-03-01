@@ -33,28 +33,24 @@
       "page": "/home.php?mod=space&uid=$user.id$",
       "fields": {
         "uploaded": {
-          "selector": [
-            "#psts li:contains('上传量')"
-          ],
+          "selector": "#psts li:contains('上传量')",
           "filters": [
-            "query.text().match('上传量.*?/\\s*([\\d\\.]+\\s*?[ZEPTGMK]?i?B)')",
-            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+            "query.text().match(/上传量.+?\\/\\s*([\\d\\.]+\\s*?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>=2) ? query[1].sizeToNumber() : 0"
           ]
         },
         "downloaded": {
-          "selector": [
-            "#psts li:contains('下载量')"
-          ],
+          "selector": "#psts li:contains('下载量')",
           "filters": [
-            "query.text().match('下载量.*?/\\s*([\\d\\.]+\\s*?[ZEPTGMK]?i?B)')",
-            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+            "query.text().match(/下载量.+?\\/\\s*([\\d\\.]+\\s*?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>=2) ? query[1].sizeToNumber() : 0"
           ]
         },
         "ratio": {
           "selector": "ul.bbda",
           "filters": [
-            "query.text().match('分享率\\s+?([\\d\\.]+)')",
-            "(query && query.length>=2)?(query[1].trim()):0"
+            "query.text().match(/分享率\\s+?([\\d\\.]+)/)",
+            "(query && query.length>=2) ? query[1].trim() : 0"
           ]
         },
         "seeding": {
@@ -67,8 +63,8 @@
         "seedingSize": {
           "selector": "#psts li:contains('实际保种')",
           "filters": [
-            "query.text().match('实际保种.*?/\\s*([\\d\\.]+\\s*[ZEPTGMK])')",
-            "(query && query.length>=2)?(query[1].trim()).sizeToNumber():0"
+            "query.text().match(/实际保种.+?\\/\\s*([\\d\\.]+\\s*[ZEPTGMK])/)",
+            "(query && query.length>=2) ? (query[1].trim()).sizeToNumber() : 0"
           ]
         },
         "levelName": {
