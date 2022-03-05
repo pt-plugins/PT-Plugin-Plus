@@ -546,7 +546,7 @@ export class Searcher {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.searchRequestQueue[url] = $.ajax({
         url: url,
-        cache: ['AvistaZ'].includes(site.schema),
+        cache: true,
         dataType: "text",
         contentType: "text/plain",
         timeout: this.options.connectClientTimeout || 30000,
