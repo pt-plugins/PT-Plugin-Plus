@@ -72,8 +72,8 @@ class Main {
         month: this.i18n.vuei18n.t("timeline.time.month", this.i18n.currentLanguage).toString(),
         day: this.i18n.vuei18n.t("timeline.time.day", this.i18n.currentLanguage).toString(),
         hour: this.i18n.vuei18n.t("timeline.time.hour", this.i18n.currentLanguage).toString(),
-        mins: this.i18n.vuei18n.t("timeline.time.minute", this.i18n.currentLanguage).toString(),
-        week: this.i18n.vuei18n.t("timeline.time.week", this.i18n.currentLanguage.toString())
+        mins: this.i18n.vuei18n.t("timeline.time.mins", this.i18n.currentLanguage).toString(),
+        week: this.i18n.vuei18n.t("timeline.time.week", this.i18n.currentLanguage).toString()
       };
 
       let now = new Date().getTime();
