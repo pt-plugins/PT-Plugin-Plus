@@ -1,0 +1,85 @@
+{
+  "name": "bitbr",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "url": "https://bitbr.cc/",
+  "icon": "https://bitbr.cc/favicon.ico",
+  "tags": [
+      "影视",
+      "成人"
+  ],
+  "host": "bitbr.cc",
+  "collaborator": "枕头啊枕头",
+  "selectors": {
+      "userExtendInfo": {
+          "page": "/userdetails.php?id=$user.id$",
+          "merge": true,
+          "fields": {
+              "uploaded": {
+                  "selector": "span.medium",
+                  "filters": [
+                      "query.text().match(/Uploaded: (.*?)  Downloaded/g)[0].replace('Uploaded:', '').replace('Downloaded', '').trim()",
+                      "(query && query.length>=2) ? query.sizeToNumber() : 0"
+                  ]
+              },
+              "downloaded": {
+                  "selector": "span.medium",
+                  "filters": [
+                      "query.text().match(/Downloaded: (.*?)  Torrents/g)[0].replace('Downloaded:', '').replace('Torrents', '').trim()",
+                      "(query && query.length>=2) ? query.sizeToNumber() : 0"
+                  ]
+              },
+              "ratio": {
+                  "selector": "span.medium",
+                  "filters": [
+                      "query.text().match(/Ratio:(.*?) Uploaded:/g)[0].replace('Ratio:','').replace('Uploaded:','').replace(/,/gi,'').trim()",
+                      "(query && query.length>=2) ? query : 0"
+                  ]
+              },
+              "levelName": {
+                  "selector": "table.main tbody tbody td:contains(Classe)",
+                  "filters": [
+                      "query.parent().children('td').eq(1).find('img').attr('title')"
+                  ]
+              },
+              "bonus": {
+                  "selector": [
+                      "table.main tbody tbody td:contains(Pontos Karma)"
+                  ],
+                  "filters": [
+                      "query.parent().children('td').eq(1).text()",
+                      "parseFloat(query)"
+                  ]
+              },
+              "joinTime": {
+                  "selector": "table.main tbody tbody tr:eq(2) td:eq(1)",
+                  "filters": [
+                      "query.text().match(/\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{1,2}:\\d{1,2}/g)[0]",
+                      "dateTime(query).isValid()?dateTime(query).valueOf():query"
+                  ]
+              }
+          }
+      },
+      "userSeedingTorrents": {
+        "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+        "fields": {
+            "seedingSize": {
+                "selector": "",
+                "filters": [
+                    "query.text().match(/registro(.*?)Tipo/g)",
+                    "(query && query.length>0 ) ? query[0].replace('registro', '').replace('Tipo', '').replace('s', '').trim() : 0",
+                    "(query != 0) ? query.sizeToNumber() : 0"
+                ]
+            },
+            "seeding": {
+                "selector": "",
+                "filters": [
+                    "query.text().match(/(.*?)registro/g)",
+                    "(query && query.length>0 ) ? query[0].replace('registro', '').trim() : 0",
+                    "(query != 0) ? query : 0"
+                ]
+            }
+        }
+    }
+  }
+}
