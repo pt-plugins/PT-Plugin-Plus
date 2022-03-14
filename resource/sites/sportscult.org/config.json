@@ -1,0 +1,451 @@
+{
+  "name": "sportscult",
+  "timezoneOffset": "+0000",
+  "description": "sportscult",
+  "url": "https://sportscult.org/",
+  "icon": "https://sportscult.org/favicon.ico",
+  "tags": [
+      "体育"
+  ],
+  "schema": "Common",
+  "collaborator": "枕头啊枕头",
+  "plugins": [
+      {
+          "name": "种子详情页面",
+          "pages": [
+              "/index.php"
+          ],
+          "scripts": [
+              "/schemas/NexusPHP/common.js",
+              "details.js"
+          ]
+      }
+  ],
+  "host": "sportscult.org",
+  "searchEntryConfig": {
+      "page": "/index.php?page=torrents",
+      "queryString": "search=$key$&active=0",
+      "resultType": "html",
+      "resultSelector": "#bodyarea > table > tbody > tr > td:nth-child(2) > div > .block-content > div > div > div table:nth-child(4) > tbody > tr:nth-child(2) > td > table > tbody > tr:not(:first-child)",
+      "dataRowSelector": " > tbody > tr:not(:first-child)",
+      "fieldIndex": {
+          "title": 1,
+          "link": 1,
+          "url": 2,
+          "time": 4,
+          "size": 3,
+          "seeders": 5,
+          "leechers": 6,
+          "completed": 7
+      },
+      "fieldSelector": {
+          "title": {
+              "selector": [
+                  ""
+              ],
+              "filters": [
+                  "query.get(0).firstChild",
+                  "query.nodeValue||query.innerText||0"
+              ]
+          },
+          "link": {
+              "selector": [
+                  ""
+              ],
+              "filters": [
+                  "query.children().attr('href')",
+                  "'https://sportscult.org/'+query"
+              ]
+          },
+          "url": {
+              "selector": [
+                  ""
+              ],
+              "filters": [
+                  "query.children().attr('href')",
+                  "'https://sportscult.org/'+query"
+              ]
+          }
+      }
+  },
+  "searchEntry": [
+      {
+          "name": "全部",
+          "enabled": true
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=47&active=1&gold=0",
+          "name": "EPL",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=41&active=1&gold=0",
+          "name": "American Football",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=54",
+          "name": "AutoMotoRacing",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=17",
+          "name": "Athletics",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=51",
+          "name": "Baseball",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=34",
+          "name": "Bodybuilding/Fitness",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=50",
+          "name": "Golf",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=29",
+          "name": "Boxing",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=19",
+          "name": "BrainGames",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=36",
+          "name": "BreakDance",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=40",
+          "name": "Golf",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=23",
+          "name": "Cycling",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=31",
+          "name": "Documentary",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=1",
+          "name": "European Basketball",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=6",
+          "name": "European Soccer",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=37",
+          "name": "Extreme Sports",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=9",
+          "name": "Fight Sports",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=32",
+          "name": "Formula1",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=45",
+          "name": "GAA (Gaelic)",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=8",
+          "name": "Golf",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=22",
+          "name": "Gymnastics",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=39",
+          "name": "Handball",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=2",
+          "name": "International Basket",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=25",
+          "name": "IceHockey",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=4",
+          "name": "International Soccer",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=42",
+          "name": "KHL",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=35",
+          "name": "KickBoxing/Muay Thai",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=43",
+          "name": "La Liga",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=15",
+          "name": "MotorSport",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=24",
+          "name": "MLB/Baseball",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=28",
+          "name": "MMA",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=11",
+          "name": "NBA/WNBA",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=3",
+          "name": "NCAA Basket/Football",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=5",
+          "name": "NFL",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=27",
+          "name": "NHL",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=26",
+          "name": "Olympic games",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=7",
+          "name": "Rugby",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=44",
+          "name": "Serie A",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=38",
+          "name": "Snooker/Pool",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=30",
+          "name": "Streetball",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=18",
+          "name": "Swimming/Aquatics",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=46",
+          "name": "AFL(AustralianFB)",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=12",
+          "name": "Tennis",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=20",
+          "name": "Volleyball/Beach",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=21",
+          "name": "Weightlifting",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=16",
+          "name": "WinterSport",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=33",
+          "name": "Wrestling/Grapling",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=48",
+          "name": "Uncategorised",
+          "enabled": false
+      },
+      {
+          "queryString": "index.php?page=torrents&search=$key$&category=53",
+          "name": "Cricket",
+          "enabled": false
+      }
+  ],
+  "torrentTagSelectors": [
+      {
+          "name": "Free",
+          "selector": "img[src='gold/gold.gif']"
+      },
+      {
+          "name": "50%",
+          "selector": "img[src='gold/silver.gif']"
+      }
+  ],
+  "selectors": {
+      "userBaseInfo": {
+          "page": "/index.php",
+          "merge": true,
+          "fields": {
+              "id": {
+                  "selector": "a[href*='index.php?page=usercp']:first",
+                  "attribute": "href",
+                  "filters": [
+                      "query ? query.getQueryString('uid'):''"
+                  ]
+              },
+              "isLogged": {
+                  "selector": [
+                      "a[href*='logout.php']"
+                  ],
+                  "filters": [
+                      "query.length>0"
+                  ]
+              },
+              "messageCount": {
+                  "selector": [
+                      "a[href*='do=pm']"
+                  ],
+                  "filters": [
+                      "query.text().match(/(\\d+)/)",
+                      "(query && query.length>=2)?parseInt(query[1]):0"
+                  ]
+              }
+          }
+      },
+      "userExtendInfo" :{
+          "page": "/index.php?page=usercp&uid=$user.id$",
+          "merge": true,
+          "fields": {
+              "uploaded": {
+                  "selector": "td.header:contains('Uploaded:') + td",
+                  "filters": [
+                      "(query && query.length > 0) ? query.text().sizeToNumber():0"
+                  ]
+              },
+              "downloaded": {
+                  "selector": "td.header:contains('Downloaded:') + td",
+                  "filters": [
+                      "(query && query.length > 0) ? query.text().sizeToNumber():0"
+                  ]
+              },
+              "ratio": {
+                  "selector": "td.header:contains('Ratio:') + td",
+                  "filters": [
+                      "parseFloat(query.text().trim())"
+                  ]
+              },
+              "levelName": {
+                  "selector": "td.header:contains('Rank:') + td"
+              },
+              "bonus": {
+                  "selector": [
+                      "td.green:contains('Bonus')"
+                  ],
+                  "filters": [
+                      "query.text().replace('(Bonus ','').replace(')','')"
+                  ]
+              },
+              "seeding": {
+                  "value": "N/A"
+              },
+              "seedingSize": {
+                  "value": -1
+              },
+              "name": {
+                  "selector": "td.header:contains('User') + td"
+              },
+              "joinTime": {
+                  "selector": [
+                      "td.header:contains('Joined on') + td"
+                  ],
+                  "filters": [
+                      "query[0].innerHTML.replace('&nbsp;', '').replace('&nbsp;', '')",
+                      "dateTime(query).valueOf()"
+                  ]
+              }
+          }
+      },
+      "common": {
+          "page": "/index.php?page=torrent-details",
+          "merge": true,
+          "fields": {
+              "downloadURL": {
+                  "selector": [
+                      "a[href*='download.php?id=']"
+                  ],
+                  "filters": [
+                      "query.attr('href')"
+                  ]
+              },
+              "size": {
+                  "selector": [
+                      "td.header:contains('Size') + td"
+                  ],
+                  "filters": [
+                      "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+                      "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+                  ]
+              },
+              "sayThanksButton": {
+                  "selector": [
+                      "#ty"
+                  ],
+                  "filters": [
+                      "query"
+                  ]
+              }
+          }
+      }
+  },
+  "supportedFeatures": {
+      "imdbSearch": false
+  }
+}
