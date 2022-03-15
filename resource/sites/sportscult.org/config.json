@@ -1,6 +1,6 @@
 {
   "name": "sportscult",
-  "timezoneOffset": "+0000",
+  "timezoneOffset": "+0800",
   "description": "sportscult",
   "url": "https://sportscult.org/",
   "icon": "https://sportscult.org/favicon.ico",
@@ -407,9 +407,10 @@
                       "td.header:contains('Joined on') + td"
                   ],
                   "filters": [
-                      "query[0].innerHTML.replace('&nbsp;', '').replace('&nbsp;', '')",
-                      "dateTime(query).valueOf()"
-                  ]
+                    "query[0].innerHTML.split('/')",
+                    "query[1]+'-'+query[0]+'-'+query[2]",
+                    "dateTime(query).valueOf()"
+                ]
               }
           }
       },
