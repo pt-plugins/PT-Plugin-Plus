@@ -72,12 +72,13 @@
                 <div class="caption">
                   <span v-if="showUserName" class="mr-2">{{ site.user.name }}</span>
                   <span v-if="showUserLevel">&lt;{{ site.user.levelName }}&gt;</span>
+                  <span v-if="site.user.id && site.user.id.length > 0 && showUid">&lt;{{ site.user.id }}&gt;</span>
                 </div>
               </template>
               <div>
                 <v-divider v-if="i>0" class="mb-2"></v-divider>
                 <div class="headline font-weight-light mb-2" v-if="showSiteName">{{ site.name }}</div>
-                <div>{{ $t('timeline.user.uploaded') }}{{ site.user.uploaded | formatSize }}</div>
+                <div>{{ $t('timeline.user.uploaded') }}{{ site.user.uploaded | formatSize}}</div>
                 <div>{{ $t('timeline.user.downloaded') }}{{ site.user.downloaded | formatSize }}</div>
                 <div>{{ $t('timeline.user.ratio') }}{{ site.user.ratio | formatRatio }}</div>
                 <div>{{ $t('timeline.user.seedingSize') }}{{ site.user.seedingSize | formatSize }} ({{ site.user.seeding }})</div>
@@ -118,6 +119,12 @@
         color="success"
         v-model="showUserLevel"
         :label="$t('timeline.userLevel')"
+        class="my-0"
+      ></v-switch>
+      <v-switch
+        color="success"
+        v-model="showUid"
+        :label="$t('timeline.userId')"
         class="my-0"
       ></v-switch>
       <v-divider />
@@ -186,6 +193,7 @@ export default Vue.extend({
       showUserName: true,
       showSiteName: true,
       showUserLevel: true,
+      showUid: true,
       blurSiteIcon: false,
       iconCache: {} as Dictionary<any>
     };
@@ -242,7 +250,7 @@ export default Vue.extend({
         if (!this.showSites.includes(site.name)) {
           return;
         }
-
+ 
         let user = site.user;
         if (user && user.name && user.joinTime) {
           sites.push(site);
@@ -288,7 +296,6 @@ export default Vue.extend({
               result.maxSeedingInfo.site = site;
             }
           }
-
           user.ratio = this.getRatio(user);
         }
       });
@@ -304,12 +311,17 @@ export default Vue.extend({
 
       // 按加入时间排序
       this.datas = sites.sort((a, b) => {
+        
         if (!a.user || !b.user) {
           return 0;
         }
         const sortA = a.user.joinTime || 0;
         const sortB = b.user.joinTime || 0;
 
+if(a.name == "sports"){
+        console.log( a.user.joinTime);
+        console.log( (sortA < sortB)+ "-"+b.name +"-"+ (sortA > sortB));
+}
         if (sortA < sortB) return -1;
         if (sortA > sortB) return 1;
         return 0;
