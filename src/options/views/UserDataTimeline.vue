@@ -318,10 +318,6 @@ export default Vue.extend({
         const sortA = a.user.joinTime || 0;
         const sortB = b.user.joinTime || 0;
 
-if(a.name == "sports"){
-        console.log( a.user.joinTime);
-        console.log( (sortA < sortB)+ "-"+b.name +"-"+ (sortA > sortB));
-}
         if (sortA < sortB) return -1;
         if (sortA > sortB) return 1;
         return 0;
