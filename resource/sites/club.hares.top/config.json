@@ -4,42 +4,230 @@
   "description": "2160p/4k 及以上的高清资源站点",
   "url": "https://club.hares.top/",
   "icon": "https://club.hares.top/favicon.ico",
-  "tags": ["影视", "纪录片","综合"],
+  "tags": [
+      "影视",
+      "纪录片",
+      "综合"
+  ],
   "schema": "NexusPHP",
   "host": "club.hares.top",
-  "collaborator": "kevgao",
+  "collaborator": [
+      "kevgao",
+      "枕头啊枕头"
+  ],
   "formerHosts": [],
   "searchEntryConfig": {
-    "fieldSelector": {
-      "title": {
-        "selector": ["a[href*='details.php?id='][title]:first"],
-        "filters": ["query"]
+      "fieldIndex": {
+          "title": 1,
+          "subTitle": 1,
+          "link": 1,
+          "url": 1,
+          "time": 3,
+          "size": 4,
+          "seeders": 5,
+          "leechers": 6,
+          "completed": 7,
+          "comments":2
       },
-      "subTitle": {
-        "selector": ["a[href*='details.php?id='][title]:first"],
-        "filters": ["query.parent()[0].lastChild", "query.nodeName == '#text'?$(query).text().trim():$(query.previousSibling.previousSibling.previousSibling.previousSibling).text().trim()"]
+      "fieldSelector": {
+          "title": {
+              "selector": [
+                  "a[href*='details.php?id='][title]:first"
+              ],
+              "filters": [
+                  "query"
+              ]
+          },
+          "subTitle": {
+              "selector": [
+                  "p.layui-elip.layui-torrents-descr-width:first"
+              ],
+              "filters": [
+                  "query.text()"
+              ]
+          },  
+          "progress": {
+              "selector": [
+                  "div[title^='leeching'], div[title^='seeding'], div[title^='inactivity']"
+              ],
+              "filters": [
+                  "query ? query.attr('title').replace('leeching','').replace('seeding','').replace('inactivity','').replace('%','').trim() : null"
+              ]
+          },
+          "status": {
+              "selector": [
+                  "div[title^='leeching']",
+                  "div[title^='seeding']",
+                  "div[title^='inactivity']"
+              ],
+              "switchFilters": [
+                  [
+                      "1"
+                  ],
+                  [
+                      "2"
+                  ],
+                  [
+                      "query.attr('title').indexOf('100%')!=-1 ? 255:3"
+                  ]
+              ]
+          }
       }
-    }
   },
-  "searchEntry": [{
-    "name": "全部",
-    "enabled": true
-  }],
+  "searchEntry": [
+      {
+          "name": "全部",
+          "enabled": true
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat401=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "电影",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat402=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "电视剧",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat403=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "综艺",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat406=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "M V",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat409=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "演唱会",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat404=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "纪录片",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat405=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "动漫",
+          "enabled": false
+      },
+      {
+          "queryString": "/torrents.php?search_area=0&search=$key$&search_mode=0&cat407=1&incldead=1&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "体育",
+          "enabled": false
+      },
+      {
+          "queryString": "/official.php?search_area=0&search=$key$&search_mode=0&team1=1&team2=1&team3=1&incldead=0&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "官组(全部)",
+          "enabled": false
+      },
+      {
+          "queryString": "/official.php?search_area=0&search=$key$&search_mode=0&medium1=1&medium2=1&team1=1&team2=1&team3=1&incldead=0&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "官组(原盘|DIY)",
+          "enabled": false
+      },
+      {
+          "queryString": "/official.php?search_area=0&search=$key$&search_mode=0&medium3=1&team1=1&team2=1&team3=1&incldead=0&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "官组(Remux)",
+          "enabled": false
+      },
+      {
+          "queryString": "/official.php?search_area=0&search=$key$&search_mode=0&medium3=1&team1=1&team2=1&team3=1&incldead=0&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "官组(Remux)",
+          "enabled": false
+      },
+      {
+          "queryString": "/official.php?search_area=0&search=$key$&search_mode=0&medium5=1&team1=1&team2=1&team3=1&incldead=0&spstate=0&check_state=0&can_claim=0&inclbookmarked=0",
+          "name": "官组(WEB-DL)",
+          "enabled": false
+      }
+  ],
   "selectors": {
-    "userExtendInfo": {
-      "merge": true,
-      "fields": {
-        "bonus": {
-          "selector": ["td.rowhead:contains('奶糖') + td"],
-          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
-        }
-      }
-    }
+  "userExtendInfo": {
+          "page":"/userdetails.php?id=$user.id$",
+          "merge":true,
+          "fields": { 
+              "joinTime": {
+                  "selector": [
+                      ".layui-row.layui-userdetails.layui-poll-con.layui-margin-bottom"
+                  ],
+                  "filters": [
+                      "query.html().match(/加入日期(.*?)<span/g)[0].replace('加入日期</td><td colspan=\"2\">','').replace('(<span','').trim()",
+                      "dateTime(query).isValid()?dateTime(query).valueOf():query"
+                  ]
+              },
+               "uploaded": {
+                  "selector": [
+                      ".layui-row.layui-userdetails.layui-poll-con.layui-margin-bottom"
+                  ],
+                  "filters": [
+                      "query.text().match(/上传量(.*?)下载量/g)[0].replace('上传量','').replace('下载量','').trim()",
+                      "(query && query.length >=2)?query.sizeToNumber():0"
+                  ]
+              },
+              "downloaded": {
+                  "selector": [
+                      ".layui-row.layui-userdetails.layui-poll-con.layui-margin-bottom table:eq(1) tbody td:eq(6)"
+                  ],
+                  "filters": [
+                      "query.html()",
+                      "(query && query.length >=2)?query.sizeToNumber():0"
+                  ]
+              },
+              "levelName": {
+                  "selector": [
+                      ".layui-row.layui-userdetails.layui-poll-con.layui-margin-bottom table tbody td:eq(10)"
+                  ],
+                  "filters": [
+                      "query.text()"
+                  ]
+              },
+              "bonus": {
+                  "selector": [
+                      ".layui-row.layui-userdetails.layui-poll-con.layui-margin-bottom table tbody td:eq(8)"
+                  ],
+                  "filters": [
+                      "query.html()"
+                  ]
+              }
+          }
+      },
+      "userSeedingTorrents": {
+         "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+         "fields": {
+             "seedingSize": {
+                 "selector": "",
+                 "filters": [
+                     "query.text().match(/总大小：(.*?)类型/g)",
+                     "(query && query.length>0 ) ? query[0].replace('总大小：', '').replace('类型', '').trim() : 0",
+                     "(query != 0) ? query.sizeToNumber() : 0"
+                 ]
+             },
+             "seeding": {
+                 "selector": "",
+                 "filters": [
+                     "query.text().match(/(.*?)条记录/g)",
+                     "(query && query.length>0 ) ? query[0].replace('条记录', '').trim() : 0",
+                     "(query != 0) ? query : 0"
+                 ]
+             }
+         }
+     }
   },
-  "plugins": [{
-    "name": "官方列表",
-    "pages": ["/official.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
-  }],
+  "plugins": [
+      {
+          "name": "官方列表",
+          "pages": [
+              "/official.php"
+          ],
+          "scripts": [
+              "/schemas/NexusPHP/common.js",
+              "/schemas/NexusPHP/torrents.js"
+          ]
+      }
+  ],
   "mergeSchemaTagSelectors": true
 }
