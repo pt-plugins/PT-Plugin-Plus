@@ -14,6 +14,10 @@
     "name": "种子列表",
     "pages": ["/browse.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
+  }, {
+    "name": "收藏列表",
+    "pages": ["/bookmarks.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "bookmarks.js"]
   }],
   "host": "totheglory.im",
   "searchEntryConfig": {
