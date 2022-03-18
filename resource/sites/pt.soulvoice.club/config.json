@@ -4,24 +4,45 @@
   "schema": "NexusPHP",
   "url": "https://pt.soulvoice.club/",
   "description": "致力于建设一个有声资源，电子书为主，学习资料，影视资源为辅的PT分享站。",
-  "tags": ["综合", "电子书", "有声书"],
+  "tags": [
+      "综合",
+      "电子书",
+      "有声书"
+  ],
   "host": "pt.soulvoice.club",
-  "collaborator": "Gold John King",
-  "plugins": [{
-    "name": "阅听专区",
-    "pages": ["/live.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
-  }],
+  "collaborator": [
+      "Gold John King",
+      "枕头啊枕头"
+  ],
   "searchEntryConfig": {
-    "fieldSelector": {
-      "progress": {
-        "selector": ["> td:eq(8)"],
-        "filters": ["query.text()=='--'?null:parseFloat(query.text())"]
-      },
-      "status": {
-        "selector": ["> td:eq(8)"],
-        "filters": ["query.text()==='--'?null:(parseFloat(query.text())==100?255:3)"]
+      "fieldSelector": {
+          "progress": {
+              "selector": [
+                  "> td:eq(8)"
+              ],
+              "filters": [
+                  "query.text()=='--'?null:parseFloat(query.text())"
+              ]
+          },
+          "status": {
+              "selector": [
+                  "> td:eq(8)"
+              ],
+              "filters": [
+                  "query.text()==='--'?null:(parseFloat(query.text())==100?255:3)"
+              ]
+          }
       }
-    }
-  }
+  },
+  "searchEntry": [
+      {
+          "name": "种子",
+          "enabled": true
+      },
+      {
+          "entry": "live.php?search=$key$&notnewword=1",
+          "name": "阅听专区",
+          "enabled": false
+      }
+  ]
 }
