@@ -136,6 +136,18 @@
           "filters": ["query"]
         }
       }
+    },
+    "/plugin_details.php": {
+      "fields": {
+        "size": {
+          "selector": ["td.rowtitle:contains('大小：'):first"],
+          "filters": ["query.next().text()", "(query && query.length>1)?query.sizeToNumber():0"]
+        },
+        "sayThanksButton": {
+          "selector": ["input#saythanks:not(:disabled)"],
+          "filters": ["query"]
+        }
+      }
     }
   }
 }
