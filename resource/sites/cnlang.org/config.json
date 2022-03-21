@@ -1,0 +1,102 @@
+{
+    "name": "国语视界",
+    "timezoneOffset": "+0800",
+    "schema": "Discuz",
+    "supportedFeatures": {
+        "search": false,
+        "imdbSearch": false,
+        "sendTorrent": false
+    },
+    "url": "https://cnlang.org/",
+    "description": "国语视界音轨组，特效字幕组官方首发论坛，国语音轨和特效字幕的分享基地，蓝光DIY和4K电影爱好者的乐园。",
+    "icon": "https://cnlang.org/favicon.ico",
+    "tags": ["特效字幕", "国语音轨"],
+    "collaborator": [
+      "fzlins"
+    ],
+    "host": "cnlang.org",
+    "selectors": {
+      "userBaseInfo": {
+        "page": "/home.php?mod=spacecp&ac=credit",
+        "fields": {
+          "id": {
+            "selector": [".vwmy a"],
+            "attribute": "href",
+            "filters": ["query ? query.replace(/\\D+/g, '') : '' "]
+          },
+          "name": {
+            "selector": [".vwmy a"]
+          },
+          "messageCount": {
+            "selector": ["a.a.showmenu.new"],
+            "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+          },
+          "isLogged": {
+            "selector": [
+              "a[href*='action=logout']"
+            ],
+            "filters": [
+              "query.length>0"
+            ]
+          },
+          "bonus": {
+            "selector": "li:contains('大洋')",
+            "filters": [
+              "query.text().match(/大洋.*?([\\d.]+)/)[1]",
+              "parseFloat(query)"
+            ]
+          }
+        }
+      },
+      "userExtendInfo": {
+        "page": "/home.php?mod=spacecp&ac=plugin&id=bt_magnet:action",
+        "fields": {
+          "uploaded": {
+            "selector": ".attach_magnet_div p:contains('上传量')",
+            "filters": [
+                "query.text().replace('上传量：', '').trim().sizeToNumber()"
+            ]
+          },
+          "downloaded": {
+            "selector": ".attach_magnet_div p:contains('下载量')",
+            "filters": [
+                "query.text().replace('下载量：', '').trim().sizeToNumber()"
+            ]
+          },
+          "ratio": {
+            "selector": ".attach_magnet_div p:contains('分享率：')",
+            "filters": [
+              "query.text().replace('分享率：', '').replace(/,/g,'').trim()",
+              "parseFloat(query)"
+            ]
+          },
+          "levelName": {
+            "selector": ["a[href='home.php?mod=spacecp&ac=usergroup']:first"],
+            "filters": ["query.text().replace('用户组: ', '').trim()"]
+          },
+          "joinTime": {
+            "selector": ".attach_magnet_div p:contains('加入时间：')",
+            "filters": [
+              "query.text().replace('加入时间：', '').trim()",
+              "dateTime(query).isValid()?dateTime(query).valueOf():query"
+            ]
+          }
+        }
+      },
+      "userSeedingTorrents": {
+        "prerequisites": "!user.seeding",
+        "page": "/home.php?mod=spacecp&ac=plugin&id=bt_magnet:action&subop=seeding",
+        "parser": "getUserSeedingTorrents.js",
+        "fields": {
+            "seeding": {
+                "selector": [".mn tr:not(:eq(0))"],
+                "filters": ["query.length"]
+            },
+            "seedingSize": {
+              "selector": [".mn tr:not(:eq(0))"],
+              "filters": ["jQuery.map(query.find('td:eq(1)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+            }
+        }
+      } 
+    }
+  }
