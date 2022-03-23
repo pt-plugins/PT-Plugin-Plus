@@ -8,8 +8,7 @@
   "tags": ["动漫"],
   "collaborator": [
     "栽培者",
-    "MewX",
-    "fzlins"
+    "MewX"
   ],
   "host": "www.skyey2.com",
   "selectors": {
@@ -64,7 +63,8 @@
         "seedingSize": {
           "selector": "#psts li:contains('实际保种')",
           "filters": [
-            "query.text().split('/').pop().replace('hh', 'B').trim().sizeToNumber()"
+            "query.text().match(/实际保种.+?\\/\\s*([\\d\\.]+\\s*[ZEPTGMK])/)",
+            "(query && query.length>=2) ? (query[1].trim()).sizeToNumber() : 0"
           ]
         },
         "levelName": {
