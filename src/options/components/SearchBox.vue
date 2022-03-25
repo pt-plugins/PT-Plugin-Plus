@@ -21,7 +21,6 @@
           class="top-searches"
           nudge-bottom="8"
           nudge-left="12"
-          v-if="topSearches.length > 0"
         >
           <v-btn slot="activator" flat small color="grey lighten-2">{{
             $t("common.hot")
@@ -34,7 +33,8 @@
             "
           >
             <v-container fluid grid-list-lg class="pa-3">
-              <v-layout row wrap>
+              <div v-if="topSearches.length == 0"> {{ $t('common.loading') }} </div>
+              <v-layout  v-else row wrap>
                 <v-flex v-for="(item, index) in topSearches" :key="index" xs4>
                   <v-card
                     @click="searchHotItem(item)"
