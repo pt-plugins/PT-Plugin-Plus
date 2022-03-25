@@ -13,7 +13,8 @@
   "host": "club.hares.top",
   "collaborator": [
       "kevgao",
-      "枕头啊枕头"
+      "枕头啊枕头",
+      "bright"
   ],
   "formerHosts": [],
   "searchEntryConfig": {
@@ -145,7 +146,16 @@
           "enabled": false
       }
   ],
-  "selectors": {
+  "selectors": {  
+    "userBaseInfo": {
+      "merge":true,
+      "fields": {
+        "messageCount": {
+          "selector": [".unread"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        }
+      }
+    },
   "userExtendInfo": {
           "page":"/userdetails.php?id=$user.id$",
           "merge":true,
