@@ -62,9 +62,7 @@
             site: site,
             tags: this.getTags(item),
             entryName: options.entry.name,
-            category: item.category,
-            progress: "",
-            status: ""
+            category: item.category
           };
           results.push(data);
         });
