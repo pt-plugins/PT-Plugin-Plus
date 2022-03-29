@@ -118,7 +118,7 @@
         },
         "sayThanksButton": {
           "selector": [".button-block button.btn.btn-sm.btn-primary"],
-          "filters": ["query"]
+          "filters": ["$(query[0])"]
         }
       }
     }
