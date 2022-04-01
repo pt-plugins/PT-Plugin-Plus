@@ -144,8 +144,8 @@
       "merge": true,
       "fields": {
         "downloadURL": {
-          "selector": "input.dt_download",
-          "filters": ["query.parent().attr('action')"]
+          "selector": "td.rowfollow a:contains('passkey')",
+          "filters": ["query.attr('href')"]
         }
       }
     }
