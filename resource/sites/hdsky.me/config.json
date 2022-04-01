@@ -114,16 +114,18 @@
   "searchEntryConfig": {
     "fieldSelector": {
       "progress": {
-        "selector": ["div.progressseeding, div.progressfinished, div.progressdownloading, div.progressdownloaded"],
+        "selector": ["div.progressseeding, div.progressfinished, div.progressdownloading, div.progressdownloaded, div.progressuploaded"],
         "filters": ["query.attr('style')||''", "query.match(/width:([ \\d.]+)%/)", "(query && query.length>=2)?query[1]:null"]
       },
       "status": {
-        "selector": ["div.progressseeding", "div.progressfinished", "div.progressdownloading", "div.progressdownloaded"],
+        "selector": ["div.progressseeding", "div.progressfinished", "div.progressdownloading", "div.progressdownloaded", "div.progressuploaded[title='由我上传 ']", "div.progressuploaded[title='由我上传 , 正在做种 ']"],
         "switchFilters": [
           ["2"],
           ["255"],
           ["1"],
-          ["255"]
+          ["255"],
+          ["255"],
+          ["2"]
         ]
       }
     }
