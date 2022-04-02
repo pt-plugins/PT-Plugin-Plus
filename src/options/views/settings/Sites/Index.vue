@@ -130,7 +130,7 @@
                 small
                 class="ml-2"
                 @click="editUserInfo(props.item)"
-                :title="$t('setting.sites.index.showUserInfo')"
+                :title="$t('settings.sites.index.showUserInfo')"
             >view_list</v-icon>
             <v-icon
               small
