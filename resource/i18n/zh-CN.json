@@ -174,6 +174,7 @@
       "getUserInfoAbort": "{siteName} 获取用户资料请求已取消",
       "getUserInfoAbortError": "{siteName} 获取用户资料请求取消失败",
       "headers": {
+        "date": "日期",
         "site": "站点",
         "userName": "用户名",
         "levelName": "等级",
@@ -672,6 +673,10 @@
           "timezone": "时区",
           "disableMessageCount": "关闭消息提醒"
         },
+        "userinfo": {
+          "title": "用户数据",
+          "deleteConfirm": "确认删除？这个操作不可恢复，请确认你做好了相应备份。"
+        },
         "index": {
           "importAll": "一键导入站点",
           "importAllConfirm": "确认要进行导入站点操作吗？此操作会导入已在浏览器上登录过但未添加的站点。",
@@ -679,6 +684,7 @@
           "removeConfirm": "确认要删除这个站点吗？",
           "removeTitle": "删除确认",
           "plugins": "插件",
+          "showUserInfo": "用户数据",
           "title": "站点设置",
           "subTitle": "只有配置过的站点才会显示插件图标及相应的功能；<br/>已离线的站点不再参与搜索和信息获取；",
           "searchEntry": "搜索入口",

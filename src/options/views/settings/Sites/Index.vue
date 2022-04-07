@@ -126,6 +126,13 @@
               :title="$t('settings.sites.index.plugins')"
             >assistant</v-icon>
             <v-icon
+                v-if="props.item.allowGetUserInfo"
+                small
+                class="ml-2"
+                @click="editUserInfo(props.item)"
+                :title="$t('setting.sites.index.showUserInfo')"
+            >view_list</v-icon>
+            <v-icon
               small
               class="ml-2"
               @click="editSearchEntry(props.item)"
@@ -154,6 +161,7 @@
     <AddSite v-model="showAddDialog" @save="addSite" />
     <!-- 编辑站点 -->
     <EditSite v-model="showEditDialog" :site="selectedSite" @save="updateSite" />
+    <UserInfo v-model="showUserInfo" :site="selectedSite"></UserInfo>
 
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
@@ -206,6 +214,7 @@ import {
 } from "@/interface/common";
 import AddSite from "./Add.vue";
 import EditSite from "./Edit.vue";
+import UserInfo from "./UserInfo.vue";
 
 import { filters } from "@/service/filters";
 import Extension from "@/service/extension";
@@ -217,7 +226,8 @@ const extension = new Extension();
 export default Vue.extend({
   components: {
     AddSite,
-    EditSite
+    EditSite,
+    UserInfo
   },
   data() {
     return {
@@ -227,6 +237,7 @@ export default Vue.extend({
       },
       showAddDialog: false,
       showEditDialog: false,
+      showUserInfo: false,
       siteDuplicate: false,
       sites: [] as Site[],
       selectedSite: {},
@@ -256,6 +267,16 @@ export default Vue.extend({
       if (index !== -1) {
         this.selectedSite = this.$store.state.options.sites[index];
         this.showEditDialog = true;
+      }
+    },
+    editUserInfo(item: any) {
+      let index = this.$store.state.options.sites.findIndex((site: any) => {
+        return item.name === site.name;
+      });
+
+      if (index !== -1) {
+        this.selectedSite = this.$store.state.options.sites[index];
+        this.showUserInfo = true;
       }
     },
     removeConfirm(item: any) {

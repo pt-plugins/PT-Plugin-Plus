@@ -177,6 +177,7 @@
       "getUserInfoAbort": "Get user profile request has been canceled. ({siteName})",
       "getUserInfoAbortError": "Cancellation failed to get user profile request. ({siteName})",
       "headers": {
+        "date": "Date",
         "site": "Site",
         "userName": "User name",
         "levelName": "Level",
@@ -676,6 +677,10 @@
           "timezone": "Timezone",
           "disableMessageCount": "Display message count"
         },
+        "userinfo": {
+          "title": "User Info",
+          "deleteConfirm": "confirm deletion? This operation cannot be restored, please make sure that you have made a corresponding backup."
+        },
         "index": {
           "importAll": "One-click import site",
           "importAllConfirm": "Are you sure you want to import site operations? This will import sites that have been logged in to the browser but have not been added.",
@@ -683,6 +688,7 @@
           "removeConfirm": "Are you sure you want to delete this site?",
           "removeTitle": "Delete confirmation",
           "plugins": "Plugins",
+          "showUserInfo": "UserInfo",
           "title": "Site settings",
           "subTitle": "Only the configured site will display the plugin icon and the corresponding function; the offline site will no longer participate in the search and information acquisition;",
           "searchEntry": "Search Entry",
