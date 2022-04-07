@@ -8,7 +8,8 @@
   "tags": ["动漫"],
   "collaborator": [
     "栽培者",
-    "MewX"
+    "MewX",
+    "fzlins"
   ],
   "host": "www.skyey2.com",
   "selectors": {
@@ -53,20 +54,6 @@
             "(query && query.length>=2) ? query[1].trim() : 0"
           ]
         },
-        "seeding": {
-          "selector": "#psts li:contains('做种数估计')",
-          "filters": [
-            "query.text().replace('做种数估计', '').replace(/,/g,'').trim()",
-            "parseFloat(query)"
-          ]
-        },
-        "seedingSize": {
-          "selector": "#psts li:contains('实际保种')",
-          "filters": [
-            "query.text().match(/实际保种.+?\\/\\s*([\\d\\.]+\\s*[ZEPTGMK])/)",
-            "(query && query.length>=2) ? (query[1].trim()).sizeToNumber() : 0"
-          ]
-        },
         "levelName": {
           "selector": "a[href='home.php?mod=spacecp&ac=usergroup']",
           "filters": ["query.text().replace('用户组: ', '').trim()"]
@@ -86,7 +73,22 @@
           ]
         }
       }
-    }
+    },
+    "userSeedingTorrents": {
+      "prerequisites": "!user.seeding",
+      "page": "/forum.php?&mod=torrents&cat_5up=on",
+      "parser": "getUserSeedingTorrents.js",
+      "fields": {
+        "seeding": {
+          "selector": ["table.torrents > tbody > tr:not(:eq(0))"],
+          "filters": ["query.length"]
+        },
+        "seedingSize": {
+          "selector": ["table.torrents > tbody > tr:not(:eq(0))"],
+          "filters": ["jQuery.map(query.find('td.rowfollow:eq(3)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+        }
+      }
+    } 
   },
   "supportedFeatures": {
     "imdbSearch": false
