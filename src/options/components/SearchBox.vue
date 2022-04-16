@@ -4,7 +4,8 @@
       <v-text-field
         flat
         solo-inverted
-        :prepend-icon="$vuetify.breakpoint.smAndUp ? 'search' : ''"
+        prepend-icon="search"
+        @click:prepend="searchTorrent()"
         :label="$t('searchBox.searchTip')"
         class="mt-2 mb-0"
         v-model="searchKey"
