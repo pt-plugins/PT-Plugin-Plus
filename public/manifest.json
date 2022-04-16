@@ -46,6 +46,9 @@
 			"http://*/*",
 			"https://*/*"
 		],
+		"exclude_matches": [
+			"https://fonts.google.com/*"
+		],
 		"css": [
 			"assets/base.css",
 			"libs/materialIcons/content_style.css",
