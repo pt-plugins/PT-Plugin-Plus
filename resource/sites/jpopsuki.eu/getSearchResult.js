@@ -14,7 +14,7 @@ if (!"".getQueryString) {
   class Parser {
     constructor() {
       this.haveData = false;
-      if (/auth_form/.test(options.responseText)) {
+      if (/You will be banned for 6 hours after your login attempts run out/.test(options.responseText)) {
         options.status = ESearchResultParseStatus.needLogin; //`[${options.site.name}]需要登录后再搜索`;
         return;
       }
