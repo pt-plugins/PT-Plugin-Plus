@@ -470,7 +470,7 @@ export class ContextMenus {
         });
         chrome.tabs.sendMessage(tabid, {
           action: EAction.showMessage,
-          data: result
+          data: result.status=="" ? this.service.i18n.t("service.contextMenus.sendTorrentToClientError") : result
         });
       })
       .finally(() => {
