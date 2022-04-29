@@ -1,0 +1,135 @@
+{
+  "name": "睿思",
+  "timezoneOffset": "+0800",
+  "description": "西电睿思PT",
+  "url": "http://resource.xidian.edu.cn/",
+  "icon": "http://resource.xidian.edu.cn/favicon.ico",
+  "tags": [
+    "教育网",
+    "影视",
+    "综合"
+  ],
+  "schema": "NexusPHP",
+  "host": "resource.xidian.edu.cn",
+  "collaborator": "luy",
+  "searchEntry": [
+    {
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat401=1",
+      "name": "电影",
+      "enabled": false
+    },
+    {
+      "queryString": "cat402=1",
+      "name": "电视剧",
+      "enabled": false
+    },
+    {
+      "queryString": "cat403=1",
+      "name": "综艺",
+      "enabled": false
+    },
+    {
+      "queryString": "cat404=1",
+      "name": "纪录片",
+      "enabled": false
+    },
+    {
+      "queryString": "cat405=1",
+      "name": "动漫",
+      "enabled": false
+    },
+    {
+      "queryString": "cat406=1",
+      "name": "MV",
+      "enabled": false
+    },
+    {
+      "queryString": "cat407=1",
+      "name": "体育",
+      "enabled": false
+    },
+    {
+      "queryString": "cat408=1",
+      "name": "音乐",
+      "enabled": false
+    },
+    {
+      "queryString": "cat410=1",
+      "name": "游戏",
+      "enabled": false
+    },
+    {
+      "queryString": "cat411=1",
+      "name": "学习",
+      "enabled": false
+    },
+    {
+      "queryString": "cat412=1",
+      "name": "软件",
+      "enabled": false
+    },
+    {
+      "queryString": "cat409=1",
+      "name": "其他",
+      "enabled": false
+    }
+  ],
+  "categories": [{
+    "entry": "*",
+    "result": "&cat$id$=1",
+    "category": [{
+        "id": 401,
+        "name": "电影"
+      },
+      {
+        "id": 402,
+        "name": "电视剧"
+      },
+      {
+        "id": 403,
+        "name": "综艺"
+      },
+      {
+        "id": 404,
+        "name": "纪录片"
+      },
+      {
+        "id": 405,
+        "name": "动漫"
+      },
+      {
+        "id": 406,
+        "name": "MV"
+      },
+      {
+        "id": 407,
+        "name": "体育"
+      },
+      {
+        "id": 408,
+        "name": "音乐"
+      },
+      {
+        "id": 410,
+        "name": "游戏"
+      },
+      {
+        "id": 411,
+        "name": "学习"
+      },
+      {
+        "id": 412,
+        "name": "软件"
+      },
+      {
+        "id": 409,
+        "name": "其他"
+      }
+    ]
+  }],
+  "cdn": ["http://resource.xidian.edu.cn/"]
+}
