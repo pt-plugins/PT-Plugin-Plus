@@ -50,7 +50,8 @@
         //配置
         category: 0
       };
-
+      if(options.page.find("div#codec1")) 
+      fieldIndex = {time: 3,size: 4,seeders: 6,leechers: 7,completed: 5,name: 1,author: 8,category: 0};
       if (site.url.substr(-1) == "/") {
         site.url = site.url.substr(0, site.url.length - 1);
       }
