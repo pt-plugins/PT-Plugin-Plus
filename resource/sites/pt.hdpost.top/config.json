@@ -9,9 +9,5 @@
     "电视剧"
   ],
   "schema": "UNIT3D",
-  "host": "pt.hdpost.top",
-  "supportedFeatures": {
-    "imdbSearch": false,
-    "userData": "◐"
-  }
+  "host": "pt.hdpost.top"
 }
