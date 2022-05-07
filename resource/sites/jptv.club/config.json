@@ -24,24 +24,6 @@
       "replaceKey": [
         "tt", ""
       ]
-    }],
-    "fieldSelector": {
-      "progress": {
-        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle, button.btn.btn-info.btn-circle", ""],
-        "switchFilters": [
-          ["100"],
-          ["0"],
-          ["null"]
-        ]
-      },
-      "status": {
-        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle", "button.btn.btn-info.btn-circle"],
-        "switchFilters": [
-          ["2"],
-          ["1"],
-          ["3"]
-        ]
-      }
-    }
+    }]
   }
 }
