@@ -17,17 +17,14 @@
   "searchEntryConfig": {
     "page": "/torrents",
     "queryString": "perPage=100&name=$key$",
-        "area": [
-            {
-                "name": "IMDB",
-                "keyAutoMatch": "^(tt\\d+)$",
-                "queryString": "perPage=100&imdbId=$key$",
-                "replaceKey": [
-                    "tt",
-                    ""
-                ]
-            }
-        ],
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "perPage=100&imdbId=$key$",
+      "replaceKey": [
+        "tt", ""
+      ]
+    }],
     "fieldSelector": {
       "progress": {
         "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle, button.btn.btn-info.btn-circle", ""],
