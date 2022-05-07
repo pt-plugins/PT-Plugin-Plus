@@ -98,7 +98,7 @@
           "selector": "div.content span.badge-user"
         },
         "messageCount": {
-          "selector": [".point"],
+          "selector": [".point, ul.top-nav__icon-bar circle"],
           "filters": ["query.length?'11':'0'"]
         },
         "joinTime": {
