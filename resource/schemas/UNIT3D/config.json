@@ -17,17 +17,14 @@
   "searchEntryConfig": {
     "page": "/torrents",
     "queryString": "perPage=100&name=$key$",
-        "area": [
-            {
-                "name": "IMDB",
-                "keyAutoMatch": "^(tt\\d+)$",
-                "queryString": "perPage=100&imdbId=$key$",
-                "replaceKey": [
-                    "tt",
-                    ""
-                ]
-            }
-        ],
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "perPage=100&imdbId=$key$",
+      "replaceKey": [
+        "tt", ""
+      ]
+    }],
     "fieldSelector": {
       "progress": {
         "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle, button.btn.btn-info.btn-circle", ""],
@@ -73,20 +70,20 @@
           ]
         },
         "uploaded": {
-          "selector": ["div.ratio-bar i.fa-arrow-up"],
-          "filters": ["query.parent().text().trim().replace(/,/g,'').match(/:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "selector": ["div.ratio-bar i.fa-arrow-up, ul.top-nav__ratio-bar i.fa-arrow-up, span[title='Upload'], span[title='上传']"],
+          "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+ ?[ZEPTGMK]?i?B/)", "(query && query.length>=1)?(query[0]).sizeToNumber():0"]
         },
         "downloaded": {
-          "selector": ["div.ratio-bar i.fa-arrow-down"],
-          "filters": ["query.parent().text().trim().replace(/,/g,'').match(/:.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "selector": ["div.ratio-bar i.fa-arrow-down, ul.top-nav__ratio-bar i.fa-arrow-down, span[title='Download'], span[title='下载']"],
+          "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+ ?[ZEPTGMK]?i?B/)", "(query && query.length>=1)?(query[0]).sizeToNumber():0"]
         },
         "bonus": {
-          "selector": ["div.ratio-bar i.fa-coins"],
-          "filters": ["query.parent().text().trim().replace(/,|\\s/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+          "selector": ["div.ratio-bar i.fa-coins, ul.top-nav__ratio-bar i.fa-coins, a[title='My Bonus Points'], a[title='我的魔力']"],
+          "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+/)", "(query && query.length>=1)?parseFloat(query[0]):0"]
         },
         "seeding": {
-          "selector": ["div.ratio-bar i.fa-upload"],
-          "filters": ["query.parent().text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+          "selector": ["div.ratio-bar i.fa-upload, ul.top-nav__ratio-bar i.fa-upload, span[title='Seeding'], span[title='做种']"],
+          "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+/)", "(query && query.length>=1)?parseFloat(query[0]):0"]
         }
       }
     },
@@ -95,13 +92,13 @@
       "fields": {
         "seedingSize": {
           "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Seeding Size') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('做种体积') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('做種體積') + td"],
-          "filters": ["query.text().trim().replace(/,/g,'').sizeToNumber()"]
+          "filters": ["query.text().trim().replace(/,|\\s|\\n/g,'').sizeToNumber()"]
         },
         "levelName": {
           "selector": "div.content span.badge-user"
         },
         "messageCount": {
-          "selector": [".point"],
+          "selector": [".point, ul.top-nav__icon-bar circle"],
           "filters": ["query.length?'11':'0'"]
         },
         "joinTime": {
