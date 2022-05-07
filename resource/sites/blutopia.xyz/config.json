@@ -35,7 +35,7 @@
             "merge": true,
             "fields": {
                 "messageCount": {
-                    "selector": [".point"],
+                    "selector": ["ul.top-nav__icon-bar circle"],
                     "filters": ["query.length?'11':'0'"]
                 }
             }
