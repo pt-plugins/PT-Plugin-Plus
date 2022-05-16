@@ -15,6 +15,7 @@
   }],
   "securityKeyFields": ["authkey", "torrent_pass"],
   "searchEntryConfig": {
+	"skipIMDbId": true,
     "page": "/ajax.php",
     "resultType": "json",
     "parseScriptFile": "getSearchResult.js",

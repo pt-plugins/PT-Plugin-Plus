@@ -17,6 +17,7 @@
   }],
   "host": "aidoru-online.me",
   "searchEntryConfig": {
+	"skipIMDbId": true,
     "page": "/get_ttable.php?pcat=Show+All&subbed=&fl=&resd=&p=0&searchstr=$key$&deadlive=1&sortcol=id&sortorder=desc&startdt=&enddt=",
     "loggedRegex": "class=\"ttable_headinner\"",
     "resultType": "html",
