@@ -12,6 +12,7 @@
   "host": "u2.dmhy.org",
   "searchEntryConfig": {
     "merge": true,
+    "skipIMDbId": true,
     "fieldSelector": {
       "progress": {
         "selector": ["td[class*='seedhlc_']", "td[class*='leechhlc_']", ""],

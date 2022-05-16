@@ -71,6 +71,10 @@
       for (let index = 0; index < rows.length; index++) {
         const row = rows.eq(index);
         let cells = row.find(">div");
+        let titleStrings = cells
+          .eq(fieldIndex.title)
+          .find("a")
+          .attr("title");
         let title = cells
           .eq(fieldIndex.title)
           .find("a")
@@ -78,7 +82,6 @@
         if (title.length == 0) {
           continue;
         }
-        let titleStrings = title.text();
         let link = title.attr("href");
         if (link && link.substr(0, 4) !== "http") {
           link = `${site.url}/${link}`;
