@@ -8,28 +8,5 @@
         "综合"
     ],
     "host": "aither.cc",
-    "collaborator": "MewX",
-    "searchEntry": [
-        {
-            "name": "全部",
-            "enabled": true
-        }
-    ],
-    "searchEntryConfig": {
-        "page": "/torrents",
-        "queryString": "perPage=100&name=$key$",
-        "area": [
-            {
-                "name": "IMDB",
-                "keyAutoMatch": "^(tt\\d+)$",
-                "queryString": "perPage=100&imdbId=$key$",
-                "replaceKey": [
-                    "tt",
-                    ""
-                ]
-            }
-        ],
-        "resultType": "html",
-        "parseScriptFile": "getSearchResult.js"
-    }
+    "collaborator": "MewX"
 }
