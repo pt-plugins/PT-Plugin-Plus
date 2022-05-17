@@ -12,11 +12,17 @@
     "page": "/torrents.php",
     "resultType": "json",
     "parseScriptFile": "getSearchResult.js",
-    "queryString": "searchstr=$key$&grouping=0&json=noredirect"
+    "queryString": "searchstr=$key$&grouping=0&inallakas=1&json=noredirect"
   },
   "searchEntry": [{
-    "name": "全部",
+    "name": "Normal",
     "enabled": true
+  },
+  {
+    "name": "filelist",
+    "skipIMDbId": true,
+    "queryString":"filelist=$key$&grouping=0&json=noredirect",
+    "enabled": false
   }],
   "selectors": {
     "userBaseInfo": {
