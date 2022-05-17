@@ -8,6 +8,22 @@
   "tags": ["影视", "综合"],
   "host": "ptsbao.club",
   "collaborator": ["laizony", "ted423"],
+  "searchEntryConfig": {
+	"merge": true,
+    "fieldSelector": {
+      "progress": {
+        "selector": ["tr.finished,tr.seeders"],
+        "filters": ["query.length?100:null"]
+      },
+      "status": {
+        "selector": ["tr.finished", "tr.seeders"],
+        "switchFilters": [
+        	["255"],
+        	["2"]
+        ]
+      }
+    }
+  },
   "selectors": {
     "userBaseInfo": {
       "merge": true,
