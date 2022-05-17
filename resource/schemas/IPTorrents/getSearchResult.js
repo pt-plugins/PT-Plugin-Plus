@@ -177,7 +177,7 @@
             comments:
               fieldIndex.comments == -1
                 ? ""
-                : cells.eq(fieldIndex.comments).text() || 0,
+                : cells.eq(fieldIndex.comments).text().replace("Go to comments","") || 0,
             site: site,
             tags: Searcher.getRowTags(site, row),
             entryName: options.entry.name,
@@ -202,10 +202,13 @@
     }
 
     getTime(row) {
-      let text = row.find(".t_ctime").text();
+      let text = row.find("td.al div.sub").text();
       if (text) {
         if (text.indexOf("|") > 0) {
-          return text.split("|")[1].trim();
+	        text=text.split("|")[1];
+	        if (text.indexOf("by") > 0) {
+              return text.split("|")[0].trim();
+          }
         }
       }
       return text;
