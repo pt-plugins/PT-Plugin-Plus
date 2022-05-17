@@ -208,8 +208,8 @@
                 ? null
                 : this.getFieldValue(row, cells, fieldIndex, "category") ||
                 this.getCategory(cells.eq(fieldIndex.category)),
-            progress: this.getFieldValue(row, cells, fieldIndex, "progress"),
-            status: this.getFieldValue(row, cells, fieldIndex, "status")
+            progress: Searcher.getFieldValue(site, row, "progress"),
+            status: Searcher.getFieldValue(site, row, "status")
           };
 
           results.push(data);
