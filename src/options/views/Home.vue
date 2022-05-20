@@ -166,8 +166,8 @@
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 class="nodecoration"
-              >{{ props.item.user.lastErrorMsg }}</a>
-              <span v-else>{{ props.item.user.lastErrorMsg }}</span>
+              >{{ formatError(props.item.user) }}</a>
+              <span v-else>{{ formatError(props.item.user) }}</span>
             </span>
           </td>
         </template>
@@ -446,7 +446,17 @@ export default Vue.extend({
           showWeek: this.showWeek
         }
       });
-    }
+    },
+
+    formatError(user: any) {
+      if (user.lastErrorMsg) {
+        return user.lastErrorMsg;
+      }
+      if (user.lastUpdateStatus && user.lastUpdateStatus !== EUserDataRequestStatus.success) {
+        return this.$t(`service.user.${user.lastUpdateStatus}`);
+      }
+      return '';
+    },
   },
 
   filters: {
@@ -517,7 +527,7 @@ export default Vue.extend({
           align: "right",
           value: "user.lastUpdateTime"
         },
-        { text: this.$t("home.headers.status"), align: "center", value: "" }
+        { text: this.$t("home.headers.status"), align: "center", value: "user.lastUpdateStatus" }
       ];
     }
   }
