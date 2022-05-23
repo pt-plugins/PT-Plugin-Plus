@@ -125,7 +125,7 @@ export default Vue.extend({
             {
               title: "navigation.settings.permissions",
               icon: "verified_user",
-              key: "set-permissions"
+              key: "/set-permissions"
             }
           ]
         },

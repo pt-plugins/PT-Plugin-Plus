@@ -85,6 +85,7 @@ export class InfoParser {
               query = content;
             } else {
               query = content.find(selector);
+              if (query.length == 0)query = content.filter(selector)
             }
 
             if (query.length > 0) {
