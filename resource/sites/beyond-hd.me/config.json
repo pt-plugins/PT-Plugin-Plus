@@ -1,10 +1,10 @@
 {
   "name": "BeyondHD",
   "timezoneOffset": "+0000",
-  "description": "综合",
+  "description": "Beyond Your Imagination,BeyondHD is a community-built Movie/TV database. Every piece of data has been added by our amazing community since 2012. BeyondHD is blessed to have a proactive userbase that focuses on HD content, an awesome/secure codebase and a helpful and friendly volunteer Staff team.",
   "url": "https://beyond-hd.me/",
   "icon": "https://beyond-hd.me/favicon.ico",
-  "tags": ["综合"],
+  "tags": ["影视"],
   "schema": "UNIT3D",
   "host": "beyond-hd.me",
   "collaborator": "lengmianxia",
