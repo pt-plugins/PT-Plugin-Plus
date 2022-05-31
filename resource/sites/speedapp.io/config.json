@@ -20,6 +20,8 @@
     "loggedRegex": "class=\"card-body p-0",
     "resultType": "html",
     "resultSelector": "div.card-body.p-0",
+    "dataRowSelector": "div.row.mr-0.ml-0.py-3",
+    "dataSellSelector": ">div",
     "fieldIndex": {
 	    "category": 0,
 	    "title": 0,
