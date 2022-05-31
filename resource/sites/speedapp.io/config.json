@@ -1,0 +1,154 @@
+{
+  "name": "SpeedApp",
+  "timezoneOffset": "+0000",
+  "description": "Romania site, Half i18n support",
+  "url": "https://speedapp.io/",
+  "tags": ["影视", "综合","Adult"],
+  "schema": "Common",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["^/browse/[1-9](.+)$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["^/browse$","^/internal$","^/adult$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+  }],
+  "host": "speedapp.io",
+  "searchEntryConfig": {
+    "page": "/browse?search=$key$",
+    "loggedRegex": "class=\"card-body p-0",
+    "resultType": "html",
+    "resultSelector": "div.card-body.p-0",
+    "fieldIndex": {
+	    "category": 0,
+	    "title": 0,
+	    "link": 0,
+	    "url": 5,
+        "comments": 4,
+        "time": 1,
+        "size": 3,
+        "seeders": 4,
+        "leechers": 4,
+        "completed": 2
+	},
+	"fieldSelector": {
+	  "title": {
+		"selector": ["a[data-poload]"],
+        "filters": ["query.text()"]
+	  },
+	  "link": {
+		"selector": ["a[data-poload]"],
+        "filters": ["query.attr('href')", "'https://speedapp.io/'+query"]
+	  },
+	  "url": {
+		"selector": ["a.btn.btn-success"],
+        "filters": ["query.children().attr('href')", "'https://speedapp.io/'+query"]
+	  },
+	  "time": {
+		"selector": ["div.col-6.col-sm-4[data-original-title]"],
+        "filters": ["dateTime(query).isValid()?dateTime(query).valueOf():query"]
+	  }
+	}
+  },
+  "searchEntry": [{
+    "name": "Normal",
+    "enabled": true
+  }, {
+    "entry": "/internal?search=$key$",
+    "name": "internal",
+    "enabled": false
+  }, {
+    "entry": "/adult?search=$key$",
+    "name": "adult",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "span.label.label-succes:contains('free')"
+  }, {
+    "name": "50%",
+    "selector": "span.label.label-dark:contains('half')"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/profile",
+      "fields": {
+        "name": {
+          "selector": "#kt_quick_user_toggle > span.text-dark-50"
+        },
+        "isLogged": {
+          "selector": ["#kt_quick_user_toggle > span.text-dark-50"],
+          "filters": ["query.length>0"]
+        },
+        "messageCount": {
+          "selector": ["#notifications-oc-toggle"],
+          "filters": [""]
+        },
+        "uploaded": {
+          "selector": ["dt:contains('已上传') + dd","dt:contains('Uploaded') + dd","dt:contains('Incarcat') + dd"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["dt:contains('已下载') + dd","dt:contains('Downloaded') + dd","dt:contains('Descarcat') + dd"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": ["dt:contains('比率') + dd","dt:contains('Ratio') + dd","dt:contains('Ratie') + dd"],
+          "filters": ["query.text()"]
+        }, 
+        "levelName": {
+          "selector": ["div.card-body.pt-4 >div.align-items-center div.text-muted"],
+          "filters":  ["query.text().replace(/,|\\s|\\n/g,'')"]
+        },
+        
+         "joinTime": {
+          "selector": ["dt:contains('注册日期') + dd, dt:contains('Signup date') + dd, dt:contains('Data inregistrarii') + dd"],
+          "filters": ["dateTime(query.text()).valueOf()"]
+        },
+        "seedingSize": {
+	        "selector": ["dt:contains('奖励积分') + dd > b:nth-of-type(2)","dt:contains('Bonus points') + dd > b:nth-of-type(2)","dt:contains('Puncte bonus') + dd > b:nth-of-type(2)"],
+	        "filters": ["query.text().replace(/,|\\s|\\n/g,'').sizeToNumber()"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/profile/menu-stats",
+      "fields": {
+        "bonus": {
+          "selector": ["a[href='/shop'][title='奖励积分'], a[href='/shop'][title='Bonus points'], a[href='/shop'][title='Puncte bonus']"],
+          "filters": ["parseFloat(query.text().replace(/,|\\s|\\n/g,''))"]
+        },
+        "seeding": {
+	      "selector": ["a[href='/snatch/seeding'][title='目前正在播种种子'],a[href='/snatch/seeding'][title='Currently seeding torrents'],a[href='/snatch/seeding'][title='Torrente ce se incarca']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        }
+      }
+    },
+    "common": {
+	  "page": "/torrents-details.php",
+      "fields": {
+        "downloadURL": {
+          "selector": ["a[href*='download.php?id=']"],
+          "filters": ["query.attr('href')"]
+        },
+        "size": {
+          "selector": ["td[align='left']:contains('Total Size:') + td"],
+          "filters": ["query.parent().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        },
+        "sayThanksButton": {
+          "selector": ["#ty-button"],
+          "filters": ["query"]
+        },
+        "downloadURLs": {
+          "selector": ["a[href*='download.php?id=']"],
+          "filters": ["query.toArray()"]
+        },
+        "confirmSize": {
+          "selector": ["table.ttable_headinner"],
+          "filters": ["query.find('td.ttable_size')"]
+        }
+      }
+    }
+  }
+}
