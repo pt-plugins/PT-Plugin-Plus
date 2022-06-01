@@ -31,6 +31,7 @@
       let selector = options.resultSelector;
       let dataRowSelector = options.entry.dataRowSelector || "> tbody > tr";
       selector = selector.replace(dataRowSelector, "");
+      let cellSelector = options.entry.dataCellSelector || ">td";
       // 获取数据表格
       let table = options.page.find(selector);
       // 获取种子列表行
@@ -67,7 +68,7 @@
         // 遍历数据行
         for (let index = beginRowIndex; index < rows.length; index++) {
           const row = rows.eq(index);
-          let cells = row.find(">td");
+          let cells = row.find(cellSelector);
 
           let title = this.getTitle(row, cells, fieldIndex);
 
@@ -144,7 +145,7 @@
 
       let result = Searcher.getFieldValue(this.site, parent, fieldName);
 
-      if (!result && cell) {
+      if (!result && cell && result !== 0) {
         if (returnCell) {
           return cell;
         }
