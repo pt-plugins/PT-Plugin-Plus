@@ -8,11 +8,11 @@
   "plugins": [{
     "name": "种子详情页面",
     "pages": ["^/browse/[1-9](.+)$"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+    "scripts": ["/schemas/Common/common.js", "/schemas/Common/details.js"]
   }, {
     "name": "种子列表",
     "pages": ["^/browse$","^/internal$","^/adult$"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+    "scripts": ["/schemas/Common/common.js", "/schemas/Common/torrents.js"]
   }],
   "host": "speedapp.io",
   "searchEntryConfig": {
@@ -100,7 +100,7 @@
           "filters": ["query.length>0"]
         },
         "messageCount": {
-          "selector": ["#notifications-oc-toggle > div.btn > label-danger"],
+          "selector": ["#notifications-oc-toggle > div.btn > .label-danger"],
           "filters": ["query.length?parseInt(query.text()):0"]
         },
         "uploaded": {
@@ -151,11 +151,11 @@
           "filters": ["query.attr('href')"]
         },
         "size": {
-          "selector": ["td[align='left']:contains('Total Size:') + td"],
-          "filters": ["query.parent().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+          "selector": ["div.cover-overlay div.card-body > div.row > div.justify-content-end > div:contains('B')"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
         },
         "sayThanksButton": {
-          "selector": ["#ty-button"],
+          "selector": ["a.btn.btn-hover-success[href*='?thanks']"],
           "filters": ["query"]
         },
         "downloadURLs": {
@@ -163,8 +163,8 @@
           "filters": ["query.toArray()"]
         },
         "confirmSize": {
-          "selector": ["table.ttable_headinner"],
-          "filters": ["query.find('td.ttable_size')"]
+          "selector": ["div.container > div.row >div.col-12.gutter-b div.row.mr-0.ml-0.py-3 > div.col-6.col-sm-4.col-md-1.text-center.text-muted:contains('B')"],
+          "filters": ["query"]
         }
       }
     }
