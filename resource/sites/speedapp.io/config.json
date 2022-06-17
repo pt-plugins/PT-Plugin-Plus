@@ -65,7 +65,7 @@
 	  },
 	  "url": {
 		"selector": ["a.btn.btn-success"],
-        "filters": ["query.children().attr('href')", "'https://speedapp.io/'+query"]
+        "filters": ["query.attr('href')", "'https://speedapp.io/'+query"]
 	  }
 	}
   },
