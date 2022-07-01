@@ -73,6 +73,7 @@
 
       // 初始化说谢谢按钮
       this.initSayThanksButton();
+      if(document.domain.match("keepfrds.com")){$(".pt-plugin-body").css("z-index","39")}
     }
 
     /**
