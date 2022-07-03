@@ -85,17 +85,14 @@
                 v-if="!props.item.disableMessageCount && props.item.user.messageCount > 0"
                 :title="$t('home.newMessage')"
               >
-                {{
-                props.item.user.messageCount > 10
-                ? ""
-                : props.item.user.messageCount
-                }}
+                {{ props.item.user.messageCount > 10 ? "" : props.item.user.messageCount }}
               </template>
               <v-btn
                 flat
                 icon
                 class="siteIcon"
                 :title="$t('home.getInfos')"
+                :disabled="props.item.offline"
                 @click.stop="getSiteUserInfo(props.item)"
               >
                 <v-avatar :size="showSiteName ? 18 : 24">
@@ -331,6 +328,7 @@ export default Vue.extend({
       let index = this.requestQueue.findIndex((item: any) => {
         return item.host === site.host;
       });
+
       (site.user as any).isLoading = false;
       if (index !== -1) {
         this.requestQueue.splice(index, 1);
@@ -372,7 +370,8 @@ export default Vue.extend({
      * 获取站点用户信息
      */
     getSiteUserInfo(site: Site) {
-      if (!site.user) {
+      // fix issue #1065, 注意此处直接return在无站点更新时会导致刷新按钮一直处于loading状态，暂不修
+      if (!site.user || site.offline) {
         return;
       }
 

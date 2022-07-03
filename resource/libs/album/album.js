@@ -93,6 +93,7 @@ window.album = function (options) {
     theme: "",
     IE: ("v" == "\v"),
     init() {
+      console.log('this\'s album.js');
       this.options = $.extend(this.options, options);
       if (!this.options.parent) {
         this.options.parent = $(document.body);
@@ -328,8 +329,15 @@ window.album = function (options) {
       if (!this.options.keepThumbBar) {
         // 鼠标离开和进入图片列表时
         this.controlBar.on("mouseleave", () => {
-          self.hideThumbsBar();
+          if(self.hideThumbsBarTimer)
+            clearTimeout(self.hideThumbsBarTimer);
+          // 隐藏图片列表
+          self.hideThumbsBarTimer = setTimeout(() => {
+            self.hideThumbsBar();
+          }, 500);
         }).on("mouseenter", () => {
+          if(self.hideThumbsBarTimer)
+            clearTimeout(self.hideThumbsBarTimer);
           self.showThumbsBar();
           // 鼠标滚轮上一张、下一张
         }).on("mousewheel DOMMouseScroll", event => {
@@ -346,13 +354,27 @@ window.album = function (options) {
         });
 
         // 隐藏图片列表
-        setTimeout(() => {
+        self.hideThumbsBarTimer = setTimeout(() => {
           self.hideThumbsBar();
         }, 1000);
+
       } else {
-        // this.listBar.css({
-        // 	opacity: .6
-        // });
+        // 鼠标离开和进入图片列表时
+        this.controlBar.on("mouseenter", () => {
+          self.showThumbsBar();
+          // 鼠标滚轮上一张、下一张
+        }).on("mousewheel DOMMouseScroll", event => {
+          // $.log("mousewheel", event);
+          const v = (event.type == "mousewheel" ? event.originalEvent.wheelDelta : event.originalEvent.detail);
+          if (v < 0) {
+            self.gotoImage("next");
+          } else {
+            self.gotoImage("prev");
+          }
+
+          event.preventDefault();
+          event.stopPropagation();
+        });
       }
 
       // 上一张
@@ -440,7 +462,7 @@ window.album = function (options) {
     },
     hideThumbsBar() {
       const _self = this;
-      this.listBar.animate({
+      this.listBar.stop().animate({
         height: 30,
         opacity: .2
       }, () => {
@@ -453,7 +475,7 @@ window.album = function (options) {
     },
     showThumbsBar() {
       const _self = this;
-      this.listBar.animate({
+      this.listBar.stop().animate({
         height: this.options.listHeight,
         opacity: .8
       }, () => {
