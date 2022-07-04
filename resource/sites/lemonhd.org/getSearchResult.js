@@ -39,7 +39,7 @@
       let table = options.page.find(selector);
       // 获取种子列表行
       let rows = table.find("> tbody > tr");
-      if (rows.length == 0) {
+      if (rows.length <= 1) {
         options.status = ESearchResultParseStatus.torrentTableIsEmpty; //`[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
         return [];
       }
