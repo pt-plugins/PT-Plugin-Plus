@@ -11,7 +11,7 @@
   ],
   "schema": "NexusPHP",
   "host": "hudbt.hust.edu.cn",
-  "collaborator": "Rhilip",
+  "collaborator": ["Rhilip", "枕头啊枕头"],
   "searchEntry": [{
       "name": "全站",
       "enabled": true
