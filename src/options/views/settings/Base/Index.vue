@@ -560,7 +560,6 @@ export default Vue.extend({
       if (!(this.$refs.form as any).validate()) {
         this.activeTab = "base";
         (this.$refs.defaultClient as any).focus();
-        return;
       }
 
       if (!this.options.apiKey) {
