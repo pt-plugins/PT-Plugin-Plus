@@ -789,9 +789,12 @@ export default Vue.extend({
       ).toString();
     }
   },
-  watch: {
-    successMsg() {
-      this.haveSuccess = this.successMsg != "";
+  watch: { 
+    successMsg: {
+      handler() {
+        this.haveSuccess = this.successMsg != "";
+      },
+      deep: true,
     },
     errorMsg() {
       this.haveError = this.errorMsg != "";

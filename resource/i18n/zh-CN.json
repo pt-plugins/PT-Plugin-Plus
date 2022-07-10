@@ -413,7 +413,7 @@
       },
       "base": {
         "title": "常规设置",
-        "defaultClient": "默认下载服务器（必选）",
+        "defaultClient": "默认下载服务器",
         "autoUpdate": "自动更新官方数据",
         "save": "保存",
         "allowSelectionTextSearch": "启用页面内容选择搜索",
