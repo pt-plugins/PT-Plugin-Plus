@@ -5,6 +5,7 @@
         flat
         solo-inverted
         prepend-icon="search"
+        type="search"
         @click:prepend="searchTorrent()"
         :label="$t('searchBox.searchTip')"
         class="mt-2 mb-0"
@@ -13,7 +14,7 @@
         @click.stop="showSelectBox"
         @click:clear="clearSearchKey"
         :loading="loadStatus"
-        v-on:keyup.13="searchTorrent()"
+        v-on:keyup.enter="searchTorrent()"
       >
         <!-- 近期热门 -->
         <v-menu
