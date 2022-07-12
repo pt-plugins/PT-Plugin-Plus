@@ -560,7 +560,6 @@ export default Vue.extend({
       if (!(this.$refs.form as any).validate()) {
         this.activeTab = "base";
         (this.$refs.defaultClient as any).focus();
-        return;
       }
 
       if (!this.options.apiKey) {
@@ -790,9 +789,12 @@ export default Vue.extend({
       ).toString();
     }
   },
-  watch: {
-    successMsg() {
-      this.haveSuccess = this.successMsg != "";
+  watch: { 
+    successMsg: {
+      handler() {
+        this.haveSuccess = this.successMsg != "";
+      },
+      deep: true,
     },
     errorMsg() {
       this.haveError = this.errorMsg != "";
