@@ -10,6 +10,11 @@
   "searchEntryConfig": {
     "skipIMDbId": true
   },
+  "plugins": [{
+    "name": "种子列表",
+    "pages": ["/artist.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
   "searchEntry": [{
     "entry": "/torrents.php?searchstr=$key$&searchsubmit=1",
     "name": "all",
