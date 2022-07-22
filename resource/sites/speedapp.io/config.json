@@ -144,14 +144,14 @@
       }
     },
     "common": {
-	  "page": "/torrents-details.php",
+	  "page": "/browse/",
       "fields": {
         "downloadURL": {
           "selector": ["a[href*='.torrent']"],
           "filters": ["query.attr('href')"]
         },
         "size": {
-          "selector": ["div.cover-overlay div.card-body > div.row > div.justify-content-end > div:contains('B')"],
+          "selector": ["div.card-body > div.row > div.justify-content-end > div:contains('B')"],
           "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
         },
         "sayThanksButton": {
