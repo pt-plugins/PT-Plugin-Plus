@@ -60,9 +60,9 @@
               let data = {
                 id: torrent.torrentId,
                 title:
-                  group.artist +
-                  " - " +
                   group.groupName +
+                  " - " +
+                  group.groupSubName +
                   " [" +
                   group.groupYear +
                   "] [" +
