@@ -24,25 +24,31 @@
     "enabled": true
   }],
   "selectors": {
+    "userBaseInfo": {
+      "page": "/ajax.php?action=index",
+      "dataType": "json",
+      "merge": true,
+      "fields": {
+        "seedingSize": {
+          "selector": ["response.userstats.seedingSize"]
+        },
+        "bonus": {
+          "selector": ["response.userstats.bonusPoints"]
+        },
+        "joinTime": {
+          "selector": ["response.userstats.joinedDate"]
+        },
+        "seeding": {
+          "selector": ["response.userstats.seedingCount"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "disabled": true
+    },
     "userSeedingTorrents": {
       "page": "/bonus.php?action=bprates",
       "fields": {
-        "seedingSize": {
-          "selector": [
-            "#seeding-size-value"
-          ],
-          "filters": [
-            "query.data('value')"
-          ]
-        },
-        "bonus": {
-          "selector": [
-            "#bp-value"
-          ],
-          "filters": [
-            "query.data('value')"
-          ]
-        },
         "seedingList": {
           "selector": ["a[href*='torrentid=']"],
           "filters": ["jQuery.map(query, item=>$(item).attr('href').match(/torrentid=(\\d+)/)[1])"]
