@@ -60,11 +60,19 @@
       }
     },
     "userSeedingTorrents": {
-      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "page": "/getusertorrentlist.php?userid=$user.id$&type=seeding",
       "fields": {
+        "seeding": {
+          "selector": ["#outer > span:nth-child(3) > b"],
+          "filters": ["query.text()"]
+        },
         "seedingSize": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          "selector": "",
+          "filters": [
+            "/资源总大小：(.*)/.exec(query.text())[1]",
+            "(query != 0) ? query.sizeToNumber() : 0"
+
+        ]
         }
       }
     },
