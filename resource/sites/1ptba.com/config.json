@@ -8,5 +8,23 @@
     "影视",
     "综合"
   ],
-  "host": "1ptba.com"
+  "host": "1ptba.com",
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["b:first"],
+          "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "/总大小：(.*?)类型/.exec(query.text())[1]",
+            "(query != 0) ? query.sizeToNumber() : 0"
+          ]
+        }
+      }
+    }
+  }
 }
