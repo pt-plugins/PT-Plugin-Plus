@@ -614,7 +614,7 @@
                 >{{ tag.name }}</span>
               </span>
 
-              <span v-if="props.item.subTitle">{{ props.item.subTitle }}</span>
+              <span v-if="props.item.subTitle" :title="props.item.subTitle">{{ props.item.subTitle }}</span>
             </div>
 
             <v-layout v-if="$vuetify.breakpoint.xs">
