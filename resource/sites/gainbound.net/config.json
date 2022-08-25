@@ -1,0 +1,46 @@
+{
+    "name": "丐帮",
+    "description": "降龙掌青竹杖 美酒佳肴来作伴",
+    "url": "https://gainbound.net/",
+    "icon": "https://gainbound.net/favicon.ico",
+    "tags": ["高清","电影","纪录片"],
+    "schema": "NexusPHP",
+    "host": "gainbound.net",
+    "patterns": {
+      "torrentLinks": ["*://*/*"]
+    },
+    "parser": {
+      "downloadURL": "解析脚本内容"
+    },
+    "torrentTagSelectors": [
+      {
+        "name": "Free",
+        "selector": "img.pro_free",
+        "color": "blue"
+      }
+    ],
+    "categories": [
+      {
+        "entry": "*",
+        "result": "cat$id$=1",
+        "category": [
+          {
+            "id": 401,
+            "name": "电影"
+          },
+          {
+            "id": 404,
+            "name": "记录片"
+          },
+          {
+            "id": 410,
+            "name": "港台剧"
+          },
+          {
+            "id": 406,
+            "name": "演唱会"
+          }
+        ]
+      }
+    ]
+  }
