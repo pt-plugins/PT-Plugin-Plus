@@ -23,14 +23,10 @@ class Deployer {
   private init() {
     // 打包
     if (this.options.package) {
-      new Package(process.env.CRX_PRIVATE_KEY).start().then(file => {
-        this.publish(file);
-      });
+      new Package(process.env.CRX_PRIVATE_KEY).start().then(file => {});
     } else if (this.options.zip) {
       new Package().zip();
-    } else {
-      this.publish();
-    }
+    } else {}
   }
 
   /**
