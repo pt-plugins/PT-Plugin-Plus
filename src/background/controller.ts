@@ -512,7 +512,7 @@ export default class Controller {
         type: EDataResultType.success,
         msg:
           this.service.i18n.t("service.controller.torrentAdded", {
-            name: downloadOptions.title
+            title: downloadOptions.title
           }) +
           (downloadOptions.savePath
             ? this.service.i18n.t("service.controller.torrentSavePath", {
