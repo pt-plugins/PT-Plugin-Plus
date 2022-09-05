@@ -27,7 +27,7 @@
                 },
                 "uploaded": {
                     "selector": ["abbr.upload"],
-                    "filters": ["query.next().text().trim()", "query.replace(/,/g,'').sizeToNumber()"]
+                    "filters": ["query.next().text().trim()", "query.length > 0?query.replace(/,/g,'').sizeToNumber():null"]
                 },
                 "downloaded": {
                     "selector": ["abbr.download"],

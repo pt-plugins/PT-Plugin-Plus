@@ -49,7 +49,7 @@
           ],
           "filters": [
             "query.text().match(/上传.*?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
-            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+            "(query && query.length>=2)?(query[1]).sizeToNumber():null"
           ]
         },
         "downloaded": {
@@ -58,7 +58,7 @@
           ],
           "filters": [
             "query.text().match(/下载.*?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
-            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+            "(query && query.length>=2)?(query[1]).sizeToNumber():null"
           ]
         },
         "levelName": {

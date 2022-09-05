@@ -50,7 +50,7 @@
           "selector": ["li:contains('Seeding:')"],
           "filters": [
             "query.text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)",
-            "(query && query.length>=2)?parseFloat(query[1]):0"
+            "(query && query.length>=2)?parseFloat(query[1]):null"
           ]
         },
         "seedingSize": {

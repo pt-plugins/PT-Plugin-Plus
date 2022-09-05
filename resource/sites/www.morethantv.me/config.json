@@ -43,19 +43,19 @@
       "fields": {
         "uploaded": {
           "selector": "ul.stats > li:contains('Uploaded')",
-          "filters": ["query.text().replace(/,/g,'').match(/Uploaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/Uploaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "downloaded": {
           "selector": "ul.stats > li:contains('Downloaded')",
-          "filters": ["query.text().replace(/,/g,'').match(/Downloaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/Downloaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "ratio": {
           "selector": "ul.stats > li:contains('Ratio:')",
-          "filters": ["query.text().replace(/,/g,'').match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+          "filters": ["query.text().replace(/,/g,'').match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:null"]
         },
         "seeding": {
           "selector": ["ul.stats > li:contains('Seeding:')"],
-          "filters": [ "query.text().replace(/,/g, '').match(/Seeding:.+?([\\d]+)/)", "(query && query.length>=2)?query[1]:0" ]
+          "filters": [ "query.text().replace(/,/g, '').match(/Seeding:.+?([\\d]+)/)", "(query && query.length>=2)?query[1]:null" ]
         },
         "seedingSize": {
           "selector": ["ul.stats > li:contains('Seeding Size:')"],

@@ -42,11 +42,11 @@
         },
         "uploaded": {
           "selector": ["span.centerTopBar div[title^='Uploaded'] span"],
-          "filters": ["query.text().trim().replace(/,/g,'').sizeToNumber()"]
+          "filters": ["query.text()?query.text().trim().replace(/,/g,'').sizeToNumber():null"]
         },
         "downloaded": {
           "selector": ["span.centerTopBar div[title^='Downloaded'] span"],
-          "filters": ["query.text().trim().replace(/,/g,'').sizeToNumber()"]
+          "filters": ["query.text()?query.text().trim().replace(/,/g,'').sizeToNumber():null"]
         },
         "bonus": {
           "selector": ["span.centerTopBar span.total-TL-points"],

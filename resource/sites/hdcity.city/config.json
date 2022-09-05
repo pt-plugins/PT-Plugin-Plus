@@ -162,11 +162,11 @@
       "fields": {
         "uploaded": {
           "selector": ["div.text:contains('上传量')", "div.text:contains('上傳量')", "div.text:contains('Uploaded')"],
-          "filters": ["query.text().replace(/,/g,'').match(/(?:上[传傳]量|Uploaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/(?:上[传傳]量|Uploaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "downloaded": {
           "selector": ["div.text:contains('下载量')", "div.text:contains('下載量')", "div.text:contains('Downloaded')"],
-          "filters": ["query.text().replace(/,/g,'').match(/(?:下[载載]量|Downloaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/(?:下[载載]量|Downloaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "levelName": {
           "selector": "img[src*='/pic/class/']",
@@ -175,7 +175,7 @@
         },
         "bonus": {
           "selector": ["div.text:contains('魅力值')", "div.text:contains('Karma'):contains('Points')"],
-          "filters": ["query.text().replace(/,/g,'').match(/(?:魅力值|Karma Points).+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+          "filters": ["query.text().replace(/,/g,'').match(/(?:魅力值|Karma Points).+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):null"]
         },
         "messageCount": {
           "selector": ["li > a[href='messages']"],
