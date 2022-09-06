@@ -161,5 +161,9 @@
   "torrentTagSelectors": [{
     "name": "⛔️",
     "selector": "td.embedded b > font.recommended:contains('禁转')"
+  },{
+    "name": "Neutral",
+    "selector": "img.pro_nl",
+    "color": "purple"
   }]
 }
