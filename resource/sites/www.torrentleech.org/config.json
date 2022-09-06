@@ -53,8 +53,8 @@
           "filters": ["query.text().replace(/,/g,'')"]
         },
         "messageCount": {
-          "selector": ["a[href='/content/articles'] i.news-notify"],
-          "filters": ["query.length>0 ? 255: 0"]
+          "selector": ["span.link[onclick*='/notifications']"],
+          "filters": ["parseInt(query.text().trim())"]
         }
       }
     },
