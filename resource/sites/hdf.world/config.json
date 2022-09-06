@@ -15,12 +15,7 @@
   }],
   "securityKeyFields": ["authkey", "torrent_pass"],
   "searchEntryConfig": {
-	"skipIMDbId": true,
-    "page": "/ajax.php",
-    "resultType": "json",
-    "parseScriptFile": "getSearchResult.js",
-    "asyncParse": true,
-    "queryString": "action=browse&searchstr=$key$"
+	"skipIMDbId": true
   },
   "searchEntry": [{
     "name": "all",
@@ -80,5 +75,8 @@
         }
       }
     }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false
   }
 }

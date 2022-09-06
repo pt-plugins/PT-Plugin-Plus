@@ -51,7 +51,7 @@
       let results = [];
       let authkey = this.authkey;
       let passkey = this.passkey;
-      console.log("groups.length", groups.length);
+      //console.log("groups.length", groups.length);
       try {
         groups.forEach(group => {
           if (group.hasOwnProperty("torrents")) {
@@ -76,12 +76,7 @@
                   (torrent.hasLog ? ` / Log(${torrent.logScore})` : "") +
                   (torrent.hasCue ? " / Cue" : "") +
                   (torrent.remastered ? ` / ${torrent.remasterYear} / ${torrent.remasterTitle}` : "") +
-                  (torrent.scene ? " / Scene" : "") +
-                  (torrent.isFreeleech ||
-                  torrent.isNeutralLeech ||
-                  torrent.isPersonalFreeleech
-                    ? " / Freeleech"
-                    : ""),
+                  (torrent.scene ? " / Scene" : ""),
                 link: `${site.url}torrents.php?id=${group.groupId}&torrentid=${torrent.torrentId}`,
                 url: `${site.url}torrents.php?action=download&id=${torrent.torrentId}&authkey=${authkey}&torrent_pass=${passkey}`,
                 size: parseFloat(torrent.size),
@@ -90,6 +85,7 @@
                 leechers: torrent.leechers,
                 completed: torrent.snatches,
                 site: site,
+                tags: (torrent.isFreeleech || torrent.isPersonalFreeleech)?[{name: "Free",color: "blue"}]:torrent.isNeutralLeech?[{name: "Neutral",color: "purple"}]:[{"":""}],
                 entryName: options.entry.name,
                 category: group.releaseType
               };
