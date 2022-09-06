@@ -62,11 +62,10 @@
                   group.artist +
                   " - " +
                   group.groupName +
-                  " [" +
+                  " / " +
                   group.groupYear +
-                  "] [" +
-                  group.releaseType +
-                  "]",
+                  " / " +
+                  (group.releaseType ? group.releaseType : ""),
                 subTitle:
                   torrent.format +
                   " / " +
@@ -85,7 +84,7 @@
                 leechers: torrent.leechers,
                 completed: torrent.snatches,
                 site: site,
-                tags: (torrent.isFreeleech || torrent.isPersonalFreeleech)?[{name: "Free",color: "blue"}]:torrent.isNeutralLeech?[{name: "Neutral",color: "purple"}]:[{"":""}],
+                tags: (torrent.isFreeleech || torrent.isPersonalFreeleech) ? [{name: "Free",color: "blue"}] : torrent.isNeutralLeech ? [{name: "Neutral",color: "purple"}] : [],
                 entryName: options.entry.name,
                 category: group.releaseType
               };
