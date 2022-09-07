@@ -25,6 +25,7 @@
      * 获取搜索结果
      */
     getResult() {
+	   console.log("Common schemas search js");
       if (!this.haveData) {
         return [];
       }
