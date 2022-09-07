@@ -59,22 +59,21 @@
             torrents.forEach(torrent => {
               let data = {
                 title:
-                  group.artist +
-                  " - " +
+                  (group.artist ? group.artist + " - " : "") +
                   group.groupName +
                   " / " +
                   group.groupYear +
                   " / " +
-                  (group.releaseType ? group.releaseType : ""),
-                subTitle:
-                  torrent.format +
-                  " / " +
-                  torrent.encoding +
-                  " / " +
                   torrent.media +
-                  (torrent.hasLog ? ` / Log(${torrent.logScore})` : "") +
+                  (group.releaseType ? " / " + group.releaseType : "") + 
+                  (torrent.format ? " / " + torrent.format : " / " + torrent.codec) + 
+                  (torrent.encoding ? " / " + torrent.encoding : " / " + torrent.resolution),
+                  
+                subTitle:
+                  (torrent.container ? torrent.container: "") + 
+                  (torrent.hasLog ? `Log(${torrent.logScore})` : "") +
                   (torrent.hasCue ? " / Cue" : "") +
-                  (torrent.remastered ? ` / ${torrent.remasterYear} / ${torrent.remasterTitle}` : "") +
+                  (torrent.remastered ? ` / Remaster / ${torrent.remasterYear} / ${torrent.remasterTitle}` : "") +
                   (torrent.scene ? " / Scene" : ""),
                 link: `${site.url}torrents.php?id=${group.groupId}&torrentid=${torrent.torrentId}`,
                 url: `${site.url}torrents.php?action=download&id=${torrent.torrentId}&authkey=${authkey}&torrent_pass=${passkey}`,
