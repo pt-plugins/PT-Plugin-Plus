@@ -1,0 +1,13 @@
+{
+  "name": "AvistaZ",
+  "timezoneOffset": "+0000",
+  "description": "综合",
+  "url": "https://avistaz.to/",
+  "icon": "https://avistaz.to/images/avistaz-favicon.png",
+  "tags": ["综合"],
+  "schema": "AvistaZ",
+  "host": "avistaz.to",
+  "supportedFeatures": {
+    "imdbSearch": false
+  }
+}

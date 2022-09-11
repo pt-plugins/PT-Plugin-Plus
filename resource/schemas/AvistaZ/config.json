@@ -1,0 +1,118 @@
+{
+  "name": "AvistaZ",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["^/torrent/(.+)$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents"],
+    "styles": ["/libs/album/style.css"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/libs/album/album.js", "torrents.js"]
+  }],
+  "searchEntry": [{
+    "entry": "/torrents?in=1&search=$key$",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/AvistaZ/getSearchResult.js",
+    "resultSelector": "div.table-responsive > table:first",
+    "enabled": true
+  }], 
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["tr[class*='success'], tr[class*='warning'], tr[class*='danger']", "tr[class*='info']",""],
+        "switchFilters": [
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["tr[class*='warning'], tr[class*='danger']", "tr[class*='success']", "tr[class*='tr.info']"],
+        "switchFilters": [
+          ["3"],
+          ["2"],
+          ["1"]
+        ]
+      }
+    }
+  },
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "i.fa-star"
+  }, {
+    "name": "2xUp",
+    "selector": "i.fa-diamond"
+  }, {
+    "name": "50%",
+    "selector": "i.fa-star-half-o"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "messageCount": {
+          "selector": ["a[title=Messages] span.message-count.badge"],
+          "filters": ["query.text()"]
+        },
+        "name": {
+          "selector": ["a[href*='/profile/']:first"],
+          "filters": ["query.attr('href').match(/profile\\/(.+)/)", "(query && query.length>=2)?(query[1]):''"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='/logout']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/profile/$user.name$",
+      "fields": {
+        "id": {
+          "selector": ["td:contains('User ID') + td"]
+        },
+        "uploaded": {
+          "selector": ["td:contains('Uploaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td:contains('Downloaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "td:contains('Ratio') + td",
+          "filters": ["query.text().replace(/,/g,'')"]
+        },
+        "levelName": {
+          "selector": "td:contains('Rank') + td"
+        },
+        "bonus": {
+          "selector": ["td:contains('Bonus Points') + td"],
+          "filters": ["query.text().replace(/,/g,'')"]
+        },
+        "joinTime": {
+          "selector": "td:contains('Joined') + td",
+          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["li:contains('Seeding'):first", "li:contains('Seeds'):first"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d]+)/)", "(query && query.length>=2)?query[1]:''"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/profile/$user.name$/active?order=progress&sort=desc",
+      "parser": "/schemas/AvistaZ/getUserSeedingTorrents.js"
+    },
+    "common": {
+      "fields": {
+        "sayThanksButton": {
+          "selector": ["button#btn-torrent-thank"],
+          "filters": ["query"]
+        }
+      }
+    }
+  }
+}
