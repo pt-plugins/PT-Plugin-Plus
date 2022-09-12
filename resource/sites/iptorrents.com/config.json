@@ -9,5 +9,95 @@
   "host": "iptorrents.com",
   "supportedFeatures": {
     "userData": "◐"
+  },
+    "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/torrent.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["^/t$"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "searchEntry": [{
+    "entry": "/t?q=$key$",
+    "name": "全部",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "table#torrents:first",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "span.t_tag_free_leech"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ["a[href*='/u/']:first", "a[href*='userdetails.php']:first"],
+          "attribute": "href",
+          "switchFilters": [
+            ["query.match(/u\\/(.+)/)", "(query && query.length>=2)?(query[1]):''"],
+            ["query ? query.getQueryString('id'):''"]
+          ]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']", "form[action*='lout']"],
+          "filters": ["query.length>0"]
+        },
+        "messageCount": {
+          "selector": ["td[style*='background: red'] a[href*='messages.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "name": {
+          "selector": ["h1.c0"]
+        },
+        "uploaded": {
+          "selector": ["th:contains('Uploaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["th:contains('Downloaded') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "ratio": {
+          "selector": "th:contains('Share ratio') + td",
+          "filters": ["query.text().replace(/,/g,'')"]
+        },
+        "levelName": {
+          "selector": "th:contains('Class') + td"
+        },
+        "bonus": {
+          "selector": ["a[href='/mybonus.php']"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?query[1]:''"]
+        },
+        "joinTime": {
+          "selector": "th:contains('Join date') + td",
+          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "seeding": {
+          "selector": ["th:contains('Seeding') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d]+)/)", "(query && query.length>=2)?query[1]:''"]
+        },
+        "seedingSize": {
+          "value": -1
+        }
+      }
+    },
+    "/details.php": {
+      "fields": {
+        "size": {
+          "selector": ["th.ar:contains('Size') + td"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        }
+      }
+    }
   }
 }

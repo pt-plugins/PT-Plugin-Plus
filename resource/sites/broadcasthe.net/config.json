@@ -50,14 +50,14 @@
           "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(1)",
           "filters": [
             "query.text().replace(/,/g,'').match(/Upload.+?([\\d.]+ ?[TGMK]?i?B)/)",
-            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+            "(query && query.length>=2)?(query[1]).sizeToNumber():null"
           ]
         },
         "downloaded": {
           "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(7)",
           "filters": [
             "query.text().replace(/,/g,'').match(/Downloaded.+?([\\d.]+ ?[TGMK]?i?B)/)",
-            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+            "(query && query.length>=2)?(query[1]).sizeToNumber():null"
           ]
         },
         "ratio": {
@@ -87,7 +87,7 @@
           "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(4)",
           "filters": [
             "query.text().replace(/,/g,'').match(/Seeding:.+?(\\d+).+?/)",
-            "(query && query.length>=2)?(query[1]):0"
+            "(query && query.length>=2)?(query[1]):null"
           ]
         },
         "seedingSize": {

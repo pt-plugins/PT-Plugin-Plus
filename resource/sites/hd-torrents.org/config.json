@@ -103,15 +103,15 @@
         },
         "uploaded": {
           "selector": ["td.header:contains('Uploaded') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "downloaded": {
           "selector": ["td.header:contains('Downloaded') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "ratio": {
           "selector": "td.header:contains('Ratio') + td",
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?query[1]:null"]
         },
         "levelName": {
           "selector": "td.header:contains('Rank') + td"

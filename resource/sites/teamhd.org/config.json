@@ -100,11 +100,11 @@
         },
         "uploaded": {
           "selector": ["div.col-8.mb-4 > font[color='green']"],
-          "filters": ["$(query[0].nextSibling).text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["$(query[0].nextSibling).text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "downloaded": {
           "selector": ["div.col-8.mb-4 > font[color='darkred']"],
-          "filters": ["$(query[0].nextSibling).text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["$(query[0].nextSibling).text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "ratio": {
           "selector": ["div.col-8.mb-4 > font[color='#1900D1']"],

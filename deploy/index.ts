@@ -1,5 +1,4 @@
 import Package from "./package";
-import ChromeWebStore from "./chrome";
 import * as program from "commander";
 
 class Deployer {
@@ -13,7 +12,6 @@ class Deployer {
       .version("0.0.1")
       .option("-p, --package", "打包文件")
       .option("-z, --zip", "打包文件")
-      .option("-c, --chrome", "发布至 Chrome Web Store")
       .action(options => {
         this.options = options;
         this.init();
@@ -25,28 +23,16 @@ class Deployer {
   private init() {
     // 打包
     if (this.options.package) {
-      new Package(process.env.CRX_PRIVATE_KEY).start().then(file => {
-        this.publish(file);
-      });
+      new Package(process.env.CRX_PRIVATE_KEY).start().then(file => {});
     } else if (this.options.zip) {
       new Package().zip();
-    } else {
-      this.publish();
-    }
+    } else {}
   }
 
   /**
    * 发布至应用市场
    * @param file
    */
-  private publish(file?: string) {
-    if (this.options.chrome) {
-      const chromeWebStore = new ChromeWebStore(file);
-      chromeWebStore.upload().then(() => {
-        chromeWebStore.publish();
-      });
-    }
-  }
 }
 
 new Deployer();

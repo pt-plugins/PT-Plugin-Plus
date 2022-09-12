@@ -419,10 +419,11 @@
       switch (options.site.host) {
         case 'hdsky.me': {
           let url_another = row.find('form[action*="download.php"]:eq(0)')
-          if (url_another) {
+          if (url_another.length > 0) {
             url = url_another.attr('action')
+            break;
           }
-          break;
+          
         }
 
         default: {

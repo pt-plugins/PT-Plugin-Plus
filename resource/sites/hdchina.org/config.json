@@ -276,7 +276,7 @@
       "fields": {
         "seeding": {
           "selector": ["div#ka1"],
-          "filters": ["query.parent().text().match(/\\(([\\d.]+)个种子/)", "(query && query.length>=2)?query[1]:0"]
+          "filters": ["query.parent().text().match(/\\(([\\d.]+)个种子/)", "(query && query.length>=2)?query[1]:null"]
         },
         "seedingSize": {
           "selector": ["div#ka1"],

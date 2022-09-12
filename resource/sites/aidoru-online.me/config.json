@@ -139,11 +139,11 @@
         },
         "uploaded": {
           "selector": [".myBlock-content td:contains('Uploaded:') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "downloaded": {
           "selector": [".myBlock-content td:contains('Downloaded:') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "ratio": {
           "selector": [".myBlock-content td:contains('Ratio:') + td"],
@@ -167,7 +167,7 @@
         },
         "seeding": {
 	      "selector": ["b:contains('Currently seeding')"],
-          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):null"]
         },
         "seedingSize": {
 	        "selector": ["b:contains('Currently seeding') + br + table tr:not(:first-child) > td:nth-child(4)"],

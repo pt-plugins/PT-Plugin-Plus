@@ -68,19 +68,19 @@
       "fields": {
 	    "uploaded": {
           "selector": "div:contains('Stats') + ul.stats > li:contains('Uploaded'), div:contains('統計情報') + ul.stats > li:contains('アップロード数')",
-          "filters": ["query.text().replace(/,/g,'').match(/[\\d.]+ ?[ZEPTGMK]?i?B/)", " query ?(query[0]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/[\\d.]+ ?[ZEPTGMK]?i?B/)", " query ?(query[0]).sizeToNumber():null"]
         },
         "downloaded": {
           "selector": "div:contains('Stats') + ul.stats > li:contains('Downloaded'), div:contains('統計情報') + ul.stats > li:contains('Downloaded')",
-          "filters": ["query.text().replace(/,/g,'').match(/Downloaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/Downloaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "seeding": {
           "selector": "div:contains('Community') + ul.stats > li:contains('Seeding:'), div:contains('コミュニティ') + ul.stats > li:contains('シード中')",
-          "filters": ["query.text().match(/[\\d.]+/)", " query ?query[0]:0"]
+          "filters": ["query.text().match(/[\\d.]+/)", " query ?query[0]:null"]
         },
         "bonus": {
           "selector": ["div:contains('Stats') + ul.stats > li:contains('Bonus Points:')", "div:contains('統計情報') + ul.stats > li:contains('ボーナスポイント')"],
-          "filters": ["query.text().replace(/,/g,'')", "query.match(/Bonus Points.+?([\\d.]+)/)||query.match(/ボーナスポイント.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+          "filters": ["query.text().replace(/,/g,'')", "query.match(/Bonus Points.+?([\\d.]+)/)||query.match(/ボーナスポイント.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:null"]
         },
         "levelName": {
           "selector": "div:contains('Personal') + ul.stats > li:contains('Class:'), div:contains('個人情報') + ul.stats > li:contains('階級:')",

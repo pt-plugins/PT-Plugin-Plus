@@ -3,7 +3,7 @@
   "timezoneOffset": "+0000",
   "description": "",
   "icon": "https://www.morethantv.me/favicon.ico",
-  "schema": "Luminance",
+  "schema": "Common",
   "tags": ["电视剧", "剧集"],
   "url": "https://www.morethantv.me",
   "collaborator": "luckiestone",
@@ -11,10 +11,15 @@
   "formerHosts": [
     "www.morethan.tv"
   ],
-  "supportedFeatures": {
-    "search": false,
-    "imdbSearch": false
-  },
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/torrents.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents/browse", "/show/(\\d+)/$","/collages.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+  }],
   "selectors": {
     "userBaseInfo": {
       "merge": true,
@@ -43,19 +48,19 @@
       "fields": {
         "uploaded": {
           "selector": "ul.stats > li:contains('Uploaded')",
-          "filters": ["query.text().replace(/,/g,'').match(/Uploaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/Uploaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "downloaded": {
           "selector": "ul.stats > li:contains('Downloaded')",
-          "filters": ["query.text().replace(/,/g,'').match(/Downloaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/Downloaded.+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "ratio": {
           "selector": "ul.stats > li:contains('Ratio:')",
-          "filters": ["query.text().replace(/,/g,'').match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+          "filters": ["query.text().replace(/,/g,'').match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:null"]
         },
         "seeding": {
           "selector": ["ul.stats > li:contains('Seeding:')"],
-          "filters": [ "query.text().replace(/,/g, '').match(/Seeding:.+?([\\d]+)/)", "(query && query.length>=2)?query[1]:0" ]
+          "filters": [ "query.text().replace(/,/g, '').match(/Seeding:.+?([\\d]+)/)", "(query && query.length>=2)?query[1]:null" ]
         },
         "seedingSize": {
           "selector": ["ul.stats > li:contains('Seeding Size:')"],
@@ -72,6 +77,27 @@
         "joinTime": {
           "selector": ["ul.stats > li:contains('Joined:') > span"],
           "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    },
+    "common": {
+	  "page": "/torrents.php",
+      "fields": {
+        "downloadURL": {
+          "selector": ["tr[id*='torrentinfo'][class!='hidden']"],
+          "filters": ["query.prev().find(\"a[href*='action=download']\").attr('href')"]
+        },
+        "size": {
+          "selector": ["tr.group_torrent > td.nobr"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+        },
+        "downloadURLs": {
+          "selector": ["a[href*='action=download']"],
+          "filters": ["query.toArray()"]
+        },
+        "confirmSize": {
+          "selector": ["tr.group_torrent > td.nobr"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
         }
       }
     }

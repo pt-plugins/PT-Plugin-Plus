@@ -17,17 +17,21 @@
         "userBaseInfo": {
             "page": "/",
             "fields": {
+	            "isLogged": {
+		          "selector": ["a[href='/logout']"],
+		          "filters": ["query.length>0"]
+		        },
                 "name": {
                     "selector": ["#subnav > div > div > ul > li.dropdown.pull-right > a > span.hidden-sm"],
                     "filters": ["query.text()"]
                 },
                 "uploaded": {
-                    "selector": ["#header > div > div > div > span.navbar-text.stats.hidden-sm"],
-                    "filters": ["query.text().split(':')[1].split('D')[0].trim()", "query.replace(/,/g,'').sizeToNumber()"]
+                    "selector": ["abbr.upload"],
+                    "filters": ["query.next().text().trim()", "query.length > 0?query.replace(/,/g,'').sizeToNumber():null"]
                 },
                 "downloaded": {
-                    "selector": ["#header > div > div > div > span.navbar-text.stats.hidden-sm"],
-                    "filters": ["query.text().split(':')[2].split('R')[0].replace(/Bytes/g,'').trim()", "query.replace(/,/g,'').sizeToNumber()"]
+                    "selector": ["abbr.download"],
+                    "filters": ["if(query[0])$(query[0].nextSibling).text().trim().replace(/,/g,'').sizeToNumber()"]
                 }
             }
         },
@@ -44,7 +48,7 @@
                 },
                 "seeding": {
                     "selector": ["#content > div > div.col-md-9 > div:nth-child(5) > div.panel-heading > h4"],
-                    "filters": ["query.text().split(':')[1].split('L')[0].trim()"]
+                    "filters": ["if(query[0]&&query.text().split(':')[1])query.text().split(':')[1].split('L')[0].trim()"]
                 },
                  "seedingSize": {
                     "value": -1
