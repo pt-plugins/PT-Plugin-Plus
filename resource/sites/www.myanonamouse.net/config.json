@@ -3,10 +3,7 @@
   "description": "Friendliness, Warmth and Sharing",
   "url": "https://www.myanonamouse.net/",
   "icon": "https://cdn.myanonamouse.net/favicon.ico",
-  "tags": [
-    "电子书",
-    "有声书"
-  ],
+  "tags": ["电子书", "有声书"],
   "schema": "MyAnonaMouse",
   "host": "www.myanonamouse.net",
   "collaborator": "tongyifan",
@@ -19,23 +16,13 @@
   "plugins": [
     {
       "name": "种子详情页面",
-      "pages": [
-        "/t/\\d+"
-      ],
-      "scripts": [
-        "/schemas/NexusPHP/common.js",
-        "details.js"
-      ]
+      "pages": ["/t/\\d+"],
+      "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
     },
     {
       "name": "种子列表",
-      "pages": [
-        "/tor/browse.php",
-        "/stats/top10Tor.php"
-      ],
-      "styles": [
-        "/libs/album/style.css"
-      ],
+      "pages": ["/tor/browse.php", "/stats/top10Tor.php"],
+      "styles": ["/libs/album/style.css"],
       "scripts": [
         "/schemas/NexusPHP/common.js",
         "/libs/album/album.js",
@@ -73,34 +60,20 @@
       "page": "/index.php",
       "fields": {
         "id": {
-          "selector": [
-            "li.myInfo > a"
-          ],
+          "selector": ["li.myInfo > a"],
           "attribute": "href",
-          "filters": [
-            "query ? query.match(/(\\d+)/)[1]:''"
-          ]
+          "filters": ["query ? query.match(/(\\d+)/)[1]:''"]
         },
         "name": {
-          "selector": [
-            "a#userMenu"
-          ],
-          "filters": [
-            "query ? query.text().replace(\"↓\", \"\").trim() : ''"
-          ]
+          "selector": ["a#userMenu"],
+          "filters": ["query ? query.text().replace(\"↓\", \"\").trim() : ''"]
         },
         "isLogged": {
-          "selector": [
-            "a[href='/preferences/index.php']"
-          ],
-          "filters": [
-            "query.length>0"
-          ]
+          "selector": ["a[href='/preferences/index.php']"],
+          "filters": ["query.length>0"]
         },
         "messageCount": {
-          "selector": [
-            "a.tmnb, a.tmn, a.tmng"
-          ],
+          "selector": ["a.tmnb, a.tmn, a.tmng"],
           "filters": [
             "query.text().match(/(\\d+)/g)",
             "query ? query.map(Number).reduce((sum, current) => {return sum + current;}, 0) : 0"
@@ -112,44 +85,32 @@
       "page": "/u/$user.id$",
       "fields": {
         "uploaded": {
-          "selector": [
-            "td.rowhead:contains('Uploaded'):eq(0) + td"
-          ],
+          "selector": ["td.rowhead:contains('Uploaded'):eq(0) + td"],
           "filters": [
             "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
-            "(query && query.length==2)?(query[1]).sizeToNumber():0"
+            "(query && query.length==2)?(query[1]).sizeToNumber():null"
           ]
         },
         "downloaded": {
-          "selector": [
-            "td.rowhead:contains('Downloaded'):eq(0) + td"
-          ],
+          "selector": ["td.rowhead:contains('Downloaded'):eq(0) + td"],
           "filters": [
             "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
-            "(query && query.length==2)?(query[1]).sizeToNumber():0"
+            "(query && query.length==2)?(query[1]).sizeToNumber():null"
           ]
         },
         "levelName": {
-          "selector": [
-            "td.rowhead:contains('Class') + td"
-          ],
-          "filters": [
-            "query.text()"
-          ]
+          "selector": ["td.rowhead:contains('Class') + td"],
+          "filters": ["query.text()"]
         },
         "bonus": {
-          "selector": [
-            "a#tmBP"
-          ],
+          "selector": ["a#tmBP"],
           "filters": [
             "query.text().replace(/,/g,'').match(/Bonus: ([\\d.]+)/)",
-            "(query && query.length==2)?parseFloat(query[1]):0"
+            "(query && query.length==2)?parseFloat(query[1]):null"
           ]
         },
         "joinTime": {
-          "selector": [
-            "td.rowhead:contains('Join'):contains('date') + td"
-          ],
+          "selector": ["td.rowhead:contains('Join'):contains('date') + td"],
           "filters": [
             "query.text().split(' (')[0]",
             "dateTime(query).isValid()?dateTime(query).valueOf():query"
@@ -164,46 +125,28 @@
     "common": {
       "fields": {
         "downloadURLs": {
-          "selector": [
-            "a[href*='/tor/download.php/']"
-          ],
-          "filters": [
-            "query.toArray()"
-          ]
+          "selector": ["a[href*='/tor/download.php/']"],
+          "filters": ["query.toArray()"]
         },
         "confirmSize": {
-          "selector": [
-            "table.newTorTable > tbody > tr > td:eq(4)"
-          ],
-          "filters": [
-            "query"
-          ]
+          "selector": ["table.newTorTable > tbody > tr > td:eq(4)"],
+          "filters": ["query"]
         },
         "downloadURL": {
-          "selector": [
-            "a#tddl"
-          ],
+          "selector": ["a#tddl"],
           "attribute": "href",
-          "filters": [
-            "query"
-          ]
+          "filters": ["query"]
         },
         "size": {
-          "selector": [
-            "div#size > div:eq(1) > span"
-          ],
+          "selector": ["div#size > div:eq(1) > span"],
           "filters": [
             "query.text().replace(/[, ]/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
             "(query && query.length>1)?(query[1]).sizeToNumber():0"
           ]
         },
         "sayThanksButton": {
-          "selector": [
-            "button#giveThanks"
-          ],
-          "filters": [
-            "query"
-          ]
+          "selector": ["button#giveThanks"],
+          "filters": ["query"]
         }
       }
     }

@@ -206,7 +206,7 @@
       "fields": {
         "bonus": {
           "selector": ["td.rowhead:contains('UCoin') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/\\(([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+          "filters": ["query.text().replace(/,/g,'').match(/\\(([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):null"]
         }
       }
     },

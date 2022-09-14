@@ -105,11 +105,11 @@
         },
         "uploaded": {
           "selector": ["dt:contains('已上传') + dd","dt:contains('Uploaded') + dd","dt:contains('Incarcat') + dd"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "downloaded": {
           "selector": ["dt:contains('已下载') + dd","dt:contains('Downloaded') + dd","dt:contains('Descarcat') + dd"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "ratio": {
           "selector": ["dt:contains('比率') + dd","dt:contains('Ratio') + dd","dt:contains('Ratie') + dd"],
@@ -139,7 +139,7 @@
         },
         "seeding": {
 	      "selector": ["a[href='/snatch/seeding'][title='目前正在播种种子'],a[href='/snatch/seeding'][title='Currently seeding torrents'],a[href='/snatch/seeding'][title='Torrente ce se incarca']"],
-          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):null"]
         }
       }
     },

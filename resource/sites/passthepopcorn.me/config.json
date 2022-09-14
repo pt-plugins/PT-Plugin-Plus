@@ -59,11 +59,11 @@
         },
         "ratio": {
           "selector": "ul.list > li:contains('Ratio:')",
-          "filters": ["query.text().replace(/,|\\n|\\s+/g,'').match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+          "filters": ["query.text().replace(/,|\\n|\\s+/g,'').match(/Ratio.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:null"]
         },
         "seeding": {
           "selector": "ul.list > li:contains('Seeding:')",
-          "filters": ["query.text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):0"]
+          "filters": ["query.text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):null"]
         },
         "seedingSize": {
           "selector": "ul.list > li:contains('Seeding size:')",

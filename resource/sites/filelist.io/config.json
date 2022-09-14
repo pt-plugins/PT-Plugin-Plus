@@ -36,12 +36,12 @@
       "page": "/index.php",
       "fields": {
         "id": {
-          "selector": "a[href*='userdetails.php']:last",
+          "selector": "a[href*='userdetails.php']:first",
           "attribute": "href",
           "filters": ["query ? query.getQueryString('id'):''"]
         },
         "name": {
-          "selector": "a[href*='userdetails.php']:last"
+          "selector": "a[href*='userdetails.php']:eq(1)"
         },
         "isLogged": {
           "selector": ["a[href*='logout.php']"],
