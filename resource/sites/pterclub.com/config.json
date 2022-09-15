@@ -13,7 +13,7 @@
   "searchEntryConfig": {
     "fieldSelector": {
       "title": {
-        "selector": ["a[href*='details.php?id='][title]:first"],
+        "selector": ["a[href*='details.php?id=']:first"],
         "filters": ["query"]
       },
       "subTitle": {
