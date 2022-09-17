@@ -38,7 +38,8 @@
       "merge": true,
       "fields": {
         "levelName": {
-          "selector": ["td.rowhead:contains('等级') + td b b"]
+          "selector": ["td.rowhead:contains('等级') + td b b[class]"],
+          "filters": ["query.text().trim() + '(' + query.attr('class').replace('User_Name',' User') + ')'"]
         }
       }
     }

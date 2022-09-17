@@ -17,7 +17,7 @@
   "host": "speedapp.io",
   "searchEntryConfig": {
     "page": "/browse?search=$key$",
-    "loggedRegex": "class=\"card-body p-0",
+    "loggedRegex": "href=\"\/profile\"",
     "resultType": "html",
     "resultSelector": "div.card-body.p-0",
     "dataRowSelector": "div.row.mr-0.ml-0.py-3",
