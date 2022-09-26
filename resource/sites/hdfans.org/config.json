@@ -1,23 +1,44 @@
 {
-    "name": "HDFans",
-    "timezoneOffset": "+0800",
-    "description": "与志同道合之人前行 分享更多值得珍藏的资源",
-    "url": "https://hdfans.org",
-    "icon": "https://hdfans.org/favicon.ico",
-    "tags": ["综合", "电影", "电视剧", "纪录片"],
-    "schema": "NexusPHP",
-    "host": "hdfans.org",
-    "collaborator": "csi0n",
-    "searchEntryConfig": {
-      "fieldSelector": {
-        "progress": {
-          "selector": ["> td:eq(9)"],
-          "filters": ["query.text()=='--'?null:parseFloat(query.text())"]
+  "name": "HDFans",
+  "timezoneOffset": "+0800",
+  "description": "与志同道合之人前行 分享更多值得珍藏的资源",
+  "url": "https://hdfans.org",
+  "icon": "https://hdfans.org/favicon.ico",
+  "tags": ["综合", "电影", "电视剧", "纪录片"],
+  "schema": "NexusPHP",
+  "host": "hdfans.org",
+  "collaborator": "csi0n",
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["b:first"],
+          "filters": ["query.text()"]
         },
-        "status": {
-          "selector": ["> td:eq(9)"],
-          "filters": ["query.text()==='--'?null:(parseFloat(query.text())==100?255:3)"]
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)</g)",
+            "(query && query.length>0 ) ? query[0].replace('总大小：', '').replace('<', '').trim() : 0",
+            "(query != 0) ? _self.getTotalSize([query]) : 0"
+          ]
         }
       }
     }
+  },
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["> td:eq(9)"],
+        "filters": ["query.text()=='--'?null:parseFloat(query.text())"]
+      },
+      "status": {
+        "selector": ["> td:eq(9)"],
+        "filters": [
+          "query.text()==='--'?null:(parseFloat(query.text())==100?255:3)"
+        ]
+      }
+    }
+  }
 }
