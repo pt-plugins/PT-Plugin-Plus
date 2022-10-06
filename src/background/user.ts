@@ -130,7 +130,7 @@ export class User {
 
           if (!userInfo.isLogged) {
             userInfo.lastUpdateStatus = EUserDataRequestStatus.needLogin;
-            this.updateStatus(site, userInfo);
+            //this.updateStatus(site, userInfo);
 
             rejectFN(
               APP.createErrorMessage({
@@ -171,12 +171,12 @@ export class User {
               })
               .catch((error: any) => {
                 userInfo.lastUpdateStatus = EUserDataRequestStatus.unknown;
-                this.updateStatus(site, userInfo);
+                //this.updateStatus(site, userInfo);
                 rejectFN(APP.createErrorMessage(error));
               });
           } else {
             userInfo.lastUpdateStatus = EUserDataRequestStatus.unknown;
-            this.updateStatus(site, userInfo);
+            //this.updateStatus(site, userInfo);
             rejectFN(
               APP.createErrorMessage({
                 status: EUserDataRequestStatus.unknown,
@@ -187,7 +187,7 @@ export class User {
         })
         .catch((error: any) => {
           userInfo.lastUpdateStatus = EUserDataRequestStatus.unknown;
-          this.updateStatus(site, userInfo);
+          //this.updateStatus(site, userInfo);
           rejectFN(APP.createErrorMessage(error));
         });
     });
