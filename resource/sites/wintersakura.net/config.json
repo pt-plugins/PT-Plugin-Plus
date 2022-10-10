@@ -1,0 +1,80 @@
+{
+  "name": "冬樱/WinterSakura",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "collaborator":"xqw8889",
+  "description": "A new Beginning.",
+  "url": "https://wintersakura.net/",
+  "icon": "https://wintersakura.net/favicon.ico",
+  "tags": [
+    "二次元",
+    "综合"
+  ],
+  "host": "wintersakura.net",
+  "formerHosts": [
+    "wintersakura.net"
+  ],
+  "plugins": [
+    {
+      "name": "种子列表",
+      "pages": [
+        "/special.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/NexusPHP/torrents.js"
+      ]
+    }
+  ],
+  "searchEntry": [
+    {
+      "entry": "/torrents.php?search=$key$",
+      "name": "综合",
+      "enabled": true
+    },
+	{
+      "entry": "torrents.php?cat422=1&cat413=1&incldead=0&search=$key$",
+      "name": "二次元",
+      "enabled": true
+    },
+    {
+      "entry": "/special.php?search=$key$",
+      "name": "特别",
+      "enabled": true
+    }
+  ],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["b:first"],
+          "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)</g)",
+            "(query && query.length>0 ) ? query[0].replace('总大小：', '').replace('<', '').trim() : 0",
+            "(query != 0) ? _self.getTotalSize([query]) : 0"
+          ]
+        }
+      }
+    }
+  },
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["> td:eq(9)"],
+        "filters": ["query.text()=='--'?null:parseFloat(query.text())"]
+      },
+      "status": {
+        "selector": ["> td:eq(9)"],
+        "filters": [
+          "query.text()==='--'?null:(parseFloat(query.text())==100?255:3)"
+        ]
+      }
+    }
+  }
+  
+}
