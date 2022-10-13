@@ -1,0 +1,15 @@
+{
+    "name": "Monika",
+    "timezoneOffset": "+0800",
+    "schema": "UNIT3D",
+    "url": "https://monikadesign.uk/",
+    "icon": "https://monikadesign.uk/favicon.ico",
+    "description": "一个以动画为主体，涵盖日语影视音乐的资源站，诣在为广大动画、日剧日影、ACG Live爱好者提供一个资源信息交流平台。",
+    "tags": [
+        "影视",
+        "剧集",
+        "动漫"
+    ],
+    "host": "monikadesign.uk",
+    "collaborator": "fzlins"
+}
