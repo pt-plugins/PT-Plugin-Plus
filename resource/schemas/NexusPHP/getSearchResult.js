@@ -152,7 +152,7 @@
 
           let cells = row.find(">td");
 
-          let title = this.getTitle(row);
+          let title = this.getTitle(row,cells,fieldIndex);
 
           // 没有获取标题时，继续下一个
           if (title.length == 0) {
@@ -307,10 +307,10 @@
     /**
      * 获取标题
      */
-    getTitle(row) {
+    getTitle(row, cells, fieldIndex) {
       let title =
-        Searcher.getFieldValue(this.site, row, "title") ||
-        row.find("a[href*='hit'][title]").first();
+        this.getFieldValue(row, cells, fieldIndex, "title", true) ||
+        row.find("a[href*='hit'][title]:not(a[href*='comment'])").first();
 
       if (typeof title === "string") {
         return title;
