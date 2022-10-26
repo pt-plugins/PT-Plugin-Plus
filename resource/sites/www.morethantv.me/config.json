@@ -20,6 +20,47 @@
     "pages": ["/torrents/browse", "/show/(\\d+)/$","/collages.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
   }],
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
+  "searchEntryConfig": {
+    "page": "torrents/browse?searchtext=$key$",
+    "skipIMDbId": true,
+    "name": "全部",
+    "resultType": "html",
+    "resultSelector": "table.torrent_table",
+    "dataRowSelector": "> tbody > tr:not(:first-child)",
+    "fieldIndex": {
+	    "title": 1,
+	    "link": 1,
+	    "url": 1,
+        "time": 3,
+        "size": 4,
+        "author": 8,
+        "seeders": 6,
+        "leechers": 7,
+        "completed": 5
+	},
+	"fieldSelector": {
+	  "title": {
+		"selector": ["a.overlay_torrent"],
+        "filters": ["query.text()"]
+	  },
+	  "link": {
+		"selector": ["a.overlay_torrent"],
+        "filters": ["query.attr('href')", "'https://www.morethantv.me/'+query"]
+	  },
+	  "url": {
+		"selector": ["a[title='Download Torrent']"],
+        "filters": ["query.attr('href')", "'https://www.morethantv.me/'+query"]
+	  },
+	  "time": {
+		"selector": ["span.time"],
+        "filters": ["dateTime(query.attr('title')).format()"]
+	  }
+    }
+  },
   "selectors": {
     "userBaseInfo": {
       "merge": true,
