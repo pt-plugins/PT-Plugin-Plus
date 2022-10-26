@@ -36,7 +36,7 @@
           "div[title^='leeching'], div[title^='seeding'], div[title^='inactivity']"
         ],
         "filters": [
-          "query ? query.attr('title').replace('leeching','').replace('seeding','').replace('inactivity','').replace('%','').trim() : null"
+          "query[0] ? query.attr('title').replace('leeching','').replace('seeding','').replace('inactivity','').replace('%','').trim() : null"
         ]
       },
       "status": {
@@ -172,34 +172,20 @@
           "selector": [
             ".layui-row.layui-userdetails.layui-poll-con.layui-margin-bottom table tbody td:eq(10)"
           ],
-          "filters": ["query.text()"]
+          "filters": [ "query.text()" ]
         },
         "bonus": {
           "selector": [
             ".layui-row.layui-userdetails.layui-poll-con.layui-margin-bottom table tbody td:eq(8)"
           ],
-          "filters": ["query.html()"]
-        }
-      }
-    },
-    "userSeedingTorrents": {
-      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
-      "fields": {
-        "seedingSize": {
-          "selector": "",
-          "filters": [
-            "query.text().match(/总大小：(.*?)类型/g)",
-            "(query && query.length>0 ) ? query[0].replace('总大小：', '').replace('类型', '').trim() : 0",
-            "(query != 0) ? query.sizeToNumber() : 0"
-          ]
+          "filters": [ "query.html()" ]
         },
         "seeding": {
-          "selector": "",
-          "filters": [
-            "query.text().match(/(.*?)条记录/g)",
-            "(query && query.length>0 ) ? query[0].replace('条记录', '').trim() : 0",
-            "(query != 0) ? query : 0"
-          ]
+          "selector": [ "i.fas.fa-upload.text-success.fa-fw + span.list-info" ],
+          "filters": ["query.text().trim()"]
+        },
+        "seedingSize": {
+          "value": -1
         }
       }
     }
