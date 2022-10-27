@@ -20,25 +20,26 @@
           "table[title='Stopped'] > tbody > tr > td > div",
           "table[title='completed'] > tbody > tr > td > div"
         ],
-        "filters": ["query.attr('style')||''", "query.match(/width:.?(\\d.+)%/)", "(query && query.length>=2)?query[1]:null"]
+        "filters": [ "query.attr('style')||''", "query.match(/width:.?(\\d.+)%/)", "(query && query.length>=2)?query[1]:null" ]
       },
       "status": {
         "selector": [
           "table[title='downloading']",
           "table[title='seeding']",
-          "table[title='Stopped']",                         
+          "table[title='Stopped']",
           "table[title='completed']"
         ],
         "switchFilters": [
-          ["1"],
-          ["2"],
-          ["3"],
-          ["255"]
+          [ "1" ],
+          [ "2" ],
+          [ "3" ],
+          [ "255" ]
         ]
       }
     }
   },
-  "searchEntry": [{
+  "searchEntry": [
+    {
       "name": "全站",
       "enabled": true
     },
@@ -128,86 +129,96 @@
       "enabled": false
     }
   ],
-  "categories": [{
-    "entry": "torrents.php",
-    "result": "&cat$id$=1",
-    "category": [{
-        "id": 401,
-        "name": "Movies Blu-ray"
-      },
-      {
-        "id": 415,
-        "name": "Movies REMUX"
-      },
-      {
-        "id": 416,
-        "name": "Movies 3D"
-      },
-      {
-        "id": 410,
-        "name": "Movies 1080p"
-      },
-      {
-        "id": 411,
-        "name": "Movies 720p"
-      },
-      {
-        "id": 414,
-        "name": "Movies DVD"
-      },
-      {
-        "id": 412,
-        "name": "Movies WEB-DL"
-      },
-      {
-        "id": 413,
-        "name": "Movies HDTV"
-      },
-      {
-        "id": 417,
-        "name": "Movies iPad"
-      },
-      {
-        "id": 404,
-        "name": "Documentaries"
-      },
-      {
-        "id": 405,
-        "name": "Animations"
-      },
-      {
-        "id": 402,
-        "name": "TV Series"
-      },
-      {
-        "id": 403,
-        "name": "TV Shows"
-      },
-      {
-        "id": 406,
-        "name": "Music Videos"
-      },
-      {
-        "id": 407,
-        "name": "Sports"
-      },
-      {
-        "id": 409,
-        "name": "Misc"
-      },
-      {
-        "id": 408,
-        "name": "HQ Audio"
-      }
-    ]
-  }],
+  "categories": [
+    {
+      "entry": "torrents.php",
+      "result": "&cat$id$=1",
+      "category": [
+        {
+          "id": 401,
+          "name": "Movies Blu-ray"
+        },
+        {
+          "id": 415,
+          "name": "Movies REMUX"
+        },
+        {
+          "id": 416,
+          "name": "Movies 3D"
+        },
+        {
+          "id": 410,
+          "name": "Movies 1080p"
+        },
+        {
+          "id": 411,
+          "name": "Movies 720p"
+        },
+        {
+          "id": 414,
+          "name": "Movies DVD"
+        },
+        {
+          "id": 412,
+          "name": "Movies WEB-DL"
+        },
+        {
+          "id": 413,
+          "name": "Movies HDTV"
+        },
+        {
+          "id": 417,
+          "name": "Movies iPad"
+        },
+        {
+          "id": 404,
+          "name": "Documentaries"
+        },
+        {
+          "id": 405,
+          "name": "Animations"
+        },
+        {
+          "id": 402,
+          "name": "TV Series"
+        },
+        {
+          "id": 403,
+          "name": "TV Shows"
+        },
+        {
+          "id": 406,
+          "name": "Music Videos"
+        },
+        {
+          "id": 407,
+          "name": "Sports"
+        },
+        {
+          "id": 409,
+          "name": "Misc"
+        },
+        {
+          "id": 408,
+          "name": "HQ Audio"
+        }
+      ]
+    }
+  ],
+  "fieldSelector": {
+    "merge": true,
+    "title": {
+      "selector": [ "a.title:not(a[href*='comment']),a[onmouseover*='get_ext_info_ajax']" ],
+      "filters": [ "query.text()" ]
+    }
+  },
   "selectors": {
     "/details.php": {
       "merge": true,
       "fields": {
         "downloadURL": {
-          "selector": ["td.rowfollow:contains('&passkey='):last"],
-          "filters": ["query[0].childNodes[0].textContent"]
+          "selector": [ "td.rowfollow:contains('&passkey='):last" ],
+          "filters": [ "query[0].childNodes[0].textContent" ]
         }
       }
     }

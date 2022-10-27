@@ -187,6 +187,7 @@ export class User {
         })
         .catch((error: any) => {
           userInfo.lastUpdateStatus = EUserDataRequestStatus.unknown;
+          console.log("getInfos Error :",error);
           //this.updateStatus(site, userInfo);
           rejectFN(APP.createErrorMessage(error));
         });

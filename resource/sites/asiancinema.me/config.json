@@ -12,11 +12,11 @@
     "resultType": "html",
     "parseScriptFile": "/sites/asiancinema.me/getSearchResult.js",
     "resultSelector": "div.table-responsive > table:first",
-    "queryString": "search=$key$",
+    "queryString": "search=$key$&qty=100",
     "area": [{
       "name": "IMDB",
       "keyAutoMatch": "^(tt\\d+)$",
-      "queryString": "imdb=$key$",
+      "queryString": "imdb=$key$&qty=100",
       "replaceKey": [
         "tt", ""
       ]
