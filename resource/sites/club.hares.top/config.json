@@ -179,13 +179,18 @@
             ".layui-row.layui-userdetails.layui-poll-con.layui-margin-bottom table tbody td:eq(8)"
           ],
           "filters": [ "query.html()" ]
-        },
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?page=1&limit=50&uid=$user.id$&type=seeding",
+      "parser": "getUserSeedingTorrents.js",
+      "fields": {
         "seeding": {
-          "selector": [ "i.fas.fa-upload.text-success.fa-fw + span.list-info" ],
-          "filters": ["query.text().trim()"]
+          "selector": ["div"]
         },
         "seedingSize": {
-          "value": -1
+          "selector": ["div"]
         }
       }
     }
