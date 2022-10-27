@@ -45,7 +45,7 @@
 	  },
 	  "time":  {
 		"selector": [""],
-        "filters": ["query.attr('title')","dateTime(query).valueOf()?dateTime(query):query"]
+      "filters": [ "query.attr('title')", "dateTime(query).isValid() ? dateTime(query).valueOf() : dateTime(query.replace('下午','PM ').replace('上午','AM ').replace('日','').replaceAll(/年|月/g,'-'), 'YYYY-M-D A hh:mm:ss').format('YYYY-M-D HH:mm')" ]
 	  },
 	  "seeders":  {
 		"selector": ["span:contains('seeders')"],
@@ -119,10 +119,9 @@
           "selector": ["div.card-body.pt-4 >div.align-items-center div.text-muted"],
           "filters":  ["query.text().replace(/,|\\s|\\n/g,'')"]
         },
-        
-         "joinTime": {
+        "joinTime": {
           "selector": ["dt:contains('注册日期') + dd, dt:contains('Signup date') + dd, dt:contains('Data inregistrarii') + dd"],
-          "filters": ["dateTime(query.text()).valueOf()"]
+          "filters": [ "query.text()", "dateTime(query).isValid() ? dateTime(query).valueOf() : dateTime(query.replace('下午','PM ').replace('上午','AM ').replace('日','').replaceAll(/年|月/g,'-'), 'YYYY-M-D A hh:mm:ss').valueOf()" ]
         },
         "seedingSize": {
 	        "selector": ["dt:contains('奖励积分') + dd > b:nth-of-type(2)","dt:contains('Bonus points') + dd > b:nth-of-type(2)","dt:contains('Puncte bonus') + dd > b:nth-of-type(2)"],

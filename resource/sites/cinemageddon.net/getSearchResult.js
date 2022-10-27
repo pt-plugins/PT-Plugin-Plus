@@ -1,3 +1,15 @@
+if (!"".getQueryString) {
+  String.prototype.getQueryString = function(name, split) {
+    if (split == undefined) split = "&";
+    var reg = new RegExp(
+        "(^|" + split + "|\\?)" + name + "=([^" + split + "]*)(" + split + "|$)"
+      ),
+      r;
+    if ((r = this.match(reg))) return decodeURI(r[2]);
+    return null;
+  };
+}
+
 (function(options) {
   class Parser {
     constructor() {
@@ -26,7 +38,10 @@
       let results = [];
       // 获取种子列表行
       let rows = options.page.find(options.resultSelector);
-      if (rows.length == 0) {
+      const browsecheck = options.page
+        .find("a[href*='browse.php?page']:contains('-'):last")
+        .attr("href");
+      if (rows.length == 0 || browsecheck) {
         options.status = ESearchResultParseStatus.torrentTableIsEmpty; //`[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
         return results;
       }

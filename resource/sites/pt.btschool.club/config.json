@@ -4,26 +4,43 @@
   "description": "汇聚每一个人的影响力",
   "url": "https://pt.btschool.club/",
   "icon": "https://pt.btschool.club/favicon.ico",
-  "tags": ["影视", "综合"],
+  "tags": [ "影视", "综合" ],
   "schema": "NexusPHP",
   "host": "pt.btschool.club",
   "formerHosts": [
     "pt.btschool.net"
   ],
   "searchEntryConfig": {
-    "area": [{
-      "name": "IMDB",
-      "keyAutoMatch": "^(tt\\d+)$",
-      "appendQueryString": "&search_area=1"
-    }],
+    "area": [
+      {
+        "name": "IMDB",
+        "keyAutoMatch": "^(tt\\d+)$",
+        "appendQueryString": "&search_area=1"
+      }
+    ],
     "fieldSelector": {
       "progress": {
-        "selector": [".progress:eq(0) > div"],
-        "filters": ["query.attr('style')||''", "query.match(/width:([ \\d.]+)%/)", "(query && query.length>=2)?query[1]:null"]
+        "selector": [ ".progress:eq(0) > div" ],
+        "filters": [ "query.attr('style')||''", "query.match(/width:([ \\d.]+)%/)", "(query && query.length>=2)?query[1]:null" ]
       },
       "status": {
-        "selector": [".progress:eq(0) > div"],
-        "filters": ["query.attr('class')", "query=='progress_seeding'?2:(query=='progress_completed'?255:(query=='progress_no_downloading'?3:1))"]
+        "selector": [ ".progress:eq(0) > div" ],
+        "filters": [ "query.attr('class')", "query=='progress_seeding'?2:(query=='progress_completed'?255:(query=='progress_no_downloading'?3:1))" ]
+      }
+    }
+  },
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "seeding": {
+          "selector": [ "span.medium img.arrowup" ],
+          "filters": [ "$(query[0].nextSibling).text().trim().replace(/,/g,'')" ]
+        },
+        "seedingSize": {
+          "selector": [ "td.rowhead:contains('当前做种') + td", "td.rowhead:contains('目前做種') + td", "td.rowhead:contains('Current Seeding') + td" ],
+          "filters": [ "query.text().replace(/.*共计/g,'').replace(')','')", "query.sizeToNumber()" ]
+        }
       }
     }
   }

@@ -73,11 +73,17 @@
       }
     }
   },
-  "plugins": [{
+  "plugins": [
+    {
     "name": "保种和官方列表",
     "pages": ["/reseed.php", "/officialgroup.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
-  }],
+    },{
+      "name": "游戏种子详情页面",
+      "pages": ["/detailsgame.php"],
+      "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+    }
+  ],
   "mergeSchemaTagSelectors": true,
   "torrentTagSelectors": [{
     "name": "⛔️",
