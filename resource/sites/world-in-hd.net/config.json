@@ -11,6 +11,10 @@
     "name": "种子详情页面",
     "pages": ["/torrent/view/"],
     "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents"],
+    "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
   }],
   "searchEntryConfig": {
     "skipIMDbId": true,
