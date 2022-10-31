@@ -129,7 +129,7 @@
       "merge": true,
       "fields": {
         "messageCount": {
-          "selector": [".unread"],
+          "selector": [ ".unread" ],
           "filters": [
             "query.text().match(/(\\d+)/)",
             "(query && query.length>=2)?parseInt(query[1]):0"
@@ -182,23 +182,33 @@
         },
         "seeding": {
           "selector": [ "i.fas.fa-upload.text-success.fa-fw + span.list-info" ],
-          "filters": ["query.text().trim()"]
-        },
+          "filters": [ "query.text().trim()" ]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?page=1&limit=50&uid=$user.id$&type=seeding",
+      "dataType": "json",
+      "headers": {
+        "Accept": "application/json, text/javascript, */*; q=0.01"
+      },
+      "fields": {
         "seedingSize": {
-          "value": -1
+          "selector": [ "size" ],
+          "filters": [ "query.sizeToNumber()" ]
         }
       }
     }
   },
-  "plugins": [
-    {
-      "name": "官方列表",
-      "pages": ["/official.php"],
-      "scripts": [
-        "/schemas/NexusPHP/common.js",
-        "/schemas/NexusPHP/torrents.js"
-      ]
-    }
-  ],
-  "mergeSchemaTagSelectors": true
-}
+    "plugins": [
+      {
+        "name": "官方列表",
+        "pages": [ "/official.php" ],
+        "scripts": [
+          "/schemas/NexusPHP/common.js",
+          "/schemas/NexusPHP/torrents.js"
+        ]
+      }
+    ],
+    "mergeSchemaTagSelectors": true
+  }

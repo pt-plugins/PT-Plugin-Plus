@@ -26,7 +26,6 @@
   }],
   "searchEntryConfig": {
     "page": "torrents/browse?searchtext=$key$",
-    "skipIMDbId": true,
     "name": "全部",
     "resultType": "html",
     "resultSelector": "table.torrent_table",

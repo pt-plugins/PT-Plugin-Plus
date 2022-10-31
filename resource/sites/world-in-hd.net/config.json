@@ -1,0 +1,81 @@
+{
+  "name": "WiHD",
+  "timezoneOffset": "+0200",
+  "schema": "WiHD",
+  "url": "https://world-in-hd.net/",
+  "icon": "https://world-in-hd.net/media/cache/icon32/appicon.png",
+  "tags": ["影视"],
+  "host": "world-in-hd.net",
+  "collaborator": "luckiestone",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/torrent/view/"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents"],
+    "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
+  }],
+  "searchEntryConfig": {
+    "skipIMDbId": true,
+    "page": "/torrent/ajaxsearchtorrent/$key$",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "div.torrent-body"
+  },
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  },
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "div.fl-item"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "name": {
+          "selector": "span.username"
+        },
+        "bonus": {
+          "value": "N/A"
+        },
+        "messageCount": {
+          "selector": ["li.messages li.message", "li.notifications li.notification"],
+          "filters": ["(query && query.length>=1)?11:0"]
+        },
+        "seeding": {
+          "selector": ["i.fa-upload + strong"]
+        },
+        "seedingSize": {
+          "value": -1
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/profils/user/$user.name$",
+      "fields": {
+        "uploaded": {
+          "selector": ["div.stats a.btn:contains('Upload')"],
+          "filters": ["query.text().replace(/,/g,'').replace('o','B').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["div.stats a.btn:contains('Download')"],
+          "filters": ["query.text().replace(/,/g,'').replace('o','B').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+        },
+        "levelName": {
+          "selector": "span.class"
+        },
+        "joinTime": {
+          "selector": "div.user-block-content:first",
+          "filters": ["query.text().trim()", "dateTime(query,'DD\/MM\/YYYY').isValid()?dateTime(query,'DD\/MM\/YYYY').valueOf():query"]
+        }
+      }
+    }
+  }
+}
