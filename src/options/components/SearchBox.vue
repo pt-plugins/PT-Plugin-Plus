@@ -14,6 +14,7 @@
         @click.stop="showSelectBox"
         @click:clear="clearSearchKey"
         :loading="loadStatus"
+        enterkeyhint="search"
         v-on:keyup.enter="searchTorrent()"
       >
         <!-- 近期热门 -->

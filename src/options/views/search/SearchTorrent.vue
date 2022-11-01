@@ -300,6 +300,7 @@
               :label="$t('searchTorrent.filterSearchResults')"
               single-line
               hide-details
+              enterkeyhint="search"
             ></v-text-field>
           </div>
         </v-flex>
