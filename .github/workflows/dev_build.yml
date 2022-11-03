@@ -35,7 +35,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - uses: benjlevesque/short-sha@v1.2
+      - uses: benjlevesque/short-sha@v2.1
         id: short-sha
 
       - run: yarn release
