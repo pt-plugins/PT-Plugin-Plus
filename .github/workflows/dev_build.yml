@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
 
@@ -43,13 +43,13 @@ jobs:
           CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
 
       - name: Upload dev_build_zip
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: dev-build-${{ steps.short-sha.outputs.sha }}-zip
           path: releases/*.zip
 
       - name: Upload dev_build_crx
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: dev-build-${{ steps.short-sha.outputs.sha }}-crx
           path: releases/*.crx
