@@ -50,7 +50,7 @@
         //配置
         category: 0
       };
-      if(rows.eq(0).find(">td").length == 9) {
+      if(rows.eq(0).find("td[id*=codec]").length == 0) {
         fieldIndex = {time: 3,size: 4,seeders: 6,leechers: 7,completed: 5,name: 1,author: 8,category: 0};
       }
       if (site.url.substr(-1) == "/") {
