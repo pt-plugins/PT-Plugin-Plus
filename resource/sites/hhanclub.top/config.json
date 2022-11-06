@@ -1,0 +1,31 @@
+{
+  "name": "憨憨PT",
+  "schema": "NexusPHP",
+  "url": "https://hhanclub.top",
+  "description": "憨憨PT",
+  "icon": "https://hhanclub.top/favicon.ico",
+  "tags": ["影视", "综合"],
+  "host": "hhanclub.top",
+  "plugins": [
+    {
+      "name": "种子列表",
+      "pages": [
+        "/torrents.php",
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/NexusPHP/torrents.js"
+      ]
+    },
+    {
+      "name": "种子详情页面",
+      "pages": [
+        "/details.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/NexusPHP/details.js"
+      ]
+    }
+  ]
+}
