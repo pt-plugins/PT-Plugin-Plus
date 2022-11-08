@@ -63,6 +63,7 @@
           label="Search"
           single-line
           hide-details
+          enterkeyhint="search"
         ></v-text-field>
       </v-card-title>
 
