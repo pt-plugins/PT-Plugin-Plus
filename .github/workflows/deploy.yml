@@ -1,0 +1,24 @@
+name: Publish to Chrome Web Store
+# 创建新 release 时自动发布到 Chrome Web Store
+on:
+  release:
+    types:
+      - created
+jobs:
+  publish:
+    name: Checkout & Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Deploy
+        uses: borales/actions-yarn@master
+        env:
+          CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+          CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+        with:
+          cmd: deploy
