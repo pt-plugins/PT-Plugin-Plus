@@ -70,7 +70,7 @@
         }
 
         // 大小
-        if (cell.find("i.fa-database").length) {
+        if (cell.attr('class').indexOf("torrent-listings-size") > -1 || cell.find("i.fa-database").length) {
           fieldIndex.size = index;
           continue;
         }
