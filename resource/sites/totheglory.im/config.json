@@ -220,6 +220,15 @@
         }
       }
     },
+    "bonusExtendInfo": {
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["td.rowhead:contains('总计') + td"],
+          "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
+        }
+      }
+    },
     "common": {
       "fields": {
         "size": {

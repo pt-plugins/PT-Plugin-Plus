@@ -126,6 +126,15 @@
     }
   ],
   "selectors": {
+    "bonusExtendInfo": {
+      "page": "/mybonus_new.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["table.mainouter table td:contains('合计每小时魔力') + td", "table.mainouter table td:contains('合计每小时魔力') + td"],
+          "filters": ["parseFloat(query.text())"]
+        }
+      }
+    },
     "userSeedingTorrents": {
       "page": "/userdetails.php?id=$user.id$",
       "merge": true,

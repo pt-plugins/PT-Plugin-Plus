@@ -533,6 +533,10 @@ export interface UserInfo {
   bonus?: number;
   // 保种积分         //add by koal 220920
   bonus2?: number;
+  // 时魔
+  bonusPerHour?: number;
+  // 积分页面
+  bonusPage?: string;
   // 入站时间
   joinTime?: number;
   // 最后更新时间

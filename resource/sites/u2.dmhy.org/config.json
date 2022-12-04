@@ -210,6 +210,15 @@
         }
       }
     },
+    "bonusExtendInfo": {
+      "page": "/mprecent.php?user=$user.id$",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["td.rowfollow:eq(1)"],
+          "filters": ["parseFloat(query.text())"]
+        }
+      }
+    },
     "/details.php": {
       "merge": true,
       "fields": {
