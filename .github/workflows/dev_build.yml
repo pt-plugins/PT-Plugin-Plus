@@ -41,7 +41,7 @@ jobs:
       - run: yarn release
         env:
           CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
-
+        continue-on-error: true
       - name: Upload dev_build_zip
         uses: actions/upload-artifact@v3
         with:
