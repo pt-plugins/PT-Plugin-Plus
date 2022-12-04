@@ -9,8 +9,8 @@
   "displayName": "PT 助手 Plus",
   "homepage": "https://github.com/ronggang/PT-Plugin-Plus",
   "scripts": {
-    "serve": "vue-cli-service serve --mode=test",
-    "build": "yarn build:index && yarn build:background && yarn build:content && yarn resource",
+    "serve": "set NODE_OPTIONS=--openssl-legacy-provider & vue-cli-service serve --mode=test",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider & yarn build:index && yarn build:background && yarn build:content && yarn resource",
     "lint": "vue-cli-service lint",
     "background": "webpack --config webpack/prod-background.js && webpack --config webpack/prod-content.js",
     "dev": "yarn dev:index && yarn dev:background && yarn dev:content && yarn resource",
