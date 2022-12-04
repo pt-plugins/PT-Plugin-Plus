@@ -531,6 +531,8 @@ export interface UserInfo {
   levelName?: string;
   // 魔力值/积分
   bonus?: number;
+  // 保种积分         //add by koal 220920
+  bonus2?: number;
   // 入站时间
   joinTime?: number;
   // 最后更新时间
