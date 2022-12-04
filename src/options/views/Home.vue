@@ -128,7 +128,19 @@
           <td class="number">{{ props.item.user.ratio | formatRatio }}</td>
           <td class="number">{{ props.item.user.seeding }}</td>
           <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>
-          <td class="number">{{ props.item.user.bonus | formatNumber }}</td>
+          <td class="number">
+            <template v-if="props.item.schema === 'NexusPHP' && props.item.user.bonus2">                
+              <div>
+                魔力：{{ props.item.user.bonus | formatNumber }}
+              </div>
+              <div>
+                积分：{{ props.item.user.bonus2 | formatNumber }}
+              </div>
+            </template>
+            <template v-else>
+              {{ props.item.user.bonus | formatNumber }}
+            </template>
+          </td>
           <td
             class="number"
             :title="props.item.user.joinDateTime"

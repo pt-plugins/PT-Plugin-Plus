@@ -152,6 +152,7 @@ import FileSaver from "file-saver";
 import domtoimage from 'dom-to-image';
 import Extension from "@/service/extension";
 import dayjs from "dayjs";
+import { PPF } from "@/service/public";
 
 const extension = new Extension();
 
@@ -253,6 +254,8 @@ export default Vue.extend({
  
         let user = site.user;
         if (user && user.name && user.joinTime) {
+          user.joinTime = PPF.transformTime(user.joinTime, site.timezoneOffset);  //add by pxwang for gpw jointime error
+          
           sites.push(site);
           if (!userNames[user.name]) {
             userNames[user.name] = 0;

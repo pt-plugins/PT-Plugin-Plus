@@ -14,6 +14,22 @@
   "schema": "NexusPHP",
   "host": "audiences.me",
   "collaborator": "Audiences",
+  "selectors": {
+    "userExtendInfo": {
+        "page": "/userdetails.php?id=$user.id$",
+        "merge": true,
+        "fields": {
+          "bonus2": {
+            "selector": ["td.rowhead:contains('做种积分') + td"],
+            "filters": [
+              "query.text().match(/(.*?)本月：/g)",
+              "(query && query.length>0) ? query[0].replace('（本月：', '').trim() : 0",
+              "(query != 0) ? parseFloat(query) : 0"
+          ]
+          }
+        }
+    }
+  },
   "searchEntryConfig": {
     "fieldSelector": {
       "progress": {
