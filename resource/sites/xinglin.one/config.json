@@ -1,18 +1,21 @@
 {
-  "name": "1PTBar",
+  "name": "杏林",
   "schema": "NexusPHP",
-  "url": "https://1ptba.com/",
-  "description": "壹PT吧,PT下载,教育视频,课件资源,发布教育类,学习类,纪录片等资源",
-  "icon": "https://1ptba.com/kuai360/favicon.ico",
-  "tags": ["影视", "综合"],
-  "host": "1ptba.com",
+  "url": "https://xinglin.one/",
+  "description": "杏林 - 积少成多，聚沙成塔。",
+  "icon": "https://xinglin.one/favicon.ico",
+  "tags": [
+    "医学"
+  ],
+  "host": "xinglin.one",
+  "collaborator": "koal",
   "selectors": {
     "userExtendInfo": {
         "page": "/userdetails.php?id=$user.id$",
         "merge": true,
         "fields": {
           "bonus2": {
-            "selector": ["td.rowhead:contains('Seed points') + td"],
+            "selector": ["td.rowhead:contains('做种积分') + td"],
             "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
           }
         }
