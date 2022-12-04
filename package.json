@@ -30,7 +30,8 @@
     "deploy": "yarn build && yarn deploy:chrome"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "^5.45.0",
+    "@typescript-eslint/eslint-plugin": "^4.4.0",
+    "@typescript-eslint/parser": "^4.4.0",
     "archiver": "^5.3.1",
     "basiccontext": "^3.5.1",
     "blueimp-md5": "^2.19.0",
@@ -75,7 +76,7 @@
     "@vue/cli-plugin-eslint": "^3.0.5",
     "@vue/cli-plugin-typescript": "^3.2.0",
     "@vue/cli-service": "^3.0.5",
-    "@vue/eslint-config-typescript": "^4.0.0",
+    "@vue/eslint-config-typescript": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "copy-webpack-plugin": "^4.6.0",
     "crx": "^5.0.1",
