@@ -30,6 +30,7 @@
     "deploy": "yarn build && yarn deploy:chrome"
   },
   "dependencies": {
+    "@typescript-eslint/parser": "^5.45.0",
     "archiver": "^5.3.1",
     "basiccontext": "^3.5.1",
     "blueimp-md5": "^2.19.0",
@@ -112,7 +113,7 @@
       "no-console": 0
     },
     "parserOptions": {
-      "parser": "typescript-eslint-parser"
+      "parser": "@typescript-eslint/parser"
     }
   },
   "postcss": {
