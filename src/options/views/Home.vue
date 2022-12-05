@@ -141,6 +141,7 @@
               {{ props.item.user.bonus | formatNumber }}
             </template>
           </td>
+          <td class="number">{{ props.item.user.bonusPerHour | formatNumber }}</td>
           <td
             class="number"
             :title="props.item.user.joinDateTime"
@@ -526,6 +527,11 @@ export default Vue.extend({
         },
         {
           text: this.$t("home.headers.bonus"),
+          align: "right",
+          value: "user.bonus"
+        },
+        {
+          text: this.$t("home.headers.bonusPerHour"),
           align: "right",
           value: "user.bonus"
         },

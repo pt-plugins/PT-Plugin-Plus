@@ -141,6 +141,10 @@
           "selector": ["td.rowhead:contains('魔力值') + td, td.rowhead:contains('Karma Points') + td"],
           "filters": ["query.text().replace(/,/g,'').match(/魔力值:.+?([\\d.]+)/)[1]", "parseFloat(query)"]
         },
+        "bonusPerHour": {
+          "selector": ["td.rowhead:contains('魔力值') + td, td.rowhead:contains('Karma Points') + td"],
+          "filters": ["query.text().replaceAll(',','').match(/[\\d.]+/g)", "(query && query.length==4)? parseFloat(query[2])+parseFloat(query)[4] : parseFloat(query[2])"]
+        },
         "seedingSize": {
           "selector": ["td.rowhead:contains('当前做种') + td, td.rowhead:contains('Current Seeding') + td, td.rowhead:contains('目前做種') + td"],
           "filters": ["query.text().trim().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]

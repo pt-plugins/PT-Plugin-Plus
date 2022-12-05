@@ -183,6 +183,7 @@
         "seeding": "做种数",
         "seedingSize": "做种体积",
         "bonus": "魔力值/积分",
+        "bonusPerHour": "时魔",
         "joinTime": "入站时间",
         "lastUpdateTime": "数据更新于",
         "status": "状态"
