@@ -9,16 +9,6 @@
     "host": "pt.0ff.cc",
     "collaborator": "koal",
     "selectors": {
-        "userExtendInfo": {
-            "page": "/userdetails.php?id=$user.id$",
-            "merge": true,
-            "fields": {
-              "bonus2": {
-                "selector": ["td.rowhead:contains('做种积分') + td"],
-                "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
-              }
-            }
-        },
         "userSeedingTorrents": {
             "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
             "fields": {

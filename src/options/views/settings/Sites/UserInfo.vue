@@ -118,6 +118,11 @@ export default Vue.extend({
           value: "bonus"
         },
         {
+          text: this.$t("home.headers.bonusPerHour"),
+          align: "right",
+          value: "bonusPerHour"
+        },
+        {
           text: this.$t("settings.sites.index.headers.action"),
           value: "name",
           sortable: false,

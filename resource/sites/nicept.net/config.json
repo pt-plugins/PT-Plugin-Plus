@@ -10,37 +10,27 @@
   "schema": "NexusPHP",
   "host": "www.nicept.net",
   "selectors": {
-    "userExtendInfo": {
-        "page": "/userdetails.php?id=$user.id$",
-        "merge": true,
+    "userSeedingTorrents": {
+        "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
         "fields": {
-          "bonus2": {
-            "selector": ["td.rowhead:contains('做種積分') + td"],
-            "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
-          }
+            "seeding": {
+                "selector": [
+                    "b:first"
+                ],
+                "filters": [
+                    "query.text()"
+                ]
+            },
+            "seedingSize": {
+                "selector": "",
+                "filters": [
+                    "query.text().match(/總大小：(.*?)上一頁/g)",
+                    "(query && query.length>0) ? query[0].replace('總大小：', '').replace('<< 上一頁', '').trim() : 0",
+                    "(query != 0) ? query.sizeToNumber() : 0"
+                ]
+            }
         }
-    },
-      "userSeedingTorrents": {
-          "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
-          "fields": {
-              "seeding": {
-                  "selector": [
-                      "b:first"
-                  ],
-                  "filters": [
-                      "query.text()"
-                  ]
-              },
-              "seedingSize": {
-                  "selector": "",
-                  "filters": [
-                      "query.text().match(/總大小：(.*?)上一頁/g)",
-                      "(query && query.length>0) ? query[0].replace('總大小：', '').replace('<< 上一頁', '').trim() : 0",
-                      "(query != 0) ? query.sizeToNumber() : 0"
-                  ]
-              }
-          }
-      }
+    }
   },
   "collaborator": "DXV5",
   "searchEntry": [{

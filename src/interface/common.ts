@@ -532,7 +532,7 @@ export interface UserInfo {
   // 魔力值/积分
   bonus?: number;
   // 保种积分         //add by koal 220920
-  bonus2?: number;
+  seedingPoints?: number;
   // 时魔
   bonusPerHour?: number;
   // 积分页面
