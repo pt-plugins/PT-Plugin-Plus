@@ -43,6 +43,9 @@
         },
         "levelName": {
           "selector": ["response.userstats.class"]
+        },
+        "bonusPerHour": {
+          "selector": ["response.userstats.bonusPointsPerHour", "response.userstats.seedingBonusPointsPerHour"]
         }
       }
     },
