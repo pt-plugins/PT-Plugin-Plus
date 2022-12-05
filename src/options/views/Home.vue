@@ -129,12 +129,12 @@
           <td class="number">{{ props.item.user.seeding }}</td>
           <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>
           <td class="number">
-            <template v-if="props.item.schema === 'NexusPHP' && props.item.user.bonus2">                
+            <template v-if="props.item.user.seedingPoints">                
               <div>
                 魔力：{{ props.item.user.bonus | formatNumber }}
               </div>
               <div>
-                积分：{{ props.item.user.bonus2 | formatNumber }}
+                积分：{{ props.item.user.seedingPoints | formatNumber }}
               </div>
             </template>
             <template v-else>
@@ -533,7 +533,7 @@ export default Vue.extend({
         {
           text: this.$t("home.headers.bonusPerHour"),
           align: "right",
-          value: "user.bonus"
+          value: "user.bonusPerHour"
         },
         {
           text: this.$t("home.headers.joinTime"),

@@ -40,14 +40,6 @@
         "seedingSize": {
           "selector": [ "td.rowhead:contains('当前做种') + td", "td.rowhead:contains('目前做種') + td", "td.rowhead:contains('Current Seeding') + td" ],
           "filters": [ "query.text().replace(/.*共计/g,'').replace(')','')", "query.sizeToNumber()" ]
-        },
-        "bonus2": {
-          "selector": ["td.rowhead:contains('传输') + td"],
-          "filters": [
-            "query.text().match(/做种积分:(.*?)注:做种积分/g)",
-            "(query && query.length>0) ? query[0].replace('做种积分:', '').replace('(注:做种积分', '').trim() : 0",
-            "(query != 0) ? parseFloat(query) : 0"
-        ]
         }
       }
     }

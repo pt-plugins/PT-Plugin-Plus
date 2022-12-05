@@ -117,18 +117,6 @@
     "name": "50%",
     "selector": "img.pro_50pctdown"
   }],
-  "selectors": {
-      "userExtendInfo": {
-          "page": "/userdetails.php?id=$user.id$",
-          "merge": true,
-          "fields": {
-            "bonus2": {
-              "selector": ["td.rowhead:contains('传输') + td", "td.rowhead:contains('傳送') + td", "td.rowhead:contains('Transfers') + td", "td.rowfollow:contains('分享率')"],
-              "filters": ["query.text().replace(/,/g,'').match(/(做种积分).+?([\\d.]+)/)", "(query && query.length==3)? query[2]:0",  "(query != 0) ? parseFloat(query) : 0"]
-            }
-          }
-      }
-  },
   "searchEntryConfig": {
 	"merge": true,
     "fieldSelector": {

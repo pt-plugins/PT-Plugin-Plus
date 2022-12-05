@@ -186,6 +186,7 @@
         "seeding": "Seeding",
         "seedingSize": "Seeding size",
         "bonus": "Bonus",
+        "seedingPoints": "Seeding Points",
         "bonusPerHour": "Bonus per hour",
         "joinTime": "Join time",
         "lastUpdateTime": "Update at",

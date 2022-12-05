@@ -100,6 +100,13 @@
           "selector": ["td.rowhead:contains('魔力') + td", "td.rowhead:contains('Karma'):contains('Points') + td", "td.rowhead:contains('麦粒') + td", "td.rowfollow:contains('魔力值')", "td.rowhead:contains('bonus') + td"],
           "filters": ["query.is(\":contains('魔力值:')\")?query.text().replace(/,/g,'').match(/魔力值.+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')", "parseFloat(query)"]
         },
+        "seedingPoints": {
+          "selector": ["td.rowhead:contains('做种积分') + td", "td.rowhead:contains('Seeding Points') + td", "td.rowhead:contains('做種積分') + td", "td.rowhead:contains('保种积分') + td", "td.rowfollow:contains('做种积分')", "td.rowfollow:contains('Seeding Points')", "td.rowfollow:contains('做種積分')"],
+          "filters": [
+            "query.text().replace(/,/g,'')",
+            "query.includes('做种积分') || query.includes('做種積分') || query.includes('Seeding Points') ? query.match(/(做种积分|做種積分|Seeding Points).+?[\\d.]+/g)[0] : query",
+            "query ? parseFloat(query.match(/[\\d.]+/)[0]) : null"]
+        },
         "joinTime": {
           "selector": ["td.rowhead:contains('加入日期')", "td.rowhead:contains('Join'):contains('date')"],
           "filters": ["query.next().text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
