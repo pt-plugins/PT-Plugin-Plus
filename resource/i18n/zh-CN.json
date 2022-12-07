@@ -162,6 +162,7 @@
       "siteName": "网站名称",
       "userName": "用户名称",
       "userLevel": "用户等级",
+      "levelRequirements": "等级要求",
       "week": "时间显示为周数",
       "timeline": "时间轴",
       "settings": "参数",
@@ -187,7 +188,9 @@
         "bonusPerHour": "时魔",
         "joinTime": "入站时间",
         "lastUpdateTime": "数据更新于",
-        "status": "状态"
+        "status": "状态",
+        "uploads": "发布",
+        "trueDownloaded": "真实下载"
       },
       "tip": "N/A 表示暂不支持",
       "nodata": "您还没有添加站点，请前往『站点设置』添加站点。"

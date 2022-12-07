@@ -279,15 +279,17 @@ export interface LevelRequirement {
   // 日期要求
   requiredDate?: string;
   // 上传数要求
-  upload?: number;
+  uploads?: number;
   // 上传量要求
   uploaded?: string | number;
   // 下载量要求
   downloaded?: string | number;
+  // 真实下载量
+  trueDownloaded?: string | number;
   // 积分要求
   bonus?: number;
   // 做种积分要求
-  seedingPoints?:number;
+  seedingPoints?: number;
   // 保种体积要求
   seedingSize?: number;
   // 分享率要求
@@ -542,8 +544,12 @@ export interface UserInfo {
   name: string;
   // 上传量
   uploaded?: number;
+  // 发布数
+  uploads?: number;
   // 下载量
   downloaded?: number;
+  // 真实下载量
+  trueDownloaded?: string | number;
   // 分享率
   ratio?: number;
   // 当前做种数量

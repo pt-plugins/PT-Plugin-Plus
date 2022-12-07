@@ -165,6 +165,7 @@
       "siteName": "Site name",
       "userName": "User name",
       "userLevel": "User level",
+      "levelRequirements": "Level requirements",
       "week": "Expressed in weeks",
       "timeline": "Time line",
       "settings": "Settings",
@@ -191,7 +192,9 @@
         "joinTime": "Join time",
         "lastUpdateTime": "Update at",
         "status": "Status",
-        "comments": "Comments"
+        "comments": "Comments",
+        "uploads": "Uploaded",
+        "trueDownloaded": "True Downloaded"
       },
       "tip": "N/A means no support",
       "nodata": "You have not added a site, please go to [Sites] to add a site."
