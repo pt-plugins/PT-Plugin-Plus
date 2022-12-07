@@ -181,8 +181,8 @@ if (!"".getQueryString) {
             let result = row.find(item.selector);
             if (result.length) {
               tags.push({
-                name: item.name,
-                color: item.color
+                name: "Free",
+                color: "blue"
               });
               return true;
             }
