@@ -267,6 +267,33 @@ export interface Site {
   mergeSchemaTagSelectors?: boolean;
   // 消息提醒开关
   disableMessageCount?: boolean;
+  // 等级要求
+  levelRequirements?: LevelRequirement[];
+}
+
+export interface LevelRequirement {
+  level?: number;
+  name?: string;
+  // 间隔要求
+  interval?: number;
+  // 日期要求
+  requiredDate?: string;
+  // 上传数要求
+  upload?: number;
+  // 上传量要求
+  uploaded?: string | number;
+  // 下载量要求
+  downloaded?: string | number;
+  // 积分要求
+  bonus?: number;
+  // 做种积分要求
+  seedingPoints?:number;
+  // 保种体积要求
+  seedingSize?: number;
+  // 分享率要求
+  ratio?: number;
+  // 权限
+  privilege?: string;
 }
 
 export interface Request {
@@ -555,6 +582,8 @@ export interface UserInfo {
   lastErrorMsg?: string;
   // 消息数量
   messageCount?: number;
+  // 下一等级
+  nextLevel?: LevelRequirement;
   [key: string]: any;
 }
 

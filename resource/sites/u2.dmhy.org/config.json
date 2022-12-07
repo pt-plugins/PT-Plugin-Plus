@@ -10,6 +10,63 @@
   ],
   "schema": "NexusPHP",
   "host": "u2.dmhy.org",
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "御宅族",
+    "interval": "4",
+    "downloaded": "50GB",
+    "ratio": "1.05",
+    "privilege": "查看会员列表; 请求补种; 查看普通日志; 使用流量信息条"
+  },{
+    "level": "2", 
+    "name": "宅修士",
+    "interval": "8",
+    "downloaded": "120GB",
+    "ratio": "1.55",
+    "privilege": "无"
+  },{
+    "level": "3", 
+    "name": "宅教士",
+    "interval": "15",
+    "downloaded": "300GB",
+    "ratio": "2.55",
+    "privilege": "无"
+  },{
+    "level": "4", 
+    "name": "宅传教士",
+    "interval": "25",
+    "downloaded": "500GB",
+    "ratio": "2.55",
+    "privilege": "无"
+  },{
+    "level": "5", 
+    "name": "宅护法",
+    "interval": "40",
+    "downloaded": "750GB",
+    "ratio": "3.05",
+    "privilege": "使用邀请名额; 无可用邀请时，购买邀请"
+  },{
+    "level": "6", 
+    "name": "宅贤者",
+    "interval": "60",
+    "downloaded": "1024GB",
+    "ratio": "3.55",
+    "privilege": "无"
+  },{
+    "level": "7", 
+    "name": "宅圣",
+    "interval": "80",
+    "downloaded": "1536GB",
+    "ratio": "4.05",
+    "privilege": "账号封存后永久保留."
+  },{
+    "level": "8", 
+    "name": "宅神",
+    "interval": "100",
+    "downloaded": "3072GB",
+    "ratio": "4.55",
+    "privilege": "账号永久保留"
+  }],
   "searchEntryConfig": {
     "merge": true,
     "skipIMDbId": true,
