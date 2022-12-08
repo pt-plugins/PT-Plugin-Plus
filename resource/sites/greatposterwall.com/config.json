@@ -104,7 +104,7 @@
       "fields": {
         "uploads": {
           "selector": ["#upload-count-value"],
-          "filters" : ["query.text().replace(/,/g,'').match(/[\\d.]+/)[0]"]
+          "filters" : ["query.text().replace(/,/g,'').match(/[\\d.]+/)", "query ? parseFloat(query[0]): 0"]
         },
         "trueDownloaded": {
           "selector": ["#downloaded-value"],

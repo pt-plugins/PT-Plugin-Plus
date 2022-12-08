@@ -192,10 +192,10 @@ export default Vue.extend({
       shareTime: new Date(),
       shareing: false,
       showUserName: true,
-      showSiteName: true,
+      showSiteName: false,
       showUserLevel: true,
       showUid: true,
-      blurSiteIcon: false,
+      blurSiteIcon: true,
       iconCache: {} as Dictionary<any>
     };
   },

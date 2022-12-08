@@ -192,6 +192,24 @@
         "uploads": "发布",
         "trueDownloaded": "真实下载"
       },
+      "levelRequirement": {
+        "date": "日期",
+        "site": "站点",
+        "userName": "用户名",
+        "levelName": "等级",
+        "activitiyData": "数据量",
+        "ratio": "分享率",
+        "seeding": "做种数",
+        "seedingSize": "做种体积",
+        "bonus": "魔力值",
+        "seedingPoints": "做种积分",
+        "bonusPerHour": "时魔",
+        "joinTime": "入站时间",
+        "lastUpdateTime": "数据更新于",
+        "status": "状态",
+        "uploads": "发布",
+        "trueDownloaded": "真实下载"
+      },
       "tip": "N/A 表示暂不支持",
       "nodata": "您还没有添加站点，请前往『站点设置』添加站点。"
     },
