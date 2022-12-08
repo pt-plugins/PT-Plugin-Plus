@@ -53,14 +53,14 @@
     "level": "7", 
     "name": "Ultimate User",
     "interval": "40",
-    "downloaded": "1536 ",
+    "downloaded": "1536GB",
     "ratio": "4.05",
     "privilege": "无"
   },{
     "level": "8", 
     "name": "Nexus Master",
     "interval": "150",
-    "downloaded": "45TB",
+    "downloaded": "3072GB",
     "ratio": "4.55",
     "privilege": "永远保留账号"
   }],
