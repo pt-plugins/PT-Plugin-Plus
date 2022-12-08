@@ -86,7 +86,7 @@
           "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+/)", "(query && query.length>=1)?parseFloat(query[0]):0"]
         },
         "bonusPage": {
-          "selector": ["a[href*='bonus']:first"],
+          "selector": ["a[href$='bonus']:first","a[href$='bonus/earnings']:first"],
           "filters": ["new URL(query.attr('href')).pathname"]
         }
       }
