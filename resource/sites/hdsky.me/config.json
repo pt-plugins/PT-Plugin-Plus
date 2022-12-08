@@ -11,6 +11,63 @@
   ],
   "schema": "NexusPHP",
   "host": "hdsky.me",
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "Power User",
+    "interval": "5",
+    "downloaded": "200GB",
+    "ratio": "2.0",
+    "privilege": "NFO文档；请求续种；查看其它用户的种子历史；删除自己上传的字幕"
+  },{
+    "level": "2", 
+    "name": "Elite User",
+    "interval": "10",
+    "downloaded": "500GB",
+    "ratio": "2.5",
+    "privilege": "无"
+  },{
+    "level": "3", 
+    "name": "Crazy User",
+    "interval": "15",
+    "downloaded": "1TB",
+    "ratio": "3.0",
+    "privilege": "在做种/下载/发布的时候选择匿名模式"
+  },{
+    "level": "4", 
+    "name": "Insane User",
+    "interval": "20",
+    "downloaded": "2TB",
+    "ratio": "3.5",
+    "privilege": "查看普通日志"
+  },{
+    "level": "5", 
+    "name": "Veteran User",
+    "interval": "25",
+    "downloaded": "4TB",
+    "ratio": "4.0",
+    "privilege": "封存账号后不会被删除；查看其它用户的评论、帖子历史"
+  },{
+    "level": "6", 
+    "name": "Extreme User",
+    "interval": "30",
+    "downloaded": "6TB",
+    "ratio": "4.5",
+    "privilege": "更新过期的外部信息；查看Extreme User论坛"
+  },{
+    "level": "7", 
+    "name": "Ultimate User",
+    "interval": "45",
+    "downloaded": "10TB",
+    "ratio": "5.0",
+    "privilege": "永远保留账号"
+  },{
+    "level": "8", 
+    "name": "Nexus Master",
+    "interval": "65",
+    "downloaded": "10TB",
+    "ratio": "5.5",
+    "privilege": "直接发布种子；可以查看排行榜；在网站开放邀请期间发送邀请"
+  }],
   "searchEntry": [{
       "name": "全部",
       "enabled": true

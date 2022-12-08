@@ -10,6 +10,71 @@
   "formerHosts": [
     "pt.btschool.net"
   ],
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "Power User",
+    "interval": "4",
+    "downloaded": "50GB",
+    "ratio": "2.0",
+    "seedingPoints": "40000",
+    "privilege": "一个邀请名额；查看NFO文档；查看用户列表；请求续种；查看其它用户的种子历史； 删除自己上传的字幕。"
+  },{
+    "level": "2", 
+    "name": "Elite User",
+    "interval": "8",
+    "downloaded": "100GB",
+    "ratio": "2.5",
+    "seedingPoints": "80000",
+    "privilege": "直接发布种子； 查看排行榜"
+  },{
+    "level": "3", 
+    "name": "Crazy User",
+    "interval": "15",
+    "downloaded": "300GB",
+    "ratio": "3.0",
+    "seedingPoints": "150000",
+    "privilege": "两个邀请名额；在做种/下载/发布的时候选择匿名模式"
+  },{
+    "level": "4", 
+    "name": "Insane User",
+    "interval": "25",
+    "downloaded": "500GB",
+    "ratio": "3.5",
+    "seedingPoints": "250000",
+    "privilege": "查看普通日志"
+  },{
+    "level": "5", 
+    "name": "Veteran User",
+    "interval": "40",
+    "downloaded": "1TB",
+    "ratio": "4.0",
+    "seedingPoints": "400000",
+    "privilege": "三个邀请名额；查看其它用户的评论、帖子历史；封存账号后不会被删除"
+  },{
+    "level": "6", 
+    "name": "Extreme User",
+    "interval": "60",
+    "downloaded": "2TB",
+    "ratio": "4.5",
+    "seedingPoints": "600000",
+    "privilege": "更新过期的外部信息；查看Extreme User论坛；永远保留账号"
+  },{
+    "level": "7", 
+    "name": "Ultimate User",
+    "interval": "80",
+    "downloaded": "5TB",
+    "ratio": "5.0",
+    "seedingPoints": "800000",
+    "privilege": "五个邀请名额"
+  },{
+    "level": "8", 
+    "name": "Nexus Master",
+    "interval": "100",
+    "downloaded": "10TB",
+    "ratio": "5.5",
+    "seedingPoints": "1000000",
+    "privilege": "十个邀请名额；发送邀请"
+  }],
   "searchEntryConfig": {
     "area": [
       {

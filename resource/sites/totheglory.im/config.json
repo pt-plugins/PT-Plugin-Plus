@@ -20,6 +20,84 @@
     "scripts": ["/schemas/NexusPHP/common.js", "bookmarks.js"]
   }],
   "host": "totheglory.im",
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "KiloByte",
+    "interval": "5",
+    "downloaded": "60GB",
+    "ratio": "1.1",
+    "privilege": "可申请种子候选"
+  },{
+    "level": "2", 
+    "name": "MegaByte",
+    "interval": "8",
+    "downloaded": "150GB",
+    "ratio": "2.0",
+    "privilege": "无"
+  },{
+    "level": "3", 
+    "name": "GigaByte",
+    "interval": "8",
+    "downloaded": "250GB",
+    "ratio": "2.0",
+    "privilege": "可挂起，可进入积分商城"
+  },{
+    "level": "4", 
+    "name": "TeraByte",
+    "interval": "8",
+    "downloaded": "500GB",
+    "ratio": "2.5",
+    "privilege": "可用积分购买邀请，并可浏览全站（新加游戏分类页），可以访问邀请区"
+  },{
+    "level": "5", 
+    "name": "PetaByte",
+    "interval": "15",
+    "downloaded": "750GB",
+    "ratio": "2.5",
+    "privilege": "可直接发布种子"
+  },{
+    "level": "6", 
+    "name": "ExaByte",
+    "interval": "24",
+    "downloaded": "1TB",
+    "ratio": "3.0",
+    "privilege": "自行挂起账号后不会被清除"
+  },{
+    "level": "7", 
+    "name": "ZettaByte",
+    "interval": "24",
+    "downloaded": "1.5TB",
+    "ratio": "3.5",
+    "privilege": "无"
+  },{
+    "level": "8", 
+    "name": "YottaByte",
+    "interval": "24",
+    "downloaded": "2.5TB",
+    "ratio": "4.0",
+    "privilege": "可查看排行榜"
+  },{
+    "level": "9", 
+    "name": "BrontoByte",
+    "interval": "32",
+    "downloaded": "3.5TB",
+    "ratio": "5.0",
+    "privilege": "永远保留账号"
+  },{
+    "level": "10", 
+    "name": "NonaByte",
+    "interval": "48",
+    "downloaded": "50TB",
+    "ratio": "6.0",
+    "privilege": "无"
+  },{
+    "level": "11", 
+    "name": "DoggaByte",
+    "interval": "48",
+    "downloaded": "100TB",
+    "ratio": "6.0",
+    "privilege": "无"
+  }],
   "searchEntryConfig": {
     "page": "/browse.php",
     "queryString": "search_field=$key$",

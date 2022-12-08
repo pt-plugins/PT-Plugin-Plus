@@ -7,6 +7,37 @@
   "tags": ["综合"],
   "schema": "UNIT3D",
   "host": "asiancinema.me",
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "Power User",
+    "interval": "1",
+    "uploaded": "1TB",
+    "privilege": ""
+  },{
+    "level": "2", 
+    "name": "Super User",
+    "interval": "2",
+    "uploaded": "5TB",
+    "privilege": ""
+  },{
+    "level": "3", 
+    "name": "Extreme User",
+    "interval": "3",
+    "uploaded": "20TB",
+    "privilege": ""
+  },{
+    "level": "4", 
+    "name": "Insane User",
+    "interval": "6",
+    "uploaded": "50TB",
+    "privilege": ""
+  },{
+    "level": "5", 
+    "name": "Veteran",
+    "interval": "12",
+    "uploaded": "100TB",
+    "privilege": "Special freeleech"
+  }],
   "searchEntryConfig": {
     "page": "/torrents/filter",
     "resultType": "html",

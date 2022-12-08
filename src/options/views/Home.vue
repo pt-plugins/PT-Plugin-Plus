@@ -42,7 +42,12 @@
                 :label="$t('home.userLevel')"
                 @change="updateViewOptions"
               ></v-switch>
-
+              <v-switch
+                color="success"
+                v-model="showLevelRequirements"
+                :label="$t('home.levelRequirements')"
+                @change="updateViewOptions"
+              ></v-switch>
               <v-switch
                 color="success"
                 v-model="showWeek"
@@ -114,7 +119,49 @@
             </a>
           </td>
           <td>{{ showUserName ? props.item.user.name : "****" }}</td>
-          <td>{{ showUserLevel ? props.item.user.levelName : "****" }}</td>
+          <td>
+            {{ showUserLevel ? props.item.user.levelName : "****" }}
+            <template v-if="showLevelRequirements">
+              <template v-if="props.item.levelRequirements">
+                <template v-if="props.item.user.nextLevel.name">
+                  <br/>
+                  <span style="color:blue;">
+                    <template v-if="props.item.user.nextLevel.requiredDate">{{ props.item.user.nextLevel.requiredDate }}&nbsp;</template>
+                  </span>
+                  <span style="color:red;">
+                    <template v-if="props.item.user.nextLevel.uploaded">{{ props.item.user.nextLevel.uploaded | formatSize }}<v-icon small color="red darken-4">file_upload</v-icon>&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.downloaded">{{ props.item.user.nextLevel.downloaded | formatSize }}<v-icon small color="red darken-4">file_download</v-icon>&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.trueDownloaded">{{ props.item.user.nextLevel.trueDownloaded | formatSize }}{{$t("home.headers.trueDownloaded")}}&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.bonus">{{ props.item.user.nextLevel.bonus | formatNumber }}{{$t("home.headers.bonus")}}&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.seedingPoints">{{ props.item.user.nextLevel.seedingPoints | formatNumber }}{{$t("home.headers.seedingPoints")}}&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.uploads">{{ props.item.user.nextLevel.uploads }}{{$t("home.headers.uploads")}}&nbsp;</template>
+                  </span>
+                </template>
+                <template v-else>
+                  <v-icon small color="green darken-4">done</v-icon>
+                </template>
+                <div class="levelRequirement">
+                  <template v-for="levelRequirement in props.item.levelRequirements">
+                    <template v-if="Number(props.item.user.nextLevel.level) > Number(levelRequirement.level)">
+                      <v-icon small color="green darken-4">done</v-icon>
+                    </template>
+                    <template v-else>
+                      <v-icon small color="red darken-4">block</v-icon>
+                    </template>
+                    <template v-if="levelRequirement.requiredDate">{{ levelRequirement.requiredDate }}</template>({{ levelRequirement.name }}):
+                    <template v-if="levelRequirement.uploaded">{{ levelRequirement.uploaded }}<v-icon small color="green darken-4">file_upload</v-icon>;</template>
+                    <template v-if="levelRequirement.uploads">{{$t("home.headers.uploads")}} {{ levelRequirement.uploads }};</template>
+                    <template v-if="levelRequirement.downloaded">{{ levelRequirement.downloaded }}<v-icon small color="red darken-4">file_download</v-icon>;</template>
+                    <template v-if="levelRequirement.trueDownloaded">{{$t("home.headers.trueDownloaded")}} {{ levelRequirement.trueDownloaded }};</template>
+                    <template v-if="levelRequirement.ratio">{{$t("home.headers.ratio")}} {{ levelRequirement.ratio }};</template>
+                    <template v-if="levelRequirement.bonus">{{$t("home.headers.bonus")}} {{ levelRequirement.bonus | formatNumber }};</template>
+                    <template v-if="levelRequirement.seedingPoints">{{$t("home.headers.seedingPoints")}} {{ levelRequirement.seedingPoints | formatNumber }};</template>
+                    {{levelRequirement.privilege}}<br />
+                  </template>
+                </div>
+              </template>
+            </template>
+          </td>
           <td class="number">
             <div>
               {{ props.item.user.uploaded | formatSize }}
@@ -237,6 +284,7 @@ export default Vue.extend({
       showUserName: true,
       showSiteName: true,
       showUserLevel: true,
+      showLevelRequirements: true,
       showWeek: false
     };
   },
@@ -295,6 +343,7 @@ export default Vue.extend({
         showUserName: true,
         showSiteName: true,
         showUserLevel: true,
+        showLevelRequirements: true,
         showWeek: false
       });
       Object.assign(this, viewOptions);
@@ -379,6 +428,160 @@ export default Vue.extend({
       user.joinTime = PPF.transformTime(user.joinTime, site.timezoneOffset);
 
       user.joinDateTime = dayjs(user.joinTime).format("YYYY-MM-DD HH:mm:ss");
+
+      // 设置升级条件
+      try
+      {
+        if (site.levelRequirements)
+        {
+          user.nextLevel = {};
+          user.nextLevel.level = -1;
+          for (var levelRequirement of site.levelRequirements)
+          {
+            if (levelRequirement.requiredDate)
+              break;
+
+            if (levelRequirement.interval && user.joinDateTime)
+            {
+              levelRequirement.requiredDate = dayjs(user.joinDateTime).add(levelRequirement.interval as number, "week").format("YYYY-MM-DD");
+            } else
+             break;
+          }
+
+          for (var levelRequirement of site.levelRequirements)
+          {
+            if (levelRequirement.interval && user.joinDateTime)
+            {
+              let weeks = levelRequirement.interval as number;
+              let requiredDate = dayjs(user.joinDateTime).add(weeks, "week");
+              if (dayjs(new Date()).isBefore(requiredDate))
+              {
+                user.nextLevel.requiredDate = requiredDate.format("YYYY-MM-DD");
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.uploaded || (downloaded && levelRequirement.ratio))
+            {
+              let levelRequirementUploaded = levelRequirement.uploaded ? this.fileSizetoLength(levelRequirement.uploaded as string) : 0;
+              let requiredUploadedbyRatio = levelRequirement.ratio ? downloaded * levelRequirement.ratio : 0;
+              let requiredUploaded = Math.max(levelRequirementUploaded, requiredUploadedbyRatio);
+              if (uploaded < requiredUploaded)
+              {
+                user.nextLevel.uploaded = requiredUploaded - uploaded;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.downloaded)
+            {
+              let requiredDownloaded = this.fileSizetoLength(levelRequirement.downloaded as string);
+              if (downloaded < requiredDownloaded)
+              {
+                user.nextLevel.downloaded = requiredDownloaded - downloaded;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.ratio)
+            {
+              let userRatio = user.ratio as number
+              let requiredRatio = levelRequirement.ratio as number;
+              if (userRatio != -1 && userRatio < requiredRatio)
+              {
+                user.nextLevel.ratio = levelRequirement.ratio;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+            
+            if (levelRequirement.bonus)
+            {
+              let userBonus = user.bonus as number
+              let requiredBonus = levelRequirement.bonus as number
+              
+              if (userBonus < requiredBonus)
+              {
+                user.nextLevel.bonus = requiredBonus - userBonus
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.seedingPoints)
+            {
+              let userSeedingPoints = user.seedingPoints as number
+              let requiredSeedingPoints = levelRequirement.seedingPoints as number
+              if (userSeedingPoints < requiredSeedingPoints)
+              {
+                user.nextLevel.seedingPoints = requiredSeedingPoints - userSeedingPoints;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.uploads)
+            {
+              let userUploads = user.uploads as number
+              let requiredUploads = levelRequirement.uploads as number
+              if (userUploads < requiredUploads)
+              {
+                user.nextLevel.uploads = requiredUploads - userUploads;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.trueDownloaded)
+            {
+              let userTrueDownloaded = user.trueDownloaded ? user.trueDownloaded as number : 0;
+              let requiredTrueDownloaded = this.fileSizetoLength(levelRequirement.trueDownloaded as string);
+              if (userTrueDownloaded < requiredTrueDownloaded)
+              {
+                user.nextLevel.trueDownloaded = requiredTrueDownloaded - userTrueDownloaded;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+            
+            if (user.nextLevel.level as number > 0)
+            {
+              user.nextLevel.name = levelRequirement.name;
+              break;
+            }
+          }
+        }
+      } catch {}
+    },
+    /**
+     * @return {number}
+     */
+     fileSizetoLength(size: string | number): number {
+      if (typeof size == "number") {
+        return size;
+      }
+      let _size_raw_match = size
+        .replace(/,/g, "")
+        .trim()
+        .match(/^(\d*\.?\d+)(.*[^ZEPTGMK])?([ZEPTGMK](B|iB))$/i);
+      if (_size_raw_match) {
+        let _size_num = parseFloat(_size_raw_match[1]);
+        let _size_type = _size_raw_match[3];
+        switch (true) {
+          case /Zi?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 70);
+          case /Ei?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 60);
+          case /Pi?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 50);
+          case /Ti?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 40);
+          case /Gi?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 30);
+          case /Mi?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 20);
+          case /Ki?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 10);
+          default:
+            return _size_num;
+        }
+      }
+      return 0;
     },
     /**
      * 获取站点用户信息
@@ -456,6 +659,7 @@ export default Vue.extend({
           showUserName: this.showUserName,
           showSiteName: this.showSiteName,
           showUserLevel: this.showUserLevel,
+          showLevelRequirements: this.showLevelRequirements,
           showWeek: this.showWeek
         }
       });
@@ -583,6 +787,18 @@ export default Vue.extend({
     margin: 0;
     height: 30px;
     width: 30px;
+  }
+
+  td:hover div.levelRequirement {
+    display: block;
+  }
+
+  .levelRequirement{
+    position: absolute;
+    background-color: white;
+    display: none;
+    z-index: 999;
+    border: 1px solid black;
   }
 }
 </style>

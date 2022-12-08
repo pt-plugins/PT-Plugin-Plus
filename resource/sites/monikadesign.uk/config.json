@@ -11,5 +11,36 @@
         "动漫"
     ],
     "host": "monikadesign.uk",
+    "levelRequirements": [{
+        "level": "1", 
+        "name": "PowerUser",
+        "interval": "1",
+        "uploaded": "1TB",
+        "privilege": "访问邀请区"
+      },{
+        "level": "2", 
+        "name": "SuperUser",
+        "interval": "2",
+        "uploaded": "2TB",
+        "privilege": "无"
+      },{
+        "level": "3", 
+        "name": "ExtremeUser",
+        "interval": "3",
+        "uploaded": "5TB",
+        "privilege": "无"
+      },{
+        "level": "4", 
+        "name": "InsaneUser",
+        "interval": "6",
+        "uploaded": "10TB",
+        "privilege": "自动通过候选"
+      },{
+        "level": "5", 
+        "name": "Veteran",
+        "interval": "12",
+        "uploaded": "15TB",
+        "privilege": "个人全局双倍上传"
+      }],
     "collaborator": "fzlins"
 }

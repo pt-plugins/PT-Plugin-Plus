@@ -86,7 +86,7 @@
           "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+/)", "(query && query.length>=1)?parseFloat(query[0]):0"]
         },
         "bonusPage": {
-          "selector": ["span.badge-user a[href*='bonus']","li.ratio-bar__points a"],
+          "selector": ["a[href*='bonus']:first"],
           "filters": ["new URL(query.attr('href')).pathname"]
         }
       }
@@ -117,7 +117,7 @@
       "fields": {
         "bonusPerHour": {
           "selector": [".table-condensed tr:last td:eq(2)"],
-          "filters": ["parseFloat(query.text().trim())"]
+          "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
         }
       }
     },

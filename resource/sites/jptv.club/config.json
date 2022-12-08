@@ -10,6 +10,37 @@
         "动漫"
     ],
     "host": "jptv.club",
+    "levelRequirements": [{
+      "level": "1", 
+      "name": "PowerUser",
+      "interval": "1",
+      "uploaded": "1TB",
+      "privilege": "Invite forums"
+    },{
+      "level": "2", 
+      "name": "SuperUser",
+      "interval": "2",
+      "uploaded": "5TB",
+      "privilege": ""
+    },{
+      "level": "3", 
+      "name": "ExtremeUser",
+      "interval": "3",
+      "uploaded": "20TB",
+      "privilege": "Prune Immunity"
+    },{
+      "level": "4", 
+      "name": "InsaneUser",
+      "interval": "6",
+      "uploaded": "50TB",
+      "privilege": ""
+    },{
+      "level": "5", 
+      "name": "Veteran",
+      "interval": "12",
+      "uploaded": "15TB",
+      "privilege": "H&R Immunity; Special FL"
+    }],
     "collaborator": "MewX",
     "searchEntryConfig": {
     "page": "/torrents/filter",
