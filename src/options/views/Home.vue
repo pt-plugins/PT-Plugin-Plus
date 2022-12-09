@@ -63,7 +63,7 @@
             </v-container>
           </v-card>
         </v-menu>
-        <v-select v-model="selectedHeaders" :items="headers" :label="$t('home.selectColumns')" multiple outlined return-object>
+        <v-select v-model="selectedHeaders" class="select" :items="headers" :label="$t('home.selectColumns')" multiple outlined return-object>
             <template v-slot:selection="{ item, index }">
               <v-chip v-if="index === 0">
                 <span>{{ item.text }}</span>
@@ -383,12 +383,27 @@ export default Vue.extend({
     };
   },
   created() {
-    this.selectedHeaders = this.headers;
+    let saveHeaders = localStorage.getItem("HomeHeaders");
+console.log(saveHeaders)
+    if (saveHeaders && saveHeaders.length > 1)
+    {
+      let homeHeaders = saveHeaders.split(";");
+      this.selectedHeaders =  this.headers.filter(s => homeHeaders.includes(s.value))
+    }
+    else
+      this.selectedHeaders = this.headers
     this.init();
   },
   computed: {
     //Done to get the ordered headers
     showHeaders() : any[] {
+      var saveHeaders = "";
+      for (var header of this.headers.filter(s => this.selectedHeaders.includes(s)))
+      {
+        saveHeaders += ";"+ header.value;
+      }
+
+      localStorage.setItem('HomeHeaders', saveHeaders)
       return this.headers.filter(s => this.selectedHeaders.includes(s));
     }
   },
@@ -845,6 +860,10 @@ export default Vue.extend({
     display: none;
     z-index: 999;
     border: 1px solid black;
+  }
+
+  .select {
+    max-width: 180px;
   }
 }
 </style>
