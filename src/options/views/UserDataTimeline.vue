@@ -64,7 +64,7 @@
             <v-timeline-item v-for="(site, i) in datas" :key="i" color="transparent" large>
               <template v-slot:icon>
                 <v-avatar size="38">
-                  <img :src="site.icon" :class="{'icon-blur': blurSiteIcon}"/>
+                  <img v-if="site.icon" :src="site.icon" :class="{'icon-blur': blurSiteIcon}"/>
                 </v-avatar>
               </template>
               <template v-slot:opposite>
@@ -192,10 +192,10 @@ export default Vue.extend({
       shareTime: new Date(),
       shareing: false,
       showUserName: true,
-      showSiteName: true,
+      showSiteName: false,
       showUserLevel: true,
       showUid: true,
-      blurSiteIcon: false,
+      blurSiteIcon: true,
       iconCache: {} as Dictionary<any>
     };
   },

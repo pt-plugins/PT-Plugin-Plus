@@ -86,7 +86,7 @@
           "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+/)", "(query && query.length>=1)?parseFloat(query[0]):0"]
         },
         "bonusPage": {
-          "selector": ["a[href*='bonus']:first"],
+          "selector": ["a[href$='bonus']:first","a[href$='bonus/earnings']:first"],
           "filters": ["new URL(query.attr('href')).pathname"]
         }
       }
@@ -108,6 +108,10 @@
         "joinTime": {
           "selector": ["div.content h4:contains('Registration date')", "div.content h4:contains('注册日期')", "div.content h4:contains('註冊日期')"],
           "filters": ["query.text().replace(/(Registration date|注册日期|註冊日期)/g, '').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "uploads": {
+          "selector": [".badge-user .fa-upload + span"],
+          "filters": ["query ? parseFloat(query.text().trim()) : 0"]
         }
       }
     },

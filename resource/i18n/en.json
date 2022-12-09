@@ -196,6 +196,25 @@
         "uploads": "Uploaded",
         "trueDownloaded": "True Downloaded"
       },
+      "levelRequirement": {
+        "date": "Date",
+        "site": "Site",
+        "userName": "User name",
+        "levelName": "Level",
+        "activitiyData": "Activitiy data",
+        "ratio": "Ratio",
+        "seeding": "Seeding",
+        "seedingSize": "Seeding size",
+        "bonus": "Bonus",
+        "seedingPoints": "Seeding Points",
+        "bonusPerHour": "Bonus per hour",
+        "joinTime": "Join time",
+        "lastUpdateTime": "Update at",
+        "status": "Status",
+        "comments": "Comments",
+        "uploads": "Uploaded",
+        "trueDownloaded": "True Downloaded"
+      },
       "tip": "N/A means no support",
       "nodata": "You have not added a site, please go to [Sites] to add a site."
     },

@@ -118,7 +118,17 @@
               <span class="caption">{{ props.item.name }}</span>
             </a>
           </td>
-          <td>{{ showUserName ? props.item.user.name : "****" }}</td>
+          <td>
+            <template v-if="showUserName">
+              {{ props.item.user.name}}
+              <template v-if="props.item.user.id">
+                <br/>({{props.item.user.id}})
+              </template>
+            </template>
+            <template v-else>
+              ****
+            </template>
+          </td>
           <td>
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
@@ -131,10 +141,10 @@
                   <span style="color:red;">
                     <template v-if="props.item.user.nextLevel.uploaded">{{ props.item.user.nextLevel.uploaded | formatSize }}<v-icon small color="red darken-4">file_upload</v-icon>&nbsp;</template>
                     <template v-if="props.item.user.nextLevel.downloaded">{{ props.item.user.nextLevel.downloaded | formatSize }}<v-icon small color="red darken-4">file_download</v-icon>&nbsp;</template>
-                    <template v-if="props.item.user.nextLevel.trueDownloaded">{{ props.item.user.nextLevel.trueDownloaded | formatSize }}{{$t("home.headers.trueDownloaded")}}&nbsp;</template>
-                    <template v-if="props.item.user.nextLevel.bonus">{{ props.item.user.nextLevel.bonus | formatNumber }}{{$t("home.headers.bonus")}}&nbsp;</template>
-                    <template v-if="props.item.user.nextLevel.seedingPoints">{{ props.item.user.nextLevel.seedingPoints | formatNumber }}{{$t("home.headers.seedingPoints")}}&nbsp;</template>
-                    <template v-if="props.item.user.nextLevel.uploads">{{ props.item.user.nextLevel.uploads }}{{$t("home.headers.uploads")}}&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.trueDownloaded">{{ props.item.user.nextLevel.trueDownloaded | formatSize }}{{$t("home.levelRequirement.trueDownloaded")}}&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.bonus">{{ props.item.user.nextLevel.bonus | formatNumber }}{{$t("home.levelRequirement.bonus")}}&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.seedingPoints">{{ props.item.user.nextLevel.seedingPoints | formatNumber }}{{$t("home.levelRequirement.seedingPoints")}}&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.uploads">{{ props.item.user.nextLevel.uploads }}{{$t("home.levelRequirement.uploads")}}&nbsp;</template>
                   </span>
                 </template>
                 <template v-else>
@@ -150,12 +160,12 @@
                     </template>
                     <template v-if="levelRequirement.requiredDate">{{ levelRequirement.requiredDate }}</template>({{ levelRequirement.name }}):
                     <template v-if="levelRequirement.uploaded">{{ levelRequirement.uploaded }}<v-icon small color="green darken-4">file_upload</v-icon>;</template>
-                    <template v-if="levelRequirement.uploads">{{$t("home.headers.uploads")}} {{ levelRequirement.uploads }};</template>
+                    <template v-if="levelRequirement.uploads">{{$t("home.levelRequirement.uploads")}} {{ levelRequirement.uploads }};</template>
                     <template v-if="levelRequirement.downloaded">{{ levelRequirement.downloaded }}<v-icon small color="red darken-4">file_download</v-icon>;</template>
-                    <template v-if="levelRequirement.trueDownloaded">{{$t("home.headers.trueDownloaded")}} {{ levelRequirement.trueDownloaded }};</template>
-                    <template v-if="levelRequirement.ratio">{{$t("home.headers.ratio")}} {{ levelRequirement.ratio }};</template>
-                    <template v-if="levelRequirement.bonus">{{$t("home.headers.bonus")}} {{ levelRequirement.bonus | formatNumber }};</template>
-                    <template v-if="levelRequirement.seedingPoints">{{$t("home.headers.seedingPoints")}} {{ levelRequirement.seedingPoints | formatNumber }};</template>
+                    <template v-if="levelRequirement.trueDownloaded">{{$t("home.levelRequirement.trueDownloaded")}} {{ levelRequirement.trueDownloaded }};</template>
+                    <template v-if="levelRequirement.ratio">{{$t("home.levelRequirement.ratio")}} {{ levelRequirement.ratio }};</template>
+                    <template v-if="levelRequirement.bonus">{{$t("home.levelRequirement.bonus")}} {{ levelRequirement.bonus | formatNumber }};</template>
+                    <template v-if="levelRequirement.seedingPoints">{{$t("home.levelRequirement.seedingPoints")}} {{ levelRequirement.seedingPoints | formatNumber }};</template>
                     {{levelRequirement.privilege}}<br />
                   </template>
                 </div>
