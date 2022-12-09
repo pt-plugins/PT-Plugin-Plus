@@ -22,7 +22,7 @@
       let site = options.site;
       site.searchEntryConfig = options.entry
       let selector =
-        options.resultSelector || "#torrent-list-table";
+        options.resultSelector || "table.data-table";
       let table = options.page.find(selector);
       // 获取种子列表行
       let rows = table.find("> tbody > tr");
