@@ -166,6 +166,8 @@
       "userName": "User name",
       "userLevel": "User level",
       "levelRequirements": "Level requirements",
+      "seedingPoints": "Seeding Points",
+      "selectColumns": "Select Columns",
       "week": "Expressed in weeks",
       "timeline": "Time line",
       "settings": "Settings",
