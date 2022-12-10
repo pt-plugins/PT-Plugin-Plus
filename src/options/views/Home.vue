@@ -135,12 +135,9 @@
               <span class="caption">{{ props.item.name }}</span>
             </a>
           </td>
-          <td v-if="showColumn('user.name')">
+          <td v-if="showColumn('user.name')" :title="props.item.user.id">
             <template v-if="showUserName">
               {{ props.item.user.name}}
-              <template v-if="props.item.user.id">
-                <br/>({{props.item.user.id}})
-              </template>
             </template>
             <template v-else>
               ****
@@ -220,10 +217,11 @@
               {{ props.item.user.bonusPerHour | formatNumber }}
             </template>
           </td>
-          <td v-if="showColumn('user.joinDate')"
+          <td v-if="showColumn('user.joinTime')"
             class="number"
-            :title="props.item.user.joinDateTime"
-          >{{ props.item.user.joinTime | timeAgo(showWeek) }}</td>
+            :title="props.item.user.joinDateTime">
+            {{ props.item.user.joinTime | timeAgo(showWeek) }}
+          </td>
           <td v-if="showColumn('user.lastUpdateTime')" class="number">
             <v-btn
               depressed
