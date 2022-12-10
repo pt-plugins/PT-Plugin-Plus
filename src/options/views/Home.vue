@@ -166,7 +166,7 @@
                 </template>
                 <div class="levelRequirement">
                   <template v-for="levelRequirement in props.item.levelRequirements">
-                    <template v-if="Number(props.item.user.nextLevel.level) > Number(levelRequirement.level)">
+                    <template v-if="!props.item.user.nextLevel.name || Number(props.item.user.nextLevel.level) > Number(levelRequirement.level)">
                       <v-icon small color="green darken-4">done</v-icon>
                     </template>
                     <template v-else>
