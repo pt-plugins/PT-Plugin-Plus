@@ -163,6 +163,8 @@
       "userName": "用户名称",
       "userLevel": "用户等级",
       "levelRequirements": "等级要求",
+      "seedingPoints": "保种积分",
+      "selectColumns": "过滤列",
       "week": "时间显示为周数",
       "timeline": "时间轴",
       "settings": "参数",

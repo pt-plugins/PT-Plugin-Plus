@@ -54,9 +54,26 @@
                 :label="$t('home.week')"
                 @change="updateViewOptions"
               ></v-switch>
+              <v-switch
+                color="success"
+                v-model="showSeedingPoints"
+                :label="$t('home.seedingPoints')"
+                @change="updateViewOptions"
+              ></v-switch>
             </v-container>
           </v-card>
         </v-menu>
+        <v-select v-model="selectedHeaders" class="select" :items="headers" :label="$t('home.selectColumns')" multiple outlined return-object>
+            <template v-slot:selection="{ item, index }">
+              <v-chip v-if="index === 0">
+                <span>{{ item.text }}</span>
+              </v-chip>
+              <span
+                v-if="index === 1"
+                class="grey--text caption"
+              >(+{{ selectedHeaders.length - 1 }} others)</span>
+            </template>
+         </v-select>
 
         <!-- <AutoSignWarning /> -->
         <v-spacer></v-spacer>
@@ -74,7 +91,7 @@
 
       <v-data-table
         :search="filterKey"
-        :headers="headers"
+        :headers="showHeaders"
         :items="sites"
         :pagination.sync="pagination"
         item-key="host"
@@ -84,7 +101,7 @@
       >
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
-          <td class="center">
+          <td v-if="showColumn('name')" class="center">
             <v-badge color="red messageCount" overlap>
               <template
                 v-slot:badge
@@ -118,7 +135,7 @@
               <span class="caption">{{ props.item.name }}</span>
             </a>
           </td>
-          <td>
+          <td v-if="showColumn('user.name')">
             <template v-if="showUserName">
               {{ props.item.user.name}}
               <template v-if="props.item.user.id">
@@ -129,7 +146,7 @@
               ****
             </template>
           </td>
-          <td>
+          <td v-if="showColumn('user.levelName')">
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
               <template v-if="props.item.levelRequirements">
@@ -172,7 +189,7 @@
               </template>
             </template>
           </td>
-          <td class="number">
+          <td v-if="showColumn('user.uploaded')" class="number">
             <div>
               {{ props.item.user.uploaded | formatSize }}
               <v-icon small color="green darken-4">expand_less</v-icon>
@@ -182,11 +199,11 @@
               <v-icon small color="red darken-4">expand_more</v-icon>
             </div>
           </td>
-          <td class="number">{{ props.item.user.ratio | formatRatio }}</td>
-          <td class="number">{{ props.item.user.seeding }}</td>
-          <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>
-          <td class="number">
-            <template v-if="props.item.user.seedingPoints">                
+          <td v-if="showColumn('user.ratio')" class="number">{{ props.item.user.ratio | formatRatio }}</td>
+          <td v-if="showColumn('user.seeding')" class="number">{{ props.item.user.seeding }}</td>
+          <td v-if="showColumn('user.seedingSize')" class="number">{{ props.item.user.seedingSize | formatSize }}</td>
+          <td v-if="showColumn('user.bonus')" class="number">
+            <template v-if="showSeedingPoints && props.item.user.seedingPoints">                
               <div>
                 魔力：{{ props.item.user.bonus | formatNumber }}
               </div>
@@ -198,12 +215,16 @@
               {{ props.item.user.bonus | formatNumber }}
             </template>
           </td>
-          <td class="number">{{ props.item.user.bonusPerHour | formatNumber }}</td>
-          <td
+          <td v-if="showColumn('user.bonusPerHour')" class="number">
+            <template v-if="props.item.user.bonusPerHour">    
+              {{ props.item.user.bonusPerHour | formatNumber }}
+            </template>
+          </td>
+          <td v-if="showColumn('user.joinDate')"
             class="number"
             :title="props.item.user.joinDateTime"
           >{{ props.item.user.joinTime | timeAgo(showWeek) }}</td>
-          <td class="number">
+          <td v-if="showColumn('user.lastUpdateTime')" class="number">
             <v-btn
               depressed
               small
@@ -211,7 +232,7 @@
               :title="$t('home.statistic')"
             >{{ props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</v-btn>
           </td>
-          <td class="center">
+          <td v-if="showColumn('user.lastUpdateStatus')" class="center">
             <v-progress-circular
               indeterminate
               :width="3"
@@ -279,6 +300,68 @@ export default Vue.extend({
     return {
       loading: false,
       items: [] as any[],
+      selectedHeaders: [] as any[],
+      headers:[
+        {
+          text: this.$t("home.headers.site"),
+          align: "center",
+          value: "name",
+          width: "110px"
+        },
+        {
+          text: this.$t("home.headers.userName"),
+          align: "left",
+          value: "user.name",
+          width: ""
+        },
+        {
+          text: this.$t("home.headers.levelName"),
+          align: "left",
+          value: "user.levelName"
+        },
+        {
+          text: this.$t("home.headers.activitiyData"),
+          align: "right",
+          value: "user.uploaded",
+          width: "120px"
+        },
+        {
+          text: this.$t("home.headers.ratio"),
+          align: "right",
+          value: "user.ratio"
+        },
+        {
+          text: this.$t("home.headers.seeding"),
+          align: "right",
+          value: "user.seeding"
+        },
+        {
+          text: this.$t("home.headers.seedingSize"),
+          align: "right",
+          value: "user.seedingSize"
+        },
+        {
+          text: this.$t("home.headers.bonus"),
+          align: "right",
+          value: "user.bonus"
+        },
+        {
+          text: this.$t("home.headers.bonusPerHour"),
+          align: "right",
+          value: "user.bonusPerHour"
+        },
+        {
+          text: this.$t("home.headers.joinTime"),
+          align: "right",
+          value: "user.joinTime"
+        },
+        {
+          text: this.$t("home.headers.lastUpdateTime"),
+          align: "right",
+          value: "user.lastUpdateTime"
+        },
+        { text: this.$t("home.headers.status"), align: "center", value: "user.lastUpdateStatus" }
+      ],
       pagination: {
         rowsPerPage: -1
       },
@@ -295,11 +378,34 @@ export default Vue.extend({
       showSiteName: true,
       showUserLevel: true,
       showLevelRequirements: true,
+      showSeedingPoints: true,
       showWeek: false
     };
   },
   created() {
+    let saveHeaders = localStorage.getItem("HomeHeaders");
+console.log(saveHeaders)
+    if (saveHeaders && saveHeaders.length > 1)
+    {
+      let homeHeaders = saveHeaders.split(";");
+      this.selectedHeaders =  this.headers.filter(s => homeHeaders.includes(s.value))
+    }
+    else
+      this.selectedHeaders = this.headers
     this.init();
+  },
+  computed: {
+    //Done to get the ordered headers
+    showHeaders() : any[] {
+      var saveHeaders = "";
+      for (var header of this.headers.filter(s => this.selectedHeaders.includes(s)))
+      {
+        saveHeaders += ";"+ header.value;
+      }
+
+      localStorage.setItem('HomeHeaders', saveHeaders)
+      return this.headers.filter(s => this.selectedHeaders.includes(s));
+    }
   },
 
   /**
@@ -313,6 +419,14 @@ export default Vue.extend({
   },
 
   methods: {
+    showColumn(val : string){
+      for (var header of this.headers.filter(s => this.selectedHeaders.includes(s)))
+      {
+        if (header.value === val)
+          return true;
+      }
+      return false;
+    },
     resetSites() {
       this.sites = [];
       this.options.sites.forEach((site: Site) => {
@@ -354,6 +468,7 @@ export default Vue.extend({
         showSiteName: true,
         showUserLevel: true,
         showLevelRequirements: true,
+        showSeedingPoints: true,
         showWeek: false
       });
       Object.assign(this, viewOptions);
@@ -670,6 +785,7 @@ export default Vue.extend({
           showSiteName: this.showSiteName,
           showUserLevel: this.showUserLevel,
           showLevelRequirements: this.showLevelRequirements,
+          showSeedingPoints: this.showSeedingPoints,
           showWeek: this.showWeek
         }
       });
@@ -696,71 +812,6 @@ export default Vue.extend({
         return "";
       }
       return number.toFixed(2);
-    }
-  },
-
-  computed: {
-    headers(): Array<any> {
-      return [
-        {
-          text: this.$t("home.headers.site"),
-          align: "center",
-          value: "name",
-          width: "110px"
-        },
-        {
-          text: this.$t("home.headers.userName"),
-          align: "left",
-          value: "user.name"
-        },
-        {
-          text: this.$t("home.headers.levelName"),
-          align: "left",
-          value: "user.levelName"
-        },
-        {
-          text: this.$t("home.headers.activitiyData"),
-          align: "right",
-          value: "user.uploaded",
-          width: "120px"
-        },
-        {
-          text: this.$t("home.headers.ratio"),
-          align: "right",
-          value: "user.ratio"
-        },
-        {
-          text: this.$t("home.headers.seeding"),
-          align: "right",
-          value: "user.seeding"
-        },
-        {
-          text: this.$t("home.headers.seedingSize"),
-          align: "right",
-          value: "user.seedingSize"
-        },
-        {
-          text: this.$t("home.headers.bonus"),
-          align: "right",
-          value: "user.bonus"
-        },
-        {
-          text: this.$t("home.headers.bonusPerHour"),
-          align: "right",
-          value: "user.bonusPerHour"
-        },
-        {
-          text: this.$t("home.headers.joinTime"),
-          align: "right",
-          value: "user.joinTime"
-        },
-        {
-          text: this.$t("home.headers.lastUpdateTime"),
-          align: "right",
-          value: "user.lastUpdateTime"
-        },
-        { text: this.$t("home.headers.status"), align: "center", value: "user.lastUpdateStatus" }
-      ];
     }
   }
 });
@@ -809,6 +860,10 @@ export default Vue.extend({
     display: none;
     z-index: 999;
     border: 1px solid black;
+  }
+
+  .select {
+    max-width: 180px;
   }
 }
 </style>
