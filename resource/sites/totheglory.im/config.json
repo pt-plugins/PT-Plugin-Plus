@@ -87,14 +87,14 @@
     "level": "10", 
     "name": "NonaByte",
     "interval": "48",
-    "downloaded": "50TB",
+    "downloaded": "5TB",
     "ratio": "6.0",
     "privilege": "无"
   },{
     "level": "11", 
     "name": "DoggaByte",
     "interval": "48",
-    "downloaded": "100TB",
+    "downloaded": "10TB",
     "ratio": "6.0",
     "privilege": "无"
   }],
