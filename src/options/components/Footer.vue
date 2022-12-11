@@ -6,7 +6,8 @@
       <span
         v-if="isDevelopmentMode && $vuetify.breakpoint.mdAndUp"
         class="deep-orange--text"
-      >{{ words.developmentMode }}</span>
+        >{{ words.developmentMode }}</span
+      >
       <v-chip
         label
         outline
@@ -14,16 +15,18 @@
         disabled
         small
         v-if="isDebugMode && $vuetify.breakpoint.mdAndUp"
-      >{{ $t("common.debugMode") }}</v-chip>
+        >{{ $t("common.debugMode") }}</v-chip
+      >
       <v-btn
         outline
         color="success"
         small
         v-if="newReleases"
-        href="https://github.com/ronggang/PT-Plugin-Plus/releases"
+        href="https://github.com/pt-plugins/PT-Plugin-Plus/releases"
         target="_blank"
         rel="noopener noreferrer nofollow"
-      >{{ $t("common.haveNewReleases") }}, {{ releasesVersion }}</v-btn>
+        >{{ $t("common.haveNewReleases") }}, {{ releasesVersion }}</v-btn
+      >
     </span>
     <v-spacer></v-spacer>
     <v-btn
@@ -42,15 +45,13 @@
       />
       <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">Telegram</span>
     </v-btn>
-    <input type="file" ref="fileLanguage" style="display:none;" />
+    <input type="file" ref="fileLanguage" style="display: none" />
     <v-menu top offset-y>
       <template v-slot:activator="{ on }">
         <v-btn flat small v-on="on" :icon="$vuetify.breakpoint.smAndDown">
           <v-icon small>language</v-icon>
           <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">
-            {{
-            $t("common.changeLanguage")
-            }}
+            {{ $t("common.changeLanguage") }}
           </span>
         </v-btn>
       </template>
@@ -64,10 +65,21 @@
       <v-divider></v-divider>
 
       <v-list dense>
-        <v-list-tile v-for="(item, index) in languages" :key="index" @click="changeLanguage(item)">
-          <v-list-tile-title :class="currentLanguage == item.code ? 'primary--text' : ''">
+        <v-list-tile
+          v-for="(item, index) in languages"
+          :key="index"
+          @click="changeLanguage(item)"
+        >
+          <v-list-tile-title
+            :class="currentLanguage == item.code ? 'primary--text' : ''"
+          >
             <span>
-              <v-icon small class="mr-1 primary--text" v-if="currentLanguage == item.code">check</v-icon>
+              <v-icon
+                small
+                class="mr-1 primary--text"
+                v-if="currentLanguage == item.code"
+                >check</v-icon
+              >
               <span v-else class="mr-4"></span>
             </span>
             {{ item.name }}
@@ -78,9 +90,7 @@
     <v-btn flat small to="/system-logs" :icon="$vuetify.breakpoint.smAndDown">
       <v-icon small>assignment</v-icon>
       <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">
-        {{
-        $t("common.systemLog")
-        }}
+        {{ $t("common.systemLog") }}
       </span>
     </v-btn>
     <v-btn
@@ -97,9 +107,7 @@
     </v-btn>
 
     <v-snackbar v-model="invalidFile" top :timeout="3000" color="error">
-      {{
-      $t("footer.invalidFile")
-      }}
+      {{ $t("footer.invalidFile") }}
     </v-snackbar>
   </v-footer>
 </template>
@@ -174,7 +182,7 @@ export default Vue.extend({
             }
           }
         })
-        .fail((result: any) => {});
+        .fail((result: any) => { });
     },
 
     /**
@@ -207,7 +215,7 @@ export default Vue.extend({
             this.invalidFile = true;
           }
         };
-        r.onerror = () => {};
+        r.onerror = () => { };
         r.readAsText(fileInput.files[0]);
         fileInput.value = "";
       }
@@ -226,7 +234,7 @@ export default Vue.extend({
             .then(() => {
               this.currentLanguage = resource.code;
             })
-            .catch(() => {});
+            .catch(() => { });
         }
       } else {
         window.i18nService
@@ -238,7 +246,7 @@ export default Vue.extend({
               code: resource.code
             });
           })
-          .catch(() => {});
+          .catch(() => { });
       }
     },
 

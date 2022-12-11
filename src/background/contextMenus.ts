@@ -129,7 +129,7 @@ export class ContextMenus {
       contexts: ["browser_action"],
       onclick: () => {
         chrome.tabs.create({
-          url: "https://github.com/ronggang/PT-Plugin-Plus/issues/new"
+          url: "https://github.com/pt-plugins/PT-Plugin-Plus/issues/new"
         });
       }
     });
@@ -470,7 +470,7 @@ export class ContextMenus {
         });
         chrome.tabs.sendMessage(tabid, {
           action: EAction.showMessage,
-          data: result.status=="" ? this.service.i18n.t("service.contextMenus.sendTorrentToClientError") : result
+          data: result.status == "" ? this.service.i18n.t("service.contextMenus.sendTorrentToClientError") : result
         });
       })
       .finally(() => {

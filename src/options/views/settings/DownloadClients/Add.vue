@@ -1,21 +1,20 @@
 <template>
   <div>
-    <v-snackbar
-      v-model="valid"
-      top
-      :timeout="3000"
-      color="error"
-    >{{ $t('settings.downloadClients.add.validMsg') }}</v-snackbar>
+    <v-snackbar v-model="valid" top :timeout="3000" color="error">{{
+      $t("settings.downloadClients.add.validMsg")
+    }}</v-snackbar>
     <v-dialog v-model="show" max-width="800">
       <v-card>
         <v-toolbar dark color="blue-grey darken-2">
-          <v-toolbar-title>{{ $t('settings.downloadClients.add.title') }}</v-toolbar-title>
+          <v-toolbar-title>{{
+            $t("settings.downloadClients.add.title")
+          }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn
             icon
             flat
             color="success"
-            href="https://github.com/ronggang/PT-Plugin-Plus/wiki/config-download-client"
+            href="https://github.com/pt-plugins/PT-Plugin-Plus/wiki/config-download-client"
             target="_blank"
             rel="noopener noreferrer nofollow"
             :title="$t('common.help')"
@@ -27,14 +26,15 @@
         <v-card-text>
           <v-stepper v-model="step">
             <v-stepper-header>
-              <v-stepper-step
-                :complete="step > 1"
-                step="1"
-              >{{ $t('settings.downloadClients.add.titleStep1') }}</v-stepper-step>
+              <v-stepper-step :complete="step > 1" step="1">{{
+                $t("settings.downloadClients.add.titleStep1")
+              }}</v-stepper-step>
 
               <v-divider></v-divider>
 
-              <v-stepper-step step="2">{{ $t('settings.downloadClients.add.titleStep2') }}</v-stepper-step>
+              <v-stepper-step step="2">{{
+                $t("settings.downloadClients.add.titleStep2")
+              }}</v-stepper-step>
             </v-stepper-header>
 
             <v-stepper-items>
@@ -44,7 +44,7 @@
                   v-model="selectedItem"
                   :items="items"
                   :label="$t('settings.downloadClients.add.validMsg')"
-                  :menu-props="{maxHeight:'auto'}"
+                  :menu-props="{ maxHeight: 'auto' }"
                   :hint="selectedItem.description"
                   persistent-hint
                   return-object
@@ -63,10 +63,14 @@
                       <img :src="data.item.icon" />
                     </v-list-tile-avatar>
                     <v-list-tile-content>
-                      <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                      <v-list-tile-title
+                        v-html="data.item.name"
+                      ></v-list-tile-title>
                     </v-list-tile-content>
                     <v-list-tile-action>
-                      <v-list-tile-action-text>{{ data.item.ver }}</v-list-tile-action-text>
+                      <v-list-tile-action-text>{{
+                        data.item.ver
+                      }}</v-list-tile-action-text>
                     </v-list-tile-action>
                   </template>
                 </v-autocomplete>
@@ -86,32 +90,46 @@
           <v-btn
             flat
             color="grey darken-1"
-            href="https://github.com/ronggang/PT-Plugin-Plus/tree/master/resource/clients"
+            href="https://github.com/pt-plugins/PT-Plugin-Plus/tree/master/resource/clients"
             target="_blank"
-            v-show="step==1"
+            v-show="step == 1"
             rel="noopener noreferrer nofollow"
           >
             <v-icon>help</v-icon>
-            <span class="ml-1">{{ $t('settings.downloadClients.add.helpMsg') }}</span>
+            <span class="ml-1">{{
+              $t("settings.downloadClients.add.helpMsg")
+            }}</span>
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn flat color="error" @click="cancel">
             <v-icon>cancel</v-icon>
-            <span class="ml-1">{{ $t('settings.downloadClients.add.cancel') }}</span>
+            <span class="ml-1">{{
+              $t("settings.downloadClients.add.cancel")
+            }}</span>
           </v-btn>
-          <v-btn flat color="grey darken-1" @click="step--" :disabled="step===1">
+          <v-btn
+            flat
+            color="grey darken-1"
+            @click="step--"
+            :disabled="step === 1"
+          >
             <v-icon>navigate_before</v-icon>
-            <span>{{ $t('settings.downloadClients.add.prevStep') }}</span>
+            <span>{{ $t("settings.downloadClients.add.prevStep") }}</span>
           </v-btn>
-          <v-btn flat color="blue" @click="next(step)" v-show="step<stepCount">
-            <span>{{ $t('settings.downloadClients.add.nextStep') }}</span>
+          <v-btn
+            flat
+            color="blue"
+            @click="next(step)"
+            v-show="step < stepCount"
+          >
+            <span>{{ $t("settings.downloadClients.add.nextStep") }}</span>
             <v-icon>navigate_next</v-icon>
           </v-btn>
           <v-btn
             flat
             color="success"
             @click="save"
-            v-show="step===stepCount"
+            v-show="step === stepCount"
             :disabled="!selectedData.valid"
           >
             <v-icon>check_circle_outline</v-icon>
@@ -178,6 +196,6 @@ export default Vue.extend({
       this.show = false;
     }
   },
-  created() {}
+  created() { }
 });
 </script>

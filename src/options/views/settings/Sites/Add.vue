@@ -1,21 +1,20 @@
 <template>
   <div>
-    <v-snackbar
-      :value="haveError"
-      top
-      :timeout="3000"
-      color="error"
-    >{{ $t('settings.sites.add.validMsg') }}</v-snackbar>
+    <v-snackbar :value="haveError" top :timeout="3000" color="error">{{
+      $t("settings.sites.add.validMsg")
+    }}</v-snackbar>
     <v-dialog v-model="show" max-width="800">
       <v-card>
         <v-toolbar dark color="blue-grey darken-2">
-          <v-toolbar-title>{{ $t('settings.sites.add.title') }}</v-toolbar-title>
+          <v-toolbar-title>{{
+            $t("settings.sites.add.title")
+          }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn
             icon
             flat
             color="success"
-            href="https://github.com/ronggang/PT-Plugin-Plus/wiki/config-site"
+            href="https://github.com/pt-plugins/PT-Plugin-Plus/wiki/config-site"
             target="_blank"
             rel="noopener noreferrer nofollow"
             :title="$t('common.help')"
@@ -27,11 +26,15 @@
         <v-card-text>
           <v-stepper v-model="step">
             <v-stepper-header>
-              <v-stepper-step :complete="step > 1" step="1">{{ $t('settings.sites.add.step1') }}</v-stepper-step>
+              <v-stepper-step :complete="step > 1" step="1">{{
+                $t("settings.sites.add.step1")
+              }}</v-stepper-step>
 
               <v-divider></v-divider>
 
-              <v-stepper-step step="2">{{ $t('settings.sites.add.step2') }}</v-stepper-step>
+              <v-stepper-step step="2">{{
+                $t("settings.sites.add.step2")
+              }}</v-stepper-step>
             </v-stepper-header>
 
             <v-stepper-items>
@@ -60,11 +63,17 @@
                       <img :src="data.item.icon" />
                     </v-list-tile-avatar>
                     <v-list-tile-content>
-                      <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                      <v-list-tile-sub-title v-html="data.item.url"></v-list-tile-sub-title>
+                      <v-list-tile-title
+                        v-html="data.item.name"
+                      ></v-list-tile-title>
+                      <v-list-tile-sub-title
+                        v-html="data.item.url"
+                      ></v-list-tile-sub-title>
                     </v-list-tile-content>
                     <v-list-tile-action>
-                      <v-list-tile-action-text>{{ joinTags(data.item.tags) }}</v-list-tile-action-text>
+                      <v-list-tile-action-text>{{
+                        joinTags(data.item.tags)
+                      }}</v-list-tile-action-text>
                     </v-list-tile-action>
                   </template>
                 </v-autocomplete>
@@ -72,7 +81,11 @@
 
               <!-- 站点配置 -->
               <v-stepper-content step="2">
-                <SiteEditor :initData="selectedSite" :custom="isCustom" @change="change" />
+                <SiteEditor
+                  :initData="selectedSite"
+                  :custom="isCustom"
+                  @change="change"
+                />
               </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
@@ -84,32 +97,48 @@
           <v-btn
             flat
             color="grey darken-1"
-            href="https://github.com/ronggang/PT-Plugin-Plus/tree/master/resource/sites"
+            href="https://github.com/pt-plugins/PT-Plugin-Plus/tree/master/resource/sites"
             target="_blank"
-            v-show="step==1"
+            v-show="step == 1"
             rel="noopener noreferrer nofollow"
           >
             <v-icon>help</v-icon>
-            <span class="ml-1">{{ $t('settings.sites.add.help') }}</span>
+            <span class="ml-1">{{ $t("settings.sites.add.help") }}</span>
           </v-btn>
-          <v-btn flat @click="custom" v-show="step<stepCount">
+          <v-btn flat @click="custom" v-show="step < stepCount">
             <v-icon>add_circle_outline</v-icon>
-            <span class="ml-1">{{ $t('settings.sites.add.custom') }}</span>
+            <span class="ml-1">{{ $t("settings.sites.add.custom") }}</span>
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn flat color="error" @click="cancel">
             <v-icon>cancel</v-icon>
-            <span class="ml-1">{{ $t('common.cancel') }}</span>
+            <span class="ml-1">{{ $t("common.cancel") }}</span>
           </v-btn>
-          <v-btn flat color="grey darken-1" @click="step--" :disabled="step===1">
+          <v-btn
+            flat
+            color="grey darken-1"
+            @click="step--"
+            :disabled="step === 1"
+          >
             <v-icon>navigate_before</v-icon>
-            <span>{{ $t('settings.sites.add.prev') }}</span>
+            <span>{{ $t("settings.sites.add.prev") }}</span>
           </v-btn>
-          <v-btn flat color="blue" @click="next(step)" v-show="step<stepCount">
-            <span>{{ $t('settings.sites.add.next') }}</span>
+          <v-btn
+            flat
+            color="blue"
+            @click="next(step)"
+            v-show="step < stepCount"
+          >
+            <span>{{ $t("settings.sites.add.next") }}</span>
             <v-icon>navigate_next</v-icon>
           </v-btn>
-          <v-btn flat color="success" @click="save" v-show="step===stepCount" :disabled="!valid">
+          <v-btn
+            flat
+            color="success"
+            @click="save"
+            v-show="step === stepCount"
+            :disabled="!valid"
+          >
             <v-icon>check_circle_outline</v-icon>
           </v-btn>
         </v-card-actions>
@@ -234,6 +263,6 @@ export default Vue.extend({
       return (site.url ? site.url : "") + description;
     }
   },
-  created() {}
+  created() { }
 });
 </script>
