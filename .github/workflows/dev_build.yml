@@ -6,7 +6,7 @@ name: Build dev branch for test
 # events but only for the master branch
 on:
   push:
-    branches: [ dev ]
+    branches: [ dev , dep-update ]
   pull_request:
     branches: [ dev ]
 
@@ -41,7 +41,7 @@ jobs:
       - run: yarn release
         env:
           CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
-
+        continue-on-error: true
       - name: Upload dev_build_zip
         uses: actions/upload-artifact@v3
         with:

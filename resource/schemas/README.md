@@ -74,9 +74,9 @@
 ### 关于脚本及其他资源文件路径说明
 
 - 如果在第一个位置指定了 `/` ，则路径会被指向到：
-  - `https://github.com/ronggang/PT-Plugin-Plus/tree/master/resource/`
+  - `https://github.com/pt-plugins/PT-Plugin-Plus/tree/master/resource/`
 - 如果第一个位置不是 `/` ，则表示当前路径为该架构所在目录，如 `NexusPHP` 的指向目录为：
-  - `https://github.com/ronggang/PT-Plugin-Plus/tree/master/resource/schemas/NexusPHP/`
+  - `https://github.com/pt-plugins/PT-Plugin-Plus/tree/master/resource/schemas/NexusPHP/`
 
 ## 脚本中可用的全局对象
 

@@ -1,0 +1,31 @@
+{
+  "name": "ihdbits",
+  "schema": "NexusPHP",
+  "url": "https://oldtoons.world/",
+  "description": "",
+  "icon": "https://oldtoons.world/favicon.ico",
+  "tags": [
+    "影视"
+  ],
+  "host": "oldtoons.world",
+  "collaborator": "koal",
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["b:first"],
+          "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)上一页/g)",
+            "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
+            "(query != 0) ? query.sizeToNumber() : 0"
+          ]
+        }
+      }
+    }
+  }
+}

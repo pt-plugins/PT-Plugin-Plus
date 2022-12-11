@@ -362,8 +362,8 @@
       try {
         if (row.text().trim().match(/免费剩余/)) {
           tags.push({
-            name: "~Free",
-            color: "teal"
+            name: "Free",
+            color: "blue"
           })
         };
       } catch (error) {

@@ -42,16 +42,42 @@
                 :label="$t('home.userLevel')"
                 @change="updateViewOptions"
               ></v-switch>
-
+              <v-switch
+                color="success"
+                v-model="showLevelRequirements"
+                :label="$t('home.levelRequirements')"
+                @change="updateViewOptions"
+              ></v-switch>
               <v-switch
                 color="success"
                 v-model="showWeek"
                 :label="$t('home.week')"
                 @change="updateViewOptions"
               ></v-switch>
+              <v-switch
+                color="success"
+                v-model="showSeedingPoints"
+                :label="$t('home.seedingPoints')"
+                @change="updateViewOptions"
+              ></v-switch>
             </v-container>
           </v-card>
         </v-menu>
+        <v-select v-model="selectedHeaders" 
+          class="select" :items="headers" 
+          :label="$t('home.selectColumns')"
+          @change="updateViewOptions"
+          multiple outlined return-object>
+          <template v-slot:selection="{ item, index }">
+            <v-chip v-if="index === 0">
+              <span>{{ item.text }}</span>
+            </v-chip>
+            <span
+              v-if="index === 1"
+              class="grey--text caption"
+            >(+{{ selectedHeaders.length - 1 }} others)</span>
+          </template>
+         </v-select>
 
         <!-- <AutoSignWarning /> -->
         <v-spacer></v-spacer>
@@ -69,7 +95,7 @@
 
       <v-data-table
         :search="filterKey"
-        :headers="headers"
+        :headers="showHeaders"
         :items="sites"
         :pagination.sync="pagination"
         item-key="host"
@@ -79,7 +105,7 @@
       >
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
-          <td class="center">
+          <td v-if="showColumn('name')" class="center">
             <v-badge color="red messageCount" overlap>
               <template
                 v-slot:badge
@@ -113,9 +139,58 @@
               <span class="caption">{{ props.item.name }}</span>
             </a>
           </td>
-          <td>{{ showUserName ? props.item.user.name : "****" }}</td>
-          <td>{{ showUserLevel ? props.item.user.levelName : "****" }}</td>
-          <td class="number">
+          <td v-if="showColumn('user.name')" :title="props.item.user.id">
+            <template v-if="showUserName">
+              {{ props.item.user.name}}
+            </template>
+            <template v-else>
+              ****
+            </template>
+          </td>
+          <td v-if="showColumn('user.levelName')">
+            {{ showUserLevel ? props.item.user.levelName : "****" }}
+            <template v-if="showLevelRequirements">
+              <template v-if="props.item.levelRequirements">
+                <template v-if="props.item.user.nextLevel.name">
+                  <br/>
+                  <span style="color:blue;">
+                    <template v-if="props.item.user.nextLevel.requiredDate">{{ props.item.user.nextLevel.requiredDate }}&nbsp;</template>
+                  </span>
+                  <span style="color:red;">
+                    <template v-if="props.item.user.nextLevel.uploaded">{{ props.item.user.nextLevel.uploaded | formatSize }}<v-icon small color="red darken-4">file_upload</v-icon>&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.downloaded">{{ props.item.user.nextLevel.downloaded | formatSize }}<v-icon small color="red darken-4">file_download</v-icon>&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.trueDownloaded">{{ props.item.user.nextLevel.trueDownloaded | formatSize }}{{$t("home.levelRequirement.trueDownloaded")}}&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.bonus">{{ props.item.user.nextLevel.bonus | formatNumber }}{{$t("home.levelRequirement.bonus")}}&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.seedingPoints">{{ props.item.user.nextLevel.seedingPoints | formatNumber }}{{$t("home.levelRequirement.seedingPoints")}}&nbsp;</template>
+                    <template v-if="props.item.user.nextLevel.uploads">{{ props.item.user.nextLevel.uploads }}{{$t("home.levelRequirement.uploads")}}&nbsp;</template>
+                  </span>
+                </template>
+                <template v-else>
+                  <v-icon small color="green darken-4">done</v-icon>
+                </template>
+                <div class="levelRequirement">
+                  <template v-for="levelRequirement in props.item.levelRequirements">
+                    <template v-if="Number(props.item.user.nextLevel.level) > Number(levelRequirement.level)">
+                      <v-icon small color="green darken-4">done</v-icon>
+                    </template>
+                    <template v-else>
+                      <v-icon small color="red darken-4">block</v-icon>
+                    </template>
+                    <template v-if="levelRequirement.requiredDate">{{ levelRequirement.requiredDate }}</template>({{ levelRequirement.name }}):
+                    <template v-if="levelRequirement.uploaded">{{ levelRequirement.uploaded }}<v-icon small color="green darken-4">file_upload</v-icon>;</template>
+                    <template v-if="levelRequirement.uploads">{{$t("home.levelRequirement.uploads")}} {{ levelRequirement.uploads }};</template>
+                    <template v-if="levelRequirement.downloaded">{{ levelRequirement.downloaded }}<v-icon small color="red darken-4">file_download</v-icon>;</template>
+                    <template v-if="levelRequirement.trueDownloaded">{{$t("home.levelRequirement.trueDownloaded")}} {{ levelRequirement.trueDownloaded }};</template>
+                    <template v-if="levelRequirement.ratio">{{$t("home.levelRequirement.ratio")}} {{ levelRequirement.ratio }};</template>
+                    <template v-if="levelRequirement.bonus">{{$t("home.levelRequirement.bonus")}} {{ levelRequirement.bonus | formatNumber }};</template>
+                    <template v-if="levelRequirement.seedingPoints">{{$t("home.levelRequirement.seedingPoints")}} {{ levelRequirement.seedingPoints | formatNumber }};</template>
+                    {{levelRequirement.privilege}}<br />
+                  </template>
+                </div>
+              </template>
+            </template>
+          </td>
+          <td v-if="showColumn('user.uploaded')" class="number">
             <div>
               {{ props.item.user.uploaded | formatSize }}
               <v-icon small color="green darken-4">expand_less</v-icon>
@@ -125,15 +200,33 @@
               <v-icon small color="red darken-4">expand_more</v-icon>
             </div>
           </td>
-          <td class="number">{{ props.item.user.ratio | formatRatio }}</td>
-          <td class="number">{{ props.item.user.seeding }}</td>
-          <td class="number">{{ props.item.user.seedingSize | formatSize }}</td>
-          <td class="number">{{ props.item.user.bonus | formatNumber }}</td>
-          <td
+          <td v-if="showColumn('user.ratio')" class="number">{{ props.item.user.ratio | formatRatio }}</td>
+          <td v-if="showColumn('user.seeding')" class="number">{{ props.item.user.seeding }}</td>
+          <td v-if="showColumn('user.seedingSize')" class="number">{{ props.item.user.seedingSize | formatSize }}</td>
+          <td v-if="showColumn('user.bonus')" class="number">
+            <template v-if="showSeedingPoints && props.item.user.seedingPoints">                
+              <div>
+                魔力：{{ props.item.user.bonus | formatNumber }}
+              </div>
+              <div>
+                积分：{{ props.item.user.seedingPoints | formatNumber }}
+              </div>
+            </template>
+            <template v-else>
+              {{ props.item.user.bonus | formatNumber }}
+            </template>
+          </td>
+          <td v-if="showColumn('user.bonusPerHour')" class="number">
+            <template v-if="props.item.user.bonusPerHour">    
+              {{ props.item.user.bonusPerHour | formatNumber }}
+            </template>
+          </td>
+          <td v-if="showColumn('user.joinTime')"
             class="number"
-            :title="props.item.user.joinDateTime"
-          >{{ props.item.user.joinTime | timeAgo(showWeek) }}</td>
-          <td class="number">
+            :title="props.item.user.joinDateTime">
+            {{ props.item.user.joinTime | timeAgo(showWeek) }}
+          </td>
+          <td v-if="showColumn('user.lastUpdateTime')" class="number">
             <v-btn
               depressed
               small
@@ -141,7 +234,7 @@
               :title="$t('home.statistic')"
             >{{ props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</v-btn>
           </td>
-          <td class="center">
+          <td v-if="showColumn('user.lastUpdateStatus')" class="center">
             <v-progress-circular
               indeterminate
               :width="3"
@@ -209,6 +302,67 @@ export default Vue.extend({
     return {
       loading: false,
       items: [] as any[],
+      selectedHeaders: [] as any[],
+      headers:[
+        {
+          text: this.$t("home.headers.site"),
+          align: "center",
+          value: "name",
+          width: "110px"
+        },
+        {
+          text: this.$t("home.headers.userName"),
+          align: "left",
+          value: "user.name",
+        },
+        {
+          text: this.$t("home.headers.levelName"),
+          align: "left",
+          value: "user.levelName"
+        },
+        {
+          text: this.$t("home.headers.activitiyData"),
+          align: "right",
+          value: "user.uploaded",
+          width: "120px"
+        },
+        {
+          text: this.$t("home.headers.ratio"),
+          align: "right",
+          value: "user.ratio"
+        },
+        {
+          text: this.$t("home.headers.seeding"),
+          align: "right",
+          value: "user.seeding"
+        },
+        {
+          text: this.$t("home.headers.seedingSize"),
+          align: "right",
+          value: "user.seedingSize"
+        },
+        {
+          text: this.$t("home.headers.bonus"),
+          align: "right",
+          value: "user.bonus"
+        },
+        {
+          text: this.$t("home.headers.bonusPerHour"),
+          align: "right",
+          value: "user.bonusPerHour"
+        },
+        {
+          text: this.$t("home.headers.joinTime"),
+          align: "right",
+          value: "user.joinTime"
+        },
+        {
+          text: this.$t("home.headers.lastUpdateTime"),
+          align: "right",
+          value: "user.lastUpdateTime"
+        },
+        { text: this.$t("home.headers.status"), align: "center", value: "user.lastUpdateStatus" }
+      ],
       pagination: {
         rowsPerPage: -1
       },
@@ -224,11 +378,19 @@ export default Vue.extend({
       showUserName: true,
       showSiteName: true,
       showUserLevel: true,
+      showLevelRequirements: true,
+      showSeedingPoints: true,
       showWeek: false
     };
   },
   created() {
     this.init();
+  },
+  computed: {
+    //Done to get the ordered headers
+    showHeaders() : any[] {
+        return this.headers.filter(s => this.selectedHeaders.map(sh=>sh.value).includes(s.value));
+    }
   },
 
   /**
@@ -242,6 +404,14 @@ export default Vue.extend({
   },
 
   methods: {
+    showColumn(val : string){
+      for (var header of this.headers.filter(s => this.selectedHeaders.includes(s)))
+      {
+        if (header.value === val)
+          return true;
+      }
+      return false;
+    },
     resetSites() {
       this.sites = [];
       this.options.sites.forEach((site: Site) => {
@@ -282,9 +452,13 @@ export default Vue.extend({
         showUserName: true,
         showSiteName: true,
         showUserLevel: true,
-        showWeek: false
+        showLevelRequirements: true,
+        showSeedingPoints: true,
+        showWeek: false,
+        selectedHeaders: this.selectedHeaders
       });
       Object.assign(this, viewOptions);
+      this.selectedHeaders =  this.headers.filter(s => this.selectedHeaders.map(sh=>sh.value).includes(s.value));
     },
     getInfos() {
       this.loading = true;
@@ -366,6 +540,160 @@ export default Vue.extend({
       user.joinTime = PPF.transformTime(user.joinTime, site.timezoneOffset);
 
       user.joinDateTime = dayjs(user.joinTime).format("YYYY-MM-DD HH:mm:ss");
+
+      // 设置升级条件
+      try
+      {
+        if (site.levelRequirements)
+        {
+          user.nextLevel = {};
+          user.nextLevel.level = -1;
+          for (var levelRequirement of site.levelRequirements)
+          {
+            if (levelRequirement.requiredDate)
+              break;
+
+            if (levelRequirement.interval && user.joinDateTime)
+            {
+              levelRequirement.requiredDate = dayjs(user.joinDateTime).add(levelRequirement.interval as number, "week").format("YYYY-MM-DD");
+            } else
+             break;
+          }
+
+          for (var levelRequirement of site.levelRequirements)
+          {
+            if (levelRequirement.interval && user.joinDateTime)
+            {
+              let weeks = levelRequirement.interval as number;
+              let requiredDate = dayjs(user.joinDateTime).add(weeks, "week");
+              if (dayjs(new Date()).isBefore(requiredDate))
+              {
+                user.nextLevel.requiredDate = requiredDate.format("YYYY-MM-DD");
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.uploaded || (downloaded && levelRequirement.ratio))
+            {
+              let levelRequirementUploaded = levelRequirement.uploaded ? this.fileSizetoLength(levelRequirement.uploaded as string) : 0;
+              let requiredUploadedbyRatio = levelRequirement.ratio ? downloaded * levelRequirement.ratio : 0;
+              let requiredUploaded = Math.max(levelRequirementUploaded, requiredUploadedbyRatio);
+              if (uploaded < requiredUploaded)
+              {
+                user.nextLevel.uploaded = requiredUploaded - uploaded;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.downloaded)
+            {
+              let requiredDownloaded = this.fileSizetoLength(levelRequirement.downloaded as string);
+              if (downloaded < requiredDownloaded)
+              {
+                user.nextLevel.downloaded = requiredDownloaded - downloaded;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.ratio)
+            {
+              let userRatio = user.ratio as number
+              let requiredRatio = levelRequirement.ratio as number;
+              if (userRatio != -1 && userRatio < requiredRatio)
+              {
+                user.nextLevel.ratio = levelRequirement.ratio;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+            
+            if (levelRequirement.bonus)
+            {
+              let userBonus = user.bonus as number
+              let requiredBonus = levelRequirement.bonus as number
+              
+              if (userBonus < requiredBonus)
+              {
+                user.nextLevel.bonus = requiredBonus - userBonus
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.seedingPoints)
+            {
+              let userSeedingPoints = user.seedingPoints as number
+              let requiredSeedingPoints = levelRequirement.seedingPoints as number
+              if (userSeedingPoints < requiredSeedingPoints)
+              {
+                user.nextLevel.seedingPoints = requiredSeedingPoints - userSeedingPoints;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.uploads)
+            {
+              let userUploads = user.uploads as number
+              let requiredUploads = levelRequirement.uploads as number
+              if (userUploads < requiredUploads)
+              {
+                user.nextLevel.uploads = requiredUploads - userUploads;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.trueDownloaded)
+            {
+              let userTrueDownloaded = user.trueDownloaded ? user.trueDownloaded as number : 0;
+              let requiredTrueDownloaded = this.fileSizetoLength(levelRequirement.trueDownloaded as string);
+              if (userTrueDownloaded < requiredTrueDownloaded)
+              {
+                user.nextLevel.trueDownloaded = requiredTrueDownloaded - userTrueDownloaded;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+            
+            if (user.nextLevel.level as number > 0)
+            {
+              user.nextLevel.name = levelRequirement.name;
+              break;
+            }
+          }
+        }
+      } catch {}
+    },
+    /**
+     * @return {number}
+     */
+     fileSizetoLength(size: string | number): number {
+      if (typeof size == "number") {
+        return size;
+      }
+      let _size_raw_match = size
+        .replace(/,/g, "")
+        .trim()
+        .match(/^(\d*\.?\d+)(.*[^ZEPTGMK])?([ZEPTGMK](B|iB))$/i);
+      if (_size_raw_match) {
+        let _size_num = parseFloat(_size_raw_match[1]);
+        let _size_type = _size_raw_match[3];
+        switch (true) {
+          case /Zi?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 70);
+          case /Ei?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 60);
+          case /Pi?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 50);
+          case /Ti?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 40);
+          case /Gi?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 30);
+          case /Mi?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 20);
+          case /Ki?B/i.test(_size_type):
+            return _size_num * Math.pow(2, 10);
+          default:
+            return _size_num;
+        }
+      }
+      return 0;
     },
     /**
      * 获取站点用户信息
@@ -443,7 +771,10 @@ export default Vue.extend({
           showUserName: this.showUserName,
           showSiteName: this.showSiteName,
           showUserLevel: this.showUserLevel,
-          showWeek: this.showWeek
+          showLevelRequirements: this.showLevelRequirements,
+          showSeedingPoints: this.showSeedingPoints,
+          showWeek: this.showWeek,
+          selectedHeaders: this.selectedHeaders
         }
       });
     },
@@ -469,66 +800,6 @@ export default Vue.extend({
         return "";
       }
       return number.toFixed(2);
-    }
-  },
-
-  computed: {
-    headers(): Array<any> {
-      return [
-        {
-          text: this.$t("home.headers.site"),
-          align: "center",
-          value: "name",
-          width: "110px"
-        },
-        {
-          text: this.$t("home.headers.userName"),
-          align: "left",
-          value: "user.name"
-        },
-        {
-          text: this.$t("home.headers.levelName"),
-          align: "left",
-          value: "user.levelName"
-        },
-        {
-          text: this.$t("home.headers.activitiyData"),
-          align: "right",
-          value: "user.uploaded",
-          width: "120px"
-        },
-        {
-          text: this.$t("home.headers.ratio"),
-          align: "right",
-          value: "user.ratio"
-        },
-        {
-          text: this.$t("home.headers.seeding"),
-          align: "right",
-          value: "user.seeding"
-        },
-        {
-          text: this.$t("home.headers.seedingSize"),
-          align: "right",
-          value: "user.seedingSize"
-        },
-        {
-          text: this.$t("home.headers.bonus"),
-          align: "right",
-          value: "user.bonus"
-        },
-        {
-          text: this.$t("home.headers.joinTime"),
-          align: "right",
-          value: "user.joinTime"
-        },
-        {
-          text: this.$t("home.headers.lastUpdateTime"),
-          align: "right",
-          value: "user.lastUpdateTime"
-        },
-        { text: this.$t("home.headers.status"), align: "center", value: "user.lastUpdateStatus" }
-      ];
     }
   }
 });
@@ -565,6 +836,22 @@ export default Vue.extend({
     margin: 0;
     height: 30px;
     width: 30px;
+  }
+
+  td:hover div.levelRequirement {
+    display: block;
+  }
+
+  .levelRequirement{
+    position: absolute;
+    background-color: white;
+    display: none;
+    z-index: 999;
+    border: 1px solid black;
+  }
+
+  .select {
+    max-width: 180px;
   }
 }
 </style>

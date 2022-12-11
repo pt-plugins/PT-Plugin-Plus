@@ -1,7 +1,10 @@
 <template>
   <v-toolbar :color="baseColor" app fixed clipped-left id="system-topbar">
-    <v-toolbar-side-icon @click.stop="drawer = !drawer" :title="$t('topbar.navBarTip')"></v-toolbar-side-icon>
-    <v-toolbar-title style="width: 220px;" class="hidden-md-and-down">
+    <v-toolbar-side-icon
+      @click.stop="drawer = !drawer"
+      :title="$t('topbar.navBarTip')"
+    ></v-toolbar-side-icon>
+    <v-toolbar-title style="width: 220px" class="hidden-md-and-down">
       <span>{{ $t("topbar.title") }}</span>
     </v-toolbar-title>
     <SearchBox />
@@ -12,14 +15,16 @@
       :title="$t('topbar.showNewTorrentsTip')"
     >
       <v-icon>fiber_new</v-icon>
-      <span class="ml-2 hidden-md-and-down">{{ $t("topbar.showNewTorrents") }}</span>
+      <span class="ml-2 hidden-md-and-down">{{
+        $t("topbar.showNewTorrents")
+      }}</span>
     </v-btn>
 
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-xs-only">
       <v-btn
         flat
-        href="https://github.com/ronggang/PT-Plugin-Plus"
+        href="https://github.com/pt-plugins/PT-Plugin-Plus"
         target="_blank"
         class="grey--text text--darken-2"
         rel="noopener noreferrer nofollow"
@@ -30,7 +35,7 @@
       </v-btn>
       <v-btn
         flat
-        href="https://github.com/ronggang/PT-Plugin-Plus/wiki"
+        href="https://github.com/pt-plugins/PT-Plugin-Plus/wiki"
         target="_blank"
         class="grey--text text--darken-2"
         :title="$t('topbar.help')"
@@ -38,15 +43,6 @@
       >
         <v-icon>help</v-icon>
         <span class="ml-1">{{ $t("topbar.help") }}</span>
-      </v-btn>
-      <v-btn
-        flat
-        to="/donate"
-        class="grey--text text--darken-2"
-        :title="$t('navigation.support.donate')"
-      >
-        <v-icon>free_breakfast</v-icon>
-        <span class="ml-1">{{ $t("navigation.support.donate") }}</span>
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>

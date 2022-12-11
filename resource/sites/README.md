@@ -113,9 +113,9 @@
 ### 关于脚本及其他资源文件路径说明
 
 - 如果在第一个位置指定了 `/` ，则路径会被指向到：
-  - `https://github.com/ronggang/PT-Plugin-Plus/tree/master/resource/`
+  - `https://github.com/pt-plugins/PT-Plugin-Plus/tree/master/resource/`
 - 如果第一个位置不是 `/` ，则表示当前路径为该网站所在目录，如 `open.cd` 的指向目录为：
-  - `https://github.com/ronggang/PT-Plugin-Plus/tree/master/resource/sites/open.cd/`
+  - `https://github.com/pt-plugins/PT-Plugin-Plus/tree/master/resource/sites/open.cd/`
 
 ## 如何提交一个新的站点？
 
@@ -132,7 +132,7 @@
    - 最后在 `github` 仓库中发起一个 `PR(pull request)` 即可；
 
 2. 加入开发交流 QQ 群：773500545，把你的配置文件分享给我们吧；
-3. 通过 [该主题](https://github.com/ronggang/PT-Plugin-Plus/issues/30) 留言，按格式提交已测试可用的站点信息；
+3. 通过 [该主题](https://github.com/pt-plugins/PT-Plugin-Plus/issues/30) 留言，按格式提交已测试可用的站点信息；
 
 ## PR 参考资料
 

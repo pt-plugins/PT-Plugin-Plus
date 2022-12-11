@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-toolbar :color="baseColor" app fixed clipped-left id="system-topbar">
-      <v-toolbar-title style="width: 220px;" class="hidden-md-and-down">
+      <v-toolbar-title style="width: 220px" class="hidden-md-and-down">
         <span>Debugger Beta</span>
       </v-toolbar-title>
 
@@ -9,7 +9,7 @@
       <v-toolbar-items class="hidden-xs-only">
         <v-btn
           flat
-          href="https://github.com/ronggang/PT-Plugin-Plus/issues"
+          href="https://github.com/pt-plugins/PT-Plugin-Plus/issues"
           target="_blank"
           rel="noopener noreferrer nofollow"
         >
@@ -22,7 +22,7 @@
         <table>
           <tbody>
             <tr v-for="(item, index) in items" :key="index">
-              <td class="id">{{ index+1 }}</td>
+              <td class="id">{{ index + 1 }}</td>
               <td class="time">{{ item.time }}</td>
               <td class="msg">
                 <div>{{ item.msg }}</div>

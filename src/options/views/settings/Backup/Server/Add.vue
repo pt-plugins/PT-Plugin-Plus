@@ -3,13 +3,15 @@
     <v-dialog v-model="show" max-width="800">
       <v-card>
         <v-toolbar dark color="blue-grey darken-2">
-          <v-toolbar-title>{{ $t('settings.backup.server.add.title') }}</v-toolbar-title>
+          <v-toolbar-title>{{
+            $t("settings.backup.server.add.title")
+          }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn
             icon
             flat
             color="success"
-            href="https://github.com/ronggang/PT-Plugin-Plus/wiki/config-backup-server"
+            href="https://github.com/pt-plugins/PT-Plugin-Plus/wiki/config-backup-server"
             target="_blank"
             rel="noopener noreferrer nofollow"
             :title="$t('common.help')"
@@ -19,7 +21,12 @@
         </v-toolbar>
 
         <v-card-text class="body">
-          <Editor :type="type" :initData="selected" @change="change" :show="show" />
+          <Editor
+            :type="type"
+            :initData="selected"
+            @change="change"
+            :show="show"
+          />
         </v-card-text>
 
         <v-divider></v-divider>
@@ -28,11 +35,11 @@
           <v-spacer></v-spacer>
           <v-btn flat color="error" @click="cancel">
             <v-icon>cancel</v-icon>
-            <span class="ml-1">{{ $t('common.cancel') }}</span>
+            <span class="ml-1">{{ $t("common.cancel") }}</span>
           </v-btn>
           <v-btn flat color="success" @click="save" :disabled="!valid">
             <v-icon>check_circle_outline</v-icon>
-            <span class="ml-1">{{ $t('common.ok') }}</span>
+            <span class="ml-1">{{ $t("common.ok") }}</span>
           </v-btn>
         </v-card-actions>
       </v-card>

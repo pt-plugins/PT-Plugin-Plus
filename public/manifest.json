@@ -5,7 +5,7 @@
 	"description": "__MSG_manifest_appDescription__",
 	"manifest_version": 2,
 	"default_locale": "zh_CN",
-	"homepage_url": "https://github.com/ronggang/PT-Plugin-Plus",
+	"homepage_url": "https://github.com/pt-plugins/PT-Plugin-Plus",
 	"browser_action": {
 		"default_icon": "assets/icon-19.png",
 		"default_title": "__MSG_manifest_appName__"

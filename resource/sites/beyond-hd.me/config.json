@@ -13,11 +13,11 @@
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
     "resultSelector": "div.table-torrents > table:last",
-    "queryString": "search=$key$",
+    "queryString": "search=$key$&qty=100",
     "area": [{
       "name": "IMDB",
       "keyAutoMatch": "^(tt\\d+)$",
-      "queryString": "imdb=$key$"
+      "queryString": "imdb=$key$&qty=100"
     }],
     "fieldSelector": {
       "progress": {

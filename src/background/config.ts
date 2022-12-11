@@ -380,6 +380,13 @@ class Config {
             _site.patterns = systemSite.patterns;
           }
 
+          // 更新升级要求
+          if (!systemSite.levelRequirements && _site.levelRequirements) {
+            delete _site.levelRequirements;
+          } else {
+            _site.levelRequirements = systemSite.levelRequirements;
+          }
+
           // 合并系统定义的搜索入口
           if (_site.searchEntry && systemSite.searchEntry) {
             systemSite.searchEntry.forEach((sysEntry: SearchEntry) => {

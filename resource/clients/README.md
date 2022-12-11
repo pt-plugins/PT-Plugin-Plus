@@ -52,14 +52,14 @@
 
 * 客户端对象需对外暴露以下公用方法
   - `init` : 用于初始化客户端，接收一个参数：`options` 表示客户端定义的相关参数
-    - 属性参考 [common.ts](https://github.com/ronggang/PT-Plugin-Plus/blob/master/src/interface/common.ts) 的 `DownloadClient`
+    - 属性参考 [common.ts](https://github.com/pt-plugins/PT-Plugin-Plus/blob/master/src/interface/common.ts) 的 `DownloadClient`
   - `call` : 用于方法调用，接收两个参数：`action`, `data`，返回一个 `Promise` 对象
     - `action` : 字符串，需要执行的方法（动作）名称，方法说明：
       - `addTorrentFromURL` : 从指定的链接增加种子文件
       - `testClientConnectivity` : 测试当前客户端是否可连接
-      - 更多方法参考 [common.ts](https://github.com/ronggang/PT-Plugin-Plus/blob/master/src/interface/common.ts) 的 `EAction`
+      - 更多方法参考 [common.ts](https://github.com/pt-plugins/PT-Plugin-Plus/blob/master/src/interface/common.ts) 的 `EAction`
     - `data` : 任意类型，接收的数据，根据 `action` 不同，数据格式也不同
 
 - 在脚本中可用的系统对象
-  - `PTBackgroundService` : 助手后台服务程序，详情参考 [service.ts](https://github.com/ronggang/PT-Plugin-Plus/blob/master/src/background/service.ts)
-  - `PTSevriceFilters` : 系统定义的过滤器，详情参考 [filters.ts](https://github.com/ronggang/PT-Plugin-Plus/blob/master/src/service/filters.ts)
+  - `PTBackgroundService` : 助手后台服务程序，详情参考 [service.ts](https://github.com/pt-plugins/PT-Plugin-Plus/blob/master/src/background/service.ts)
+  - `PTSevriceFilters` : 系统定义的过滤器，详情参考 [filters.ts](https://github.com/pt-plugins/PT-Plugin-Plus/blob/master/src/service/filters.ts)

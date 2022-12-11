@@ -8,5 +8,9 @@
         "综合"
     ],
     "host": "aither.cc",
-    "collaborator": "MewX"
+    "collaborator": "MewX",
+    "searchEntryConfig": {
+        "merge": true,
+        "resultSelector": "#torrent-list-table"
+    }
 }

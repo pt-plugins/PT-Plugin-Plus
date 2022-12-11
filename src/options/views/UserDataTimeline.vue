@@ -64,7 +64,7 @@
             <v-timeline-item v-for="(site, i) in datas" :key="i" color="transparent" large>
               <template v-slot:icon>
                 <v-avatar size="38">
-                  <img :src="site.icon" :class="{'icon-blur': blurSiteIcon}"/>
+                  <img v-if="site.icon" :src="site.icon" :class="{'icon-blur': blurSiteIcon}"/>
                 </v-avatar>
               </template>
               <template v-slot:opposite>
@@ -152,6 +152,7 @@ import FileSaver from "file-saver";
 import domtoimage from 'dom-to-image';
 import Extension from "@/service/extension";
 import dayjs from "dayjs";
+import { PPF } from "@/service/public";
 
 const extension = new Extension();
 
@@ -191,10 +192,10 @@ export default Vue.extend({
       shareTime: new Date(),
       shareing: false,
       showUserName: true,
-      showSiteName: true,
+      showSiteName: false,
       showUserLevel: true,
       showUid: true,
-      blurSiteIcon: false,
+      blurSiteIcon: true,
       iconCache: {} as Dictionary<any>
     };
   },
@@ -253,6 +254,8 @@ export default Vue.extend({
  
         let user = site.user;
         if (user && user.name && user.joinTime) {
+          user.joinTime = PPF.transformTime(user.joinTime, site.timezoneOffset);  //add by pxwang for gpw jointime error
+          
           sites.push(site);
           if (!userNames[user.name]) {
             userNames[user.name] = 0;

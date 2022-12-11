@@ -147,12 +147,12 @@
         for (let index = beginRowIndex; index < rows.length; index++) {
           const row = rows.eq(index);
 
-          // FIX https://github.com/ronggang/PT-Plugin-Plus/issues/347
+          // FIX https://github.com/pt-plugins/PT-Plugin-Plus/issues/347
           row.attr('id') === 'zhiding' && row.removeAttr('id');
 
           let cells = row.find(">td");
 
-          let title = this.getTitle(row,cells,fieldIndex);
+          let title = this.getTitle(row, cells, fieldIndex);
 
           // 没有获取标题时，继续下一个
           if (title.length == 0) {
@@ -167,7 +167,7 @@
           }
 
           // 获取下载链接
-          let url = this.getDownloadLink(row,link);
+          let url = this.getDownloadLink(row, link);
           if (url && url.substr(0, 2) === "//") {
             // 适配HUDBT、WHU这样以相对链接开头
             url = `${site_url_help.protocol}://${url}`;
@@ -269,7 +269,7 @@
       if (options.site.host === "pt.sjtu.edu.cn") {
         if (time.match(/\d+[分时天月年]/g)) {
           time = Date.now() - this._parseTime(time)
-          time = new Date(time).toLocaleString("zh-CN", {hour12: false}).replace(/\//g, '-')
+          time = new Date(time).toLocaleString("zh-CN", { hour12: false }).replace(/\//g, '-')
         }
       }
       return time || "";
@@ -423,7 +423,7 @@
             url = url_another.attr('action')
             break;
           }
-          
+
         }
 
         default: {

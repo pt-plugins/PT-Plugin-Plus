@@ -6,5 +6,9 @@
     "icon": "https://hawke.uno/favicon.ico",
     "tags": ["影视"],
     "host": "hawke.unoz",
-    "collaborator": ["fzlins"]
+    "collaborator": ["fzlins"],
+    "searchEntryConfig": {
+        "merge": true,
+        "resultSelector": "#torrent-list-table"
+    }
 }

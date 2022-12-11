@@ -29,7 +29,7 @@
           icon
           flat
           color="success"
-          href="https://github.com/ronggang/PT-Plugin-Plus/wiki/keep-upload-task"
+          href="https://github.com/pt-plugins/PT-Plugin-Plus/wiki/keep-upload-task"
           target="_blank"
           rel="noopener noreferrer nofollow"
           :title="$t('common.help')"
@@ -37,7 +37,7 @@
           <v-icon>help</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-card-text style="max-height: 80vh;">
+      <v-card-text style="max-height: 80vh">
         <v-list two-line subheader dense>
           <template v-for="(item, index) in verifiedItems">
             <v-subheader v-if="index == 0" :key="index">{{
@@ -78,9 +78,9 @@
                     icon
                     v-if="
                       verifiedItems[0].verified &&
-                        !item.loading &&
-                        !item.verified &&
-                        index > 0
+                      !item.loading &&
+                      !item.verified &&
+                      index > 0
                     "
                     :title="$t('keepUploadTask.addToKeepUpload')"
                     @click.stop="addToVerified(item)"
@@ -93,7 +93,7 @@
                     <v-icon color="success" v-if="item.verified"
                       >done_all</v-icon
                     >
-                    <v-icon color="error" v-else>clear</v-icon>
+                    <v-icon color="error" v-on:click.prevent="deleteVerifiedItem(index)" v-else>clear</v-icon>
                   </v-btn>
                 </div>
               </v-list-tile-action>
@@ -206,7 +206,7 @@ export default Vue.extend({
       }
     }
   },
-  mounted() {},
+  mounted() { },
   watch: {
     dialog() {
       if (this.dialog) {
@@ -221,6 +221,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    deleteVerifiedItem(index: number){
+      this.$delete(this.verifiedItems, index);
+    },
     setDownloadOptions(options: any) {
       console.log(options);
       this.downloadOptions = options.downloadOptions;
