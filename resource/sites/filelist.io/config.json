@@ -16,6 +16,32 @@
     "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
   }],
   "host": "filelist.io",
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Power User",
+      "interval": "4",
+      "downloaded": "25GB",
+      "ratio": "1.05",
+      "privilege": "It can download DOX files larger than 1MB. This class has the right to apply to uploader status."
+    },
+    {
+      "level": 2,
+      "name": "Addict",
+      "interval": "26",
+      "downloaded": "500GB",
+      "ratio": "4.00",
+      "privilege": "This class has the right to request a Custom Title. This class is entitled to requests."
+    },
+    {
+      "level": 3,
+      "name": "Elite",
+      "interval": "209",
+      "downloaded": "4TB",
+      "ratio": "5.00",
+      "privilege": "This class gives you the right to give reputation to other users."
+    }
+  ],
   "searchEntryConfig": {
     "page": "/browse.php",
     "queryString": "search=$key$&cat=0&searchin=1&sort=2",
