@@ -1,6 +1,6 @@
 /**
  * @see https://global.download.synology.com/download/Document/DeveloperGuide/Synology_Download_Station_Web_API.pdf
- * @backport https://github.com/ronggang/PT-Plugin-Plus/blob/48c2d42a1d05c129c0abbbecf653b1b7d88a8a8e/src/resource/btClients/src/clients/synologyDownloadStation.ts
+ * @backport https://github.com/pt-plugins/PT-Plugin-Plus/blob/48c2d42a1d05c129c0abbbecf653b1b7d88a8a8e/src/resource/btClients/src/clients/synologyDownloadStation.ts
  */
 (function ($, window) {
   class Client {
@@ -69,7 +69,7 @@
             });
             break;
 
-            // 测试是否可连接
+          // 测试是否可连接
           case "testClientConnectivity":
             this.getSessionId().then(result => {
               resolve(result != "");
@@ -134,7 +134,7 @@
             if (Array.isArray(v)) {
               v = JSON.stringify(v);
             }
-            formData.append(k,v);
+            formData.append(k, v);
           }
         });
 

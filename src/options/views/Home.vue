@@ -3,11 +3,20 @@
     <v-alert :value="true" type="info">{{ $t("home.title") }}</v-alert>
     <v-card>
       <v-card-title v-if="sites && sites.length > 0">
-        <v-btn color="success" @click="getInfos" :loading="loading" :title="$t('home.getInfos')">
+        <v-btn
+          color="success"
+          @click="getInfos"
+          :loading="loading"
+          :title="$t('home.getInfos')"
+        >
           <v-icon class="mr-2">cached</v-icon>
           {{ $t("home.getInfos") }}
         </v-btn>
-        <v-btn to="/user-data-timeline" color="success" :title="$t('home.timeline')">
+        <v-btn
+          to="/user-data-timeline"
+          color="success"
+          :title="$t('home.timeline')"
+        >
           <v-icon>timeline</v-icon>
         </v-btn>
 
@@ -63,17 +72,25 @@
             </v-container>
           </v-card>
         </v-menu>
-        <v-select v-model="selectedHeaders" class="select" :items="headers" :label="$t('home.selectColumns')" multiple outlined return-object>
-            <template v-slot:selection="{ item, index }">
-              <v-chip v-if="index === 0">
-                <span>{{ item.text }}</span>
-              </v-chip>
-              <span
-                v-if="index === 1"
-                class="grey--text caption"
-              >(+{{ selectedHeaders.length - 1 }} others)</span>
-            </template>
-         </v-select>
+        <v-select
+          v-model="selectedHeaders"
+          class="select"
+          :items="headers"
+          :label="$t('home.selectColumns')"
+          @change="updateViewOptions"
+          multiple
+          outlined
+          return-object
+        >
+          <template v-slot:selection="{ item, index }">
+            <v-chip v-if="index === 0">
+              <span>{{ item.text }}</span>
+            </v-chip>
+            <span v-if="index === 1" class="grey--text caption"
+              >(+{{ selectedHeaders.length - 1 }} others)</span
+            >
+          </template>
+        </v-select>
 
         <!-- <AutoSignWarning /> -->
         <v-spacer></v-spacer>
@@ -105,10 +122,17 @@
             <v-badge color="red messageCount" overlap>
               <template
                 v-slot:badge
-                v-if="!props.item.disableMessageCount && props.item.user.messageCount > 0"
+                v-if="
+                  !props.item.disableMessageCount &&
+                  props.item.user.messageCount > 0
+                "
                 :title="$t('home.newMessage')"
               >
-                {{ props.item.user.messageCount > 10 ? "" : props.item.user.messageCount }}
+                {{
+                  props.item.user.messageCount > 10
+                    ? ""
+                    : props.item.user.messageCount
+                }}
               </template>
               <v-btn
                 flat
@@ -137,28 +161,57 @@
           </td>
           <td v-if="showColumn('user.name')" :title="props.item.user.id">
             <template v-if="showUserName">
-              {{ props.item.user.name}}
+              {{ props.item.user.name }}
             </template>
-            <template v-else>
-              ****
-            </template>
+            <template v-else> **** </template>
           </td>
           <td v-if="showColumn('user.levelName')">
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
               <template v-if="props.item.levelRequirements">
                 <template v-if="props.item.user.nextLevel.name">
-                  <br/>
-                  <span style="color:blue;">
-                    <template v-if="props.item.user.nextLevel.requiredDate">{{ props.item.user.nextLevel.requiredDate }}&nbsp;</template>
+                  <br />
+                  <span style="color: blue">
+                    <template v-if="props.item.user.nextLevel.requiredDate"
+                      >{{
+                        props.item.user.nextLevel.requiredDate
+                      }}&nbsp;</template
+                    >
                   </span>
-                  <span style="color:red;">
-                    <template v-if="props.item.user.nextLevel.uploaded">{{ props.item.user.nextLevel.uploaded | formatSize }}<v-icon small color="red darken-4">file_upload</v-icon>&nbsp;</template>
-                    <template v-if="props.item.user.nextLevel.downloaded">{{ props.item.user.nextLevel.downloaded | formatSize }}<v-icon small color="red darken-4">file_download</v-icon>&nbsp;</template>
-                    <template v-if="props.item.user.nextLevel.trueDownloaded">{{ props.item.user.nextLevel.trueDownloaded | formatSize }}{{$t("home.levelRequirement.trueDownloaded")}}&nbsp;</template>
-                    <template v-if="props.item.user.nextLevel.bonus">{{ props.item.user.nextLevel.bonus | formatNumber }}{{$t("home.levelRequirement.bonus")}}&nbsp;</template>
-                    <template v-if="props.item.user.nextLevel.seedingPoints">{{ props.item.user.nextLevel.seedingPoints | formatNumber }}{{$t("home.levelRequirement.seedingPoints")}}&nbsp;</template>
-                    <template v-if="props.item.user.nextLevel.uploads">{{ props.item.user.nextLevel.uploads }}{{$t("home.levelRequirement.uploads")}}&nbsp;</template>
+                  <span style="color: red">
+                    <template v-if="props.item.user.nextLevel.uploaded"
+                      >{{ props.item.user.nextLevel.uploaded | formatSize
+                      }}<v-icon small color="red darken-4">file_upload</v-icon
+                      >&nbsp;</template
+                    >
+                    <template v-if="props.item.user.nextLevel.downloaded"
+                      >{{ props.item.user.nextLevel.downloaded | formatSize
+                      }}<v-icon small color="red darken-4">file_download</v-icon
+                      >&nbsp;</template
+                    >
+                    <template v-if="props.item.user.nextLevel.trueDownloaded"
+                      >{{ props.item.user.nextLevel.trueDownloaded | formatSize
+                      }}{{
+                        $t("home.levelRequirement.trueDownloaded")
+                      }}&nbsp;</template
+                    >
+                    <template v-if="props.item.user.nextLevel.bonus"
+                      >{{ props.item.user.nextLevel.bonus | formatNumber
+                      }}{{ $t("home.levelRequirement.bonus") }}&nbsp;</template
+                    >
+                    <template v-if="props.item.user.nextLevel.seedingPoints"
+                      >{{
+                        props.item.user.nextLevel.seedingPoints | formatNumber
+                      }}{{
+                        $t("home.levelRequirement.seedingPoints")
+                      }}&nbsp;</template
+                    >
+                    <template v-if="props.item.user.nextLevel.uploads"
+                      >{{ props.item.user.nextLevel.uploads
+                      }}{{
+                        $t("home.levelRequirement.uploads")
+                      }}&nbsp;</template
+                    >
                   </span>
                 </template>
                 <template v-else>
@@ -172,15 +225,43 @@
                     <template v-else>
                       <v-icon small color="red darken-4">block</v-icon>
                     </template>
-                    <template v-if="levelRequirement.requiredDate">{{ levelRequirement.requiredDate }}</template>({{ levelRequirement.name }}):
-                    <template v-if="levelRequirement.uploaded">{{ levelRequirement.uploaded }}<v-icon small color="green darken-4">file_upload</v-icon>;</template>
-                    <template v-if="levelRequirement.uploads">{{$t("home.levelRequirement.uploads")}} {{ levelRequirement.uploads }};</template>
-                    <template v-if="levelRequirement.downloaded">{{ levelRequirement.downloaded }}<v-icon small color="red darken-4">file_download</v-icon>;</template>
-                    <template v-if="levelRequirement.trueDownloaded">{{$t("home.levelRequirement.trueDownloaded")}} {{ levelRequirement.trueDownloaded }};</template>
-                    <template v-if="levelRequirement.ratio">{{$t("home.levelRequirement.ratio")}} {{ levelRequirement.ratio }};</template>
-                    <template v-if="levelRequirement.bonus">{{$t("home.levelRequirement.bonus")}} {{ levelRequirement.bonus | formatNumber }};</template>
-                    <template v-if="levelRequirement.seedingPoints">{{$t("home.levelRequirement.seedingPoints")}} {{ levelRequirement.seedingPoints | formatNumber }};</template>
-                    {{levelRequirement.privilege}}<br />
+                    <template v-if="levelRequirement.requiredDate">{{
+                      levelRequirement.requiredDate
+                    }}</template
+                    >({{ levelRequirement.name }}):
+                    <template v-if="levelRequirement.uploaded"
+                      >{{ levelRequirement.uploaded
+                      }}<v-icon small color="green darken-4">file_upload</v-icon
+                      >;</template
+                    >
+                    <template v-if="levelRequirement.uploads"
+                      >{{ $t("home.levelRequirement.uploads") }}
+                      {{ levelRequirement.uploads }};</template
+                    >
+                    <template v-if="levelRequirement.downloaded"
+                      >{{ levelRequirement.downloaded
+                      }}<v-icon small color="red darken-4">file_download</v-icon
+                      >;</template
+                    >
+                    <template v-if="levelRequirement.trueDownloaded"
+                      >{{ $t("home.levelRequirement.trueDownloaded") }}
+                      {{ levelRequirement.trueDownloaded }};</template
+                    >
+                    <template v-if="levelRequirement.ratio"
+                      >{{ $t("home.levelRequirement.ratio") }}
+                      {{ levelRequirement.ratio }};</template
+                    >
+                    <template v-if="levelRequirement.bonus"
+                      >{{ $t("home.levelRequirement.bonus") }}
+                      {{ levelRequirement.bonus | formatNumber }};</template
+                    >
+                    <template v-if="levelRequirement.seedingPoints"
+                      >{{ $t("home.levelRequirement.seedingPoints") }}
+                      {{
+                        levelRequirement.seedingPoints | formatNumber
+                      }};</template
+                    >
+                    {{ levelRequirement.privilege }}<br />
                   </template>
                 </div>
               </template>
@@ -196,14 +277,18 @@
               <v-icon small color="red darken-4">expand_more</v-icon>
             </div>
           </td>
-          <td v-if="showColumn('user.ratio')" class="number">{{ props.item.user.ratio | formatRatio }}</td>
-          <td v-if="showColumn('user.seeding')" class="number">{{ props.item.user.seeding }}</td>
-          <td v-if="showColumn('user.seedingSize')" class="number">{{ props.item.user.seedingSize | formatSize }}</td>
+          <td v-if="showColumn('user.ratio')" class="number">
+            {{ props.item.user.ratio | formatRatio }}
+          </td>
+          <td v-if="showColumn('user.seeding')" class="number">
+            {{ props.item.user.seeding }}
+          </td>
+          <td v-if="showColumn('user.seedingSize')" class="number">
+            {{ props.item.user.seedingSize | formatSize }}
+          </td>
           <td v-if="showColumn('user.bonus')" class="number">
-            <template v-if="showSeedingPoints && props.item.user.seedingPoints">                
-              <div>
-                魔力：{{ props.item.user.bonus | formatNumber }}
-              </div>
+            <template v-if="showSeedingPoints && props.item.user.seedingPoints">
+              <div>魔力：{{ props.item.user.bonus | formatNumber }}</div>
               <div>
                 积分：{{ props.item.user.seedingPoints | formatNumber }}
               </div>
@@ -213,13 +298,15 @@
             </template>
           </td>
           <td v-if="showColumn('user.bonusPerHour')" class="number">
-            <template v-if="props.item.user.bonusPerHour">    
+            <template v-if="props.item.user.bonusPerHour">
               {{ props.item.user.bonusPerHour | formatNumber }}
             </template>
           </td>
-          <td v-if="showColumn('user.joinTime')"
+          <td
+            v-if="showColumn('user.joinTime')"
             class="number"
-            :title="props.item.user.joinDateTime">
+            :title="props.item.user.joinDateTime"
+          >
             {{ props.item.user.joinTime | timeAgo(showWeek) }}
           </td>
           <td v-if="showColumn('user.lastUpdateTime')" class="number">
@@ -228,7 +315,11 @@
               small
               :to="`statistic/${props.item.host}`"
               :title="$t('home.statistic')"
-            >{{ props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</v-btn>
+              >{{
+                props.item.user.lastUpdateTime
+                  | formatDate("YYYY-MM-DD HH:mm:ss")
+              }}</v-btn
+            >
           </td>
           <td v-if="showColumn('user.lastUpdateStatus')" class="center">
             <v-progress-circular
@@ -244,7 +335,8 @@
                 color="red"
                 small
                 :title="$t('home.cancelRequest')"
-              >cancel</v-icon>
+                >cancel</v-icon
+              >
             </v-progress-circular>
             <span v-else>
               <a
@@ -253,7 +345,8 @@
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 class="nodecoration"
-              >{{ formatError(props.item.user) }}</a>
+                >{{ formatError(props.item.user) }}</a
+              >
               <span v-else>{{ formatError(props.item.user) }}</span>
             </span>
           </td>
@@ -299,7 +392,7 @@ export default Vue.extend({
       loading: false,
       items: [] as any[],
       selectedHeaders: [] as any[],
-      headers:[
+      headers: [
         {
           text: this.$t("home.headers.site"),
           align: "center",
@@ -310,7 +403,6 @@ export default Vue.extend({
           text: this.$t("home.headers.userName"),
           align: "left",
           value: "user.name",
-          width: ""
         },
         {
           text: this.$t("home.headers.levelName"),
@@ -381,28 +473,12 @@ export default Vue.extend({
     };
   },
   created() {
-    let saveHeaders = localStorage.getItem("HomeHeaders");
-console.log(saveHeaders)
-    if (saveHeaders && saveHeaders.length > 1)
-    {
-      let homeHeaders = saveHeaders.split(";");
-      this.selectedHeaders =  this.headers.filter(s => homeHeaders.includes(s.value))
-    }
-    else
-      this.selectedHeaders = this.headers
     this.init();
   },
   computed: {
     //Done to get the ordered headers
-    showHeaders() : any[] {
-      var saveHeaders = "";
-      for (var header of this.headers.filter(s => this.selectedHeaders.includes(s)))
-      {
-        saveHeaders += ";"+ header.value;
-      }
-
-      localStorage.setItem('HomeHeaders', saveHeaders)
-      return this.headers.filter(s => this.selectedHeaders.includes(s));
+    showHeaders(): any[] {
+      return this.headers.filter(s => this.selectedHeaders.map(sh => sh.value).includes(s.value));
     }
   },
 
@@ -417,9 +493,8 @@ console.log(saveHeaders)
   },
 
   methods: {
-    showColumn(val : string){
-      for (var header of this.headers.filter(s => this.selectedHeaders.includes(s)))
-      {
+    showColumn(val: string) {
+      for (var header of this.headers.filter(s => this.selectedHeaders.includes(s))) {
         if (header.value === val)
           return true;
       }
@@ -467,9 +542,14 @@ console.log(saveHeaders)
         showUserLevel: true,
         showLevelRequirements: true,
         showSeedingPoints: true,
-        showWeek: false
+        showWeek: false,
+        selectedHeaders: this.selectedHeaders
       });
       Object.assign(this, viewOptions);
+      this.selectedHeaders = this.headers.filter(s => this.selectedHeaders.map(sh => sh.value).includes(s.value));
+      if (this.selectedHeaders.length == 0) {
+        this.selectedHeaders = Object.assign([], this.headers);
+      }
     },
     getInfos() {
       this.loading = true;
@@ -553,128 +633,106 @@ console.log(saveHeaders)
       user.joinDateTime = dayjs(user.joinTime).format("YYYY-MM-DD HH:mm:ss");
 
       // 设置升级条件
-      try
-      {
-        if (site.levelRequirements)
-        {
+      try {
+        if (site.levelRequirements) {
           user.nextLevel = {};
           user.nextLevel.level = -1;
-          for (var levelRequirement of site.levelRequirements)
-          {
+          for (var levelRequirement of site.levelRequirements) {
             if (levelRequirement.requiredDate)
               break;
 
-            if (levelRequirement.interval && user.joinDateTime)
-            {
+            if (levelRequirement.interval && user.joinDateTime) {
               levelRequirement.requiredDate = dayjs(user.joinDateTime).add(levelRequirement.interval as number, "week").format("YYYY-MM-DD");
             } else
-             break;
+              break;
           }
 
-          for (var levelRequirement of site.levelRequirements)
-          {
-            if (levelRequirement.interval && user.joinDateTime)
-            {
+          for (var levelRequirement of site.levelRequirements) {
+            if (levelRequirement.interval && user.joinDateTime) {
               let weeks = levelRequirement.interval as number;
               let requiredDate = dayjs(user.joinDateTime).add(weeks, "week");
-              if (dayjs(new Date()).isBefore(requiredDate))
-              {
+              if (dayjs(new Date()).isBefore(requiredDate)) {
                 user.nextLevel.requiredDate = requiredDate.format("YYYY-MM-DD");
                 user.nextLevel.level = levelRequirement.level;
               }
             }
 
-            if (levelRequirement.uploaded || (downloaded && levelRequirement.ratio))
-            {
+            if (levelRequirement.uploaded || (downloaded && levelRequirement.ratio)) {
               let levelRequirementUploaded = levelRequirement.uploaded ? this.fileSizetoLength(levelRequirement.uploaded as string) : 0;
               let requiredUploadedbyRatio = levelRequirement.ratio ? downloaded * levelRequirement.ratio : 0;
               let requiredUploaded = Math.max(levelRequirementUploaded, requiredUploadedbyRatio);
-              if (uploaded < requiredUploaded)
-              {
+              if (uploaded < requiredUploaded) {
                 user.nextLevel.uploaded = requiredUploaded - uploaded;
                 user.nextLevel.level = levelRequirement.level;
               }
             }
 
-            if (levelRequirement.downloaded)
-            {
+            if (levelRequirement.downloaded) {
               let requiredDownloaded = this.fileSizetoLength(levelRequirement.downloaded as string);
-              if (downloaded < requiredDownloaded)
-              {
+              if (downloaded < requiredDownloaded) {
                 user.nextLevel.downloaded = requiredDownloaded - downloaded;
                 user.nextLevel.level = levelRequirement.level;
               }
             }
 
-            if (levelRequirement.ratio)
-            {
+            if (levelRequirement.ratio) {
               let userRatio = user.ratio as number
               let requiredRatio = levelRequirement.ratio as number;
-              if (userRatio != -1 && userRatio < requiredRatio)
-              {
+              if (userRatio != -1 && userRatio < requiredRatio) {
                 user.nextLevel.ratio = levelRequirement.ratio;
                 user.nextLevel.level = levelRequirement.level;
               }
             }
-            
-            if (levelRequirement.bonus)
-            {
+
+            if (levelRequirement.bonus) {
               let userBonus = user.bonus as number
               let requiredBonus = levelRequirement.bonus as number
-              
-              if (userBonus < requiredBonus)
-              {
+
+              if (userBonus < requiredBonus) {
                 user.nextLevel.bonus = requiredBonus - userBonus
                 user.nextLevel.level = levelRequirement.level;
               }
             }
 
-            if (levelRequirement.seedingPoints)
-            {
+            if (levelRequirement.seedingPoints) {
               let userSeedingPoints = user.seedingPoints as number
               let requiredSeedingPoints = levelRequirement.seedingPoints as number
-              if (userSeedingPoints < requiredSeedingPoints)
-              {
+              if (userSeedingPoints < requiredSeedingPoints) {
                 user.nextLevel.seedingPoints = requiredSeedingPoints - userSeedingPoints;
                 user.nextLevel.level = levelRequirement.level;
               }
             }
 
-            if (levelRequirement.uploads)
-            {
+            if (levelRequirement.uploads) {
               let userUploads = user.uploads as number
               let requiredUploads = levelRequirement.uploads as number
-              if (userUploads < requiredUploads)
-              {
+              if (userUploads < requiredUploads) {
                 user.nextLevel.uploads = requiredUploads - userUploads;
                 user.nextLevel.level = levelRequirement.level;
               }
             }
 
-            if (levelRequirement.trueDownloaded)
-            {
+            if (levelRequirement.trueDownloaded) {
               let userTrueDownloaded = user.trueDownloaded ? user.trueDownloaded as number : 0;
               let requiredTrueDownloaded = this.fileSizetoLength(levelRequirement.trueDownloaded as string);
-              if (userTrueDownloaded < requiredTrueDownloaded)
-              {
+              if (userTrueDownloaded < requiredTrueDownloaded) {
                 user.nextLevel.trueDownloaded = requiredTrueDownloaded - userTrueDownloaded;
                 user.nextLevel.level = levelRequirement.level;
               }
             }
-            
-            if (user.nextLevel.level as number > 0)
-            {
+
+            if (user.nextLevel.level as number > 0) {
               user.nextLevel.name = levelRequirement.name;
               break;
             }
           }
         }
-      } catch {}
+      } catch { }
     },
     /**
      * @return {number}
      */
-     fileSizetoLength(size: string | number): number {
+    fileSizetoLength(size: string | number): number {
       if (typeof size == "number") {
         return size;
       }
@@ -784,7 +842,8 @@ console.log(saveHeaders)
           showUserLevel: this.showUserLevel,
           showLevelRequirements: this.showLevelRequirements,
           showSeedingPoints: this.showSeedingPoints,
-          showWeek: this.showWeek
+          showWeek: this.showWeek,
+          selectedHeaders: this.selectedHeaders
         }
       });
     },
@@ -852,7 +911,7 @@ console.log(saveHeaders)
     display: block;
   }
 
-  .levelRequirement{
+  .levelRequirement {
     position: absolute;
     background-color: white;
     display: none;

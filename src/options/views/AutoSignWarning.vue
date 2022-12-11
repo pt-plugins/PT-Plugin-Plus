@@ -26,7 +26,7 @@
           icon
           flat
           color="success"
-          href="https://github.com/ronggang/PT-Plugin-Plus/wiki/frequently-asked-questions#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8A%A9%E6%89%8B%E6%B2%A1%E6%9C%89%E8%87%AA%E5%8A%A8%E7%AD%BE%E5%88%B0%E5%8A%9F%E8%83%BD"
+          href="https://github.com/pt-plugins/PT-Plugin-Plus/wiki/frequently-asked-questions#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8A%A9%E6%89%8B%E6%B2%A1%E6%9C%89%E8%87%AA%E5%8A%A8%E7%AD%BE%E5%88%B0%E5%8A%9F%E8%83%BD"
           target="_blank"
           rel="noopener noreferrer nofollow"
           :title="$t('common.help')"
@@ -34,7 +34,7 @@
           <v-icon>help</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-card-text style="max-height: 80vh;" class="pa-0">
+      <v-card-text style="max-height: 80vh" class="pa-0">
         <v-alert :value="true" color="warning" class="ma-0">
           <div>
             感谢您使用助手，抱歉这里没有自动签到功能，如果您愿意，请阅读以下内容：

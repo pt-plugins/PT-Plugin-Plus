@@ -390,7 +390,7 @@ export enum EPluginPosition {
  * 相关Wiki链接
  */
 export enum EWikiLink {
-  faq = "https://github.com/ronggang/PT-Plugin-Plus/wiki/frequently-asked-questions"
+  faq = "https://github.com/pt-plugins/PT-Plugin-Plus/wiki/frequently-asked-questions"
 }
 
 /**

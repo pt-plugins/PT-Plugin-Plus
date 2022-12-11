@@ -1,30 +1,42 @@
 <template>
   <div>
-    <v-alert :value="true" type="info">{{ $t("keepUploadTask.title") }}</v-alert>
+    <v-alert :value="true" type="info">{{
+      $t("keepUploadTask.title")
+    }}</v-alert>
     <v-card>
       <v-card-title>
-        <v-btn color="error" :disabled="selected.length==0" @click="removeSelected">
+        <v-btn
+          color="error"
+          :disabled="selected.length == 0"
+          @click="removeSelected"
+        >
           <v-icon class="mr-2">remove</v-icon>
           {{ $t("common.remove") }}
         </v-btn>
 
-        <v-btn color="error" @click="clear" :disabled="items.length==0">
+        <v-btn color="error" @click="clear" :disabled="items.length == 0">
           <v-icon class="mr-2">clear</v-icon>
           {{ $t("common.clear") }}
         </v-btn>
 
         <v-btn
           color="info"
-          href="https://github.com/ronggang/PT-Plugin-Plus/wiki/keep-upload-task"
+          href="https://github.com/pt-plugins/PT-Plugin-Plus/wiki/keep-upload-task"
           target="_blank"
           rel="noopener noreferrer nofollow"
         >
           <v-icon class="mr-2">help</v-icon>
-          {{ $t('settings.searchSolution.index.help') }}
+          {{ $t("settings.searchSolution.index.help") }}
         </v-btn>
         <v-spacer></v-spacer>
 
-        <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+        <v-text-field
+          class="search"
+          append-icon="search"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
       </v-card-title>
 
       <v-data-table
@@ -38,8 +50,12 @@
       >
         <template slot="items" slot-scope="props">
           <tr @click="props.expanded = !props.expanded">
-            <td style="width:20px;">
-              <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+            <td style="width: 20px">
+              <v-checkbox
+                v-model="props.selected"
+                primary
+                hide-details
+              ></v-checkbox>
             </td>
             <td class="text-xs-center">
               <v-avatar size="18">
@@ -59,11 +75,18 @@
                 rel="noopener noreferrer nofollow"
               ></a>
               <div class="body-1 mb-2">
-                <span v-if="props.item.items[0].subTitle">{{props.item.items[0].subTitle}}</span>
+                <span v-if="props.item.items[0].subTitle">{{
+                  props.item.items[0].subTitle
+                }}</span>
               </div>
 
               <div class="caption">
-                {{ $t("keepUploadTask.savePath") }}{{ props.item.downloadOptions.clientName }} -> {{ props.item.downloadOptions.savePath || $t("keepUploadTask.defaultPath")}}
+                {{ $t("keepUploadTask.savePath")
+                }}{{ props.item.downloadOptions.clientName }} ->
+                {{
+                  props.item.downloadOptions.savePath ||
+                  $t("keepUploadTask.defaultPath")
+                }}
                 <DownloadTo
                   flat
                   icon
@@ -76,9 +99,10 @@
                   :downloadOptions="props.item.items[0]"
                 />
               </div>
-              <div
-                class="caption"
-              >{{ $t('keepUploadTask.torrentCount') }}{{ props.item.items.length }}</div>
+              <div class="caption">
+                {{ $t("keepUploadTask.torrentCount")
+                }}{{ props.item.items.length }}
+              </div>
             </td>
             <!-- 大小 -->
             <td class="text-xs-right">{{ props.item.size | formatSize }}</td>
@@ -149,7 +173,7 @@
 
         <template slot="expand" slot-scope="props">
           <v-list subheader dense class="ml-5">
-            <template v-for="(item) in props.item.items">
+            <template v-for="item in props.item.items">
               <v-list-tile :key="item.link" class="ml-5">
                 <v-list-tile-avatar>
                   <v-avatar size="18">
@@ -167,7 +191,9 @@
                       rel="noopener noreferrer nofollow"
                     ></a>
                   </v-list-tile-title>
-                  <v-list-tile-sub-title>{{ item.subTitle }}</v-list-tile-sub-title>
+                  <v-list-tile-sub-title>{{
+                    item.subTitle
+                  }}</v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
             </template>
@@ -180,9 +206,15 @@
       <div>
         警告：
         <ul>
-          <li>辅种前请确认下载服务器已关闭类似于 “自动开始下载” 的选项（如果有）。</li>
-          <li>助手仅对种子文件做简单验证，不保证辅种成功，请自行斟酌是否要使用辅种功能！</li>
-          <li>如出现因辅种失败造成的爆仓，由用户自行负责！别找我，别找我，别找我。</li>
+          <li>
+            辅种前请确认下载服务器已关闭类似于 “自动开始下载” 的选项（如果有）。
+          </li>
+          <li>
+            助手仅对种子文件做简单验证，不保证辅种成功，请自行斟酌是否要使用辅种功能！
+          </li>
+          <li>
+            如出现因辅种失败造成的爆仓，由用户自行负责！别找我，别找我，别找我。
+          </li>
         </ul>
       </div>
     </v-alert>
@@ -190,28 +222,34 @@
     <!-- 删除确认 -->
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
-        <v-card-title class="headline red lighten-2">{{ $t('keepUploadTask.removeConfirmTitle') }}</v-card-title>
+        <v-card-title class="headline red lighten-2">{{
+          $t("keepUploadTask.removeConfirmTitle")
+        }}</v-card-title>
 
-        <v-card-text>{{ $t('keepUploadTask.removeConfirm') }}</v-card-text>
+        <v-card-text>{{ $t("keepUploadTask.removeConfirm") }}</v-card-text>
 
         <v-divider></v-divider>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat color="info" @click="dialogRemoveConfirm=false">
+          <v-btn flat color="info" @click="dialogRemoveConfirm = false">
             <v-icon>cancel</v-icon>
-            <span class="ml-1">{{ $t('common.cancel') }}</span>
+            <span class="ml-1">{{ $t("common.cancel") }}</span>
           </v-btn>
           <v-btn color="error" flat @click="remove()">
             <v-icon>check_circle_outline</v-icon>
-            <span class="ml-1">{{ $t('common.ok') }}</span>
+            <span class="ml-1">{{ $t("common.ok") }}</span>
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{ errorMsg }}</v-snackbar>
-    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{ successMsg }}</v-snackbar>
+    <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{
+      errorMsg
+    }}</v-snackbar>
+    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{
+      successMsg
+    }}</v-snackbar>
   </div>
 </template>
 <script lang="ts">
@@ -396,7 +434,7 @@ export default Vue.extend({
           console.log(result);
           this.errorMsg = this.$t("keepUploadTask.sendError").toString();
         })
-        .finally(() => {});
+        .finally(() => { });
     },
 
     copyLinksToClipboard(source: any) {

@@ -3,9 +3,9 @@
     <v-alert :value="true" type="info">{{ $t("collection.title") }}</v-alert>
     <v-card>
       <div
-        style="height: 120px; overflow-x: auto;display: -webkit-box;"
+        style="height: 120px; overflow-x: auto; display: -webkit-box"
         class="ma-2 pt-2"
-        v-if="groups.length>1"
+        v-if="groups.length > 1"
       >
         <GroupCard
           :color="group.color"
@@ -15,10 +15,10 @@
           :description="group.description"
           :count="group.count"
           :group="group"
-          :active="group.id===activeGroupId"
+          :active="group.id === activeGroupId"
           :readOnly="group.readOnly"
           :width="group.width"
-          :isDefault="group.id===defaultGroupId"
+          :isDefault="group.id === defaultGroupId"
           :items="getItemsFromGroup(group.id)"
           @changeColor="changeGroupColor"
           @remove="removeGroup"
@@ -35,12 +35,16 @@
       <v-divider></v-divider>
 
       <v-card-title>
-        <v-btn color="error" :disabled="selected.length==0" @click="removeSelected">
+        <v-btn
+          color="error"
+          :disabled="selected.length == 0"
+          @click="removeSelected"
+        >
           <v-icon class="mr-2">remove</v-icon>
           {{ $t("common.remove") }}
         </v-btn>
 
-        <v-btn color="error" @click="clear" :disabled="items.length==0">
+        <v-btn color="error" @click="clear" :disabled="items.length == 0">
           <v-icon class="mr-2">clear</v-icon>
           {{ $t("common.clear") }}
         </v-btn>
@@ -54,12 +58,12 @@
 
         <v-btn
           color="info"
-          href="https://github.com/ronggang/PT-Plugin-Plus/wiki/my-collection"
+          href="https://github.com/pt-plugins/PT-Plugin-Plus/wiki/my-collection"
           target="_blank"
           rel="noopener noreferrer nofollow"
         >
           <v-icon class="mr-2">help</v-icon>
-          {{ $t('settings.searchSolution.index.help') }}
+          {{ $t("settings.searchSolution.index.help") }}
         </v-btn>
 
         <v-spacer></v-spacer>
@@ -87,35 +91,55 @@
         class="dataList"
       >
         <template slot="items" slot-scope="props">
-          <td style="width:50px;">
-            <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+          <td style="width: 50px">
+            <v-checkbox
+              v-model="props.selected"
+              primary
+              hide-details
+            ></v-checkbox>
           </td>
           <td>{{ props.index + 1 }}</td>
           <td>
             <v-img
-              :src="(props.item.movieInfo && props.item.movieInfo.image)?props.item.movieInfo.image:'./assets/movie.png'"
+              :src="
+                props.item.movieInfo && props.item.movieInfo.image
+                  ? props.item.movieInfo.image
+                  : './assets/movie.png'
+              "
               class="mx-0 my-2"
               contain
-              :max-height="(props.item.movieInfo && props.item.movieInfo.image)? 100: 80"
+              :max-height="
+                props.item.movieInfo && props.item.movieInfo.image ? 100 : 80
+              "
               position="left center"
             >
-              <v-layout style="margin-left: 90px;" row wrap>
-                <template v-if="(props.item.movieInfo && props.item.movieInfo.title)">
+              <v-layout style="margin-left: 90px" row wrap>
+                <template
+                  v-if="props.item.movieInfo && props.item.movieInfo.title"
+                >
                   <v-flex xs12>
                     <a
                       :href="props.item.movieInfo.link"
                       target="_blank"
                       rel="noopener noreferrer nofollow"
                     >
-                      <img src="https://img3.doubanio.com/favicon.ico" class="mr-2 mt-0" width="16" />
+                      <img
+                        src="https://img3.doubanio.com/favicon.ico"
+                        class="mr-2 mt-0"
+                        width="16"
+                      />
                     </a>
                     <span class="title">{{ props.item.movieInfo.title }}</span>
 
-                    <span class="caption ml-2">({{ props.item.movieInfo.year }})</span>
+                    <span class="caption ml-2"
+                      >({{ props.item.movieInfo.year }})</span
+                    >
                   </v-flex>
 
                   <v-flex xs12 class="mb-1">
-                    <span class="sub-title">{{ props.item.movieInfo.alt_title }}</span>
+                    <span class="sub-title">{{
+                      props.item.movieInfo.alt_title
+                    }}</span>
                   </v-flex>
                 </template>
                 <template>
@@ -139,21 +163,29 @@
 
             <!-- 分组列表 -->
             <template>
-              <div style="margin-left: 90px;">
-                <v-hover v-for="(group, index) in getGroupList(props.item)" :key="index">
+              <div style="margin-left: 90px">
+                <v-hover
+                  v-for="(group, index) in getGroupList(props.item)"
+                  :key="index"
+                >
                   <v-chip
                     slot-scope="{ hover }"
-                    :close="hover && group.id!=null"
+                    :close="hover && group.id != null"
                     label
-                    :color="group.color||'grey'"
-                    :dark="group.color && group.color.indexOf('lighten')>0?false: true"
+                    :color="group.color || 'grey'"
+                    :dark="
+                      group.color && group.color.indexOf('lighten') > 0
+                        ? false
+                        : true
+                    "
                     small
                     @input="removeFromGroup(props.item, group)"
-                  >{{group.name}}</v-chip>
+                    >{{ group.name }}</v-chip
+                  >
                 </v-hover>
 
                 <AddToGroup
-                  v-if="groups && groups.length>1"
+                  v-if="groups && groups.length > 1"
                   icon
                   small
                   flat
@@ -175,7 +207,9 @@
                 <v-avatar :size="15">
                   <img :src="props.item.site.icon" />
                 </v-avatar>
-                <span class="caption ml-1 site-name">{{ props.item.site.name }}</span>
+                <span class="caption ml-1 site-name">{{
+                  props.item.site.name
+                }}</span>
               </a>
             </v-layout>
           </td>
@@ -234,7 +268,7 @@
 
             <!-- 下载种子文件 -->
             <v-btn
-              v-if="props.item.site.downloadMethod=='POST'"
+              v-if="props.item.site.downloadMethod == 'POST'"
               flat
               icon
               small
@@ -275,10 +309,22 @@
       </v-data-table>
     </v-card>
 
-    <v-snackbar v-model="haveError" top :timeout="3000" color="error" multi-line>
+    <v-snackbar
+      v-model="haveError"
+      top
+      :timeout="3000"
+      color="error"
+      multi-line
+    >
       <span v-html="errorMsg"></span>
     </v-snackbar>
-    <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success" multi-line>
+    <v-snackbar
+      v-model="haveSuccess"
+      bottom
+      :timeout="3000"
+      color="success"
+      multi-line
+    >
       <span v-html="successMsg"></span>
     </v-snackbar>
   </div>
@@ -682,7 +728,7 @@ export default Vue.extend({
       });
 
       file.requestMethod = requestMethod;
-      file.onError = (error: any) => {};
+      file.onError = (error: any) => { };
       file.start();
     }
   },

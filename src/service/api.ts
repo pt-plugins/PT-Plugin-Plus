@@ -43,7 +43,7 @@ let RESOURCE_API = {
   siteConfig: `${RESOURCE_URL}/sites/{$site}/config.json`,
   clients: `${RESOURCE_URL}/clients.json`,
   clientConfig: `${RESOURCE_URL}/clients/{$client}/config.json`,
-  latestReleases: `https://api.github.com/repos/ronggang/PT-Plugin-Plus/releases/latest`,
+  latestReleases: `https://api.github.com/repos/pt-plugins/PT-Plugin-Plus/releases/latest`,
   systemConfig: `${RESOURCE_URL}/systemConfig.json`
 };
 
@@ -174,9 +174,9 @@ export const APP = {
                     ) {
                       reject(
                         jqXHR.responseJSON.msg +
-                          " (" +
-                          jqXHR.responseJSON.code +
-                          ")"
+                        " (" +
+                        jqXHR.responseJSON.code +
+                        ")"
                       );
                     } else {
                       reject(status + ", " + text);
@@ -300,7 +300,7 @@ export const APP = {
           // 判断是否为 crx 方式
           if (
             result.updateUrl &&
-            result.updateUrl.indexOf("ronggang/PT-Plugin-Plus") > 0
+            result.updateUrl.indexOf("pt-plugins/PT-Plugin-Plus") > 0
           ) {
             resolve(EInstallType.crx);
           } else {

@@ -3,13 +3,15 @@
     <v-dialog v-model="show" fullscreen>
       <v-card>
         <v-toolbar dark color="blue-grey darken-2">
-          <v-toolbar-title>{{ $t('settings.sitePlugins.add.title') }}</v-toolbar-title>
+          <v-toolbar-title>{{
+            $t("settings.sitePlugins.add.title")
+          }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn
             icon
             flat
             color="success"
-            href="https://github.com/ronggang/PT-Plugin-Plus/wiki/config-custom-plugin"
+            href="https://github.com/pt-plugins/PT-Plugin-Plus/wiki/config-custom-plugin"
             target="_blank"
             rel="noopener noreferrer nofollow"
             :title="$t('common.help')"
@@ -28,11 +30,11 @@
           <v-spacer></v-spacer>
           <v-btn flat color="error" @click="cancel">
             <v-icon>cancel</v-icon>
-            <span class="ml-1">{{ $t('common.cancel') }}</span>
+            <span class="ml-1">{{ $t("common.cancel") }}</span>
           </v-btn>
           <v-btn flat color="success" @click="save" :disabled="!valid">
             <v-icon>check_circle_outline</v-icon>
-            <span class="ml-1">{{ $t('common.ok') }}</span>
+            <span class="ml-1">{{ $t("common.ok") }}</span>
           </v-btn>
         </v-card-actions>
       </v-card>

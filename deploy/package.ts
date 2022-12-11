@@ -13,9 +13,9 @@ export default class Package {
   private keyFile = "";
   private privateKey = "";
   private rootPath = PATH.join(__dirname, "../");
-  private crxURL = `https://github.com/ronggang/PT-Plugin-Plus/releases/download/${version}/${packageName}.crx`;
+  private crxURL = `https://github.com/pt-plugins/PT-Plugin-Plus/releases/download/${version}/${packageName}.crx`;
   private updateURL =
-    "https://raw.githubusercontent.com/ronggang/PT-Plugin-Plus/master/update/index.xml";
+    "https://raw.githubusercontent.com/pt-plugins/PT-Plugin-Plus/master/update/index.xml";
   private manifestFile = "";
 
   constructor(privateKey: string = "") {

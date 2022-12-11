@@ -7,7 +7,7 @@
   },
   "archiverName": "PT-Plugin-Plus",
   "displayName": "PT 助手 Plus",
-  "homepage": "https://github.com/ronggang/PT-Plugin-Plus",
+  "homepage": "https://github.com/pt-plugins/PT-Plugin-Plus",
   "scripts": {
     "serve": "set NODE_OPTIONS=--openssl-legacy-provider & vue-cli-service serve --mode=test",
     "build": "set NODE_OPTIONS=--openssl-legacy-provider & yarn build:index && yarn build:background && yarn build:content && yarn resource",

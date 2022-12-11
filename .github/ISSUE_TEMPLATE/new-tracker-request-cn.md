@@ -10,7 +10,7 @@ assignees: ''
 <!-- 
 1、在发起请求前，请先确认是否在已支持的架构内；
 2、如果在已支持的架构内，本主题将会被视为无效并关闭；
-3、如果您是开发者，请按 https://github.com/ronggang/PT-Plugin-Plus/wiki/developer 文档适配并提交PR；
+3、如果您是开发者，请按 https://github.com/pt-plugins/PT-Plugin-Plus/wiki/developer 文档适配并提交PR；
 4、如果您无法发送邀请，请不要提交，因为开发人员无法对其适配；
 5、如有考核，请确认是否可免考，因为开发人员无法保证完成考核；
 6、如有多个站点需求，请分别发起；

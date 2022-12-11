@@ -16,5 +16,5 @@ assignees: ''
 1、如果是功能或新站点请求，将会被关闭，请按对应请求模板发起；
 2、如果是使用问题，请参考帮助文档：
 
-https://github.com/ronggang/PT-Plugin-Plus/wiki
+https://github.com/pt-plugins/PT-Plugin-Plus/wiki
  -->
