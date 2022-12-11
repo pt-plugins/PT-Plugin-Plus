@@ -93,7 +93,7 @@
                     <v-icon color="success" v-if="item.verified"
                       >done_all</v-icon
                     >
-                    <v-icon color="error" v-else>clear</v-icon>
+                    <v-icon color="error" v-on:click.prevent="deleteVerifiedItem(index)" v-else>clear</v-icon>
                   </v-btn>
                 </div>
               </v-list-tile-action>
@@ -221,6 +221,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    deleteVerifiedItem(index: number){
+      this.$delete(this.verifiedItems, index);
+    },
     setDownloadOptions(options: any) {
       console.log(options);
       this.downloadOptions = options.downloadOptions;
