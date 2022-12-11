@@ -84,7 +84,8 @@
                   torrent.isNeutralLeech ||
                   torrent.isPersonalFreeleech
                     ? " / Freeleech"
-                    : ""),
+                    : "") +
+                  (torrent.releaseGroup ? ` / ${torrent.releaseGroup}` : ""),
                 link: `${site.url}torrents.php?id=${group.groupId}&torrentid=${torrent.torrentId}`,
                 url: `${site.url}torrents.php?action=download&id=${torrent.torrentId}&authkey=${authkey}&torrent_pass=${passkey}`,
                 size: parseFloat(torrent.size),
