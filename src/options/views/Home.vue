@@ -63,16 +63,20 @@
             </v-container>
           </v-card>
         </v-menu>
-        <v-select v-model="selectedHeaders" class="select" :items="headers" :label="$t('home.selectColumns')" multiple outlined return-object>
-            <template v-slot:selection="{ item, index }">
-              <v-chip v-if="index === 0">
-                <span>{{ item.text }}</span>
-              </v-chip>
-              <span
-                v-if="index === 1"
-                class="grey--text caption"
-              >(+{{ selectedHeaders.length - 1 }} others)</span>
-            </template>
+        <v-select v-model="selectedHeaders" 
+          class="select" :items="headers" 
+          :label="$t('home.selectColumns')"
+          @change="updateViewOptions"
+          multiple outlined return-object>
+          <template v-slot:selection="{ item, index }">
+            <v-chip v-if="index === 0">
+              <span>{{ item.text }}</span>
+            </v-chip>
+            <span
+              v-if="index === 1"
+              class="grey--text caption"
+            >(+{{ selectedHeaders.length - 1 }} others)</span>
+          </template>
          </v-select>
 
         <!-- <AutoSignWarning /> -->
@@ -135,12 +139,9 @@
               <span class="caption">{{ props.item.name }}</span>
             </a>
           </td>
-          <td v-if="showColumn('user.name')">
+          <td v-if="showColumn('user.name')" :title="props.item.user.id">
             <template v-if="showUserName">
               {{ props.item.user.name}}
-              <template v-if="props.item.user.id">
-                <br/>({{props.item.user.id}})
-              </template>
             </template>
             <template v-else>
               ****
@@ -220,10 +221,11 @@
               {{ props.item.user.bonusPerHour | formatNumber }}
             </template>
           </td>
-          <td v-if="showColumn('user.joinDate')"
+          <td v-if="showColumn('user.joinTime')"
             class="number"
-            :title="props.item.user.joinDateTime"
-          >{{ props.item.user.joinTime | timeAgo(showWeek) }}</td>
+            :title="props.item.user.joinDateTime">
+            {{ props.item.user.joinTime | timeAgo(showWeek) }}
+          </td>
           <td v-if="showColumn('user.lastUpdateTime')" class="number">
             <v-btn
               depressed
@@ -312,7 +314,6 @@ export default Vue.extend({
           text: this.$t("home.headers.userName"),
           align: "left",
           value: "user.name",
-          width: ""
         },
         {
           text: this.$t("home.headers.levelName"),
@@ -383,28 +384,12 @@ export default Vue.extend({
     };
   },
   created() {
-    let saveHeaders = localStorage.getItem("HomeHeaders");
-console.log(saveHeaders)
-    if (saveHeaders && saveHeaders.length > 1)
-    {
-      let homeHeaders = saveHeaders.split(";");
-      this.selectedHeaders =  this.headers.filter(s => homeHeaders.includes(s.value))
-    }
-    else
-      this.selectedHeaders = this.headers
     this.init();
   },
   computed: {
     //Done to get the ordered headers
     showHeaders() : any[] {
-      var saveHeaders = "";
-      for (var header of this.headers.filter(s => this.selectedHeaders.includes(s)))
-      {
-        saveHeaders += ";"+ header.value;
-      }
-
-      localStorage.setItem('HomeHeaders', saveHeaders)
-      return this.headers.filter(s => this.selectedHeaders.includes(s));
+        return this.headers.filter(s => this.selectedHeaders.map(sh=>sh.value).includes(s.value));
     }
   },
 
@@ -469,9 +454,11 @@ console.log(saveHeaders)
         showUserLevel: true,
         showLevelRequirements: true,
         showSeedingPoints: true,
-        showWeek: false
+        showWeek: false,
+        selectedHeaders: this.selectedHeaders
       });
       Object.assign(this, viewOptions);
+      this.selectedHeaders =  this.headers.filter(s => this.selectedHeaders.map(sh=>sh.value).includes(s.value));
     },
     getInfos() {
       this.loading = true;
@@ -786,7 +773,8 @@ console.log(saveHeaders)
           showUserLevel: this.showUserLevel,
           showLevelRequirements: this.showLevelRequirements,
           showSeedingPoints: this.showSeedingPoints,
-          showWeek: this.showWeek
+          showWeek: this.showWeek,
+          selectedHeaders: this.selectedHeaders
         }
       });
     },
