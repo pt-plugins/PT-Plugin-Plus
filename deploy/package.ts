@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import * as archiver from "archiver";
-import * as crx3 from "crx3";
 import * as PATH from "path";
 import * as ChromeExtension from "crx";
 
@@ -132,30 +131,6 @@ export default class Package {
         .catch(err => {
           console.error(err);
           reject(err);
-        });
-    });
-  }
-
-  /**
-   * 打包 crx3
-   * 该方法打包时，会将 prodversionmin 限定为最低 '64.0.3242' ，会导致其他浏览器因版本问题无法更新
-   */
-  public crx3(): Promise<any> {
-    return new Promise<any>((resolve?: any, reject?: any) => {
-      console.log("正在打包 crx");
-      crx3([PATH.join(this.rootPath, "dist/manifest.json")], {
-        keyPath: PATH.join(this.rootPath, "releases/key.pem"),
-        crxPath: this.crxFile,
-        zipPath: this.zipFile,
-        xmlPath: PATH.join(this.rootPath, "update/index.xml"),
-        crxURL: this.crxURL
-      })
-        .then(() => {
-          console.log("打包完成 %s", this.crxFile);
-          resolve(this.crxFile);
-        })
-        .catch(error => {
-          reject(error);
         });
     });
   }

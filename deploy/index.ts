@@ -28,11 +28,6 @@ class Deployer {
       new Package().zip();
     } else {}
   }
-
-  /**
-   * 发布至应用市场
-   * @param file
-   */
 }
 
 new Deployer();

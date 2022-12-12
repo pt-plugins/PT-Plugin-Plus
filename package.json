@@ -25,9 +25,7 @@
     "build:content": "webpack --config webpack/prod-content.js --progress",
     "zip": "ts-node --skip-project ./deploy/index.ts -z",
     "package": "ts-node --skip-project ./deploy/index.ts -p",
-    "release": "yarn build && yarn package",
-    "deploy:chrome": "ts-node --skip-project ./deploy/index.ts -pc",
-    "deploy": "yarn build && yarn deploy:chrome"
+    "release": "yarn build && yarn package"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^4.4.0",
@@ -80,7 +78,6 @@
     "babel-eslint": "^10.0.1",
     "copy-webpack-plugin": "^4.6.0",
     "crx": "^5.0.1",
-    "crx3": "^1.1.3",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^9.0.0",
     "git-commit-id": "^2.0.1",
