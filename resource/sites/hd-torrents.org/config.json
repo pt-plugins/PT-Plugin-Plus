@@ -17,6 +17,29 @@
     "styles": ["/libs/album/style.css"]
   }],
   "host": "hd-torrents.org",
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "HD Maniac",
+      "uploaded": "50GB",
+      "ratio": "1.05",
+      "privilege": "Gain access to \"Top 10\""
+    },
+    {
+      "level": 2,
+      "name": "HD Monster",
+      "uploaded": "250GB",
+      "ratio": "2.00",
+      "privilege": "Gain access to \"Tracker Info\", \"Invites\" section of the forums"
+    },
+    {
+      "level": 3,
+      "name": "HD Daemon",
+      "uploaded": "1TB",
+      "ratio": "4.00",
+      "privilege": "Gain access to \"Users\""
+    }
+  ],
   "searchEntryConfig": {
     "page": "/torrents.php",
     "beforeSearch": {
