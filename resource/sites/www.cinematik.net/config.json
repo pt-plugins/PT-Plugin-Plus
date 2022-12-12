@@ -16,6 +16,16 @@
     "pages": ["/browse.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
   }],
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "Power User",
+      "interval": "8",
+      "uploaded": "100GB",
+      "ratio": "1.1",
+      "privilege": "More download slots"
+    }
+  ],
   "searchEntryConfig": {
     "page": "/browse.php",
     "resultType": "html",
