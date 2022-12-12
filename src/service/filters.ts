@@ -19,6 +19,7 @@ interface IFilter {
   };
   timeAgoToNumber: (source: string) => number;
   [key: string]: any;
+  formatInteger:(source: number) => string;
 }
 
 /**
@@ -343,5 +344,8 @@ export const filters: IFilter = {
     }
 
     return result.getTime();
-  }
+  },
+  formatInteger(source: number) : string {
+    return this.formatNumber(source, "###,###,###,###")
+  },
 };
