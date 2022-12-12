@@ -70,12 +70,12 @@
       "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
       "fields": {
         "seeding": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(3)').length != 0 ? query.find('td.rowfollow:eq(3)').length : query.length"]
+          "selector": ["body"],
+          "filters": ["query.text().replace(/,/g,'').match(/[\\d]+/)", "query ? query[0] : 0"]
         },
         "seedingSize": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(3)').length != 0 ? jQuery.map(query.find('td.rowfollow:eq(3)'), (item)=>{return $(item).text();}) : jQuery.map(query.find('td:eq(3)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          "selector": ["body"],
+          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "query ? query[0].sizeToNumber() : 0"]
         }
       }
     }

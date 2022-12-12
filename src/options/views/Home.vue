@@ -169,50 +169,38 @@
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
               <template v-if="props.item.levelRequirements">
-                <template v-if="props.item.user.nextLevel.name">
-                  <br />
-                  <span style="color: blue">
-                    <template v-if="props.item.user.nextLevel.requiredDate"
-                      >{{
-                        props.item.user.nextLevel.requiredDate
-                      }}&nbsp;</template
-                    >
-                  </span>
-                  <span style="color: red">
-                    <template v-if="props.item.user.nextLevel.uploaded"
-                      >{{ props.item.user.nextLevel.uploaded | formatSize
-                      }}<v-icon small color="red darken-4">file_upload</v-icon
-                      >&nbsp;</template
-                    >
-                    <template v-if="props.item.user.nextLevel.downloaded"
-                      >{{ props.item.user.nextLevel.downloaded | formatSize
-                      }}<v-icon small color="red darken-4">file_download</v-icon
-                      >&nbsp;</template
-                    >
-                    <template v-if="props.item.user.nextLevel.trueDownloaded"
-                      >{{ props.item.user.nextLevel.trueDownloaded | formatSize
-                      }}{{
-                        $t("home.levelRequirement.trueDownloaded")
-                      }}&nbsp;</template
-                    >
-                    <template v-if="props.item.user.nextLevel.bonus"
-                      >{{ props.item.user.nextLevel.bonus | formatNumber
-                      }}{{ $t("home.levelRequirement.bonus") }}&nbsp;</template
-                    >
-                    <template v-if="props.item.user.nextLevel.seedingPoints"
-                      >{{
-                        props.item.user.nextLevel.seedingPoints | formatNumber
-                      }}{{
-                        $t("home.levelRequirement.seedingPoints")
-                      }}&nbsp;</template
-                    >
-                    <template v-if="props.item.user.nextLevel.uploads"
-                      >{{ props.item.user.nextLevel.uploads
-                      }}{{
-                        $t("home.levelRequirement.uploads")
-                      }}&nbsp;</template
-                    >
-                  </span>
+                <template v-if="props.item.user.nextLevel">
+                  <template v-if="props.item.user.nextLevel.name">
+                    <br />
+                    <v-icon small color="black darken-4">keyboard_tab</v-icon>
+                    <template v-if="props.item.user.nextLevel.requiredDate">
+                      {{ props.item.user.nextLevel.requiredDate }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.uploaded">
+                      <v-icon small color="red darken-4">arrow_upward</v-icon>
+                      {{ props.item.user.nextLevel.uploaded | formatSize }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.downloaded">
+                      <v-icon small color="green darken-4">arrow_downward</v-icon>
+                      {{ props.item.user.nextLevel.downloaded | formatSize }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.trueDownloaded">
+                      {{ $t("home.levelRequirement.trueDownloaded") }}
+                      {{ props.item.user.nextLevel.trueDownloaded | formatSize }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.bonus">
+                      <v-icon small color="green darken-4">attach_money</v-icon>
+                      {{ props.item.user.nextLevel.bonus | formatNumber}}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.seedingPoints">
+                      {{ $t("home.levelRequirement.seedingPoints") }}
+                      {{ props.item.user.nextLevel.seedingPoints | formatNumber }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.uploads">
+                      <v-icon small color="green darken-4">file_upload</v-icon>
+                      {{ props.item.user.nextLevel.uploads }}&nbsp;
+                    </template>
+                  </template>
                 </template>
                 <template v-else>
                   <v-icon small color="green darken-4">done</v-icon>
@@ -222,51 +210,48 @@
                     v-for="levelRequirement in props.item.levelRequirements"
                   >
                     <template
-                    v-if="!props.item.user.nextLevel.name || Number(props.item.user.nextLevel.level) >
-                    Number(levelRequirement.level)"
+                      v-if="
+                        !props.item.user.nextLevel.name ||
+                        Number(props.item.user.nextLevel.level) >
+                          Number(levelRequirement.level)
+                      "
                     >
                       <v-icon small color="green darken-4">done</v-icon>
                     </template>
                     <template v-else>
                       <v-icon small color="red darken-4">block</v-icon>
                     </template>
-                    <template v-if="levelRequirement.requiredDate">{{
-                      levelRequirement.requiredDate
-                    }}</template
-                    >({{ levelRequirement.name }}):
-                    <template v-if="levelRequirement.uploaded"
-                      >{{ levelRequirement.uploaded
-                      }}<v-icon small color="green darken-4">file_upload</v-icon
-                      >;</template
-                    >
-                    <template v-if="levelRequirement.uploads"
-                      >{{ $t("home.levelRequirement.uploads") }}
-                      {{ levelRequirement.uploads }};</template
-                    >
-                    <template v-if="levelRequirement.downloaded"
-                      >{{ levelRequirement.downloaded
-                      }}<v-icon small color="red darken-4">file_download</v-icon
-                      >;</template
-                    >
-                    <template v-if="levelRequirement.trueDownloaded"
-                      >{{ $t("home.levelRequirement.trueDownloaded") }}
-                      {{ levelRequirement.trueDownloaded }};</template
-                    >
-                    <template v-if="levelRequirement.ratio"
-                      >{{ $t("home.levelRequirement.ratio") }}
-                      {{ levelRequirement.ratio }};</template
-                    >
-                    <template v-if="levelRequirement.bonus"
-                      >{{ $t("home.levelRequirement.bonus") }}
-                      {{ levelRequirement.bonus | formatNumber }};</template
-                    >
-                    <template v-if="levelRequirement.seedingPoints"
-                      >{{ $t("home.levelRequirement.seedingPoints") }}
-                      {{
-                        levelRequirement.seedingPoints | formatNumber
-                      }};</template
-                    >
-                    {{ levelRequirement.privilege }}<br />
+                    <template v-if="levelRequirement.requiredDate">
+                      {{ levelRequirement.requiredDate }} </template>({{ levelRequirement.name }}):
+                    <template v-if="levelRequirement.uploaded">
+                      <v-icon small color="green darken-4">arrow_upward</v-icon>
+                      {{ levelRequirement.uploaded }};
+                    </template>
+                    <template v-if="levelRequirement.uploads">
+                      <v-icon small color="green darken-4">file_upload</v-icon>
+                      {{ levelRequirement.uploads }};
+                    </template>
+                    <template v-if="levelRequirement.downloaded">
+                      <v-icon small color="red darken-4">arrow_downward</v-icon>
+                      {{ levelRequirement.downloaded }};
+                    </template>
+                    <template v-if="levelRequirement.trueDownloaded">
+                      {{ $t("home.levelRequirement.trueDownloaded") }}
+                      {{ levelRequirement.trueDownloaded }};
+                    </template>
+                    <template v-if="levelRequirement.ratio">
+                      % {{ levelRequirement.ratio }};
+                    </template>
+                    <template v-if="levelRequirement.bonus">
+                      <v-icon small color="green darken-4">attach_money</v-icon>
+                      {{ levelRequirement.bonus | formatNumber }};
+                    </template>
+                    <template v-if="levelRequirement.seedingPoints">
+                      {{ $t("home.levelRequirement.seedingPoints") }}
+                      {{ levelRequirement.seedingPoints | formatNumber }};
+                    </template>
+                    {{ levelRequirement.privilege }}
+                    <br />
                   </template>
                 </div>
               </template>
@@ -321,8 +306,8 @@
               :to="`statistic/${props.item.host}`"
               :title="$t('home.statistic')"
               >{{
-                props.item.user.lastUpdateTime
-                  | formatDate("YYYY-MM-DD HH:mm:ss")
+                props.item.user.lastUpdateTime |
+                  formatDate("YYYY-MM-DD HH:mm:ss")
               }}</v-btn
             >
           </td>
@@ -376,7 +361,7 @@ import {
   EUserDataRequestStatus,
   Options,
   UserInfo,
-  EViewKey
+  EViewKey,
 } from "@/interface/common";
 import dayjs from "dayjs";
 
@@ -390,7 +375,7 @@ interface UserInfoEx extends UserInfo {
 const extension = new Extension();
 export default Vue.extend({
   components: {
-    AutoSignWarning
+    AutoSignWarning,
   },
   data() {
     return {
@@ -402,7 +387,7 @@ export default Vue.extend({
           text: this.$t("home.headers.site"),
           align: "center",
           value: "name",
-          width: "110px"
+          width: "110px",
         },
         {
           text: this.$t("home.headers.userName"),
@@ -412,53 +397,57 @@ export default Vue.extend({
         {
           text: this.$t("home.headers.levelName"),
           align: "left",
-          value: "user.levelName"
+          value: "user.levelName",
         },
         {
           text: this.$t("home.headers.activitiyData"),
           align: "right",
           value: "user.uploaded",
-          width: "120px"
+          width: "120px",
         },
         {
           text: this.$t("home.headers.ratio"),
           align: "right",
-          value: "user.ratio"
+          value: "user.ratio",
         },
         {
           text: this.$t("home.headers.seeding"),
           align: "right",
-          value: "user.seeding"
+          value: "user.seeding",
         },
         {
           text: this.$t("home.headers.seedingSize"),
           align: "right",
-          value: "user.seedingSize"
+          value: "user.seedingSize",
         },
         {
           text: this.$t("home.headers.bonus"),
           align: "right",
-          value: "user.bonus"
+          value: "user.bonus",
         },
         {
           text: this.$t("home.headers.bonusPerHour"),
           align: "right",
-          value: "user.bonusPerHour"
+          value: "user.bonusPerHour",
         },
         {
           text: this.$t("home.headers.joinTime"),
           align: "right",
-          value: "user.joinTime"
+          value: "user.joinTime",
         },
         {
           text: this.$t("home.headers.lastUpdateTime"),
           align: "right",
-          value: "user.lastUpdateTime"
+          value: "user.lastUpdateTime",
         },
-        { text: this.$t("home.headers.status"), align: "center", value: "user.lastUpdateStatus" }
+        {
+          text: this.$t("home.headers.status"),
+          align: "center",
+          value: "user.lastUpdateStatus",
+        },
       ],
       pagination: {
-        rowsPerPage: -1
+        rowsPerPage: -1,
       },
       options: this.$store.state.options,
       beginTime: null as any,
@@ -474,7 +463,7 @@ export default Vue.extend({
       showUserLevel: true,
       showLevelRequirements: true,
       showSeedingPoints: true,
-      showWeek: false
+      showWeek: false,
     };
   },
   created() {
@@ -483,8 +472,10 @@ export default Vue.extend({
   computed: {
     //Done to get the ordered headers
     showHeaders(): any[] {
-      return this.headers.filter(s => this.selectedHeaders.map(sh => sh.value).includes(s.value));
-    }
+      return this.headers.filter((s) =>
+        this.selectedHeaders.map((sh) => sh.value).includes(s.value)
+      );
+    },
   },
 
   /**
@@ -499,9 +490,10 @@ export default Vue.extend({
 
   methods: {
     showColumn(val: string) {
-      for (var header of this.headers.filter(s => this.selectedHeaders.includes(s))) {
-        if (header.value === val)
-          return true;
+      for (var header of this.headers.filter((s) =>
+        this.selectedHeaders.includes(s)
+      )) {
+        if (header.value === val) return true;
       }
       return false;
     },
@@ -515,7 +507,7 @@ export default Vue.extend({
               id: "",
               name: "",
               isLogged: false,
-              isLoading: false
+              isLoading: false,
             };
           } else {
             if (_site.user.isLoading === undefined) {
@@ -548,10 +540,12 @@ export default Vue.extend({
         showLevelRequirements: true,
         showSeedingPoints: true,
         showWeek: false,
-        selectedHeaders: this.selectedHeaders
+        selectedHeaders: this.selectedHeaders,
       });
       Object.assign(this, viewOptions);
-      this.selectedHeaders = this.headers.filter(s => this.selectedHeaders.map(sh => sh.value).includes(s.value));
+      this.selectedHeaders = this.headers.filter((s) =>
+        this.selectedHeaders.map((sh) => sh.value).includes(s.value)
+      );
       if (this.selectedHeaders.length == 0) {
         this.selectedHeaders = Object.assign([], this.headers);
       }
@@ -561,19 +555,19 @@ export default Vue.extend({
       this.beginTime = dayjs();
       this.writeLog({
         event: `Home.getUserInfo.Start`,
-        msg: this.$t("home.startGetting").toString()
+        msg: this.$t("home.startGetting").toString(),
       });
 
       this.sites.forEach((site: Site, index: number) => {
         this.writeLog({
           event: `Home.getUserInfo.Processing`,
           msg: this.$t("home.gettingForSite", {
-            siteName: site.name
+            siteName: site.name,
           }).toString(),
           data: {
             host: site.host,
-            name: site.name
-          }
+            name: site.name,
+          },
         });
 
         this.getSiteUserInfo(site);
@@ -588,7 +582,7 @@ export default Vue.extend({
         module: EModule.options,
         event: options.event,
         msg: options.msg,
-        data: options.data
+        data: options.data,
       });
     },
 
@@ -605,12 +599,12 @@ export default Vue.extend({
         this.requestQueue.splice(index, 1);
         if (this.requestQueue.length == 0) {
           this.requestMsg = this.$t("home.requestCompleted", {
-            second: dayjs().diff(this.beginTime, "second", true)
+            second: dayjs().diff(this.beginTime, "second", true),
           }).toString();
           this.loading = false;
           this.writeLog({
             event: `Home.getUserInfo.Finished`,
-            msg: this.requestMsg
+            msg: this.requestMsg,
           });
           // 重置站点信息，因为有时候加载完成后，某些行还显示正在加载，暂时未明是哪里问题
           this.sites = this.clone(this.sites);
@@ -643,13 +637,13 @@ export default Vue.extend({
           user.nextLevel = {};
           user.nextLevel.level = -1;
           for (var levelRequirement of site.levelRequirements) {
-            if (levelRequirement.requiredDate)
-              break;
+            if (levelRequirement.requiredDate) break;
 
             if (levelRequirement.interval && user.joinDateTime) {
-              levelRequirement.requiredDate = dayjs(user.joinDateTime).add(levelRequirement.interval as number, "week").format("YYYY-MM-DD");
-            } else
-              break;
+              levelRequirement.requiredDate = dayjs(user.joinDateTime)
+                .add(levelRequirement.interval as number, "week")
+                .format("YYYY-MM-DD");
+            } else break;
           }
 
           for (var levelRequirement of site.levelRequirements) {
@@ -662,10 +656,20 @@ export default Vue.extend({
               }
             }
 
-            if (levelRequirement.uploaded || (downloaded && levelRequirement.ratio)) {
-              let levelRequirementUploaded = levelRequirement.uploaded ? this.fileSizetoLength(levelRequirement.uploaded as string) : 0;
-              let requiredUploadedbyRatio = levelRequirement.ratio ? downloaded * levelRequirement.ratio : 0;
-              let requiredUploaded = Math.max(levelRequirementUploaded, requiredUploadedbyRatio);
+            if (
+              levelRequirement.uploaded ||
+              (downloaded && levelRequirement.ratio)
+            ) {
+              let levelRequirementUploaded = levelRequirement.uploaded
+                ? this.fileSizetoLength(levelRequirement.uploaded as string)
+                : 0;
+              let requiredUploadedbyRatio = levelRequirement.ratio
+                ? downloaded * levelRequirement.ratio
+                : 0;
+              let requiredUploaded = Math.max(
+                levelRequirementUploaded,
+                requiredUploadedbyRatio
+              );
               if (uploaded < requiredUploaded) {
                 user.nextLevel.uploaded = requiredUploaded - uploaded;
                 user.nextLevel.level = levelRequirement.level;
@@ -673,7 +677,9 @@ export default Vue.extend({
             }
 
             if (levelRequirement.downloaded) {
-              let requiredDownloaded = this.fileSizetoLength(levelRequirement.downloaded as string);
+              let requiredDownloaded = this.fileSizetoLength(
+                levelRequirement.downloaded as string
+              );
               if (downloaded < requiredDownloaded) {
                 user.nextLevel.downloaded = requiredDownloaded - downloaded;
                 user.nextLevel.level = levelRequirement.level;
@@ -681,7 +687,7 @@ export default Vue.extend({
             }
 
             if (levelRequirement.ratio) {
-              let userRatio = user.ratio as number
+              let userRatio = user.ratio as number;
               let requiredRatio = levelRequirement.ratio as number;
               if (userRatio != -1 && userRatio < requiredRatio) {
                 user.nextLevel.ratio = levelRequirement.ratio;
@@ -690,27 +696,29 @@ export default Vue.extend({
             }
 
             if (levelRequirement.bonus) {
-              let userBonus = user.bonus as number
-              let requiredBonus = levelRequirement.bonus as number
+              let userBonus = user.bonus as number;
+              let requiredBonus = levelRequirement.bonus as number;
 
               if (userBonus < requiredBonus) {
-                user.nextLevel.bonus = requiredBonus - userBonus
+                user.nextLevel.bonus = requiredBonus - userBonus;
                 user.nextLevel.level = levelRequirement.level;
               }
             }
 
             if (levelRequirement.seedingPoints) {
-              let userSeedingPoints = user.seedingPoints as number
-              let requiredSeedingPoints = levelRequirement.seedingPoints as number
+              let userSeedingPoints = user.seedingPoints as number;
+              let requiredSeedingPoints =
+                levelRequirement.seedingPoints as number;
               if (userSeedingPoints < requiredSeedingPoints) {
-                user.nextLevel.seedingPoints = requiredSeedingPoints - userSeedingPoints;
+                user.nextLevel.seedingPoints =
+                  requiredSeedingPoints - userSeedingPoints;
                 user.nextLevel.level = levelRequirement.level;
               }
             }
 
             if (levelRequirement.uploads) {
-              let userUploads = user.uploads as number
-              let requiredUploads = levelRequirement.uploads as number
+              let userUploads = user.uploads as number;
+              let requiredUploads = levelRequirement.uploads as number;
               if (userUploads < requiredUploads) {
                 user.nextLevel.uploads = requiredUploads - userUploads;
                 user.nextLevel.level = levelRequirement.level;
@@ -718,21 +726,26 @@ export default Vue.extend({
             }
 
             if (levelRequirement.trueDownloaded) {
-              let userTrueDownloaded = user.trueDownloaded ? user.trueDownloaded as number : 0;
-              let requiredTrueDownloaded = this.fileSizetoLength(levelRequirement.trueDownloaded as string);
+              let userTrueDownloaded = user.trueDownloaded
+                ? (user.trueDownloaded as number)
+                : 0;
+              let requiredTrueDownloaded = this.fileSizetoLength(
+                levelRequirement.trueDownloaded as string
+              );
               if (userTrueDownloaded < requiredTrueDownloaded) {
-                user.nextLevel.trueDownloaded = requiredTrueDownloaded - userTrueDownloaded;
+                user.nextLevel.trueDownloaded =
+                  requiredTrueDownloaded - userTrueDownloaded;
                 user.nextLevel.level = levelRequirement.level;
               }
             }
 
-            if (user.nextLevel.level as number > 0) {
+            if ((user.nextLevel.level as number) > 0) {
               user.nextLevel.name = levelRequirement.name;
               break;
             }
           }
         }
-      } catch { }
+      } catch {}
     },
     /**
      * @return {number}
@@ -793,7 +806,7 @@ export default Vue.extend({
             this.formatUserInfo(user, site);
           }
         })
-        .catch(result => {
+        .catch((result) => {
           console.log("error", result);
           if (result.msg && result.msg.status) {
             user.lastErrorMsg = result.msg.msg;
@@ -815,16 +828,16 @@ export default Vue.extend({
           this.writeLog({
             event: `Home.getUserInfo.Abort`,
             msg: this.$t("home.getUserInfoAbort", {
-              siteName: site.name
-            }).toString()
+              siteName: site.name,
+            }).toString(),
           });
         })
         .catch(() => {
           this.writeLog({
             event: `Home.getUserInfo.Abort.Error`,
             msg: this.$t("home.getUserInfoAbortError", {
-              siteName: site.name
-            }).toString()
+              siteName: site.name,
+            }).toString(),
           });
           this.removeQueue(site);
         });
@@ -848,8 +861,8 @@ export default Vue.extend({
           showLevelRequirements: this.showLevelRequirements,
           showSeedingPoints: this.showSeedingPoints,
           showWeek: this.showWeek,
-          selectedHeaders: this.selectedHeaders
-        }
+          selectedHeaders: this.selectedHeaders,
+        },
       });
     },
 
@@ -857,10 +870,13 @@ export default Vue.extend({
       if (user.lastErrorMsg) {
         return user.lastErrorMsg;
       }
-      if (user.lastUpdateStatus && user.lastUpdateStatus !== EUserDataRequestStatus.success) {
+      if (
+        user.lastUpdateStatus &&
+        user.lastUpdateStatus !== EUserDataRequestStatus.success
+      ) {
         return this.$t(`service.user.${user.lastUpdateStatus}`);
       }
-      return '';
+      return "";
     },
   },
 
@@ -874,8 +890,8 @@ export default Vue.extend({
         return "";
       }
       return number.toFixed(2);
-    }
-  }
+    },
+  },
 });
 </script>
 

@@ -20,7 +20,7 @@
       "level": 1,
       "name": "Power Angel",
       "interval": "4",
-      "uploads": "50GB",
+      "uploaded": "50GB",
       "ratio": "1.0",
       "privilege": "可以请求续种；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")。"
     },
@@ -28,7 +28,7 @@
       "level": 2,
       "name": "Elite Angel",
       "interval": "8",
-      "uploads": "150GB",
+      "uploaded": "150GB",
       "ratio": "1.1",
       "privilege": "权天使及以上等级封存账号后不会被删除。"
     },
@@ -36,7 +36,7 @@
       "level": 3,
       "name": "Crazy Angel",
       "interval": "12",
-      "uploads": "500GB",
+      "uploaded": "500GB",
       "ratio": "1.5",
       "privilege": "可以在做种/下载/发布的时候选择匿名模式。"
     },
@@ -44,7 +44,7 @@
       "level": 4,
       "name": "Insane Angel",
       "interval": "16",
-      "uploads": "1TB",
+      "uploaded": "1TB",
       "ratio": "2.0",
       "privilege": "可以查看普通日志。"
     },
@@ -52,7 +52,7 @@
       "level": 5,
       "name": "Veteran Angel",
       "interval": "24",
-      "uploads": "5TB",
+      "uploaded": "5TB",
       "ratio": "2.5",
       "privilege": "主天使及以上市民会永远保留账号。"
     },
@@ -60,7 +60,7 @@
       "level": 6,
       "name": "Extreme Angel",
       "interval": "36",
-      "uploads": "10TB",
+      "uploaded": "10TB",
       "ratio": "2.6",
       "privilege": "无"
     },
@@ -68,7 +68,7 @@
       "level": 7,
       "name": "Ultimate Angel",
       "interval": "72",
-      "uploads": "20TB",
+      "uploaded": "20TB",
       "ratio": "2.8",
       "privilege": "比较牛逼的等级。"
     },
@@ -76,7 +76,7 @@
       "level": 8,
       "name": "Master Angel",
       "interval": "100",
-      "uploads": "40TB",
+      "uploaded": "40TB",
       "ratio": "4.0",
       "privilege": "最牛逼的市民，或特殊任务分配。"
     }
