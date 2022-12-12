@@ -59,7 +59,7 @@
   },{
     "level": "8", 
     "name": "Nexus Master",
-    "interval": "150",
+    "interval": "45",
     "downloaded": "3072GB",
     "ratio": "4.55",
     "privilege": "永远保留账号"

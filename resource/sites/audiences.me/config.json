@@ -14,68 +14,68 @@
   "schema": "NexusPHP",
   "host": "audiences.me",
   "levelRequirements": [{
-    "level": "1", 
+    "level": "1",
     "name": "Power User",
     "interval": "5",
     "downloaded": "120GB",
     "ratio": "2.0",
-    "seedingPoints": "0",
+    "seedingPoints": "160000",
     "privilege": "查看NFO文档；查看用户列表；请求续种；查看其它用户的种子历史；删除自己上传的字幕"
   },{
-    "level": "2", 
+    "level": "2",
     "name": "Elite User",
     "interval": "15",
     "downloaded": "240GB",
     "ratio": "2.5",
-    "seedingPoints": "0",
+    "seedingPoints": "250000",
     "privilege": "无"
   },{
-    "level": "3", 
+    "level": "3",
     "name": "Crazy User",
     "interval": "24",
     "downloaded": "400GB",
     "ratio": "3.0",
-    "seedingPoints": "0",
+    "seedingPoints": "360000",
     "privilege": "查看排行榜"
   },{
-    "level": "4", 
+    "level": "4",
     "name": "Insane User",
     "interval": "40",
     "downloaded": "600GB",
     "ratio": "3.5",
-    "seedingPoints": "0",
+    "seedingPoints": "500000",
     "privilege": "无"
   },{
-    "level": "5", 
+    "level": "5",
     "name": "Veteran User",
     "interval": "60",
     "downloaded": "900GB",
     "ratio": "4.0",
-    "seedingPoints": "0",
+    "seedingPoints": "660000",
     "privilege": "查看其它用户的评论、帖子历史"
   },{
-    "level": "6", 
+    "level": "6",
     "name": "Extreme User",
     "interval": "80",
-    "downloaded": "2048BB",
+    "downloaded": "2048GB",
     "ratio": "4.5",
-    "seedingPoints": "0",
+    "seedingPoints": "880000",
     "privilege": "永远保留账号；更新过期的外部信息"
   },{
-    "level": "7", 
+    "level": "7",
     "name": "Ultimate User",
     "interval": "100",
     "downloaded": "4096GB",
-    "ratio": "5.0",
-    "seedingPoints": "0",
+    "ratio": "4.5",
+    "seedingPoints": "1080000",
     "privilege": "无"
   },{
-    "level": "8", 
+    "level": "8",
     "name": "Nexus Master",
     "interval": "112",
     "downloaded": "8192GB",
     "ratio": "5.0",
-    "seedingPoints": "0",
+    "seedingPoints": "1280000",
     "privilege": "无"
   }],
   "collaborator": "Audiences",

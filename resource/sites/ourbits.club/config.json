@@ -12,6 +12,63 @@
   ],
   "schema": "NexusPHP",
   "host": "ourbits.club",
+  "levelRequirements": [{
+    "level": "1",
+    "name": "Power User",
+    "interval": "5",
+    "downloaded": "100GB",
+    "ratio": "2.0",
+    "privilege": "可以查看NFO文档；可以查看用户列表；可以请求续种；可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")；可以删除自己上传的字幕。最多可以同时下载20个种子"
+  },{
+    "level": "2",
+    "name": "Elite User",
+    "interval": "10",
+    "downloaded": "350GB",
+    "ratio": "2.5",
+    "privilege": "Elite User及以上用户封存账号后不会被删除。此等级及以上没有下载数限制。可以查看论坛Elite User(邀请交流版)"
+  },{
+    "level": "3",
+    "name": "Crazy User",
+    "interval": "15",
+    "downloaded": "500GB",
+    "ratio": "3.0",
+    "privilege": "可以在做种/下载/发布的时候选择匿名模式"
+  },{
+    "level": "4",
+    "name": "Insane User",
+    "interval": "20",
+    "downloaded": "1TB",
+    "ratio": "3.5",
+    "privilege": "可以查看普通日志"
+  },{
+    "level": "5",
+    "name": "Veteran User",
+    "interval": "25",
+    "downloaded": "2TB",
+    "ratio": "3.0",
+    "privilege": "可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号"
+  },{
+    "level": "6",
+    "name": "Extreme User",
+    "interval": "30",
+    "downloaded": "4TB",
+    "ratio": "4.5",
+    "privilege": "得到一个永久邀请；可以更新过期的外部信息"
+  },{
+    "level": "7",
+    "name": "Ultimate User",
+    "interval": "40",
+    "downloaded": "6TB",
+    "ratio": "4.0",
+    "privilege": "得到两个永久邀请"
+  },{
+    "level": "8",
+    "name": "Nexus Master",
+    "interval": "52",
+    "downloaded": "8TB",
+    "ratio": "5.5",
+    "privilege": "得到三个永久邀请"
+  }],
   "collaborator": "Rhilip",
   "searchEntry": [{
       "name": "全站",

@@ -17,7 +17,33 @@
   }],
   "host": "sdbits.org",
   "collaborator": "luckiestone",
-  "searchEntryConfig": {
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "DVD",
+      "interval": "4",
+      "downloaded": "30GB",
+      "ratio": "0.95",
+      "privilege": "Are able to leech 100 torrents at a time. You can view NFOs and request reseeds on poorly seeded torrents."
+    },
+    {
+      "level": "2",
+      "name": "SuperBit",
+      "interval": "4",
+      "downloaded": "500GB",
+      "ratio": "1.4",
+      "privilege": "As DVD"
+    },
+    {
+      "level": "3",
+      "name": "Criterion",
+      "interval": "4",
+      "downloaded": "500GB",
+      "ratio": "2.5",
+      "privilege": "As DVD"
+    }
+  ],
+"searchEntryConfig": {
     "page": "/browse.php",
     "queryString": "search=$key$",
     "resultType": "html",

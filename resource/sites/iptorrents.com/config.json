@@ -7,6 +7,16 @@
   "tags": ["综合"],
   "schema": "IPTorrents",
   "host": "iptorrents.com",
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Power User",
+      "interval": "4",
+      "uploaded": "50GB",
+      "ratio": "1.05",
+      "privilege": "Are able to make requests for torrents, view the Top 10, and apply for Uploader status"
+    }
+  ],
   "supportedFeatures": {
     "userData": "◐"
   },

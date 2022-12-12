@@ -7,6 +7,63 @@
   "icon": "https://www.pttime.org/favicon.ico",
   "tags": ["电影", "成人"],
   "host": "www.pttime.org",
+  "levelRequirements": [{
+    "level": "1",
+    "name": "Power User",
+    "interval": "4",
+    "downloaded": "512GB",
+    "ratio": "1.05",
+    "privilege": "无"
+  },{
+    "level": "2",
+    "name": "Elite User",
+    "interval": "8",
+    "downloaded": "1TB",
+    "ratio": "1.55",
+    "privilege": "无"
+  },{
+    "level": "3",
+    "name": "Crazy User",
+    "interval": "15",
+    "downloaded": "2TB",
+    "ratio": "2.05",
+    "privilege": "无"
+  },{
+    "level": "4",
+    "name": "Insane User",
+    "interval": "25",
+    "downloaded": "4TB",
+    "ratio": "2.55",
+    "privilege": "无"
+  },{
+    "level": "5",
+    "name": "Veteran User",
+    "interval": "52",
+    "downloaded": "8TB",
+    "ratio": "3.05",
+    "privilege": "无"
+  },{
+    "level": "6",
+    "name": "Extreme User",
+    "interval": "80",
+    "downloaded": "16TB",
+    "ratio": "3.55",
+    "privilege": "无"
+  },{
+    "level": "7",
+    "name": "Ultimate User",
+    "interval": "104",
+    "downloaded": "35000GB",
+    "ratio": "4.05",
+    "privilege": "无"
+  },{
+    "level": "8",
+    "name": "Nexus Master",
+    "interval": "130",
+    "downloaded": "70000GB",
+    "ratio": "4.55",
+    "privilege": "无"
+  }],
   "selectors": {
     "userBaseInfo": {
       "page": "/index.php",

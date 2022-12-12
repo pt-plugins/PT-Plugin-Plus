@@ -17,7 +17,16 @@
     "pages": ["/browse.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
   }],
-  "searchEntryConfig": {
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "Power User",
+      "interval": "13",
+      "uploaded": "50GB",
+      "ratio": "1.05"
+    }
+  ],
+"searchEntryConfig": {
     "page": "/browse.php",
     "queryString": "search=$key$&search_type=torrent",
     "resultType": "html",

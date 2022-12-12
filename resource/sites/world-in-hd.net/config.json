@@ -16,7 +16,30 @@
     "pages": ["/torrents"],
     "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
   }],
-  "searchEntryConfig": {
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "720p",
+      "interval": "5",
+      "uploaded": "250GB",
+      "ratio": "2"
+    },
+    {
+      "level": "2",
+      "name": "1080i",
+      "interval": "15",
+      "uploaded": "400GB",
+      "ratio": "3"
+    },
+    {
+      "level": "3",
+      "name": "1080p",
+      "interval": "25",
+      "uploaded": "1.2TB",
+      "ratio": "4.5"
+    }
+  ],
+"searchEntryConfig": {
     "skipIMDbId": true,
     "page": "/torrent/ajaxsearchtorrent/$key$",
     "resultType": "html",
