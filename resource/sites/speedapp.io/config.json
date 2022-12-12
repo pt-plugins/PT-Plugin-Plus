@@ -117,7 +117,7 @@
         }, 
         "levelName": {
           "selector": ["div.card-body.pt-4 >div.align-items-center div.text-muted"],
-          "filters":  ["query.text().replace(/,|\\s|\\n/g,'')"]
+          "filters":  ["$(query.contents()[0]).text().trim()"]
         },
         "joinTime": {
           "selector": ["dt:contains('注册日期') + dd, dt:contains('Signup date') + dd, dt:contains('Data inregistrarii') + dd"],
