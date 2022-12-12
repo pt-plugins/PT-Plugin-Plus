@@ -172,44 +172,37 @@
                 <template v-if="props.item.user.nextLevel">
                   <template v-if="props.item.user.nextLevel.name">
                     <br />
-                    <span style="color: blue">
-                      <template v-if="props.item.user.nextLevel.requiredDate">
-                        {{ props.item.user.nextLevel.requiredDate }}&nbsp;
-                      </template>
-                    </span>
-                    <span style="color: red">
-                      <template v-if="props.item.user.nextLevel.uploaded">
-                        {{ props.item.user.nextLevel.uploaded | formatSize }}
-                        <v-icon small color="red darken-4">file_upload</v-icon
-                        >&nbsp;
-                      </template>
-                      <template v-if="props.item.user.nextLevel.downloaded">
-                        {{ props.item.user.nextLevel.downloaded | formatSize }}
-                        <v-icon small color="red darken-4">file_download</v-icon
-                        >&nbsp;
-                      </template>
-                      <template v-if="props.item.user.nextLevel.trueDownloaded">
-                        {{
-                          props.item.user.nextLevel.trueDownloaded | formatSize
-                        }}{{ $t("home.levelRequirement.trueDownloaded") }}&nbsp;
-                      </template>
-                      <template v-if="props.item.user.nextLevel.bonus">
-                        {{ props.item.user.nextLevel.bonus | formatNumber
-                        }}{{ $t("home.levelRequirement.bonus") }}&nbsp;
-                      </template>
-                      <template v-if="props.item.user.nextLevel.seedingPoints">
-                        {{
-                          props.item.user.nextLevel.seedingPoints |
-                            formatNumber
-                        }}{{ $t("home.levelRequirement.seedingPoints") }}&nbsp;
-                      </template>
-                      <template v-if="props.item.user.nextLevel.uploads">
-                        {{ props.item.user.nextLevel.uploads
-                        }}{{ $t("home.levelRequirement.uploads") }}&nbsp;
-                      </template>
-                    </span>
-                  </template> </template
-                ><template v-else>
+                    <v-icon small color="black darken-4">keyboard_tab</v-icon>
+                    <template v-if="props.item.user.nextLevel.requiredDate">
+                      {{ props.item.user.nextLevel.requiredDate }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.uploaded">
+                      <v-icon small color="red darken-4">arrow_upward</v-icon>
+                      {{ props.item.user.nextLevel.uploaded | formatSize }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.downloaded">
+                      <v-icon small color="green darken-4">arrow_downward</v-icon>
+                      {{ props.item.user.nextLevel.downloaded | formatSize }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.trueDownloaded">
+                      {{ $t("home.levelRequirement.trueDownloaded") }}
+                      {{ props.item.user.nextLevel.trueDownloaded | formatSize }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.bonus">
+                      <v-icon small color="green darken-4">attach_money</v-icon>
+                      {{ props.item.user.nextLevel.bonus | formatNumber}}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.seedingPoints">
+                      {{ $t("home.levelRequirement.seedingPoints") }}
+                      {{ props.item.user.nextLevel.seedingPoints | formatNumber }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.uploads">
+                      <v-icon small color="green darken-4">file_upload</v-icon>
+                      {{ props.item.user.nextLevel.uploads }}&nbsp;
+                    </template>
+                  </template>
+                </template>
+                <template v-else>
                   <v-icon small color="green darken-4">done</v-icon>
                 </template>
                 <div class="levelRequirement">
@@ -229,30 +222,28 @@
                       <v-icon small color="red darken-4">block</v-icon>
                     </template>
                     <template v-if="levelRequirement.requiredDate">
-                      {{ levelRequirement.requiredDate }} </template
-                    >({{ levelRequirement.name }}):
+                      {{ levelRequirement.requiredDate }} </template>({{ levelRequirement.name }}):
                     <template v-if="levelRequirement.uploaded">
-                      {{ levelRequirement.uploaded }}
-                      <v-icon small color="green darken-4">file_upload</v-icon>;
+                      <v-icon small color="green darken-4">arrow_upward</v-icon>
+                      {{ levelRequirement.uploaded }};
                     </template>
                     <template v-if="levelRequirement.uploads">
-                      {{ $t("home.levelRequirement.uploads") }}
+                      <v-icon small color="green darken-4">file_upload</v-icon>
                       {{ levelRequirement.uploads }};
                     </template>
                     <template v-if="levelRequirement.downloaded">
-                      {{ levelRequirement.downloaded }}
-                      <v-icon small color="red darken-4">file_download</v-icon>;
+                      <v-icon small color="red darken-4">arrow_downward</v-icon>
+                      {{ levelRequirement.downloaded }};
                     </template>
                     <template v-if="levelRequirement.trueDownloaded">
                       {{ $t("home.levelRequirement.trueDownloaded") }}
                       {{ levelRequirement.trueDownloaded }};
                     </template>
                     <template v-if="levelRequirement.ratio">
-                      {{ $t("home.levelRequirement.ratio") }}
-                      {{ levelRequirement.ratio }};
+                      % {{ levelRequirement.ratio }};
                     </template>
                     <template v-if="levelRequirement.bonus">
-                      {{ $t("home.levelRequirement.bonus") }}
+                      <v-icon small color="green darken-4">attach_money</v-icon>
                       {{ levelRequirement.bonus | formatNumber }};
                     </template>
                     <template v-if="levelRequirement.seedingPoints">
