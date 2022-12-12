@@ -16,7 +16,33 @@
     "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
   }],
   "host": "hdbits.org",
-  "searchEntryConfig": {
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "1080i",
+      "interval": "4",
+      "downloaded": "30GB",
+      "ratio": "0.95",
+      "privilege": "You can view NFOs and request reseeds on poorly seeded torrents."
+    },
+    {
+      "level": "2",
+      "name": "1080p",
+      "interval": "4",
+      "downloaded": "500GB",
+      "ratio": "1.4",
+      "privilege": "As 1080i"
+    },
+    {
+      "level": "3",
+      "name": "UHD",
+      "interval": "4",
+      "downloaded": "500GB",
+      "ratio": "2.5",
+      "privilege": "As 1080i"
+    }
+  ],
+"searchEntryConfig": {
     "page": "/browse.php",
     "queryString": "search=$key$",
     "resultType": "html",
