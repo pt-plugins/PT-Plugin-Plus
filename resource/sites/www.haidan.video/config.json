@@ -191,7 +191,7 @@
       "fields": {
         "classPoints": {
           "selector": ["a[href='classpoint.php']+span"],
-          "filters": ["query.text().trim()", "query ? parseInt(query) : 0"]
+          "filters": ["query.text().replace(/\\D/g,'')", "query ? parseInt(query) : 0"]
         }
       }
     }
