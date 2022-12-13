@@ -210,10 +210,11 @@
                   >
                     <template
                       v-if="
-                        !props.item.user.nextLevel.name ||
-                        Number(props.item.user.nextLevel.level) >
-                          Number(levelRequirement.level)
-                      "
+                            !props.item.user.nextLevel ||
+                            !props.item.user.nextLevel.name ||
+                            Number(props.item.user.nextLevel.level) >
+                            Number(levelRequirement.level)
+                            "
                     >
                       <v-icon small color="green darken-4">done</v-icon>
                     </template>
