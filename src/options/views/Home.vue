@@ -197,6 +197,9 @@
                       </template>
                     </div>
                   </template>
+                  <template v-else>
+                    <v-icon small color="green darken-4">done</v-icon>
+                  </template>
                 </template>
                 <template v-else>
                   <v-icon small color="green darken-4">done</v-icon>
