@@ -199,7 +199,6 @@
                     </template>
                   </div>
                 </template>
-                </template>
                 <template v-else>
                   <v-icon small color="green darken-4">done</v-icon>
                 </template>
@@ -250,6 +249,7 @@
                     <br />
                   </template>
                 </div>
+              </template>
             </template>
           </td>
           <td v-if="showColumn('user.uploaded')" class="number">
