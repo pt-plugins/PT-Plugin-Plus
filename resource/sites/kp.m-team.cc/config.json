@@ -267,6 +267,16 @@
           "filters": ["jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
       }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["td:contains('您目前每小時合計可獲得'):last", "td:contains('您目前每小时合计可获得'):last"],
+          "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
+        }
+      }
     }
   }
 }
