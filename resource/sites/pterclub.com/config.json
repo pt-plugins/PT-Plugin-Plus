@@ -114,6 +114,10 @@
           "selector": ["td.rowhead:contains('猫粮') + td, td.rowhead:contains('Karma Points') + td, td.rowhead:contains('貓糧') + td"],
           "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
         },
+        "seeding": {
+          "selector": ["a[href*='getusertorrentlist.php'][href*='seeding']"],
+          "filters": ["query ? parseInt(query.text().replace(/,/g,'')) : 0"]
+        },
         "seedingSize": {
           "selector": ["td.rowhead:contains('做种大小') + td, td.rowhead:contains('Seeding Size') + td, td.rowhead:contains('做種大小') + td"],
           "filters": ["query.text().trim().sizeToNumber()"]
@@ -121,6 +125,7 @@
       }
     },
     "userSeedingTorrents": {
+      "prerequisites": "!user.seeding",
       "page": "/getusertorrentlist.php?userid=$user.id$&type=seeding",
       "fields": {
         "seeding": {
