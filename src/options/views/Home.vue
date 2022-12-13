@@ -169,7 +169,6 @@
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
               <template v-if="props.item.levelRequirements">
-                <template v-if="props.item.user.nextLevel">
                   <template v-if="props.item.user.nextLevel.name">
                     <div>
                       <v-icon small color="black darken-4">keyboard_tab</v-icon>
@@ -197,7 +196,6 @@
                       </template>
                     </div>
                   </template>
-                </template>
                 <template v-else>
                   <v-icon small color="green darken-4">done</v-icon>
                 </template>
