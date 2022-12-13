@@ -195,6 +195,16 @@
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         }
       }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["td:contains('我的数据'):last", "td:contains('我的數據'):last", "td:contains('My Data'):last"],
+          "filters": ["parseFloat(query.parent().children().last().text())"]
+        }
+      }
     }
   }
 }
