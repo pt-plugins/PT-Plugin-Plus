@@ -196,7 +196,7 @@
                         <v-icon small color="green darken-4">file_upload</v-icon>{{ props.item.user.nextLevel.uploads }}&nbsp;
                       </template>
                       <template v-if="props.item.user.nextLevel.classPoints">
-                        <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{ props.item.user.nextLevel.classPoints | formatNumber }}&nbsp;
+                        <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{ props.item.user.nextLevel.classPoints | formatNumber }}&nbsp;
                       </template>
                     </div>
                   </template>
@@ -245,7 +245,7 @@
                       <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{ levelRequirement.seedingPoints | formatInteger }};
                     </template>
                     <template v-if="levelRequirement.classPoints">
-                      <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{ levelRequirement.classPoints | formatInteger }};
+                      <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{ levelRequirement.classPoints | formatInteger }};
                     </template>
                     {{ levelRequirement.privilege }}
                     <br />
@@ -280,6 +280,14 @@
               </div>
               <div>
                 <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{ props.item.user.seedingPoints | formatNumber }}
+              </div>
+            </template>
+            <template v-else-if="showSeedingPoints && props.item.user.classPoints">
+              <div>
+                <v-icon small color="green darken-4">attach_money</v-icon>{{ props.item.user.bonus | formatNumber }}
+              </div>
+              <div>
+                <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{ props.item.user.classPoints | formatNumber }}
               </div>
             </template>
             <template v-else>
