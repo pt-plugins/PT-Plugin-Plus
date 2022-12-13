@@ -14,6 +14,70 @@
   "formerHosts": [
     "hdcmct.org"
   ],
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "Power User",
+    "downloaded": "100GB",
+    "ratio": "1.1",
+    "seedingPoints": "20000",
+    "privilege": "查看NFO文档；请求续种；上传字幕或删除自己上传的字幕。"
+  },{
+    "level": "2", 
+    "name": "Elite User",
+    "downloaded": "200GB",
+    "ratio": "1.2",
+    "seedingPoints": "50000",
+    "privilege": "查看用户列表；查看排行榜。"
+  },{
+    "level": "3", 
+    "name": "Crazy User",
+    "downloaded": "500GB",
+    "ratio": "1.2",
+    "seedingPoints": "100000",
+    "privilege": "在做种/下载/发布的时候选择匿名模式, 浏览论坛邀请区。封存账号后不会被删除"
+  },{
+    "level": "4", 
+    "name": "Insane User",
+    "downloaded": "1TB",
+    "ratio": "1.2",
+    "seedingPoints": "200000",
+    "privilege": "查看其它用户的种子历史"
+  },{
+    "level": "5", 
+    "name": "Veteran User",
+    "downloaded": "2TB",
+    "ratio": "1.2",
+    "seedingPoints": "400000",
+    "privilege": "永远保留账号。免除站点常规考核"
+  },{
+    "level": "6", 
+    "name": "Extreme User",
+    "downloaded": "3TB",
+    "ratio": "1.5",
+    "seedingPoints": "600000",
+    "privilege": "得到1个邀请名额。"
+  },{
+    "level": "7", 
+    "name": "Ultimate User",
+    "downloaded": "4TB",
+    "ratio": "1.5",
+    "seedingPoints": "800000",
+    "privilege": "查看其它用户的评论、帖子历史。"
+  },{
+    "level": "8", 
+    "name": "Nexus Master",
+    "downloaded": "5TB",
+    "ratio": "1.5",
+    "seedingPoints": "1000000",
+    "privilege": "得到1个邀请名额。"
+  },{
+    "level": "9", 
+    "name": "Nexus God",
+    "downloaded": "11TB",
+    "ratio": "2.0",
+    "seedingPoints": "2200000",
+    "privilege": "彩色ID特权；查看普通日志；购买及发送邀请。"
+  }],
   "searchEntry": [{
       "name": "全部",
       "enabled": true
