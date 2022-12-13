@@ -169,37 +169,36 @@
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
               <template v-if="props.item.levelRequirements">
-                <template v-if="props.item.user.nextLevel">
-                  <template v-if="props.item.user.nextLevel.name">
-                    <div>
-                      <v-icon small color="black darken-4">keyboard_tab</v-icon>
-                      <template v-if="props.item.user.nextLevel.requiredDate">
-                        {{ props.item.user.nextLevel.requiredDate }}&nbsp;
-                      </template>
-                      <template v-if="props.item.user.nextLevel.uploaded">
-                        <v-icon small color="red darken-4">arrow_upward</v-icon>{{ props.item.user.nextLevel.uploaded | formatSize }}&nbsp;
-                      </template>
-                      <template v-if="props.item.user.nextLevel.downloaded">
-                        <v-icon small color="green darken-4">arrow_downward</v-icon>{{ props.item.user.nextLevel.downloaded | formatSize }}&nbsp;
-                      </template>
-                      <template v-if="props.item.user.nextLevel.trueDownloaded">
-                        {{ $t("home.levelRequirement.trueDownloaded") }}
-                        {{ props.item.user.nextLevel.trueDownloaded | formatSize }}&nbsp;
-                      </template>
-                      <template v-if="props.item.user.nextLevel.bonus">
-                        <v-icon small color="green darken-4">attach_money</v-icon>{{ props.item.user.nextLevel.bonus | formatNumber}}&nbsp;
-                      </template>
-                      <template v-if="props.item.user.nextLevel.seedingPoints">
-                        <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{ props.item.user.nextLevel.seedingPoints | formatNumber }}&nbsp;
-                      </template>
-                      <template v-if="props.item.user.nextLevel.uploads">
-                        <v-icon small color="green darken-4">file_upload</v-icon>{{ props.item.user.nextLevel.uploads }}&nbsp;
-                      </template>
-                      <template v-if="props.item.user.nextLevel.classPoints">
-                        <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{ props.item.user.nextLevel.classPoints | formatNumber }}&nbsp;
-                      </template>
-                    </div>
-                  </template>
+                <template v-if="props.item.user.nextLevel && props.item.user.nextLevel.name">
+                  <div>
+                    <v-icon small color="black darken-4">keyboard_tab</v-icon>
+                    <template v-if="props.item.user.nextLevel.requiredDate">
+                      {{ props.item.user.nextLevel.requiredDate }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.uploaded">
+                      <v-icon small color="red darken-4">arrow_upward</v-icon>{{ props.item.user.nextLevel.uploaded | formatSize }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.downloaded">
+                      <v-icon small color="green darken-4">arrow_downward</v-icon>{{ props.item.user.nextLevel.downloaded | formatSize }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.trueDownloaded">
+                      {{ $t("home.levelRequirement.trueDownloaded") }}
+                      {{ props.item.user.nextLevel.trueDownloaded | formatSize }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.bonus">
+                      <v-icon small color="green darken-4">attach_money</v-icon>{{ props.item.user.nextLevel.bonus | formatNumber}}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.seedingPoints">
+                      <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{ props.item.user.nextLevel.seedingPoints | formatNumber }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.uploads">
+                      <v-icon small color="green darken-4">file_upload</v-icon>{{ props.item.user.nextLevel.uploads }}&nbsp;
+                    </template>
+                    <template v-if="props.item.user.nextLevel.classPoints">
+                      <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{ props.item.user.nextLevel.classPoints | formatNumber }}&nbsp;
+                    </template>
+                  </div>
+                </template>
                 </template>
                 <template v-else>
                   <v-icon small color="green darken-4">done</v-icon>
@@ -251,7 +250,6 @@
                     <br />
                   </template>
                 </div>
-              </template>
             </template>
           </td>
           <td v-if="showColumn('user.uploaded')" class="number">
