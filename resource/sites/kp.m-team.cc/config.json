@@ -273,8 +273,11 @@
       "page": "/mybonus.php",
       "fields": {
         "bonusPerHour": {
-          "selector": ["td:contains('您目前每小時合計可獲得'):last", "td:contains('您目前每小时合计可获得'):last"],
-          "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
+          "selector": ["td:contains('您目前每小時合計可獲得'):last",
+                       "td:contains('您目前每小时合计可获得'):last",
+                       "td:contains('目前將會獲取'):last",
+                       "td:contains('目前将会获取'):last"],
+          "filters": ["parseFloat(query.text().match(/[獲获][得取](\\d+(?:\\.\\d+)?)/)[1])"]
         }
       }
     }
