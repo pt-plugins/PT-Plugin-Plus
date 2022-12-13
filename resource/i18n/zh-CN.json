@@ -192,7 +192,8 @@
         "lastUpdateTime": "数据更新于",
         "status": "状态",
         "uploads": "发布",
-        "trueDownloaded": "真实下载"
+        "trueDownloaded": "真实下载",
+        "classPoints": "等级积分"
       },
       "levelRequirement": {
         "date": "日期",
@@ -210,7 +211,8 @@
         "lastUpdateTime": "数据更新于",
         "status": "状态",
         "uploads": "发布",
-        "trueDownloaded": "真实下载"
+        "trueDownloaded": "真实下载",
+        "classPoints": "等级积分"
       },
       "tip": "N/A 表示暂不支持",
       "nodata": "您还没有添加站点，请前往『站点设置』添加站点。"

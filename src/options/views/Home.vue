@@ -195,6 +195,9 @@
                       <template v-if="props.item.user.nextLevel.uploads">
                         <v-icon small color="green darken-4">file_upload</v-icon>{{ props.item.user.nextLevel.uploads }}&nbsp;
                       </template>
+                      <template v-if="props.item.user.nextLevel.classPoints">
+                        <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{ props.item.user.nextLevel.classPoints | formatNumber }}&nbsp;
+                      </template>
                     </div>
                   </template>
                 </template>
@@ -240,6 +243,9 @@
                     </template>
                     <template v-if="levelRequirement.seedingPoints">
                       <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{ levelRequirement.seedingPoints | formatInteger }};
+                    </template>
+                    <template v-if="levelRequirement.classPoints">
+                      <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{ levelRequirement.classPoints | formatInteger }};
                     </template>
                     {{ levelRequirement.privilege }}
                     <br />
@@ -728,6 +734,15 @@ export default Vue.extend({
               if (userTrueDownloaded < requiredTrueDownloaded) {
                 user.nextLevel.trueDownloaded =
                   requiredTrueDownloaded - userTrueDownloaded;
+                user.nextLevel.level = levelRequirement.level;
+              }
+            }
+
+            if (levelRequirement.classPoints) {
+              let userClassPoints = user.classPoints as number;
+              let requiredClassPoints = levelRequirement.classPoints as number;
+              if (userClassPoints < requiredClassPoints) {
+                user.nextLevel.classPoints = requiredClassPoints - userClassPoints;
                 user.nextLevel.level = levelRequirement.level;
               }
             }

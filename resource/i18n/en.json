@@ -196,7 +196,8 @@
         "status": "Status",
         "comments": "Comments",
         "uploads": "Uploaded",
-        "trueDownloaded": "True Downloaded"
+        "trueDownloaded": "True Downloaded",
+        "classPoints": "Class Points"
       },
       "levelRequirement": {
         "date": "Date",
@@ -215,7 +216,8 @@
         "status": "Status",
         "comments": "Comments",
         "uploads": "Uploaded",
-        "trueDownloaded": "True Downloaded"
+        "trueDownloaded": "True Downloaded",
+        "classPoints": "Class Points"
       },
       "tip": "N/A means no support",
       "nodata": "You have not added a site, please go to [Sites] to add a site."
