@@ -294,6 +294,8 @@ export interface LevelRequirement {
   seedingSize?: number;
   // 分享率要求
   ratio?: number;
+  // 等级积分要求
+  classPoints?: string | number;
   // 权限
   privilege?: string;
 }
@@ -572,6 +574,8 @@ export interface UserInfo {
   bonusPage?: string;
   // 入站时间
   joinTime?: number;
+  // 等级积分
+  classPoints?: string | number;
   // 最后更新时间
   lastUpdateTime?: number;
   // 最后更新状态
