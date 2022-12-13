@@ -20,12 +20,12 @@
     _getDownloadUrlByPossibleHrefs() {
       const possibleHrefs = [
         // pthome
-        "a[href*='downhash'][href*='https']",
+        "a[href*='downhash'][href*='https'][class!='forward_a']",
         // hdchina
-        "a[href*='hash'][href*='https']",
+        "a[href*='hash'][href*='https'][class!='forward_a']",
         // misc
-        "a[href*='passkey'][href*='https']",
-        "a[href*='passkey']"
+        "a[href*='passkey'][href*='https'][class!='forward_a']",
+        "a[href*='passkey'][class!='forward_a']"
       ];
 
       for (const href of possibleHrefs) {
