@@ -113,8 +113,7 @@ jobs:
           zipFilePath: 'extension.zip'
           crxFilePath: 'artifact/extension.crx'
           privateKey: ${{ secrets.CRX_PRIVATE_KEY }}
-          # 此处利用inputs为空的特性，在action build的时候不构建 updateXml 文件
-          updateXmlPath: artifact/${{ inputs.auto_update_file }}
+          updateXmlPath: artifact/${{ steps.auto_update_file.outputs.value }}
           updateXmlCodebaseUrl: https://github.com/pt-plugins/PT-Plugin-Plus/releases/download/v${{ steps.zip.outputs.extensionVersion }}/PT-Plugin-Plus-${{ steps.zip.outputs.extensionVersion }}.crx
 
       - name: Upload Built Crx to action
