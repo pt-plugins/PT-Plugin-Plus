@@ -21,7 +21,7 @@
       "addLanguage": "Add a new language temporarily",
       "version": "Version",
       "systemLog": "System Log",
-      "darkMode": "Dark Mode",
+      "darkMode": "Invert Color",
       "haveNewReleases": "Update available",
       "add": "Add",
       "edit": "Edit",
@@ -201,6 +201,7 @@
         "classPoints": "Class Points"
       },
       "levelRequirement": {
+        "levelRequirements": "Level Requirements",
         "date": "Date",
         "site": "Site",
         "userName": "User name",

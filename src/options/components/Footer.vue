@@ -94,7 +94,7 @@
       </span>
     </v-btn>
     <v-btn @click="toggle_dark_mode" flat small :icon="$vuetify.breakpoint.smAndDown">
-      <v-icon small>dark_mode</v-icon>
+      <v-icon small>invert_colors</v-icon>
       <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">
         {{ $t("common.darkMode") }}
       </span>
