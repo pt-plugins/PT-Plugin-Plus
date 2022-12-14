@@ -141,7 +141,7 @@
                     </template>
                   </div>
                 </template>
-                <template v-else>
+                <template v-else-if="props.item.user.name">
                   <v-icon small color="green darken-4">done</v-icon>
                 </template>
                 <v-card class="levelRequirement">
