@@ -114,6 +114,16 @@
           "filters": ["query.last().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         }
       }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["td.colhead:contains('Seed'):contains('bonus') + td > div:eq(2) > b"],
+          "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
+        }
+      }
     }
   }
 }
