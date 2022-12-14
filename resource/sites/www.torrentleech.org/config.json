@@ -7,6 +7,36 @@
   "tags": ["综合"],
   "schema": "TorrentLeech",
   "host": "www.torrentleech.org",
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Power User",
+      "interval": "2",
+      "uploaded": "200GB",
+      "ratio": "1.1"
+    },
+    {
+      "level": 2,
+      "name": "Super User",
+      "interval": "12",
+      "uploaded": "1TB",
+      "ratio": "2.0"
+    },
+    {
+      "level": 3,
+      "name": "Extreme User",
+      "interval": "24",
+      "uploaded": "10TB",
+      "ratio": "5.0"
+    },
+    {
+      "level": 4,
+      "name": "TL GOD",
+      "interval": "52",
+      "uploaded": "50TB",
+      "ratio": "8.0"
+    }
+  ],
   "plugins": [{
     "name": "种子详情页面",
     "pages": ["^/torrent/(\\d+)$"],
