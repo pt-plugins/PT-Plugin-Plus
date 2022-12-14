@@ -271,11 +271,9 @@
       "page": "/mprecent.php?user=$user.id$",
       "fields": {
         "bonusPerHour": {
-          "selector": ["td:contains('最近24小时获得种子UCoin')",
-                       "td:contains('最近24小時獲得種子UCoin')",
-                       "td:contains('UCoins acquired in recent 24 hours')",
-                       "td:contains('UCoins подсчитано за последние сутки')"],
-          "filters": ["query.is(\":contains('最近24小时获得种子UCoin')\") || query.is(\":contains('最近24小時獲得種子UCoin')\") ? query.text().match(/最近24(?:小时获得种子|小時獲得種子)UCoin.*?([\\d.]+)/)[1] : query.is(\":contains('UCoins acquired in recent 24 hours')\") ? query.text().match(/([\\d.]+).*?UCoins acquired in recent 24 hours/)[1] : query.is(\":contains('UCoins подсчитано за последние сутки')\") ? query.text().match(/([\\d.]+).*?UCoins подсчитано за последние сутки/)[1].replace(/,/g,'.') : null",
+          "selector": ["#outer > table.main td.embedded table td.text"],
+          "filters": ["query.contents().filter(function() {return this.nodeType == 3;}).text()",
+                      "query.includes('最近24小时获得种子UCoin') || query.includes('最近24小時獲得種子UCoin') ? query.match(/最近24(?:小时获得种子|小時獲得種子)UCoin.*?([\\d.]+)/)[1] : query.includes('UCoins acquired in recent 24 hours') ? query.match(/([\\d.]+).*?UCoins acquired in recent 24 hours/)[1] : query.includes('UCoins подсчитано за последние сутки') ? query.match(/([\\d.]+).*?UCoins подсчитано за последние сутки/)[1].replace(/,/g,'.') : null",
                       "query ? parseFloat(query) / 24 : null"]
         }
       }
