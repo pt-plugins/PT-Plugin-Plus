@@ -147,7 +147,7 @@
                 <v-card class="levelRequirement">
                   <template v-for="levelRequirement in props.item.levelRequirements">
                     <template v-if="
-                      !props.item.user.nextLevel.name ||
+                      !(props.item.user.nextLevel && props.item.user.nextLevel.name) ||
                       Number(props.item.user.nextLevel.level) >
                       Number(levelRequirement.level)
                     ">
