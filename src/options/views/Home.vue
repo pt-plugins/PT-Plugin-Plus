@@ -3,20 +3,11 @@
     <v-alert :value="true" type="info">{{ $t("home.title") }}</v-alert>
     <v-card>
       <v-card-title v-if="sites && sites.length > 0">
-        <v-btn
-          color="success"
-          @click="getInfos"
-          :loading="loading"
-          :title="$t('home.getInfos')"
-        >
+        <v-btn color="success" @click="getInfos" :loading="loading" :title="$t('home.getInfos')">
           <v-icon class="mr-2">cached</v-icon>
           {{ $t("home.getInfos") }}
         </v-btn>
-        <v-btn
-          to="/user-data-timeline"
-          color="success"
-          :title="$t('home.timeline')"
-        >
+        <v-btn to="/user-data-timeline" color="success" :title="$t('home.timeline')">
           <v-icon>timeline</v-icon>
         </v-btn>
 
@@ -33,115 +24,56 @@
 
           <v-card>
             <v-container grid-list-xs>
-              <v-switch
-                color="success"
-                v-model="showSiteName"
-                :label="$t('home.siteName')"
-                @change="updateViewOptions"
-              ></v-switch>
-              <v-switch
-                color="success"
-                v-model="showUserName"
-                :label="$t('home.userName')"
-                @change="updateViewOptions"
-              ></v-switch>
-              <v-switch
-                color="success"
-                v-model="showUserLevel"
-                :label="$t('home.userLevel')"
-                @change="updateViewOptions"
-              ></v-switch>
-              <v-switch
-                color="success"
-                v-model="showLevelRequirements"
-                :label="$t('home.levelRequirements')"
-                @change="updateViewOptions"
-              ></v-switch>
-              <v-switch
-                color="success"
-                v-model="showWeek"
-                :label="$t('home.week')"
-                @change="updateViewOptions"
-              ></v-switch>
-              <v-switch
-                color="success"
-                v-model="showSeedingPoints"
-                :label="$t('home.seedingPoints')"
-                @change="updateViewOptions"
-              ></v-switch>
+              <v-switch color="success" v-model="showSiteName" :label="$t('home.siteName')"
+                @change="updateViewOptions"></v-switch>
+              <v-switch color="success" v-model="showUserName" :label="$t('home.userName')"
+                @change="updateViewOptions"></v-switch>
+              <v-switch color="success" v-model="showUserLevel" :label="$t('home.userLevel')"
+                @change="updateViewOptions"></v-switch>
+              <v-switch color="success" v-model="showLevelRequirements" :label="$t('home.levelRequirements')"
+                @change="updateViewOptions"></v-switch>
+              <v-switch color="success" v-model="showWeek" :label="$t('home.week')"
+                @change="updateViewOptions"></v-switch>
+              <v-switch color="success" v-model="showSeedingPoints" :label="$t('home.seedingPoints')"
+                @change="updateViewOptions"></v-switch>
             </v-container>
           </v-card>
         </v-menu>
-        <v-select
-          v-model="selectedHeaders"
-          class="select"
-          :items="headers"
-          :label="$t('home.selectColumns')"
-          @change="updateViewOptions"
-          multiple
-          outlined
-          return-object
-        >
+        <v-select v-model="selectedHeaders" class="select" :items="headers" :label="$t('home.selectColumns')"
+          @change="updateViewOptions" multiple outlined return-object>
           <template v-slot:selection="{ item, index }">
             <v-chip v-if="index === 0">
               <span>{{ item.text }}</span>
             </v-chip>
-            <span v-if="index === 1" class="grey--text caption"
-              >(+{{ selectedHeaders.length - 1 }} others)</span
-            >
+            <span v-if="index === 1" class="grey--text caption">(+{{ selectedHeaders.length - 1 }} others)</span>
           </template>
         </v-select>
 
         <!-- <AutoSignWarning /> -->
         <v-spacer></v-spacer>
 
-        <v-text-field
-          class="search"
-          v-model="filterKey"
-          append-icon="search"
-          label="Search"
-          single-line
-          hide-details
-          enterkeyhint="search"
-        ></v-text-field>
+        <v-text-field class="search" v-model="filterKey" append-icon="search" label="Search" single-line hide-details
+          enterkeyhint="search"></v-text-field>
       </v-card-title>
 
-      <v-data-table
-        :search="filterKey"
-        :headers="showHeaders"
-        :items="sites"
-        :pagination.sync="pagination"
-        item-key="host"
-        class="elevation-1"
-        ref="userDataTable"
-        :no-data-text="$t('home.nodata')"
-      >
+      <v-data-table :search="filterKey" :headers="showHeaders" :items="sites" :pagination.sync="pagination"
+        item-key="host" class="elevation-1" ref="userDataTable" :no-data-text="$t('home.nodata')">
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
           <td v-if="showColumn('name')" class="center">
             <v-badge color="red messageCount" overlap>
-              <template
-                v-slot:badge
-                v-if="
-                  !props.item.disableMessageCount &&
-                  props.item.user.messageCount > 0
-                "
-                :title="$t('home.newMessage')"
-              >
+              <template v-slot:badge v-if="
+                !props.item.disableMessageCount &&
+                props.item.user.messageCount > 0
+              " :title="$t('home.newMessage')">
                 {{
-                  props.item.user.messageCount > 10
-                    ? ""
-                    : props.item.user.messageCount
+                    props.item.user.messageCount > 10
+                      ? ""
+                      : props.item.user.messageCount
                 }}
               </template>
-              <v-btn
-                flat
-                icon
-                class="siteIcon"
-                :title="$t('home.getInfos')"
-                :disabled="props.item.offline"
-                @click.stop="getSiteUserInfo(props.item)"
-              >
+              <v-btn flat icon class="siteIcon" :title="$t('home.getInfos')" :disabled="props.item.offline"
+                @click.stop="getSiteUserInfo(props.item)">
                 <v-avatar :size="showSiteName ? 18 : 24">
                   <img :src="props.item.icon" />
                 </v-avatar>
@@ -149,13 +81,8 @@
             </v-badge>
 
             <br />
-            <a
-              :href="props.item.activeURL"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              class="nodecoration"
-              v-if="showSiteName"
-            >
+            <a :href="props.item.activeURL" target="_blank" rel="noopener noreferrer nofollow" class="nodecoration"
+              v-if="showSiteName">
               <span class="caption">{{ props.item.name }}</span>
             </a>
           </td>
@@ -169,57 +96,47 @@
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
               <template v-if="props.item.levelRequirements">
-                <template
-                  v-if="
-                    props.item.user.nextLevel && props.item.user.nextLevel.name
-                  "
-                >
+                <template v-if="
+                  props.item.user.nextLevel && props.item.user.nextLevel.name
+                ">
                   <div>
                     <v-icon small color="black darken-4">keyboard_tab</v-icon>
                     <template v-if="props.item.user.nextLevel.requiredDate">
                       {{ props.item.user.nextLevel.requiredDate }}&nbsp;
                     </template>
                     <template v-if="props.item.user.nextLevel.uploaded">
-                      <v-icon small color="red darken-4">arrow_upward</v-icon
-                      >{{
-                        props.item.user.nextLevel.uploaded | formatSize
+                      <v-icon small color="red darken-4">arrow_upward</v-icon>{{
+                          props.item.user.nextLevel.uploaded | formatSize
                       }}&nbsp;
                     </template>
                     <template v-if="props.item.user.nextLevel.downloaded">
-                      <v-icon small color="green darken-4"
-                        >arrow_downward</v-icon
-                      >{{
-                        props.item.user.nextLevel.downloaded | formatSize
+                      <v-icon small color="green darken-4">arrow_downward</v-icon>{{
+                          props.item.user.nextLevel.downloaded | formatSize
                       }}&nbsp;
                     </template>
                     <template v-if="props.item.user.nextLevel.trueDownloaded">
                       {{ $t("home.levelRequirement.trueDownloaded") }}
                       {{
-                        props.item.user.nextLevel.trueDownloaded | formatSize
+                          props.item.user.nextLevel.trueDownloaded | formatSize
                       }}&nbsp;
                     </template>
                     <template v-if="props.item.user.nextLevel.bonus">
-                      <v-icon small color="green darken-4">attach_money</v-icon
-                      >{{
-                        props.item.user.nextLevel.bonus | formatNumber
+                      <v-icon small color="green darken-4">attach_money</v-icon>{{
+                          props.item.user.nextLevel.bonus | formatNumber
                       }}&nbsp;
                     </template>
                     <template v-if="props.item.user.nextLevel.seedingPoints">
-                      <v-icon small color="green darken-4"
-                        >energy_savings_leaf</v-icon
-                      >{{
-                        props.item.user.nextLevel.seedingPoints | formatNumber
+                      <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{
+                          props.item.user.nextLevel.seedingPoints | formatNumber
                       }}&nbsp;
                     </template>
                     <template v-if="props.item.user.nextLevel.uploads">
-                      <v-icon small color="green darken-4">file_upload</v-icon
-                      >{{ props.item.user.nextLevel.uploads }}&nbsp;
+                      <v-icon small color="green darken-4">file_upload</v-icon>{{ props.item.user.nextLevel.uploads
+                      }}&nbsp;
                     </template>
                     <template v-if="props.item.user.nextLevel.classPoints">
-                      <v-icon small color="yellow darken-4"
-                        >energy_savings_leaf</v-icon
-                      >{{
-                        props.item.user.nextLevel.classPoints | formatNumber
+                      <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{
+                          props.item.user.nextLevel.classPoints | formatNumber
                       }}&nbsp;
                     </template>
                   </div>
@@ -228,57 +145,49 @@
                   <v-icon small color="green darken-4">done</v-icon>
                 </template>
                 <v-card class="levelRequirement">
-                  <template
-                    v-for="levelRequirement in props.item.levelRequirements"
-                  >
-                    <template
-                      v-if="
-                        !props.item.user.nextLevel.name ||
-                        Number(props.item.user.nextLevel.level) >
-                          Number(levelRequirement.level)
-                      "
-                    >
+                  <template v-for="levelRequirement in props.item.levelRequirements">
+                    <template v-if="
+                      !props.item.user.nextLevel.name ||
+                      Number(props.item.user.nextLevel.level) >
+                      Number(levelRequirement.level)
+                    ">
                       <v-icon small color="green darken-4">done</v-icon>
                     </template>
                     <template v-else>
                       <v-icon small color="red darken-4">block</v-icon>
                     </template>
                     <template v-if="levelRequirement.requiredDate">
-                      {{ levelRequirement.requiredDate }} </template
-                    >({{ levelRequirement.name }}):
+                      {{ levelRequirement.requiredDate }} </template>({{ levelRequirement.name }}):
                     <template v-if="levelRequirement.uploaded">
-                      <v-icon small color="green darken-4">arrow_upward</v-icon
-                      >{{ levelRequirement.uploaded }};
+                      <v-icon small color="green darken-4">arrow_upward</v-icon>{{ levelRequirement.uploaded }};
                     </template>
                     <template v-if="levelRequirement.uploads">
-                      <v-icon small color="green darken-4">file_upload</v-icon
-                      >{{ levelRequirement.uploads }};
+                      <v-icon small color="green darken-4">file_upload</v-icon>{{ levelRequirement.uploads }};
                     </template>
                     <template v-if="levelRequirement.downloaded">
-                      <v-icon small color="red darken-4">arrow_downward</v-icon
-                      >{{ levelRequirement.downloaded }};
+                      <v-icon small color="red darken-4">arrow_downward</v-icon>{{ levelRequirement.downloaded }};
                     </template>
                     <template v-if="levelRequirement.trueDownloaded">
                       {{ $t("home.levelRequirement.trueDownloaded") }}
                       {{ levelRequirement.trueDownloaded }};
                     </template>
                     <template v-if="levelRequirement.ratio">
-                      <v-icon small color="orange darken-4">balance</v-icon
-                      >{{ levelRequirement.ratio }};
+                      <v-icon small color="orange darken-4">balance</v-icon>{{ levelRequirement.ratio }};
                     </template>
                     <template v-if="levelRequirement.bonus">
-                      <v-icon small color="green darken-4">attach_money</v-icon
-                      >{{ levelRequirement.bonus | formatInteger }};
+                      <v-icon small color="green darken-4">attach_money</v-icon>{{ levelRequirement.bonus |
+                          formatInteger
+                      }};
                     </template>
                     <template v-if="levelRequirement.seedingPoints">
-                      <v-icon small color="green darken-4"
-                        >energy_savings_leaf</v-icon
-                      >{{ levelRequirement.seedingPoints | formatInteger }};
+                      <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{ levelRequirement.seedingPoints
+                          | formatInteger
+                      }};
                     </template>
                     <template v-if="levelRequirement.classPoints">
-                      <v-icon small color="yellow darken-4"
-                        >energy_savings_leaf</v-icon
-                      >{{ levelRequirement.classPoints | formatInteger }};
+                      <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{ levelRequirement.classPoints
+                          | formatInteger
+                      }};
                     </template>
                     {{ levelRequirement.privilege }}
                     <br />
@@ -309,25 +218,22 @@
           <td v-if="showColumn('user.bonus')" class="number">
             <template v-if="showSeedingPoints && props.item.user.seedingPoints">
               <div>
-                <v-icon small color="green darken-4">attach_money</v-icon
-                >{{ props.item.user.bonus | formatNumber }}
+                <v-icon small color="green darken-4">attach_money</v-icon>{{ props.item.user.bonus | formatNumber }}
               </div>
               <div>
-                <v-icon small color="green darken-4">energy_savings_leaf</v-icon
-                >{{ props.item.user.seedingPoints | formatNumber }}
+                <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{ props.item.user.seedingPoints |
+                    formatNumber
+                }}
               </div>
             </template>
-            <template
-              v-else-if="showSeedingPoints && props.item.user.classPoints"
-            >
+            <template v-else-if="showSeedingPoints && props.item.user.classPoints">
               <div>
-                <v-icon small color="green darken-4">attach_money</v-icon
-                >{{ props.item.user.bonus | formatNumber }}
+                <v-icon small color="green darken-4">attach_money</v-icon>{{ props.item.user.bonus | formatNumber }}
               </div>
               <div>
-                <v-icon small color="yellow darken-4"
-                  >energy_savings_leaf</v-icon
-                >{{ props.item.user.classPoints | formatNumber }}
+                <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{ props.item.user.classPoints |
+                    formatNumber
+                }}
               </div>
             </template>
             <template v-else>
@@ -339,51 +245,23 @@
               {{ props.item.user.bonusPerHour | formatNumber }}
             </template>
           </td>
-          <td
-            v-if="showColumn('user.joinTime')"
-            class="number"
-            :title="props.item.user.joinDateTime"
-          >
+          <td v-if="showColumn('user.joinTime')" class="number" :title="props.item.user.joinDateTime">
             {{ props.item.user.joinTime | timeAgo(showWeek) }}
           </td>
           <td v-if="showColumn('user.lastUpdateTime')" class="number">
-            <v-btn
-              depressed
-              small
-              :to="`statistic/${props.item.host}`"
-              :title="$t('home.statistic')"
-              >{{
+            <v-btn depressed small :to="`statistic/${props.item.host}`" :title="$t('home.statistic')">{{
                 props.item.user.lastUpdateTime |
-                  formatDate("YYYY-MM-DD HH:mm:ss")
-              }}</v-btn
-            >
+                formatDate("YYYY-MM-DD HH:mm:ss")
+            }}</v-btn>
           </td>
           <td v-if="showColumn('user.lastUpdateStatus')" class="center">
-            <v-progress-circular
-              indeterminate
-              :width="3"
-              size="30"
-              color="green"
-              v-if="props.item.user.isLoading"
-            >
-              <v-icon
-                v-if="props.item.user.isLoading"
-                @click="abortRequest(props.item)"
-                color="red"
-                small
-                :title="$t('home.cancelRequest')"
-                >cancel</v-icon
-              >
+            <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="props.item.user.isLoading">
+              <v-icon v-if="props.item.user.isLoading" @click="abortRequest(props.item)" color="red" small
+                :title="$t('home.cancelRequest')">cancel</v-icon>
             </v-progress-circular>
             <span v-else>
-              <a
-                :href="props.item.activeURL"
-                v-if="!props.item.user.isLogged"
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                class="nodecoration"
-                >{{ formatError(props.item.user) }}</a
-              >
+              <a :href="props.item.activeURL" v-if="!props.item.user.isLogged" target="_blank"
+                rel="noopener noreferrer nofollow" class="nodecoration">{{ formatError(props.item.user) }}</a>
               <span v-else>{{ formatError(props.item.user) }}</span>
             </span>
           </td>
@@ -715,7 +593,7 @@ export default Vue.extend({
                 : 0;
               let requiredUploadedbyRatio = levelRequirement.ratio
                 ? Math.max(downloaded, requiredDownloaded) *
-                  levelRequirement.ratio
+                levelRequirement.ratio
                 : 0;
               let requiredUploaded = Math.max(
                 levelRequirementUploaded,
@@ -806,7 +684,7 @@ export default Vue.extend({
             }
           }
         }
-      } catch {}
+      } catch { }
     },
     /**
      * @return {number}
@@ -958,6 +836,7 @@ export default Vue.extend({
 
 <style lang="scss">
 .home {
+
   table.v-table thead tr:not(.v-datatable__progress) th,
   table.v-table tbody tr td {
     padding: 5px !important;
@@ -967,6 +846,7 @@ export default Vue.extend({
   .center {
     text-align: center;
   }
+
   .number {
     text-align: right;
   }
