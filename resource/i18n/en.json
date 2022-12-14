@@ -21,6 +21,7 @@
       "addLanguage": "Add a new language temporarily",
       "version": "Version",
       "systemLog": "System Log",
+      "darkMode": "Dark Mode",
       "haveNewReleases": "Update available",
       "add": "Add",
       "edit": "Edit",

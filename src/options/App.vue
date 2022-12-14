@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="inspire" :dark="isDark">
     <template v-if="initializing">
       <v-progress-linear :indeterminate="true" color="info" height="5" class="pa-0 ma-0"></v-progress-linear>
       <v-alert :value="true" type="info">
@@ -53,6 +53,8 @@ export default {
   },
   created() {
     // this.init();
+    if (!localStorage.getItem('DarkMode'))
+      localStorage.setItem('DarkMode', false);
   },
   watch: {
     drawer() {
@@ -61,6 +63,11 @@ export default {
           navBarIsOpen: this.drawer
         });
       }
+    }
+  },
+  computed: {
+    isDark () {
+      return (localStorage.getItem('DarkMode') == 'true')
     }
   },
   methods: {

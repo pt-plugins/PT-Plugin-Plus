@@ -18,6 +18,7 @@
       "addLanguage": "临时添加新语言",
       "version": "版本",
       "systemLog": "系统日志",
+      "darkMode": "暗色模式",
       "haveNewReleases": "有更新可用",
       "add": "新增",
       "edit": "编辑",

@@ -202,7 +202,7 @@
                 <template v-else>
                   <v-icon small color="green darken-4">done</v-icon>
                 </template>
-                <div class="levelRequirement">
+                <v-card class="levelRequirement">
                   <template
                     v-for="levelRequirement in props.item.levelRequirements"
                   >
@@ -234,7 +234,7 @@
                       {{ levelRequirement.trueDownloaded }};
                     </template>
                     <template v-if="levelRequirement.ratio">
-                      <v-icon small color="black darken-4">balance</v-icon>{{ levelRequirement.ratio }};
+                      <v-icon small color="orange darken-4">balance</v-icon>{{ levelRequirement.ratio }};
                     </template>
                     <template v-if="levelRequirement.bonus">
                       <v-icon small color="green darken-4">attach_money</v-icon>{{ levelRequirement.bonus | formatInteger }};
@@ -248,7 +248,7 @@
                     {{ levelRequirement.privilege }}
                     <br />
                   </template>
-                </div>
+                </v-card>
               </template>
             </template>
           </td>
@@ -948,12 +948,11 @@ export default Vue.extend({
 
   .levelRequirement {
     position: absolute;
-    background-color: white;
     display: none;
     z-index: 999;
-    border: 1px solid black;
+    border: 1px solid;
   }
-
+  
   .select {
     max-width: 180px;
   }
