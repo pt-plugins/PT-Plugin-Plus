@@ -22,18 +22,13 @@
     "resource": "cd debug && yarn install && tsc && node ./dist/buildResource.js",
     "build:index": "yarn install && vue-cli-service build",
     "build:background": "webpack --config webpack/prod-background.js --progress",
-    "build:content": "webpack --config webpack/prod-content.js --progress",
-    "zip": "ts-node --skip-project ./deploy/index.ts -z",
-    "package": "ts-node --skip-project ./deploy/index.ts -p",
-    "release": "yarn build && yarn package"
+    "build:content": "webpack --config webpack/prod-content.js --progress"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
-    "archiver": "^5.3.1",
     "basiccontext": "^3.5.1",
     "blueimp-md5": "^2.19.0",
-    "commander": "^4.0.1",
     "crypto-js": "^3.1.9-1",
     "dayjs": "^1.11.5",
     "dom-to-image": "^2.6.0",
@@ -59,7 +54,6 @@
     "webdav": "^3.6.2"
   },
   "devDependencies": {
-    "@types/archiver": "^5.3.1",
     "@types/blueimp-md5": "^2.18.0",
     "@types/chrome": "^0.0.75",
     "@types/crypto-js": "^3.1.43",
@@ -78,7 +72,6 @@
     "@vue/eslint-config-typescript": "^11.0.0",
     "babel-eslint": "^10.0.1",
     "copy-webpack-plugin": "^4.6.0",
-    "crx": "^5.0.1",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^9.0.0",
     "git-rev-sync": "^3.0.2",

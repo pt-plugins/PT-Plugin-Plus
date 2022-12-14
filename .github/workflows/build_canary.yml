@@ -1,0 +1,61 @@
+name: Build Canary Release
+
+on:
+  schedule:
+    - cron: '0 20 1,15 * *'
+
+jobs:
+  action:
+    uses: ./.github/workflows/build_action.yml
+    secrets:
+      CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+
+  canary:
+    runs-on: ubuntu-latest
+    needs: action
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Checkout gh-pages
+        uses: actions/checkout@master
+        with:
+          ref: 'gh-pages'
+          path: 'pages'
+
+      - uses: actions/download-artifact@v3
+        with:
+          name:
+            dev-build-${{ needs.action.outputs.version }}-zip
+
+      - uses: actions/download-artifact@v3
+        with:
+          name:
+            dev-build-${{ needs.action.outputs.version }}-crx
+
+      - name: Prepare Release
+        run: |
+          mv canary.xml pages/update/canary.xml -f
+          mkdir build
+          mv extension.zip build/PT-Plugin-Plus-${{ needs.action.outputs.version }}.zip
+          mv extension.crx build/PT-Plugin-Plus-${{ needs.action.outputs.version }}.crx
+
+      - name: Deploy update Xml
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pages
+          commit_message: deploy ${{ github.ref }}
+          force_orphan: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+
+      - uses: ncipollo/release-action@v1
+        with:
+          name: v${{ needs.action.outputs.version }}
+          tag: v${{ needs.action.outputs.version }}
+          generateReleaseNotes: true
+          prerelease: true
+          artifacts: 'build/*'
