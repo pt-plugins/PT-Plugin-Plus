@@ -12,6 +12,63 @@
   "schema": "NexusPHP",
   "host": "et8.org",
   "collaborator": "Rhilip",
+  "levelRequirements": [{
+    "level": "1",
+    "name": "士官(Power User)",
+    "interval": "2",
+    "downloaded": "64GB",
+    "ratio": "1.05",
+    "privilege": "可以上传种子; 可以删除自己上传的字幕; 可以在做种/下载/上传的时候选择匿名模式."
+  },{
+    "level": "2",
+    "name": "尉官(Elite User)",
+    "interval": "6",
+    "downloaded": "128GB",
+    "ratio": "1.55",
+    "privilege": "购买邀请; 可以查看邀请论坛; 可以查看NFO文档; 可以更新外部信息; 可以请求续种; 可以使用个性条."
+  },{
+    "level": "3",
+    "name": "少校(Crazy User)",
+    "interval": "14",
+    "downloaded": "256GB",
+    "ratio": "2.05",
+    "privilege": "可以查看排行榜;可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")."
+  },{
+    "level": "4",
+    "name": "中校(Insane User)",
+    "interval": "26",
+    "downloaded": "512GB",
+    "ratio": "2.55",
+    "privilege": "中校及以上用户Park后不会被删除帐号."
+  },{
+    "level": "5",
+    "name": "上校(Veteran User)",
+    "interval": "38",
+    "downloaded": "1TB",
+    "ratio": "3.05",
+    "privilege": "可以发送邀请; 上校及以上用户会永远保留账号."
+  },{
+    "level": "6",
+    "name": "少将(Extreme User)",
+    "interval": "54",
+    "downloaded": "2TB",
+    "ratio": "3.55",
+    "privilege": "可以查看种子文件结构."
+  },{
+    "level": "7",
+    "name": "中将(Ultimate User)",
+    "interval": "70",
+    "downloaded": "4TB",
+    "ratio": "4.05",
+    "privilege": "可以查看其它用户的评论、帖子历史;得到五个邀请名额."
+  },{
+    "level": "8",
+    "name": "上将(Nexus Master)",
+    "interval": "88",
+    "downloaded": "8TB",
+    "ratio": "4.55",
+    "privilege": "得到十个邀请名额。"
+  }],
   "plugins": [{
     "name": "小组专区",
     "pages": ["/trls.php"],
