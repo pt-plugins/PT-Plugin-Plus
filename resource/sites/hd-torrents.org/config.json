@@ -163,6 +163,16 @@
         }
       }
     },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/seedbonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["#BonusPointsHideShowTR .blockcontent center:eq(0) h1 font[color='blue']:eq(2)"],
+          "filters": ["parseFloat(query.text())"]
+        }
+      }
+    },
     "common": {
 	  "page": "/details.php",
       "merge": true,
