@@ -273,7 +273,7 @@
         "bonusPerHour": {
           "selector": ["#outer > table.main td.embedded table td.text"],
           "filters": ["query.contents().filter(function() {return this.nodeType == 3;}).text()",
-                      "query.match(/\\d+\\.\\d+/)? query.match(/\\d+\\.\\d+/) : null",
+                      "query.includes('最近24小时获得种子UCoin') || query.includes('最近24小時獲得種子UCoin') ? query.match(/最近24(?:小时获得种子|小時獲得種子)UCoin.*?([\\d.]+)/)[1] : query.includes('UCoins acquired in recent 24 hours') ? query.match(/([\\d.]+).*?UCoins acquired in recent 24 hours/)[1] : query.includes('UCoins подсчитано за последние сутки') ? query.match(/([\\d.]+).*?UCoins подсчитано за последние сутки/)[1].replace(/,/g,'.') : null",
                       "query ? parseFloat(query) / 24 : null"]
         }
       }
