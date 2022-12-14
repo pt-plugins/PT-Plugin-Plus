@@ -188,7 +188,7 @@
       "fields": {
         "bonusPerHour": {
           "selector": ["table.mainouter table td:contains('合计每小时魔力') + td", "table.mainouter table td:contains('合计每小时魔力') + td"],
-          "filters": ["parseFloat(query.text())"]
+          "filters": ["parseFloat(query.text().replace(/,/g,''))"]
         }
       }
     },
