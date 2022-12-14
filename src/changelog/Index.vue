@@ -12,7 +12,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import marked from "marked";
+import { marked } from "marked";
 import { PPF } from "@/service/public";
 
 // 重写 version，因为使用 getVersion 获取到的是 `v1.5.1` 或者 `v1.5.1.dc988f6`，需要重写为 `v1.5.1` 否则无法获取release信息
@@ -37,19 +37,14 @@ export default Vue.extend({
   },
 
   created() {
-    $.getJSON(
-      `https://api.github.com/repos/pt-plugins/PT-Plugin-Plus/releases/tags/${this.version}`
-    )
-      .done((result: any) => {
-        if (result && result.body) {
+    fetch(`https://api.github.com/repos/pt-plugins/PT-Plugin-Plus/releases/tags/${this.version}`)
+        .then(r => r.json())
+        .then((result: any) => {
           this.content = this.parse(result.body);
-        } else {
+        })
+        .catch(() => {
           this.content = this.failContent;
-        }
-      })
-      .fail((result: any) => {
-        this.content = this.failContent;
-      });
+        });
   },
 
   methods: {
