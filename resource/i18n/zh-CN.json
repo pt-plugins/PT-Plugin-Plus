@@ -18,7 +18,7 @@
       "addLanguage": "临时添加新语言",
       "version": "版本",
       "systemLog": "系统日志",
-      "darkMode": "暗色模式",
+      "darkMode": "反转颜色",
       "haveNewReleases": "有更新可用",
       "add": "新增",
       "edit": "编辑",
@@ -197,6 +197,7 @@
         "classPoints": "等级积分"
       },
       "levelRequirement": {
+        "levelRequirements": "升级要求",
         "date": "日期",
         "site": "站点",
         "userName": "用户名",
