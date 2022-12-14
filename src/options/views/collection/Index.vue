@@ -810,8 +810,8 @@ export default Vue.extend({
       background-color: #f1f1f1;
     }
 
-    table.v-table tbody tr:nth-child(odd) {
-      background-color: #fff;
+    table.v-table.theme--dark tbody tr:nth-child(even) {
+      background-color: #1f1f1f;
     }
   }
 

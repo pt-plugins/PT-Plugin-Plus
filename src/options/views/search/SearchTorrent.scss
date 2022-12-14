@@ -15,12 +15,16 @@
       background-color: #f1f1f1;
     }
 
-    table.v-table tbody tr:nth-child(odd) {
-      background-color: #fff;
-    }
-
     table.v-table tbody tr[active='true'] {
       background-color: #B3E5FC !important;
+    }
+
+    table.v-table.theme--dark tbody tr:nth-child(even) {
+      background-color: #1f1f1f;
+    }
+
+    table.v-table.theme--dark tbody tr[active='true'] {
+      background-color: #4c1a03 !important;
     }
   }
 
@@ -43,14 +47,29 @@
     text-decoration: none;
   }
 
+  .theme--dark a {
+    color: #fff;
+    text-decoration: none;    
+  }
+
   a:hover {
     color: #008c00;
+  }
+
+  .theme--dark a {
+    color: #ff73ff;
   }
 
   .sub-title {
     word-break: break-all;
     margin-top: 2px;
     color: #8c8c8c !important;
+  }
+
+  .theme--dark .sub-title {
+    word-break: break-all;
+    margin-top: 2px;
+    color: #737373 !important;
   }
 
   .progress {
@@ -78,9 +97,22 @@
     padding: 1px 3px;
   }
 
-  .captionText {
+  .theme--dark .tag {
+    font-size: 9px;
+    margin: 0 1px;
+    border-radius: 2px;
+    color: #000;
+    padding: 1px 3px;
+  }
+
+  .theme--dark .captionText {
     font-size: 12px;
     color: #aaaaaa;
+  }
+
+  .captionText {
+    font-size: 12px;
+    color: #555555;
   }
 
   .category {
