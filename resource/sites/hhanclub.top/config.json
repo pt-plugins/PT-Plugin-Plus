@@ -84,7 +84,7 @@
     "collaborator": "koal",
     "selectors": {
         "userExtendInfo": {
-            "page": "/userdetails.php?id=$user.id$",
+            "merge": true,
             "fields": {
                 "bonus": {
                     "selector": ["td.rowhead:contains('憨值') + td", "td.rowhead:contains('Seed points') + td"],
