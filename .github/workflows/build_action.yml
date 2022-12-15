@@ -132,7 +132,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
         with:
-          name: dev-build-${{ steps.zip.outputs.extensionVersion }}-zip
+          name: dev-build-${{ needs.zip.outputs.version }}-zip
 
       - uses: cardinalby/webext-buildtools-firefox-sign-xpi-action@v1
         with:
@@ -145,5 +145,5 @@ jobs:
       - name: Upload Built Xpi to action
         uses: actions/upload-artifact@v3
         with:
-          name: dev-build-${{ steps.zip.outputs.extensionVersion }}-xpi
+          name: dev-build-${{ needs.zip.outputs.version }}-xpi
           path: artifact/*
