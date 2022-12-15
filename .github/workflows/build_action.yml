@@ -82,6 +82,9 @@ jobs:
     name: Build Crx
     runs-on: ubuntu-latest
     needs: build
+    env:   
+      CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+    if: ${{ env.CRX_PRIVATE_KEY != ''  }}
     steps:
       - name: Set name output
         id: auto_update_file
@@ -105,9 +108,6 @@ jobs:
           zipFilePath: 'extension.zip'
 
       - name: Build Crx
-        env:
-          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
-        if: ${{ env.CRX_PRIVATE_KEY != ''  }}
         uses: cardinalby/webext-buildtools-chrome-crx-action@v2
         with:
           zipFilePath: 'extension.zip'
@@ -117,9 +117,6 @@ jobs:
           updateXmlCodebaseUrl: https://github.com/pt-plugins/PT-Plugin-Plus/releases/download/v${{ steps.zip.outputs.extensionVersion }}/PT-Plugin-Plus-${{ steps.zip.outputs.extensionVersion }}.crx
 
       - name: Upload Built Crx to action
-        env:
-          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
-        if: ${{ env.CRX_PRIVATE_KEY != '' }}
         uses: actions/upload-artifact@v3
         with:
           name: dev-build-${{ steps.zip.outputs.extensionVersion }}-crx
