@@ -1,8 +1,10 @@
 name: Build Canary Release
 
 on:
-  schedule:
-    - cron: '0 20 1,15 * *'
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
 
 jobs:
   action:
@@ -25,21 +27,25 @@ jobs:
           ref: 'gh-pages'
           path: 'pages'
 
-      - uses: actions/download-artifact@v3
+      - name: Prepare Release
+        run: mkdir build
+
+      - name: Get And rename Zip build
+        uses: actions/download-artifact@v3
         with:
           name:
             dev-build-${{ needs.action.outputs.version }}-zip
 
-      - uses: actions/download-artifact@v3
+      - run: mv extension.zip build/PT-Plugin-Plus-${{ needs.action.outputs.version }}.zip
+
+      - name: Get And remove Crx Build
+        uses: actions/download-artifact@v3
         with:
           name:
             dev-build-${{ needs.action.outputs.version }}-crx
 
-      - name: Prepare Release
-        run: |
+      - run: |
           mv canary.xml pages/update/canary.xml -f
-          mkdir build
-          mv extension.zip build/PT-Plugin-Plus-${{ needs.action.outputs.version }}.zip
           mv extension.crx build/PT-Plugin-Plus-${{ needs.action.outputs.version }}.crx
 
       - name: Deploy update Xml
@@ -51,6 +57,16 @@ jobs:
           force_orphan: true
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
+
+      - name: Get And move Xpi Build
+        uses: actions/download-artifact@v3
+        if: ${{ needs.action.exist_xpi_file == 'success' }}
+        with:
+          name:
+            dev-build-${{ needs.action.outputs.version }}-xpi
+
+      - if: ${{ needs.action.exist_xpi_file == 'success' }}
+        run: mv extension.signed.xpi build/PT-Plugin-Plus-${{ needs.action.outputs.version }}.xpi
 
       - uses: ncipollo/release-action@v1
         with:
