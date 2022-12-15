@@ -2,7 +2,7 @@ const merge = require("webpack-merge");
 const common = require("./common.js");
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const gitCommitId = require('git-commit-id');
+const git = require('git-rev-sync');
 
 // 用于替换 @ 符号的路径
 function resolve(dir) {
@@ -32,7 +32,11 @@ module.exports = merge(common, {
         to: path.join(resolve('dist'), "manifest.json"),
         transform (content, path) {
           var manifest = JSON.parse(content.toString());
-          manifest.version_name = `${manifest.version}.${gitCommitId().slice(0, 7)}`; // ex: '01ef00a'
+
+          // rewrite version to add Build number (simple from git count)
+          const build_number = git.count() % 65535;
+          manifest.version = `${manifest.version}.${build_number}`;
+
           return JSON.stringify(manifest);
         }
       }

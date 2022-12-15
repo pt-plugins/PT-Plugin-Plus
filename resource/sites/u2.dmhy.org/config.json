@@ -271,8 +271,10 @@
       "page": "/mprecent.php?user=$user.id$",
       "fields": {
         "bonusPerHour": {
-          "selector": ["td.rowfollow:eq(1)"],
-          "filters": ["parseFloat(query.text())"]
+          "selector": ["#outer > table.main td.embedded table td.text"],
+          "filters": ["query.contents().filter(function() {return this.nodeType == 3;}).text()",
+                      "query.match(/\\d+[.,]\\d+/)",
+                      "query ? parseFloat(query[0].replace(/,/g, '.')) / 24 : null"]
         }
       }
     },

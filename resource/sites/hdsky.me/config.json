@@ -24,7 +24,7 @@
     "interval": "10",
     "downloaded": "500GB",
     "ratio": "2.5",
-    "privilege": "无"
+    "privilege": "查看邀请区"
   },{
     "level": "3", 
     "name": "Crazy User",
@@ -57,7 +57,7 @@
     "level": "7", 
     "name": "Ultimate User",
     "interval": "45",
-    "downloaded": "10TB",
+    "downloaded": "8TB",
     "ratio": "5.0",
     "privilege": "永远保留账号"
   },{

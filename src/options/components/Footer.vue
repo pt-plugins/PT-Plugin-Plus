@@ -93,6 +93,12 @@
         {{ $t("common.systemLog") }}
       </span>
     </v-btn>
+    <v-btn @click="toggle_dark_mode" flat small :icon="$vuetify.breakpoint.smAndDown">
+      <v-icon small>invert_colors</v-icon>
+      <span class="ml-1" v-if="$vuetify.breakpoint.mdAndUp">
+        {{ $t("common.darkMode") }}
+      </span>
+    </v-btn>
     <v-btn
       v-if="$vuetify.breakpoint.mdAndUp"
       flat
@@ -219,6 +225,14 @@ export default Vue.extend({
         r.readAsText(fileInput.files[0]);
         fileInput.value = "";
       }
+    },
+    toggle_dark_mode: function() {
+      if (localStorage.getItem('DarkMode') == 'true')
+        localStorage.setItem('DarkMode', 'false');
+      else
+        localStorage.setItem("DarkMode", 'true');
+      
+      window.location.reload();
     },
 
     /**

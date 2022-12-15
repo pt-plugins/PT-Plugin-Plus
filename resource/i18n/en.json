@@ -21,6 +21,7 @@
       "addLanguage": "Add a new language temporarily",
       "version": "Version",
       "systemLog": "System Log",
+      "darkMode": "Invert Color",
       "haveNewReleases": "Update available",
       "add": "Add",
       "edit": "Edit",
@@ -196,9 +197,11 @@
         "status": "Status",
         "comments": "Comments",
         "uploads": "Uploaded",
-        "trueDownloaded": "True Downloaded"
+        "trueDownloaded": "True Downloaded",
+        "classPoints": "Class Points"
       },
       "levelRequirement": {
+        "levelRequirements": "Level Requirements",
         "date": "Date",
         "site": "Site",
         "userName": "User name",
@@ -215,7 +218,8 @@
         "status": "Status",
         "comments": "Comments",
         "uploads": "Uploaded",
-        "trueDownloaded": "True Downloaded"
+        "trueDownloaded": "True Downloaded",
+        "classPoints": "Class Points"
       },
       "tip": "N/A means no support",
       "nodata": "You have not added a site, please go to [Sites] to add a site."

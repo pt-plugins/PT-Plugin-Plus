@@ -18,6 +18,7 @@
       "addLanguage": "临时添加新语言",
       "version": "版本",
       "systemLog": "系统日志",
+      "darkMode": "反转颜色",
       "haveNewReleases": "有更新可用",
       "add": "新增",
       "edit": "编辑",
@@ -192,9 +193,11 @@
         "lastUpdateTime": "数据更新于",
         "status": "状态",
         "uploads": "发布",
-        "trueDownloaded": "真实下载"
+        "trueDownloaded": "真实下载",
+        "classPoints": "等级积分"
       },
       "levelRequirement": {
+        "levelRequirements": "升级要求",
         "date": "日期",
         "site": "站点",
         "userName": "用户名",
@@ -210,7 +213,8 @@
         "lastUpdateTime": "数据更新于",
         "status": "状态",
         "uploads": "发布",
-        "trueDownloaded": "真实下载"
+        "trueDownloaded": "真实下载",
+        "classPoints": "等级积分"
       },
       "tip": "N/A 表示暂不支持",
       "nodata": "您还没有添加站点，请前往『站点设置』添加站点。"

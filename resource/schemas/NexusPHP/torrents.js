@@ -21,7 +21,7 @@
     getDownloadURLs() {
       let urls = PTService.getFieldValue("downloadURLs");
       if (!urls) {
-        let links = $("a[href*='download']").toArray();
+        let links = $("a[href*='/download.php']").toArray();
 
         if (links.length === 0) {
           links = $(".torrentname a[href*='details.php']").toArray();

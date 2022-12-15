@@ -19,7 +19,7 @@
     "interval": "5",
     "downloaded": "120GB",
     "ratio": "2.0",
-    "seedingPoints": "160000",
+    "seedingPoints": "100000",
     "privilege": "查看NFO文档；查看用户列表；请求续种；查看其它用户的种子历史；删除自己上传的字幕"
   },{
     "level": "2",
@@ -27,7 +27,7 @@
     "interval": "15",
     "downloaded": "240GB",
     "ratio": "2.5",
-    "seedingPoints": "250000",
+    "seedingPoints": "180000",
     "privilege": "无"
   },{
     "level": "3",
@@ -35,7 +35,7 @@
     "interval": "24",
     "downloaded": "400GB",
     "ratio": "3.0",
-    "seedingPoints": "360000",
+    "seedingPoints": "320000",
     "privilege": "查看排行榜"
   },{
     "level": "4",
@@ -43,7 +43,7 @@
     "interval": "40",
     "downloaded": "600GB",
     "ratio": "3.5",
-    "seedingPoints": "500000",
+    "seedingPoints": "480000",
     "privilege": "无"
   },{
     "level": "5",

@@ -23,7 +23,7 @@
     "interval": "10",
     "downloaded": "350GB",
     "ratio": "2.5",
-    "privilege": "用户封存账号后不会被删除"
+    "privilege": "用户封存账号后不会被删除；查看官方邀请区"
   },{
     "level": "3", 
     "name": "Crazy User",
@@ -187,8 +187,8 @@
       "page": "/mybonus_new.php",
       "fields": {
         "bonusPerHour": {
-          "selector": ["table.mainouter table td:contains('合计每小时魔力') + td", "table.mainouter table td:contains('合计每小时魔力') + td"],
-          "filters": ["parseFloat(query.text())"]
+          "selector": ["table.mainouter table td:contains('合计每小时魔力') + td"],
+          "filters": ["parseFloat(query.text().replace(/,/g,''))"]
         }
       }
     },
