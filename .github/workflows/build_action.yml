@@ -138,7 +138,7 @@ jobs:
         with:
           zipFilePath: extension.zip
           xpiFilePath: artifact/extension.signed.xpi
-          extensionId: 'eb63a980-e2c6-43b2-885c-e87e6819b603'
+          extensionId: ${{ secrets.FF_EXT_UUID }}
           jwtIssuer: ${{ secrets.FF_JWT_ISSUER }}
           jwtSecret: ${{ secrets.FF_JWT_SECRET }}
 
