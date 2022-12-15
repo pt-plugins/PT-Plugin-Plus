@@ -226,13 +226,8 @@ export default Vue.extend({
         fileInput.value = "";
       }
     },
-    toggle_dark_mode: function() {
-      if (localStorage.getItem('DarkMode') == 'true')
-        localStorage.setItem('DarkMode', 'false');
-      else
-        localStorage.setItem("DarkMode", 'true');
-      
-      window.location.reload();
+    toggle_dark_mode() {
+      this.$root.$emit('ToggleDarkMode');
     },
 
     /**

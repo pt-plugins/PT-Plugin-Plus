@@ -295,6 +295,9 @@ export default Vue.extend({
             this.dialog = false;
           }, 3000);
           console.log("createKeepUploadTask", result);
+
+           // 生成辅种任务后清除选择
+           this.$root.$emit('KeepUploadTaskCreateSuccess');
         })
         .catch(() => {
           this.creating = false;

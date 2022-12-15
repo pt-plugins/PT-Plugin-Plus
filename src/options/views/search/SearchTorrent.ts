@@ -172,6 +172,11 @@ export default Vue.extend({
       this.shiftKey = false;
     });
     window.addEventListener("scroll", this.handleScroll);
+
+    // 生成辅种任务后清除选择
+    this.$root.$on("KeepUploadTaskCreateSuccess",() => {
+      this.toggleAll();
+    });
   },
   destroyed() {
     window.removeEventListener("scroll", this.handleScroll);
