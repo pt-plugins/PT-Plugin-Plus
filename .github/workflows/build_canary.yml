@@ -12,9 +12,41 @@ jobs:
     secrets:
       CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
 
-  canary:
+  xpi:
+    name: Build Xpi (Firefox)
     runs-on: ubuntu-latest
     needs: action
+    outputs:
+      exist_xpi_file: ${{ steps.addonsDeploy.outcome }}
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: dev-build-${{ needs.action.outputs.version }}-zip
+
+      - uses: cardinalby/webext-buildtools-firefox-sign-xpi-action@v1
+        id: addonsDeploy
+        if: ${{ env.FF_EXT_UUID != ''  }}
+        env:
+          FF_EXT_UUID: ${{ secrets.FF_EXT_UUID }}
+        continue-on-error: true
+        with:
+          timeoutMs: 600000
+          zipFilePath: extension.zip
+          xpiFilePath: artifact/extension.signed.xpi
+          extensionId: ${{ secrets.FF_EXT_UUID }}
+          jwtIssuer: ${{ secrets.FF_JWT_ISSUER }}
+          jwtSecret: ${{ secrets.FF_JWT_SECRET }}
+
+      - name: Upload Built Xpi to action
+        uses: actions/upload-artifact@v3
+        if: ${{ steps.addonsDeploy.outcome == 'success' }}
+        with:
+          name: dev-build-${{ needs.zip.outputs.version }}-xpi
+          path: artifact/*
+
+  canary:
+    runs-on: ubuntu-latest
+    needs: [action, xpi]
     permissions:
       contents: write
     steps:
@@ -60,12 +92,12 @@ jobs:
 
       - name: Get And move Xpi Build
         uses: actions/download-artifact@v3
-        if: ${{ needs.action.exist_xpi_file == 'success' }}
+        if: ${{ needs.xpi.outputs.exist_xpi_file == 'success' }}
         with:
           name:
             dev-build-${{ needs.action.outputs.version }}-xpi
 
-      - if: ${{ needs.action.exist_xpi_file == 'success' }}
+      - if: ${{ needs.xpi.outputs.exist_xpi_file == 'success' }}
         run: mv extension.signed.xpi build/PT-Plugin-Plus-${{ needs.action.outputs.version }}.xpi
 
       - uses: ncipollo/release-action@v1
