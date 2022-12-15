@@ -122,7 +122,7 @@ class HelpFunctions {
     options = Object.assign(
       {
         type: "basic",
-        iconUrl: chrome.extension.getURL("/assets/icon-128.png"),
+        iconUrl: chrome.runtime.getURL("/assets/icon-128.png"),
         title: "PT 助手 Plus",
         priority: 0,
         message: ""
