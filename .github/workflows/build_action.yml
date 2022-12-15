@@ -79,7 +79,7 @@ jobs:
           path: artifact/*
 
   crx:
-    name: Build Crx
+    name: Build Crx (Chromium)
     runs-on: ubuntu-latest
     needs: build
     steps:
