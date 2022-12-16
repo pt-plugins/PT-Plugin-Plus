@@ -997,6 +997,8 @@
       "fileCount": "Files: ",
       "sendConfirm": "Are you sure you want to send these {count} torrents?",
       "addToKeepUpload": "Add to task list",
+      "removeFromKeepUpload": "Remove from task list",
+      "redownload" : "Re-download",
       "addToKeepUploadConfirm": "Are you sure want add this torrent to task list?",
       "status": {
         "label": "Status: ",
