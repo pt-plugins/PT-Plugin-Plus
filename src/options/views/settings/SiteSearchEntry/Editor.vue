@@ -1,5 +1,5 @@
 <template>
-  <v-card color="grey lighten-4">
+  <v-card :color="$vuetify.dark ? '' : 'grey lighten-4'">
     <v-card-text>
       <v-form v-model="data.valid">
         <!-- 名称 -->

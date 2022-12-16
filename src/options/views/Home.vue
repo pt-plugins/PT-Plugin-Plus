@@ -106,12 +106,12 @@
                       {{ props.item.user.nextLevel.requiredDate }}&nbsp;
                     </template>
                     <template v-if="props.item.user.nextLevel.uploaded">
-                      <v-icon small color="red darken-4">expand_less</v-icon>{{
+                      <v-icon small color="green darken-4">expand_less</v-icon>{{
                           props.item.user.nextLevel.uploaded | formatSize
                       }}&nbsp;
                     </template>
                     <template v-if="props.item.user.nextLevel.downloaded">
-                      <v-icon small color="green darken-4">expand_more</v-icon>{{
+                      <v-icon small color="red darken-4">expand_more</v-icon>{{
                           props.item.user.nextLevel.downloaded | formatSize
                       }}&nbsp;
                     </template>
@@ -158,33 +158,33 @@
                       <template v-if="levelRequirement.requiredDate">
                         {{ levelRequirement.requiredDate }} </template>({{ levelRequirement.name }}):
                       <template v-if="levelRequirement.uploaded">
-                        <v-icon small color="green darken-4">expand_less</v-icon>{{ levelRequirement.uploaded }};
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uploaded')">expand_less</v-icon>{{ levelRequirement.uploaded }};
                       </template>
                       <template v-if="levelRequirement.uploads">
-                        <v-icon small color="green darken-4">file_upload</v-icon>{{ levelRequirement.uploads }};
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uploads')">file_upload</v-icon>{{ levelRequirement.uploaded }};
                       </template>
                       <template v-if="levelRequirement.downloaded">
-                        <v-icon small color="red darken-4">expand_more</v-icon>{{ levelRequirement.downloaded }};
+                        <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloaded')">expand_more</v-icon>{{ levelRequirement.downloaded }};
                       </template>
                       <template v-if="levelRequirement.trueDownloaded">
                         {{ $t("home.levelRequirement.trueDownloaded") }}
                         {{ levelRequirement.trueDownloaded }};
                       </template>
                       <template v-if="levelRequirement.ratio">
-                        <v-icon small color="orange darken-4">balance</v-icon>{{ levelRequirement.ratio }};
+                        <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.ratio')">balance</v-icon>{{ levelRequirement.ratio }};
                       </template>
                       <template v-if="levelRequirement.bonus">
-                        <v-icon small color="green darken-4">attach_money</v-icon>{{ levelRequirement.bonus |
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.bonus')">attach_money</v-icon>{{ levelRequirement.bonus |
                             formatInteger
                         }};
                       </template>
                       <template v-if="levelRequirement.seedingPoints">
-                        <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{ levelRequirement.seedingPoints
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.seedingPoints
                             | formatInteger
                         }};
                       </template>
                       <template v-if="levelRequirement.classPoints">
-                        <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{ levelRequirement.classPoints
+                        <v-icon small color="yellow darken-4" :title="$t('home.levelRequirement.classPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.classPoints
                             | formatInteger
                         }};
                       </template>

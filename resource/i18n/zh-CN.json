@@ -212,6 +212,8 @@
         "joinTime": "入站时间",
         "lastUpdateTime": "数据更新于",
         "status": "状态",
+        "uploaded": "上传量",
+        "downloaded":"下载量",
         "uploads": "发布",
         "trueDownloaded": "真实下载",
         "classPoints": "等级积分"

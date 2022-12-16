@@ -209,7 +209,7 @@
         "bonusPerHour": {
           "selector": ["td.rowhead:contains('魔力值') + td, td.rowhead:contains('Karma Points') + td"],
           "filters": ["query.text().replace(/,/g,'').match(/[\\d.]+/g)",
-          "(query && query.length==5) ? (parseFloat(query[2]) > 10.01 ? parseFloat(query[2]) + parseFloat(query[4]) : parseFloat(query[2])) : parseFloat(query[2])"]
+          "query.length == 5 ? parseFloat(query[2]) + parseFloat(query[4]) : parseFloat(query[2])"]
         },
         "seedingSize": {
           "selector": ["td.rowhead:contains('当前做种') + td, td.rowhead:contains('Current Seeding') + td, td.rowhead:contains('目前做種') + td"],

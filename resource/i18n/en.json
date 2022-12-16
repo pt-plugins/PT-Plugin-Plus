@@ -217,6 +217,8 @@
         "lastUpdateTime": "Update at",
         "status": "Status",
         "comments": "Comments",
+        "uploaded": "Uploaded",
+        "downloaded":"Downloaded",
         "uploads": "Uploaded",
         "trueDownloaded": "True Downloaded",
         "classPoints": "Class Points"
