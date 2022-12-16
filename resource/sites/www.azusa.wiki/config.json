@@ -91,6 +91,15 @@
     }
   ],
   "selectors": {
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "name": {
+          "selector": ["a[href*='userdetails.php'][class*='Name']:first"],
+          "filters": ["query ? query.find('i.icon-rank:first').length > 0 ? $(query.find('i.icon-rank:first')[0].previousSibling).text() : query.text() : ''"]
+        }
+      }
+    },
     "userSeedingTorrents": {
       "merge": true,
       "fields": {
