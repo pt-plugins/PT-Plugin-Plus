@@ -1,12 +1,15 @@
 name: Build Canary Release
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 20 1,15 * *'
 
 jobs:
   action:
     uses: ./.github/workflows/build_action.yml
+    with:
+      ref: 'dev'
     secrets:
       CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
 

@@ -7,6 +7,9 @@ on:
     branches: [ dev ]
   workflow_call:
     inputs:
+      ref:
+        default: 'dev'
+        type: string
       auto_update_file:
         default: 'canary.xml'
         type: string
@@ -25,6 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
         with:
+          ref: ${{ inputs.ref }}
           fetch-depth: 0
 
       - name: Setup Node
