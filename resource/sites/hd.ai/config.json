@@ -71,12 +71,12 @@
   "collaborator": ["indeedsi"],
   "searchEntryConfig": {
     "page": "/Torrents.tableList",
-    "queryString": "searchParams={\"keyword\":\"$key$\"}",
+    "queryString": "searchParams={\"keyword\":\"$key$\",\"keyword_area\":1}",
     "parseScriptFile": "getSearchResult.js"
   },
   "searchEntry": [
     {
-      "entry": "/Torrents.tableList?searchParams={\"keyword\":\"$key$\"}",
+      "entry": "/Torrents.tableList?searchParams={\"keyword\":\"$key$\",\"keyword_area\":1}",
       "name": "全站",
       "enabled": true
     }

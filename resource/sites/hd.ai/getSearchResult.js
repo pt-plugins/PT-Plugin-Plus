@@ -62,7 +62,9 @@
             site: site,
             tags: this.getTags(item),
             entryName: options.entry.name,
-            category: item.category
+            category: item.category,
+            progress: item.progress != null ? item.progress.progress * 100 : null,
+            status: item.progress != null ? item.progress.seeder ? 2 : 1 : null
           };
           results.push(data);
         });
