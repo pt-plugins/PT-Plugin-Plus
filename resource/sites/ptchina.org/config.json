@@ -81,7 +81,7 @@
             "privilege": "得到十个邀请名额。"
         }
     ],
-    "collaborator": "koal",
+    "collaborator": ["koal", "zhuweitung"],
     "selectors": {
         "userSeedingTorrents": {
             "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
@@ -102,6 +102,21 @@
                         "(query != 0) ? query.sizeToNumber() : 0"
                     ]
                 }
+            }
+        }
+    },
+    "searchEntryConfig": {
+        "fieldSelector": {
+            "progress": {
+                "selector": ["> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"],
+                "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+            },
+            "status": {
+                "selector": ["> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"],
+                "filters": [
+                    "query ? query.attr('title') : ''",
+                    "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+                ]
             }
         }
     }

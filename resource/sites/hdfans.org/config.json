@@ -72,7 +72,7 @@
     "seedingPoints": "1688888",
     "privilege": "得到十个邀请名额"
   }],
-  "collaborator": "csi0n",
+  "collaborator": ["csi0n", "zhuweitung"],
   "selectors": {
     "userSeedingTorrents": {
       "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
@@ -95,13 +95,14 @@
   "searchEntryConfig": {
     "fieldSelector": {
       "progress": {
-        "selector": ["> td:eq(9)"],
-        "filters": ["query.text()=='--'?null:parseFloat(query.text())"]
+        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+        "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
       },
       "status": {
-        "selector": ["> td:eq(9)"],
+        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
         "filters": [
-          "query.text()==='--'?null:(parseFloat(query.text())==100?255:3)"
+          "query ? query.attr('title') : ''",
+          "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
         ]
       }
     }
