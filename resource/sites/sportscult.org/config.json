@@ -6,7 +6,7 @@
   "icon": "https://sportscult.org/favicon.ico",
   "tags": ["体育"],
   "schema": "Common",
-  "collaborator": "枕头啊枕头",
+  "collaborator": ["枕头啊枕头", "zhuweitung"],
   "plugins": [
     {
       "name": "种子详情页面",
@@ -15,6 +15,22 @@
     }
   ],
   "host": "sportscult.org",
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "Athlete",
+      "uploaded": "50GB",
+      "ratio": "0.90",
+      "privilege": "Access to: Online Users, Tracker info, Live TV"
+    },
+    {
+      "level": "2",
+      "name": "ProAthlete",
+      "uploaded": "250GB",
+      "ratio": "1.80",
+      "privilege": "Access to: Online Users, Tracker info, Live TV, Requests, Top 10, and Users"
+    }
+  ],
   "searchEntryConfig": {
     "page": "/index.php?page=torrents",
     "queryString": "search=$key$&active=0",
@@ -367,10 +383,12 @@
           "filters": ["query.text().replace('(Bonus ','').replace(')','')"]
         },
         "seeding": {
-          "value": "N/A"
+          "selector": ["#mcol div.b-content table.lista:eq(2) tbody tr:gt(1)"],
+          "filters": ["query.length"]
         },
         "seedingSize": {
-          "value": -1
+          "selector": ["#mcol div.b-content table.lista:eq(2) tbody tr:gt(1)"],
+          "filters": ["jQuery.map(query.find('td:eq(1)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         },
         "name": {
           "selector": "td.header:contains('User') + td"
@@ -382,6 +400,16 @@
             "query[1]+'-'+query[0]+'-'+query[2]",
             "dateTime(query).valueOf()"
           ]
+        }
+      }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/index.php?page=modules&module=seedbonus",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["#mcol div.b-content > h3:contains('points per hour')"],
+          "filters": ["parseFloat(query.text().match(/\\d+(?:\\.\\d+)?/)[0])"]
         }
       }
     },
