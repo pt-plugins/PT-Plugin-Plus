@@ -1,7 +1,5 @@
 /**
- * @see https://github.com/bogenpirat/remote-torrent-adder/blob/master/webuiapis/floodWebUI.js
- * @see https://github.com/Flood-UI/flood
- *
+ * @see https://github.com/jesec/flood/tree/master/server/routes/api
  */
 
 (function ($) {
@@ -74,7 +72,7 @@
       let options = this.options;
       $.ajax({
         type: "POST",
-        url: options.address + "auth/authenticate",
+        url: options.address + "api/auth/authenticate",
         contentType: 'application/json',
         data: JSON.stringify({
           username: options.loginName,
@@ -134,19 +132,22 @@
     addTorrentFromUrl(data, callback) {
       let url = data.url;
 
+      let addTorrentData = {
+        destination: data.savePath || '',
+        /** isBasePath
+         * @see https://github.com/Flood-UI/flood/blob/master/server/models/ClientRequest.js#L143-L149
+         * @see https://rtorrent-docs.readthedocs.io/en/latest/cmd-ref.html
+         */
+        isBasePath: false,
+        start: !data.autoStart,
+        tag: [],
+      }
+
       // 处理magent链接
       if (url.startsWith('magnet:')) {
-        this.addTorrentUrl({
-          destination: data.savePath || '',
-          /** isBasePath
-           * @see https://github.com/Flood-UI/flood/blob/master/server/models/ClientRequest.js#L143-L149
-           * @see https://rtorrent-docs.readthedocs.io/en/latest/cmd-ref.html
-           */
-          isBasePath: false,
-          start: !data.autoStart,
-          tag: [],
-          urls: [url]
-        }, callback);
+        addTorrentData.urls = [url];
+
+        this.addTorrentUrl(addTorrentData, callback);
         return;
       }
 
@@ -156,14 +157,19 @@
         data: url
       })
         .then((result) => {
-          let formData = new FormData();
-          formData.append("torrents", result, "file.torrent");
-          formData.append("tags", "");
-          formData.append("destination", data.savePath || '');
-          formData.append("isBasePath", false);
-          formData.append("start", !data.autoStart);
+          var fileReader = new FileReader();
 
-          this.addTorrentFile(formData, callback);
+          fileReader.onload = e => {
+            var contents = e.target.result;
+            var key = "base64,";
+            var index = contents.indexOf(key);
+            if (index == -1) {
+              return;
+            }
+            var metainfo = contents.substring(index + key.length);
+            addTorrentData.files = [metainfo];
+            this.addTorrentFile(addTorrentData, callback);
+          }
         })
         .catch((result) => {
           callback && callback(result);
@@ -171,11 +177,11 @@
     }
 
     addTorrentUrl(data, callback) {
-      this.addTorrent('api/client/add', data, callback);
+      this.addTorrent('api/torrents/add-urls', data, callback);
     }
 
     addTorrentFile(data, callback) {
-      this.addTorrent('api/client/add-files', data, callback);
+      this.addTorrent('api/torrents/add-files', data, callback);
     }
 
     /**
