@@ -36,6 +36,8 @@
                 @change="updateViewOptions"></v-switch>
               <v-switch color="success" v-model="showSeedingPoints" :label="$t('home.seedingPoints')"
                 @change="updateViewOptions"></v-switch>
+              <v-switch color="success" v-model="showHnR" :label="$t('home.showHnR')"
+                @change="updateViewOptions"></v-switch>
             </v-container>
           </v-card>
         </v-menu>
@@ -209,7 +211,8 @@
             {{ props.item.user.ratio | formatRatio }}
           </td>
           <td v-if="showColumn('user.seeding')" class="number">
-            {{ props.item.user.seeding }}
+            <div>{{ props.item.user.seeding }}</div>
+            <div v-if="showHnR && props.item.user.unsatisfieds && props.item.user.unsatisfieds > 0" :title="$t('home.headers.unsatisfieds')" ><v-icon small color="yellow darken-4">warning</v-icon>{{props.item.user.unsatisfieds}}</div>
           </td>
           <td v-if="showColumn('user.seedingSize')" class="number">
             {{ props.item.user.seedingSize | formatSize }}
@@ -387,6 +390,7 @@ export default Vue.extend({
       showUserLevel: true,
       showLevelRequirements: true,
       showSeedingPoints: true,
+      showHnR: true,
       showWeek: false,
     };
   },
@@ -463,6 +467,7 @@ export default Vue.extend({
         showUserLevel: true,
         showLevelRequirements: true,
         showSeedingPoints: true,
+        showHnR: true,
         showWeek: false,
         selectedHeaders: this.selectedHeaders,
       });
@@ -798,6 +803,7 @@ export default Vue.extend({
           showUserLevel: this.showUserLevel,
           showLevelRequirements: this.showLevelRequirements,
           showSeedingPoints: this.showSeedingPoints,
+          showHnR: this.showHnR,
           showWeek: this.showWeek,
           selectedHeaders: this.selectedHeaders,
         },

@@ -112,6 +112,10 @@
         "uploads": {
           "selector": [".badge-user .fa-upload + span"],
           "filters": ["query ? parseFloat(query.text().trim()) : 0"]
+        },
+        "unsatisfiedsPage": {
+          "selector": ["a[href$='unsatisfieds']:first"],
+          "filters": ["new URL(query.attr('href')).pathname"]
         }
       }
     },
@@ -122,6 +126,16 @@
         "bonusPerHour": {
           "selector": [".table-condensed tr:last td:eq(2)"],
           "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
+        }
+      }
+    },
+    "hnrExtendInfo": {
+      "prerequisites": "!(!user.unsatisfiedsPage)",
+      "page": "$user.unsatisfiedsPage$",
+      "fields": {
+        "unsatisfieds": {
+          "selector": ["tr[class='userFiltered'][hr='0'][immune='0']"],
+          "filters": ["query ? query.length : 0"]
         }
       }
     },

@@ -572,10 +572,16 @@ export interface UserInfo {
   bonusPerHour?: number;
   // 积分页面
   bonusPage?: string;
+  // H&R未达标页面
+  unsatisfiedsPage?: string;
   // 入站时间
   joinTime?: number;
   // 等级积分
   classPoints?: number;
+  // H&R未达标
+  unsatisfieds?: number;
+  // H&R预警
+  prewarn?: number;
   // 最后更新时间
   lastUpdateTime?: number;
   // 最后更新状态

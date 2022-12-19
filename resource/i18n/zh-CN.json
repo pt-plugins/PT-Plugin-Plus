@@ -165,6 +165,7 @@
       "userLevel": "用户等级",
       "levelRequirements": "等级要求",
       "seedingPoints": "保种积分",
+      "showHnR": "H&R",
       "selectColumns": "过滤列",
       "week": "时间显示为周数",
       "timeline": "时间轴",
@@ -194,7 +195,9 @@
         "status": "状态",
         "uploads": "发布",
         "trueDownloaded": "真实下载",
-        "classPoints": "等级积分"
+        "classPoints": "等级积分",
+        "unsatisfieds": "H&R未达标",
+        "prewarn": "H&R预警"
       },
       "levelRequirement": {
         "levelRequirements": "升级要求",
