@@ -986,6 +986,7 @@
       "createSuccess": "Task creation completed",
       "createError": "Task creation failed",
       "noItem": "No matching seeds",
+      "filterSearchResults": "Filter search results",
       "savePath": "Save Path: ",
       "defaultPath": "Default Path",
       "setSavePath": "Set Save Path",

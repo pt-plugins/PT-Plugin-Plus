@@ -981,6 +981,7 @@
       "createSuccess": "辅种任务创建完成，请到辅种任务列表中进行后续操作",
       "createError": "辅种任务创建失败",
       "noItem": "没有符合条件的种子",
+      "filterSearchResults": "过滤搜索结果",
       "savePath": "保存目录：",
       "defaultPath": "默认目录",
       "setSavePath": "设置保存目录",
