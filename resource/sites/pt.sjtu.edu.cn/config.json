@@ -11,7 +11,7 @@
   ],
   "schema": "NexusPHP",
   "host": "pt.sjtu.edu.cn",
-  "collaborator": "Rhilip",
+  "collaborator": ["Rhilip","Yincircle"],
   "levelRequirements": [{
     "level": "1",
     "name": "Power User",
