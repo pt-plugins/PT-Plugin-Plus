@@ -34,7 +34,7 @@ jobs:
           timeoutMs: 600000
           zipFilePath: extension.zip
           xpiFilePath: artifact/extension.signed.xpi
-          extensionId: ${{ secrets.FF_EXT_UUID }}
+          extensionId: e9c422a1-5740-4c0a-a10e-867939119613
           jwtIssuer: ${{ secrets.FF_JWT_ISSUER }}
           jwtSecret: ${{ secrets.FF_JWT_SECRET }}
 
