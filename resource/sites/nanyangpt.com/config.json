@@ -11,7 +11,64 @@
   ],
   "schema": "NexusPHP",
   "host": "nanyangpt.com",
-  "collaborator": "Rhilip",
+  "collaborator": ["Rhilip","Yincircle"],
+  "levelRequirements": [{
+    "level": "1",
+    "name": "小小学士",
+    "interval": "2",
+    "downloaded": "30GB",
+    "ratio": "1.5",
+    "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+  },{
+    "level": "2",
+    "name": "优秀硕士",
+    "interval": "5",
+    "downloaded": "50GB",
+    "ratio": "2.5",
+    "privilege": "优秀硕士及以上用户封存账号后不会被删除。"
+  },{
+    "level": "3",
+    "name": "初为博士",
+    "interval": "10",
+    "downloaded": "100GB",
+    "ratio": "3.5",
+    "privilege": "可以在做种/下载/发布的时候选择匿名模式，可以在邀请传送门版块发帖。"
+  },{
+    "level": "4",
+    "name": "海归博后",
+    "interval": "15",
+    "downloaded": "300GB",
+    "ratio": "4.5",
+    "privilege": "可以查看普通日志。"
+  },{
+    "level": "5",
+    "name": "大学讲师",
+    "interval": "20",
+    "downloaded": "500GB",
+    "ratio": "5.5",
+    "privilege": "可以查看排行榜；可以查看其它用户的评论、帖子历史。大学讲师及以上用户会永远保留账号。"
+  },{
+    "level": "6",
+    "name": "晋升副教",
+    "interval": "30",
+    "downloaded": "700GB",
+    "ratio": "6.5",
+    "privilege": "可以更新过期的外部信息；可以查看晋升副教论坛。"
+  },{
+    "level": "7",
+    "name": "终身教授",
+    "interval": "80",
+    "downloaded": "900GB",
+    "ratio": "7.5",
+    "privilege": "更加高级。"
+  },{
+    "level": "8",
+    "name": "荣誉院士",
+    "interval": "100",
+    "downloaded": "1TB",
+    "ratio": "8.5",
+    "privilege": "更加高级。"
+  }],
   "searchEntry": [{
       "name": "全站",
       "enabled": true
