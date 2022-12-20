@@ -15,6 +15,48 @@
     "scripts": ["/schemas/Common/common.js", "/schemas/Common/torrents.js"]
   }],
   "host": "speedapp.io",
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "Power User",
+      "interval": "13",
+      "uploaded": "200GB",
+      "ratio": "2",
+      "privilege": "Can make requests"
+    },
+    {
+      "level": "2",
+      "name": "Elite User",
+      "interval": "26",
+      "uploaded": "1TB",
+      "ratio": "3",
+      "privilege": "Can be chosen as Hyperseeders"
+    },
+    {
+      "level": "3",
+      "name": "Xtreme User",
+      "interval": "52",
+      "uploaded": "5TB",
+      "ratio": "4",
+      "privilege": "None"
+    },
+    {
+      "level": "4",
+      "name": "Super User",
+      "interval": "103",
+      "uploaded": "20TB",
+      "ratio": "5",
+      "privilege": "None"
+    },
+    {
+      "level": "5",
+      "name": "Legend User",
+      "interval": "309",
+      "uploaded": "100TB",
+      "ratio": "6",
+      "privilege": "None"
+    }
+  ],
   "searchEntryConfig": {
     "page": "/browse?search=$key$",
     "loggedRegex": "href=\"\/profile\"",
@@ -164,6 +206,20 @@
         "confirmSize": {
           "selector": ["div.container > div.row >div.col-12.gutter-b div.row.mr-0.ml-0.py-3 > div.col-6.col-sm-4.col-md-1.text-center.text-muted:contains('B')"],
           "filters": ["query"]
+        }
+      }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/profile",
+      "fields": {
+        "bonusPerHour": {
+          "selector": [
+            "dt:contains('奖励积分') + dd > b:eq(0)",
+            "dt:contains('Bonus points') + dd > b:eq(0)",
+            "dt:contains('Puncte bonus') + dd > b:eq(0)"
+          ],
+          "filters": ["parseFloat(query.text())"]
         }
       }
     }
