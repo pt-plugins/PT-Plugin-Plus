@@ -224,7 +224,8 @@
         "downloaded":"Downloaded",
         "uploads": "Uploaded",
         "trueDownloaded": "True Downloaded",
-        "classPoints": "Class Points"
+        "classPoints": "Class Points",
+        "alternative": "Alternative"
       },
       "tip": "N/A means no support",
       "nodata": "You have not added a site, please go to [Sites] to add a site."

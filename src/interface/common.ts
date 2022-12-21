@@ -298,6 +298,8 @@ export interface LevelRequirement {
   classPoints?: number;
   // 权限
   privilege?: string;
+  // 可选要求
+  alternative?: LevelRequirement;
 }
 
 export interface Request {
@@ -599,7 +601,7 @@ export interface UserInfo {
   // 消息数量
   messageCount?: number;
   // 下一等级
-  nextLevel?: LevelRequirement;
+  nextLevels?: LevelRequirement[];
   [key: string]: any;
 }
 

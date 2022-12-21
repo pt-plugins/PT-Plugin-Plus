@@ -99,62 +99,58 @@
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
               <template v-if="props.item.levelRequirements">
-                <template v-if="
-                  props.item.user.nextLevel && props.item.user.nextLevel.name
-                ">
-                  <div>
-                    <v-icon small>keyboard_tab</v-icon>
-                    <template v-if="props.item.user.nextLevel.requiredDate">
-                      {{ props.item.user.nextLevel.requiredDate }}&nbsp;
-                    </template>
-                    <template v-if="props.item.user.nextLevel.uploaded">
-                      <v-icon small color="green darken-4">expand_less</v-icon>{{
-                          props.item.user.nextLevel.uploaded | formatSize
-                      }}&nbsp;
-                    </template>
-                    <template v-if="props.item.user.nextLevel.downloaded">
-                      <v-icon small color="red darken-4">expand_more</v-icon>{{
-                          props.item.user.nextLevel.downloaded | formatSize
-                      }}&nbsp;
-                    </template>
-                    <template v-if="props.item.user.nextLevel.trueDownloaded">
-                      {{ $t("home.levelRequirement.trueDownloaded") }}
-                      {{
-                          props.item.user.nextLevel.trueDownloaded | formatSize
-                      }}&nbsp;
-                    </template>
-                    <template v-if="props.item.user.nextLevel.bonus">
-                      <v-icon small color="green darken-4">attach_money</v-icon>{{
-                          props.item.user.nextLevel.bonus | formatNumber
-                      }}&nbsp;
-                    </template>
-                    <template v-if="props.item.user.nextLevel.seedingPoints">
-                      <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{
-                          props.item.user.nextLevel.seedingPoints | formatNumber
-                      }}&nbsp;
-                    </template>
-                    <template v-if="props.item.user.nextLevel.uploads">
-                      <v-icon small color="green darken-4">file_upload</v-icon>{{ props.item.user.nextLevel.uploads
-                      }}&nbsp;
-                    </template>
-                    <template v-if="props.item.user.nextLevel.classPoints">
-                      <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{
-                          props.item.user.nextLevel.classPoints | formatNumber
-                      }}&nbsp;
-                    </template>
-                  </div>
+                <template v-if="props.item.user.nextLevels && props.item.user.nextLevels.length > 0">
+                  <template v-for="nextLevel in props.item.user.nextLevels">
+                    <div>
+                      <v-icon small>keyboard_tab</v-icon>
+                      <template v-if="nextLevel.requiredDate">
+                        {{ nextLevel.requiredDate }}&nbsp;
+                      </template>
+                      <template v-if="nextLevel.uploaded">
+                        <v-icon small color="green darken-4">expand_less</v-icon>{{
+                            nextLevel.uploaded | formatSize
+                        }}&nbsp;
+                      </template>
+                      <template v-if="nextLevel.downloaded">
+                        <v-icon small color="red darken-4">expand_more</v-icon>{{
+                            nextLevel.downloaded | formatSize
+                        }}&nbsp;
+                      </template>
+                      <template v-if="nextLevel.trueDownloaded">
+                        {{ $t("home.levelRequirement.trueDownloaded") }}
+                        {{
+                            nextLevel.trueDownloaded | formatSize
+                        }}&nbsp;
+                      </template>
+                      <template v-if="nextLevel.bonus">
+                        <v-icon small color="green darken-4">attach_money</v-icon>{{
+                            nextLevel.bonus | formatNumber
+                        }}&nbsp;
+                      </template>
+                      <template v-if="nextLevel.seedingPoints">
+                        <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{
+                            nextLevel.seedingPoints | formatNumber
+                        }}&nbsp;
+                      </template>
+                      <template v-if="nextLevel.uploads">
+                        <v-icon small color="green darken-4">file_upload</v-icon>{{ nextLevel.uploads
+                        }}&nbsp;
+                      </template>
+                      <template v-if="nextLevel.classPoints">
+                        <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{
+                            nextLevel.classPoints | formatNumber
+                        }}&nbsp;
+                      </template>
+                    </div>
+                  </template>
                 </template>
                 <template v-else-if="props.item.user.name">
                   <v-icon small color="green darken-4">done</v-icon>
                 </template>
                 <v-card class="levelRequirement">
-                  <template v-for="levelRequirement in props.item.levelRequirements">
+                  <template v-for="levelRequirement of props.item.levelRequirements">
                     <div>
-                      <v-icon v-if="
-                          !(props.item.user.nextLevel && props.item.user.nextLevel.name) ||
-                          Number(props.item.user.nextLevel.level) >
-                          Number(levelRequirement.level)
-                        "
+                      <v-icon v-if="!(props.item.user.nextLevels && props.item.user.nextLevels.length > 0) || props.item.user.nextLevels[0].level > levelRequirement.level"
                         small color="green darken-4">done</v-icon>
                       <v-icon v-else small color="red darken-4">block</v-icon>
                       <template v-if="levelRequirement.requiredDate">
@@ -189,6 +185,43 @@
                         <v-icon small color="yellow darken-4" :title="$t('home.levelRequirement.classPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.classPoints
                             | formatInteger
                         }};
+                      </template>
+                      <template v-if="levelRequirement.alternative">
+                        <v-icon small :title="$t('home.levelRequirement.alternative')">filter_1</v-icon>(
+                        <template v-if="levelRequirement.alternative.requiredDate">
+                          {{ levelRequirement.alternative.requiredDate }};
+                        </template>
+                        <template v-if="levelRequirement.alternative.uploaded">
+                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uploaded')">expand_less</v-icon>{{ levelRequirement.alternative.uploaded }};
+                        </template>
+                        <template v-if="levelRequirement.alternative.uploads">
+                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uploads')">file_upload</v-icon>{{ levelRequirement.alternative.uploads }};
+                        </template>
+                        <template v-if="levelRequirement.alternative.downloaded">
+                          <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloaded')">expand_more</v-icon>{{ levelRequirement.alternative.downloaded }};
+                        </template>
+                        <template v-if="levelRequirement.alternative.trueDownloaded">
+                          {{ $t("home.levelRequirement.trueDownloaded") }}
+                          {{ levelRequirement.alternative.trueDownloaded }};
+                        </template>
+                        <template v-if="levelRequirement.alternative.ratio">
+                          <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.ratio')">balance</v-icon>{{ levelRequirement.alternative.ratio }};
+                        </template>
+                        <template v-if="levelRequirement.alternative.bonus">
+                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.bonus')">attach_money</v-icon>{{ levelRequirement.alternative.bonus |
+                              formatInteger
+                          }};
+                        </template>
+                        <template v-if="levelRequirement.alternative.seedingPoints">
+                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.alternative.seedingPoints
+                              | formatInteger
+                          }};
+                        </template>
+                        <template v-if="levelRequirement.alternative.classPoints">
+                          <v-icon small color="yellow darken-4" :title="$t('home.levelRequirement.classPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.alternative.classPoints
+                              | formatInteger
+                          }};
+                        </template>);
                       </template>
                       {{ levelRequirement.privilege }}
                     </div>
@@ -289,6 +322,7 @@ import {
   Options,
   UserInfo,
   EViewKey,
+  LevelRequirement,
 } from "@/interface/common";
 import dayjs from "dayjs";
 
@@ -563,132 +597,152 @@ export default Vue.extend({
       // 设置升级条件
       try {
         if (site.levelRequirements) {
-          user.nextLevel = {};
-          user.nextLevel.level = -1;
           for (var levelRequirement of site.levelRequirements) {
             if (levelRequirement.requiredDate) break;
 
             if (levelRequirement.interval && user.joinDateTime) {
-              levelRequirement.requiredDate = dayjs(user.joinDateTime)
-                .add(levelRequirement.interval as number, "week")
-                .format("YYYY-MM-DD");
+              levelRequirement.requiredDate = dayjs(user.joinDateTime).add(levelRequirement.interval as number, "week").format("YYYY-MM-DD");
             } else break;
           }
 
-          for (var levelRequirement of site.levelRequirements) {
-            if (levelRequirement.interval && user.joinDateTime) {
-              let weeks = levelRequirement.interval as number;
-              let requiredDate = dayjs(user.joinDateTime).add(weeks, "week");
-              if (dayjs(new Date()).isBefore(requiredDate)) {
-                user.nextLevel.requiredDate = requiredDate.format("YYYY-MM-DD");
-                user.nextLevel.level = levelRequirement.level;
+          user.nextLevels = [] as LevelRequirement[];
+          if (site.levelRequirements[0].alternative) {
+            for(var key of Object.keys(site.levelRequirements[0].alternative) as Array<keyof LevelRequirement>) {
+              for (var levelRequirement of site.levelRequirements) {
+                var newLevelRequirement = Object.assign({}, levelRequirement)
+                newLevelRequirement[key] = levelRequirement.alternative ? levelRequirement.alternative[key] as any : undefined;
+                var nextLevel = this.calculateNextLeve(user, newLevelRequirement);
+                if (nextLevel) {
+                  console.log(newLevelRequirement)
+                  console.log(nextLevel)
+                  if (user.nextLevels.length == 0 || Number(nextLevel.level) == Number(user.nextLevels[0].level))              
+                    user.nextLevels.push(nextLevel);
+                  else if (Number(nextLevel.level) > Number(user.nextLevels[0].level))
+                  {
+                    user.nextLevels = [] as LevelRequirement[];
+                    user.nextLevels.push(nextLevel);
+                  }
+                    
+                  break;
+                }
               }
-            }
-
-            if (
-              levelRequirement.uploaded ||
-              (downloaded && levelRequirement.ratio)
-            ) {
-              let levelRequirementUploaded = levelRequirement.uploaded
-                ? this.fileSizetoLength(levelRequirement.uploaded as string)
-                : 0;
-              let requiredDownloaded = levelRequirement.downloaded
-                ? this.fileSizetoLength(levelRequirement.downloaded as string)
-                : 0;
-              let requiredUploadedbyRatio = levelRequirement.ratio
-                ? Math.max(downloaded, requiredDownloaded) *
-                levelRequirement.ratio
-                : 0;
-              let requiredUploaded = Math.max(
-                levelRequirementUploaded,
-                requiredUploadedbyRatio
-              );
-              if (uploaded < requiredUploaded) {
-                user.nextLevel.uploaded = requiredUploaded - uploaded;
-                user.nextLevel.level = levelRequirement.level;
+            };
+          }
+          else {
+            for (var levelRequirement of site.levelRequirements) {
+              let nextLevel = this.calculateNextLeve(user, levelRequirement);
+              if (nextLevel) {
+                user.nextLevels.push(nextLevel);
+                break;
               }
-            }
-
-            if (levelRequirement.downloaded) {
-              let requiredDownloaded = this.fileSizetoLength(
-                levelRequirement.downloaded as string
-              );
-              if (downloaded < requiredDownloaded) {
-                user.nextLevel.downloaded = requiredDownloaded - downloaded;
-                user.nextLevel.level = levelRequirement.level;
-              }
-            }
-
-            if (levelRequirement.ratio) {
-              let userRatio = user.ratio as number;
-              let requiredRatio = levelRequirement.ratio as number;
-              if (userRatio != -1 && userRatio < requiredRatio) {
-                user.nextLevel.ratio = levelRequirement.ratio;
-                user.nextLevel.level = levelRequirement.level;
-              }
-            }
-
-            if (levelRequirement.bonus) {
-              let userBonus = user.bonus as number;
-              let requiredBonus = levelRequirement.bonus as number;
-
-              if (userBonus < requiredBonus) {
-                user.nextLevel.bonus = requiredBonus - userBonus;
-                user.nextLevel.level = levelRequirement.level;
-              }
-            }
-
-            if (levelRequirement.seedingPoints) {
-              let userSeedingPoints = user.seedingPoints as number;
-              let requiredSeedingPoints =
-                levelRequirement.seedingPoints as number;
-              if (userSeedingPoints < requiredSeedingPoints) {
-                user.nextLevel.seedingPoints =
-                  requiredSeedingPoints - userSeedingPoints;
-                user.nextLevel.level = levelRequirement.level;
-              }
-            }
-
-            if (levelRequirement.uploads) {
-              let userUploads = user.uploads as number;
-              let requiredUploads = levelRequirement.uploads as number;
-              if (userUploads < requiredUploads) {
-                user.nextLevel.uploads = requiredUploads - userUploads;
-                user.nextLevel.level = levelRequirement.level;
-              }
-            }
-
-            if (levelRequirement.trueDownloaded) {
-              let userTrueDownloaded = user.trueDownloaded
-                ? (user.trueDownloaded as number)
-                : 0;
-              let requiredTrueDownloaded = this.fileSizetoLength(
-                levelRequirement.trueDownloaded as string
-              );
-              if (userTrueDownloaded < requiredTrueDownloaded) {
-                user.nextLevel.trueDownloaded =
-                  requiredTrueDownloaded - userTrueDownloaded;
-                user.nextLevel.level = levelRequirement.level;
-              }
-            }
-
-            if (levelRequirement.classPoints) {
-              let userClassPoints = user.classPoints as number;
-              let requiredClassPoints = levelRequirement.classPoints as number;
-              if (userClassPoints < requiredClassPoints) {
-                user.nextLevel.classPoints =
-                  requiredClassPoints - userClassPoints;
-                user.nextLevel.level = levelRequirement.level;
-              }
-            }
-
-            if ((user.nextLevel.level as number) > 0) {
-              user.nextLevel.name = levelRequirement.name;
-              break;
             }
           }
         }
-      } catch { }
+      } catch(error) {
+        console.log(error);
+      }
+    },
+    /**
+     * @return {LevelRequirement}
+     */
+    calculateNextLeve(user: UserInfoEx, levelRequirement: LevelRequirement): LevelRequirement | undefined {
+      let nextLevel = {} as LevelRequirement;
+      nextLevel.level = -1;
+
+      let downloaded = user.downloaded as number;
+      let uploaded = user.uploaded as number;
+
+      if (levelRequirement.interval && user.joinDateTime) {
+        let weeks = levelRequirement.interval as number;
+        let requiredDate = dayjs(user.joinDateTime).add(weeks, "week");
+        if (dayjs(new Date()).isBefore(requiredDate)) {
+          nextLevel.requiredDate = requiredDate.format("YYYY-MM-DD");
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.uploaded || (downloaded && levelRequirement.ratio)) {
+        let levelRequirementUploaded = levelRequirement.uploaded ? this.fileSizetoLength(levelRequirement.uploaded as string) : 0;
+        let requiredDownloaded = levelRequirement.downloaded ? this.fileSizetoLength(levelRequirement.downloaded as string) : 0;
+        let requiredUploadedbyRatio = levelRequirement.ratio ? Math.max(downloaded, requiredDownloaded) * levelRequirement.ratio : 0;
+        let requiredUploaded = Math.max(levelRequirementUploaded, requiredUploadedbyRatio);
+        if (uploaded < requiredUploaded) {
+          nextLevel.uploaded = requiredUploaded - uploaded;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.downloaded) {
+        let requiredDownloaded = this.fileSizetoLength(levelRequirement.downloaded as string);
+        if (downloaded < requiredDownloaded) {
+          nextLevel.downloaded = requiredDownloaded - downloaded;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.ratio) {
+        let userRatio = user.ratio as number;
+        let requiredRatio = levelRequirement.ratio as number;
+        if (userRatio != -1 && userRatio < requiredRatio) {
+          nextLevel.ratio = levelRequirement.ratio;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.bonus) {
+        let userBonus = user.bonus as number;
+        let requiredBonus = levelRequirement.bonus as number;
+
+        if (userBonus < requiredBonus) {
+          nextLevel.bonus = requiredBonus - userBonus;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.seedingPoints) {
+        let userSeedingPoints = user.seedingPoints as number;
+        let requiredSeedingPoints = levelRequirement.seedingPoints as number;
+        if (userSeedingPoints < requiredSeedingPoints) {
+          nextLevel.seedingPoints = requiredSeedingPoints - userSeedingPoints;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.uploads) {
+        let userUploads = user.uploads ? user.uploads as number : 0;
+        let requiredUploads = levelRequirement.uploads as number;
+        if (userUploads < requiredUploads) {
+          nextLevel.uploads = requiredUploads - userUploads;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.trueDownloaded) {
+        let userTrueDownloaded = user.trueDownloaded ? (user.trueDownloaded as number) : 0;
+        let requiredTrueDownloaded = this.fileSizetoLength(
+          levelRequirement.trueDownloaded as string
+        );
+        if (userTrueDownloaded < requiredTrueDownloaded) {
+          nextLevel.trueDownloaded = requiredTrueDownloaded - userTrueDownloaded;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.classPoints) {
+        let userClassPoints = user.classPoints as number;
+        let requiredClassPoints = levelRequirement.classPoints as number;
+        if (userClassPoints < requiredClassPoints) {
+          nextLevel.classPoints = requiredClassPoints - userClassPoints;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if ((nextLevel.level as number) > 0)
+      {
+        nextLevel.name = levelRequirement.name;
+        return nextLevel;
+      } else
+        return undefined;
     },
     /**
      * @return {number}
