@@ -85,7 +85,8 @@
                 site: site,
                 tags: (torrent.isFreeleech || torrent.isPersonalFreeleech) ? [{name: "Free",color: "blue"}] : torrent.isNeutralLeech ? [{name: "Neutral",color: "purple"}] : [],
                 entryName: options.entry.name,
-                category: group.releaseType
+                category: group.releaseType,
+                imdbId: group.imdbId,
               };
               results.push(data);
             });
@@ -104,7 +105,8 @@
               site: site,
               tags: group.tags,
               entryName: options.entry.name,
-              category: group.category
+              category: group.category,
+              imdbId: group.imdbId,
             };
             results.push(data);
           }

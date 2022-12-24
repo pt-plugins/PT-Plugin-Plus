@@ -389,7 +389,8 @@ export default Vue.extend({
         downloadOptions = Object.assign(downloadOptions, {
           title: item.title,
           url: item.url,
-          link: item.link
+          link: item.link,
+          imdbId: item.imdbId
         });
         items.push(downloadOptions);
       });
@@ -403,7 +404,8 @@ export default Vue.extend({
         downloadOptions = Object.assign(downloadOptions, {
           title: item.title,
           url: item.url,
-          link: item.link
+          link: item.link,
+          imdbId: item.imdbId
         });
         items.push(downloadOptions);
       });

@@ -12,6 +12,7 @@ export type downloadFile = {
 export type downloadOptions = {
   files?: downloadFile[];
   autoStart?: boolean;
+  tagIMDb?: boolean;
   onCompleted?: Function;
   onError?: Function;
   onProgress?: Function;

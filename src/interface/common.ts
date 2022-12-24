@@ -33,6 +33,7 @@ export interface DownloadClient {
   loginPwd?: string;
   paths?: any;
   autoStart?: boolean;
+  tagIMDb?: boolean;
   type?: string;
 }
 
@@ -331,9 +332,11 @@ export interface DownloadOptions {
   title?: string;
   savePath?: string;
   autoStart?: boolean;
+  tagIMDb?: boolean;
   clientId?: string;
   // 来源链接地址
   link?: string;
+  imdbId?: string;
 }
 
 /**
@@ -396,6 +399,7 @@ export interface SearchResultItem {
   // 状态
   status?: ETorrentStatus;
   host?: string;
+  imdbId?: string;
 }
 
 /**
@@ -649,6 +653,7 @@ export interface ICollection {
   size: number;
   time?: number;
   subTitle?: string;
+  imdbId?: string;
   movieInfo?: {
     title: string;
     alt_title: string;

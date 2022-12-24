@@ -205,4 +205,19 @@ export class InfoParser {
 
     return total;
   }
+
+  /**
+   * 获取指定数组的合计尺寸
+   * @param imdbId 表示大小的数组
+   */
+  formatIMDbId(imdbId: string) {
+    if (Number(imdbId))
+    {
+      if (imdbId.length < 7)
+        imdbId.padStart(7, '0');
+      
+      imdbId = "tt" + imdbId;
+    }
+    return imdbId;
+  }
 }

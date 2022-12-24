@@ -545,6 +545,7 @@
           "loginPwd": "login password",
           "id": "ID",
           "autoStart": "Automatically start downloading when sending a torrent",
+          "tagIMDb": "Add IMDb tag when sending a torrent",
           "autoCreate": "<Automatically generated after saving>",
           "test": "Test if the server can connect",
           "testSuccess": "Server can be connected",

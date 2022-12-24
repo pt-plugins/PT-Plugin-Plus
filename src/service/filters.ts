@@ -20,6 +20,7 @@ interface IFilter {
   timeAgoToNumber: (source: string) => number;
   [key: string]: any;
   formatInteger:(source: number) => string;
+  formatIMDbId:(source: string) => string;
 }
 
 /**
@@ -286,6 +287,20 @@ export const filters: IFilter = {
       segments: a.pathname.replace(/^\//, "").split("/"),
       origin: `${a.protocol}//${a.hostname}` + (a.port ? `:${a.port}` : "")
     };
+  },
+  /**
+   * 将数字转为正确的IMDbId
+   * @param source
+   */
+  formatIMDbId(imdbId: string): string {
+    if (Number(imdbId))
+    {
+      if (imdbId.length < 7)
+        imdbId.padStart(7, '0');
+      
+      imdbId = "tt" + imdbId;
+    }
+    return imdbId;
   },
 
   /**

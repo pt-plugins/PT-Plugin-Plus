@@ -132,6 +132,20 @@
             url = `${site.url}${url}`;
           }
 
+          let imdbId = row.find("div#imdb_id")
+          if (imdbId.length > 0)
+          {
+            imdbId = imdbId.text().replace(/\D/g,'');
+            console.log(imdbId)
+            if (imdbId.length < 7)
+              imdbId.padStart(7, '0');
+      
+            imdbId = "tt" + imdbId;
+          }
+          else {
+            imdbId = null;
+          }
+
           let data = {
             title: title.text().trim(),
             subTitle: this.getSubTitle(title, row),
@@ -173,7 +187,8 @@
                 ? null
                 : this.getCategory(cells.eq(fieldIndex.category)),
             progress: this.getFieldValue(row, cells, fieldIndex, "progress"),
-            status: this.getFieldValue(row, cells, fieldIndex, "status")
+            status: this.getFieldValue(row, cells, fieldIndex, "status"),
+            imdbId: imdbId
           };
           results.push(data);
         }

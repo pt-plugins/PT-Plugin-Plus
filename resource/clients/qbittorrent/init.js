@@ -169,6 +169,10 @@
         formData.append("paused", !data.autoStart);
       }
 
+      if (data.imdbId != undefined) {
+        formData.append("tags", data.imdbId);
+      }
+
       let url = data.url;
 
       // 磁性连接

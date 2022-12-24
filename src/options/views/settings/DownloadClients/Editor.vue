@@ -40,6 +40,12 @@
             v-if="['transmission', 'qbittorrent'].includes(option.type)"
           ></v-switch>
 
+          <v-switch
+            :label="$t('settings.downloadClients.editor.tagIMDb')"
+            v-model="option.tagIMDb"
+            v-if="['qbittorrent'].includes(option.type)"
+          ></v-switch>
+
           <v-text-field
             :value="option.type"
             :label="$t('settings.downloadClients.editor.type')"
