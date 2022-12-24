@@ -263,7 +263,8 @@ export default class Controller {
           autoStart:
             downloadOptions.autoStart === undefined
               ? false
-              : downloadOptions.autoStart
+              : downloadOptions.autoStart,
+          imdbId: downloadOptions.tagIMDb ? downloadOptions.imdbId : null,
         })
         .then((result: any) => {
           this.service.logger.add({

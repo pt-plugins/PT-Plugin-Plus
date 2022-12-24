@@ -1,0 +1,132 @@
+{
+  "name": "Azusa",
+  "description": "梓喵",
+  "schema": "NexusPHP",
+  "timezoneOffset": "+0800",
+  "icon": "https://www.azusa.wiki/favicon.ico",
+  "tags": ["漫画", "轻小说", "Galgame", "画集"],
+  "url": "https://www.azusa.wiki",
+  "host": "www.azusa.wiki",
+  "collaborator": "zhuweitung",
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Power User",
+      "interval": "4",
+      "uploads": "1",
+      "downloaded": "50GB",
+      "ratio": "1",
+      "seedingPoints": "40000",
+      "privilege": "得到一个邀请名额；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+    },
+    {
+      "level": 2,
+      "name": "Elite User",
+      "interval": "8",
+      "uploads": "10",
+      "downloaded": "100GB",
+      "ratio": "2",
+      "seedingPoints": "100000",
+      "privilege": "Elite User及以上用户封存账号后不会被删除。"
+    },
+    {
+      "level": 3,
+      "name": "Crazy User",
+      "interval": "15",
+      "uploads": "20",
+      "downloaded": "150GB",
+      "ratio": "3",
+      "seedingPoints": "300000",
+      "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+    },
+    {
+      "level": 4,
+      "name": "Insane User",
+      "interval": "25",
+      "uploads": "40",
+      "downloaded": "200GB",
+      "ratio": "4",
+      "seedingPoints": "500000",
+      "privilege": "可以查看普通日志。"
+    },
+    {
+      "level": 5,
+      "name": "Veteran User",
+      "interval": "40",
+      "uploads": "80",
+      "downloaded": "250GB",
+      "ratio": "5",
+      "seedingPoints": "1000000",
+      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+    },
+    {
+      "level": 6,
+      "name": "Extreme User",
+      "interval": "60",
+      "uploads": "150",
+      "downloaded": "300GB",
+      "ratio": "6",
+      "seedingPoints": "1500000",
+      "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
+    },
+    {
+      "level": 7,
+      "name": "Ultimate User",
+      "interval": "80",
+      "uploads": "150",
+      "downloaded": "350GB",
+      "ratio": "7",
+      "seedingPoints": "2000000",
+      "privilege": "得到五个邀请名额。"
+    },
+    {
+      "level": 8,
+      "name": "Nexus Master",
+      "interval": "100",
+      "uploads": "300",
+      "downloaded": "400GB",
+      "ratio": "8",
+      "seedingPoints": "5000000",
+      "privilege": "得到十个邀请名额。"
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "name": {
+          "selector": ["a[href*='userdetails.php'][class*='Name']:first"],
+          "filters": ["query ? query.find('i.icon-rank:first').length > 0 ? $(query.find('i.icon-rank:first')[0].previousSibling).text() : query.text() : ''"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "merge": true,
+      "fields": {
+        "seeding": {
+          "selector": ["b:first"],
+          "filters": ["query.text().trim()"]
+        },
+        "seedingSize": {
+          "selector": ["b:first"],
+          "filters": ["$(query[0].nextSibling).text().trim().match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==2)?(query[0]).sizeToNumber():0"]
+        }
+      }
+    }
+  },
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"],
+        "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+      },
+      "status": {
+        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"],
+        "filters": [
+          "query ? query.attr('title') : ''",
+          "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+        ]
+      }
+    }
+  }
+}

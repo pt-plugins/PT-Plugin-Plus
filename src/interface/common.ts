@@ -33,6 +33,7 @@ export interface DownloadClient {
   loginPwd?: string;
   paths?: any;
   autoStart?: boolean;
+  tagIMDb?: boolean;
   type?: string;
 }
 
@@ -298,6 +299,8 @@ export interface LevelRequirement {
   classPoints?: number;
   // 权限
   privilege?: string;
+  // 可选要求
+  alternative?: LevelRequirement;
 }
 
 export interface Request {
@@ -329,9 +332,11 @@ export interface DownloadOptions {
   title?: string;
   savePath?: string;
   autoStart?: boolean;
+  tagIMDb?: boolean;
   clientId?: string;
   // 来源链接地址
   link?: string;
+  imdbId?: string;
 }
 
 /**
@@ -394,6 +399,7 @@ export interface SearchResultItem {
   // 状态
   status?: ETorrentStatus;
   host?: string;
+  imdbId?: string;
 }
 
 /**
@@ -572,10 +578,16 @@ export interface UserInfo {
   bonusPerHour?: number;
   // 积分页面
   bonusPage?: string;
+  // H&R未达标页面
+  unsatisfiedsPage?: string;
   // 入站时间
   joinTime?: number;
   // 等级积分
   classPoints?: number;
+  // H&R未达标
+  unsatisfieds?: number;
+  // H&R预警
+  prewarn?: number;
   // 最后更新时间
   lastUpdateTime?: number;
   // 最后更新状态
@@ -593,7 +605,7 @@ export interface UserInfo {
   // 消息数量
   messageCount?: number;
   // 下一等级
-  nextLevel?: LevelRequirement;
+  nextLevels?: LevelRequirement[];
   [key: string]: any;
 }
 
@@ -641,6 +653,7 @@ export interface ICollection {
   size: number;
   time?: number;
   subTitle?: string;
+  imdbId?: string;
   movieInfo?: {
     title: string;
     alt_title: string;

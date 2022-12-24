@@ -165,6 +165,7 @@
       "userLevel": "用户等级",
       "levelRequirements": "等级要求",
       "seedingPoints": "保种积分",
+      "showHnR": "H&R",
       "selectColumns": "过滤列",
       "week": "时间显示为周数",
       "timeline": "时间轴",
@@ -194,7 +195,9 @@
         "status": "状态",
         "uploads": "发布",
         "trueDownloaded": "真实下载",
-        "classPoints": "等级积分"
+        "classPoints": "等级积分",
+        "unsatisfieds": "H&R考核中",
+        "prewarn": "H&R预警"
       },
       "levelRequirement": {
         "levelRequirements": "升级要求",
@@ -212,9 +215,12 @@
         "joinTime": "入站时间",
         "lastUpdateTime": "数据更新于",
         "status": "状态",
+        "uploaded": "上传量",
+        "downloaded":"下载量",
         "uploads": "发布",
         "trueDownloaded": "真实下载",
-        "classPoints": "等级积分"
+        "classPoints": "等级积分",
+        "alternative": "择一"
       },
       "tip": "N/A 表示暂不支持",
       "nodata": "您还没有添加站点，请前往『站点设置』添加站点。"
@@ -534,6 +540,7 @@
           "loginPwd": "登录密码",
           "id": "ID",
           "autoStart": "发送种子时自动开始下载",
+          "tagIMDb": "发送种子时自动添加IMDb标签",
           "autoCreate": "<保存后自动生成>",
           "test": "测试服务器是否可连接",
           "testSuccess": "服务器可连接",
@@ -976,6 +983,7 @@
       "createSuccess": "辅种任务创建完成，请到辅种任务列表中进行后续操作",
       "createError": "辅种任务创建失败",
       "noItem": "没有符合条件的种子",
+      "filterSearchResults": "过滤搜索结果",
       "savePath": "保存目录：",
       "defaultPath": "默认目录",
       "setSavePath": "设置保存目录",
@@ -992,6 +1000,8 @@
       "fileCount": "文件数：",
       "sendConfirm": "是否确认要发送这 {count} 个种子？",
       "addToKeepUpload": "添加至辅种列表",
+      "removeFromKeepUpload": "移除种子",
+      "redownload" : "重新下载",
       "addToKeepUploadConfirm": "该种子未能通过初步校验，确认要添加吗？",
       "status": {
         "label": "状态：",

@@ -40,5 +40,16 @@
     "uploaded": "100TB",
     "privilege": "Immunity to automated HnR warnings; Global Freeleech; 25 download slots"
   }],
-  "collaborator": ["bimzcy", "lengmianxia", "bright"]
+  "collaborator": ["bimzcy", "lengmianxia", "bright"],
+  "selectors": {
+    "hnrExtendInfo": {
+      "page": "/users/$user.name$/torrents?unsatisfied=include&perPage=100&hitrun=exclude&immune=exclude",
+      "fields": {
+        "unsatisfieds": {
+          "selector": [".table-responsive tbody tr"],
+          "filters": ["query ? query.length : 0"]
+        }
+      }
+    }
+  }
 }

@@ -201,8 +201,10 @@ export default Vue.extend({
                   title: options.title,
                   savePath: item.path,
                   autoStart: item.client.autoStart,
+                  tagIMDb: item.client.tagIMDb,
                   link: options.link,
-                  clientId: item.client.id
+                  clientId: item.client.id,
+                  imdbId: options.imdbId
                 };
 
                 if (this.getOptionsOnly) {
@@ -312,7 +314,9 @@ export default Vue.extend({
           clientId: options.client.id,
           savePath: options.path,
           autoStart: options.client.autoStart,
-          link: item.link
+          tagIMDb: options.client.tagIMDb,
+          link: item.link,
+          imdbId: item.imdbId
         });
       });
 

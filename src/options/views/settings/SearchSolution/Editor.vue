@@ -1,6 +1,6 @@
 <template>
   <div class="search-solution-editor">
-    <v-card color="grey lighten-4" class="body">
+    <v-card :color="$vuetify.dark ? '' : 'grey lighten-4'" class="body">
       <v-card-text>
         <v-form v-model="isValid" class="content">
           <v-layout row>

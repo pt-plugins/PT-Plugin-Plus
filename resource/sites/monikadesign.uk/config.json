@@ -42,5 +42,9 @@
         "uploaded": "15TB",
         "privilege": "个人全局双倍上传"
       }],
-    "collaborator": "fzlins"
+    "collaborator": "fzlins",
+    "searchEntryConfig": {
+      "merge": true,
+      "resultSelector": "#torrent-list-table"
+    }
 }

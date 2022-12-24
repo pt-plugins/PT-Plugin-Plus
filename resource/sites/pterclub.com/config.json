@@ -70,12 +70,17 @@
   "searchEntryConfig": {
     "fieldSelector": {
       "title": {
-        "selector": ["a[href*='details.php?id=']:first"],
+        "selector": ["a[href*='details'][href*='php?id=']:first"],
         "filters": ["query"]
       },
       "subTitle": {
-        "selector": ["div>span"],
+        "selector": ["div>span:eq(0)"],
         "filters": ["query.text().trim()"]
+      },
+      "imdbId": {
+        "selector": ["a span[data-imdbid]:first"],
+        "attribute": "data-imdbid",
+        "filters": ["this.formatIMDbId(query)"]
       },
       "progress": {
         "selector": [".progbargreen", ".progbarred + .progbarrest", ".progbarred", ".progbarrest", ""],

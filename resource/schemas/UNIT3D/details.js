@@ -32,6 +32,31 @@
 
       return this.getFullURL(url);
     }
+    
+    /**
+     * 获取当前种子IMDb Id
+     */
+    getIMDbId() {
+      try
+      {
+        let imdbId = PTService.getFieldValue("imdbId");
+        console.log(imdbId);
+        if (imdbId)
+          return imdbId;
+        else {
+          const link = $("a[href*='www.imdb.com/title/']:first");
+          if (link.length > 0) {
+            let match = link.attr("href").match(/(tt\d+)/);
+
+            if (match && match.length >= 2)
+              return imdbId = match[1];
+
+          }
+        }
+      } catch {
+      }
+      return null;
+    }
   }
   new App().init();
 })(jQuery, window);

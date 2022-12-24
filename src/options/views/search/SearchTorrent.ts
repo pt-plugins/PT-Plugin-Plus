@@ -1066,7 +1066,8 @@ export default Vue.extend({
       title?: string,
       options?: any,
       callback?: any,
-      link: string = ""
+      link: string = "",
+      imdbId?: string
     ) {
       console.log(url);
       this.clearMessage();
@@ -1109,8 +1110,10 @@ export default Vue.extend({
         title,
         savePath: savePath,
         autoStart: defaultClientOptions.autoStart,
+        tagIMDb: defaultClientOptions.tagIMDb,
         clientId: defaultClientOptions.id,
-        link
+        link,
+        imdbId
       };
       this.writeLog({
         event: "SearchTorrent.sendTorrentToClient",
@@ -1232,6 +1235,7 @@ export default Vue.extend({
       new Downloader({
         files: files,
         autoStart: true,
+        tagIMDb: true,
         onCompleted: (file: FileDownloader) => {
           this.downloadTorrentFilesCompleted(file);
         },
@@ -1330,6 +1334,7 @@ export default Vue.extend({
         return;
       }
       let data: SearchResultItem = datas.shift() as SearchResultItem;
+      console.log(data.imdbId)
       this.sendToClient(
         data.url as string,
         data.title,
@@ -1347,7 +1352,8 @@ export default Vue.extend({
           }
           this.sendSelectedToClient(datas, count, downloadOptions);
         },
-        data.link
+        data.link,
+        data.imdbId
       );
     },
     /**
@@ -1510,7 +1516,8 @@ export default Vue.extend({
                   options.title,
                   item,
                   null,
-                  options.link
+                  options.link,
+                  options.imdbId
                 );
               }
             }

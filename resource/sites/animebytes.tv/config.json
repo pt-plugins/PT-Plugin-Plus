@@ -47,7 +47,7 @@
   ],
   "selectors": {
     "userBaseInfo": {
-      "page": "/index.php",
+      "page": "/",
       "fields": {
         "id": {
           "selector": ["#stats_menu > a:first"],
@@ -70,6 +70,10 @@
     "userExtendInfo": {
       "page": "/user.php?id=$user.id$",
       "fields": {
+        "uploads":{
+          "selector": ["dt:contains('Torrents Uploaded:') + dd"],
+          "filters": ["query.text().replace(/,/g,'').match(/[\\d]+/)[0]", "parseInt(query)"]
+        },
         "uploaded": {
           "selector": ["dt:contains('Uploaded:') + dd > span"],
           "filters": ["query.attr('title').replace(/,/g,'')", "parseFloat(query)"]
@@ -78,9 +82,15 @@
           "selector": ["dt:contains('Downloaded:') + dd > span"],
           "filters": ["query.attr('title').replace(/,/g,'')", "parseFloat(query)"]
         },
+        "unsatisfieds": {
+          "selector": ["ul.stats li:contains('H&Rs:')"],
+          "attribute": "title",
+          "filters": ["query.replace(/,/g,'').match(/[\\d]+/g)", "query && query.length >= 2 ? parseInt(query[1]) : 0"]
+        },
         "ratio": {
           "selector": ["dt:contains('Ratio:') + dd > span"],
-          "filters": ["query.attr('title').replace(/,/g,'')"]
+          "attribute": "title",
+          "filters": ["query ? query.replace(/,/g,'') : null"]
         },
         "seeding": {
           "selector": ["dt:contains('Seeding:') + dd"],
@@ -100,6 +110,10 @@
         "bonus": {
           "selector": ["#yen_count > a"],
           "filters": ["query.text().replace(/,|\\n|\\s+|¥/g,'')"]
+        },
+        "bonusPerHour": {
+          "selector": ["dt:contains('Yen per day:') + dd"],
+          "filters": ["query.text().replace(/,/g,'').match(/[\\d.]+/)", "query ? parseFloat(query[0]) / 24 : 0"]
         },
         "joinTime": {
           "selector": ["dt:contains('Joined:') + dd > span"],

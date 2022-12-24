@@ -168,6 +168,7 @@
       "userLevel": "User level",
       "levelRequirements": "Level requirements",
       "seedingPoints": "Seeding Points",
+      "showHnR": "H&R",
       "selectColumns": "Select Columns",
       "week": "Expressed in weeks",
       "timeline": "Time line",
@@ -198,7 +199,9 @@
         "comments": "Comments",
         "uploads": "Uploaded",
         "trueDownloaded": "True Downloaded",
-        "classPoints": "Class Points"
+        "classPoints": "Class Points",
+        "unsatisfieds": "Unsatisfieds",
+        "prewarn": "H&R Prewarn"
       },
       "levelRequirement": {
         "levelRequirements": "Level Requirements",
@@ -217,9 +220,12 @@
         "lastUpdateTime": "Update at",
         "status": "Status",
         "comments": "Comments",
+        "uploaded": "Uploaded",
+        "downloaded":"Downloaded",
         "uploads": "Uploaded",
         "trueDownloaded": "True Downloaded",
-        "classPoints": "Class Points"
+        "classPoints": "Class Points",
+        "alternative": "Alternative"
       },
       "tip": "N/A means no support",
       "nodata": "You have not added a site, please go to [Sites] to add a site."
@@ -539,6 +545,7 @@
           "loginPwd": "login password",
           "id": "ID",
           "autoStart": "Automatically start downloading when sending a torrent",
+          "tagIMDb": "Add IMDb tag when sending a torrent",
           "autoCreate": "<Automatically generated after saving>",
           "test": "Test if the server can connect",
           "testSuccess": "Server can be connected",
@@ -981,6 +988,7 @@
       "createSuccess": "Task creation completed",
       "createError": "Task creation failed",
       "noItem": "No matching seeds",
+      "filterSearchResults": "Filter search results",
       "savePath": "Save Path: ",
       "defaultPath": "Default Path",
       "setSavePath": "Set Save Path",
@@ -997,6 +1005,8 @@
       "fileCount": "Files: ",
       "sendConfirm": "Are you sure you want to send these {count} torrents?",
       "addToKeepUpload": "Add to task list",
+      "removeFromKeepUpload": "Remove from task list",
+      "redownload" : "Re-download",
       "addToKeepUploadConfirm": "Are you sure want add this torrent to task list?",
       "status": {
         "label": "Status: ",

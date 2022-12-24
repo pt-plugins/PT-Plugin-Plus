@@ -95,7 +95,8 @@
                 completed: torrent.snatches,
                 site: site,
                 entryName: options.entry.name,
-                category: group.releaseType
+                category: group.releaseType,
+                imdbId: group.imdbId,
               };
               results.push(data);
             });
@@ -114,7 +115,8 @@
               site: site,
               tags: group.tags,
               entryName: options.entry.name,
-              category: group.category
+              category: group.category,
+              imdbId: group.imdbId,
             };
             results.push(data);
           }

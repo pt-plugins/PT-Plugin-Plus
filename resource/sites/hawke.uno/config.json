@@ -12,14 +12,14 @@
         "resultSelector": "#torrent-list-table"
     },
     "selectors": {
-        "userBaseInfo": {
-          "merge": true,
-          "fields": {
-            "seeding": {
-                "selector": ["div.ratio-bar i.fa-leaf"],
-                "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+/)", "(query && query.length>=1)?parseFloat(query[0]):0"]
-            }
+      "userBaseInfo": {
+        "merge": true,
+        "fields": {
+          "seeding": {
+              "selector": ["div.ratio-bar i.fa-leaf"],
+              "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+/)", "(query && query.length>=1)?parseFloat(query[0]):0"]
           }
         }
+      }
     }
 }

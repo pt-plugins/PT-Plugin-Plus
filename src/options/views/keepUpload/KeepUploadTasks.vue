@@ -31,16 +31,20 @@
         <v-spacer></v-spacer>
 
         <v-text-field
+          v-model="filterKey"
           class="search"
           append-icon="search"
-          label="Search"
+          :label="$t('keepUploadTask.filterSearchResults')"
           single-line
           hide-details
+          enterkeyhint="search"
         ></v-text-field>
       </v-card-title>
 
       <v-data-table
         v-model="selected"
+        :search="filterKey"
+        :custom-filter="searchResultFilter"
         :headers="headers"
         :items="items"
         :pagination.sync="pagination"
@@ -74,12 +78,11 @@
                 :title="props.item.title"
                 rel="noopener noreferrer nofollow"
               ></a>
-              <div class="body-1 mb-2">
+              <div class="body-1">
                 <span v-if="props.item.items[0].subTitle">{{
                   props.item.items[0].subTitle
                 }}</span>
               </div>
-
               <div class="caption">
                 {{ $t("keepUploadTask.savePath")
                 }}{{ props.item.downloadOptions.clientName }} ->
@@ -286,7 +289,10 @@ export default Vue.extend({
       haveError: false,
       haveSuccess: false,
       successMsg: "",
-      siteCache: {} as Dictionary<any>
+      siteCache: {} as Dictionary<any>,
+      filterKey: "",
+      // 已过滤的数据
+      filteredDatas: [] as any
     };
   },
 
@@ -383,7 +389,8 @@ export default Vue.extend({
         downloadOptions = Object.assign(downloadOptions, {
           title: item.title,
           url: item.url,
-          link: item.link
+          link: item.link,
+          imdbId: item.imdbId
         });
         items.push(downloadOptions);
       });
@@ -397,7 +404,8 @@ export default Vue.extend({
         downloadOptions = Object.assign(downloadOptions, {
           title: item.title,
           url: item.url,
-          link: item.link
+          link: item.link,
+          imdbId: item.imdbId
         });
         items.push(downloadOptions);
       });
@@ -460,7 +468,33 @@ export default Vue.extend({
             "searchTorrent.copyLinkToClipboardError"
           ).toString();
         });
-    }
+    },
+    /**
+     * 搜索结果过滤器，用于用户二次过滤
+     * @param items
+     * @param search
+     */
+     searchResultFilter(items: any[], search: string) {
+      search = search.toString().toLowerCase();
+      this.filteredDatas = [];
+      if (search.trim() === "") return items;
+
+      // 以空格分隔要过滤的关键字
+      let searchs = search.split(" ");
+
+      this.filteredDatas = items.filter((item: IKeepUploadTask) => {
+        // 过滤标题和副标题
+        let source = (item.title + (item.items[0].subTitle || "")).toLowerCase();
+        let result = true;
+        searchs.forEach((key) => {
+          if (key.trim() != "") {
+            result = result && source.indexOf(key) > -1;
+          }
+        });
+        return result;
+      });
+      return this.filteredDatas;
+    },
   },
 
   created() {
@@ -510,3 +544,8 @@ export default Vue.extend({
   }
 });
 </script>
+<style lang="scss" >
+.v-datatable .caption {
+  line-height: 1px!important;
+}
+</style>
