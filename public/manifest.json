@@ -76,5 +76,10 @@
 	"omnibox": {
 		"keyword": "pt"
 	},
-	"minimum_chrome_version": "1.0.0"
+	"minimum_chrome_version": "64.0.3242",
+	"browser_specific_settings": {
+		"gecko": {
+			"update_url": "https://pt-plugins.github.io/PT-Plugin-Plus/update/firefox.json"
+		}
+	}
 }
