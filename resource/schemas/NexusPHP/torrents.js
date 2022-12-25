@@ -19,9 +19,12 @@
      * 获取下载链接
      */
     getDownloadURLs() {
+      let urlParser = PTService.filters.parseURL(location.href);
+      let site = PTService.getSiteFromHost(urlParser.host);
+      
       let urls = PTService.getFieldValue("downloadURLs");
       if (!urls) {
-        let links = $("a[href*='/download.php']").toArray();
+        let links = $("a[href*='download.php']").toArray();
 
         if (links.length === 0) {
           links = $(".torrentname a[href*='details.php']").toArray();
@@ -48,6 +51,19 @@
             ) {
               url += "&https=1";
             }
+
+            try
+            {
+              if (site) {
+                switch (site.name) {
+                  case 'HDChina': 
+                    url += `&uid=${site.user.id}` 
+                    break;
+                  default:
+                    break;
+                }
+              }
+            } catch {}
           }
           return url;
         });
