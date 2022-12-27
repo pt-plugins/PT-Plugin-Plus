@@ -108,6 +108,16 @@
         }
       }
     },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/$user.name$.$user.id$/bonus",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["div.panel-body > div.hd-table > div:first > div:first"],
+          "filters": ["parseFloat(query.text())"]
+        }
+      }
+    },
     "common": {
 	  "page": "/torrent/",
       "merge": true,
