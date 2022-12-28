@@ -540,7 +540,7 @@
           "loginPwd": "登录密码",
           "id": "ID",
           "autoStart": "发送种子时自动开始下载",
-          "tagIMDb": "发送种子时自动添加IMDb标签",
+          "tagIMDb": "发送种子时自动添加IMDb标签（Beta）",
           "autoCreate": "<保存后自动生成>",
           "test": "测试服务器是否可连接",
           "testSuccess": "服务器可连接",
