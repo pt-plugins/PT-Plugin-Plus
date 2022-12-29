@@ -1008,6 +1008,8 @@
         "downloading": "正在下载",
         "downloaded": "下载完成",
         "failed": "校验失败",
+        "incorrectOrder": "文件顺序错误",
+        "missingFiles": "缺少文件",
         "success": "校验成功",
         "waiting": "等待校验",
         "downloadFailed": "下载失败"

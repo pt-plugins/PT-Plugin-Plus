@@ -1012,6 +1012,8 @@
         "label": "Status: ",
         "downloading": "Downloading",
         "failed": "Verification failed",
+        "incorrectOrder": "Incorrect Order",
+        "missingFiles": "Missing Files",
         "success": "Verify successful",
         "waiting": "Waiting for verification",
         "downloadFailed": "Download Failed"

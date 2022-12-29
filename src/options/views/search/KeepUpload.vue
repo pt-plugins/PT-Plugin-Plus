@@ -417,14 +417,10 @@ export default Vue.extend({
         ) {
           result.verified = baseTorrent.files.every(
             (sourceFile: any, index: number) => {
-              for (let file of torrent.files)
-              {
-                if (file.path == sourceFile.path && file.length == sourceFile.length)
-                {
-                  return true;
-                }
-              }
-              return false;
+              const file = torrent.files[index];
+              return (
+                file.path == sourceFile.path && file.length == sourceFile.length
+              );
             }
           );
         }
@@ -437,6 +433,25 @@ export default Vue.extend({
         result.status = result.verified
           ? this.$t("keepUploadTask.status.success").toString()
           : this.$t("keepUploadTask.status.failed").toString();
+
+        // 验证是否因为文件顺序错误或缺少文件而失败
+        if (!result.verified && torrent.name == baseTorrent.name &&
+          torrent.length <= baseTorrent.length &&
+          torrent.files.length <= baseTorrent.files.length)
+        {
+          if (torrent.files.every((file: any) =>
+          {
+            return baseTorrent.files.find((sourceFile: any) => 
+              file.path == sourceFile.path && file.length == sourceFile.length
+            );
+          }))
+          {
+            if (torrent.files.length == baseTorrent.files.length)
+              result.status = this.$t("keepUploadTask.status.incorrectOrder").toString();
+            else
+              result.status = this.$t("keepUploadTask.status.missingFiles").toString();
+          }
+        }
 
         this.verifiedItems[index] = Object.assign(
           this.verifiedItems[index],
