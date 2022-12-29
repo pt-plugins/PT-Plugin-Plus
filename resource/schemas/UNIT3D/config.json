@@ -124,7 +124,7 @@
       "page": "$user.bonusPage$",
       "fields": {
         "bonusPerHour": {
-          "selector": [".table-condensed tr:last td:eq(2)"],
+          "selector": [".table-condensed tr:last"],
           "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
         }
       }
