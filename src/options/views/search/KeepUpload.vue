@@ -180,6 +180,7 @@ import { SearchResultItem, EAction, IKeepUploadTask } from "@/interface/common";
 import DownloadTo from "@/options/components/DownloadTo.vue";
 import Extension from "@/service/extension";
 import { PPF } from "@/service/public";
+import { ParsedFile } from "parse-torrent-file";
 const extension = new Extension();
 
 interface IVerifiedItem {
@@ -416,11 +417,14 @@ export default Vue.extend({
         ) {
           result.verified = baseTorrent.files.every(
             (sourceFile: any, index: number) => {
-              const file = torrent.files[index];
-
-              return (
-                file.path == sourceFile.path && file.length == sourceFile.length
-              );
+              for (let file of torrent.files)
+              {
+                if (file.path == sourceFile.path && file.length == sourceFile.length)
+                {
+                  return true;
+                }
+              }
+              return false;
             }
           );
         }
