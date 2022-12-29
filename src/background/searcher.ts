@@ -222,7 +222,6 @@ export class Searcher {
         }
 
         let queryString = entry.queryString;
-
         if (searchEntryConfigQueryString) {
           // 当前入口没有查询字符串时，尝试使用默认配置
           if (!queryString) {
@@ -268,11 +267,11 @@ export class Searcher {
             searchPage = (searchPage + "").substr(1);
           }
           let url: string = site.url + searchPage;
-
           if (queryString) {
             if (searchPage.indexOf("?") !== -1) {
               url += "&" + queryString;
-            } else {
+            } else if (searchEntryConfig && searchEntryConfig.appendString) { url += searchEntryConfig.appendString; }
+            else {
               url += "?" + queryString;
             }
           }

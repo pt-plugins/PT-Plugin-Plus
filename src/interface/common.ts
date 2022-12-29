@@ -500,6 +500,7 @@ export interface SearchEntryConfig {
   requestMethod?: ERequestMethod;
   // 需要提交的数据
   requestData?: Dictionary<any>;
+  appendString?: string;
 }
 
 /**

@@ -47,7 +47,8 @@
     "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
   }],
   "searchEntryConfig": {
-    "page": "/torrents/browse/list/query/$key$",
+    "page": "/torrents/browse/list/",
+    "appendString": "query/$key$",
     "resultType": "json",
     "parseScriptFile": "getSearchResult.js",
     "area": [{
@@ -59,6 +60,34 @@
   "searchEntry": [{
     "name": "all",
     "enabled": true
+  },{
+    "name": "Movies",
+    "appendString": "categories/8,9,11,37,43,14,12,13,47,15,29,36/query/$key$",
+    "enabled": false
+  },{
+    "name": "TV",
+    "appendString": "categories/26,32,27,44/query/$key$",
+    "enabled": false
+  },{
+    "name": "Games",
+    "appendString": "categories/17,42,19,21,39,22,30,48/query/$key$",
+    "enabled": false
+  },{
+    "name": "Apps",
+    "appendString": "categories/23,24,25,33/query/$key$",
+    "enabled": false
+  },{
+    "name": "Animation",
+    "appendString": "categories/34/query/$key$",
+    "enabled": false
+  },{
+    "name": "Books",
+    "appendString": "categories/45.46/query/$key$",
+    "enabled": false
+  },{
+    "name": "Music",
+    "appendString": "categories/31,16/query/$key$",
+    "enabled": false
   }],
   "selectors": {
     "userBaseInfo": {
