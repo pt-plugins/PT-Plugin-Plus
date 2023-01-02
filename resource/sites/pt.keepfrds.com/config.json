@@ -9,7 +9,6 @@
   ],
   "schema": "NexusPHP",
   "host": "pt.keepfrds.com",
-  "timezoneOffset": "0000",
   "levelRequirements": [{
     "level": "1", 
     "name": "Power User",
