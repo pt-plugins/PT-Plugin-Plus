@@ -1,0 +1,165 @@
+{
+  "name": "GTru",
+  "timezoneOffset": "+0000",
+  "url": "https://www.gaytor.rent/",
+  "icon": "https://www.gaytor.rent/favicon.ico",
+  "tags": ["影视", "成人", "综合"],
+  "schema": "GTru",
+  "host": "www.gaytor.rent",
+  "collaborator": "davidxuang",
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Power User",
+      "interval": "4",
+      "uploaded": "40 GB",
+      "ratio": "1.05"
+    }
+  ],
+  "searchEntryConfig": {
+    "page": "/search.php",
+    "queryString": "search=$key$&incldead=1&inname=1&indesc=1&infn=1&orderby=added&sort=desc",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "#mysearchtable",
+    "fieldSelector": {
+      "status": {
+        "selector": [".tocolsnatched", ".tocolloaded"],
+        "switchFilters": [["255"], ["3"]]
+      }
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "all",
+      "enabled": false
+    },
+    {
+      "name": "misc",
+      "appendQueryString": "&c46=1&c50=1&c48=1&c58=1&c45=1&c1=1",
+      "enabled": true
+    },
+    {
+      "name": "Movies",
+      "appendQueryString": "&c45=1",
+      "enabled": false
+    },
+    {
+      "name": "TV",
+      "appendQueryString": "&c1=1",
+      "enabled": false
+    },
+    {
+      "name": "Porn",
+      "appendQueryString": "&c62=1&c29=1&c30=1&c43=1&c19=1&c17=1&c44=1&c9=1&c7=1&c5=1&c67=1&c66=1&c34=1&c68=1&c27=1&c32=1&c63=1&c12=1&c33=1&c53=1&c57=1&c35=1&c36=1&c37=1&c54=1&c38=1&c39=1&c56=1&c40=1&c47=1&c41=1&c42=1&c51=1&c65=1&c28=1",
+      "enabled": false
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/my.php",
+      "fields": {
+        "id": {
+          "selector": ".panel-title > a",
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id') : ''"]
+        },
+        "name": {
+          "selector": ".panel-title > a"
+        },
+        "uploaded": {
+          "selector": ".nav:not(.navbar-right) > .navbar-text:first-of-type",
+          "filters": ["query ? query.text().replace(/.+UL:\\s*([\\d.]+ ?[A-Z]?i?B).+/gs, '$1').sizeToNumber() : null"]
+        },
+        "downloaded": {
+          "selector": ".nav:not(.navbar-right) > .navbar-text:first-of-type",
+          "filters": ["query ? query.text().replace(/.+DL:\\s*([\\d.]+ ?[A-Z]?i?B).*/gs, '$1').sizeToNumber() : null"]
+        },
+        "bonus": {
+          "selector": "#bonus"
+        },
+        "messageCount": {
+          "selector": "#unread"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "levelName": {
+          "selector": [
+            "img[src*='user.gif']",
+            "img[src*='power.gif']",
+            "img[src*='vip.gif']",
+            "img[src*='mod.gif']",
+            "img[src*='sysop.gif']",
+            "img[src*='admin.gif']"
+          ],
+          "attribute": "src",
+          "switchFilters": [["'User'"], ["'Power User'"], ["'VIP'"], ["'Moderator'"], ["'SysOp'"], ["'Admin'"]]
+        },
+        "joinTime": {
+          "selector": "td:contains('Join') + td",
+          "filters": ["dateTime(query.text().split(' (')[0]).valueOf()"]
+        },
+        "seedingSize": {
+          "selector": "#SeedingTorrents > div > table > tbody > tr:not(:first-of-type) > td:nth-of-type(3)",
+          "filters": ["jQuery.map(query, (item) => {return $(item).text()})", "_self.getTotalSize(query)"]
+        },
+        "seeding": {
+          "selector": "#SeedingTorrents > div > table > tbody > tr:not(:first-of-type)",
+          "filters": ["query.length"]
+        }
+      }
+    }
+  },
+  "categories": [
+    {
+      "entry": "*",
+      "result": "&c$id$=1",
+      "category": [
+        { "id": "62", "name": "Amateur" },
+        { "id": "29", "name": "Anal" },
+        { "id": "46", "name": "Anime & Games" },
+        { "id": "30", "name": "Asian" },
+        { "id": "43", "name": "Bareback" },
+        { "id": "19", "name": "BDSM" },
+        { "id": "17", "name": "Bears" },
+        { "id": "44", "name": "Black" },
+        { "id": "50", "name": "Books & Magazines" },
+        { "id": "9", "name": "Chubbies" },
+        { "id": "7", "name": "Clips" },
+        { "id": "48", "name": "Comic & Yaoi" },
+        { "id": "5", "name": "Daddies / Sons" },
+        { "id": "67", "name": "Dildos" },
+        { "id": "66", "name": "Fan Sites" },
+        { "id": "34", "name": "Fetish" },
+        { "id": "68", "name": "Fisting" },
+        { "id": "27", "name": "Grey / Older" },
+        { "id": "32", "name": "Group-Sex" },
+        { "id": "63", "name": "Homemade" },
+        { "id": "12", "name": "Hunks" },
+        { "id": "33", "name": "Images" },
+        { "id": "53", "name": "Interracial" },
+        { "id": "57", "name": "Jocks" },
+        { "id": "35", "name": "Latino" },
+        { "id": "36", "name": "Mature" },
+        { "id": "58", "name": "Media Programs" },
+        { "id": "37", "name": "Member" },
+        { "id": "54", "name": "Middle Eastern" },
+        { "id": "38", "name": "Military" },
+        { "id": "39", "name": "Oral-Sex" },
+        { "id": "56", "name": "Softcore" },
+        { "id": "40", "name": "Solo" },
+        { "id": "45", "name": "Themed Movie" },
+        { "id": "47", "name": "Trans" },
+        { "id": "1", "name": "TV / Episodes" },
+        { "id": "41", "name": "Twinks" },
+        { "id": "42", "name": "Vintage" },
+        { "id": "51", "name": "Voyeur" },
+        { "id": "65", "name": "Wrestling and Sports" },
+        { "id": "28", "name": "Youngblood" }
+      ]
+    }
+  ]
+}
