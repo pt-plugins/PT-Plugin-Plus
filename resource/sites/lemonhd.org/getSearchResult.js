@@ -205,7 +205,8 @@
                 : this.getFieldValue(row, cells, fieldIndex, "category") ||
                 this.getCategory(cells.eq(fieldIndex.category)),
             progress: this.getFieldValue(row, cells, fieldIndex, "progress"),
-            status: this.getFieldValue(row, cells, fieldIndex, "status")
+            status: this.getFieldValue(row, cells, fieldIndex, "status"),
+            imdbId: this.getIMDbId(row)
           };
           results.push(data);
         }
@@ -333,6 +334,23 @@
       }
 
       return title;
+    }
+
+    getIMDbId(row)
+    {
+      try {
+        let link = row.find("a[href*='imdb.com/title/tt']").first().attr("href");
+        if (link)
+        {
+          let imdbId = link.match(/(tt\d+)/);
+          if (imdbId)
+            return imdbId[0];
+        }
+      } catch (error){
+        console.log(error)
+        return null;
+      }
+      return null;
     }
 
     /**
