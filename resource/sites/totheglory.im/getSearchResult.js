@@ -147,7 +147,8 @@
           category: this.getCategory(cells.eq(fieldIndex.category)),
           tags: options.searcher.getRowTags(site, row),
           progress: options.searcher.getFieldValue(site, row, "progress"),
-          status: options.searcher.getFieldValue(site, row, "status")
+          status: options.searcher.getFieldValue(site, row, "status"),
+          imdbId: this.getIMDbId(row)
         };
         results.push(data);
       }
@@ -157,6 +158,27 @@
       }
 
       return results;
+    }
+
+    /**
+     * 获取IMDbId
+     * @param {*} row
+     */
+    getIMDbId(row)
+    {
+      try {
+        let link = row.find("a[href*='imdb.com/title/tt']").first().attr("href");
+        if (link)
+        {
+          let imdbId = link.match(/(tt\d+)/);
+          if (imdbId)
+            return imdbId[0];
+        }
+      } catch (error){
+        console.log(error)
+        return null;
+      }
+      return null;
     }
 
     /**

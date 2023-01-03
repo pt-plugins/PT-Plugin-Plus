@@ -11,6 +11,10 @@
         "merge": true,
         "resultSelector": "#torrent-list-table"
     },
+    "torrentTagSelectors": [{
+      "name": "Free",
+      "selector": "i.fal.fa-gift.text-orange"
+    }],
     "selectors": {
       "userBaseInfo": {
         "merge": true,
