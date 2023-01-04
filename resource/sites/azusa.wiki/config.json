@@ -3,11 +3,14 @@
   "description": "梓喵",
   "schema": "NexusPHP",
   "timezoneOffset": "+0800",
-  "icon": "https://www.azusa.wiki/favicon.ico",
+  "icon": "https://azusa.wiki/favicon.ico",
   "tags": ["漫画", "轻小说", "Galgame", "画集"],
-  "url": "https://www.azusa.wiki",
-  "host": "www.azusa.wiki",
+  "url": "https://azusa.wiki",
+  "host": "azusa.wiki",
   "collaborator": "zhuweitung",
+  "formerHosts": [
+    "www.azusa.wiki"
+  ],
   "levelRequirements": [
     {
       "level": 1,
