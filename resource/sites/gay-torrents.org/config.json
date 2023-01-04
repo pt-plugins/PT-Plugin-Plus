@@ -93,6 +93,9 @@
         },
         "seeding": {
           "selector": "#user_info span[title='Seed']"
+        },
+        "messageCount": {
+          "selector": "#my_menu > ul > li:contains('Mailbox') > span"
         }
       }
     },
