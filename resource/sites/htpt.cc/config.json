@@ -86,7 +86,14 @@
   },
   "searchEntryConfig": {
     "skipIMDbId": true
-  },	   
+  },
+  "selectors": {
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus_new.php",
+      "merge": true
+    }
+  },
   "plugins": [
     {
       "name": "种子列表",
