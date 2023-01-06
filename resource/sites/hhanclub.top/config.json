@@ -112,6 +112,16 @@
                     ]
                 }
             }
+        },
+        "bonusExtendInfo": {
+            "prerequisites": "!user.bonusPerHour",
+            "page": "/mybonus.php",
+            "fields": {
+                "bonusPerHour": {
+                    "selector": ["h1:contains('每小时获得的合计憨值') + div table tr:eq(1) td:last", "h1:contains('Total bonus gained per hour') + div table tr:eq(1) td:last"],
+                    "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
+                }
+            }
         }
     },
     "searchEntryConfig": {
