@@ -204,7 +204,7 @@ export class User {
   public getMoreInfos(site: Site, userInfo: UserInfo): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let requests: any[] = [];
-      let selectors = ["userSeedingTorrents", "bonusExtendInfo", "hnrExtendInfo"];
+      let selectors = ["userSeedingTorrents", "bonusExtendInfo", "hnrExtendInfo", "userUploadedTorrents"];
 
       selectors.forEach((name: string) => {
         let host = site.host as string;
