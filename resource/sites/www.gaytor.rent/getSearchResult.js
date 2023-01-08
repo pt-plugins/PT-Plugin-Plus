@@ -53,7 +53,7 @@
           let data = {
             title: title_elem.text().replace(/^♺ /g, ''),
             link: `${site.url}${title_elem.attr("href")}`,
-            url: `${site.url}${row.find('.index').first().attr('href')}&secure=1`,
+            url: `${site.url}${row.find('.index').first().attr('href')}`,
             size: row.find('.tsize').first().text(),
             time: `${time.match(/\d{4}-\d{2}-\d{2}/g)[0]} ${time.match(/\d{2}:\d{2}:\d{2}/g)[0]}`,
             author: '(Anonymous)',

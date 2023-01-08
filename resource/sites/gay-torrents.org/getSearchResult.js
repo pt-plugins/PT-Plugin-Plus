@@ -39,7 +39,7 @@
           let data = {
             title: title_elem.text(),
             link: `${site.url}${title_elem.attr('href')}`,
-            url: `${site.url}${row.find('.downloadLink').first().attr('href')}`,
+            url: `${site.url}${row.find('.downloadLink').first().attr('href')}&secure=1`,
             size: row.find('.size').first().text(),
             time: row.find('.date').first().text().replace(/\s*on\s*/, ''),
             author: row.find('.uploader > span').first().text(),
