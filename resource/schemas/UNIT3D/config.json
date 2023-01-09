@@ -65,7 +65,7 @@
           "selector": ["a[href*='settings']:first"],
           "attribute": "href",
           "switchFilters": [
-            ["query.match(/users\\/(.+)\\/settings/)", "(query && query.length>=2)?(query[1]):''"],
+            ["new URL(query).pathname.split('/')", "(query && query.length>2)?(query[2]):''"],
             ["query ? query.getQueryString('id'):''"]
           ]
         },
@@ -86,8 +86,9 @@
           "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+/)", "(query && query.length>=1)?parseFloat(query[0]):0"]
         },
         "bonusPage": {
-          "selector": ["a[href$='bonus']:first","a[href$='bonus/earnings']:first"],
-          "filters": ["new URL(query.attr('href')).pathname"]
+          "selector": ["a[href$='bonus']:first","a[href$='earnings']:first"],
+          "attribute": "href",
+          "filters": ["query ? new URL(query).pathname : null"]
         }
       }
     },
@@ -115,7 +116,8 @@
         },
         "unsatisfiedsPage": {
           "selector": ["a[href$='unsatisfieds']:first"],
-          "filters": ["new URL(query.attr('href')).pathname"]
+          "attribute": "href",
+          "filters": ["query ? new URL(query).pathname : null"]
         }
       }
     },
