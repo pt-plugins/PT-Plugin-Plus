@@ -7,8 +7,73 @@
   "tags": ["影视", "纪录片", "综合"],
   "schema": "NexusPHP",
   "host": "club.hares.top",
-  "collaborator": ["kevgao", "枕头啊枕头", "bright"],
+  "collaborator": ["kevgao", "枕头啊枕头", "bright", "yuanyiwei"],
   "formerHosts": [],
+  "levelRequirements": [{
+    "level": "1",
+    "name": "Power User",
+    "interval": "4",
+    "downloaded": "100GB",
+    "ratio": "2",
+    "seedingPoints": "20000",
+    "privilege": "可以在邀请区回复；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以查看排行榜"
+  },{
+    "level": "2",
+    "name": "Elite User",
+    "interval": "8",
+    "downloaded": "350GB",
+    "ratio": "2.5",
+    "seedingPoints": "50000",
+    "privilege": "可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕"
+  },{
+    "level": "3",
+    "name": "Crazy User",
+    "interval": "16",
+    "downloaded": "500GB",
+    "ratio": "3",
+    "seedingPoints": "200000",
+    "privilege": "可以直接发布种子；可以发送邀请；可以在做种/下载/发布的时候选择匿名模式"
+  },{
+    "level": "4",
+    "name": "Insane User",
+    "interval": "20",
+    "downloaded": "1TB",
+    "ratio": "3.5",
+    "seedingPoints": "400000",
+    "privilege": "得到两个邀请名额；可以查看普通日志"
+  },{
+    "level": "5",
+    "name": "Veteran User",
+    "interval": "25",
+    "downloaded": "2TB",
+    "ratio": "4",
+    "seedingPoints": "600000",
+    "privilege": "得到四个邀请名额；可以查看其它用户的评论、帖子历史"
+  },{
+    "level": "6",
+    "name": "Extreme User",
+    "interval": "30",
+    "downloaded": "4TB",
+    "ratio": "4.5",
+    "seedingPoints": "800000",
+    "privilege": "得到六个邀请名额；可以更新过期的外部信息；可以查看Extreme User论坛。Extreme User用户封存后将永远保留账号"
+  },{
+    "level": "7",
+    "name": "Ultimate User",
+    "interval": "40",
+    "downloaded": "6TB",
+    "ratio": "5",
+    "seedingPoints": "1000000",
+    "privilege": "得到八个邀请名额"
+  },{
+    "level": "8",
+    "name": "Nexus Master",
+    "interval": "52",
+    "downloaded": "8TB",
+    "ratio": "5.5",
+    "seedingPoints": "1200000",
+    "privilege": "得到十个邀请名额。Nexus Master用户会永远保留账号"
+  }],
   "searchEntryConfig": {
     "fieldIndex": {
       "title": 1,
