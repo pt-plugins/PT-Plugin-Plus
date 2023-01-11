@@ -87,7 +87,7 @@
             "merge": true,
             "fields": {
                 "bonus": {
-                    "selector": ["td.rowhead:contains('憨值') + td", "td.rowhead:contains('Seed points') + td"],
+                    "selector": ["td.rowhead:contains('憨豆') + td", "td.rowhead:contains('Seed points') + td"],
                     "filters": ["parseFloat(query.text().replace(/,/g,''))"]
                 }
             }
@@ -118,7 +118,7 @@
             "page": "/mybonus.php",
             "fields": {
                 "bonusPerHour": {
-                    "selector": ["h1:contains('每小时获得的合计憨值') + div table tr:eq(1) td:last", "h1:contains('Total bonus gained per hour') + div table tr:eq(1) td:last"],
+                    "selector": ["h1:contains('每小时获得的合计憨豆') + div table tr:eq(1) td:last", "h1:contains('Total bonus gained per hour') + div table tr:eq(1) td:last"],
                     "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
                 }
             }
