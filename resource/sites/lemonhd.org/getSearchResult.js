@@ -378,7 +378,7 @@
     getRowTags(row) {
       let tags = []
       try {
-        if (row.text().trim().match(/免费剩余|全局免费/)) {
+        if (row.text().trim().match(/免费剩余|全局免费|全站免费/)) {
           tags.push({
             name: "Free",
             color: "blue"
