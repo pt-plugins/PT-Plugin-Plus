@@ -9,9 +9,60 @@
   "collaborator": [
     "栽培者",
     "MewX",
-    "fzlins"
+    "fzlins",
+    "zhuweitung"
   ],
   "host": "www.skyey2.com",
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Lv.1 白露",
+      "bonus": 1000,
+      "privilege": "自定义头衔；允许发短消息；允许加好友；允许设置回帖奖励；允许参与点评；"
+    },
+    {
+      "level": 2,
+      "name": "Lv.2 秋分",
+      "bonus": 3000,
+      "privilege": ""
+    },
+    {
+      "level": 3,
+      "name": "Lv.3 霜降",
+      "bonus": 5000,
+      "privilege": ""
+    },
+    {
+      "level": 4,
+      "name": "Lv.4 小雪",
+      "bonus": 10000,
+      "privilege": ""
+    },
+    {
+      "level": 5,
+      "name": "Lv.5 大雪",
+      "bonus": 30000,
+      "privilege": ""
+    },
+    {
+      "level": 6,
+      "name": "Lv.6 小寒",
+      "bonus": 100000,
+      "privilege": ""
+    },
+    {
+      "level": 7,
+      "name": "Lv.7 大寒",
+      "bonus": 300000,
+      "privilege": ""
+    },
+    {
+      "level": 8,
+      "name": "Lv.8 立春",
+      "bonus": 1000000,
+      "privilege": ""
+    }
+  ],
   "selectors": {
     "userBaseInfo": {
       "page": "/",
