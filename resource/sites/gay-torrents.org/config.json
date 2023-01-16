@@ -1,0 +1,164 @@
+{
+  "name": "GTorg",
+  "url": "https://gay-torrents.org/",
+  "cdn": ["https://gay-torrents.se/", "https://gay-area.org/"],
+  "icon": "https://gay-torrents.org/favicon.ico",
+  "tags": ["影视", "成人", "综合"],
+  "schema": "GTorg",
+  "host": "gay-torrents.org",
+  "collaborator": "davidxuang",
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "PowerUser",
+      "uploaded": "50 GB",
+      "ratio": "1.05",
+      "privilege": "Access to online users and tracker info"
+    },
+    {
+      "level": 2,
+      "name": "ExtraUser",
+      "uploaded": "250 GB",
+      "ratio": "2.00",
+      "privilege": "Access to online users, tracker info, requests, top 10 and users"
+    }
+  ],
+  "searchEntryConfig": {
+    "page": "/torrents_beta.php",
+    "queryString": "search=$key$&active=0&options=1",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": ".torrentsContainer"
+  },
+  "searchEntry": [
+    {
+      "name": "all",
+      "enabled": false
+    },
+    {
+      "name": "misc",
+      "appendQueryString": "&category[]=17&category[]=31&category[]=49&category[]=41",
+      "enabled": true
+    },
+    {
+      "name": "Non-Porn",
+      "appendQueryString": "&category[]=41",
+      "enabled": false
+    },
+    {
+      "name": "Porn",
+      "appendQueryString": "&category[]=15&category[]=16&category[]=42&category[]=18&category[]=19&category[]=20&category[]=22&category[]=21&category[]=23&category[]=25&category[]=51&category[]=71&category[]=27&category[]=28&category[]=30&category[]=52&category[]=68&category[]=32&category[]=50&category[]=33&category[]=34&category[]=40&category[]=35&category[]=36&category[]=37&category[]=38&category[]=39",
+      "enabled": false
+    }
+  ],
+  "torrentTagSelectors": [
+    {
+      "name": "Free",
+      "selector": ".specsIn.Freee[title~='0%']",
+      "color": "blue"
+    },
+    {
+      "name": "50%",
+      "selector": ".specsIn.Freee[title~='50%']",
+      "color": "orange"
+    },
+    {
+      "name": "75%",
+      "selector": ".specsIn.Freee[title~='75%']",
+      "color": "lime darken-3"
+    },
+    {
+      "name": "Bumped",
+      "selector": ".specsIn.Bump",
+      "color": "grey"
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": "#my_menu > ul > li:first-child > a",
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('uid') : ''"]
+        },
+        "name": {
+          "selector": "#user_info li:has(i[title='Username'])",
+          "filters": ["query ? query.text().match(/\\s*(.+?)\\s*\\(/)[1] : ''"]
+        },
+        "bonus": {
+          "selector": "#user_info li:has(i[title~='Bonus'])",
+          "filters": ["query ? query.text().match(/[\\d.]+/)[0] : 0"]
+        },
+        "seeding": {
+          "selector": "#user_info span[title='Seed']"
+        },
+        "messageCount": {
+          "selector": "#my_menu > ul > li:contains('Mailbox') > span"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/usercp.php?uid=$user.id$",
+      "fields": {
+        "name": {
+          "selector": ".simple_table.full_widths.left_column td:contains('User') + td"
+        },
+        "levelName": {
+          "selector": ".simple_table.full_widths.left_column td:contains('Rank') + td"
+        },
+        "uploaded": {
+          "selector": ".simple_table.full_widths.left_column td:contains('Uploaded') + td",
+          "filters": ["query.text().sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ".simple_table.full_widths.left_column td:contains('Downloaded') + td",
+          "filters": ["query.text().sizeToNumber()"]
+        },
+        "joinTime": {
+          "selector": ".simple_table.full_widths.left_column td:contains('Joined') + td",
+          "filters": ["dateTime(query.text().replace(/(\\d{2})\\/(\\d{2})\\/(\\d{4})/,'$3-$2-$1')).valueOf()"]
+        }
+      }
+    }
+  },
+  "categories": [
+    {
+      "entry": "*",
+      "result": "&category[]=$id$",
+      "category": [
+        { "id": "15", "name": "Amateur" },
+        { "id": "16", "name": "Anal" },
+        { "id": "42", "name": "Animation" },
+        { "id": "18", "name": "Asian" },
+        { "id": "19", "name": "Bareback" },
+        { "id": "20", "name": "Bears" },
+        { "id": "22", "name": "Bisexual" },
+        { "id": "21", "name": "Black" },
+        { "id": "23", "name": "Chubs" },
+        { "id": "25", "name": "Cross Generation" },
+        { "id": "51", "name": "Doctor/Medical" },
+        { "id": "71", "name": "Fan Sites" },
+        { "id": "27", "name": "Fetish" },
+        { "id": "28", "name": "Group Sex" },
+        { "id": "30", "name": "Hunks" },
+        { "id": "52", "name": "Interracial" },
+        { "id": "68", "name": "Homo Erotic" },
+        { "id": "32", "name": "Latino" },
+        { "id": "50", "name": "Middle Eastern" },
+        { "id": "33", "name": "Military" },
+        { "id": "34", "name": "Oral-Sex" },
+        { "id": "40", "name": "Other" },
+        { "id": "35", "name": "Solo" },
+        { "id": "36", "name": "Trans" },
+        { "id": "37", "name": "Twinks" },
+        { "id": "38", "name": "Vintage" },
+        { "id": "39", "name": "Wrestling" },
+        { "id": "17", "name": "Applications" },
+        { "id": "31", "name": "Images" },
+        { "id": "49", "name": "Books" },
+        { "id": "41", "name": "Non-Porn" }
+      ]
+    }
+  ]
+}

@@ -22,6 +22,10 @@
         "bonus": {
           "selector": ["div#content > div.header > h3"],
           "filters": ["query.text().replace(/,/g,'').match(/.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:null"]
+        },
+        "bonusPerHour": {
+          "selector": ["table#bprates_overview > tbody > tr > td:eq(2)"],
+          "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
         }
       }
     }

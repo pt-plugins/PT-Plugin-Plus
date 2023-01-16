@@ -55,18 +55,18 @@
       "page": "/",
       "fields": {
         "id": {
-          "selector": ["a[href*='settings']:first"],
+          "selector": ["div.dropmenu > a[href]:first"],
           "attribute": "href",
           "switchFilters": [
-            ["query.match(/me\\/(.+)\\.(.+)\\/settings/)", "(query && query.length>=3)?(query[2]):''"],
+            ["query.match(/me\\/(.+)\\.(.+)/)", "(query && query.length>=3)?(query[2]):''"],
             ["query ? query.getQueryString('id'):''"]
           ]
         },
         "name": {
-          "selector": ["a[href*='settings']:first"],
+          "selector": ["div.dropmenu > a[href]:first"],
           "attribute": "href",
           "switchFilters": [
-            ["query.match(/me\\/(.+)\\.(.+)\\/settings/)", "(query && query.length>=3)?(query[1]):''"],
+            ["query.match(/me\\/(.+)\\.(.+)/)", "(query && query.length>=3)?(query[1]):''"],
             ["query ? query.getQueryString('id'):''"]
           ]
         },
@@ -105,6 +105,16 @@
         "joinTime": {
           "selector": "div.button-holder h5:contains('Since: ')",
           "filters": ["query.text().trim().replace('Since: ', '').replace('Member ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/$user.name$.$user.id$/bonus",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["div.panel-body > div.hd-table > div:first > div:first"],
+          "filters": ["parseFloat(query.text())"]
         }
       }
     },

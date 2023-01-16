@@ -94,6 +94,9 @@ jobs:
     steps:
       - name: Set name output
         id: auto_update_file
+        env:
+          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+        if: ${{ env.CRX_PRIVATE_KEY != ''  }}
         run: |
           USER_INPUT=${{ inputs.auto_update_file }}
           echo "value=${USER_INPUT:-"stable.xml"}" >> $GITHUB_OUTPUT
@@ -107,6 +110,9 @@ jobs:
           path: dist
 
       - name: Add update_url
+        env:
+          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+        if: ${{ env.CRX_PRIVATE_KEY != ''  }}
         run: echo $(jq '. |= .+ {"update_url":"https://pt-plugins.github.io/PT-Plugin-Plus/update/${{ steps.auto_update_file.outputs.value }}"}' dist/manifest.json) > dist/manifest.json
 
       - id: zip

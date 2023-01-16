@@ -205,7 +205,8 @@
                 : this.getFieldValue(row, cells, fieldIndex, "category") ||
                 this.getCategory(cells.eq(fieldIndex.category)),
             progress: this.getFieldValue(row, cells, fieldIndex, "progress"),
-            status: this.getFieldValue(row, cells, fieldIndex, "status")
+            status: this.getFieldValue(row, cells, fieldIndex, "status"),
+            imdbId: this.getIMDbId(row)
           };
           results.push(data);
         }
@@ -335,6 +336,23 @@
       return title;
     }
 
+    getIMDbId(row)
+    {
+      try {
+        let link = row.find("a[href*='imdb.com/title/tt']").first().attr("href");
+        if (link)
+        {
+          let imdbId = link.match(/(tt\d+)/);
+          if (imdbId)
+            return imdbId[0];
+        }
+      } catch (error){
+        console.log(error)
+        return null;
+      }
+      return null;
+    }
+
     /**
      * 获取副标题
      * @param {*} title
@@ -360,7 +378,7 @@
     getRowTags(row) {
       let tags = []
       try {
-        if (row.text().trim().match(/免费剩余|全局免费/)) {
+        if (row.text().trim().match(/免费剩余|全局免费|全站免费/)) {
           tags.push({
             name: "Free",
             color: "blue"

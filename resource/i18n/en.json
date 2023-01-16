@@ -545,7 +545,7 @@
           "loginPwd": "login password",
           "id": "ID",
           "autoStart": "Automatically start downloading when sending a torrent",
-          "tagIMDb": "Add IMDb tag when sending a torrent",
+          "tagIMDb": "Add IMDb tag when sending a torrent(Beta)",
           "autoCreate": "<Automatically generated after saving>",
           "test": "Test if the server can connect",
           "testSuccess": "Server can be connected",
@@ -1012,6 +1012,8 @@
         "label": "Status: ",
         "downloading": "Downloading",
         "failed": "Verification failed",
+        "incorrectOrder": "Incorrect Order",
+        "missingFiles": "Missing Files",
         "success": "Verify successful",
         "waiting": "Waiting for verification",
         "downloadFailed": "Download Failed"

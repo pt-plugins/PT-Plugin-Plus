@@ -168,6 +168,14 @@
         "seedingSize": {
 	        "selector": ["dt:contains('奖励积分') + dd > b:nth-of-type(2)","dt:contains('Bonus points') + dd > b:nth-of-type(2)","dt:contains('Puncte bonus') + dd > b:nth-of-type(2)"],
 	        "filters": ["query.text().replace(/,|\\s|\\n/g,'').sizeToNumber()"]
+        },
+        "bonusPerHour": {
+          "selector": [
+            "dt:contains('奖励积分') + dd > b:eq(0)",
+            "dt:contains('Bonus points') + dd > b:eq(0)",
+            "dt:contains('Puncte bonus') + dd > b:eq(0)"
+          ],
+          "filters": ["parseFloat(query.text())"]
         }
       }
     },
@@ -206,20 +214,6 @@
         "confirmSize": {
           "selector": ["div.container > div.row >div.col-12.gutter-b div.row.mr-0.ml-0.py-3 > div.col-6.col-sm-4.col-md-1.text-center.text-muted:contains('B')"],
           "filters": ["query"]
-        }
-      }
-    },
-    "bonusExtendInfo": {
-      "prerequisites": "!user.bonusPerHour",
-      "page": "/profile",
-      "fields": {
-        "bonusPerHour": {
-          "selector": [
-            "dt:contains('奖励积分') + dd > b:eq(0)",
-            "dt:contains('Bonus points') + dd > b:eq(0)",
-            "dt:contains('Puncte bonus') + dd > b:eq(0)"
-          ],
-          "filters": ["parseFloat(query.text())"]
         }
       }
     }

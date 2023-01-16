@@ -150,7 +150,7 @@
                 <v-card class="levelRequirement">
                   <template v-for="levelRequirement of props.item.levelRequirements">
                     <div>
-                      <v-icon v-if="!(props.item.user.nextLevels && props.item.user.nextLevels.length > 0) || props.item.user.nextLevels[0].level > levelRequirement.level"
+                      <v-icon v-if="!(props.item.user.nextLevels && props.item.user.nextLevels.length > 0) || Number(props.item.user.nextLevels[0].level) > Number(levelRequirement.level)"
                         small color="green darken-4">done</v-icon>
                       <v-icon v-else small color="red darken-4">block</v-icon>
                       <template v-if="levelRequirement.requiredDate">

@@ -11,7 +11,7 @@
   ],
   "schema": "NexusPHP",
   "host": "et8.org",
-  "collaborator": "Rhilip",
+  "collaborator": ["Rhilip", "cnsunyour"],
   "levelRequirements": [{
     "level": "1",
     "name": "士官(Power User)",
@@ -99,108 +99,73 @@
       "enabled": true
     },
     {
-      "queryString": "cat601=1",
-      "name": "Movies",
+      "queryString": "cat622=1",
+      "name": "Movies.电影",
       "enabled": false
     },
     {
-      "queryString": "cat602=1",
-      "name": "Animations",
+      "queryString": "cat623=1",
+      "name": "TV.电视剧",
       "enabled": false
     },
     {
-      "queryString": "cat603=1",
-      "name": "Sports",
+      "queryString": "cat624=1",
+      "name": "Documentaries.纪录片",
       "enabled": false
     },
     {
-      "queryString": "cat604=1",
-      "name": "Documentaries",
+      "queryString": "cat625=1",
+      "name": "Appz.软件",
       "enabled": false
     },
     {
-      "queryString": "cat605=1",
-      "name": "EDU",
+      "queryString": "cat626=1",
+      "name": "Music&MusicVideos.音乐及MV",
       "enabled": false
     },
     {
-      "queryString": "cat606=1",
-      "name": "TV/Cn",
+      "queryString": "cat627=1",
+      "name": "Others.其他(非学习类)",
       "enabled": false
     },
     {
-      "queryString": "cat607=1",
-      "name": "TV/Western",
+      "queryString": "cat628=1",
+      "name": "Elearning - 杂项学习",
       "enabled": false
     },
     {
-      "queryString": "cat608=1",
-      "name": "TV/hk_tw",
+      "queryString": "cat629=1",
+      "name": "Elearning - 电子书/小说",
       "enabled": false
     },
     {
-      "queryString": "cat609=1",
-      "name": "TV/Japan_korea",
+      "queryString": "cat630=1",
+      "name": "Elearning - 电子书/非小说",
       "enabled": false
     },
     {
-      "queryString": "cat610=1",
-      "name": "TV Shows",
+      "queryString": "cat631=1",
+      "name": "Elearning - 杂志",
       "enabled": false
     },
     {
-      "queryString": "cat611=1",
-      "name": "Music/Cn",
+      "queryString": "cat632=1",
+      "name": "Elearning - 漫画",
       "enabled": false
     },
     {
-      "queryString": "cat612=1",
-      "name": "Music/Western",
+      "queryString": "cat633=1",
+      "name": "Elearning - 有声书",
       "enabled": false
     },
     {
-      "queryString": "cat613=1",
-      "name": "Music/Asia",
+      "queryString": "cat634=1",
+      "name": "Elearning - 公开课",
       "enabled": false
     },
     {
-      "queryString": "cat614=1",
-      "name": "Music/Classic",
-      "enabled": false
-    },
-    {
-      "queryString": "cat615=1",
-      "name": "MusicVideo",
-      "enabled": false
-    },
-    {
-      "queryString": "cat616=1",
-      "name": "Appz",
-      "enabled": false
-    },
-    {
-      "queryString": "cat617=1",
-      "name": "PC Games",
-      "enabled": false
-    },
-    {
-      "queryString": "cat618=1",
-      "name": "Playstation",
-      "enabled": false
-    },
-    {
-      "queryString": "cat619=1",
-      "name": "Xbox",
-      "enabled": false
-    },
-    {
-      "queryString": "cat620=1",
-      "name": "Wii",
-      "enabled": false
-    },
-    {
-      "queryString": "cat621=1",
-      "name": "Others",
+      "queryString": "cat635=1",
+      "name": "Elearning - 视频教程",
       "enabled": false
     }
   ],
@@ -208,88 +173,60 @@
     "entry": "torrents.php",
     "result": "&cat$id$=1",
     "category": [{
-        "id": 601,
-        "name": "Movies"
+        "id": 622,
+        "name": "Movies.电影"
       },
       {
-        "id": 602,
-        "name": "Animations"
+        "id": 623,
+        "name": "TV.电视剧"
       },
       {
-        "id": 603,
-        "name": "Sports"
+        "id": 624,
+        "name": "Documentaries.纪录片"
       },
       {
-        "id": 604,
-        "name": "Documentaries"
+        "id": 625,
+        "name": "Appz.软件"
       },
       {
-        "id": 605,
-        "name": "EDU"
+        "id": 626,
+        "name": "Music&MusicVideos.音乐及MV"
       },
       {
-        "id": 606,
-        "name": "TV/Cn"
+        "id": 627,
+        "name": "Others.其他(非学习类)"
       },
       {
-        "id": 607,
-        "name": "TV/Western"
+        "id": 628,
+        "name": "Elearning - 杂项学习"
       },
       {
-        "id": 608,
-        "name": "TV/hk_tw"
+        "id": 629,
+        "name": "Elearning - 电子书/小说"
       },
       {
-        "id": 609,
-        "name": "TV/Japan_korea"
+        "id": 630,
+        "name": "Elearning - 电子书/非小说"
       },
       {
-        "id": 610,
-        "name": "TV Shows"
+        "id": 631,
+        "name": "Elearning - 杂志"
       },
       {
-        "id": 611,
-        "name": "Music/Cn"
+        "id": 632,
+        "name": "Elearning - 漫画"
       },
       {
-        "id": 612,
-        "name": "Music/Western"
+        "id": 633,
+        "name": "Elearning - 有声书"
       },
       {
-        "id": 613,
-        "name": "Music/Asia"
+        "id": 634,
+        "name": "Elearning - 公开课"
       },
       {
-        "id": 614,
-        "name": "Music/Classic"
-      },
-      {
-        "id": 615,
-        "name": "MusicVideo"
-      },
-      {
-        "id": 616,
-        "name": "Appz"
-      },
-      {
-        "id": 617,
-        "name": "PC Games"
-      },
-      {
-        "id": 618,
-        "name": "Playstation"
-      },
-      {
-        "id": 619,
-        "name": "Xbox"
-      },
-      {
-        "id": 620,
-        "name": "Wii"
-      },
-      {
-        "id": 621,
-        "name": "Others"
+        "id": 635,
+        "name": "Elearning - 视频教程"
       }
     ]
   }]

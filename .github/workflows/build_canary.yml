@@ -78,6 +78,7 @@ jobs:
         with:
           name: v${{ needs.action.outputs.version }}
           tag: v${{ needs.action.outputs.version }}
+          commit: 'dev'
           generateReleaseNotes: true
           prerelease: true
           artifacts: 'build/*'

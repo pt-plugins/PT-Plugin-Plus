@@ -48,7 +48,8 @@
                 site,
                 options.url,
                 item.categoryID
-              )
+              ),
+              imdbId: item.imdbID
             };
             results.push(data);
           }
