@@ -649,8 +649,8 @@ export default Vue.extend({
       let nextLevel = {} as LevelRequirement;
       nextLevel.level = -1;
 
-      let downloaded = user.downloaded as number;
-      let uploaded = user.uploaded as number;
+      let downloaded = user.downloaded ?? 0;
+      let uploaded = user.uploaded ?? 0;
 
       if (levelRequirement.interval && user.joinDateTime) {
         let weeks = levelRequirement.interval as number;
@@ -661,10 +661,10 @@ export default Vue.extend({
         }
       }
 
-      if (levelRequirement.uploaded || (downloaded && levelRequirement.ratio)) {
+      if (levelRequirement.uploaded || levelRequirement.ratio) {
         let levelRequirementUploaded = levelRequirement.uploaded ? this.fileSizetoLength(levelRequirement.uploaded as string) : 0;
         let requiredDownloaded = levelRequirement.downloaded ? this.fileSizetoLength(levelRequirement.downloaded as string) : 0;
-        let requiredUploadedbyRatio = levelRequirement.ratio ? Math.max(downloaded, requiredDownloaded) * levelRequirement.ratio : 0;
+        let requiredUploadedbyRatio = Math.max(downloaded, requiredDownloaded) * (levelRequirement.ratio ?? 0);
         let requiredUploaded = Math.max(levelRequirementUploaded, requiredUploadedbyRatio);
         if (uploaded < requiredUploaded) {
           nextLevel.uploaded = requiredUploaded - uploaded;
