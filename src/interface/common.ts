@@ -12,7 +12,8 @@ import {
   EPluginPosition,
   EWorkingStatus,
   EEncryptMode,
-  ETorrentStatus
+  ETorrentStatus,
+  ERequestType
 } from "./enum";
 
 /**
@@ -472,6 +473,9 @@ export interface SearchEntryConfig {
   page: string;
   entry?: string;
   resultType?: ERequestResultType;
+  // don't encode the key, for some json post API. e.g. TNode
+  keepOriginKey?: boolean
+  requestDataType?: ERequestType;
   queryString?: string;
   parseScriptFile?: string;
   parseScript?: string;

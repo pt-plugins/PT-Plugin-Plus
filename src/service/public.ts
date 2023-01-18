@@ -399,7 +399,7 @@ class HelpFunctions {
     maps: Dictionary<any>,
     prefix: string = ""
   ): string {
-    if (!source) {
+    if (!source || typeof source !== 'string') {
       return source;
     }
     let result: string = source;
