@@ -51,5 +51,6 @@
         }
       }
     }
-  }
+  },
+  "cdn": ["https://blutopia.cc/","https://blutopia.xyz/"]
 }
