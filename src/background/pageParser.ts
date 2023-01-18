@@ -24,6 +24,7 @@ export class PageParser {
    * 初始化
    * @param options 解析配置
    * @param site 站点
+   * @param timeout
    * @param commonDatas 指定的通用数据
    */
   constructor(

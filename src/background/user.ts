@@ -161,7 +161,7 @@ export class User {
               return;
             }
 
-            this.getInfos(host, url, rule)
+            this.getInfos(host, url, rule, site, userInfo)
               .then((result: any) => {
                 userInfo = Object.assign(userInfo, result);
 
@@ -284,6 +284,19 @@ export class User {
             if (requestData.hasOwnProperty(key)) {
               const value = requestData[key];
               requestData[key] = PPF.replaceKeys(value, userInfo, "user");
+            }
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      let headers = rule.headers;
+      if (headers && userInfo) {
+        try {
+          for (const key in headers) {
+            if (headers.hasOwnProperty(key)) {
+              const value = headers[key];
+              headers[key] = PPF.replaceKeys(value, userInfo, "user");
             }
           }
         } catch (error) {

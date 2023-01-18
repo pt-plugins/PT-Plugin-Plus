@@ -160,7 +160,7 @@ export class Favicon {
                     if (link.substr(0, 2) === "//") {
                       link = `${URL.protocol}:${link}`;
                     } else if (link.substr(0, 4) !== "http") {
-                      link = `${URL.origin}/${link}`;
+                      link = link.startsWith('/') ? `${URL.origin}${link}` : `${URL.origin}/${link}`;
                     }
 
                     this.download(link)

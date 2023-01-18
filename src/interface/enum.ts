@@ -12,6 +12,14 @@ export enum ESizeUnit {
 }
 
 /**
+ * 数据请求类型
+ */
+export enum ERequestType {
+  JSON = "json",
+  TEXT = "urlencode"
+}
+
+/**
  * 数据请求返回类型
  */
 export enum ERequestResultType {

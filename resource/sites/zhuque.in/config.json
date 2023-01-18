@@ -1,0 +1,57 @@
+{
+  "name": "ZHUQUE",
+  "timezoneOffset": "+0800",
+  "description": "朱雀",
+  "url": "https://zhuque.in/",
+  "icon": "https://zhuque.in/assets/images/512.png",
+  "tags": ["影视", "综合"],
+  "schema": "TNode",
+  "host": "zhuque.in",
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
+  "levelRequirements": [{
+    "level": "1",
+    "name": "结丹",
+    "interval": "5",
+    "downloaded": "10GB",
+    "ratio": "2"
+  },{
+    "level": "2",
+    "name": "元婴",
+    "interval": "10",
+    "downloaded": "25GB",
+    "ratio": "2"
+  },{
+    "level": "3",
+    "name": "出窍",
+    "interval": "15",
+    "downloaded": "50GB",
+    "ratio": "2"
+  },{
+    "level": "4",
+    "name": "炼虚",
+    "interval": "20",
+    "downloaded": "100GB",
+    "ratio": "2"
+  },{
+    "level": "5",
+    "name": "合体",
+    "interval": "25",
+    "downloaded": "200GB",
+    "ratio": "4"
+  },{
+    "level": "6",
+    "name": "大乘",
+    "interval": "30",
+    "downloaded": "300GB",
+    "ratio": "6"
+  },{
+    "level": "7",
+    "name": "真仙",
+    "interval": "35",
+    "downloaded": "400GB",
+    "ratio": "8"
+  }]
+}

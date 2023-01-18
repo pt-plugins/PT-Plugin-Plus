@@ -14,7 +14,8 @@ import {
   SiteCategories,
   SiteCategory,
   ERequestMethod,
-  BASE_TAG_COLORS
+  BASE_TAG_COLORS,
+  ERequestType
 } from "@/interface/common";
 import { APP } from "@/service/api";
 import { SiteService } from "./site";
@@ -204,10 +205,11 @@ export class Searcher {
       let doneCount = 0;
 
       const KEY = "$key$";
-
-      // 转换 uri
-      key = encodeURIComponent(key);
-
+      // for some json post API
+      if (!searchEntryConfig.keepOriginKey) {
+        // 转换 uri
+        key = encodeURIComponent(key);
+      }
       // 遍历需要搜索的入口
       searchConfig.entry.forEach((entry: SearchEntry) => {
         let searchPage = entry.entry || siteSearchPage;
@@ -241,6 +243,7 @@ export class Searcher {
           entry.parseScriptFile =
             searchEntryConfig.parseScriptFile || entry.parseScriptFile;
           entry.resultType = searchEntryConfig.resultType || entry.resultType;
+          entry.requestDataType = searchEntryConfig.requestDataType || entry.requestDataType;
           entry.resultSelector =
             searchEntryConfig.resultSelector || entry.resultSelector;
           entry.headers = searchEntryConfig.headers || entry.headers;
@@ -297,6 +300,7 @@ export class Searcher {
               for (const key in entry.requestData) {
                 if (entry.requestData.hasOwnProperty(key)) {
                   const value = entry.requestData[key];
+                  if (typeof value !== 'string') continue
                   entry.requestData[key] = PPF.replaceKeys(value, {
                     key: searchKey,
                     passkey: site.passkey ? site.passkey : ""
@@ -304,7 +308,7 @@ export class Searcher {
 
                   if (site.user) {
                     entry.requestData[key] = PPF.replaceKeys(
-                      value,
+                      entry.requestData[key],
                       site.user,
                       "user"
                     );
@@ -316,7 +320,26 @@ export class Searcher {
               this.service.debug(error);
             }
           }
+          // 替换要提交请求头中的内容
+          if (entry.headers) {
+            for (const key in entry.headers) {
+              if (entry.headers.hasOwnProperty(key)) {
+                const value = entry.headers[key];
+                entry.headers[key] = PPF.replaceKeys(value, {
+                  key: searchKey,
+                  passkey: site.passkey ? site.passkey : ""
+                });
 
+                if (site.user) {
+                  entry.headers[key] = PPF.replaceKeys(
+                    entry.headers[key],
+                    site.user,
+                    "user"
+                  );
+                }
+              }
+            }
+          }
           // 替换用户相关信息
           if (site.user) {
             url = this.replaceKeys(url, site.user, "user");
@@ -452,7 +475,7 @@ export class Searcher {
         let pageParser = new PageParser(
           entry.beforeSearch,
           site,
-          this.service.options.connectClientTimeout
+          this.service.options.connectClientTimeout,
         );
         pageParser
           .getInfos()
@@ -543,16 +566,26 @@ export class Searcher {
       entry: _entry
     });
     let logId = "";
+    let contentType = 'text/plain';
+    let data: Dictionary<any> | string | undefined = entry.requestData
+    switch (entry.requestDataType) {
+      case ERequestType.JSON:
+        contentType = 'application/json';
+        if (data)
+          data = JSON.stringify(data);
+      case ERequestType.TEXT:
+      default:
+    }
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.searchRequestQueue[url] = $.ajax({
         url: url,
         cache: true,
         dataType: "text",
-        contentType: "text/plain",
+        contentType,
         timeout: this.options.connectClientTimeout || 30000,
         headers: entry.headers,
         method: entry.requestMethod || ERequestMethod.GET,
-        data: entry.requestData
+        data
       })
         .done((result: any) => {
           this.service.debug("getSearchResult.done", url);

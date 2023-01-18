@@ -1,0 +1,103 @@
+{
+  "name": "TNode",
+  "ver": "0.0.1",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["\/torrent\/info\/\\d+"],
+    "scripts": ["common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["\/list\/\\d+\/\\d+"],
+    "scripts": ["common.js", "torrents.js"]
+  }],
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
+  "searchEntryConfig": {
+    "page": "/api/torrent/advancedSearch",
+    "resultType": "json",
+    "keepOriginKey": true,
+    "requestDataType": "json",
+    "headers": {"x-csrf-token": "$user.csrfToken$"},
+    "requestMethod": "POST",
+    "requestData": {
+      "page":1,
+      "size":20,
+      "type":"title",
+      "sorter":"id",
+      "order":"desc",
+      "keyword":"$key$",
+      "tags":[],
+      "category":[],
+      "medium":[],
+      "videoCoding":[],
+      "audioCoding":[],
+      "resolution":[],
+      "group":[],
+      "more":false
+    },
+    "parseScriptFile": "/schemas/TNode/getSearchResult.js"
+  },
+  "checker": {
+    "isLogin": {
+      "page": "/user/info",
+      "contains": "退出登录"
+    }
+  },
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "img.pro_free, .free_bg, font.free"
+  }, {
+    "name": "2xFree",
+    "selector": "img.pro_free2up, .twoupfree_bg, font.twoupfree"
+  }, {
+    "name": "2xUp",
+    "selector": "img.pro_2up, .twoup_bg, font.twoup"
+  }, {
+    "name": "2x50%",
+    "selector": "img.pro_50pctdown2up, .twouphalfdown_bg, font.twouphalfdown"
+  }, {
+    "name": "30%",
+    "selector": "img.pro_30pctdown, .thirtypercentdown_bg, font.thirtypercent"
+  }, {
+    "name": "50%",
+    "selector": "img.pro_50pctdown, .halfdown_bg, font.halfdown"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/api/plugins/ptppUserInfo",
+      "dataType": "json",
+      "fields": {
+        "bonus": { "selector": ["data.bonus"]},
+        "downloaded": { "selector": ["data.downloaded"]},
+        "id": { "selector": ["data.id"]},
+        "invites": { "selector": ["data.invites"]},
+        "isLogged": { "selector": ["data.isLogged"]},
+        "joinTime": { "selector": ["data.joinTime"]},
+        "lastUpdateTime": { "selector": ["data.lastUpdateTime"]},
+        "levelName": { "selector": ["data.levelName"]},
+        "name": { "selector": ["data.name"]},
+        "seedingPoints": { "selector": ["data.seedingPoints"]},
+        "trueDownloaded": { "selector": ["data.trueDownloaded"]},
+        "uploaded": { "selector": ["data.uploaded"]},
+        "leeching": { "selector": ["data.leeching"]},
+        "seeding": { "selector": ["data.seeding"]},
+        "bonusPerHour": { "selector": ["data.bonusPerHour"]},
+        "seedingSize": { "selector": ["data.seedingSize"]},
+        "messageCount": { "selector": ["data.messageCount"]},
+        "csrfToken": { "selector": ["data.csrfToken"]}
+      }
+    },
+    "userExtendInfo": {
+      "page": "/api/torrent/option",
+      "dataType": "json",
+      "headers": {
+        "x-csrf-token": "$user.csrfToken$"
+      },
+      "fields": {
+        "tagsAndCategories": { "selector": ["data.option"]}
+      }
+    }
+  }
+}
