@@ -174,5 +174,5 @@
       }
     }
   },
-  "cdn": ["https://www.tjupt.org/"]
+  "cdn": ["https://tjupt.org/","https://www.tjupt.org/"]
 }
