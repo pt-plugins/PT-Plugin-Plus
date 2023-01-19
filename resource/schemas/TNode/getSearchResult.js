@@ -36,12 +36,14 @@
 /**
  * TNode 默认搜索结果解析类
  */
-(function (options, site) {
+(function (options, Searcher) {
   class Parser {
     /**
+     * @param {Site} site
      * @param {TagOrCategory[]} tagsAndCategories
      */
-    constructor(tagsAndCategories = []) {
+    constructor(site, tagsAndCategories = []) {
+      this.site = site
       /**
        * @type Record<number, string>
        */
@@ -87,6 +89,7 @@
             subTitle: torrent.subtitle,
             link,
             url,
+            site: this.site,
             size: torrent.size,
             time: torrent.upload_time,
             author: torrent.anonymous ? undefined: torrent.user.username,
@@ -112,8 +115,9 @@
     }
 
   }
-
-  let parser = new Parser(site && site.user && site.user.tagsAndCategories || []);
+  let site = options.site;
+  let tagsAndCategories = site.user && site.user.tagsAndCategories || [];
+  let parser = new Parser(site, tagsAndCategories);
   options.results = parser.getResult(options.page);
   console.log(options.results);
-})(options, site);
+})(options, options.searcher);
