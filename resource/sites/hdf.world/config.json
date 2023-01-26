@@ -8,11 +8,6 @@
   "url": "https://hdf.world/",
   "collaborator": ["luckiestone"],
   "host": "hdf.world",
-  "plugins": [{
-    "name": "种子列表",
-    "pages": ["/torrents.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Gazelle/torrents.js"]
-  }],
   "securityKeyFields": ["authkey", "torrent_pass"],
   "searchEntryConfig": {
 	"skipIMDbId": true
