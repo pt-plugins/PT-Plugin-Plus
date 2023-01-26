@@ -23,9 +23,9 @@
       let links = $("a[title='Download']").toArray();
 
       if (links.length == 0) {
-        // 排除使用免费令牌的链接
+        // 排除使用免费令牌的链接,id是autofeed的a连接会带，会造成干扰
         links = $(
-          "a[href*='torrents.php?action=download']:not([href*='usetoken'])"
+          "a[href*='torrents.php?action=download']:not([href*='usetoken']):not([id])"
         ).toArray();
       }
 
