@@ -25,7 +25,7 @@
       if (links.length == 0) {
         // 排除使用免费令牌的链接
         links = $(
-          "a[href*='torrents.php?action=download']:not([href*='usetoken'])"
+          "a[href*='torrents.php?action=download']:not([href*='usetoken']):not([href*='upload'])"
         ).toArray();
       }
 
