@@ -282,6 +282,8 @@ export interface LevelRequirement {
   requiredDate?: string;
   // 上传数要求
   uploads?: number;
+  // 下载数要求
+  downloads?: number;
   // 上传量要求
   uploaded?: string | number;
   // 下载量要求
@@ -292,6 +294,8 @@ export interface LevelRequirement {
   bonus?: number;
   // 做种积分要求
   seedingPoints?: number;
+  // 做种时间要求
+  seedingTime?: number;
   // 保种体积要求
   seedingSize?: number;
   // 分享率要求
@@ -562,6 +566,8 @@ export interface UserInfo {
   downloaded?: number;
   // 真实下载量
   trueDownloaded?: string | number;
+  // 下载数
+  downloads?: number;
   // 分享率
   ratio?: number;
   // 当前做种数量
@@ -578,6 +584,8 @@ export interface UserInfo {
   bonus?: number;
   // 保种积分         //add by koal 220920
   seedingPoints?: number;
+  // 做种时间要求
+  seedingTime?: number;
   // 时魔
   bonusPerHour?: number;
   // 积分页面
