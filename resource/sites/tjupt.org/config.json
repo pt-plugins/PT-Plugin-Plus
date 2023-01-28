@@ -11,7 +11,95 @@
   ],
   "schema": "NexusPHP",
   "host": "tjupt.org",
-  "collaborator": "tongyifan",
+  "collaborator": ["tongyifan", "echo094"],
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "拜师学艺",
+      "interval": "4",
+      "downloads": "20",
+      "seedingTime": "30",
+      "uploaded": "50GB",
+      "bonus": "10000",
+      "privilege": "查看用户列表；请求续种；查看其他用户种子历史（隐私等级不为高时）；删除自己上传的字幕。"
+    },
+    {
+      "level": 2,
+      "name": "持剑下山",
+      "interval": "8",
+      "downloads": "60",
+      "seedingTime": "120",
+      "uploaded": "200GB",
+      "bonus": "30000",
+      "privilege": "封存账号后不会被删除。"
+    },
+    {
+      "level": 3,
+      "name": "初入江湖",
+      "interval": "16",
+      "downloads": "150",
+      "seedingTime": "450",
+      "uploaded": "800GB",
+      "uploads": "1",
+      "bonus": "80000",
+      "privilege": "首次升级至此等级时将获得1个永久邀请；发送邀请；做种/下载/发布时可以选择匿名。"
+    },
+    {
+      "level": 4,
+      "name": "小有名气",
+      "interval": "28",
+      "downloads": "300",
+      "seedingTime": "1500",
+      "uploaded": "2000GB",
+      "uploads": "5",
+      "bonus": "150000",
+      "privilege": "首次升级至此等级时将获得1个永久邀请；查看普通日志。"
+    },
+    {
+      "level": 5,
+      "name": "威震一方",
+      "interval": "48",
+      "downloads": "600",
+      "seedingTime": "4200",
+      "uploaded": "5000GB",
+      "uploads": "10",
+      "bonus": "300000",
+      "privilege": "首次升级至此等级时将获得1个永久邀请；查看其它用户的评论、帖子历史；永久保留账号。"
+    },
+    {
+      "level": 6,
+      "name": "横扫群雄",
+      "interval": "72",
+      "downloads": "1000",
+      "seedingTime": "28000",
+      "uploaded": "10000GB",
+      "uploads": "15",
+      "bonus": "400000",
+      "privilege": "首次升级至此等级时将获得1个永久邀请。"
+    },
+    {
+      "level": 7,
+      "name": "开宗立派",
+      "interval": "100",
+      "downloads": "1800",
+      "seedingTime": "90000",
+      "uploaded": "20000GB",
+      "uploads": "30",
+      "bonus": "600000",
+      "privilege": "首次升级至此等级时将获得2个永久邀请。"
+    },
+    {
+      "level": 8,
+      "name": "天下无敌",
+      "interval": "132",
+      "downloads": "3000",
+      "seedingTime": "300000",
+      "uploads": "50",
+      "uploaded": "50000GB",
+      "bonus": "1000000",
+      "privilege": "首次升级至此等级时将获得3个永久邀请。"
+    }
+  ],
   "searchEntry": [{
       "name": "全站",
       "enabled": true
@@ -161,6 +249,19 @@
         "seedingSize": {
           "selector": ["b:first"],
           "filters": ["$(query[0].nextSibling).text().trim().match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==2)?(query[0]).sizeToNumber():0"]
+        }
+      }
+    },
+    "levelExtendInfo": {
+      "page": "/classes.php",
+      "fields": {
+        "downloads": {
+          "selector": ["#9 td:eq(1) li:eq(1)"],
+          "filters": ["parseInt(query.text().trim().split('：')[1].split('/')[0])"]
+        },
+        "seedingTime": {
+          "selector": ["#9 td:eq(1) li:eq(2)"],
+          "filters": ["parseFloat(query.text().trim().split('：')[1].split('/')[0])"]
         }
       }
     },

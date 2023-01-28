@@ -209,6 +209,7 @@
         "ratio": "分享率",
         "seeding": "做种数",
         "seedingSize": "做种体积",
+        "seedingTime": "做种时间",
         "bonus": "魔力值",
         "seedingPoints": "做种积分",
         "bonusPerHour": "时魔",
@@ -218,6 +219,7 @@
         "uploaded": "上传量",
         "downloaded":"下载量",
         "uploads": "发布",
+        "downloads": "完成",
         "trueDownloaded": "真实下载",
         "classPoints": "等级积分",
         "alternative": "择一"
