@@ -657,7 +657,10 @@ export default Vue.extend({
             for (var levelRequirement of site.levelRequirements) {
               let nextLevel = this.calculateNextLeve(user, levelRequirement);
               if (nextLevel) {
-                user.nextLevels = [ nextLevel ];
+                if (user.nextLevels.length) {
+                  continue
+                }
+                user.nextLevels.push(nextLevel);
               } else {
                 user.nextLevels = []
               }
