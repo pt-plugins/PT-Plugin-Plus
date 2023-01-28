@@ -657,8 +657,9 @@ export default Vue.extend({
             for (var levelRequirement of site.levelRequirements) {
               let nextLevel = this.calculateNextLeve(user, levelRequirement);
               if (nextLevel) {
-                user.nextLevels.push(nextLevel);
-                break;
+                user.nextLevels = [ nextLevel ];
+              } else {
+                user.nextLevels = []
               }
             }
           }
@@ -676,6 +677,10 @@ export default Vue.extend({
 
       let downloaded = user.downloaded ?? 0;
       let uploaded = user.uploaded ?? 0;
+      
+      if (user.levelName == levelRequirement.name) {
+        return undefined;
+      }
 
       if (levelRequirement.interval && user.joinDateTime) {
         let weeks = levelRequirement.interval as number;
