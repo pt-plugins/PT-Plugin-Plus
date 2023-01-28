@@ -1,0 +1,110 @@
+{
+  "name": "FSM",
+  "timezoneOffset": "+0800",
+  "description": "飞天拉面神教 - FSM",
+  "url": "https://nextpt.net/",
+  "tags": [ "成人" ],
+  "schema": "Common",
+  "host": "nextpt.net",
+  "plugins": [
+    {
+      "name": "种子详情页面",
+      "pages": [ "/Torrents/details" ],
+      "scripts": [ "/schemas/NexusPHP/common.js", "/schemas/Common/details.js" ]
+    },
+    {
+      "name": "种子列表",
+      "pages": [ "/Torrents", "/torrents-search.php" ],
+      "scripts": [ "/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js" ]
+    }
+  ],
+  "searchEntryConfig": {
+    "skipIMDbId": true,
+    "page": "/Torrents?type=0&systematics=0&keyword=$key$",
+    "loggedRegex": "container-fluid",
+    "resultType": "html",
+    "resultSelector": "table",
+    "fieldIndex": {
+      "category": 0,
+      "title": 2,
+      "link": 2,
+      "url": 3,
+      "comments": 4,
+      "time": 5,
+      "size": 6,
+      "seeders": 7,
+      "leechers": 8,
+      "completed": 9
+    },
+    "fieldSelector": {
+      "title": {
+        "selector": [ "a[href*='/Torrents/details']" ],
+        "filters": [ "query" ]
+      },
+      "url": {
+        "selector": [ "a[href*='/Torrents/download?passkey=']" ],
+        "filters": [ "query.attr('href')", "'https://nextpt.net'+query" ]
+      },
+      "progress": {
+        "selector": [ ".progress-bar.progress-bar-success", ".progress-bar.progress-bar-info", ".progress-bar.progress-bar-danger", "" ],
+        "switchFilters": [
+          [ "100" ],
+          [ "query.prev().attr('style').replace('width: ','').replace('%;','')" ],
+          [ "0" ],
+          [ "null" ]
+        ]
+      },
+      "status": {
+        "selector": [ ".progress-bar.progress-bar-success", ".progress-bar.progress-bar-info", ".progress-bar.progress-bar-danger" ],
+        "switchFilters": [
+          [ "2" ],
+          [ "1" ],
+          [ "3" ]
+        ]
+      }
+    }
+  },
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/Rules",
+      "fields": {
+        "isLogged": {
+          "selector": [ "a.adminUser" ],
+          "filters": [ "query.length>0" ]
+        },
+        "name": {
+          "selector": [ "ul.navbar-right a.dropdown-toggle" ],
+          "filters": [ "query.text().trim().replace('欢迎你，','')" ]
+        },
+        "id": {
+          "selector": [ "ul.navbar-right a.dropdown-toggle" ],
+          "attribute": "href",
+          "filters": [ "query ? query.getQueryString('uid'):''" ]
+        },
+        "messageCount": {
+          "selector": [ "a[href='/Mail']" ],
+          "filters": [ "query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0" ]
+        },
+        "uploaded": {
+          "selector": [ "text:has(text.uploadG):contains('上传')" ],
+          "filters": [ "query.text().replace(/,/g,'').replace('上传量：','').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null" ]
+        },
+        "downloaded": {
+          "selector": [ "text:has(text.downloadR):contains('下载')" ],
+          "filters": [ "query.text().replace(/,/g,'').replace('下载量：','').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null" ]
+        },
+        "seeding": {
+          "selector": [ "text.pointB:contains('当前活动')" ],
+          "filters": [ "query[0].nextSibling.textContent.replace('：', '')" ]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/Users/profile?uid=$user.id$",
+      "fields": {
+        "joinTime": {},
+        "levelName": {}
+      }
+    }
+  }
+}
