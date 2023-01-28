@@ -46,11 +46,10 @@
         "filters": [ "query.attr('href')", "'https://nextpt.net'+query" ]
       },
       "progress": {
-        "selector": [ ".progress-bar.progress-bar-success", ".progress-bar.progress-bar-info", ".progress-bar.progress-bar-danger", "" ],
+        "selector": [ ".progress-bar.progress-bar-success", ".progress-bar.progress-bar-info,.progress-bar.progress-bar-danger", "" ],
         "switchFilters": [
           [ "100" ],
-          [ "query.prev().attr('style').replace('width: ','').replace('%;','')" ],
-          [ "0" ],
+          [ "query.attr('style').replace('width: ','').replace('%;','')" ],
           [ "null" ]
         ]
       },
