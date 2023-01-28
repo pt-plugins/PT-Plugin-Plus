@@ -159,7 +159,7 @@
                         <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uploaded')">expand_less</v-icon>{{ levelRequirement.uploaded }};
                       </template>
                       <template v-if="levelRequirement.uploads">
-                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uploads')">file_upload</v-icon>{{ levelRequirement.uploaded }};
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uploads')">file_upload</v-icon>{{ levelRequirement.uploads }};
                       </template>
                       <template v-if="levelRequirement.downloaded">
                         <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloaded')">expand_more</v-icon>{{ levelRequirement.downloaded }};
