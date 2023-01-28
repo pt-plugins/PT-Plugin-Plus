@@ -262,6 +262,10 @@
         "seedingTime": {
           "selector": ["#9 td:eq(1) li:eq(2)"],
           "filters": ["parseFloat(query.text().trim().split('：')[1].split('/')[0])"]
+        },
+        "uploads": {
+          "selector": ["#9 td:eq(1) li:eq(4)"],
+          "filters": ["parseInt(query.text().trim().split('：')[1].split('/')[0])"]
         }
       }
     },
