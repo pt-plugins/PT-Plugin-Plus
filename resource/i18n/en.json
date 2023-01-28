@@ -215,6 +215,7 @@
         "seedingSize": "Seeding size",
         "bonus": "Bonus",
         "seedingPoints": "Seeding Points",
+        "seedingTime": "Seeding Time",
         "bonusPerHour": "Bonus per hour",
         "joinTime": "Join time",
         "lastUpdateTime": "Update at",
@@ -223,6 +224,7 @@
         "uploaded": "Uploaded",
         "downloaded":"Downloaded",
         "uploads": "Uploaded",
+        "downloads": "Downloaded",
         "trueDownloaded": "True Downloaded",
         "classPoints": "Class Points",
         "alternative": "Alternative"

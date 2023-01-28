@@ -132,8 +132,17 @@
                             nextLevel.seedingPoints | formatNumber
                         }}&nbsp;
                       </template>
+                      <template v-if="nextLevel.seedingTime">
+                        <v-icon small color="green darken-4">timer</v-icon>{{
+                            nextLevel.seedingTime | formatNumber
+                        }}&nbsp;
+                      </template>
                       <template v-if="nextLevel.uploads">
                         <v-icon small color="green darken-4">file_upload</v-icon>{{ nextLevel.uploads
+                        }}&nbsp;
+                      </template>
+                      <template v-if="nextLevel.downloads">
+                        <v-icon small color="red darken-4">file_download</v-icon>{{ nextLevel.downloads
                         }}&nbsp;
                       </template>
                       <template v-if="nextLevel.classPoints">
@@ -168,6 +177,9 @@
                         {{ $t("home.levelRequirement.trueDownloaded") }}
                         {{ levelRequirement.trueDownloaded }};
                       </template>
+                      <template v-if="levelRequirement.downloads">
+                        <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ levelRequirement.downloads }};
+                      </template>
                       <template v-if="levelRequirement.ratio">
                         <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.ratio')">balance</v-icon>{{ levelRequirement.ratio }};
                       </template>
@@ -178,6 +190,11 @@
                       </template>
                       <template v-if="levelRequirement.seedingPoints">
                         <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.seedingPoints
+                            | formatInteger
+                        }};
+                      </template>
+                      <template v-if="levelRequirement.seedingTime">
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingTime')">timer</v-icon>{{ levelRequirement.seedingTime
                             | formatInteger
                         }};
                       </template>
@@ -204,6 +221,9 @@
                           {{ $t("home.levelRequirement.trueDownloaded") }}
                           {{ levelRequirement.alternative.trueDownloaded }};
                         </template>
+                        <template v-if="levelRequirement.alternative.downloads">
+                          <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ levelRequirement.alternative.downloads }};
+                        </template>
                         <template v-if="levelRequirement.alternative.ratio">
                           <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.ratio')">balance</v-icon>{{ levelRequirement.alternative.ratio }};
                         </template>
@@ -214,6 +234,11 @@
                         </template>
                         <template v-if="levelRequirement.alternative.seedingPoints">
                           <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.alternative.seedingPoints
+                              | formatInteger
+                          }};
+                        </template>
+                        <template v-if="levelRequirement.alternative.seedingTime">
+                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingTime')">timer</v-icon>{{ levelRequirement.alternative.seedingTime
                               | formatInteger
                           }};
                         </template>
@@ -708,11 +733,29 @@ export default Vue.extend({
         }
       }
 
+      if (levelRequirement.seedingTime) {
+        let userSeedingTime = user.seedingTime as number;
+        let requiredSeedingTime = levelRequirement.seedingTime as number;
+        if (userSeedingTime < requiredSeedingTime) {
+          nextLevel.seedingTime = requiredSeedingTime - userSeedingTime;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
       if (levelRequirement.uploads) {
         let userUploads = user.uploads ? user.uploads as number : 0;
         let requiredUploads = levelRequirement.uploads as number;
         if (userUploads < requiredUploads) {
           nextLevel.uploads = requiredUploads - userUploads;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.downloads) {
+        let userDownloads = user.downloads ? user.downloads as number : 0;
+        let requiredDownloads = levelRequirement.downloads as number;
+        if (userDownloads < requiredDownloads) {
+          nextLevel.downloads = requiredDownloads - userDownloads;
           nextLevel.level = levelRequirement.level;
         }
       }
