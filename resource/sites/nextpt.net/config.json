@@ -14,7 +14,7 @@
     },
     {
       "name": "种子列表",
-      "pages": [ "/Torrents", "/torrents-search.php" ],
+      "pages": [ "/Torrents$" ],
       "scripts": [ "/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js" ]
     }
   ],
@@ -103,6 +103,27 @@
       "fields": {
         "joinTime": {},
         "levelName": {}
+      }
+    },
+    "common": {
+      "page": "/Torrents",
+      "fields": {
+        "downloadURL": {
+          "selector": [ "a[href*='/Torrents/download']" ],
+          "filters": [ "query.attr('href')" ]
+        },
+        "size": {
+          "selector": [ "div.visible-xs:contains('种子大小') + div" ],
+          "filters": [ "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0" ]
+        },
+        "downloadURLs": {
+          "selector": [ "a[href*='/Torrents/download']" ],
+          "filters": [ "query.toArray()" ]
+        },
+        "confirmSize": {
+          "selector": [ "table.table.table-bordered > tbody td.center.tdCenter > div:contains('B')" ],
+          "filters": [ "query" ]
+        }
       }
     }
   }
