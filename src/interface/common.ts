@@ -597,7 +597,7 @@ export interface UserInfo {
   // 等级积分
   classPoints?: number;
   // H&R未达标
-  unsatisfieds?: number;
+  unsatisfieds?: string | number;
   // H&R预警
   prewarn?: number;
   // 最后更新时间

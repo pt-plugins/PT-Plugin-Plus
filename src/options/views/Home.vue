@@ -270,7 +270,7 @@
           </td>
           <td v-if="showColumn('user.seeding')" class="number">
             <div>{{ props.item.user.seeding }}</div>
-            <div v-if="showHnR && props.item.user.unsatisfieds && props.item.user.unsatisfieds > 0" :title="$t('home.headers.unsatisfieds')" ><v-icon small color="yellow darken-4">warning</v-icon>{{props.item.user.unsatisfieds}}</div>
+            <div v-if="showHnR && props.item.user.unsatisfieds && props.item.user.unsatisfieds != 0" :title="$t('home.headers.unsatisfieds')" ><v-icon small color="yellow darken-4">warning</v-icon>{{props.item.user.unsatisfieds}}</div>
           </td>
           <td v-if="showColumn('user.seedingSize')" class="number">
             {{ props.item.user.seedingSize | formatSize }}
