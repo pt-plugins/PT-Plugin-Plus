@@ -110,6 +110,11 @@
         "joinTime": {
           "selector": "div.button-holder h5:contains('Since: ')",
           "filters": ["query.text().trim().replace('Since: ', '').replace('Member ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
+        "unsatisfiedsPage": {
+          "selector": ["a[href$='/unsatisfieds']:first"],
+          "attribute": "href",
+          "filters": ["query ? new URL(query).pathname : null"]
         }
       }
     },
@@ -120,6 +125,16 @@
         "bonusPerHour": {
           "selector": ["div.panel-body > div.hd-table > div:first > div:first"],
           "filters": ["parseFloat(query.text())"]
+        }
+      }
+    },
+    "hnrExtendInfo": {
+      "prerequisites": "!(!user.unsatisfiedsPage)",
+      "page": "$user.unsatisfiedsPage$",
+      "fields": {
+        "unsatisfieds": {
+          "selector": ["ul.pagination li a:not([rel])"],
+          "filters": ["query.length > 1 ? query.length * 50 + 1 : $('tr[class=\"userFiltered\"][hr=\"0\"][immune=\"0\"]').length"]
         }
       }
     },
