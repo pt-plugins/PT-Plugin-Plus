@@ -1,0 +1,286 @@
+{
+  "name": "CyanBug",
+  "description": "大青虫们在此聚集",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "host": "cyanbug.net",
+  "url": "https://cyanbug.net",
+  "icon": "https://cyanbug.net/favicon.ico",
+  "ver": "0.0.1",
+  "tags": [
+    "综合",
+    "影视"
+  ],
+  "collaborator": [
+    "jinglekang"
+  ],
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "Power User",
+      "interval": "4",
+      "downloaded": "50GB",
+      "ratio": "1.05",
+      "seedingPoints": "40000",
+      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以请求续种；可以发送邀请；可以查看排行榜；可以删除自己上传的字幕。"
+    },
+    {
+      "level": "2",
+      "name": "Elite User",
+      "interval": "8",
+      "downloaded": "120GB",
+      "ratio": "1.55",
+      "seedingPoints": "80000",
+      "privilege": "Elite User及以上用户封存账号后不会被删除。"
+    },
+    {
+      "level": "3",
+      "name": "Crazy User",
+      "interval": "15",
+      "downloaded": "300GB",
+      "ratio": "2.05",
+      "seedingPoints": "150000",
+      "privilege": "得到两个邀请名额; 可以在做种/下载/发布的时候选择匿名模式。"
+    },
+    {
+      "level": "4",
+      "name": "Insane User",
+      "interval": "25",
+      "downloaded": "500GB",
+      "ratio": "2.55",
+      "seedingPoints": "250000",
+      "privilege": "可以查看普通日志。"
+    },
+    {
+      "level": "5",
+      "name": "Veteran User",
+      "interval": "40",
+      "downloaded": "750GB",
+      "ratio": "3.05",
+      "seedingPoints": "400000",
+      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史；Veteran User及以上用户会永远保留账号。"
+    },
+    {
+      "level": "6",
+      "name": "Extreme User",
+      "interval": "60",
+      "downloaded": "1TB",
+      "ratio": "3.55",
+      "seedingPoints": "600000",
+      "privilege": "可可以更新过期的外部信息；可以查看Extreme User论坛。"
+    },
+    {
+      "level": "7",
+      "name": "Ultimate User",
+      "interval": "80",
+      "downloaded": "1.5TB",
+      "ratio": "4.05",
+      "seedingPoints": "800000",
+      "privilege": "得到五个邀请名额。"
+    },
+    {
+      "level": "8",
+      "name": "Nexus Master",
+      "interval": "100",
+      "downloaded": "3TB",
+      "ratio": "4.55",
+      "seedingPoints": "1000000",
+      "privilege": "得到十个邀请名额。"
+    }
+  ],
+  "securityKeyFields": [
+    "passkey"
+  ],
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "queryString": "search=$key$&notnewword=1",
+    "area": [
+      {
+        "name": "标题",
+        "appendQueryString": "&search_area=0"
+      },
+      {
+        "name": "简介",
+        "appendQueryString": "&search_area=1"
+      },
+      {
+        "name": "IMDB",
+        "keyAutoMatch": "^(tt\\d+)$",
+        "appendQueryString": "&search_area=4"
+      }
+    ],
+    "resultType": "html",
+    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+    "resultSelector": "table.torrents:last"
+  },
+  "searchEntry": [
+    {
+      "name": "全部",
+      "enabled": true
+    }
+  ],
+  "checker": {
+    "isLogin": {
+      "page": "/usercp.php",
+      "contains": "logout.php"
+    }
+  },
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": [
+            "a[href*='userdetails.php'][class*='Name']:first",
+            "a[href*='userdetails.php']:first"
+          ],
+          "attribute": "href",
+          "filters": [
+            "query ? query.getQueryString('id'):''"
+          ]
+        },
+        "name": {
+          "selector": [
+            "a[href*='userdetails.php'][class*='Name']:first",
+            "a[href*='userdetails.php']:first"
+          ],
+          "filters": [
+            "query && query.attr('href').getQueryString('id') > 0 ? query.text(): ''"
+          ]
+        },
+        "isLogged": {
+          "selector": [
+            "a[href*='usercp.php']"
+          ],
+          "filters": [
+            "query.length>0"
+          ]
+        },
+        "messageCount": {
+          "selector": [
+            "td[style*='background: red'] a[href*='messages.php']"
+          ],
+          "filters": [
+            "query.text().match(/(\\d+)/)",
+            "(query && query.length>=2)?parseInt(query[1]):0"
+          ]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": [
+            "td.rowhead:contains('传输') + td",
+            "td.rowhead:contains('傳送') + td",
+            "td.rowhead:contains('Transfers') + td",
+            "td.rowfollow:contains('分享率')"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/(上[传傳]量|Uploaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length==3)?(query[2]).sizeToNumber():0"
+          ]
+        },
+        "downloaded": {
+          "selector": [
+            "td.rowhead:contains('传输') + td",
+            "td.rowhead:contains('傳送') + td",
+            "td.rowhead:contains('Transfers') + td",
+            "td.rowfollow:contains('分享率')"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/(下[载載]量|Downloaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length==3)?(query[2]).sizeToNumber():0"
+          ]
+        },
+        "levelName": {
+          "selector": [
+            "td.rowhead:contains('等级')",
+            "td.rowhead:contains('等級')",
+            "td.rowhead:contains('Class')"
+          ],
+          "filters": [
+            "query.next().find('img').attr('title')"
+          ]
+        },
+        "bonus": {
+          "selector": [
+            "td.rowhead:contains('魔力') + td",
+            "td.rowhead:contains('Karma'):contains('Points') + td",
+            "td.rowhead:contains('麦粒') + td",
+            "td.rowfollow:contains('魔力值')",
+            "td.rowhead:contains('bonus') + td"
+          ],
+          "filters": [
+            "query.is(\":contains('魔力值:')\")||query.is(\":contains('Bonus Points:')\")?query.text().replace(/,/g,'').match(/(?:魔力值|Bonus Points).+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')",
+            "parseFloat(query)"
+          ]
+        },
+        "seedingPoints": {
+          "selector": [
+            "td.rowhead:contains('做种积分') + td",
+            "td.rowhead:contains('Seeding Points') + td",
+            "td.rowhead:contains('做種積分') + td",
+            "td.rowhead:contains('保种积分') + td",
+            "td.rowfollow:contains('做种积分')",
+            "td.rowfollow:contains('Seeding Points')",
+            "td.rowfollow:contains('做種積分')"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'')",
+            "query.includes('做种积分') || query.includes('做種積分') || query.includes('Seeding Points') ? query.match(/(做种积分|做種積分|Seeding Points).+?[\\d.]+/g)[0] : query",
+            "query ? parseFloat(query.match(/[\\d.]+/)[0]) : null"
+          ]
+        },
+        "joinTime": {
+          "selector": [
+            "td.rowhead:contains('加入日期')",
+            "td.rowhead:contains('Join'):contains('date')"
+          ],
+          "filters": [
+            "query.next().text().split(' (')[0].trim()",
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        }
+      }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": [
+            "div:contains('你当前每小时能获取'):last",
+            "div:contains('You are currently getting'):last",
+            "div:contains('你當前每小時能獲取'):last"
+          ],
+          "filters": [
+            "parseFloat(query.text().match(/[\\d.]+/)[0])"
+          ]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query.text()"
+          ]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)上一页/g)",
+            "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
+            "(query != 0) ? query.sizeToNumber() : 0"
+          ]
+        }
+      }
+    }
+  }
+}
