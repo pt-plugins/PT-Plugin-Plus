@@ -208,7 +208,15 @@ export default Vue.extend({
         if (this.initData.digest === undefined) {
           this.initData.digest = false;
         }
-        this.option = Object.assign(this.option, this.initData);
+        this.option = Object.assign({
+          authCode: "",
+          address: "",
+          name: "",
+          loginName: "",
+          loginPwd: "",
+          type: EBackupServerType.OWSS,
+          digest: false
+        }, this.initData);
         this.option.type = this.type;
       }
     }
