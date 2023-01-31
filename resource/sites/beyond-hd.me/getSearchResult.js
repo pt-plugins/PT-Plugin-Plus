@@ -10,7 +10,6 @@
       options.isLogged = true;
 
       this.haveData = true;
-      this.site = options.site;
     }
 
     /**
@@ -159,8 +158,6 @@
 
           // 获取下载链接
           let url = row.find("a[href*='/download/']").attr("href");
-          console.log("index", index);
-          console.log("url.length", url.length);
           if (url.length == 0) {
             continue;
           }
@@ -210,7 +207,7 @@
                 : cells.eq(fieldIndex.comments).text().trim() || 0,
             site: site,
             tags: Searcher.getRowTags(site, row),
-            entryName: options.entry.name.trim(),
+            entryName: options.entry.name,
             category:
               fieldIndex.category == -1
                 ? null
@@ -241,6 +238,21 @@
       return "";
     }
     
+    /**
+     * 获取分类
+     * @param {*} cell 当前列
+     */
+    getCategory(cell) {
+      let result = {
+        name: cell.find("i:first").attr("data-original-title"),
+        link: cell.find("a:first").attr("href")
+      };
+      if (result.name) {
+        result.name = result.name.replace(" torrent", "");
+      }
+      return result;
+    }
+    
     getFieldValue(row, cells, fieldIndex, fieldName, returnCell) {
       let parent = row;
       let cell = null;
@@ -254,7 +266,7 @@
         parent = cell || row;
       }
 
-      let result = Searcher.getFieldValue(this.site, parent, fieldName);
+      let result = Searcher.getFieldValue(site, parent, fieldName);
 
       if (!result && cell) {
         if (returnCell) {
@@ -263,20 +275,6 @@
         result = cell.text().trim();
       }
       if(result == "")return null;
-      return result;
-    }
-    /**
-     * 获取分类
-     * @param {*} cell 当前列
-     */
-    getCategory(cell) {
-      let result = {
-        name: cell.find("i:first").attr("data-original-title"),
-        link: cell.find("a:first").attr("href")
-      };
-      if (result.name) {
-        result.name = result.name.replace(" torrent", "");
-      }
       return result;
     }
   }
