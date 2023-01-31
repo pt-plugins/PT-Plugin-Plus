@@ -8,6 +8,11 @@
   "schema": "UNIT3D",
   "host": "beyond-hd.me",
   "collaborator": "lengmianxia",
+  "plugins": [{
+    "name": "个人种子列表页面",
+    "pages": ["^/.*?/(uploads|downloads|seeds|active|torrents|unsatisfieds)"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/UNIT3D/torrents.js"]
+  }],
   "searchEntryConfig": {
     "page": "/torrents",
     "resultType": "html",
