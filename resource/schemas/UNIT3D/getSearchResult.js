@@ -137,9 +137,8 @@
           if (imdbId.length > 0)
           {
             imdbId = imdbId.text().replace(/\D/g,'');
-            console.log(imdbId)
             if (imdbId.length < 7)
-              imdbId.padStart(7, '0');
+              imdbId = imdbId.padStart(7, '0');
       
             imdbId = "tt" + imdbId;
           }

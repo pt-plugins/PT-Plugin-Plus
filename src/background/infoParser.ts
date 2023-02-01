@@ -214,7 +214,7 @@ export class InfoParser {
     if (Number(imdbId))
     {
       if (imdbId.length < 7)
-        imdbId.padStart(7, '0');
+        imdbId = imdbId.padStart(7, '0');
       
       imdbId = "tt" + imdbId;
     }
