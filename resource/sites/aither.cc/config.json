@@ -1,12 +1,53 @@
 {
-    "name": "Aither",
-    "timezoneOffset": "+0800",
-    "schema": "UNIT3D",
-    "url": "https://aither.cc/",
-    "description": "Aither",
-    "tags": [
-        "综合"
-    ],
-    "host": "aither.cc",
-    "collaborator": "MewX"
+  "name": "Aither",
+  "timezoneOffset": "+0800",
+  "schema": "UNIT3D",
+  "url": "https://aither.cc/",
+  "description": "Aither",
+  "tags": [
+    "综合"
+  ],
+  "host": "aither.cc",
+  "collaborator": "MewX",
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "Harmonia",
+      "interval": "1",
+      "uploaded": "500Gib",
+      "privilege": "Unlimited DL slots"
+    },
+    {
+      "level": "2",
+      "name": "Zeus",
+      "interval": "2",
+      "uploaded": "1TiB"
+    },
+    {
+      "level": "3",
+      "name": "Helios",
+      "interval": "3",
+      "uploaded": "5TiB"
+    },
+    {
+      "level": "4",
+      "name": "Prometheus",
+      "interval": "4",
+      "uploaded": "10TiB"
+    },
+    {
+      "level": "5",
+      "name": "Oceanus",
+      "interval": "4",
+      "uploaded": "20TiB",
+      "privilege": "Mod Q skip, Special FL, Invite Forum, Sparkly name"
+    },
+    {
+      "level": "6",
+      "name": "Gigantes",
+      "interval": "12",
+      "uploaded": "40TiB",
+      "privilege": "Mod Q skip, Special FL, Invite Forum, Sparkly name, HnR immunity"
+    }
+  ]
 }
