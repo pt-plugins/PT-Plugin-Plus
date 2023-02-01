@@ -13,31 +13,31 @@
     "level": "1", 
     "name": "BluUser",
     "interval": "1",
-    "uploaded": "1TB",
+    "uploaded": "1TiB",
     "privilege": "5 download slots"
   },{
     "level": "2", 
     "name": "BluMaster",
     "interval": "2",
-    "uploaded": "5TB",
+    "uploaded": "5TiB",
     "privilege": "10 download slots"
   },{
     "level": "3", 
     "name": "BluExtremist",
     "interval": "3",
-    "uploaded": "20TB",
+    "uploaded": "20TiB",
     "privilege": "Automatic torrent approvals; Invite forums; 15 download slots"
   },{
     "level": "4", 
     "name": "BluLegend",
     "interval": "6",
-    "uploaded": "50TB",
+    "uploaded": "50TiB",
     "privilege": "20 download slots"
   },{
     "level": "5", 
     "name": "Blutopian",
     "interval": "12",
-    "uploaded": "100TB",
+    "uploaded": "100TiB",
     "privilege": "Immunity to automated HnR warnings; Global Freeleech; 25 download slots"
   }],
   "collaborator": ["bimzcy", "lengmianxia", "bright"],
