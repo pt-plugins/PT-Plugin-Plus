@@ -13,28 +13,32 @@
       "name": "Power User",
       "interval": "2",
       "uploaded": "200GB",
-      "ratio": "1.1"
+      "ratio": "1.1",
+      "privilege": "Increased Points: 3%, Minimum Seeding Time: 8 days"
     },
     {
       "level": 2,
       "name": "Super User",
       "interval": "12",
       "uploaded": "1TB",
-      "ratio": "2.0"
+      "ratio": "2.0",
+      "privilege": "Increased Points: 5%, Minimum Seeding Time: 7 days"
     },
     {
       "level": 3,
       "name": "Extreme User",
       "interval": "24",
       "uploaded": "10TB",
-      "ratio": "5.0"
+      "ratio": "5.0",
+      "privilege": "Increased Points: 6%, Minimum Seeding Time: 6 days"
     },
     {
       "level": 4,
       "name": "TL GOD",
       "interval": "52",
       "uploaded": "50TB",
-      "ratio": "8.0"
+      "ratio": "8.0",
+      "privilege": "Increased Points: 8%, Minimum Seeding Time: 4 days"
     }
   ],
   "plugins": [{
