@@ -134,7 +134,7 @@
       "fields": {
         "unsatisfieds": {
           "selector": ["ul.pagination li a:not([rel])"],
-          "filters": ["query.length > 1 ? query.length * 50 + 1 : $('tr[class=\"userFiltered\"][hr=\"0\"][immune=\"0\"]').length"]
+          "filters": ["query.length > 0 ? query.length * 50 + '+' : $('tr[class=\"userFiltered\"][hr=\"0\"][immune=\"0\"]').length"]
         }
       }
     },
