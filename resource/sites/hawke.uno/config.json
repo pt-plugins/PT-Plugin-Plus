@@ -16,12 +16,23 @@
       "selector": "i.fal.fa-gift.text-orange"
     }],
     "selectors": {
-      "userBaseInfo": {
+      "userExtendInfo": {
         "merge": true,
+        "page": "/users/$user.name$",
         "fields": {
+          "levelName": {
+            "selector": "span[data-original-title='Class'] span"
+          },
           "seeding": {
-              "selector": ["div.ratio-bar i.fa-leaf"],
-              "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+/)", "(query && query.length>=1)?parseFloat(query[0]):0"]
+            "selector": ".user-torrent-stats > div:nth(2) > div"
+          },
+          "uploaded": {
+            "selector": [".user-info td span[data-original-title='Recorded Upload']"],
+            "filters": ["query.text().trim().replace(/,|\\s|\\n/g,'').sizeToNumber()"]
+          },
+          "downloaded": {
+            "selector": [".user-info td span[data-original-title='Recorded Download']"],
+            "filters": ["query.text().trim().replace(/,|\\s|\\n/g,'').sizeToNumber()"]
           }
         }
       }
