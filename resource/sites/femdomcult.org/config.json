@@ -1,0 +1,103 @@
+{
+  "name": "Femdomcult",
+  "timezoneOffset": "-1100",
+  "description": "成人",
+  "url": "https://femdomcult.org/",
+  "icon": "https://femdomcult.org/favicon.ico",
+  "tags": [
+    "成人"
+  ],
+  "schema": "GazelleJSONAPI",
+  "host": "femdomcult.org",
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "",
+    "interval": "1",
+    "trueDownloaded": "5GB",
+    "ratio": "0",
+    "privilege": ""
+  },{
+    "level": "2", 
+    "name": "",
+    "interval": "2",
+    "trueDownloaded": "10GB",
+    "ratio": "0.1",
+    "privilege": ""
+  },{
+    "level": "3", 
+    "name": "",
+    "interval": "3",
+    "trueDownloaded": "20GB",
+    "ratio": "0.15",
+    "privilege": ""
+  },{
+    "level": "4", 
+    "name": "",
+    "interval": "4",
+    "trueDownloaded": "30GB",
+    "ratio": "0.2",
+    "privilege": ""
+  },{
+    "level": "5", 
+    "name": "",
+    "interval": "5",
+    "trueDownloaded": "40GB",
+    "ratio": "0.3",
+    "privilege": ""
+  },{
+    "level": "6", 
+    "name": "",
+    "interval": "6",
+    "trueDownloaded": "50GB",
+    "ratio": "0.4",
+    "privilege": ""
+  },{
+    "level": "7", 
+    "name": "Guru",
+    "interval": "7",
+    "trueDownloaded": "60GB",
+    "ratio": "0.5",
+    "privilege": ""
+    }
+  ],
+  "collaborator": [
+    "RichardHu"
+  ],
+  "searchEntryConfig": {
+    "page": "/ajax.php",
+    "resultType": "json",
+    "parseScriptFile": "getSearchResult.js",
+    "asyncParse": true,
+    "queryString": "action=browse&searchstr=$key$"
+  },
+  "searchEntry": [{
+    "name": "全部",
+    "enabled": true
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/ajax.php?action=index",
+      "dataType": "json",
+      "fields": {
+        "id": {
+          "selector": ["response.id"]
+        },
+        "name": {
+          "selector": ["response.username"]
+        },
+        "uploaded": {
+          "selector": ["response.userstats.uploaded"]
+        },
+        "downloaded": {
+          "selector": ["response.userstats.downloaded"]
+        },
+        "ratio": {
+          "selector": ["response.userstats.ratio"]
+        },
+        "levelName": {
+          "selector": ["response.userstats.class"]
+        }
+      }
+    }
+  }
+}
