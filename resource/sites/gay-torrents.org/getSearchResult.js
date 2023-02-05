@@ -41,7 +41,7 @@
             link: `${site.url}${title_elem.attr('href')}`,
             url: `${site.url}${row.find('.downloadLink').first().attr('href')}&secure=1`,
             size: row.find('.size').first().text(),
-            time: row.find('.date').first().text().replace(/\s*on\s*/, ''),
+            time: row.find('.date').first().text().replace(/on\s*(\d{2}:\d{2}(?::\d{2})?)\s*(\d{1,2})-(\w{3,4})-(\d{4,})/, '$4 $3 $2 $1'),
             author: row.find('.uploader > span').first().text(),
             seeders: row.find('.downloadPeers > div:first-child > a').first().text(),
             leechers: row.find('.downloadPeers > div:last-child > a').first().text(),
