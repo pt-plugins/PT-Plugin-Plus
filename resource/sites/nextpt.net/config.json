@@ -76,7 +76,7 @@
           "filters": [ "query.text().trim().replace('欢迎你，','')" ]
         },
         "id": {
-          "selector": [ "ul.navbar-right a.dropdown-toggle" ],
+          "selector": [ "a[href*='/Users/profile']" ],
           "attribute": "href",
           "filters": [ "query ? query.getQueryString('uid'):''" ]
         },
@@ -105,8 +105,14 @@
     "userExtendInfo": {
       "page": "/Users/profile?uid=$user.id$",
       "fields": {
-        "joinTime": {"value": null},
-        "levelName": {"value":"N/A"},
+        "joinTime": {
+          "selector": [ "th:contains('加入时间') + td" ],
+          "filters": [ "dateTime(query.text().trim()).isValid()?dateTime(query.text().trim()).valueOf():query.text().trim()"]
+        },
+        "levelName": {
+          "selector": [ "a[href*='/Users/profile'][class*='User']" ],
+          "filters": [ "query.attr('class').replace(/[^ ]*\\s/,'').replace(/User.*/,'').toUpperCase()"]
+            },
         "seedingSize": {"value":"0"},
         "bonusPerHour": {"value":"0"}
       }
