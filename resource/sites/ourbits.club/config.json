@@ -75,64 +75,64 @@
       "enabled": true
     },
     {
-      "queryString": "cat401=1",
+      "queryString": "cat=401",
       "name": "Movies",
       "enabled": false
     },
     {
-      "queryString": "cat402=1",
+      "queryString": "cat=402",
       "name": "Movies-3D",
       "enabled": false
     },
     {
-      "queryString": "cat419=1",
+      "queryString": "cat=419",
       "name": "Concert",
       "enabled": false
     },
     {
-      "queryString": "cat412=1",
+      "queryString": "cat=412",
       "name": "TV-Episode",
       "enabled": false
     },
     {
-      "queryString": "cat405=1",
+      "queryString": "cat=405",
       "name": "TV-Pack",
       "enabled": false
     },
     {
-      "queryString": "cat413=1",
+      "queryString": "cat=413",
       "name": "TV-Show",
       "enabled": false
     },
     {
-      "queryString": "cat410=1",
+      "queryString": "cat=410",
       "name": "Documentary",
       "enabled": false
     },
     {
-      "queryString": "cat411=1",
+      "queryString": "cat=411",
       "name": "Animation",
       "enabled": false
     },
     {
-      "queryString": "cat415=1",
+      "queryString": "cat=415",
       "name": "Sports",
       "enabled": false
     },
     {
-      "queryString": "cat414=1",
+      "queryString": "cat=414",
       "name": "Music-Video",
       "enabled": false
     },
     {
-      "queryString": "cat416=1",
+      "queryString": "cat=416",
       "name": "Music",
       "enabled": false
     }
   ],
   "categories": [{
     "entry": "*",
-    "result": "&cat$id$=1",
+    "result": "&cat[]=$id$",
     "category": [{
         "id": 401,
         "name": "Movies"
