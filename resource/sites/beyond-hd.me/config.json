@@ -133,8 +133,8 @@
       "page": "$user.unsatisfiedsPage$",
       "fields": {
         "unsatisfieds": {
-          "selector": ["ul.pagination li a:not([rel])"],
-          "filters": ["query.length > 0 ? query.length * 50 + '+' : $('tr[class=\"userFiltered\"][hr=\"0\"][immune=\"0\"]').length"]
+          "selector": ["ul.pagination","tr[class='userFiltered'][hr='0'][immune='0']"],
+          "filters": ["query.find('li > a:not([rel])').length > 0 ? query.find('li > a:not([rel])').last().text() * 50 + '+' : query.has('a[href*=\"download\"]').length"]
         }
       }
     },
