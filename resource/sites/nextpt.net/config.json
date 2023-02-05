@@ -95,15 +95,20 @@
         "seeding": {
           "selector": [ "text.pointB:contains('当前活动')" ],
           "filters": [ "query[0].nextSibling.nextSibling.textContent.replace('⇈', '')" ]
+        },
+        "bonus": {
+          "selector": [ "a[href='/Points']" ],
+          "filters": [ "query.text().trim()" ]
         }
       }
     },
     "userExtendInfo": {
       "page": "/Users/profile?uid=$user.id$",
       "fields": {
-        "joinTime": {"value":"N/A"},
+        "joinTime": {"value": null},
         "levelName": {"value":"N/A"},
-        "seedingSize": {"value":"N/A"}
+        "seedingSize": {"value":"0"},
+        "bonusPerHour": {"value":"0"}
       }
     },
     "common": {
