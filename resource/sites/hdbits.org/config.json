@@ -52,7 +52,20 @@
       "name": "IMDB",
       "keyAutoMatch": "^(tt\\d+)$",
       "queryString": "imdb=$key$"
-    }]
+    }],
+    "fieldSelector": {
+      "progress": {
+        "selector": ["span.tag.tag_seeding,span.tag.tag_completed"],
+        "filters": ["query.length > 0?100:null"]
+      },
+      "status": {
+        "selector": ["span.tag.tag_seeding", "span.tag.tag_completed"],
+        "switchFilters": [
+          ["2"],
+          ["255"]
+        ]
+      }
+    }
   },
   "searchEntry": [{
       "name": "全部",
