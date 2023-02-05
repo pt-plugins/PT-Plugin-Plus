@@ -33,6 +33,8 @@
 
       // 用于定位每个字段所列的位置
       let fieldIndex = {
+        progress: 2,
+        status: 2,
         // 时间
         time: 4,
         // 大小
@@ -51,7 +53,7 @@
         category: 0
       };
       if(rows.eq(0).find("td[id*=codec]").length == 0) {
-        fieldIndex = {time: 3,size: 4,seeders: 6,leechers: 7,completed: 5,name: 1,author: 8,category: 0};
+        fieldIndex = {progress: 1,status: 1,time: 3,size: 4,seeders: 6,leechers: 7,completed: 5,name: 1,author: 8,category: 0};
       }
       if (site.url.substr(-1) == "/") {
         site.url = site.url.substr(0, site.url.length - 1);
@@ -117,7 +119,9 @@
           site: site,
           entryName: options.entry.name,
           category: this.getCategory(cells.eq(fieldIndex.category)),
-          tags: Searcher.getRowTags(site, row)
+          tags: Searcher.getRowTags(site, row),
+          progress: Searcher.getFieldValue(site, cells.eq(fieldIndex.progress), "progress"),
+          status: Searcher.getFieldValue(site, cells.eq(fieldIndex.status), "status")
         };
         results.push(data);
       }
