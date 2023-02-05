@@ -94,15 +94,16 @@
         },
         "seeding": {
           "selector": [ "text.pointB:contains('当前活动')" ],
-          "filters": [ "query[0].nextSibling.textContent.replace('：', '')" ]
+          "filters": [ "query[0].nextSibling.nextSibling.textContent.replace('⇈', '')" ]
         }
       }
     },
     "userExtendInfo": {
       "page": "/Users/profile?uid=$user.id$",
       "fields": {
-        "joinTime": {},
-        "levelName": {}
+        "joinTime": {"value":"N/A"},
+        "levelName": {"value":"N/A"},
+        "seedingSize": {"value":"N/A"}
       }
     },
     "common": {
