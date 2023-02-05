@@ -55,14 +55,19 @@
     }],
     "fieldSelector": {
       "progress": {
-        "selector": ["span.tag.tag_seeding,span.tag.tag_completed"],
-        "filters": ["query.length > 0?100:null"]
+        "selector": ["span.tag.tag_seeding, span.tag.tag_completed", "span.tag.tag_leeching", ""],
+        "switchFilters": [
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
       },
       "status": {
-        "selector": ["span.tag.tag_seeding", "span.tag.tag_completed"],
+        "selector": ["span.tag.tag_seeding", "span.tag.tag_completed", "span.tag.tag_leeching"],
         "switchFilters": [
           ["2"],
-          ["255"]
+          ["255"],
+          ["1"]
         ]
       }
     }
