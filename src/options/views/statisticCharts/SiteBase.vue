@@ -507,6 +507,9 @@ export default Vue.extend({
       }
 
       var chart = {
+        chart: {
+          backgroundColor: null
+        },
         series: datas,
         colors: colors,
         // 版权信息
@@ -674,6 +677,9 @@ export default Vue.extend({
 
       let _self = this;
       var chart = {
+        chart: {
+          backgroundColor: null
+        },
         series: datas,
         colors: colors,
         // 版权信息
@@ -802,6 +808,7 @@ export default Vue.extend({
       const chart = {
         series,
         chart: {
+          backgroundColor: null,
           type: 'column'
         },
         credits: {
@@ -975,6 +982,12 @@ export default Vue.extend({
     max-width: 800px;
     height: 240px;
     margin: 0 auto;
+  }
+}
+
+.theme--dark .container {
+  .charts {
+    background-color: #9e9e9e;
   }
 }
 </style>
