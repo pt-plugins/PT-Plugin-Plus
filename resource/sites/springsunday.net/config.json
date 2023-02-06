@@ -200,6 +200,14 @@
       "prerequisites": "!user.bonusPerHour",
       "page": "/mybonus.php",
       "fields": {
+        "seeding": {
+          "selector": ["td:contains('我的数据'):last", "td:contains('我的數據'):last", "td:contains('My Data'):last"],
+          "filters": ["parseFloat(query.parent().children().eq(1).text())"]
+        },
+        "seedingSize": {
+          "selector": ["td:contains('我的数据'):last", "td:contains('我的數據'):last", "td:contains('My Data'):last"],
+          "filters": ["parseFloat(query.parent().children().eq(2).text().replace(/,/g,''))*1024*1024*1024"]
+        },
         "bonusPerHour": {
           "selector": ["td:contains('我的数据'):last", "td:contains('我的數據'):last", "td:contains('My Data'):last"],
           "filters": ["parseFloat(query.parent().children().last().text())"]
