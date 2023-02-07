@@ -202,7 +202,7 @@
       "fields": {
         "seeding": {
           "selector": ["td:contains('我的数据'):last", "td:contains('我的數據'):last", "td:contains('My Data'):last"],
-          "filters": ["parseFloat(query.parent().children().eq(1).text())"]
+          "filters": ["parseInt(query.parent().children().eq(1).text().replace(/,/g,''))"]
         },
         "seedingSize": {
           "selector": ["td:contains('我的数据'):last", "td:contains('我的數據'):last", "td:contains('My Data'):last"],
@@ -210,7 +210,7 @@
         },
         "bonusPerHour": {
           "selector": ["td:contains('我的数据'):last", "td:contains('我的數據'):last", "td:contains('My Data'):last"],
-          "filters": ["parseFloat(query.parent().children().last().text())"]
+          "filters": ["parseFloat(query.parent().children().last().text().replace(/,/g,''))"]
         }
       }
     }
