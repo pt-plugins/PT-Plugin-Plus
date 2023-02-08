@@ -16,7 +16,7 @@
     "downloaded": "50GB",
     "ratio": "1.0",
     "bonus": "3200",
-    "privilege": "请求续种；查看排行榜；查看其它用户的种子历史"
+    "privilege": "请求续种；查看排行榜；查看其它用户的种子历史；查看IMDB/Douban信息；使用魔力值"
   },{
     "level": "2", 
     "name": "Elite User",
@@ -24,7 +24,7 @@
     "downloaded": "150GB",
     "ratio": "1.5",
     "bonus": "19200",
-    "privilege": "查看邀请区"
+    "privilege": "封存账号后不会被删除；查看排行榜，IMDB/Douban Top榜单和论坛的邀请区"
   },{
     "level": "3", 
     "name": "Crazy User",
@@ -32,7 +32,7 @@
     "downloaded": "300GB",
     "ratio": "2.0",
     "bonus": "76800",
-    "privilege": "在做种/下载的时候选择匿名模式"
+    "privilege": "在做种/下载的时候选择匿名模式；使用自动合集功能"
   },{
     "level": "4", 
     "name": "Insane User",
@@ -48,7 +48,7 @@
     "downloaded": "1TB",
     "ratio": "3.5",
     "bonus": "640000",
-    "privilege": "永远保留账号"
+    "privilege": "查看其它用户的评论、帖子历史；永远保留账号"
   },{
     "level": "6", 
     "name": "Extreme User",
@@ -56,7 +56,7 @@
     "downloaded": "2TB",
     "ratio": "4.0",
     "bonus": "1280000",
-    "privilege": "超速后不会受到额外惩罚"
+    "privilege": "上传量按照等级对应的限速计算"
   },{
     "level": "7", 
     "name": "Ultimate User",
