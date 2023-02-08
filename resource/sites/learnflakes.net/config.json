@@ -1,0 +1,116 @@
+{
+  "name": "Learn Flakes",
+  "timezoneOffset": "+0000",
+  "url": "https://learnflakes.net/",
+  "description": "Learnflakes is a private torrent tracker, opened in 2013, which specializes in educational materials on computer and Internet topics",
+  "icon": "https://learnflakes.net/favicon.ico",
+  "tags": ["学习"],
+  "schema": "Common",
+  "collaborator": [
+    "fzlins"
+  ],
+  "host": "learnflakes.net",
+  "searchEntryConfig": {
+    "page": "/",
+    "queryString": "p=torrents&pid=10&keywords=$key$&search_type=name",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "div#plugins > div#content",
+    "dataRowSelector": " > div.torrent-box[id^='torrent_']",
+    "fieldSelector": {
+      "title": {
+        "selector": [ "strong.newIndicator > a" ]
+      },
+      "link": {
+        "selector": [ "strong.newIndicator > a" ],
+        "attribute": "href"
+      },
+      "url": {
+        "selector": [ "div.torrentImages a" ],
+        "attribute": "href"
+      },
+      "time": {
+        "selector": [ ".torrentOwner" ],
+        "filters": ["query.text().substring(9,25)", "dateTime(query, 'DD-MM-YYYY HH:mm').isValid() ? dateTime(query, 'DD-MM-YYYY HH:mm').valueOf() : query"]
+      },
+      "size": {
+        "selector": [ "a[rel='torrent_size']" ],
+        "filters": ["query ? query.text().trim().sizeToNumber() : 0"]
+      },
+      "seeders": {
+        "selector": [ "a[rel='torrent_seeders']" ]
+      },
+      "leechers": {
+        "selector": [ "a[rel='torrent_leechers']" ]
+      },
+      "completed": {
+        "selector": [ "a[rel='times_completed']" ]
+      }
+    }
+  },
+  "torrentTagSelectors": [{
+    "name": "⛔️",
+    "selector": "div.torrent-box"
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "isLogged": {
+          "selector": [ "a#logout" ],
+          "filters": [ "query.length>0" ]
+        },
+        "id": {
+          "selector": ["#sidebar a[href*='profile']"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('memberid'):''"]
+        },
+        "name": {
+          "selector": ["#sidebar a[href*='profile']"]
+        },
+        "messageCount": {
+          "selector": ["a.a.showmenu.new"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "bonus": {
+          "selector": [".showStats a[href*='p=market']"]
+        },
+        "bonusPerHour": {
+          "value": "N/A"
+        },
+        "joinTime": {
+          "value": "N/A"
+        },
+        "seeding": {
+          "value": "N/A"
+        },
+        "seedingSize": {
+          "value": "N/A"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/?p=profile&pid=18&memberid=$user.id$",
+      "fields": {
+        "levelName": {
+          "selector": ".memberCardDetails > span"
+        },
+        "uploaded": {
+          "selector": ["#memberinfoUpDownStats"],
+          "filters": ["query.text().trim().split('\\n\\t\\t\\t')", "(query && query.length > 1) ? (query[0].trim()).sizeToNumber() : 0"]
+        },
+        "downloaded": {
+          "selector": ["#memberinfoUpDownStats"],
+          "filters": ["query.text().trim().split('\\n\\t\\t\\t')", "(query && query.length > 2) ? (query[1].trim()).sizeToNumber() : 0"]
+        },
+        "ratio": {
+          "selector": ["#memberinfoUpDownStats"],
+          "filters": ["query.text().trim().split('\\n\\t\\t\\t')", "(query && query.length > 3) ? parseInt(query[2].trim()) : 0"]
+        }
+      }
+    }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false
+  }
+}
