@@ -8,6 +8,7 @@
     init(options) {
       this.options = options;
       this.sessionId = "";
+      this.synoToken = "";
       if (this.options.address.substr(-1) == "/") {
         this.options.address = this.options.address.substr(0, this.options.address.length - 1);
       }
@@ -18,7 +19,7 @@
      */
     getSessionId() {
       return new Promise((resolve, reject) => {
-        let url = `${this.options.address}/webapi/auth.cgi?api=SYNO.API.Auth&version=3&method=login&account=${encodeURIComponent(this.options.loginName)}&passwd=${encodeURIComponent(this.options.loginPwd)}&session=DownloadStation&format=sid`;
+        let url = `${this.options.address}/webapi/auth.cgi?api=SYNO.API.Auth&version=3&method=login&account=${encodeURIComponent(this.options.loginName)}&passwd=${encodeURIComponent(this.options.loginPwd)}&session=DownloadStation&format=sid&enable_syno_token=yes`;
         $.ajax({
           url,
           timeout: PTBackgroundService.options.connectClientTimeout,
@@ -27,6 +28,7 @@
           console.log(result)
           if (result && result.success) {
             this.sessionId = result.data.sid;
+            this.synoToken = result.data.synotoken
             resolve(this.sessionId)
           } else {
             reject({
@@ -111,6 +113,10 @@
         _sid: this.sessionId  // fxxk， _sid 参数不能放在第一位，不然会直接 101 报错
       }
 
+      let headers = {
+        'X-SYNO-TOKEN': this.synoToken
+      }
+
       // fxxk， 没有 destination 参数也会直接报错
       let savePath = (options.savePath || "") + "";
       if (savePath.substr(-1) === "/") {  // 去除路径最后的 / ，以确保可以正常添加目录信息
@@ -146,7 +152,7 @@
           .then((result) => {
             formData.append("torrent", result, "file.torrent")
 
-            this.addTorrent(formData, options, callback);
+            this.addTorrent(formData, headers, options, callback);
           })
           .catch((result) => {
             callback && callback(result);
@@ -155,9 +161,10 @@
       }
     }
 
-    addTorrent(formData, options, callback) {
+    addTorrent(formData, headers, options, callback) {
       $.ajax({
         url: `${this.options.address}/webapi/entry.cgi`,
+        headers,
         timeout: PTBackgroundService.options.connectClientTimeout,
         type: "POST",
         processData: false,
