@@ -147,10 +147,13 @@
 
         PTBackgroundService.requestMessage({
           action: "getTorrentDataFromURL",
-          data: options.url
+          data: {
+            url: options.url,
+            parseTorrent: true
+          }
         })
           .then((result) => {
-            formData.append("torrent", result, "file.torrent")
+            formData.append("torrent", result.content, `${result.torrent.name}.torrent`)
 
             this.addTorrent(formData, headers, options, callback);
           })
