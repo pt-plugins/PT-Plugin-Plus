@@ -927,7 +927,8 @@ export default class Controller {
               if (options.parseTorrent) {
                 resolve({
                   url,
-                  torrent
+                  torrent,
+                  content: file.content
                 });
               } else {
                 resolve(file.content);
