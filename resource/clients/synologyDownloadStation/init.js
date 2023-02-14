@@ -17,6 +17,7 @@
     /**
      * 获取 SID
      */
+    // FIXME 这个方法已经不止获取SID了，CSRFToken也是在此获得，该考虑换个名字了
     getSessionId() {
       return new Promise((resolve, reject) => {
         let url = `${this.options.address}/webapi/auth.cgi?api=SYNO.API.Auth&version=3&method=login&account=${encodeURIComponent(this.options.loginName)}&passwd=${encodeURIComponent(this.options.loginPwd)}&session=DownloadStation&format=sid&enable_syno_token=yes`;
@@ -25,7 +26,6 @@
           timeout: PTBackgroundService.options.connectClientTimeout,
           dataType: "json"
         }).done((result) => {
-          console.log(result)
           if (result && result.success) {
             this.sessionId = result.data.sid;
             this.synoToken = result.data.synotoken
