@@ -7,7 +7,67 @@
   "tags": ["音乐"],
   "schema": "Gazelle",
   "host": "lztr.me",
-  "collaborator": "ylxb2016",
+  "collaborator": [
+    "ylxb2016",
+    "amorphobia"
+  ],
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Member",
+      "interval": "1",
+      "uploaded": "10GB",
+      "ratio": "0.7",
+      "downloads": "1",
+      "privilege": "Can make requests, bookmarks, edit Collages, and can access the Top 10"
+    },
+    {
+      "level": 2,
+      "name": "Power User",
+      "interval": "2",
+      "uploads": "5",
+      "uploaded": "25GB",
+      "ratio": "1.05",
+      "privilege": "Receives invites, can access notifications, create new collages, access power user & invites forums."
+    },
+    {
+      "level": 3,
+      "name": "Elite",
+      "interval": "4",
+      "uploads": "50",
+      "uploaded": "100GB",
+      "ratio": "1.05",
+      "privilege": "Top 10 filters"
+    },
+    {
+      "level": 4,
+      "name": "Torrent Master",
+      "interval": "8",
+      "uploads": "200",
+      "uploaded": "200GB",
+      "ratio": "1.05",
+      "privilege": "Can invite users even when invites are closed, Can send unlimited invites"
+    }
+  ],
+  "selectors": {
+    "levelExtendInfo": {
+      "page": "/user.php?action=user_ajax&type=community&id=$user.id$",
+      "fields": {
+        "seeding": {
+          "selector": "li:contains('Seeding:')",
+          "filters": ["query.text().match(/[\\d.]+/)", " query ? query[0] : null"]
+        },
+        "uploads": {
+          "selector": "li:contains('Uploaded:')",
+          "filters": ["query.text().match(/[\\d.]+/)", " query ? query[0] : null"]
+        },
+        "downloads": {
+          "selector": "li:contains('Snatched:')",
+          "filters": ["query.text().match(/[\\d.]+/)", " query ? query[0] : null"]
+        }
+      }
+    }
+  },
   "supportedFeatures": {
     "imdbSearch": false,
     "userData": "◐"
