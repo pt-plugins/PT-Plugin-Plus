@@ -31,7 +31,7 @@
       },
       "time": {
         "selector": [ ".torrentOwner" ],
-        "filters": ["query.text().substring(9,25)", "dateTime(query, 'DD-MM-YYYY HH:mm').isValid() ? dateTime(query, 'DD-MM-YYYY HH:mm').valueOf() : query"]
+        "filters": ["query.text().substring(9,25)", "dateTime(query, 'DD-MM-YYYY HH:mm').isValid() ? dateTime(query, 'DD-MM-YYYY HH:mm').format('YYYY-MM-DD HH:mm') : query"]
       },
       "size": {
         "selector": [ "a[rel='torrent_size']" ],
@@ -78,9 +78,6 @@
         "bonusPerHour": {
           "value": "N/A"
         },
-        "joinTime": {
-          "value": "N/A"
-        },
         "seeding": {
           "value": "N/A"
         },
@@ -106,6 +103,10 @@
         "ratio": {
           "selector": ["#memberinfoUpDownStats"],
           "filters": ["query.text().trim().split('\\n\\t\\t\\t')", "(query && query.length > 3) ? parseInt(query[2].trim()) : 0"]
+        },
+        "joinTime": {
+          "selector": ["div.memberCardDetails"],
+          "filters": ["query.clone().children().remove().end().text().trim().split('\\n\\t\\t')", "(query && query.length>=2) ? dateTime(query[2], 'DD-MM-YYYY HH:mm').valueOf() : ''"]
         }
       }
     }
