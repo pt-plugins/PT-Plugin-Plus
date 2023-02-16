@@ -7,11 +7,97 @@
   "tags": ["音乐"],
   "schema": "GazelleJSONAPI",
   "host": "dicmusic.club",
-  "collaborator": ["ylxb2016", "enigmaz"],
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Member",
+      "uploaded": "10GB",
+      "ratio": "0.7",
+      "interval": "1",
+      "privilege": "发起求种；查看部分排行榜；完全访问「茶话会」版块"
+    },
+    {
+      "level": 2,
+      "name": "Power User",
+      "uploaded": "25GB",
+      "ratio": "1.05",
+      "interval": "2",
+      "uploads": "5",
+      "privilege": "免疫账号不活跃；发送邀请，赠送1枚永久邀请；佩戴1枚印记；创建1个私人合集；访问「求邀区」「发邀区」「Power User」版块；完全访问排行榜"
+    },
+    {
+      "level": 3,
+      "name": "Elite",
+      "uploaded": "75GB",
+      "ratio": "1.05",
+      "interval": "4",
+      "uploads": "50",
+      "privilege": "赠送1枚永久邀请；佩戴2枚印记；创建2个私人合集；访问「Elite」版块；检查自己的种子；编辑所有种子；购买「自定义头衔（不允许 BBCode）」"
+    },
+    {
+      "level": 4,
+      "name": "Torrent Master",
+      "uploaded": "200GB",
+      "ratio": "1.05",
+      "interval": "8",
+      "uploads": "150",
+      "privilege": "赠送2枚永久邀请；每月1枚临时邀请；佩戴3枚印记；创建3个私人合集；访问「Torrent Master」版块"
+    },
+    {
+      "level": 5,
+      "name": "Power Torrent Master",
+      "uploaded": "375GB",
+      "ratio": "1.05",
+      "interval": "8",
+      "uniqueGroups": "300",
+      "privilege": "赠送2枚永久邀请；每月2枚临时邀请；佩戴4枚印记；创建4个私人合集；检查所有种子"
+    },
+    {
+      "level": 6,
+      "name": "Elite Torrent Master",
+      "uploaded": "600GB",
+      "ratio": "1.05",
+      "interval": "12",
+      "perfectFLAC": "500",
+      "privilege": "赠送3枚永久邀请；每月3枚临时邀请；无发邀间隔；佩戴5枚印记；创建5个私人合集；访问「Elite Torrent Master」版块"
+    },
+    {
+      "level": 7,
+      "name": "Elite Torrent Master Plus",
+      "uploaded": "600GB",
+      "ratio": "1.05",
+      "interval": "12",
+      "perfectFLAC": "500",
+      "privilege": "赠送3枚永久邀请；每月3枚临时邀请；购买「自定义头衔（允许 BBCode）」"
+    },
+    {
+      "level": 8,
+      "name": "Guru",
+      "uploaded": "1.2TB",
+      "ratio": "1.05",
+      "interval": "16",
+      "perfectFLAC": "1000",
+      "privilege": "拥有无限邀请；佩戴6枚印记；创建6个私人合集；访问「Guru」版块；查看种子检查日志"
+    }
+  ],
+  "collaborator": [
+    "ylxb2016",
+    "enigmaz",
+    "amorphobia"
+  ],
   "searchEntryConfig": {
     "skipIMDbId": true
   },
   "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "page": "/ajax.php?action=user&id=$user.id$",
+      "fields": {
+        "perfectFLAC": {
+          "selector": ["response.community.perfectFlacs"]
+        }
+      }
+    },
     "userSeedingTorrents": {
       "page": "/bonus.php?action=bprates",
       "fields": {
