@@ -59,6 +59,15 @@
         },
         "seeding": {
           "selector": ["response.community.seeding"]
+        },
+        "uploads": {
+          "selector": ["response.community.uploaded"]
+        },
+        "downloads": {
+          "selector": ["response.community.snatched"]
+        },
+        "uniqueGroups": {
+          "selector": ["response.community.groups"]
         }
       }
     },
