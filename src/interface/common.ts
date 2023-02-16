@@ -302,6 +302,10 @@ export interface LevelRequirement {
   ratio?: number;
   // 等级积分要求
   classPoints?: number;
+  // 独特分组要求
+  uniqueGroups?: number;
+  // “完美”FLAC要求
+  perfectFLAC?: number;
   // 权限
   privilege?: string;
   // 可选要求
@@ -616,6 +620,10 @@ export interface UserInfo {
   lastErrorMsg?: string;
   // 消息数量
   messageCount?: number;
+  // 独特分组
+  uniqueGroups?: number;
+  // “完美”FLAC
+  perfectFLAC?: number;
   // 下一等级
   nextLevels?: LevelRequirement[];
   [key: string]: any;

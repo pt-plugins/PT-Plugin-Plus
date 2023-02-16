@@ -227,6 +227,8 @@
         "downloads": "Downloaded",
         "trueDownloaded": "True Downloaded",
         "classPoints": "Class Points",
+        "uniqueGroups": "Unique Groups",
+        "perfectFLAC": "\"Perfect\" FLAC",
         "alternative": "Alternative"
       },
       "tip": "N/A means no support",

@@ -145,6 +145,14 @@
                         <v-icon small color="red darken-4">file_download</v-icon>{{ nextLevel.downloads
                         }}&nbsp;
                       </template>
+                      <template v-if="nextLevel.uniqueGroups">
+                        <v-icon small color="green darken-4">library_music</v-icon>{{ nextLevel.uniqueGroups
+                        }}&nbsp;
+                      </template>
+                      <template v-if="nextLevel.perfectFLAC">
+                        <v-icon small color="green darken-4">diamond</v-icon>{{ nextLevel.perfectFLAC
+                        }}&nbsp;
+                      </template>
                       <template v-if="nextLevel.classPoints">
                         <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{
                             nextLevel.classPoints | formatNumber
@@ -203,6 +211,16 @@
                             | formatInteger
                         }};
                       </template>
+                      <template v-if="levelRequirement.uniqueGroups">
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uniqueGroups')">library_music</v-icon>{{ levelRequirement.uniqueGroups
+                            | formatInteger
+                        }};
+                      </template>
+                      <template v-if="levelRequirement.perfectFLAC">
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.perfectFLAC')">diamond</v-icon>{{ levelRequirement.perfectFLAC
+                            | formatInteger
+                        }};
+                      </template>
                       <template v-if="levelRequirement.alternative">
                         <v-icon small :title="$t('home.levelRequirement.alternative')">filter_1</v-icon>(
                         <template v-if="levelRequirement.alternative.requiredDate">
@@ -244,6 +262,16 @@
                         </template>
                         <template v-if="levelRequirement.alternative.classPoints">
                           <v-icon small color="yellow darken-4" :title="$t('home.levelRequirement.classPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.alternative.classPoints
+                              | formatInteger
+                          }};
+                        </template>
+                        <template v-if="levelRequirement.alternative.uniqueGroups">
+                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uniqueGroups')">library_music</v-icon>{{ levelRequirement.alternative.uniqueGroups
+                              | formatInteger
+                          }};
+                        </template>
+                        <template v-if="levelRequirement.alternative.perfectFLAC">
+                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.perfectFLAC')">diamond</v-icon>{{ levelRequirement.alternative.perfectFLAC
                               | formatInteger
                           }};
                         </template>);
@@ -784,6 +812,24 @@ export default Vue.extend({
         let requiredClassPoints = levelRequirement.classPoints as number;
         if (userClassPoints < requiredClassPoints) {
           nextLevel.classPoints = requiredClassPoints - userClassPoints;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.uniqueGroups) {
+        let userUniqueGroups = user.uniqueGroups as number;
+        let requiredUniqueGroups = levelRequirement.uniqueGroups as number;
+        if (userUniqueGroups < requiredUniqueGroups) {
+          nextLevel.uniqueGroups = requiredUniqueGroups - userUniqueGroups;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.perfectFLAC) {
+        let userPerfectFLAC = user.perfectFLAC as number;
+        let requiredPerfectFLAC = levelRequirement.perfectFLAC as number;
+        if (userPerfectFLAC < requiredPerfectFLAC) {
+          nextLevel.perfectFLAC = requiredPerfectFLAC - userPerfectFLAC;
           nextLevel.level = levelRequirement.level;
         }
       }
