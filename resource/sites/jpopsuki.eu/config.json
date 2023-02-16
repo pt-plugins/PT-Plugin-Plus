@@ -7,6 +7,33 @@
   "tags": ["音乐", "日韩"],
   "schema": "Gazelle",
   "host": "jpopsuki.eu",
+  "collaborator": [
+    "ronggang",
+    "ted423",
+    "luckiestone",
+    "amorphobia"
+  ],
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Member",
+      "interval": "1",
+      "uploaded": "10GB",
+      "ratio": "0.7",
+      "downloaded": "1KB",
+      "privilege": "Can use invites, notifications, set a forum signature, access the Top 10 and edit the Knowledge base."
+    },
+    {
+      "level": 2,
+      "name": "Power User",
+      "interval": "2",
+      "uploaded": "25GB",
+      "ratio": "1.05",
+      "downloaded": "1KB",
+      "uploads": "5",
+      "privilege": "advanced Top 10, can view torrent snatched list, edit torrent's description, original title and release date and access the advanced user search. Receives a new invite once per month (up to a maximum of 10 available invites)."
+    }
+  ],
   "searchEntryConfig": {
     "skipIMDbId": true
   },
@@ -93,6 +120,14 @@
         "messageCount": {
           "selector": ["#alerts > .alertbar > a[href='notice.php']", "div.alertbar > a[href*='inbox.php']"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "uploads": {
+          "selector": "div.box:eq(5) > div.head + ul.stats > li:eq(3)",
+          "filters": ["query.text().match(/[\\d.]+/)", " query ? query[0] : null"]
+        },
+        "downloads": {
+          "selector": "div.box:eq(5) > div.head + ul.stats > li:eq(7)",
+          "filters": ["query.text().match(/[\\d.]+/)", " query ? query[0] : null"]
         }
       }
     },
