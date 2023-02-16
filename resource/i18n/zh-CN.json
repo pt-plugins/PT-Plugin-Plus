@@ -222,6 +222,8 @@
         "downloads": "完成",
         "trueDownloaded": "真实下载",
         "classPoints": "等级积分",
+        "uniqueGroups": "独特分组",
+        "perfectFLAC": "“完美”FLAC",
         "alternative": "择一"
       },
       "tip": "N/A 表示暂不支持",
