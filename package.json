@@ -62,6 +62,7 @@
     "@types/file-saver": "^2.0.5",
     "@types/jquery": "^3.5.14",
     "@types/marked": "^4.0.8",
+    "@types/node": "^18.11.19",
     "@types/parse-torrent": "^5.8.4",
     "@types/ua-parser-js": "^0.7.36",
     "@types/url-parse": "^1.4.8",
