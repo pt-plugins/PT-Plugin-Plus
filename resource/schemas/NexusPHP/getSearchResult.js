@@ -428,6 +428,10 @@
               subTitle = $("h3", row).text();
               break;
 
+            case "springsunday.net":
+              subTitle = $(".torrent-smalldescr", row)[0].lastChild.nodeValue.trim();
+              break;
+
             default:
               subTitle = "";
               break;
