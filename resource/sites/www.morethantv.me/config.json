@@ -40,24 +40,40 @@
         "seeders": 6,
         "leechers": 7,
         "completed": 5
-	},
-	"fieldSelector": {
-	  "title": {
-		"selector": ["a.overlay_torrent"],
-        "filters": ["query.text()"]
-	  },
-	  "link": {
-		"selector": ["a.overlay_torrent"],
-        "filters": ["query.attr('href')", "'https://www.morethantv.me/'+query"]
-	  },
-	  "url": {
-		"selector": ["a[title='Download Torrent']"],
-        "filters": ["query.attr('href')", "'https://www.morethantv.me/'+query"]
-	  },
-	  "time": {
-		"selector": ["span.time"],
-        "filters": ["dateTime(query.attr('title')).format()"]
-	  }
+    },
+    "fieldSelector": {
+      "title": {
+          "selector": ["a.overlay_torrent"],
+          "filters": ["query.text()"]
+      },
+      "link": {
+          "selector": ["a.overlay_torrent"],
+          "filters": ["query.attr('href')", "'https://www.morethantv.me/'+query"]
+      },
+      "url": {
+          "selector": ["a[href*='torrents.php?action=download'],"],
+          "filters": ["query.attr('href')", "'https://www.morethantv.me/'+query"]
+      },
+      "time": {
+          "selector": ["span.time"],
+          "filters": ["dateTime(query.attr('title')).format()"]
+      },
+      "progress": {
+        "selector": ["a[title='Currently Seeding Torrent'], a[title='Previously Snatched Torrent']", "a[title='Previously Grabbed Torrent File']"],
+        "switchFilters": [
+          ["(query && query.length > 0)?100:null"],
+          ["(query && query.length > 0)?0:null"],
+          [null]
+        ]
+      },
+      "status": {
+        "selector": ["a[title='Currently Seeding Torrent']", "a[title='Previously Snatched Torrent']", "a[title='Previously Grabbed Torrent File']"],
+        "switchFilters": [
+          [2],
+          [255],
+          [3]
+        ]
+      }
     }
   },
   "selectors": {
