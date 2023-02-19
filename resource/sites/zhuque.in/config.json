@@ -11,6 +11,9 @@
     "name": "全部",
     "enabled": true
   }],
+  "searchEntryConfig": {
+    "skipIMDbId": true
+  },
   "levelRequirements": [{
     "level": "1",
     "name": "结丹",
