@@ -176,6 +176,10 @@
   }],
   "searchEntryConfig": {
     "fieldSelector": {
+      "subTitle": {
+        "selector": ["div.torrent-smalldescr:first"],
+        "filters": ["query.prop('lastChild').nodeValue.trim()"]
+      },
       "progress": {
         "selector": ["a[id*='subscription'] > img"],
         "filters": ["query.is('.uploading') ? 100 : query.is('.downloading') ? query.attr('title').match(/(\\d.+)%/)[1] : null"]
