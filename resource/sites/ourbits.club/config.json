@@ -45,7 +45,7 @@
     "name": "Veteran User",
     "interval": "25",
     "downloaded": "2TB",
-    "ratio": "3.0",
+    "ratio": "4.0",
     "privilege": "可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号"
   },{
     "level": "6",
@@ -59,7 +59,7 @@
     "name": "Ultimate User",
     "interval": "40",
     "downloaded": "6TB",
-    "ratio": "4.0",
+    "ratio": "5.0",
     "privilege": "得到两个永久邀请"
   },{
     "level": "8",
