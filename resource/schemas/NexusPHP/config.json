@@ -57,6 +57,9 @@
   }, {
     "name": "50%",
     "selector": "img.pro_50pctdown, .halfdown_bg, font.halfdown"
+  }, {
+    "name": "⛔️",
+    "selector": "span.tags.tjz, span.tag.tag-dz, span.tag.tag-limited"
   }],
   "selectors": {
     "userBaseInfo": {
