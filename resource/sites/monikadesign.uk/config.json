@@ -45,6 +45,11 @@
     "collaborator": "fzlins",
     "searchEntryConfig": {
       "merge": true,
-      "resultSelector": "#torrent-list-table"
+      "resultSelector": "#torrent-list-table",
+      "fieldSelector": {
+        "subTitle": {
+          "selector": ["td.torrent-listings-overview span:first"]
+        }
+      }
     }
 }

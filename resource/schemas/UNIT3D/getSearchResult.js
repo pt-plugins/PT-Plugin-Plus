@@ -10,6 +10,7 @@
       options.isLogged = true;
 
       this.haveData = true;
+      this.site = options.site;
     }
 
     /**
@@ -213,6 +214,10 @@
      * @param {*} row
      */
     getSubTitle(title, row) {
+      let subTitle = Searcher.getFieldValue(this.site, row, "subTitle");
+      if (subTitle) {
+        return subTitle;
+      }
       return "";
     }
 
