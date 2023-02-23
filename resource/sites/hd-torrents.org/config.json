@@ -69,12 +69,12 @@
     "resultSelector": "table.mainblockcontenttt:last > tbody > tr",
     "fieldSelector": {
       "progress": {
-        "selector": ["td.mainblockcontentpeersall, td.mainblockcontentpeersseed, td.mainblockcontentpeersleech, td.mainblockcontenthistact"],
-        "filters": ["query.is('.mainblockcontentpeersall')? null : query.is('.mainblockcontentpeersseed')? 100: query.is('.mainblockcontenthistact')? 100: 0"]
+        "selector": ["td.mainblockcontentpeersall, td.mainblockcontentpeersseed, td.mainblockcontentpeersleech, td.mainblockcontenthistact, td.mainblockcontentpeersuploaded"],
+        "filters": ["query.is('.mainblockcontentpeersall')? null : query.is('.mainblockcontentpeersseed, .mainblockcontentpeersuploaded, .mainblockcontenthistact')?100: 0"]
       },
       "status": {
-        "selector": ["td.mainblockcontentpeersall, td.mainblockcontentpeersseed, td.mainblockcontentpeersleech, td.mainblockcontenthistact"],
-        "filters": ["query.is('.mainblockcontentpeersall')? null : query.is('.mainblockcontentpeersseed')? 2: query.is('.mainblockcontenthistact')? 255: 1"]
+        "selector": ["td.mainblockcontentpeersall, td.mainblockcontentpeersseed, td.mainblockcontentpeersleech, td.mainblockcontenthistact, td.mainblockcontentpeersuploaded"],
+        "filters": ["query.is('.mainblockcontentpeersall')? null : query.is('.mainblockcontentpeersseed')? 2: query.is('.mainblockcontenthistact, .mainblockcontentpeersuploaded')? 255: 1"]
       }
     }
   },
