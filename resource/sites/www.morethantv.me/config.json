@@ -51,7 +51,7 @@
           "filters": ["query.attr('href')", "'https://www.morethantv.me/'+query"]
       },
       "url": {
-          "selector": ["a[href*='torrents.php?action=download'],"],
+          "selector": ["a[href*='torrents.php?action=download']"],
           "filters": ["query.attr('href')", "'https://www.morethantv.me/'+query"]
       },
       "time": {
