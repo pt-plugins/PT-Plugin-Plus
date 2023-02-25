@@ -1,0 +1,257 @@
+{
+  "name": "x·ite.me",
+  "timezoneOffset": "+0000",
+  "url": "https://x-ite.me/",
+  "icon": "https://x-ite.me/themes/xiteme/images/favicon.ico",
+  "tags": ["影视", "综合"],
+  "schema": "Common",
+  "host": "x-ite.me",
+  "collaborator": "davidxuang",
+  "searchEntryConfig": {
+    "page": "/torrents-search.php",
+    "queryString": "search=$key$&incldead=1&freeleech=0&lang=",
+    "resultType": "html",
+    "loggedRegex": "account-logout",
+    "area": [
+      {
+        "name": "Fix multi-word search",
+        "keyAutoMatch": "^\\s*(?:[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{P}]*)(?:\\s+[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{P}]*)+\\s*$",
+        "replaceKey": ["(?<!^)\\s+(?!$)", " +"]
+      }
+    ],
+    "resultSelector": ".ttable_headinner",
+    "fieldIndex": {
+      "title": 1,
+      "link": 1,
+      "url": 3,
+      "time": 2,
+      "size": 6,
+      "seeders": 7,
+      "leechers": 8,
+      "comments": 4,
+      "category": 0
+    },
+    "fieldSelector": {
+      "title": {
+        "selector": ["a > b"],
+        "filters": ["query.text()"]
+      },
+      "link": {
+        "selector": ["a"],
+        "attribute": "href"
+      },
+      "url": {
+        "selector": ["a"],
+        "attribute": "href"
+      },
+      "time": {
+        "selector": [""],
+        "filters": ["query.text().replace(/(\\d{2})-(\\d{2})-(\\d{4})/g, '$3-$2-$1')"]
+      }
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "all",
+      "enabled": true
+    },
+    {
+      "name": "Animations",
+      "appendQueryString": "&c6700=1&c6100=1&c6340=1&c6110=1&c6350=1&c6330=1&c6300=1&c6900=1&c6120=1&c6130=1&c6320=1&c6310=1",
+      "enabled": false
+    },
+    {
+      "name": "Applications",
+      "appendQueryString": "&c14000=1",
+      "enabled": false
+    },
+    {
+      "name": "Audio Books",
+      "appendQueryString": "&c11000=1",
+      "enabled": false
+    },
+    {
+      "name": "Books",
+      "appendQueryString": "&c10000=1",
+      "enabled": false
+    },
+    {
+      "name": "Comics & Manga",
+      "appendQueryString": "&c9700=1&c9600=1&c9200=1&c9100=1&c9900=1",
+      "enabled": false
+    },
+    {
+      "name": "Games",
+      "appendQueryString": "&c13000=1",
+      "enabled": false
+    },
+    {
+      "name": "Images",
+      "appendQueryString": "&c7500=1&c7300=1&c7700=1&c7900=1",
+      "enabled": false
+    },
+    {
+      "name": "Magazines",
+      "appendQueryString": "&c8000=1",
+      "enabled": false
+    },
+    {
+      "name": "Movies",
+      "appendQueryString": "&c1010=1&c1030=1&c1050=1&c1070=1&c1090=1&c1110=1&c1130=1&c1150=1&c1170=1&c1190=1&c1210=1&c1230=1&c1250=1&c1270=1&c1290=1&c1310=1&c1330=1&c1350=1&c1370=1&c1390=1&c1410=1&c1430=1&c1450=1&c1470=1&c1900=1&c1490=1&c1510=1&c1530=1&c1550=1&c1570=1&c1590=1&c1610=1&c1630=1",
+      "enabled": false
+    },
+    {
+      "name": "Porn",
+      "appendQueryString": "&c5000=1&c4000=1&c3000=1",
+      "enabled": false
+    },
+    {
+      "name": "Subtitles",
+      "appendQueryString": "&c12000=1",
+      "enabled": false
+    }
+  ],
+  "torrentTagSelectors": [
+    {
+      "name": "Free",
+      "selector": ".badge.free",
+      "color": "blue"
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": "#infobar .account",
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id') : ''"]
+        },
+        "name": {
+          "selector": "#infobar",
+          "filters": ["query.text().match(/as:\\s*(.+?),/)[1]"]
+        },
+        "uploaded": {
+          "selector": "#infobar img[src*='uploaded'] + font",
+          "filters": ["query.text().trim().sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": "#infobar img[src*='downloaded'] + font",
+          "filters": ["query.text().trim().sizeToNumber()"]
+        },
+        "bonus": {
+          "selector": "#infobar .seedbonus"
+        },
+        "messageCount": {
+          "selector": "#infobar .mail"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/account-details.php?id=$user.id$",
+      "fields": {
+        "levelName": {
+          "selector": ".myFrame:first-child table > tbody > tr:nth-child(2) > td:first-child",
+          "filters": [
+            "query.text().split('\\n').map(l => l.split(': ')).filter(p => p[0] && p[0].trim() == 'User Class')[0][1]"
+          ]
+        },
+        "joinTime": {
+          "selector": ".myFrame:first-child table > tbody > tr:nth-child(2) > td:first-child",
+          "filters": [
+            "query.text().split('\\n').map(l => l.split(': ')).filter(p => p[0] && p[0].trim() == 'Joined')[0][1]"
+          ]
+        },
+        "uploads": {
+          "selector": ".myFrame:first-child table > tbody > tr:nth-child(4) > td:last-child",
+          "filters": [
+            "query.text().split('\\n').map(l => l.split(': ')).filter(p => p[0] && p[0].trim() == 'Torrents Posted')[0][1]"
+          ]
+        },
+        "seedingSize": {
+          "selector": ".myFrame:nth-child(2) table.table_table > tbody > tr:not(:first-of-type) > td:nth-child(2)",
+          "filters": ["jQuery.map(query, (item) => {return $(item).text()})", "_self.getTotalSize(query)"]
+        },
+        "seeding": {
+          "selector": ".myFrame:nth-child(2) table.table_table > tbody > tr:not(:first-of-type)",
+          "filters": ["query.length"]
+        },
+        "bonusPerHour": {
+          "selector": ".myFrame:nth-child(2) table.table_table > tbody > tr:not(:first-of-type)",
+          "filters": ["0.5 * Math.min(5, Math.sqrt(query.length)) "]
+        }
+      }
+    }
+  },
+  "categories": [
+    {
+      "entry": "*",
+      "result": "&c$id$=1",
+      "category": [
+        { "id": 6700, "name": "Animations - Adult" },
+        { "id": 6100, "name": "Animations - Anime" },
+        { "id": 6340, "name": "Animations - Bara" },
+        { "id": 6110, "name": "Animations - Ecchi" },
+        { "id": 6350, "name": "Animations - Furry" },
+        { "id": 6330, "name": "Animations - Futanari" },
+        { "id": 6300, "name": "Animations - Hentai" },
+        { "id": 6900, "name": "Animations - Other" },
+        { "id": 6120, "name": "Animations - Shoujo Ai" },
+        { "id": 6130, "name": "Animations - Shounen Ai" },
+        { "id": 6320, "name": "Animations - Yaoi" },
+        { "id": 6310, "name": "Animations - Yuri" },
+        { "id": 14000, "name": "Applications - All" },
+        { "id": 11000, "name": "Audio Books - All" },
+        { "id": 10000, "name": "Books - All" },
+        { "id": 9700, "name": "Comics & Manga - Adult" },
+        { "id": 9600, "name": "Comics & Manga - Cartoon" },
+        { "id": 9200, "name": "Comics & Manga - Hentai" },
+        { "id": 9100, "name": "Comics & Manga - Manga" },
+        { "id": 9900, "name": "Comics & Manga - Other" },
+        { "id": 5000, "name": "Fetish - All" },
+        { "id": 13000, "name": "Games - All" },
+        { "id": 4000, "name": "Hardcore - All" },
+        { "id": 7500, "name": "Images - Adult" },
+        { "id": 7300, "name": "Images - Erotic" },
+        { "id": 7700, "name": "Images - Fetish" },
+        { "id": 7900, "name": "Images - Other" },
+        { "id": 8000, "name": "Magazines - All" },
+        { "id": 1010, "name": "Movies - Action" },
+        { "id": 1030, "name": "Movies - Adventure" },
+        { "id": 1050, "name": "Movies - Biography" },
+        { "id": 1070, "name": "Movies - Bollywood" },
+        { "id": 1090, "name": "Movies - Comedy" },
+        { "id": 1110, "name": "Movies - Coming of Age" },
+        { "id": 1130, "name": "Movies - Coming Out" },
+        { "id": 1150, "name": "Movies - Crime" },
+        { "id": 1170, "name": "Movies - Documentary" },
+        { "id": 1190, "name": "Movies - Drama" },
+        { "id": 1210, "name": "Movies - Eastern" },
+        { "id": 1230, "name": "Movies - Entertainment" },
+        { "id": 1250, "name": "Movies - Experimental" },
+        { "id": 1270, "name": "Movies - Family" },
+        { "id": 1290, "name": "Movies - Fantasy" },
+        { "id": 1310, "name": "Movies - Film Noir" },
+        { "id": 1330, "name": "Movies - Historical" },
+        { "id": 1350, "name": "Movies - History" },
+        { "id": 1370, "name": "Movies - Horror" },
+        { "id": 1390, "name": "Movies - Indie" },
+        { "id": 1410, "name": "Movies - Music" },
+        { "id": 1430, "name": "Movies - Musical" },
+        { "id": 1450, "name": "Movies - Mystery" },
+        { "id": 1470, "name": "Movies - News" },
+        { "id": 1900, "name": "Movies - Other" },
+        { "id": 1490, "name": "Movies - Romance" },
+        { "id": 1510, "name": "Movies - Sci-Fi" },
+        { "id": 1530, "name": "Movies - Sport" },
+        { "id": 1550, "name": "Movies - Suspense" },
+        { "id": 1570, "name": "Movies - Theater" },
+        { "id": 1590, "name": "Movies - Thriller" },
+        { "id": 1610, "name": "Movies - War" },
+        { "id": 1630, "name": "Movies - Western" },
+        { "id": 3000, "name": "Softcore - All" },
+        { "id": 12000, "name": "Subtitles - All" }
+      ]
+    }
+  ]
+}
