@@ -14,7 +14,7 @@
   "plugins": [{
     "name": "种子详情页面",
     "pages": ["/torrents.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
   }, {
     "name": "种子列表",
     "pages": ["/torrents/browse", "/show/(\\d+)/$","/collages.php"],
