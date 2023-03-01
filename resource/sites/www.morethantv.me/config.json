@@ -130,6 +130,10 @@
           "selector": "#stats_credits",
           "filters": ["query.text()"]
         },
+        "bonusPerHour": {
+          "selector": ["ul.stats > li:contains('Seeding:')"],
+          "filters": [ "query.text().replace(/,/g, '').match(/Seeding:.+?([\\d]+)/)", "(query && query.length>=2)? parseInt(query[1]) : 0", "(query >= 300) ? 100 : Math.round((Math.sqrt(query*0.4+1)-1)*10)"]
+        },
         "joinTime": {
           "selector": ["ul.stats > li:contains('Joined:') > span"],
           "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
