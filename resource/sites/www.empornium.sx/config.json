@@ -2,7 +2,7 @@
   "name": "Empornium",
   "timezoneOffset": "+0000",
   "description": "EMP",
-  "url": "https://www.empornium.is/",
+  "url": "https://www.empornium.sx/",
   "tags": ["Adult"],
   "schema": "Common",
   "plugins": [{
@@ -10,8 +10,9 @@
     "pages": ["/torrents.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
   }],
-  "host": "www.empornium.is",
+  "host": "www.empornium.sx",
   "formerHosts": [
+    "www.empornium.is",
     "www.empornium.me"
   ],
   "searchEntryConfig": {
