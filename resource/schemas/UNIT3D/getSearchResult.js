@@ -66,13 +66,13 @@
         let cell = header.eq(index);
         let text = cell.text();
         // 发布时间
-        if (cell.html().match("created_at")) {
+        if (cell.html().match("created_at") || cell.attr('class').endsWith("age-header")) {
           fieldIndex.time = index;
           continue;
         }
 
         // 大小
-        if (cell.attr('class').indexOf("torrent-listings-size") > -1 || cell.find("i.fa-database").length) {
+        if (cell.attr('class').indexOf("torrent-listings-size") > -1 || cell.attr('class').endsWith("size-header") || cell.find("i.fa-database").length) {
           fieldIndex.size = index;
           continue;
         }
@@ -102,7 +102,7 @@
           const row = rows.eq(index);
           let cells = row.find(">td");
 
-          let title = row.find("a.view-torrent");
+          let title = row.find("a.view-torrent, a.torrent-search--list__name");
           if (title.length == 0) {
             continue;
           }
