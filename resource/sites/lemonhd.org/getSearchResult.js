@@ -197,7 +197,6 @@
             comments:
               this.getFieldValue(row, cells, fieldIndex, "comments") || 0,
             site: site,
-            tags: this.getRowTags(row),
             entryName: options.entry.name,
             category:
               fieldIndex.category == -1
@@ -206,7 +205,8 @@
                 this.getCategory(cells.eq(fieldIndex.category)),
             progress: this.getFieldValue(row, cells, fieldIndex, "progress"),
             status: this.getFieldValue(row, cells, fieldIndex, "status"),
-            imdbId: this.getIMDbId(row)
+            imdbId: this.getIMDbId(row),
+            tags: Searcher.getRowTags(this.site, row)
           };
           results.push(data);
         }
@@ -373,21 +373,6 @@
       } catch (error) {
         return "";
       }
-    }
-
-    getRowTags(row) {
-      let tags = []
-      try {
-        if (row.text().trim().match(/免费剩余|全局免费|全站免费/)) {
-          tags.push({
-            name: "Free",
-            color: "blue"
-          })
-        };
-      } catch (error) {
-        return [];
-      }
-      return tags;
     }
 
     // 很

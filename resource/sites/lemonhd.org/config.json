@@ -182,6 +182,15 @@
       "enabled": false
     }
   ],
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "td:contains('免费剩余'), td:contains('全局免费'), td:contains('全站免费')"
+    },
+    {
+      "name": "⛔️",
+      "selector": "span.tag.tag_jz"
+    }
+  ],
   "selectors": {
     "bonusExtendInfo": {
       "page": "/mybonus_new.php",
