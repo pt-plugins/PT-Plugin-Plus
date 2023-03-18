@@ -83,6 +83,7 @@
                 <div>{{ $t('timeline.user.ratio') }}{{ site.user.ratio | formatRatio }}</div>
                 <div>{{ $t('timeline.user.seedingSize') }}{{ site.user.seedingSize | formatSize }} ({{ site.user.seeding }})</div>
                 <div>{{ $t('timeline.user.bonus') }}{{ site.user.bonus | formatNumber }}</div>
+                <div v-if="site.user.bonusPerHour && site.user.bonusPerHour != 'N/A'">{{ $t('timeline.user.bonusPerHour') }}{{ site.user.bonusPerHour | formatNumber }}</div>
               </div>
             </v-timeline-item>
           </v-timeline>
