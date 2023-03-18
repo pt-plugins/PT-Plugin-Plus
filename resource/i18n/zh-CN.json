@@ -287,7 +287,8 @@
         "downloaded": "下载量：",
         "seedingSize": "做种量：",
         "ratio": "分享率：",
-        "bonus": "积分值："
+        "bonus": "积分值：",
+        "bonusPerHour": "时　魔："
       },
       "inputDisplayName": "请输入需要显示的名称：",
       "inputShareMessage": "请输入需要显示的信息："

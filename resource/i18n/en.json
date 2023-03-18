@@ -292,7 +292,8 @@
         "downloaded": "Downloaded: ",
         "seedingSize": "Seeding size: ",
         "ratio": "Ratio: ",
-        "bonus": "Bonus: "
+        "bonus": "Bonus: ",
+        "bonusPerHour": "Bonus per hour: "
       },
       "inputDisplayName": "Please enter a name to display:",
       "inputShareMessage": "Please enter a message to display:"
