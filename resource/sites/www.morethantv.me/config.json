@@ -56,7 +56,7 @@
       },
       "time": {
           "selector": ["span.time"],
-          "filters": ["dateTime(query.attr('title')).format()"]
+          "filters": ["dateTime(query.attr('title')).isValid() ? query.attr('title') : query.text()", "dateTime(query).format()"]
       },
       "progress": {
         "selector": ["a[title='Currently Seeding Torrent'], a[title='Previously Snatched Torrent']", "a[title='Previously Grabbed Torrent File']"],
@@ -136,7 +136,7 @@
         },
         "joinTime": {
           "selector": ["ul.stats > li:contains('Joined:') > span"],
-          "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+          "filters": ["dateTime(query.attr('title')).isValid() ? query.attr('title') : query.text()", "dateTime(query).isValid() ? dateTime(query).valueOf() : query"]
         }
       }
     },
