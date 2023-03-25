@@ -181,6 +181,9 @@
   }, {
     "name": "50%",
     "selector": "img.pro_50pctdown"
+  }, {
+    "name": "⛔️",
+    "selector": ".tag.tag-dz"
   }],
   "searchEntryConfig": {
 	"merge": true,
