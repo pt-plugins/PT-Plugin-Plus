@@ -1,6 +1,7 @@
 {
   "name": "pt-plugin-plus",
   "version": "1.6.1",
+  "packageManager": "yarn@1.19.1",
   "author": {
     "name": "ronggang",
     "url": "https://github.com/ronggang"
