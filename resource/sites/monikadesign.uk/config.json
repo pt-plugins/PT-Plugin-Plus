@@ -1,55 +1,67 @@
 {
-    "name": "Monika",
-    "timezoneOffset": "+0800",
-    "schema": "UNIT3D",
-    "url": "https://monikadesign.uk/",
-    "icon": "https://monikadesign.uk/favicon.ico",
-    "description": "一个以动画为主体，涵盖日语影视音乐的资源站，诣在为广大动画、日剧日影、ACG Live爱好者提供一个资源信息交流平台。",
-    "tags": [
-        "影视",
-        "剧集",
-        "动漫"
-    ],
-    "host": "monikadesign.uk",
-    "levelRequirements": [{
-        "level": "1", 
-        "name": "PowerUser",
-        "interval": "1",
-        "uploaded": "1TB",
-        "privilege": "访问邀请区"
-      },{
-        "level": "2", 
-        "name": "SuperUser",
-        "interval": "2",
-        "uploaded": "2TB",
-        "privilege": "无"
-      },{
-        "level": "3", 
-        "name": "ExtremeUser",
-        "interval": "3",
-        "uploaded": "5TB",
-        "privilege": "无"
-      },{
-        "level": "4", 
-        "name": "InsaneUser",
-        "interval": "6",
-        "uploaded": "10TB",
-        "privilege": "自动通过候选"
-      },{
-        "level": "5", 
-        "name": "Veteran",
-        "interval": "12",
-        "uploaded": "15TB",
-        "privilege": "个人全局双倍上传"
-      }],
-    "collaborator": "fzlins",
-    "searchEntryConfig": {
-      "merge": true,
-      "resultSelector": "#torrent-list-table",
-      "fieldSelector": {
-        "subTitle": {
-          "selector": ["td.torrent-listings-overview span:first"]
+  "name": "MDU",
+  "timezoneOffset": "+0800",
+  "schema": "UNIT3D",
+  "url": "https://monikadesign.uk/",
+  "icon": "https://monikadesign.uk/favicon.ico",
+  "description": "一个以动画为主体，涵盖日语影视音乐的资源站，诣在为广大动画、日剧日影、ACG Live爱好者提供一个资源信息交流平台。",
+  "tags": [
+      "影视",
+      "剧集",
+      "动漫"
+  ],
+  "host": "monikadesign.uk",
+  "levelRequirements": [{
+      "level": "1", 
+      "name": "PowerUser",
+      "interval": "1",
+      "uploaded": "1TB",
+      "privilege": "访问邀请区"
+    },{
+      "level": "2", 
+      "name": "SuperUser",
+      "interval": "2",
+      "uploaded": "2TB",
+      "privilege": "无"
+    },{
+      "level": "3", 
+      "name": "ExtremeUser",
+      "interval": "3",
+      "uploaded": "5TB",
+      "privilege": "无"
+    },{
+      "level": "4", 
+      "name": "InsaneUser",
+      "interval": "6",
+      "uploaded": "10TB",
+      "privilege": "自动通过候选"
+    },{
+      "level": "5", 
+      "name": "Veteran",
+      "interval": "12",
+      "uploaded": "15TB",
+      "privilege": "个人全局双倍上传"
+    }],
+  "collaborator": "fzlins",
+  "searchEntryConfig": {
+    "merge": true,
+    "resultSelector": "#torrent-list-table",
+    "fieldSelector": {
+      "subTitle": {
+        "selector": ["td.torrent-listings-overview span:first"]
+      }
+    }
+  },
+  "selectors": {
+    "bonusExtendInfo": {
+      "prerequisites": "!(!user.bonusPage)",
+      "page": "$user.bonusPage$",
+      "fields": {
+        "bonusPerHour": {
+          "selector": [".panelV2 div.panel__body:first"],
+          "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
         }
       }
     }
+  }
 }
