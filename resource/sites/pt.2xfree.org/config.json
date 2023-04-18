@@ -1,201 +1,228 @@
 {
-    "name": "2xFree",
-    "timezoneOffset": "+0800",
-    "description": "2xFree",
-    "url": "https://pt.2xfree.org/",
-    "icon": "https://pt.2xfree.org/favicon.ico",
-    "tags": [
-        "综合",
-        "成人"
-    ],
-    "schema": "NexusPHP",
-    "host": "pt.2xfree.org",
-    "collaborator": "ysmox",
-    "levelRequirements": [
+  "name": "2xFree",
+  "timezoneOffset": "+0800",
+  "description": "2xFree",
+  "url": "https://pt.2xfree.org/",
+  "icon": "https://pt.2xfree.org/favicon.ico",
+  "tags": [
+    "综合",
+    "VR",
+    "成人"
+  ],
+  "schema": "NexusPHP",
+  "host": "pt.2xfree.org",
+  "collaborator": [
+    "ysmox",
+    "IITII"
+  ],
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Power User",
+      "interval": "4",
+      "downloaded": "512GB",
+      "ratio": "1.05",
+      "seedingPoints": "40000",
+      "privilege": "得到一个邀请名额；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+    },
+    {
+      "level": 2,
+      "name": "Elite User",
+      "interval": "8",
+      "downloaded": "1T",
+      "ratio": "1.55",
+      "seedingPoints": "80000",
+      "privilege": "Elite User及以上用户封存账号后不会被删除。"
+    },
+    {
+      "level": 3,
+      "name": "Crazy User",
+      "interval": "15",
+      "downloaded": "2T",
+      "ratio": "2.05",
+      "seedingPoints": "150000",
+      "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+    },
+    {
+      "level": 4,
+      "name": "Insane User",
+      "interval": "25",
+      "downloaded": "4T",
+      "ratio": "2.55",
+      "seedingPoints": "250000",
+      "privilege": "可以查看普通日志。"
+    },
+    {
+      "level": 5,
+      "name": "Veteran User",
+      "interval": "52",
+      "downloaded": "8T",
+      "ratio": "3.05",
+      "seedingPoints": "400000",
+      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+    },
+    {
+      "level": 6,
+      "name": "Extreme User",
+      "interval": "80",
+      "downloaded": "16T",
+      "ratio": "3.55",
+      "seedingPoints": "600000",
+      "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
+    },
+    {
+      "level": 7,
+      "name": "Ultimate User",
+      "interval": "104",
+      "downloaded": "35000GB",
+      "ratio": "4.05",
+      "seedingPoints": "800000",
+      "privilege": "得到五个邀请名额。"
+    },
+    {
+      "level": 8,
+      "name": "Nexus Master",
+      "interval": "130",
+      "downloaded": "70000GB",
+      "ratio": "4.55",
+      "seedingPoints": "1000000",
+      "privilege": "得到十个邀请名额。"
+    }
+  ],
+  "searchEntry": [
+    {
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat401=1",
+      "name": "电影",
+      "enabled": false
+    },
+    {
+      "queryString": "cat402=1",
+      "name": "剧集",
+      "enabled": false
+    },
+    {
+      "queryString": "cat403=1",
+      "name": "综艺",
+      "enabled": false
+    },
+    {
+      "queryString": "cat404=1",
+      "name": "纪录片",
+      "enabled": false
+    },
+    {
+      "queryString": "cat405=1",
+      "name": "动漫",
+      "enabled": false
+    },
+    {
+      "queryString": "cat406=1",
+      "name": "MV",
+      "enabled": false
+    },
+    {
+      "queryString": "cat407=1",
+      "name": "体育",
+      "enabled": false
+    },
+    {
+      "queryString": "cat408=1",
+      "name": "音乐",
+      "enabled": false
+    },
+    {
+      "queryString": "cat409=1",
+      "name": "其他",
+      "enabled": false
+    },
+    {
+      "queryString": "cat410=1",
+      "name": "电子书",
+      "enabled": false
+    },
+    {
+      "queryString": "cat411=1",
+      "name": "游戏",
+      "enabled": false
+    }
+  ],
+  "categories": [
+    {
+      "entry": "*",
+      "result": "&cat$id$=1",
+      "category": [
         {
-            "level": 1,
-            "name": "Power User",
-            "interval": "4",
-            "downloaded": "512GB",
-            "ratio": "1.05",
-            "seedingPoints": "40000",
-            "privilege": "得到一个邀请名额；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+          "id": 401,
+          "name": "电影"
         },
         {
-            "level": 2,
-            "name": "Elite User",
-            "interval": "8",
-            "downloaded": "1024GB",
-            "ratio": "1.55",
-            "seedingPoints": "80000",
-            "privilege": "Elite User及以上用户封存账号后不会被删除。"
+          "id": 402,
+          "name": "剧集"
         },
         {
-            "level": 3,
-            "name": "Crazy User",
-            "interval": "15",
-            "downloaded": "2048GB",
-            "ratio": "2.05",
-            "seedingPoints": "150000",
-            "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+          "id": 403,
+          "name": "综艺"
         },
         {
-            "level": 4,
-            "name": "Insane User",
-            "interval": "25",
-            "downloaded": "4096GB",
-            "ratio": "2.55",
-            "seedingPoints": "250000",
-            "privilege": "可以查看普通日志。"
+          "id": 404,
+          "name": "纪录片"
         },
         {
-            "level": 5,
-            "name": "Veteran User",
-            "interval": "52",
-            "downloaded": "8192GB",
-            "ratio": "3.05",
-            "seedingPoints": "400000",
-            "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+          "id": 405,
+          "name": "动漫"
         },
         {
-            "level": 6,
-            "name": "Extreme User",
-            "interval": "80",
-            "downloaded": "16384GB",
-            "ratio": "3.55",
-            "seedingPoints": "600000",
-            "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
+          "id": 406,
+          "name": "MV"
         },
         {
-            "level": 7,
-            "name": "Ultimate User",
-            "interval": "104",
-            "downloaded": "35000GB",
-            "ratio": "4.05",
-            "seedingPoints": "800000",
-            "privilege": "得到五个邀请名额。"
+          "id": 407,
+          "name": "体育"
         },
         {
-            "level": 8,
-            "name": "Nexus Master",
-            "interval": "130",
-            "downloaded": "70000GB",
-            "ratio": "4.55",
-            "seedingPoints": "1000000",
-            "privilege": "得到十个邀请名额。"
+          "id": 408,
+          "name": "音乐"
+        },
+        {
+          "id": 409,
+          "name": "其他"
+        },
+        {
+          "id": 409,
+          "name": "电子书"
+        },
+        {
+          "id": 411,
+          "name": "游戏"
         }
-    ],
-    "searchEntry": [
-        {
-            "name": "全站",
-            "enabled": true
+      ]
+    }
+  ],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query.text()"
+          ]
         },
-        {
-            "queryString": "cat401=1",
-            "name": "电影",
-            "enabled": false
-        },
-        {
-            "queryString": "cat402=1",
-            "name": "剧集",
-            "enabled": false
-        },
-        {
-            "queryString": "cat403=1",
-            "name": "综艺",
-            "enabled": false
-        },
-        {
-            "queryString": "cat404=1",
-            "name": "纪录片",
-            "enabled": false
-        },
-        {
-            "queryString": "cat405=1",
-            "name": "动漫",
-            "enabled": false
-        },
-        {
-            "queryString": "cat406=1",
-            "name": "MV",
-            "enabled": false
-        },
-        {
-            "queryString": "cat407=1",
-            "name": "体育",
-            "enabled": false
-        },
-        {
-            "queryString": "cat408=1",
-            "name": "音乐",
-            "enabled": false
-        },
-        {
-            "queryString": "cat409=1",
-            "name": "其他",
-            "enabled": false
-        },
-        {
-            "queryString": "cat410=1",
-            "name": "电子书",
-            "enabled": false
-        },
-        {
-            "queryString": "cat411=1",
-            "name": "游戏",
-            "enabled": false
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)上一页/g)",
+            "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
+            "(query != 0) ? query.sizeToNumber() : 0"
+          ]
         }
-    ],
-    "categories": [
-        {
-            "entry": "*",
-            "result": "&cat$id$=1",
-            "category": [
-                {
-                    "id": 401,
-                    "name": "电影"
-                },
-                {
-                    "id": 402,
-                    "name": "剧集"
-                },
-                {
-                    "id": 403,
-                    "name": "综艺"
-                },
-                {
-                    "id": 404,
-                    "name": "纪录片"
-                },
-                {
-                    "id": 405,
-                    "name": "动漫"
-                },
-                {
-                    "id": 406,
-                    "name": "MV"
-                },
-                {
-                    "id": 407,
-                    "name": "体育"
-                },
-                {
-                    "id": 408,
-                    "name": "音乐"
-                },
-                {
-                    "id": 409,
-                    "name": "其他"
-                },
-                {
-                    "id": 409,
-                    "name": "电子书"
-                },
-                {
-                    "id": 411,
-                    "name": "游戏"
-                }
-            ]
-        }
-    ]
+      }
+    }
+  }
 }
