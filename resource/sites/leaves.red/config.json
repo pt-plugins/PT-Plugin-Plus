@@ -1,0 +1,87 @@
+{
+  "name": "红叶",
+  "description": "红叶成立于2022年10月，主打有声小说，有综合区。目前站内设立有声官组,资源产出稳定。喜欢有声内容的朋友，欢迎你的加入",
+  "url": "https://leaves.red/",
+  "icon": "https://leaves.red/favicon.ico",
+  "tags": ["有声书", "综合"],
+  "schema": "NexusPHP",
+  "host": "leaves.red",
+  "collaborator": "CosmoGao",
+  "levelRequirements": [{
+    "level": "1",
+    "name": "Power User",
+    "interval": "4", 
+    "downloaded": "100GB",
+    "ratio": "1.05",
+    "seedingPoints": "60000",
+    "privilege": "首次升级PU将获得1个邀请 "
+  },{
+    "level": "2",
+    "name": "Elite User",
+    "interval": "8", 
+    "downloaded": "200GB",
+    "ratio": "1.55",
+    "seedingPoints": "120000",
+    "privilege": "Elite User及以上等级用户封存账号（在控制面板）后不会被禁用账号"
+  },{
+    "level": "3",
+    "name": "Crazy User",
+    "interval": "15", 
+    "downloaded": "400GB",
+    "ratio": "2.05",
+    "seedingPoints": "200000",
+    "privilege": "首次升级CU将分别2个邀请"
+  },{
+    "level": "4",
+    "name": "Insane User",
+    "interval": "25", 
+    "downloaded": "800GB",
+    "ratio": "2.55",
+    "seedingPoints": "400000",
+    "privilege": " "
+  },{
+    "level": "5",
+    "name": "Veteran User",
+    "interval": "40", 
+    "downloaded": "1600GB",
+    "ratio": "3.05",
+    "seedingPoints": "600000",
+    "privilege": "Veteran User及以上等级用户会永远保留；首次升级VU将获得3个邀请"
+  },{
+    "level": "6",
+    "name": "Extreme User",
+    "interval": "60", 
+    "downloaded": "2400GB",
+    "ratio": "3.55",
+    "seedingPoints": "800000",
+    "privilege": " "
+  },{
+    "level": "7",
+    "name": "Ultimate User",
+    "interval": "80", 
+    "downloaded": "3200GB",
+    "ratio": "4.05",
+    "seedingPoints": "1000000",
+    "privilege": "首次升级UU将获得5邀请"
+  },{
+    "level": "8",
+    "name": "Nexus Master",
+    "interval": "100", 
+    "downloaded": "4000GB",
+    "ratio": "4.55",
+    "seedingPoints": "2000000",
+    "privilege": "首次升级NM将获得10个邀请"
+  }],
+  "searchEntry": [
+    {
+        "entry": "/torrents.php?search=$key$&search_mode=2",
+        "name": "综合",
+        "enabled": true
+    },
+    {
+        "entry": "/special.php?search=$key$&search_mode=2",
+        "name": "有声",
+        "enabled": true
+    }
+  ]
+}
