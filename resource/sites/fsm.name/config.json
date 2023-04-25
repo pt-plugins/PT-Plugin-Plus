@@ -6,6 +6,9 @@
   "tags": [ "成人" ],
   "schema": "Common",
   "host": "fsm.name",
+  "formerHosts": [
+    "nextpt.net"
+  ],
   "collaborator": [
     "Ted423",
     "IITII"
