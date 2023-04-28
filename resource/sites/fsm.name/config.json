@@ -2,10 +2,17 @@
   "name": "FSM",
   "timezoneOffset": "+0800",
   "description": "飞天拉面神教 - FSM",
-  "url": "https://nextpt.net/",
+  "url": "https://fsm.name/",
   "tags": [ "成人" ],
   "schema": "Common",
-  "host": "nextpt.net",
+  "host": "fsm.name",
+  "formerHosts": [
+    "nextpt.net"
+  ],
+  "collaborator": [
+    "Ted423",
+    "IITII"
+  ],
   "plugins": [
     {
       "name": "种子详情页面",
@@ -43,7 +50,7 @@
       },
       "url": {
         "selector": [ "a[href*='/Torrents/download?passkey=']" ],
-        "filters": [ "query.attr('href')", "'https://nextpt.net'+query" ]
+        "filters": [ "query.attr('href')", "'https://fsm.name'+query" ]
       },
       "progress": {
         "selector": [ ".progress-bar.progress-bar-success", ".progress-bar.progress-bar-info,.progress-bar.progress-bar-danger", "" ],
@@ -72,8 +79,8 @@
           "filters": [ "query.length>0" ]
         },
         "name": {
-          "selector": [ "ul.navbar-right a.dropdown-toggle" ],
-          "filters": [ "query.text().trim().replace('欢迎你，','')" ]
+          "selector": [ "#header-navbar .dropdown-toggle" ],
+          "filters": [ "query.text().trim().replace(/工具\\s?/,'')" ]
         },
         "id": {
           "selector": [ "a[href*='/Users/profile']" ],
@@ -85,26 +92,24 @@
           "filters": [ "query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0" ]
         },
         "uploaded": {
-          "selector": [ "text:has(text.uploadG):contains('上传')" ],
+          "selector": [ "#data-upload" ],
           "filters": [ "query.text().replace(/,/g,'').replace('上传量：','').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null" ]
         },
         "downloaded": {
-          "selector": [ "text:has(text.downloadR):contains('下载')" ],
+          "selector": [ "#data-download" ],
           "filters": [ "query.text().replace(/,/g,'').replace('下载量：','').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null" ]
         },
         "seeding": {
-          "selector": [ "text.pointB:contains('当前活动')" ],
-          "filters": [ "query[0].nextSibling.nextSibling.textContent.replace('⇈', '')" ]
-        },
-        "bonus": {
-          "selector": [ "a[href='/Points']" ],
-          "filters": [ "query.text().trim()" ]
+          "selector": [ "#data-now-seed" ],
+          "filters": [ "query.text().replace(/当前上传[：:]/,'')" ]
         }
       }
     },
     "userExtendInfo": {
       "page": "/Users/profile?uid=$user.id$",
       "fields": {
+        "comment": "暂不获取的数据置 0",
+        "bonusPerHour": {"value":"0"},
         "joinTime": {
           "selector": [ "th:contains('加入时间') + td" ],
           "filters": [ "dateTime(query.text().trim()).isValid()?dateTime(query.text().trim()).valueOf():query.text().trim()"]
@@ -112,11 +117,25 @@
         "levelName": {
           "selector": [ "a[href*='/Users/profile'][class*='User']" ],
           "filters": [ "query.attr('class').replace(/[^ ]*\\s/,'').replace(/User.*/,'').toUpperCase()"]
-            },
-        "seedingSize": {"value":"0"},
-        "bonusPerHour": {"value":"0"}
+        },
+        "bonus": {
+          "selector": [ "#data-seedGH" ],
+          "filters": [ "query.text()" ]
+        }
       }
     },
+      "userSeedingTorrents": {
+        "page": "/Torrents/mySeed",
+        "fields": {
+          "seedingSize": {
+            "selector": ".panel-primary .panel-body td(6)",
+            "filters": [
+              "(query != 0) ? query.sizeToNumber() : 0",
+              "query.text()"
+            ]
+          }
+        }
+      },
     "common": {
       "page": "/Torrents",
       "fields": {
