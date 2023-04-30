@@ -1,0 +1,130 @@
+{
+    "name": "UBits",
+    "timezoneOffset": "+0800",
+    "description": "ubits.club",
+    "url": "https://ubits.club/",
+    "icon": "https://ubits.club/favicon.ico",
+    "tags": ["影视"],
+    "schema": "NexusPHP",
+    "host": "ubits.club",
+    "collaborator": ["IITII"],
+    "levelRequirements": [
+      {
+        "level": 1,
+        "name": "Power User",
+        "interval": "5",
+        "downloaded": "200GB",
+        "seedingPoints": "80000",
+        "ratio": "2",
+        "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")；可以删除自己上传的字幕。"
+      },
+      {
+        "level": 2,
+        "name": "Elite User",
+        "interval": "10",
+        "downloaded": "500G",
+        "seedingPoints": "150000",
+        "ratio": "3",
+        "privilege": "Elite User及以上用户封存账号后不会被删除。"
+      },
+      {
+        "level": 3,
+        "name": "Crazy User",
+        "interval": "15",
+        "downloaded": "800G",
+        "seedingPoints": "300000",
+        "ratio": "4",
+        "privilege": "得到1个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+      },
+      {
+        "level": 4,
+        "name": "Insane User",
+        "seedingPoints": "650000",
+        "interval": "20",
+        "downloaded": "1T",
+        "ratio": "5",
+        "privilege": "得到1个邀请名额；可以查看普通日志。"
+      },
+      {
+        "level": 5,
+        "name": "Veteran User",
+        "interval": "25",
+        "downloaded": "1.5T",
+        "seedingPoints": "1000000",
+        "ratio": "6",
+        "privilege": "得到1个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+      },
+      {
+        "level": 6,
+        "name": "Extreme User",
+        "interval": "30",
+        "seedingPoints": "2000000",
+        "downloaded": "2T",
+        "ratio": "7",
+        "privilege": "得到2个邀请名额；可以更新过期的外部信息；可以查看Extreme User论坛。"
+      },
+      {
+        "level": 7,
+        "name": "Ultimate User",
+        "interval": "40",
+        "seedingPoints": "3000000",
+        "downloaded": "3T",
+        "ratio": "8",
+        "privilege": "得到3个邀请名额。"
+      },
+      {
+        "level": 8,
+        "name": "Nexus Master",
+        "seedingPoints": "5000000",
+        "interval": "60",
+        "downloaded": "4T",
+        "ratio": "10",
+        "privilege": "得到4个邀请名额。"
+      }
+    ],
+    "searchEntry": [
+      {
+        "name": "全站",
+        "enabled": true
+      }
+    ],
+    "searchEntryConfig": {
+      "fieldSelector": {
+        "progress": {
+          "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+          "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+        },
+        "status": {
+          "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+          "filters": [
+            "query ? query.attr('title') : ''",
+            "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+          ]
+        }
+      }
+    },
+    "selectors": {
+      "userSeedingTorrents": {
+        "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+        "fields": {
+          "seeding": {
+            "selector": [
+              "b:first"
+            ],
+            "filters": [
+              "query.text()"
+            ]
+          },
+          "seedingSize": {
+            "selector": "",
+            "filters": [
+              "query.text().match(/总大小：(.*?)上一页/g)",
+              "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
+              "(query != 0) ? query.sizeToNumber() : 0"
+            ]
+          }
+        }
+      }
+    }
+  }
+  
