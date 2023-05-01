@@ -101,7 +101,8 @@
           "filters": ["query.text().trim().replace(/,|\\s|\\n/g,'').sizeToNumber()"]
         },
         "levelName": {
-          "selector": "div.content span.badge-user"
+          "selector": ["div.content span.badge-user", "a.user-tag__link"],
+          "switchFilters": [["query.text()"],["query.attr('title')"]]
         },
         "messageCount": {
           "selector": [".point, ul.top-nav__icon-bar circle"],
