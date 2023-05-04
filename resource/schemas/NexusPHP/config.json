@@ -100,7 +100,7 @@
           "filters": ["query.next().find('img').attr('title')"]
         },
         "bonus": {
-          "selector": ["td.rowhead:contains('魔力') + td", "td.rowhead:contains('Karma'):contains('Points') + td", "td.rowhead:contains('麦粒') + td", "td.rowfollow:contains('魔力值')", "td.rowhead:contains('bonus') + td"],
+          "selector": ["td.rowhead:contains('魔力') + td", "td.rowhead:contains('Karma'):contains('Points') + td", "td.rowhead:contains('麦粒') + td", "td.rowfollow:contains('魔力值')", "td.rowhead:contains('bonus') + td", "td.rowhead:contains('票根') + td:first"],
           "filters": ["query.is(\":contains('魔力值:')\")||query.is(\":contains('Bonus Points:')\")?query.text().replace(/,/g,'').match(/(?:魔力值|Bonus Points).+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')", "parseFloat(query)"]
         },
         "seedingPoints": {
