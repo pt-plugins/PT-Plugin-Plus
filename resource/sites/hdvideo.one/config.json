@@ -23,7 +23,7 @@
             "interval": "8",
             "downloaded": "256GB",
             "ratio": "2.5",
-            "seedingPoints": "127680",
+            "seedingPoints": "137088",
             "privilege": "Elite User及以上用户封存账号后不会被删除。"
         },
         {
@@ -32,7 +32,7 @@
             "interval": "12",
             "downloaded": "512GB",
             "ratio": "3.0",
-            "seedingPoints": "191520",
+            "seedingPoints": "262080",
             "privilege": "可以在做种/下载/发布的时候选择匿名模式。"
         },
         {
@@ -41,7 +41,7 @@
             "interval": "18",
             "downloaded": "1TB",
             "ratio": "3.5",
-            "seedingPoints": "317520",
+            "seedingPoints": "453600",
             "privilege": "得到两个邀请名额；可以查看普通日志。"
         },
         {
@@ -50,7 +50,7 @@
             "interval": "24",
             "downloaded": "2TB",
             "ratio": "4.0",
-            "seedingPoints": "423360",
+            "seedingPoints": "604800",
             "privilege": "可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
         },
         {
@@ -59,7 +59,7 @@
             "interval": "32",
             "downloaded": "4TB",
             "ratio": "4.5",
-            "seedingPoints": "575232",
+            "seedingPoints": "806400",
             "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
         },
         {
@@ -68,7 +68,7 @@
             "interval": "40",
             "downloaded": "6TB",
             "ratio": "5.0",
-            "seedingPoints": "719040",
+            "seedingPoints": "1008000",
             "privilege": "得到三个邀请名额。"
         },
         {
@@ -77,7 +77,7 @@
             "interval": "52",
             "downloaded": "8TB",
             "ratio": "5.5",
-            "seedingPoints": "934752",
+            "seedingPoints": "1310400",
             "privilege": "得到五个邀请名额。"
         }
     ],

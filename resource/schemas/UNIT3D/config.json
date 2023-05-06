@@ -96,18 +96,20 @@
       "page": "/users/$user.name$",
       "fields": {
         "seedingSize": {
-          "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Seeding Size') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('做种体积') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('做種體積') + td"],
+          "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Seeding Size') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('做种体积') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('做種體積') + td"
+        , ".panelV2 dt:contains('Seeding Size') + dd", ".panelV2 dt:contains('做种体积') + dd", ".panelV2 dt:contains('做種體積') + dd"],
           "filters": ["query.text().trim().replace(/,|\\s|\\n/g,'').sizeToNumber()"]
         },
         "levelName": {
-          "selector": "div.content span.badge-user"
+          "selector": ["div.content span.badge-user", "a.user-tag__link"],
+          "switchFilters": [["query.text()"],["query.attr('title')"]]
         },
         "messageCount": {
           "selector": [".point, ul.top-nav__icon-bar circle"],
           "filters": ["query.length?'11':'0'"]
         },
         "joinTime": {
-          "selector": ["div.content h4:contains('Registration date')", "div.content h4:contains('注册日期')", "div.content h4:contains('註冊日期')"],
+          "selector": ["div.content h4:contains('Registration date')", "div.content h4:contains('注册日期')", "div.content h4:contains('註冊日期')", "time.profile__registration"],
           "filters": ["query.text().replace(/(Registration date|注册日期|註冊日期)/g, '').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         },
         "uploads": {
