@@ -111,7 +111,7 @@
       "merge": true,
       "fields": {
         "bonus": {
-          "selector": ["td.rowhead:contains('票根') + td"],
+          "selector": ["td.rowhead:contains('票根') + td", "td.rowhead:contains('爆米花') + td", "td.rowhead:contains('Karma Points') + td"],
           "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
         }
       }
