@@ -105,5 +105,16 @@
       "name": "全部",
       "enabled": true
     }
-  ]
+  ],
+  "selectors":{
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowhead:contains('票根') + td"],
+          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+        }
+      }
+    }
+  }
 }
