@@ -75,7 +75,7 @@
       if (site.url.lastIndexOf("/") != site.url.length - 1) {
         site.url += "/";
       }
-
+      //2023.5.10 fix byr.pt 不显示数据，下列div.icons.*是为了单独适配
       // 获取字段所在的列
       for (let index = 0; index < header.length; index++) {
         let cell = header.eq(index);
@@ -90,7 +90,7 @@
         }
 
         // 发布时间
-        if (cell.find("img.time,div.date").length) {
+        if (cell.find("img.time,div.date,div.icons.time").length) {
           fieldIndex.time = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -98,7 +98,7 @@
         }
 
         // 大小
-        if (cell.find("img.size,div[alt='size']").length) {
+        if (cell.find("img.size,div[alt='size'],div.icons.size").length) {
           fieldIndex.size = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -106,7 +106,7 @@
         }
 
         // 种子数
-        if (cell.find("img.seeders,div[alt='seeders']").length) {
+        if (cell.find("img.seeders,div[alt='seeders'],div.icons.seeders").length) {
           fieldIndex.seeders = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -114,7 +114,7 @@
         }
 
         // 下载数
-        if (cell.find("img.leechers,div[alt='leechers']").length) {
+        if (cell.find("img.leechers,div[alt='leechers'],div.icons.leechers").length) {
           fieldIndex.leechers = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
@@ -122,7 +122,7 @@
         }
 
         // 完成数
-        if (cell.find("img.snatched,div[alt='snatched']").length) {
+        if (cell.find("img.snatched,div[alt='snatched'],div.icons.snatched").length) {
           fieldIndex.completed = index;
           fieldIndex.author =
             index == fieldIndex.author ? -1 : fieldIndex.author;
