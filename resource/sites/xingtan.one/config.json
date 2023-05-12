@@ -74,6 +74,9 @@
       "privilege": "得到10个邀请名额。"
     }
   ],
+  "formerHosts": [
+    "xinglin.one"
+  ],
   "collaborator": ["koal","yum"],
   "selectors": {
     "userSeedingTorrents": {
