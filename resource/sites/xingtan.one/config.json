@@ -1,13 +1,13 @@
 {
-  "name": "杏林",
+  "name": "杏坛",
   "schema": "NexusPHP",
-  "url": "https://xinglin.one/",
-  "description": "杏林 - 积少成多，聚沙成塔。",
-  "icon": "https://xinglin.one/favicon.ico",
+  "url": "https://xingtan.one/",
+  "description": "杏坛 - 积少成多，聚沙成塔。",
+  "icon": "https://xingtan.one/favicon.ico",
   "tags": [
     "医学"
   ],
-  "host": "xinglin.one",
+  "host": "xingtan.one",
   "collaborator": "koal",
   "selectors": {
     "userSeedingTorrents": {
