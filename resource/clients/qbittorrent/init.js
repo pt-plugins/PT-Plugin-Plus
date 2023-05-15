@@ -173,6 +173,10 @@
         formData.append("tags", data.imdbId);
       }
 
+      if (data.upLoadLimit && data.upLoadLimit > 0) {
+        formData.append("upLimit", data.upLoadLimit);
+      }
+
       let url = data.url;
 
       // 磁性连接
