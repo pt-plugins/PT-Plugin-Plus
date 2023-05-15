@@ -255,6 +255,10 @@ export default class Controller {
     downloadOptions: DownloadOptions,
     host: string = ""
   ): Promise<any> {
+    // copy from sendTorrentToDefaultClient
+    let URL = Filters.parseURL(downloadOptions.url);
+    let downloadHost = URL.host;
+    let siteConfig = this.getSiteFromHost(downloadHost);
     return new Promise((resolve?: any, reject?: any) => {
       clientConfig.client
         .call(EAction.addTorrentFromURL, {
@@ -265,6 +269,7 @@ export default class Controller {
               ? false
               : downloadOptions.autoStart,
           imdbId: downloadOptions.tagIMDb ? downloadOptions.imdbId : null,
+          upLoadLimit: siteConfig.upLoadLimit,
         })
         .then((result: any) => {
           this.service.logger.add({
