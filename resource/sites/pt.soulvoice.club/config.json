@@ -74,7 +74,7 @@
   }],
   "plugins": [{
     "name": "阅听专区",
-    "pages": ["/live.php"],
+    "pages": ["/special.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
   }],
   "searchEntryConfig": {
@@ -103,7 +103,7 @@
           "enabled": true
       },
       {
-          "entry": "live.php?search=$key$&notnewword=1",
+          "entry": "special.php?search=$key$&notnewword=1",
           "name": "阅听专区",
           "enabled": false
       }
