@@ -59,7 +59,7 @@
       "fields": {
         "bonusPerHour": {
           "selector": [".panelV2 div.panel__body:first"],
-          "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
+          "filters": ["parseFloat(query.text().split('：')[1].replace(',',''))"]
         }
       }
     }
