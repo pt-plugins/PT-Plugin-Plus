@@ -13,7 +13,8 @@
   "collaborator": [
       "Gold John King",
       "枕头啊枕头",
-      "Yincircle"
+      "Yincircle",
+      "yum"
   ],
   "levelRequirements": [{
     "level": "1",
@@ -74,7 +75,7 @@
   }],
   "plugins": [{
     "name": "阅听专区",
-    "pages": ["/live.php"],
+    "pages": ["/special.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
   }],
   "searchEntryConfig": {
@@ -103,9 +104,28 @@
           "enabled": true
       },
       {
-          "entry": "live.php?search=$key$&notnewword=1",
+          "entry": "special.php?search=$key$&notnewword=1",
           "name": "阅听专区",
           "enabled": false
       }
-  ]
+  ],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["b:first"],
+          "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)上一页/g)",
+            "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
+            "(query != 0) ? query.sizeToNumber() : 0"
+          ]
+        }
+      }
+    }
+  }
 }
