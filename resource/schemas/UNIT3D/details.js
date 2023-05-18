@@ -19,7 +19,7 @@
     getDownloadURL() {
       let url = PTService.getFieldValue("downloadURL");
       if (!url) {
-        let query = $("a.btn[href*='/download/']");
+        let query = $("a[href*='/download/']:first");
         if (query.length == 0) {
           query = $("a[href*='/download_check/']");
           if (query.length > 0) {
