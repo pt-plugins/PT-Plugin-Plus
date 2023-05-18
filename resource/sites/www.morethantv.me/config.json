@@ -152,12 +152,12 @@
           "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
         },
         "downloadURLs": {
-          "selector": ["a[href*='action=download']"],
+          "selector": ["tr.group_torrent a[href*='action=download']"],
           "filters": ["query.toArray()"]
         },
         "confirmSize": {
           "selector": ["tr.group_torrent > td.nobr"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+          "filters": ["query.toArray()"]
         }
       }
     }
