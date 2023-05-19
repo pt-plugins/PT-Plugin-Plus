@@ -717,8 +717,8 @@
           "priorityTip": "Can be used for search sorting",
           "offline": "Site is offline (downtime\/shutdown)",
           "timezone": "Timezone",
-          "upLoadLimit": "Upload limit (B\/s)",
-          "upLoadLimitTip": "Upload limit (B\/s), 0 for no limit",
+          "upLoadLimit": "Upload limit",
+          "upLoadLimitTip": "Upload limit (KB\/s), 0 or empty for no limit",
           "disableMessageCount": "Display message count"
         },
         "userinfo": {
