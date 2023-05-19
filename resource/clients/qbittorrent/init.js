@@ -174,7 +174,7 @@
       }
 
       if (data.upLoadLimit && data.upLoadLimit > 0) {
-        formData.append("upLimit", data.upLoadLimit);
+        formData.append("upLimit", data.upLoadLimit * 1024);
       }
 
       let url = data.url;
