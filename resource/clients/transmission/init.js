@@ -6,7 +6,7 @@
   class Transmission {
     /**
      * 初始化实例
-     * @param {*} options 
+     * @param {*} options
      * loginName: 登录名
      * loginPwd: 登录密码
      * url: 服务器地址
@@ -56,7 +56,7 @@
           case "addTorrentFromURL":
             this.addTorrentFromUrl(data.url, data.savePath, data.autoStart, (result) => {
               resolve(result);
-            });
+            }, data.upLoadLimit);
             break;
 
             // 获取可用空间
@@ -82,9 +82,9 @@
 
     /**
      * 调用指定的RPC
-     * @param {*} options 
-     * @param {*} callback 
-     * @param {*} tags 
+     * @param {*} options
+     * @param {*} callback
+     * @param {*} tags
      */
     exec(options, callback, tags) {
       return new Promise((resolve, reject) => {
@@ -145,9 +145,9 @@
 
     /**
      * 发送请求
-     * @param {*} options 
-     * @param {*} success 
-     * @param {*} error 
+     * @param {*} options
+     * @param {*} success
+     * @param {*} error
      */
     sendRequest(options, success, error) {
       $.ajax(options).done((resultData, textStatus) => {
@@ -182,7 +182,7 @@
      * @param bool autoStart 是否自动开始
      * @param function callback 回调
      */
-    addTorrentFromUrl(url, savePath, autoStart, callback) {
+    addTorrentFromUrl(url, savePath, autoStart, callback, uploadLimit = 0) {
       var options = {
         method: "torrent-add",
         arguments: {
@@ -193,6 +193,10 @@
 
       if (savePath) {
         options.arguments["download-dir"] = savePath;
+      }
+
+      if (uploadLimit && uploadLimit > 0) {
+        options.arguments["uploadLimit"] = uploadLimit;
       }
 
       // 磁性连接
@@ -231,8 +235,8 @@
 
     /**
      * 添加种子
-     * @param {*} options 
-     * @param {*} callback 
+     * @param {*} options
+     * @param {*} callback
      */
     addTorrent(options, callback) {
       this.exec(options).then((data) => {
