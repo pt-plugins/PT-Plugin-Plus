@@ -79,6 +79,15 @@
   ],
   "collaborator": ["koal","yum"],
   "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowhead:contains('杏仁值') + td"],
+          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+        }
+      }
+    },
     "userSeedingTorrents": {
       "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
       "fields": {
