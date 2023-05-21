@@ -181,6 +181,7 @@
       "getUserInfoError": "An error occurred",
       "getUserInfoAbort": "Get user profile request has been canceled. ({siteName})",
       "getUserInfoAbortError": "Cancellation failed to get user profile request. ({siteName})",
+      "offline":"Offline",
       "headers": {
         "date": "Date",
         "site": "Site",
