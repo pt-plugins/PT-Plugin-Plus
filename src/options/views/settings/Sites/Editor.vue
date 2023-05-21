@@ -136,6 +136,11 @@
           </template>
         </v-autocomplete>
 
+        <v-text-field
+                v-model="site.upLoadLimit"
+                :label="$t('settings.sites.editor.upLoadLimit')"
+                :placeholder="$t('settings.sites.editor.upLoadLimitTip')"
+        ></v-text-field>
         <!-- 允许获取用户信息 -->
         <v-switch
           :label="$t('settings.sites.editor.allowGetUserInfo')"

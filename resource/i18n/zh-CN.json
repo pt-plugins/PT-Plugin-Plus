@@ -712,6 +712,8 @@
           "priorityTip": "可用于搜索排序",
           "offline": "站点已离线（停机/关闭）",
           "timezone": "时区",
+          "upLoadLimit": "上传速度限制",
+          "upLoadLimitTip": "上传速度限制 (KB/s), 0或不填 不限速",
           "disableMessageCount": "关闭消息提醒"
         },
         "userinfo": {
