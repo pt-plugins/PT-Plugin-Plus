@@ -178,6 +178,7 @@
       "getUserInfoError": "发生错误",
       "getUserInfoAbort": "{siteName} 获取用户资料请求已取消",
       "getUserInfoAbortError": "{siteName} 获取用户资料请求取消失败",
+      "offline":"已离线",
       "headers": {
         "date": "日期",
         "site": "站点",
