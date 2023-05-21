@@ -348,7 +348,8 @@
                 :title="$t('home.cancelRequest')">cancel</v-icon>
             </v-progress-circular>
             <span v-else>
-              <a :href="props.item.activeURL" v-if="!props.item.user.isLogged" target="_blank"
+              <span v-if="props.item.offline">{{ $t("home.offline" )}}</span>
+              <a :href="props.item.activeURL" v-else-if="!props.item.user.isLogged" target="_blank"
                 rel="noopener noreferrer nofollow" class="nodecoration">{{ formatError(props.item.user) }}</a>
               <span v-else>{{ formatError(props.item.user) }}</span>
             </span>
