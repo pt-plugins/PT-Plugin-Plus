@@ -140,6 +140,15 @@
           "filters": ["jQuery.map(query.find('td:eq(5)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
       }
+    },
+    "bonusExtendInfo": {
+      "page": "/bonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["h3:contains('Bonus Points') + div.box > strong:contains('/')","h3:contains('ボーナスポイント') + div.box > strong:contains('/')"],
+          "filters": ["parseFloat(query.text().split('/')[0])"]
+        }
+      }
     }
   },
   "supportedFeatures": {
