@@ -147,7 +147,7 @@
           "filters": ["query.attr('href')"]
         },
         "sayThanksButton": {
-          "selector": ["a.bhd-fl-button[title*='Thank']"],
+          "selector": ["div.torrentthankbuttons[title*='Thank']"],
           "filters": ["query"]
         }
       }
