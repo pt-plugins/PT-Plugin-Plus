@@ -35,7 +35,8 @@
             "interval": "15",
             "downloaded": "300GB",
             "ratio": "2.05",
-            "seedingPoints": "350000"
+            "seedingPoints": "350000",
+            "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
         },
         {
             "level": 4,
