@@ -143,7 +143,7 @@
       "merge": true,
       "fields": {
         "downloadURL": {
-          "selector": ["a.bhd-fl-button[href*='/download/']"],
+          "selector": ["a.bhd-toolx-button[href*='/download/']"],
           "filters": ["query.attr('href')"]
         },
         "sayThanksButton": {
