@@ -1,5 +1,5 @@
 {
-  "name": "GGPT.COM",
+  "name": "GGPT",
   "timezoneOffset": "+0800",
   "description": "gamegamept.com",
   "url": "https://www.gamegamept.com/",
@@ -7,143 +7,157 @@
   "tags": ["游戏"],
   "schema": "NexusPHP",
   "host": "www.gamegamept.com",
-  "collaborator": ["IITII"],
+  "collaborator": [
+      "IITII",
+      "yiyule"
+  ],
   "levelRequirements": [
     {
       "level": 1,
       "name": "Power User",
       "interval": "4",
       "downloaded": "50GB",
-      "ratio": "1.05",
-      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+      "ratio": "2",
+      "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
       "level": 2,
       "name": "Elite User",
       "interval": "8",
-      "downloaded": "120G",
-      "ratio": "1.55",
-      "privilege": "Elite User及以上用户封存账号后不会被删除。"
+      "downloaded": "100G",
+      "ratio": "2.5",
+      "privilege": "没有新权限增加"
     },
     {
       "level": 3,
       "name": "Crazy User",
       "interval": "15",
       "downloaded": "300G",
-      "ratio": "2.05",
-      "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+      "ratio": "3",
+      "privilege": "可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
       "level": 4,
       "name": "Insane User",
       "interval": "25",
       "downloaded": "500G",
-      "ratio": "2.55",
+      "ratio": "3.5",
       "privilege": "可以查看普通日志。"
     },
     {
       "level": 5,
       "name": "Veteran User",
       "interval": "40",
-      "downloaded": "750G",
-      "ratio": "3.05",
-      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+      "downloaded": "1T",
+      "ratio": "4",
+      "privilege": "可以查看其它用户的评论、帖子历史。"
     },
     {
       "level": 6,
       "name": "Extreme User",
       "interval": "60",
-      "downloaded": "1T",
-      "ratio": "3.55",
-      "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
+      "downloaded": "2T",
+      "ratio": "4.5",
+      "privilege": "可以更新过期的外部信息。游戏大仙(Extreme User)及以上用户会永远保留账号。"
     },
     {
       "level": 7,
       "name": "Ultimate User",
       "interval": "80",
-      "downloaded": "1.5T",
-      "ratio": "4.05",
-      "privilege": "得到五个邀请名额。"
+      "downloaded": "5T",
+      "ratio": "5",
+      "privilege": "这个等级会永远保留账号。"
     },
     {
       "level": 8,
       "name": "Nexus Master",
       "interval": "100",
-      "downloaded": "3T",
-      "ratio": "4.55",
-      "privilege": "得到十个邀请名额。"
+      "downloaded": "10T",
+      "ratio": "5.5",
+      "privilege": "这个等级会永远保留账号。"
     }
   ],
   "categories": [
     {
-      "entry": "*",
+      "entry": "torrents.php",
       "result": "&cat$id$=1",
       "category": [
         {
-          "id": 404,
+          "id": 401,
           "name": "PC游戏"
         },
         {
+          "id": 404,
+          "name": "索尼主机游戏"
+        },
+        {
           "id": 405,
-          "name": "Xbox游戏"
+          "name": "微软主机游戏"
         },
         {
           "id": 406,
-          "name": "Switch游戏"
+          "name": "任天堂主机游戏"
         },
         {
           "id": 407,
-          "name": "MacOS游戏"
+          "name": "苹果游戏"
         },
         {
           "id": 409,
-          "name": "Android游戏"
+          "name": "安卓游戏"
         },
         {
           "id": 410,
-          "name": "游戏杂志"
+          "name": "游戏书藉"
+        },
+        {
+          "id": 411,
+          "name": "其他"
+        }
+      ]
+    },{
+      "entry": "special.php",
+      "result": "&cat$id$=1",
+      "category": [
+        {
+          "id": 412,
+          "name": "9PC游戏"
+        },
+        {
+          "id": 413,
+          "name": "9索尼主机游戏"
+        },
+        {
+          "id": 414,
+          "name": "9KG-游戏"
+        },
+        {
+          "id": 415,
+          "name": "9任天堂主机游戏"
+        },
+        {
+          "id": 416,
+          "name": "9苹果游戏"
+        },
+        {
+          "id": 417,
+          "name": "9安卓游戏"
+        },
+        {
+          "id": 418,
+          "name": "其他"
         }
       ]
     }
   ],
   "searchEntry": [
     {
-      "name": "全站",
+      "name": "游戏",
       "enabled": true
     },
     {
-      "queryString": "cat401=1",
-      "name": "PC游戏",
-      "enabled": false
-    },
-    {
-      "queryString": "cat404=1",
-      "name": "PS游戏",
-      "enabled": false
-    },
-    {
-      "queryString": "cat405=1",
-      "name": "Xbox游戏",
-      "enabled": false
-    },
-    {
-      "queryString": "cat406=1",
-      "name": "Switch游戏",
-      "enabled": false
-    },
-    {
-      "queryString": "cat407=1",
-      "name": "MacOS游戏",
-      "enabled": false
-    },
-    {
-      "queryString": "cat409=1",
-      "name": "Android游戏",
-      "enabled": false
-    },
-    {
-      "queryString": "cat410=1",
-      "name": "游戏杂志",
+      "entry": "special.php?search=$key$&notnewword=1",
+      "name": "9KG",
       "enabled": false
     }
   ],
