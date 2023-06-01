@@ -1,0 +1,157 @@
+{
+  "name": "ICC",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "url": "https://www.icc2022.com/",
+  "description": "冰淇淋",
+  "icon": "https://www.icc2022.com/pic/logo.png",
+  "tags": [
+    "影视",
+    "综合"
+  ],
+  "host": "www.icc2022.com",
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Power User",
+      "interval": "4",
+      "downloaded": "50GB",
+      "ratio": "1.05",
+      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+    },
+    {
+      "level": 2,
+      "name": "Elite User",
+      "interval": "8",
+      "downloaded": "120GB",
+      "ratio": "1.55",
+      "privilege": "Elite User及以上用户封存账号后不会被删除。"
+    },
+    {
+      "level": 3,
+      "name": "Crazy User",
+      "interval": "15",
+      "downloaded": "300GB",
+      "ratio": "2.05",
+      "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+    },
+    {
+      "level": 4,
+      "name": "Insane User",
+      "interval": "25",
+      "downloaded": "500GB",
+      "ratio": "2.55",
+      "privilege": "可以查看普通日志。"
+    },
+    {
+      "level": 5,
+      "name": "Veteran User",
+      "interval": "40",
+      "downloaded": "750GB",
+      "ratio": "3.05",
+      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+    },
+    {
+      "level": 6,
+      "name": "Extreme User",
+      "interval": "50",
+      "downloaded": "1TB",
+      "ratio": "3.55",
+      "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
+    },
+    {
+      "level": 7,
+      "name": "Ultimate User",
+      "interval": "80",
+      "downloaded": "1.5TB",
+      "ratio": "4.05",
+      "privilege": "得到五个邀请名额。"
+    },
+    {
+      "level": 8,
+      "name": "Nexus Master",
+      "interval": "100",
+      "downloaded": "3TB",
+      "ratio": "4.55",
+      "privilege": "得到十个邀请名额。"
+    }
+  ],
+  "categories": [
+    {
+      "entry": "torrents.php",
+      "result": "&cat$id$=1",
+      "category": [
+        {
+          "id": 408,
+          "name": "音轨"
+        },
+        {
+          "id": 409,
+          "name": "其它"
+        },
+        {
+          "id": 407,
+          "name": "体育"
+        },
+        {
+          "id": 406,
+          "name": "MV"
+        },
+        {
+          "id": 403,
+          "name": "综艺"
+        },
+        {
+          "id": 402,
+          "name": "电视剧"
+        },
+        {
+          "id": 405,
+          "name": "动漫"
+        },
+        {
+          "id": 404,
+          "name": "纪录片"
+        },
+        {
+          "id": 401,
+          "name": "电影"
+        } 
+      ]
+    }
+  ],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["b:first"],
+          "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)</g)",
+            "(query && query.length>0 ) ? query[0].replace('总大小：', '').replace('<', '').trim() : 0",
+            "(query != 0) ? _self.getTotalSize([query]) : 0"
+          ]
+        }
+      }
+    }
+  },
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+        "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+      },
+      "status": {
+        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+        "filters": [
+          "query ? query.attr('title') : ''",
+          "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+        ]
+      }
+    }
+  }
+}
