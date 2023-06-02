@@ -269,7 +269,7 @@ export default class Controller {
               ? false
               : downloadOptions.autoStart,
           imdbId: downloadOptions.tagIMDb ? downloadOptions.imdbId : null,
-          upLoadLimit: siteConfig.upLoadLimit,
+          upLoadLimit: siteConfig !== undefined ? siteConfig.upLoadLimit : null,
         })
         .then((result: any) => {
           this.service.logger.add({
