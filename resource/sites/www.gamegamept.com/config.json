@@ -77,6 +77,16 @@
       "privilege": "这个等级会永远保留账号。"
     }
   ],
+  "plugins": [{
+    "name": "9KG专区",
+    "pages": ["/special.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  },{
+    "name": "种子列表封面模式",
+    "pages": ["/torrents.php", "/special.php"],
+    "scripts": ["/libs/album/album.js", "torrents.js"],
+    "styles": ["/libs/album/style.css"]
+  }],
   "categories": [
     {
       "entry": "torrents.php",
