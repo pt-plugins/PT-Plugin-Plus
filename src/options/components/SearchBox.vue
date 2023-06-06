@@ -9,7 +9,7 @@
         @click:prepend="searchTorrent()"
         :label="$t('searchBox.searchTip')"
         class="mt-2 mb-0"
-        v-model="searchKey"
+        v-model.trim="searchKey"
         clearable
         @click.stop="showSelectBox"
         @click:clear="clearSearchKey"
