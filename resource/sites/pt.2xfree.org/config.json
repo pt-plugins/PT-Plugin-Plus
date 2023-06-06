@@ -20,9 +20,9 @@
       "level": 1,
       "name": "Power User",
       "interval": "4",
-      "downloaded": "512GB",
+      "downloaded": "100GB",
       "ratio": "1.05",
-      "seedingPoints": "40000",
+      "seedingPoints": "3000",
       "privilege": "得到一个邀请名额；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
