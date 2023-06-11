@@ -230,7 +230,7 @@
     }
   },
   "selectors": {
-	"userExtendInfo": {
+    "userExtendInfo": {
       "merge": true,
       "fields": {
         "uploaded": {
@@ -238,8 +238,8 @@
           "filters": ["$(query[0].nextSibling).text().trim().sizeToNumber()"]
         }
       }
-	},
-	"userSeedingTorrents": {
+    },
+    "userSeedingTorrents": {
       "merge": true,
       "fields": {
         "seeding": {
@@ -266,6 +266,16 @@
         "uploads": {
           "selector": ["#9 td:eq(1) li:eq(4)"],
           "filters": ["parseInt(query.text().trim().split('：')[1].split('/')[0])"]
+        }
+      }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/bonus.php?show=description",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["div:contains('你当前每小时能获取')"],
+          "filters": ["parseFloat(query.text().match(/获取(\\d+(?:\\.\\d+)?)/)[1])"]
         }
       }
     },
