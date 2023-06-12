@@ -14,6 +14,54 @@
     "parseScriptFile": "getSearchResult.js",
     "queryString": "searchstr=$key$&grouping=0&inallakas=1&json=noredirect"
   },
+   "levelRequirements": [{
+                "level": "1",
+                "name": "Member",
+                "interval": "1",
+                "ratio":"0.8",
+                "uploaded": "40GiB",
+                "privilege": "create requests"
+              },{
+                "level": "2",
+                "name": "Power User",
+                "interval": "4",
+                "ratio":"1.05",
+                "uploaded": "80GiB",
+                "uploads": "1",
+                "privilege": "Power Users have access to the Power User and Invite forums. They are immune to inactivity pruning."
+              },{
+                "level": "3",
+                "name": "Elite",
+                "interval": "10",
+                "ratio":"1.05",
+                "uploaded": "500GiB",
+                "uploads": "50",
+                "privilege": "Can access the Elite forums. They may purchase invites from the bonus store."
+              },{
+                "level": "4",
+                "name": "Torrent Master",
+                "interval": "16",
+                "ratio":"1.05",
+                "uploaded": "1TiB",
+                "uploads": "200",
+                "privilege": "Can access the Torrent Master forums. They also receive 2 invites a month. (Limited at 4 invites)"
+              },{
+                "level": "5",
+                "name": "Torrent King",
+                "interval": "24",
+                "ratio":"1.05",
+                "uploaded": "5TiB",
+                "uploads": "500",
+                "privilege": "create personal collections to feature on their profiles. double posting in the forum. unlimited search and log results."
+              },{
+                "level": "6",
+                "name": "Custom Class",
+                "interval": "36",
+                "ratio":"1.05",
+                "uploaded": "10TiB",
+                "uploads": "1000",
+                "privilege": "Choosing their own class title (subject to staff approval)."
+   }],
   "searchEntry": [{
     "name": "Normal",
     "enabled": true
@@ -53,6 +101,10 @@
           "selector": ["a.user-info-bar__link[href*='type=seeding']:first"],
           "filters": ["query.attr('title').replace(/,/g,'').sizeToNumber()"]
         },
+	 "uploads": {
+          "selector": ["span[title='The parentheses contains the number of the uploads including the deleted torrents.']"],
+          "filters": ["query.text().match(/\\d+/)","query ? parseFloat(query[0].replace(/,/g, '')) : 0"]
+        },
         "downloaded": {
           "selector": ["a.user-info-bar__link[href*='type=leeching']:first"],
           "filters": ["query.attr('title').replace(/,/g,'').sizeToNumber()"]
@@ -76,6 +128,10 @@
         "bonus": {
           "selector": ["ul.list > li:contains('Points:')", "div:contains('Stats') + ul.stats > li:contains('SeedBonus:')"],
           "filters": ["query.text().replace(/,|\\n|\\s+/g,'')", "query.match(/Points.+?([\\d.]+)/)||query.match(/SeedBonus.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:0"]
+        },
+	"bonusPerHour": {
+	  "selector": ["li:contains('Points per hour:')"],
+          "filters": ["query.text().replace(/,/g, '').match(/\\d+/)","query ? parseFloat(query[0]) : 0"]
         },
         "joinTime": {
           "selector": ["ul.list > li:contains('Joined:') > span"],
