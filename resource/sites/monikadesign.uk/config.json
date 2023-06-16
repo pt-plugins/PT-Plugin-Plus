@@ -49,6 +49,14 @@
     "fieldSelector": {
       "subTitle": {
         "selector": ["td.torrent-listings-overview span:first"]
+      },
+      "progress": {
+        "selector": ["button.btn.btn-success.btn-circle"],
+        "filters": ["100"]
+      },
+      "status": {
+        "selector": ["button.btn.btn-success.btn-circle"],
+        "filters": ["2"]
       }
     }
   },
