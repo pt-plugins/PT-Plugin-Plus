@@ -11,7 +11,8 @@
   ],
   "collaborator": [
     "Ted423",
-    "IITII"
+    "IITII",
+    "tedzhu"
   ],
   "plugins": [
     {
@@ -101,7 +102,7 @@
         },
         "seeding": {
           "selector": [ "#data-now-seed" ],
-          "filters": [ "query.text().replace(/当前上传[：:]/,'')" ]
+          "filters": [ "query.text().replace(/当前做种[：:]/,'')" ]
         }
       }
     },
@@ -119,8 +120,12 @@
           "filters": [ "query.attr('class').replace(/[^ ]*\\s/,'').replace(/User.*/,'').toUpperCase()"]
         },
         "bonus": {
-          "selector": [ "#data-seedGH" ],
-          "filters": [ "query.text()" ]
+          "selector": [ "th:contains('魔力值') + td" ],
+          "filters": [ "query.text()"]
+        },
+        "seedingSize": {
+          "selector": [ "th:contains('当前做种种子') + td:nth-child(2)" ],
+          "filters": [ "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         }
       }
     },
