@@ -9,10 +9,6 @@ module.exports = {
     debugger: {
       entry: "src/debugger/index.ts",
       title: "PT-Plugin-Plus Debugger"
-    },
-    changelog: {
-      entry: "src/changelog/index.ts",
-      title: "PT-Plugin-Plus ChangeLog"
     }
   },
   productionSourceMap: false,
