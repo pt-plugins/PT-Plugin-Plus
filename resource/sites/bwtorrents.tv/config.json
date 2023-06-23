@@ -110,15 +110,13 @@
           "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         },
         "seeding": {
-          "selector": ["#ka1 table.main > tbody > tr"],
-          "filters": ["query.length-1"]
+          "selector": ["img[title='Torrents seeding'] + font span"]
         },
         "seedingSize": {
-          "selector": ["#ka1 table.main > tbody > tr:not(:eq(0))"],
-          "filters": ["jQuery.map(query.find('td:eq(6)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          "value": -1
         },
         "bonus": {
-          "value": "N/A"
+          "selector": "a[title='Bonus Points'] font"
         }
       }
     },
