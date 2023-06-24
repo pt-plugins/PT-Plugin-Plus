@@ -18,6 +18,7 @@
       "interval": "4",
       "downloaded": "50GB",
       "ratio": "2",
+      "seedingPoints": "40000",
       "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
@@ -26,6 +27,7 @@
       "interval": "8",
       "downloaded": "100G",
       "ratio": "2.5",
+      "seedingPoints": "80000",
       "privilege": "没有新权限增加"
     },
     {
@@ -34,6 +36,7 @@
       "interval": "15",
       "downloaded": "300G",
       "ratio": "3",
+      "seedingPoints": "150000",
       "privilege": "可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
@@ -42,6 +45,7 @@
       "interval": "25",
       "downloaded": "500G",
       "ratio": "3.5",
+      "seedingPoints": "250000",
       "privilege": "可以查看普通日志。"
     },
     {
@@ -50,6 +54,7 @@
       "interval": "40",
       "downloaded": "1T",
       "ratio": "4",
+      "seedingPoints": "400000",
       "privilege": "可以查看其它用户的评论、帖子历史。"
     },
     {
@@ -58,6 +63,7 @@
       "interval": "60",
       "downloaded": "2T",
       "ratio": "4.5",
+      "seedingPoints": "600000",
       "privilege": "可以更新过期的外部信息。游戏大仙(Extreme User)及以上用户会永远保留账号。"
     },
     {
@@ -66,6 +72,7 @@
       "interval": "80",
       "downloaded": "5T",
       "ratio": "5",
+      "seedingPoints": "800000",
       "privilege": "这个等级会永远保留账号。"
     },
     {
@@ -74,6 +81,7 @@
       "interval": "100",
       "downloaded": "10T",
       "ratio": "5.5",
+      "seedingPoints": "1000000",
       "privilege": "这个等级会永远保留账号。"
     }
   ],
