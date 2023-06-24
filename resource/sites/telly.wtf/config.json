@@ -4,7 +4,7 @@
   "schema": "UNIT3D",
   "url": "https://telly.wtf/",
   "icon": "https://telly.wtf/favicon.ico",
-  "tags": ["影视", "综合"],
+  "tags": ["影视", "综合", "印度"],
   "host": "telly.wtf",
   "collaborator": "bright",
   "selectors": {
