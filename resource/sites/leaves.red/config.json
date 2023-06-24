@@ -6,7 +6,7 @@
   "tags": ["有声书", "综合"],
   "schema": "NexusPHP",
   "host": "leaves.red",
-  "collaborator": "CosmoGao",
+  "collaborator": ["CosmoGao", "tedzhu"],
   "plugins": [
     {
         "isCustom": true,
@@ -103,6 +103,15 @@
   ],
   "selectors": {
     "merge": true,
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "name": {
+          "selector": ["a[href*='userdetails.php'][class*='Name']:first"],
+          "filters": ["query[0].firstChild.firstChild.nodeValue"]
+        }
+      }
+    },
     "userSeedingTorrents": {
       "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
       "fields": {
