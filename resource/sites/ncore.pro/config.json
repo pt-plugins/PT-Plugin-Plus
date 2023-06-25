@@ -1,0 +1,85 @@
+{
+  "name": "nCore",
+  "timezoneOffset": "+0000",
+  "description": "nCore",
+  "url": "https://ncore.pro/",
+  "icon": "https://ncore.pro/favicon.ico",
+  "tags": ["影视", "综合"],
+  "schema": "nCore",
+  "collaborator": "gawain",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/torrents.php?action=details&id=\\d+"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "host": "ncore.pro",
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "queryString": "search=$key$&cat=0&searchin=1&sort=2",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js",
+    "resultSelector": "div.visitedlinks:last > div[class=torrentrow]"
+  },
+  "searchEntry": [{
+    "name": "All",
+    "enabled": true
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": "#confg",
+          "attribute": "data-uid"
+        },
+        "name": {
+          "selector": "#infosav_adatok a:first-child"
+        },
+        "isLogged": {
+          "selector": ["a[href*='exit.php']"],
+          "filters": ["query.length>0"]
+        },
+        "messageCount": {
+          "selector": [".alert a[href*='inbox.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/profile.php?id=$user.id$",
+      "fields": {
+        "levelName": {
+	        "selector": ["div#infosav_adatok"],
+          "filters": ["query.text().match(/\\((.*?)\\)/)[1]"]
+	        },
+          "uploaded": {
+            "selector": ["span.list_alert"],
+            "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
+          },
+          "downloaded": {
+            "value": 0
+            },
+        
+    	  "bonus": {
+          "selector": ["div.profil_jobb_elso2:contains('Pontok száma:') + div.profil_jobb_masodik2"],
+          "filters": ["query.text().replace(/,/g, '')"]
+    	    },
+	      "joinTime": {
+          "selector": ["div.profil_jobb_masodik2 > span"],
+          "filters": ["query.attr('title') || query.text()", "dateTime(query).isValid() ? dateTime(query).valueOf() : query"]
+	        },
+        "seeding": {
+	        "selector": ["div.lista_mini_fej"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=1)?query[0]:''"]
+	      },
+        "seedingSize": {
+	        "value": -1
+	      }
+    }
+    }
+  }
+}
