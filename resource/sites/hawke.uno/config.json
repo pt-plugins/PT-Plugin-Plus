@@ -24,14 +24,19 @@
             "selector": "span[data-original-title='Class'] span"
           },
           "seeding": {
-            "selector": ".user-torrent-stats > div:nth(2) > div"
+            "selector": [".user-info td:contains('Active Seeds') + td"],
+            "filters": ["query.text().trim()"]
+          },
+          "seedingSize": {
+            "selector": [".user-info td:contains('Seeding Size') + td"],
+            "filters": ["query.text().trim().replace(/,|\\s|\\n/g,'').sizeToNumber()"]
           },
           "uploaded": {
-            "selector": [".user-info td span[data-original-title='Recorded Upload']"],
+            "selector": [".user-info td span[data-original-title='Upload Size']"],
             "filters": ["query.text().trim().replace(/,|\\s|\\n/g,'').sizeToNumber()"]
           },
           "downloaded": {
-            "selector": [".user-info td span[data-original-title='Recorded Download']"],
+            "selector": [".user-info td span[data-original-title='Download Size']"],
             "filters": ["query.text().trim().replace(/,|\\s|\\n/g,'').sizeToNumber()"]
           }
         }
