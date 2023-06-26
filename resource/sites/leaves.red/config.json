@@ -134,7 +134,7 @@
       "page": "/mybonus.php",
       "fields": {
         "bonusPerHour": {
-          "selector": ["#outer td[rowspan='3']"]
+          "selector": ["#outer td[rowspan]"]
         }
       }
     }
