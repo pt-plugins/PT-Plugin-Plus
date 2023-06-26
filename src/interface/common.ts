@@ -310,7 +310,7 @@ export interface LevelRequirement {
   // 权限
   privilege?: string;
   // 可选要求
-  alternative?: LevelRequirement;
+  alternative?: LevelRequirement[];
 }
 
 export interface Request {

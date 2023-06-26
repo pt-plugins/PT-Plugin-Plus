@@ -13,56 +13,96 @@
     "interval": "5",
     "downloaded": "50GB",
     "ratio": "1.05",
-    "privilege": "直接发布种子；查看邀请区；请求续种；上传字幕和删除自己上传的字幕"
+    "seedingPoints": "10000",
+    "uploads": "10",
+    "privilege": "可以直接发布种子；可以查看邀请区；可以上传字幕和删除自己上传的字幕"
   },{
     "level": "2", 
     "name": "Elite User",
     "interval": "10",
     "downloaded": "120GB",
     "ratio": "1.55",
-    "privilege": "可以查看排行榜"
+    "seedingPoints": "30000",
+    "uploads": "20",
+    "privilege": "可以直接发布种子；可以查看邀请区；可以上传字幕和删除自己上传的字幕"
   },{
     "level": "3", 
     "name": "Crazy User",
-    "interval": "15",
+    "interval": "24",
     "downloaded": "300GB",
     "ratio": "2.05",
-    "privilege": "无"
+    "seedingPoints": "30000",
+    "uploads": "20",
+    "privilege": "可以请求续种"
   },{
     "level": "4", 
     "name": "Insane User",
-    "interval": "25",
+    "interval": "32",
     "downloaded": "500GB",
     "ratio": "2.55",
+    "seedingPoints": "150000",
+    "uploads": "40",
     "privilege": "查看普通日志"
   },{
     "level": "5", 
     "name": "Veteran User",
-    "interval": "30",
+    "interval": "40",
     "downloaded": "750GB",
     "ratio": "3.05",
-    "privilege": "用户封存账号后不会被封禁"
+    "seedingPoints": "150000",
+    "uploads": "40",
+    "privilege": "可以查看其它用户的评论、帖子历史；封存账号后，不会因不活跃原因被临时封禁"
   },{
     "level": "6", 
     "name": "Extreme User",
-    "interval": "35",
+    "interval": "48",
     "downloaded": "1024GB",
     "ratio": "3.55",
-    "privilege": "无"
+    "alternative": [
+      {
+        "seedingPoints": "300000",
+        "uploads": "50"
+      },
+      {
+        "seedingPoints": "900000",
+        "uploads": "10"
+      }
+    ],
+    "privilege": "可2次无条件不活跃解封，可以查看邀请树统计，初次升级赠送1枚永久邀请码"
   },{
     "level": "7", 
     "name": "Ultimate User",
-    "interval": "40",
+    "interval": "56",
     "downloaded": "1536GB",
-    "ratio": "4.05",
-    "privilege": "无"
+    "ratio": "3.45",
+    "alternative": [
+      {
+        "seedingPoints": "1200000",
+        "uploads": "60"
+      },
+      {
+        "seedingPoints": "3600000",
+        "uploads": "10"
+      }
+    ],
+    "privilege": "追加1次无条件不活跃解封，可以查看邀请树图，初次升级赠送2枚永久邀请码"
   },{
     "level": "8", 
     "name": "Nexus Master",
-    "interval": "45",
+    "interval": "112",
     "downloaded": "3072GB",
     "ratio": "4.55",
-    "privilege": "永远保留账号"
+    "alternative": [
+      {
+        "seedingPoints": "2400000",
+        "uploads": "100"
+      },
+      {
+        "seedingPoints": "9600000",
+        "uploads": "10"
+      }
+    ],
+    "privilege": "用户不会因不活跃原因被临时封禁，初次升级赠送3枚永久邀请码"
   }],
   "formerHosts": [
     "pter.club"
@@ -130,10 +170,10 @@
       }
     },
     "userSeedingTorrents": {
-      "prerequisites": "!user.seeding",
-      "page": "/getusertorrentlist.php?userid=$user.id$&type=seeding",
+      "prerequisites": "!user.uploads",
+      "page": "/torrents.php?incldead=1&check=checked&search=$user.name$&search_area=3",
       "fields": {
-        "seeding": {
+        "uploads": {
           "selector": ["tr:not(:eq(0))"],
           "filters": ["query.find('td.rowfollow:eq(1)').length"]
         }
