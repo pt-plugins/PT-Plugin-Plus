@@ -5,5 +5,8 @@
     "tags": ["综合"],
     "schema": "UNIT3D",
     "host": "www.torrentseeds.org",
-    "collaborator": "ian"
+    "collaborator": "ian",
+    "searchEntryConfig": {
+        "resultSelector": "#torrent-list-table"
+    }
 }
