@@ -2,7 +2,7 @@
   class Parser {
     constructor() {
       this.haveData = false;
-      if (/\/login/.test(options.responseText)) {
+      if (!/\/logout/.test(options.responseText)) {
         options.status = ESearchResultParseStatus.needLogin; //`[${options.site.name}]需要登录后再搜索`;
         return;
       }
