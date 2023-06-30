@@ -6,24 +6,8 @@
   "tags": ["有声书", "综合"],
   "schema": "NexusPHP",
   "host": "leaves.red",
+  "cdn": ["https://leaves.red/","https://wwww.leaves.red/"],
   "collaborator": ["CosmoGao", "tedzhu"],
-  "plugins": [
-    {
-        "isCustom": true,
-        "name": "有声区",
-        "pages": [
-            "/special.php"
-        ],
-        "readonly": false,
-        "script": "",
-        "scripts": [
-            "/schemas/nexusPHP/common.js",
-            "/schemas/nexusPHP/torrents.js"
-        ],
-        "style": "",
-        "styles": []
-    }
-],
   "levelRequirements": [{
     "level": "1",
     "name": "Power User",
