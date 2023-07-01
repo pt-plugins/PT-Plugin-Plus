@@ -27,7 +27,7 @@
     "interval": "15",
     "downloaded": "240GB",
     "ratio": "2.5",
-    "seedingPoints": "180000",
+    "seedingPoints": "200000",
     "privilege": "无"
   },{
     "level": "3",
@@ -35,7 +35,7 @@
     "interval": "24",
     "downloaded": "400GB",
     "ratio": "3.0",
-    "seedingPoints": "320000",
+    "seedingPoints": "400000",
     "privilege": "查看排行榜"
   },{
     "level": "4",
@@ -43,7 +43,7 @@
     "interval": "40",
     "downloaded": "600GB",
     "ratio": "3.5",
-    "seedingPoints": "480000",
+    "seedingPoints": "640000",
     "privilege": "无"
   },{
     "level": "5",
@@ -51,7 +51,7 @@
     "interval": "60",
     "downloaded": "900GB",
     "ratio": "4.0",
-    "seedingPoints": "660000",
+    "seedingPoints": "880000",
     "privilege": "查看其它用户的评论、帖子历史"
   },{
     "level": "6",
@@ -59,23 +59,23 @@
     "interval": "80",
     "downloaded": "2048GB",
     "ratio": "4.5",
-    "seedingPoints": "880000",
+    "seedingPoints": "1200000",
     "privilege": "永远保留账号；更新过期的外部信息"
   },{
     "level": "7",
     "name": "Ultimate User",
     "interval": "100",
     "downloaded": "4096GB",
-    "ratio": "4.5",
-    "seedingPoints": "1080000",
+    "ratio": "5.0",
+    "seedingPoints": "1500000",
     "privilege": "无"
   },{
     "level": "8",
     "name": "Nexus Master",
     "interval": "112",
     "downloaded": "8192GB",
-    "ratio": "5.0",
-    "seedingPoints": "1280000",
+    "ratio": "6.0",
+    "seedingPoints": "1800000",
     "privilege": "无"
   }],
   "collaborator": "Audiences",
