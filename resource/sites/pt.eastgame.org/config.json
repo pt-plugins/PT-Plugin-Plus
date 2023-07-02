@@ -73,5 +73,22 @@
         "ratio": "8.55",
         "privilege": "得到十个邀请名额。"
     }
-  ]
+  ],
+  "searchEntryConfig": {
+      "fieldSelector": {
+          "progress": {
+              "selector": ["div[title*='正在做种']", ""],
+              "switchFilters": [
+                  ["100"],
+                  ["null"]
+              ]
+          },
+          "status": {
+              "selector": ["div[title*='正在做种']"],
+              "switchFilters": [
+                  ["2"]
+              ]
+          }
+      }
+  }
 }
