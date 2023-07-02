@@ -24,7 +24,7 @@
     "ratio": "1.55",
     "seedingPoints": "30000",
     "uploads": "20",
-    "privilege": "可以直接发布种子；可以查看邀请区；可以上传字幕和删除自己上传的字幕"
+    "privilege": "可以请求续种"
   },{
     "level": "3", 
     "name": "Crazy User",
@@ -33,7 +33,7 @@
     "ratio": "2.05",
     "seedingPoints": "30000",
     "uploads": "20",
-    "privilege": "可以请求续种"
+    "privilege": "可以查看排行榜"
   },{
     "level": "4", 
     "name": "Insane User",
@@ -42,7 +42,7 @@
     "ratio": "2.55",
     "seedingPoints": "150000",
     "uploads": "40",
-    "privilege": "查看普通日志"
+    "privilege": "可以查看普通日志"
   },{
     "level": "5", 
     "name": "Veteran User",
