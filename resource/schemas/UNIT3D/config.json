@@ -27,7 +27,7 @@
     }],
     "fieldSelector": {
       "progress": {
-        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle, button.btn.btn-info.btn-circle", ""],
+        "selector": ["button.btn.btn-success.btn-circle, i[title*='Seeding']", "button.btn.btn-warning.btn-circle, button.btn.btn-info.btn-circle", ""],
         "switchFilters": [
           ["100"],
           ["0"],
@@ -35,7 +35,7 @@
         ]
       },
       "status": {
-        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle", "button.btn.btn-info.btn-circle"],
+        "selector": ["button.btn.btn-success.btn-circle, i[title*='Seeding']", "button.btn.btn-warning.btn-circle", "button.btn.btn-info.btn-circle"],
         "switchFilters": [
           ["2"],
           ["1"],
