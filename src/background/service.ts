@@ -557,7 +557,7 @@ export default class PTPlugin {
    */
   public upgrade() {
     // 显示更新日志
-    this.controller.openURL("changelog.html");
+    // this.controller.openURL("changelog.html");
     setTimeout(() => {
       this.userData.upgrade();
     }, 1000);

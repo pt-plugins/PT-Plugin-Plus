@@ -1,13 +1,13 @@
 {
-    "name": "OKPT",
+    "name": "影",
     "timezoneOffset": "+0800",
-    "description": "okpt.net",
-    "url": "https://www.okpt.net/",
-    "icon": "https://www.okpt.net/favicon.ico",
+    "description": "shadowflow.org",
+    "url": "https://shadowflow.org/",
+    "icon": "https://shadowflow.org/favicon.ico",
 
-    "tags": ["综合","音乐","写真"],
+    "tags": ["影视"],
     "schema": "NexusPHP",
-    "host": "www.okpt.net",
+    "host": "shadowflow.org",
     "collaborator": ["yiyule"],
     "levelRequirements": [
       {
@@ -15,92 +15,69 @@
         "name": "Power User",
         "interval": "4",
         "downloaded": "50GB",
-        "ratio": "2",
-        "seedingPoints": "40000",
-        "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+        "ratio": "1.05",
+        "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
       },
       {
         "level": 2,
         "name": "Elite User",
         "interval": "8",
         "downloaded": "100G",
-        "ratio": "2.5",
-        "seedingPoints": "80000",
-        "privilege": "没有新权限增加"
+        "ratio": "1.55",
+        "privilege": "Elite User及以上用户封存账号后不会被删除。"
       },
       {
         "level": 3,
         "name": "Crazy User",
         "interval": "15",
         "downloaded": "300G",
-        "ratio": "3",
-        "seedingPoints": "150000",
-        "privilege": "可以在做种/下载/发布的时候选择匿名模式。"
+        "ratio": "2.05",
+        "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
       },
       {
         "level": 4,
         "name": "Insane User",
         "interval": "25",
         "downloaded": "500G",
-        "ratio": "3.5",
-        "seedingPoints": "250000",
+        "ratio": "2.55",
         "privilege": "可以查看普通日志。"
       },
       {
         "level": 5,
         "name": "Veteran User",
         "interval": "40",
-        "downloaded": "1T",
-        "ratio": "4",
-        "seedingPoints": "400000",
-        "privilege": "可以查看其它用户的评论、帖子历史。"
+        "downloaded": "750G",
+        "ratio": "3.05",
+        "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
       },
       {
         "level": 6,
         "name": "Extreme User",
         "interval": "60",
-        "downloaded": "2T",
-        "ratio": "4.5",
-        "seedingPoints": "600000",
-        "privilege": "可以更新过期的外部信息。六级烧伤(Extreme User)及以上用户会永远保留账号。"
+        "downloaded": "1T",
+        "ratio": "3.55",
+        "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
       },
       {
         "level": 7,
         "name": "Ultimate User",
         "interval": "80",
-        "downloaded": "5T",
-        "ratio": "5",
-        "seedingPoints": "800000",
-        "privilege": "这个等级会永远保留账号。"
+        "downloaded": "1.5T",
+        "ratio": "4.05",
+        "privilege": "得到五个邀请名额。"
       },
       {
         "level": 8,
         "name": "Nexus Master",
         "interval": "100",
-        "downloaded": "10T",
-        "ratio": "5.5",
-        "seedingPoints": "1000000",
-        "privilege": "这个等级会永远保留账号。"
+        "downloaded": "3T",
+        "ratio": "4.55",
+        "privilege": "得到十个邀请名额。"
       }
     ],
-    "plugins": [{
-      "name": "音乐写真专区",
-      "pages": ["/special.php"],
-      "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
-    },{
-      "name": "种子列表封面模式",
-      "pages": ["/torrents.php", "/special.php"],
-      "scripts": ["/libs/album/album.js", "torrents.js"],
-      "styles": ["/libs/album/style.css"]
-    }],
     "searchEntry": [
       {
-        "name": "综合",
-        "enabled": true
-      },
-      {
-        "entry": "special.php?search=$key$&notnewword=1",
-        "name": "音乐写真",
+        "name": "影视区",
         "enabled": true
       }
     ],
@@ -130,61 +107,19 @@
             "name": "体育"
           },
           {
-            "id": 436,
-            "name": "漫画书"
-          },
-          {
             "id": 405,
             "name": "动漫"
-          },
-          {
-            "id": 434,
-            "name": "书刊"
-          },
-          {
-            "id": 432,
-            "name": "有声书"
           },
           {
             "id": 406,
             "name": "MV"
           },
           {
-            "id": 413,
-            "name": "游戏"
-          },
-          {
-            "id": 431,
-            "name": "软件"
+            "id": 408,
+            "name": "音频文件"
           },
           {
             "id": 409,
-            "name": "其他"
-          }
-        ]
-      },
-      {
-        "entry": "special.php",
-        "result": "&cat$id$=1",
-        "category": [
-          {
-            "id": 412,
-            "name": "写真图影"
-          },
-          {
-            "id": 411,
-            "name": "写真影片"
-          },
-          {
-            "id": 410,
-            "name": "写真图片"
-          },
-          {
-            "id": 415,
-            "name": "音乐"
-          },
-          {
-            "id": 416,
             "name": "其他"
           }
         ]

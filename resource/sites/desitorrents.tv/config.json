@@ -1,0 +1,52 @@
+{
+  "name": "Desitorrents",
+  "timezoneOffset": "+0000",
+  "schema": "UNIT3D",
+  "url": "https://desitorrents.tv/",
+  "icon": "https://desitorrents.tv/favicon.ico",
+  "tags": ["影视", "综合", "印度"],
+  "host": "desitorrents.tv",
+  "levelRequirements": [{
+      "level": "1",
+      "name": "PowerUser",
+      "interval": "4",
+      "uploaded": "1TB",
+      "privilege": "Power User Special Forum Acess"
+  }, {
+      "level": "2",
+      "name": "SuperUser",
+      "interval": "8",
+      "uploaded": "5TB",
+      "privilege": "Automatic torrent approvals, Super User Special Forum Acess"
+  }, {
+      "level": "3",
+      "name": "ExtremeUser",
+      "interval": "13",
+      "uploaded": "20TB",
+      "privilege": "Invite forums"
+  }, {
+      "level": "4",
+      "name": "InsaneUser",
+      "interval": "26",
+      "uploaded": "50TB",
+      "privilege": ""
+  }, {
+      "level": "5",
+      "name": "Veteran",
+      "interval": "52",
+      "uploaded": "100TB",
+      "privilege": ""
+  }],
+  "collaborator": "bright",
+  "selectors": {
+    "hnrExtendInfo": {
+      "page": "/users/$user.name$/torrents?unsatisfied=include&perPage=100&hitrun=exclude&immune=exclude",
+      "fields": {
+        "unsatisfieds": {
+          "selector": [".table-responsive tbody tr"],
+          "filters": ["query ? query.length : 0"]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "telly.wtf",
+  "timezoneOffset": "+0000",
+  "schema": "UNIT3D",
+  "url": "https://telly.wtf/",
+  "icon": "https://telly.wtf/favicon.ico",
+  "tags": ["影视", "综合", "印度"],
+  "host": "telly.wtf",
+  "collaborator": "bright",
+  "selectors": {
+    "hnrExtendInfo": {
+      "page": "/users/$user.name$/torrents?unsatisfied=include&perPage=100&hitrun=exclude&immune=exclude",
+      "fields": {
+        "unsatisfieds": {
+          "selector": [".table-responsive tbody tr"],
+          "filters": ["query ? query.length : 0"]
+        }
+      }
+    }
+  }
+}

@@ -936,7 +936,7 @@ export default Vue.extend({
         this.addCategoryResult(item);
       });
 
-      this.searchResult.sites[allSites] = this.datas;
+      this.searchResult.sites[allSites] = (this.datas as SearchResultItem[]).sort((a , b) => a.title.localeCompare(b.title, undefined, {sensitivity: 'base'}));
     },
 
     /**

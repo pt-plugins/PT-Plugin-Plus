@@ -27,7 +27,7 @@
     }],
     "fieldSelector": {
       "progress": {
-        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle, button.btn.btn-info.btn-circle", ""],
+        "selector": ["button.btn.btn-success.btn-circle, i[title*='Seeding']", "button.btn.btn-warning.btn-circle, button.btn.btn-info.btn-circle", ""],
         "switchFilters": [
           ["100"],
           ["0"],
@@ -35,7 +35,7 @@
         ]
       },
       "status": {
-        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle", "button.btn.btn-info.btn-circle"],
+        "selector": ["button.btn.btn-success.btn-circle, i[title*='Seeding']", "button.btn.btn-warning.btn-circle", "button.btn.btn-info.btn-circle"],
         "switchFilters": [
           ["2"],
           ["1"],
@@ -70,19 +70,19 @@
           ]
         },
         "uploaded": {
-          "selector": ["div.ratio-bar i.fa-arrow-up, ul.top-nav__ratio-bar i.fa-arrow-up, span[title='Upload'], span[title='上传']"],
+          "selector": ["div.ratio-bar i.fa-arrow-up, li[title='Upload'] i.fa-arrow-up, ul.top-nav__ratio-bar i.fa-arrow-up, span[title='Upload'], span[title='上传']"],
           "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+ ?[ZEPTGMK]?i?B/)", "(query && query.length>=1)?(query[0]).sizeToNumber():0"]
         },
         "downloaded": {
-          "selector": ["div.ratio-bar i.fa-arrow-down, ul.top-nav__ratio-bar i.fa-arrow-down, span[title='Download'], span[title='下载']"],
+          "selector": ["div.ratio-bar i.fa-arrow-down, li[title='Download'] i.fa-arrow-down, ul.top-nav__ratio-bar i.fa-arrow-down, span[title='Download'], span[title='下载']"],
           "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+ ?[ZEPTGMK]?i?B/)", "(query && query.length>=1)?(query[0]).sizeToNumber():0"]
         },
         "bonus": {
-          "selector": ["div.ratio-bar i.fa-coins, ul.top-nav__ratio-bar i.fa-coins, a[title='My Bonus Points'], a[title='我的魔力']"],
+          "selector": ["div.ratio-bar i.fa-coins, li[title='My Bonus Points'] i.fa-coins, ul.top-nav__ratio-bar i.fa-coins, a[title='My Bonus Points'], a[title='我的魔力']"],
           "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+/)", "(query && query.length>=1)?parseFloat(query[0]):0"]
         },
         "seeding": {
-          "selector": ["div.ratio-bar i.fa-upload, ul.top-nav__ratio-bar i.fa-upload, span[title='Seeding'], span[title='做种']"],
+          "selector": ["div.ratio-bar i.fa-upload, li[title='Seeding'] i.fa-upload, ul.top-nav__ratio-bar i.fa-upload, span[title='Seeding'], span[title='做种']"],
           "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+/)", "(query && query.length>=1)?parseFloat(query[0]):0"]
         },
         "bonusPage": {

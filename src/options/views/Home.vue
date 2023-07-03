@@ -223,57 +223,59 @@
                       </template>
                       <template v-if="levelRequirement.alternative">
                         <v-icon small :title="$t('home.levelRequirement.alternative')">filter_1</v-icon>(
-                        <template v-if="levelRequirement.alternative.requiredDate">
-                          {{ levelRequirement.alternative.requiredDate }};
-                        </template>
-                        <template v-if="levelRequirement.alternative.uploaded">
-                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uploaded')">expand_less</v-icon>{{ levelRequirement.alternative.uploaded }};
-                        </template>
-                        <template v-if="levelRequirement.alternative.uploads">
-                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uploads')">file_upload</v-icon>{{ levelRequirement.alternative.uploads }};
-                        </template>
-                        <template v-if="levelRequirement.alternative.downloaded">
-                          <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloaded')">expand_more</v-icon>{{ levelRequirement.alternative.downloaded }};
-                        </template>
-                        <template v-if="levelRequirement.alternative.trueDownloaded">
-                          {{ $t("home.levelRequirement.trueDownloaded") }}
-                          {{ levelRequirement.alternative.trueDownloaded }};
-                        </template>
-                        <template v-if="levelRequirement.alternative.downloads">
-                          <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ levelRequirement.alternative.downloads }};
-                        </template>
-                        <template v-if="levelRequirement.alternative.ratio">
-                          <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.ratio')">balance</v-icon>{{ levelRequirement.alternative.ratio }};
-                        </template>
-                        <template v-if="levelRequirement.alternative.bonus">
-                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.bonus')">attach_money</v-icon>{{ levelRequirement.alternative.bonus |
-                              formatInteger
-                          }};
-                        </template>
-                        <template v-if="levelRequirement.alternative.seedingPoints">
-                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.alternative.seedingPoints
-                              | formatInteger
-                          }};
-                        </template>
-                        <template v-if="levelRequirement.alternative.seedingTime">
-                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingTime')">timer</v-icon>{{ levelRequirement.alternative.seedingTime
-                              | formatInteger
-                          }};
-                        </template>
-                        <template v-if="levelRequirement.alternative.classPoints">
-                          <v-icon small color="yellow darken-4" :title="$t('home.levelRequirement.classPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.alternative.classPoints
-                              | formatInteger
-                          }};
-                        </template>
-                        <template v-if="levelRequirement.alternative.uniqueGroups">
-                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uniqueGroups')">library_music</v-icon>{{ levelRequirement.alternative.uniqueGroups
-                              | formatInteger
-                          }};
-                        </template>
-                        <template v-if="levelRequirement.alternative.perfectFLAC">
-                          <v-icon small color="green darken-4" :title="$t('home.levelRequirement.perfectFLAC')">diamond</v-icon>{{ levelRequirement.alternative.perfectFLAC
-                              | formatInteger
-                          }};
+                        <template v-for="option in levelRequirement.alternative">
+                          [<template v-if="option.requiredDate">
+                          {{ option.requiredDate }};
+                          </template>
+                          <template v-if="option.uploaded">
+                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uploaded')">expand_less</v-icon>{{ option.uploaded }};
+                          </template>
+                          <template v-if="option.uploads">
+                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uploads')">file_upload</v-icon>{{ option.uploads }};
+                          </template>
+                          <template v-if="option.downloaded">
+                            <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloaded')">expand_more</v-icon>{{ option.downloaded }};
+                          </template>
+                          <template v-if="option.trueDownloaded">
+                            {{ $t("home.levelRequirement.trueDownloaded") }}
+                            {{ option.trueDownloaded }};
+                          </template>
+                          <template v-if="option.downloads">
+                            <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ option.downloads }};
+                          </template>
+                          <template v-if="option.ratio">
+                            <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.ratio')">balance</v-icon>{{ option.ratio }};
+                          </template>
+                          <template v-if="option.bonus">
+                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.bonus')">attach_money</v-icon>{{ option.bonus |
+                                formatInteger
+                            }};
+                          </template>
+                          <template v-if="option.seedingPoints">
+                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingPoints')">energy_savings_leaf</v-icon>{{ option.seedingPoints
+                                | formatInteger
+                            }};
+                          </template>
+                          <template v-if="option.seedingTime">
+                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingTime')">timer</v-icon>{{ option.seedingTime
+                                | formatInteger
+                            }};
+                          </template>
+                          <template v-if="option.classPoints">
+                            <v-icon small color="yellow darken-4" :title="$t('home.levelRequirement.classPoints')">energy_savings_leaf</v-icon>{{ option.classPoints
+                                | formatInteger
+                            }};
+                          </template>
+                          <template v-if="option.uniqueGroups">
+                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.uniqueGroups')">library_music</v-icon>{{ option.uniqueGroups
+                                | formatInteger
+                            }};
+                          </template>
+                          <template v-if="option.perfectFLAC">
+                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.perfectFLAC')">diamond</v-icon>{{ option.perfectFLAC
+                                | formatInteger
+                            }};
+                          </template>];
                         </template>);
                       </template>
                       {{ levelRequirement.privilege }}
@@ -660,36 +662,43 @@ export default Vue.extend({
           }
 
           user.nextLevels = [] as LevelRequirement[];
-          if (site.levelRequirements[0].alternative) {
-            for(var key of Object.keys(site.levelRequirements[0].alternative) as Array<keyof LevelRequirement>) {
-              for (var levelRequirement of site.levelRequirements) {
+          for (var levelRequirement of site.levelRequirements) {
+            if (levelRequirement.alternative)
+            {
+              for (var option of levelRequirement.alternative)
+              {
                 var newLevelRequirement = Object.assign({}, levelRequirement)
-                newLevelRequirement[key] = levelRequirement.alternative ? levelRequirement.alternative[key] as any : undefined;
+                for(var key of Object.keys(option) as Array<keyof LevelRequirement>) {
+                  {
+                    
+                    if (option[key])
+                      newLevelRequirement[key] = option[key] as any
+                  }
+                }
+                //console.log(newLevelRequirement)
                 var nextLevel = this.calculateNextLeve(user, newLevelRequirement);
                 if (nextLevel) {
-                  console.log(newLevelRequirement)
-                  console.log(nextLevel)
-                  if (user.nextLevels.length == 0 || Number(nextLevel.level) == Number(user.nextLevels[0].level))              
-                    user.nextLevels.push(nextLevel);
-                  else if (Number(nextLevel.level) > Number(user.nextLevels[0].level))
-                  {
-                    user.nextLevels = [] as LevelRequirement[];
-                    user.nextLevels.push(nextLevel);
-                  }
-                    
+                  //console.log(nextLevel)
+                  //console.log(user.uploads)
+                  user.nextLevels.push(nextLevel);
+                } else {
+                  user.nextLevels = [] as LevelRequirement[];
                   break;
                 }
               }
-            };
-          }
-          else {
-            for (var levelRequirement of site.levelRequirements) {
+
+              if (user.nextLevels.length)
+                  break;
+            }
+            else 
+            {
               let nextLevel = this.calculateNextLeve(user, levelRequirement);
               if (nextLevel) {
                 if (user.nextLevels.length) {
                   continue
                 }
                 user.nextLevels.push(nextLevel);
+                break;
               } else {
                 user.nextLevels = []
               }
