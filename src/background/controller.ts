@@ -263,11 +263,12 @@ export default class Controller {
       clientConfig.client
         .call(EAction.addTorrentFromURL, {
           url: downloadOptions.url,
-          savePath: downloadOptions.savePath,
+          savePath: downloadOptions.savePath !== undefined && downloadOptions.savePath.includes(',') ? downloadOptions.savePath.split(',')[0] : downloadOptions.savePath,
           autoStart:
             downloadOptions.autoStart === undefined
               ? false
               : downloadOptions.autoStart,
+          category: downloadOptions.savePath !== undefined && downloadOptions.savePath.includes(',') ? downloadOptions.savePath.split(',')[1] : null,
           imdbId: downloadOptions.tagIMDb ? downloadOptions.imdbId : null,
           upLoadLimit: siteConfig !== undefined ? siteConfig.upLoadLimit : null,
         })
