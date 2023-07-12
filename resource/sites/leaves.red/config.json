@@ -93,6 +93,10 @@
         "name": {
           "selector": ["a[href*='userdetails.php'][class*='Name']:first"],
           "filters": ["query[0].firstChild.firstChild.nodeValue"]
+        },
+        "messageCount": {
+          "selector": ["a[href*='messages.php']:contains('新短讯！')", "a[href*='messages.php']:contains('new messages!')", "a[href*='messages.php']:contains('新短訊！')"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         }
       }
     },
