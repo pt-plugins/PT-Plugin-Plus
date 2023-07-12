@@ -8,6 +8,12 @@
   "host": "leaves.red",
   "cdn": ["https://leaves.red/","https://wwww.leaves.red/"],
   "collaborator": ["CosmoGao", "tedzhu"],
+  "plugins": [
+    {
+    "name": "种子列表",
+    "pages": ["/special.php", "/games.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }],
   "levelRequirements": [{
     "level": "1",
     "name": "Power User",
@@ -75,14 +81,24 @@
   }],
   "searchEntry": [
     {
-        "entry": "/torrents.php?search=$key$&search_mode=2",
-        "name": "综合",
-        "enabled": true
+      "entry": "/search.php?search=$key$&search_area=0",
+      "name": "全站",
+      "enabled": true
     },
     {
-        "entry": "/special.php?search=$key$&search_mode=2",
-        "name": "有声",
-        "enabled": true
+      "entry": "/torrents.php?search=$key$&search_mode=2",
+      "name": "综合",
+      "enabled": true
+    },
+    {
+      "entry": "/special.php?search=$key$&search_mode=2",
+      "name": "有声",
+      "enabled": true
+    },
+    {
+      "entry": "/games.php?search=$key$&search_mode=2",
+      "name": "游戏",
+      "enabled": true
     }
   ],
   "selectors": {
