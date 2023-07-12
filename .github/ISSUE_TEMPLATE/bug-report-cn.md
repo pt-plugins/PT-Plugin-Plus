@@ -9,9 +9,9 @@ assignees: ''
 
 **请确认你已经做过并了解如下步骤，在 `[]` 中填入 `x` 选中**
 - [ ] 仔细看并搜索过[Wiki](https://github.com/pt-plugins/PT-Plugin-Plus/wiki)
-- [ ] 请确认你的版本比当前[Pre-release](https://github.com/pt-plugins/PT-Plugin-Plus/tags)要新，我们建议使用crx版本作为标准。
-- [ ] 搜素过Issue，确认没有相关问题。
-- [ ] 不理解、询问问题或者使用上的问题请使用Discuissions。
+- [ ] 请确认你的版本比当前[Pre-release](https://github.com/pt-plugins/PT-Plugin-Plus/tags)要新，我们建议使用crx版本作为标准
+- [ ] 搜素过Issue，确认没有相关问题
+- [ ] 不理解、询问问题或者使用上的问题请使用Discuissions
 
 <!--
 为了更快解决您的问题，请提供以下信息，谢谢
