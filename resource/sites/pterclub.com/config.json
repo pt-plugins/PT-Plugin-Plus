@@ -31,8 +31,8 @@
     "interval": "24",
     "downloaded": "300GB",
     "ratio": "2.05",
-    "seedingPoints": "30000",
-    "uploads": "20",
+    "seedingPoints": "80000",
+    "uploads": "30",
     "privilege": "可以查看排行榜"
   },{
     "level": "4", 
@@ -49,15 +49,6 @@
     "interval": "40",
     "downloaded": "750GB",
     "ratio": "3.05",
-    "seedingPoints": "150000",
-    "uploads": "40",
-    "privilege": "可以查看其它用户的评论、帖子历史；封存账号后，不会因不活跃原因被临时封禁"
-  },{
-    "level": "6", 
-    "name": "Extreme User",
-    "interval": "48",
-    "downloaded": "1024GB",
-    "ratio": "3.55",
     "alternative": [
       {
         "seedingPoints": "300000",
@@ -68,17 +59,34 @@
         "uploads": "10"
       }
     ],
+    "privilege": "可以查看其它用户的评论、帖子历史；封存账号后，不会因不活跃原因被临时封禁"
+  },{
+    "level": "6", 
+    "name": "Extreme User",
+    "interval": "48",
+    "downloaded": "1024GB",
+    "ratio": "3.55",
+    "alternative": [
+      {
+        "seedingPoints": "600000",
+        "uploads": "60"
+      },
+      {
+        "seedingPoints": "1800000",
+        "uploads": "10"
+      }
+    ],
     "privilege": "可2次无条件不活跃解封，可以查看邀请树统计，初次升级赠送1枚永久邀请码"
   },{
     "level": "7", 
     "name": "Ultimate User",
     "interval": "56",
     "downloaded": "1536GB",
-    "ratio": "3.45",
+    "ratio": "4.05",
     "alternative": [
       {
         "seedingPoints": "1200000",
-        "uploads": "60"
+        "uploads": "70"
       },
       {
         "seedingPoints": "3600000",
