@@ -49,6 +49,10 @@
         "selector": [ "a[href*='/Torrents/details']" ],
         "filters": [ "query" ]
       },
+      "link": {
+        "selector": [ "a[href*='/Torrents/details']" ],
+        "filters": [ "query.attr('href')" ]
+      },
       "url": {
         "selector": [ "a[href*='/Torrents/download?passkey=']" ],
         "filters": [ "query.attr('href')", "'https://fsm.name'+query" ]
