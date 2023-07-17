@@ -159,5 +159,6 @@
         }
       }
     }
-  }
+  },
+  "cdn": ["https://www.empornium.sx/","https://www.empornium.is/"]
 }
