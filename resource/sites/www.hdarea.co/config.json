@@ -2,9 +2,9 @@
   "name": "HDArea",
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
-  "url": "https://www.hdarea.co/",
+  "url": "https://www.hdarea.club/",
   "description": "高清世界",
-  "icon": "https://www.hdarea.co/favicon.ico",
+  "icon": "https://www.hdarea.club/favicon.ico",
   "tags": [
     "影视",
     "综合"
