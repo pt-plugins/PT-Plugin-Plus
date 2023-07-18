@@ -1,0 +1,292 @@
+{
+  "name": "HDArea",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "url": "https://www.hdarea.club/",
+  "description": "高清世界",
+  "icon": "https://www.hdarea.club/favicon.ico",
+  "tags": [
+    "影视",
+    "综合"
+  ],
+  "host": "www.hdarea.co",
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Power User",
+      "interval": "4",
+      "downloaded": "50GB",
+      "ratio": "1.05",
+      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；；可以请求续种； 可以发送邀请（开放邀请权限时）； 可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+    },
+    {
+      "level": 2,
+      "name": "Elite User",
+      "interval": "8",
+      "downloaded": "120GB",
+      "ratio": "3",
+      "privilege": "无"
+    },
+    {
+      "level": 3,
+      "name": "Crazy User",
+      "interval": "10",
+      "downloaded": "300GB",
+      "ratio": "3.5",
+      "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+    },
+    {
+      "level": 4,
+      "name": "Insane User",
+      "interval": "12",
+      "downloaded": "750GB",
+      "ratio": "4",
+      "privilege": "可以查看普通日志。Insane User及以上用户封存账号后不会被删除。"
+    },
+    {
+      "level": 5,
+      "name": "Veteran User",
+      "interval": "20",
+      "downloaded": "1024GB",
+      "ratio": "4.5",
+      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+    },
+    {
+      "level": 6,
+      "name": "Extreme User",
+      "interval": "25",
+      "downloaded": "2TB",
+      "ratio": "5",
+      "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
+    },
+    {
+      "level": 7,
+      "name": "Ultimate User",
+      "interval": "30",
+      "downloaded": "5TB",
+      "ratio": "5.5",
+      "privilege": "得到五个邀请名额。"
+    },
+    {
+      "level": 8,
+      "name": "Nexus Master",
+      "interval": "40",
+      "downloaded": "10TB",
+      "ratio": "6",
+      "privilege": "得到十个邀请名额。"
+    }
+  ],
+  "collaborator": "lzl20110",
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "table[title='downloading'] > tbody > tr > td > div",
+          "table[title='seeding'] > tbody > tr > td > div",
+          "table[title='Stopped'] > tbody > tr > td > div",
+          "table[title='completed'] > tbody > tr > td > div"
+        ],
+        "filters": [ "query.attr('style')||''", "query.match(/width:.?(\\d.+)%/)", "(query && query.length>=2)?query[1]:null" ]
+      },
+      "status": {
+        "selector": [
+          "table[title='downloading']",
+          "table[title='seeding']",
+          "table[title='Stopped']",
+          "table[title='completed']"
+        ],
+        "switchFilters": [
+          [ "1" ],
+          [ "2" ],
+          [ "3" ],
+          [ "255" ]
+        ]
+      }
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat401=1",
+      "name": "Movies Blu-ray",
+      "enabled": false
+    },
+    {
+      "queryString": "cat415=1",
+      "name": "Movies REMUX",
+      "enabled": false
+    },
+    {
+      "queryString": "cat416=1",
+      "name": "Movies 3D",
+      "enabled": false
+    },
+    {
+      "queryString": "cat410=1",
+      "name": "Movies 1080p",
+      "enabled": false
+    },
+    {
+      "queryString": "cat411=1",
+      "name": "Movies 720p",
+      "enabled": false
+    },
+    {
+      "queryString": "cat414=1",
+      "name": "Movies DVD",
+      "enabled": false
+    },
+    {
+      "queryString": "cat412=1",
+      "name": "Movies WEB-DL",
+      "enabled": false
+    },
+    {
+      "queryString": "cat413=1",
+      "name": "Movies HDTV",
+      "enabled": false
+    },
+    {
+      "queryString": "cat417=1",
+      "name": "Movies iPad",
+      "enabled": false
+    },
+    {
+      "queryString": "cat404=1",
+      "name": "Documentaries",
+      "enabled": false
+    },
+    {
+      "queryString": "cat405=1",
+      "name": "Animations",
+      "enabled": false
+    },
+    {
+      "queryString": "cat402=1",
+      "name": "TV Series",
+      "enabled": false
+    },
+    {
+      "queryString": "cat403=1",
+      "name": "TV Shows",
+      "enabled": false
+    },
+    {
+      "queryString": "cat406=1",
+      "name": "Music Videos",
+      "enabled": false
+    },
+    {
+      "queryString": "cat407=1",
+      "name": "Sports",
+      "enabled": false
+    },
+    {
+      "queryString": "cat409=1",
+      "name": "Misc",
+      "enabled": false
+    },
+    {
+      "queryString": "cat408=1",
+      "name": "HQ Audio",
+      "enabled": false
+    }
+  ],
+  "categories": [
+    {
+      "entry": "torrents.php",
+      "result": "&cat$id$=1",
+      "category": [
+        {
+          "id": 401,
+          "name": "Movies Blu-ray"
+        },
+        {
+          "id": 415,
+          "name": "Movies REMUX"
+        },
+        {
+          "id": 416,
+          "name": "Movies 3D"
+        },
+        {
+          "id": 410,
+          "name": "Movies 1080p"
+        },
+        {
+          "id": 411,
+          "name": "Movies 720p"
+        },
+        {
+          "id": 414,
+          "name": "Movies DVD"
+        },
+        {
+          "id": 412,
+          "name": "Movies WEB-DL"
+        },
+        {
+          "id": 413,
+          "name": "Movies HDTV"
+        },
+        {
+          "id": 417,
+          "name": "Movies iPad"
+        },
+        {
+          "id": 404,
+          "name": "Documentaries"
+        },
+        {
+          "id": 405,
+          "name": "Animations"
+        },
+        {
+          "id": 402,
+          "name": "TV Series"
+        },
+        {
+          "id": 403,
+          "name": "TV Shows"
+        },
+        {
+          "id": 406,
+          "name": "Music Videos"
+        },
+        {
+          "id": 407,
+          "name": "Sports"
+        },
+        {
+          "id": 409,
+          "name": "Misc"
+        },
+        {
+          "id": 408,
+          "name": "HQ Audio"
+        }
+      ]
+    }
+  ],
+  "fieldSelector": {
+    "merge": true,
+    "title": {
+      "selector": [ "a.title:not(a[href*='comment']),a[onmouseover*='get_ext_info_ajax']" ],
+      "filters": [ "query.text()" ]
+    }
+  },
+  "selectors": {
+    "/details.php": {
+      "merge": true,
+      "fields": {
+        "downloadURL": {
+          "selector": [ "td.rowfollow:contains('&passkey='):last" ],
+          "filters": [ "query[0].childNodes[0].textContent" ]
+        }
+      }
+    }
+  }
+}
