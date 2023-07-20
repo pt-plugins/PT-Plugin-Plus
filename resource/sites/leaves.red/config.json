@@ -3,7 +3,7 @@
   "description": "红叶成立于2022年10月，主打有声小说，有综合区。目前站内设立有声官组,资源产出稳定。喜欢有声内容的朋友，欢迎你的加入",
   "url": "https://leaves.red/",
   "icon": "https://leaves.red/favicon.ico",
-  "tags": ["有声书", "综合"],
+  "tags": ["有声书", "游戏", "综合"],
   "schema": "NexusPHP",
   "host": "leaves.red",
   "cdn": ["https://leaves.red/","https://wwww.leaves.red/"],
@@ -79,26 +79,49 @@
     "seedingPoints": "2000000",
     "privilege": "首次升级NM将获得10个邀请"
   }],
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["div[title^='seeding']", "div[title^='leeching']", "div[title^='inactivity']", ".progbarrest", ""],
+        "switchFilters": [
+          ["100"],
+          ["query.attr('title').replace('leeching ','').replace('%;','')"],
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["div[title^='seeding']", "div[title^='leeching']", "div[title^='inactivity']", ".progbarrest"],
+        "switchFilters": [
+          ["2"],
+          ["3"],
+          ["255"],
+          ["3"]
+        ]
+      }
+    }
+  },
   "searchEntry": [
     {
       "entry": "/search.php?search=$key$&search_area=0",
-      "name": "全站",
+      "name": "全部",
       "enabled": true
     },
     {
       "entry": "/torrents.php?search=$key$&search_mode=2",
       "name": "综合",
-      "enabled": true
+      "enabled": false
     },
     {
       "entry": "/special.php?search=$key$&search_mode=2",
       "name": "有声",
-      "enabled": true
+      "enabled": false
     },
     {
       "entry": "/games.php?search=$key$&search_mode=2",
       "name": "游戏",
-      "enabled": true
+      "enabled": false
     }
   ],
   "selectors": {
