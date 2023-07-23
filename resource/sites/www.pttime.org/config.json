@@ -64,6 +64,14 @@
     "ratio": "4.55",
     "privilege": "无"
   }],
+  "searchEntry": [{
+    "name": "综合",
+    "enabled": true
+  }, {
+    "name": "9Kg",
+    "entry":"/adults.php",
+    "enabled": true
+  }],
   "selectors": {
     "userBaseInfo": {
       "page": "/index.php",
