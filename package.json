@@ -14,7 +14,7 @@
     "build": "set NODE_OPTIONS=--openssl-legacy-provider & yarn build:index && yarn build:background && yarn build:content && yarn resource",
     "lint": "vue-cli-service lint",
     "background": "webpack --config webpack/prod-background.js && webpack --config webpack/prod-content.js",
-    "dev": "yarn dev:index && yarn dev:background && yarn dev:content && yarn resource",
+    "dev": "set NODE_OPTIONS=--openssl-legacy-provider & yarn dev:index && yarn dev:background && yarn dev:content && yarn resource",
     "dev-s": "cd debug && yarn install && tsc && node ./dist/index.js",
     "dev:index": "yarn install && vue-cli-service build --mode=development",
     "dev:background": "webpack --config webpack/dev-background.js --progress",

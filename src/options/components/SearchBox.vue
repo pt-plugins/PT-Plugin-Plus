@@ -289,6 +289,7 @@ export default Vue.extend({
       topSearches: [] as any[],
       topSearchesUpdateTime: "N/A" as any,
       topSearchesLoading: false,
+      selectedSearchSolutionId: "",
     };
   },
 
@@ -407,6 +408,7 @@ export default Vue.extend({
 
       this.$store.dispatch("saveConfig", {
         lastSearchKey: this.searchKey,
+        defaultSearchSolutionId: this.selectedSearchSolutionId,
       });
 
       this.$router.push({
@@ -427,9 +429,10 @@ export default Vue.extend({
         ).toString();
       }
 
-      this.$store.dispatch("saveConfig", {
-        defaultSearchSolutionId: defaultSearchSolutionId,
-      });
+      this.selectedSearchSolutionId = defaultSearchSolutionId;
+      // this.$store.dispatch("saveConfig", {
+      //   defaultSearchSolutionId: defaultSearchSolutionId,
+      // });
     },
     clearSearchKey() {
       this.$store.dispatch("saveConfig", {
@@ -492,6 +495,7 @@ export default Vue.extend({
   },
   created() {
     this.selectedSearchSolutionName = this.$t("searchBox.default").toString();
+    this.selectedSearchSolutionId = this.options.defaultSearchSolutionId || "";
     if (this.options.defaultSearchSolutionId == this.allSite.id) {
       this.selectedSearchSolutionName = this.allSite.name;
     } else if (
