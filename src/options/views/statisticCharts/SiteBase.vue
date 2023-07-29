@@ -55,6 +55,7 @@
       <highcharts :options="chartBarData" />
       <highcharts :options="chartBaseData" class="mt-4" />
       <highcharts :options="chartExtData" class="mt-4" />
+      <highcharts :options="chartBounsData" class="mt-4" />
 
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -139,6 +140,7 @@ export default Vue.extend({
       chartBaseData: {},
       chartExtData: {},
       chartBarData: {},
+      chartBounsData: {},
       host: "",
       options: this.$store.state.options,
       selectedSite: {} as Site,
@@ -312,6 +314,7 @@ export default Vue.extend({
           absoluteSiteData.push({
             date: new Date(date),
             uploaded: item.uploaded,
+            bonusPerHour: item.bonusPerHour,
           });
         }
 
@@ -320,7 +323,7 @@ export default Vue.extend({
         for (let i=1; i<absoluteSiteData.length; i++) {
           const a = absoluteSiteData[i-1];
           const b = absoluteSiteData[i];
-          relativeSiteData.push({ date: a.date, relativeUploaded: b.uploaded - a.uploaded });
+          relativeSiteData.push({ date: a.date, relativeUploaded: b.uploaded - a.uploaded, bonusPerHour: a.bonusPerHour });
         }
 
         result[site.name] = relativeSiteData;
@@ -355,7 +358,8 @@ export default Vue.extend({
             !data.uploaded &&
             !data.downloaded &&
             !data.seedingSize &&
-            !data.seeding
+            !data.seeding &&
+            !data.bonusPerHour
           ) {
             data = lastData;
           } else if (lastData && !data.id && !data.name) {
@@ -422,7 +426,9 @@ export default Vue.extend({
         const newResult = this.fillData(result, false);
         this.resetBaseData(newResult);
         this.resetExtData(newResult);
-        this.resetBarData(this.getRelativeData({[this.host]: result}));
+        const data = this.getRelativeData({[this.host]: result});
+        this.resetBarData(data);
+        this.resetBounsData(data);
       } else {
         let data = this.getTotalData(result);
         this.selectedSite = {
@@ -431,7 +437,9 @@ export default Vue.extend({
         };
         this.resetBaseData(data);
         this.resetExtData(data);
-        this.resetBarData(this.getRelativeData(result));
+        const data2= this.getRelativeData(result);
+        this.resetBarData(data2);
+        this.resetBounsData(data2);
       }
     },
     /**
@@ -891,6 +899,110 @@ export default Vue.extend({
         },
       };
       this.chartBarData = chart;
+    },
+    /**
+     * 时魔数据趋势
+     * @param result 
+     */
+    resetBounsData(result: any){
+      const $t = this.$t.bind(this);
+
+      // -> [ { name: siteName, data: [ [ date, relativeUploaded ] ]}]
+      const series = Object.entries(result).map(([siteName, data]: any[]) => ({
+        name: siteName,
+        data: data.map((v: any) => ([
+          v.date.getTime(),
+          v.bonusPerHour,
+        ]))
+      }));
+
+      const chart = {
+        series,
+        chart: {
+          backgroundColor: null,
+          type: 'column'
+        },
+        credits: {
+          enabled: false
+        },
+        title: {
+          text: this.$t("statistic.hourlyBonusDataTitle", {
+            userName: this.userName,
+            site: this.selectedSite.name
+          }).toString()
+        },
+        xAxis: {
+          type: "datetime",
+          dateTimeLabelFormats: {
+            day: "%m-%d",
+            week: "%m-%d",
+            month: "%m-%d",
+            year: "%m-%d"
+          },
+          gridLineDashStyle: "ShortDash",
+          gridLineWidth: 1,
+          gridLineColor: "#dddddd"
+        },
+        yAxis: {
+          title: {
+            text: this.$t("statistic.hourlyBonus").toString(),
+          },
+          lineWidth: 1,
+          gridLineDashStyle: "ShortDash"
+        },
+        tooltip: {
+          useHTML: true,
+          formatter: function(): any {
+            const { x, y, total, color, series: { name: siteName } }: any = this
+            let sites = []
+            for (const site of series) {
+              const siteY = (site.data.find(([a]: any[]) => a === x) || [0, 0])[1]
+              if (
+                (y < 0 && siteY < 0) ||
+                (y > 0 && siteY > 0)
+               ) {
+                const percentage = Math.ceil(siteY / total * 100)
+                sites.push({
+                  name: site.name,
+                  value: siteY,
+                  valueDisplay: siteY.toString(),
+                  percentageDisplay: `${percentage}%`,
+                  isActive: site.name === siteName,
+                })
+              }
+            }
+            sites.sort((a,b) => b.value-a.value)
+            const date = dayjs(x).format("YYYY-MM-DD")
+            const totalDisplay = total.toString();
+            const totalText = $t('statistic.total').toString()
+
+            const createTr = ({ name, valueDisplay, percentageDisplay, isActive }: any) => {
+              return `
+                <tr style='color: ${isActive ? color : "inherit"};'>
+                  <td>${name}</td>
+                  <td style='padding-left: 5px;'>${valueDisplay}</td>
+                  <td style='padding-left: 5px;'>${percentageDisplay}</td>
+                </tr>
+              `
+            }
+
+            return `
+              ${date}<br/>
+              <table>
+                ${createTr({ name: totalText, valueDisplay: totalDisplay, percentageDisplay: '100%' })}
+                ${sites.map(createTr).join('')}
+              </table>
+            `
+          },
+        },
+        plotOptions: {
+          column: {
+            stacking: 'normal',
+          }
+        },
+      };
+
+      this.chartBounsData = chart;
     },
     joinTags(tags: any): string {
       if (tags && tags.join) {
