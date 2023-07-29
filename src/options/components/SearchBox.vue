@@ -430,9 +430,6 @@ export default Vue.extend({
       }
 
       this.selectedSearchSolutionId = defaultSearchSolutionId;
-      // this.$store.dispatch("saveConfig", {
-      //   defaultSearchSolutionId: defaultSearchSolutionId,
-      // });
     },
     clearSearchKey() {
       this.$store.dispatch("saveConfig", {
