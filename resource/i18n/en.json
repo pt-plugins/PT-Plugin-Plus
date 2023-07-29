@@ -802,6 +802,8 @@
       "seedingSize": "Seeding size",
       "seedingCount": "Seeding count",
       "barDataTitle": "[{userName}@{site}] Upload Data",
+      "hourlyBonusDataTitle": "[{userName}@{site}] Hourly Bonus Data",
+      "hourlyBonus": "Hourly Bonus",
       "size": "Size",
       "count": "Count",
       "total": "Total",

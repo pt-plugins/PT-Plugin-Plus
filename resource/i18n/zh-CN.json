@@ -797,6 +797,8 @@
       "seedingSize": "做种体积",
       "seedingCount": "做种数",
       "barDataTitle": "[{userName}@{site}] 上传数据",
+      "hourlyBonusDataTitle": "[{userName}@{site}] 时魔数据",
+      "hourlyBonus": "时魔",
       "size": "体积",
       "count": "数量",
       "total": "总和",
