@@ -32,13 +32,34 @@
     "name": "BluLegend",
     "interval": "6",
     "uploaded": "50TiB",
-    "privilege": "20 download slots"
+    "privilege": "Automatic torrent approvals; Invite forums; 20 download slots"
   },{
     "level": "5", 
     "name": "Blutopian",
     "interval": "12",
     "uploaded": "100TiB",
-    "privilege": "Immunity to automated HnR warnings; Global Freeleech; 25 download slots"
+    "privilege": "Automatic torrent approvals; Invite forums; Immunity to automated HnR warnings; Global Freeleech; 25 download slots"
+  },{
+    "level": "6", 
+    "name": "BluSeeder",
+    "interval": "4",
+    "seedingSize": "5TiB",
+    "averageSeedtime": "30",
+    "privilege": "Automatic torrent approvals; Invite forums; Immunity to automated HnR warnings; 15 download slots"
+  },{
+    "level": "7", 
+    "name": "BluCollector",
+    "interval": "8",
+    "seedingSize": "10TiB",
+    "averageSeedtime": "60",
+    "privilege": "Automatic torrent approvals; Invite forums; Immunity to automated HnR warnings; Global Freeleech; 20 download slots"
+  },{
+    "level": "8", 
+    "name": "BluArchivist",
+    "interval": "13",
+    "seedingSize": "20TiB",
+    "averageSeedtime": "90",
+    "privilege": "Automatic torrent approvals; Invite forums; Immunity to automated HnR warnings; Global Freeleech; Global Double Upload; 25 download slots"
   }],
   "collaborator": ["bimzcy", "lengmianxia", "bright"],
   "selectors": {
