@@ -297,8 +297,10 @@ export interface LevelRequirement {
   seedingPoints?: number;
   // 做种时间要求
   seedingTime?: number;
+  // 平均保种时间要求
+  averageSeedtime?: number;
   // 保种体积要求
-  seedingSize?: number;
+  seedingSize?: string | number;
   // 分享率要求
   ratio?: number;
   // 等级积分要求
@@ -591,6 +593,8 @@ export interface UserInfo {
   seedingPoints?: number;
   // 做种时间要求
   seedingTime?: number;
+  // 平均保种时间
+  averageSeedtime?: number;
   // 时魔
   bonusPerHour?: number;
   // 积分页面

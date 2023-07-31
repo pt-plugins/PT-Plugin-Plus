@@ -211,6 +211,7 @@
         "seeding": "做种数",
         "seedingSize": "做种体积",
         "seedingTime": "做种时间",
+        "averageSeedtime": "平均做种时间",
         "bonus": "魔力值",
         "seedingPoints": "做种积分",
         "bonusPerHour": "时魔",
@@ -225,7 +226,8 @@
         "classPoints": "等级积分",
         "uniqueGroups": "独特分组",
         "perfectFLAC": "“完美”FLAC",
-        "alternative": "择一"
+        "alternative": "择一",
+        "days": "天"
       },
       "tip": "N/A 表示暂不支持",
       "nodata": "您还没有添加站点，请前往『站点设置』添加站点。"

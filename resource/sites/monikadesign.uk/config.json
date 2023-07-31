@@ -22,25 +22,41 @@
       "name": "SuperUser",
       "interval": "8",
       "uploaded": "2TB",
-      "privilege": "无"
+      "privilege": "访问邀请区"
     },{
       "level": "3", 
       "name": "ExtremeUser",
       "interval": "12",
       "uploaded": "5TB",
-      "privilege": "无"
+      "privilege": "自动通过候选;访问邀请区"
     },{
       "level": "4", 
       "name": "InsaneUser",
       "interval": "18",
       "uploaded": "10TB",
-      "privilege": "自动通过候选"
+      "privilege": "自动通过候选;访问邀请区"
     },{
       "level": "5", 
       "name": "Veteran",
       "interval": "36",
       "uploaded": "15TB",
-      "privilege": "个人全局双倍上传"
+      "privilege": "个人全局双倍上传;自动通过候选;访问邀请区"
+    },
+    {
+      "level": "6", 
+      "name": "Seeder",
+      "interval": "4",
+      "seedingSize": "3TB",
+      "averageSeedtime": "30",
+      "privilege": "自动通过候选;访问邀请区"
+    },
+    {
+      "level": "7", 
+      "name": "Archivist",
+      "interval": "12",
+      "seedingSize": "10TB",
+      "averageSeedtime": "60",
+      "privilege": "个人全局免费;自动通过候选;访问邀请区"
     }],
   "collaborator": "fzlins",
   "searchEntryConfig": {

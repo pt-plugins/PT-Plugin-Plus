@@ -127,6 +127,11 @@
                             nextLevel.bonus | formatNumber
                         }}&nbsp;
                       </template>
+                      <template v-if="nextLevel.seedingSize">
+                        <v-icon small color="blue darken-4">dns</v-icon>{{
+                            nextLevel.seedingSize | formatSize
+                        }}&nbsp;
+                      </template>
                       <template v-if="nextLevel.seedingPoints">
                         <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{
                             nextLevel.seedingPoints | formatNumber
@@ -136,6 +141,11 @@
                         <v-icon small color="green darken-4">timer</v-icon>{{
                             nextLevel.seedingTime | formatNumber
                         }}&nbsp;
+                      </template>
+                      <template v-if="nextLevel.averageSeedtime">
+                        <v-icon small color="green darken-4">timer</v-icon>{{
+                            nextLevel.averageSeedtime | formatNumber
+                        }}{{$t("home.levelRequirement.days")}}&nbsp;
                       </template>
                       <template v-if="nextLevel.uploads">
                         <v-icon small color="green darken-4">file_upload</v-icon>{{ nextLevel.uploads
@@ -196,6 +206,9 @@
                             formatInteger
                         }};
                       </template>
+                      <template v-if="levelRequirement.seedingSize">
+                        <v-icon small color="blue darken-4" :title="$t('home.levelRequirement.seedingSize')">dns</v-icon>{{ levelRequirement.seedingSize }};
+                      </template>
                       <template v-if="levelRequirement.seedingPoints">
                         <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.seedingPoints
                             | formatInteger
@@ -205,6 +218,11 @@
                         <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingTime')">timer</v-icon>{{ levelRequirement.seedingTime
                             | formatInteger
                         }};
+                      </template>
+                      <template v-if="levelRequirement.averageSeedtime">
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.averageSeedtime')">timer</v-icon>{{ levelRequirement.averageSeedtime
+                            | formatInteger
+                        }}{{$t("home.levelRequirement.days")}};
                       </template>
                       <template v-if="levelRequirement.classPoints">
                         <v-icon small color="yellow darken-4" :title="$t('home.levelRequirement.classPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.classPoints
@@ -251,6 +269,9 @@
                                 formatInteger
                             }};
                           </template>
+                          <template v-if="option.seedingSize">
+                            <v-icon small color="blue darken-4" :title="$t('home.levelRequirement.seedingSize')">dns</v-icon>{{ option.seedingSize }};
+                          </template>
                           <template v-if="option.seedingPoints">
                             <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingPoints')">energy_savings_leaf</v-icon>{{ option.seedingPoints
                                 | formatInteger
@@ -260,6 +281,11 @@
                             <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingTime')">timer</v-icon>{{ option.seedingTime
                                 | formatInteger
                             }};
+                          </template>
+                          <template v-if="option.averageSeedtime">
+                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.averageSeedtime')">timer</v-icon>{{ option.averageSeedtime
+                                | formatInteger
+                            }}{{$t("home.levelRequirement.days")}};
                           </template>
                           <template v-if="option.classPoints">
                             <v-icon small color="yellow darken-4" :title="$t('home.levelRequirement.classPoints')">energy_savings_leaf</v-icon>{{ option.classPoints
@@ -662,7 +688,19 @@ export default Vue.extend({
           }
 
           user.nextLevels = [] as LevelRequirement[];
+          let userLevel = -1;
           for (var levelRequirement of site.levelRequirements) {
+            if (user.levelName?.trim() == levelRequirement.name?.trim())
+            {
+              userLevel = levelRequirement.level as number;
+              break;
+            }
+          }
+
+          for (var levelRequirement of site.levelRequirements) {
+            if (levelRequirement.level as number < userLevel)
+              continue;
+
             if (levelRequirement.alternative)
             {
               for (var option of levelRequirement.alternative)
@@ -779,11 +817,29 @@ export default Vue.extend({
         }
       }
 
+      if (levelRequirement.seedingSize) {
+        let requiredSeedingSize = this.fileSizetoLength(levelRequirement.seedingSize as string);
+        let userSeedingSize = user.seedingSize ? user.seedingSize : 0 ; 
+        if (userSeedingSize < requiredSeedingSize) {
+          nextLevel.seedingSize = requiredSeedingSize - userSeedingSize;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
       if (levelRequirement.seedingTime) {
         let userSeedingTime = user.seedingTime as number;
         let requiredSeedingTime = levelRequirement.seedingTime as number;
         if (userSeedingTime < requiredSeedingTime) {
           nextLevel.seedingTime = requiredSeedingTime - userSeedingTime;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.averageSeedtime) {
+        let userAverageSeedtime = user.averageSeedtime as number;
+        let requiredAverageSeedtime = levelRequirement.averageSeedtime as number;
+        if (userAverageSeedtime < requiredAverageSeedtime) {
+          nextLevel.averageSeedtime = requiredAverageSeedtime - userAverageSeedtime;
           nextLevel.level = levelRequirement.level;
         }
       }

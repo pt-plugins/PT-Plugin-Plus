@@ -39,3 +39,42 @@ String.prototype.sizeToNumber = function() {
   }
   return 0;
 };
+
+/**
+ * @return {number}
+ */
+String.prototype.timeToDays = function() {
+  const timeMatch = this.match(/\d+[天周月年DWMY]/g);
+  let length = 0;
+  if (timeMatch == null)
+    return 0;
+  
+  timeMatch.forEach(time => {
+    const timeMatch = time.match(/(\d+)([天周月年DWMY])/);
+    if (timeMatch == null)
+      return 0;
+
+    const number = parseInt(timeMatch[1])
+    const unit = timeMatch[2]
+    switch (true) {
+      case unit === 'D':
+      case unit === '天':
+        length += number;
+        break;
+      case unit === 'W':
+      case unit === '周':
+        length += number;
+        break;
+      case unit === 'M':
+      case unit === '月':
+        length += number * 30;
+        break;
+      case unit === 'Y':
+      case unit === '年':
+        length += number * 365;
+        break;
+      default:
+    }
+  })
+  return length;
+};

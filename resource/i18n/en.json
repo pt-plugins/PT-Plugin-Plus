@@ -217,6 +217,7 @@
         "bonus": "Bonus",
         "seedingPoints": "Seeding Points",
         "seedingTime": "Seeding Time",
+        "averageSeedtime": "Average Seedtime",
         "bonusPerHour": "Bonus per hour",
         "joinTime": "Join time",
         "lastUpdateTime": "Update at",
@@ -230,7 +231,8 @@
         "classPoints": "Class Points",
         "uniqueGroups": "Unique Groups",
         "perfectFLAC": "\"Perfect\" FLAC",
-        "alternative": "Alternative"
+        "alternative": "Alternative",
+        "days": "Days"
       },
       "tip": "N/A means no support",
       "nodata": "You have not added a site, please go to [Sites] to add a site."
