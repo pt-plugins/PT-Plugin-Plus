@@ -7,6 +7,54 @@
   "tags": ["音乐"],
   "schema": "GazelleJSONAPI",
   "host": "redacted.ch",
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "Member",
+    "interval": "1W",
+    "uploaded": "10GB",
+    "ratio": "0.65",
+    "privilege": ""
+  },{
+    "level": "2", 
+    "name": "Power User",
+    "interval": "2W",
+    "uploads": "5",
+    "uploaded": "25GB",
+    "ratio": "0.65",
+    "privilege": "Invites forums; Immunity from inactivity disabling"
+  },{
+    "level": "3", 
+    "name": "Elite",
+    "interval": "4W",
+    "uploads": "50",
+    "uploaded": "100GB",
+    "ratio": "0.65",
+    "privilege": ""
+  },{
+    "level": "4", 
+    "name": "Torrent Master",
+    "interval": "8W",
+    "uploads": "500",
+    "uploaded": "500GB",
+    "ratio": "0.65",
+    "privilege": "Unlimited invites"
+  },{
+    "level": "5", 
+    "name": "Power TM",
+    "interval": "8W",
+    "uniqueGroups": "500",
+    "uploaded": "500GB",
+    "ratio": "0.65",
+    "privilege": ""
+  },{
+    "level": "6", 
+    "name": "Elite TM",
+    "interval": "8W",
+    "perfectFLAC": "500",
+    "uploaded": "500GB",
+    "ratio": "0.65",
+    "privilege": ""
+  }],
   "collaborator": ["ylxb2016", "enigamz"],
   "searchEntryConfig": {
     "skipIMDbId": true
