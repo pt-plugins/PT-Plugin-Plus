@@ -268,7 +268,8 @@
       "blurSiteIcon": "Blur site icon",
       "userName": "User name",
       "userLevel": "User level",
-      "userId": "User UID",
+      "userUploads": "User uploads",
+      "userId": "User ID",
       "showSites": "Show Sites",
       "close": "Close",
       "shareMessage": "Growth process",
@@ -283,7 +284,8 @@
         "lessThanAWeek": "Less than a week"
       },
       "total": {
-        "uploaded": "Total uploads: ",
+        "uploads": "Total uploads: ",
+        "uploaded": "Total uploaded: ",
         "downloaded": "Total download: ",
         "seedingSize": "Seeding size: ",
         "ratio": "Total ratio: ",
@@ -291,6 +293,7 @@
       },
       "updateat": "Update at: ",
       "user": {
+        "uploads":"Uploads: ",
         "uploaded": "Uploaded: ",
         "downloaded": "Downloaded: ",
         "seedingSize": "Seeding size: ",

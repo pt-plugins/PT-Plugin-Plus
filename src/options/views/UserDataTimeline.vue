@@ -41,6 +41,7 @@
 
         <v-card-title primary-title>
           <div class="headline font-weight-bold">
+            <div v-if="showUserUploads">{{ $t('timeline.total.uploads') }}{{ infos.total.uploads }}</div>
             <div>{{ $t('timeline.total.uploaded') }}{{ infos.total.uploaded | formatSize }}</div>
             <div>{{ $t('timeline.total.downloaded') }}{{ infos.total.downloaded | formatSize }}</div>
             <div>{{ $t('timeline.total.seedingSize') }}{{ infos.total.seedingSize | formatSize }} ({{ infos.total.seeding }})</div>
@@ -78,6 +79,7 @@
               <div>
                 <v-divider v-if="i>0" class="mb-2"></v-divider>
                 <div class="headline font-weight-light mb-2" v-if="showSiteName">{{ site.name }}</div>
+                <div v-if="showUserUploads && site.user.uploads && site.user.uploads > 0">{{ $t('timeline.user.uploads') }}{{ site.user.uploads }}</div>
                 <div>{{ $t('timeline.user.uploaded') }}{{ site.user.uploaded | formatSize}}</div>
                 <div>{{ $t('timeline.user.downloaded') }}{{ site.user.downloaded | formatSize }}</div>
                 <div>{{ $t('timeline.user.ratio') }}{{ site.user.ratio | formatRatio }}</div>
@@ -120,6 +122,12 @@
         color="success"
         v-model="showUserLevel"
         :label="$t('timeline.userLevel')"
+        class="my-0"
+      ></v-switch>
+      <v-switch
+        color="success"
+        v-model="showUserUploads"
+        :label="$t('timeline.userUploads')"
         class="my-0"
       ></v-switch>
       <v-switch
@@ -180,6 +188,7 @@ export default Vue.extend({
           maxValue: 0
         },
         total: {
+          uploads: 0,
           uploaded: 0,
           downloaded: 0,
           seedingSize: 0,
@@ -195,6 +204,7 @@ export default Vue.extend({
       showUserName: true,
       showSiteName: false,
       showUserLevel: true,
+      showUserUploads: true,
       showUid: true,
       blurSiteIcon: true,
       iconCache: {} as Dictionary<any>
@@ -234,6 +244,7 @@ export default Vue.extend({
       let userNames: Dictionary<any> = {};
       let result = this.infos;
       result.total = {
+        uploads: 0,
         uploaded: 0,
         downloaded: 0,
         seedingSize: 0,
@@ -273,6 +284,10 @@ export default Vue.extend({
           if (user.joinTime && user.joinTime < result.joinTimeInfo.time) {
             result.joinTimeInfo.time = Math.round(user.joinTime);
             result.joinTimeInfo.site = site;
+          }
+
+          if (user.uploads && user.uploads > 0) {
+            result.total.uploads += user.uploads;
           }
 
           if (user.uploaded && user.uploaded > 0) {
