@@ -156,6 +156,16 @@
         }
       }
     },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=uploaded",
+      "fields": {
+        "uploads": {
+          "selector": ["b:first"],
+          "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"]
+        }
+      }
+    },
     "bonusExtendInfo": {
       "prerequisites": "!user.bonusPerHour",
       "page": "/mybonus.php",

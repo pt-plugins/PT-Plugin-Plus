@@ -177,13 +177,13 @@
         }
       }
     },
-    "userSeedingTorrents": {
+    "userUploadedTorrents": {
       "prerequisites": "!user.uploads",
       "page": "/torrents.php?incldead=1&check=checked&search=$user.name$&search_area=3",
       "fields": {
         "uploads": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(1)').length"]
+          "selector": ["p.np-pager:first b:last"],
+          "filters": ["query.text().replace(/,/g,'').split('-')", "(query && query.length > 1) ? parseInt(query[1]) : 0"]
         }
       }
     }

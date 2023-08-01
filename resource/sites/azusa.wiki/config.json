@@ -122,7 +122,7 @@
       "fields": {
         "uploads": {
           "selector": ["b:first"],
-          "filters": ["query.text().trim()"]
+          "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"]
         }
       }
     }
