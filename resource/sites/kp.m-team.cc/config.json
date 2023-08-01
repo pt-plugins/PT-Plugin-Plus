@@ -281,5 +281,6 @@
         }
       }
     }
-  }
+  },
+  "cdn": ["https://kp.m-team.cc/","https://xp.m-team.cc/","https://xp2.m-team.cc/"]
 }
