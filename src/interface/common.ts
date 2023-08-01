@@ -278,7 +278,7 @@ export interface LevelRequirement {
   level?: number;
   name?: string;
   // 间隔要求
-  interval?: number;
+  interval?: string;
   // 日期要求
   requiredDate?: string;
   // 上传数要求

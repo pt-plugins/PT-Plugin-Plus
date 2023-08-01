@@ -14,38 +14,38 @@
   "levelRequirements": [{
       "level": "1", 
       "name": "PowerUser",
-      "interval": "4",
+      "interval": "1M",
       "uploaded": "1TB",
       "privilege": "访问邀请区"
     },{
       "level": "2", 
       "name": "SuperUser",
-      "interval": "8",
+      "interval": "2M",
       "uploaded": "2TB",
       "privilege": "访问邀请区"
     },{
       "level": "3", 
       "name": "ExtremeUser",
-      "interval": "12",
+      "interval": "3M",
       "uploaded": "5TB",
       "privilege": "自动通过候选;访问邀请区"
     },{
       "level": "4", 
       "name": "InsaneUser",
-      "interval": "18",
+      "interval": "6M",
       "uploaded": "10TB",
       "privilege": "自动通过候选;访问邀请区"
     },{
       "level": "5", 
       "name": "Veteran",
-      "interval": "36",
+      "interval": "12M",
       "uploaded": "15TB",
       "privilege": "个人全局双倍上传;自动通过候选;访问邀请区"
     },
     {
       "level": "6", 
       "name": "Seeder",
-      "interval": "4",
+      "interval": "1M",
       "seedingSize": "3TB",
       "averageSeedtime": "30",
       "privilege": "自动通过候选;访问邀请区"
@@ -53,7 +53,7 @@
     {
       "level": "7", 
       "name": "Archivist",
-      "interval": "12",
+      "interval": "3M",
       "seedingSize": "10TB",
       "averageSeedtime": "60",
       "privilege": "个人全局免费;自动通过候选;访问邀请区"

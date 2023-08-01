@@ -683,7 +683,7 @@ export default Vue.extend({
             if (levelRequirement.requiredDate) break;
 
             if (levelRequirement.interval && user.joinDateTime) {
-              levelRequirement.requiredDate = dayjs(user.joinDateTime).add(levelRequirement.interval as number, "week").format("YYYY-MM-DD");
+              levelRequirement.requiredDate = this.getRequiredDate(levelRequirement.interval, user.joinDateTime).format("YYYY-MM-DD");
             } else break;
           }
 
@@ -762,8 +762,7 @@ export default Vue.extend({
       }
 
       if (levelRequirement.interval && user.joinDateTime) {
-        let weeks = levelRequirement.interval as number;
-        let requiredDate = dayjs(user.joinDateTime).add(weeks, "week");
+        let requiredDate = this.getRequiredDate(levelRequirement.interval, user.joinDateTime);
         if (dayjs(new Date()).isBefore(requiredDate)) {
           nextLevel.requiredDate = requiredDate.format("YYYY-MM-DD");
           nextLevel.level = levelRequirement.level;
@@ -941,6 +940,26 @@ export default Vue.extend({
         }
       }
       return 0;
+    },
+    /**
+     * @return {dayjs.Dayjs}
+     */
+     getRequiredDate(interval: string, joinDateTime: string) : dayjs.Dayjs {
+      let unit = "week";
+      switch (interval.replace(/[^A-Za-z]/g, ""))
+      {
+        case "D":
+          unit = "day";
+          break;
+        case "M":
+          unit = "month";
+          break;
+        case "Y":
+          unit = "year";
+          break;
+      }
+      let num = interval.replace(/\D/g,'');
+      return dayjs(joinDateTime).add(parseInt(num), unit as dayjs.ManipulateType);
     },
     /**
      * 获取站点用户信息
