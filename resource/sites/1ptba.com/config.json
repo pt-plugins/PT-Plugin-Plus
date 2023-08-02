@@ -98,6 +98,16 @@
           ]
         }
       }
+    },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=uploaded",
+      "fields": {
+        "uploads": {
+          "selector": ["div b:first"],
+          "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"]
+        }
+      }
     }
   },
   "searchEntryConfig": {

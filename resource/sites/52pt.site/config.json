@@ -72,5 +72,17 @@
       "ratio": "4.55",
       "privilege": "得到十个邀请名额。"
     }
-  ]
+  ],
+  "selectors": {
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=uploaded",
+      "fields": {
+        "uploads": {
+          "selector": ["b:first"],
+          "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"]
+        }
+      }
+    }
+  }
 }
