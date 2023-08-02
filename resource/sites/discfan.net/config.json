@@ -110,5 +110,34 @@
   }],
   "supportedFeatures": {
     "imdbSearch": false
+  },
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["div b:first"],
+          "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": "div div:first",
+          "filters": [
+            "query.text().match(/總大小：(.*?)B/g)",
+            "(query && query.length>0) ? query[0].replace('總大小：', '').trim() : 0",
+            "(query != 0) ? query.sizeToNumber() : 0"
+          ]
+        }
+      }
+    },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=uploaded",
+      "fields": {
+        "uploads": {
+          "selector": ["div b:first"],
+          "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"]
+        }
+      }
+    }
   }
 }
