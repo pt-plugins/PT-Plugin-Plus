@@ -80,10 +80,14 @@
       "privilege": "拥有无限邀请；佩戴6枚印记；创建6个私人合集；访问「Guru」版块；查看种子检查日志"
     }
   ],
+  "formerHosts": [
+    "dicmusic.club"
+  ],
   "collaborator": [
     "ylxb2016",
     "enigmaz",
-    "amorphobia"
+    "amorphobia",
+    "Ljcbaby"
   ],
   "searchEntryConfig": {
     "skipIMDbId": true
