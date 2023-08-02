@@ -2,11 +2,11 @@
   "name": "DIC",
   "timezoneOffset": "+0800",
   "description": "music",
-  "url": "https://dicmusic.club/",
-  "icon": "https://dicmusic.club/favicon.ico",
+  "url": "https://dicmusic.com/",
+  "icon": "https://dicmusic.com/favicon.ico",
   "tags": ["音乐"],
   "schema": "GazelleJSONAPI",
-  "host": "dicmusic.club",
+  "host": "dicmusic.com",
   "levelRequirements": [
     {
       "level": 1,
@@ -80,10 +80,14 @@
       "privilege": "拥有无限邀请；佩戴6枚印记；创建6个私人合集；访问「Guru」版块；查看种子检查日志"
     }
   ],
+  "formerHosts": [
+    "dicmusic.club"
+  ],
   "collaborator": [
     "ylxb2016",
     "enigmaz",
-    "amorphobia"
+    "amorphobia",
+    "Ljcbaby"
   ],
   "searchEntryConfig": {
     "skipIMDbId": true
