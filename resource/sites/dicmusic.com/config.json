@@ -93,15 +93,6 @@
     "skipIMDbId": true
   },
   "selectors": {
-    "userExtendInfo": {
-      "merge": true,
-      "page": "/ajax.php?action=user&id=$user.id$",
-      "fields": {
-        "perfectFLAC": {
-          "selector": ["response.community.perfectFlacs"]
-        }
-      }
-    },
     "userSeedingTorrents": {
       "page": "/bonus.php?action=bprates",
       "fields": {

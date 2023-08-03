@@ -68,6 +68,12 @@
         },
         "uniqueGroups": {
           "selector": ["response.community.groups"]
+        },
+        "perfectFLAC": {
+          "selector": ["response.community.perfectFlacs"]
+        },
+        "posts": {
+          "selector": ["response.community.posts"]
         }
       }
     },

@@ -11,6 +11,49 @@
   "formerHosts": [
     "www.morethan.tv"
   ],
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "Grip",
+    "interval": "2W",
+    "uploaded": "10GB",
+    "privilege": ""
+  },{
+    "level": "2", 
+    "name": "Key Grip",
+    "interval": "4W",
+    "uploaded": "200GB",
+    "privilege": "Upload privileges"
+  },{
+    "level": "3", 
+    "name": "Camera Operator",
+    "interval": "8W",
+    "uploaded": "500GB",
+    "privilege": "Invite forums"
+  },{
+    "level": "4", 
+    "name": "Boom Operator",
+    "interval": "12W",
+    "uploaded": "1000GB",
+    "uploads": "10",
+    "posts": "5",
+    "privilege": ""
+  },{
+    "level": "5", 
+    "name": "Gaffer",
+    "interval": "24W",
+    "uploaded": "2000GB",
+    "uploads": "100",
+    "posts": "10",
+    "privilege": "Can send invites while site is past user limit"
+  },{
+    "level": "6", 
+    "name": "Engineer",
+    "interval": "48W",
+    "uploaded": "3000GB",
+    "uploads": "500",
+    "posts": "25",
+    "privilege": "FREE Invites; Immune from inactivity disablement"
+  }],
   "plugins": [{
     "name": "种子详情页面",
     "pages": ["/torrents.php"],
@@ -137,6 +180,10 @@
         "joinTime": {
           "selector": ["ul.stats > li:contains('Joined:') > span"],
           "filters": ["dateTime(query.attr('title')).isValid() ? query.attr('title') : query.text()", "dateTime(query).isValid() ? dateTime(query).valueOf() : query"]
+        },
+        "posts": {
+          "selector": ["ul.stats > li:contains('Forum Posts:')"],
+          "filters": [ "query.text().replace(/\\D/g,'')", "query ? parseInt(query) : 0"]
         }
       }
     },

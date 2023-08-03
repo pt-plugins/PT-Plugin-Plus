@@ -163,6 +163,10 @@
                         <v-icon small color="green darken-4">diamond</v-icon>{{ nextLevel.perfectFLAC
                         }}&nbsp;
                       </template>
+                      <template v-if="nextLevel.posts">
+                        <v-icon small color="green darken-4">post_add</v-icon>{{ nextLevel.posts
+                        }}&nbsp;
+                      </template>
                       <template v-if="nextLevel.classPoints">
                         <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{
                             nextLevel.classPoints | formatNumber
@@ -239,6 +243,11 @@
                             | formatInteger
                         }};
                       </template>
+                      <template v-if="levelRequirement.posts">
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.posts')">post_add</v-icon>{{ levelRequirement.posts
+                            | formatInteger
+                        }};
+                      </template>
                       <template v-if="levelRequirement.alternative">
                         <v-icon small :title="$t('home.levelRequirement.alternative')">filter_1</v-icon>(
                         <template v-for="option in levelRequirement.alternative">
@@ -299,6 +308,11 @@
                           </template>
                           <template v-if="option.perfectFLAC">
                             <v-icon small color="green darken-4" :title="$t('home.levelRequirement.perfectFLAC')">diamond</v-icon>{{ option.perfectFLAC
+                                | formatInteger
+                            }};
+                          </template>
+                          <template v-if="option.posts">
+                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.posts')">post_add</v-icon>{{ option.posts
                                 | formatInteger
                             }};
                           </template>];
@@ -895,6 +909,15 @@ export default Vue.extend({
         let requiredPerfectFLAC = levelRequirement.perfectFLAC as number;
         if (userPerfectFLAC < requiredPerfectFLAC) {
           nextLevel.perfectFLAC = requiredPerfectFLAC - userPerfectFLAC;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.posts) {
+        let userPosts = user.posts as number;
+        let requiredPosts = levelRequirement.posts as number;
+        if (userPosts < requiredPosts) {
+          nextLevel.posts = requiredPosts - userPosts;
           nextLevel.level = levelRequirement.level;
         }
       }
