@@ -34,6 +34,8 @@
                 @change="updateViewOptions"></v-switch>
               <v-switch color="success" v-model="showWeek" :label="$t('home.week')"
                 @change="updateViewOptions"></v-switch>
+              <!--<v-switch color="success" v-model="showUserUploads" :label="$t('home.headers.uploads')"-->
+              <!--  @change="updateViewOptions"></v-switch>-->
               <v-switch color="success" v-model="showSeedingPoints" :label="$t('home.seedingPoints')"
                 @change="updateViewOptions"></v-switch>
               <v-switch color="success" v-model="showHnR" :label="$t('home.showHnR')"
@@ -338,6 +340,9 @@
           <td v-if="showColumn('user.ratio')" class="number">
             {{ props.item.user.ratio | formatRatio }}
           </td>
+          <td v-if="showColumn('user.uploads')" class="number">
+            {{ props.item.user.uploads }}
+          </td>
           <td v-if="showColumn('user.seeding')" class="number">
             <div>{{ props.item.user.seeding }}</div>
             <div v-if="showHnR && props.item.user.unsatisfieds && props.item.user.unsatisfieds != 0" :title="$t('home.headers.unsatisfieds')" ><v-icon small color="yellow darken-4">warning</v-icon>{{props.item.user.unsatisfieds}}</div>
@@ -468,6 +473,11 @@ export default Vue.extend({
           value: "user.ratio",
         },
         {
+          text: this.$t("home.headers.uploads"),
+          align: "right",
+          value: "user.uploads",
+        },
+        {
           text: this.$t("home.headers.seeding"),
           align: "right",
           value: "user.seeding",
@@ -520,6 +530,7 @@ export default Vue.extend({
       showUserLevel: true,
       showLevelRequirements: true,
       showSeedingPoints: true,
+      // showUserUploads: false,
       showHnR: true,
       showWeek: false,
     };
@@ -722,7 +733,7 @@ export default Vue.extend({
                 var newLevelRequirement = Object.assign({}, levelRequirement)
                 for(var key of Object.keys(option) as Array<keyof LevelRequirement>) {
                   {
-                    
+
                     if (option[key])
                       newLevelRequirement[key] = option[key] as any
                   }
@@ -742,7 +753,7 @@ export default Vue.extend({
               if (user.nextLevels.length)
                   break;
             }
-            else 
+            else
             {
               let nextLevel = this.calculateNextLeve(user, levelRequirement);
               if (nextLevel) {
@@ -770,7 +781,7 @@ export default Vue.extend({
 
       let downloaded = user.downloaded ?? 0;
       let uploaded = user.uploaded ?? 0;
-      
+
       if (user.levelName == levelRequirement.name) {
         return undefined;
       }
@@ -832,7 +843,7 @@ export default Vue.extend({
 
       if (levelRequirement.seedingSize) {
         let requiredSeedingSize = this.fileSizetoLength(levelRequirement.seedingSize as string);
-        let userSeedingSize = user.seedingSize ? user.seedingSize : 0 ; 
+        let userSeedingSize = user.seedingSize ? user.seedingSize : 0 ;
         if (userSeedingSize < requiredSeedingSize) {
           nextLevel.seedingSize = requiredSeedingSize - userSeedingSize;
           nextLevel.level = levelRequirement.level;
@@ -1062,6 +1073,7 @@ export default Vue.extend({
           showUserLevel: this.showUserLevel,
           showLevelRequirements: this.showLevelRequirements,
           showSeedingPoints: this.showSeedingPoints,
+          // showUserUploads: this.showUserUploads,
           showHnR: this.showHnR,
           showWeek: this.showWeek,
           selectedHeaders: this.selectedHeaders,
