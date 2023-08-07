@@ -263,11 +263,11 @@ export default Vue.extend({
         if (!this.showSites.includes(site.name)) {
           return;
         }
- 
+
         let user = site.user;
         if (user && user.name && user.joinTime) {
           user.joinTime = PPF.transformTime(user.joinTime, site.timezoneOffset);  //add by pxwang for gpw jointime error
-          
+
           sites.push(site);
           if (!userNames[user.name]) {
             userNames[user.name] = 0;
@@ -287,7 +287,13 @@ export default Vue.extend({
           }
 
           if (user.uploads && user.uploads > 0) {
+            if (typeof user.uploads !== 'number') {
+              console.log(`${site.url}: 当前站点 uploads 类型为 ${typeof user.uploads}，强制转换为 number 类型`)
+              user.uploads = parseInt(user.uploads) || 0;
+            }
             result.total.uploads += user.uploads;
+            // https://github.com/pt-plugins/PT-Plugin-Plus/pull/1517
+            // console.log(`${site.url}\t\t: uploads: ${user?.uploads} -> ${typeof user?.uploads}, total: ${result.total.uploads}`)
           }
 
           if (user.uploaded && user.uploaded > 0) {
@@ -330,7 +336,7 @@ export default Vue.extend({
 
       // 按加入时间排序
       this.datas = sites.sort((a, b) => {
-        
+
         if (!a.user || !b.user) {
           return 0;
         }
