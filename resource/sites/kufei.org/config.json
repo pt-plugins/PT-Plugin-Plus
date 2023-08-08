@@ -60,7 +60,7 @@
     {
       "level": "6",
       "name": "Extreme User",
-      "interval": "600",
+      "interval": "60",
       "downloaded": ".3.844TB",
       "ratio": "4.5",
       "seedingPoints": "1500000",
