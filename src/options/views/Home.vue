@@ -715,7 +715,7 @@ export default Vue.extend({
           user.nextLevels = [] as LevelRequirement[];
           let userLevel = -1;
           for (var levelRequirement of site.levelRequirements) {
-            if (user.levelName?.trim() == levelRequirement.name?.trim())
+            if (user.levelName?.trim()?.toUpperCase() == levelRequirement.name?.trim()?.toUpperCase())
             {
               userLevel = levelRequirement.level as number;
               break;
