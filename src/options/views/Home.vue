@@ -341,7 +341,8 @@
             {{ props.item.user.ratio | formatRatio }}
           </td>
           <td v-if="showColumn('user.uploads')" class="number">
-            {{ props.item.user.uploads }}
+            <template v-if="props.item.user.uploads && props.item.user.uploads > 0">{{ props.item.user.uploads}}</template>
+            
           </td>
           <td v-if="showColumn('user.seeding')" class="number">
             <div>{{ props.item.user.seeding }}</div>
