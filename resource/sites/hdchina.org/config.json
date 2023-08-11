@@ -370,6 +370,23 @@
         }
       }
     },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/ajax_getusertorrentlist.php",
+      "dataType": "json",
+      "requestMethod": "POST",
+      "requestData": {
+        "userid": "$user.id$",
+        "type": "uploaded",
+        "csrf": "$user.xCsrf$"
+      },
+      "fields": {
+        "uploads": {
+          "selector": ["message"],
+          "filters": ["jQuery('<div/>').html(query).find('b:first').text().trim().replace(/,/g,'') ? parseInt(query) : 0"]
+        }
+      }
+    },
     "/details.php": {
       "merge": true,
       "fields": {
