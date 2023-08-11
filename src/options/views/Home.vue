@@ -718,13 +718,13 @@ export default Vue.extend({
           for (var levelRequirement of site.levelRequirements) {
             if (user.levelName?.trim()?.toUpperCase() == levelRequirement.name?.trim()?.toUpperCase())
             {
-              userLevel = levelRequirement.level as number;
+              userLevel = Number(levelRequirement.level);
               break;
             }
           }
 
           for (var levelRequirement of site.levelRequirements) {
-            if (levelRequirement.level as number < userLevel)
+            if (Number(levelRequirement.level) < userLevel)
               continue;
 
             if (levelRequirement.alternative)
