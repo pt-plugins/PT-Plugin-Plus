@@ -39,6 +39,16 @@
   }],
   "collaborator": "bright",
   "selectors": {
+    "merge": true,
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "messageCount": {
+          "selector": ["span.animate-ping"],
+          "filters": ["query.length?11:0"]
+        }
+      }
+    },
     "hnrExtendInfo": {
       "page": "/users/$user.name$/torrents?unsatisfied=include&perPage=100&hitrun=exclude&immune=exclude",
       "fields": {
