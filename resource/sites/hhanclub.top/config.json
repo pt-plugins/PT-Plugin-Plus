@@ -88,11 +88,11 @@
             "fields": {
                 "uploaded": {
                     "selector": ["span:contains('上传量') + span", "span:contains('Uploaded') + span"],
-                    "filters": ["query.text().replace(/,/g,'')", "query.sizeToNumber()"]
+                    "filters": ["query[0].innerText.replace(/,/g,'')", "query.sizeToNumber()"]
                 },
                 "downloaded": {
                     "selector": ["span:contains('下载量') + span", "span:contains('Downloaded') + span"],
-                    "filters": ["query.text().replace(/,/g,'')", "query.sizeToNumber()"]
+                    "filters": ["query[0].innerText.replace(/,/g,'')", "query.sizeToNumber()"]
                 },
                 "levelName": {
                     "selector": ["span:contains('等级')"],
@@ -138,6 +138,10 @@
         "userUploadedTorrents": {
             "prerequisites": "!user.uploads",
             "page": "/getusertorrentlistajax.php?ajax=1&type=uploaded&userid=$user.id$",
+            "dataType": "json",
+            "headers": {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+            },
             "fields": {
                 "uploads": {
                     "selector": ["data"],
