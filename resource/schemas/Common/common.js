@@ -819,6 +819,13 @@
       let menus = [];
 
       items.forEach(item => {
+        if (!item) return
+        if (!item.client) return
+        if (!item.client.name) return
+        if (item.client.enabled === false) {
+          console.log(`skip disable client: ${item.client.name}`)
+          return
+        }
         if (item.client && item.client.name) {
           menus.push({
             title:
@@ -1188,6 +1195,13 @@
           });
         });
         clients.forEach(item => {
+          if (!item) return
+          if (!item.client) return
+          if (!item.client.name) return
+          if (item.client.enabled === false) {
+            console.log(`skip disable client: ${item.client.name}`)
+            return
+          }
           if (item.client && item.client.name) {
             addMenu(item);
 
@@ -1253,7 +1267,7 @@
 	        sayThanksButton[0].click();
             success();
             setTimeout(() => {
-	          
+
               PTService.removeButton("sayThanks");
             }, 1000);
           }

@@ -1,5 +1,6 @@
 {
   "name": "Synology Download Station",
+  "enabled": true,
   "type": "synologyDownloadStation",
   "ver": "0.0.1",
   "icon": "https://www.synology.com/img/icon/favicon.png",

@@ -27,6 +27,7 @@ export interface ContextMenuRules {
 
 export interface DownloadClient {
   id?: string;
+  enabled?:boolean;
   name?: string;
   // oldName?: string;
   address?: string;
@@ -627,7 +628,7 @@ export interface UserInfo {
   lastErrorMsg?: string;
   // 消息数量
   messageCount?: number;
-  // 独特分组 
+  // 独特分组
   uniqueGroups?: number;
   // “完美”FLAC
   perfectFLAC?: number;
