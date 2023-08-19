@@ -1,5 +1,6 @@
 {
   "name": "Deluge",
+  "enabled": true,
   "type": "deluge",
   "ver": "0.0.1",
   "icon": "https://www.deluge-torrent.org/images/deluge-icon.png",

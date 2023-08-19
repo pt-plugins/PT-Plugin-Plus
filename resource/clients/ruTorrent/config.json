@@ -1,5 +1,6 @@
 {
   "name": "ruTorrent",
+  "enabled": true,
   "type": "ruTorrent",
   "ver": "0.0.1",
   "icon": "https://raw.githubusercontent.com/Novik/ruTorrent/master/images/favicon.ico",

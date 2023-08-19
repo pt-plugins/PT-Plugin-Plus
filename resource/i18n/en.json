@@ -580,8 +580,11 @@
           "removeSelectedConfirm": "Are you sure you want to delete the selected download server?",
           "ok": "OK",
           "cancel": "Cancel",
+          "yes": "Y",
+          "no": "N",
           "headers": {
             "name": "Name",
+            "enabled": "Enabled",
             "type": "Type",
             "address": "Address",
             "action": "Action"

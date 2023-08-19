@@ -552,6 +552,7 @@
           "loginPwd": "登录密码",
           "id": "ID",
           "autoStart": "发送种子时自动开始下载",
+          "enabled": "是否启用",
           "tagIMDb": "发送种子时自动添加IMDb标签（Beta）",
           "autoCreate": "<保存后自动生成>",
           "test": "测试服务器是否可连接",
@@ -575,8 +576,11 @@
           "removeSelectedConfirm": "确认要删除已选中的下载服务器吗？",
           "ok": "确认",
           "cancel": "取消",
+          "yes": "是",
+          "no": "否",
           "headers": {
             "name": "名称",
+            "enabled": "是否启用",
             "type": "类型",
             "address": "服务器地址",
             "action": "操作"

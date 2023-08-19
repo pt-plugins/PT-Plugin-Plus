@@ -186,6 +186,12 @@ export default Vue.extend({
     next(step: number) {
       if (this.selectedItem && this.selectedItem.name) {
         this.selectedData = Object.assign({}, this.selectedItem);
+        // 兼容客户端模板缺少配置项的情况
+        // console.log('selectedData', this.selectedData)
+        if (this.selectedData.enabled === undefined) {
+          this.selectedData.enabled = true
+        }
+        // console.log('selectedData', this.selectedData)
         this.valid = false;
         this.step++;
       } else {
