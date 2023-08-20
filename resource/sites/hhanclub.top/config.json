@@ -116,12 +116,12 @@
             },
             "fields": {
                 "seeding": {
-                    "selector": ["data"],
-                    "filters": ["query.length"]
+                    "selector": ["total_count"],
+                    "filters": ["query"]
                 },
                 "seedingSize": {
                     "selector": ["total_size"],
-                    "filters":  ["query"]
+                    "filters":  ["query.sizeToNumber()"]
                 }
             }
         },
