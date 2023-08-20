@@ -182,6 +182,10 @@
       "getUserInfoAbort": "Get user profile request has been canceled. ({siteName})",
       "getUserInfoAbortError": "Cancellation failed to get user profile request. ({siteName})",
       "offline":"Offline",
+      "torrents": "Torrents",
+      "control_panel": "ControlPanel",
+      "security": "Security",
+      "2FA": "2FA",
       "headers": {
         "date": "Date",
         "site": "Site",
@@ -726,6 +730,10 @@
           "timezone": "Timezone",
           "upLoadLimit": "Upload limit",
           "upLoadLimitTip": "Upload limit (KB\/s), 0 or empty for no limit",
+          "enableQuickLink": "Enable QuickLink",
+          "enableDefaultQuickLink": "Enable Default QuickLink",
+          "quickLinkText": "Custom QuickLink Text",
+          "quickLinkTextTip": "Fill in an address in each line, and commas separate comments and URLs and colors (supports hexadecimal). Such as: 'Baidu, https://baidu.com, #2196f3'",
           "disableMessageCount": "Display message count"
         },
         "userinfo": {

@@ -179,6 +179,10 @@
       "getUserInfoAbort": "{siteName} 获取用户资料请求已取消",
       "getUserInfoAbortError": "{siteName} 获取用户资料请求取消失败",
       "offline":"已离线",
+      "torrents": "种子页",
+      "control_panel": "控制面板",
+      "security": "安全设置",
+      "2FA": "2FA",
       "headers": {
         "date": "日期",
         "site": "站点",
@@ -721,6 +725,10 @@
           "timezone": "时区",
           "upLoadLimit": "上传速度限制",
           "upLoadLimitTip": "上传速度限制 (KB/s), 0或不填 不限速",
+          "enableQuickLink": "启用快捷链接",
+          "enableDefaultQuickLink": "启用默认链接",
+          "quickLinkText": "自定义快捷链接列表",
+          "quickLinkTextTip": "每行填写一个地址，逗号分隔备注和网址和颜色（支持 16进制）。如：'百度,https://baidu.com,#2196f3'",
           "disableMessageCount": "关闭消息提醒"
         },
         "userinfo": {
