@@ -180,6 +180,7 @@
       "getUserInfoAbortError": "{siteName} 获取用户资料请求取消失败",
       "offline":"已离线",
       "torrents": "种子页",
+      "mailbox": "收件箱",
       "control_panel": "控制面板",
       "security": "安全设置",
       "2FA": "2FA",

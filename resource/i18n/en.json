@@ -183,6 +183,7 @@
       "getUserInfoAbortError": "Cancellation failed to get user profile request. ({siteName})",
       "offline":"Offline",
       "torrents": "Torrents",
+      "mailbox": "MailBox",
       "control_panel": "ControlPanel",
       "security": "Security",
       "2FA": "2FA",
