@@ -287,6 +287,7 @@ export default Vue.extend({
           }
 
           if (user.uploads && user.uploads > 0) {
+            // https://github.com/pt-plugins/PT-Plugin-Plus/pull/1517
             if (typeof user.uploads !== 'number') {
               console.log(`${site.url}: 当前站点 uploads 类型为 ${typeof user.uploads}，强制转换为 number 类型`)
               user.uploads = parseInt(user.uploads) || 0;
