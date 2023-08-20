@@ -727,6 +727,10 @@ export class ContextMenus {
    * 创建下载客户端上下文菜单，所有页面可用
    */
   private createClientMenus() {
+    let clients = this.options.clients.filter(c => c.enabled !== false)
+    console.log('createClientMenus', this.options.clients)
+    console.log('createClientMenus', clients)
+
     if (this.options.defaultClientId) {
       let client = this.options.clients.find((item: DownloadClient) => {
         return item.id === this.options.defaultClientId;
@@ -754,7 +758,7 @@ export class ContextMenus {
       }
     }
 
-    if (this.options.clients.length > 1) {
+    if (clients.length > 1) {
       this.add({
         id: this.rootId,
         title: this.service.i18n.t("service.contextMenus.sendTorrentToClient"), // "发送到其他服务器",
@@ -762,7 +766,7 @@ export class ContextMenus {
       });
 
       // 创建可用的客户端菜单
-      this.options.clients.forEach((client: DownloadClient) => {
+      clients.forEach((client: DownloadClient) => {
         if (client.id !== this.options.defaultClientId) {
           this.add({
             id: client.id,
