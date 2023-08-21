@@ -27,6 +27,7 @@ export interface ContextMenuRules {
 
 export interface DownloadClient {
   id?: string;
+  enabled?:boolean;
   name?: string;
   // oldName?: string;
   address?: string;
@@ -271,7 +272,23 @@ export interface Site {
   disableMessageCount?: boolean;
   // 等级要求
   levelRequirements?: LevelRequirement[];
+  // 上传限速 KB/s
   upLoadLimit?: number;
+  // 启用快捷链接
+  enableQuickLink?: boolean;
+  // 启用默认快捷链接
+  enableDefaultQuickLink?: boolean;
+  userQuickLinks?: UserQuickLink[];
+}
+
+/**
+ * desc & href 都不为空才被认为是有效链接
+ * href 必须是网址
+ */
+export interface UserQuickLink {
+  desc: string;
+  href: string;
+  color?: string;
 }
 
 export interface LevelRequirement {
@@ -627,7 +644,7 @@ export interface UserInfo {
   lastErrorMsg?: string;
   // 消息数量
   messageCount?: number;
-  // 独特分组 
+  // 独特分组
   uniqueGroups?: number;
   // “完美”FLAC
   perfectFLAC?: number;

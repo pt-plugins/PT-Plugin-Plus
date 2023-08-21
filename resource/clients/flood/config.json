@@ -1,5 +1,6 @@
 {
   "name": "Flood",
+  "enabled": true,
   "type": "flood",
   "ver": "0.0.1",
   "icon": "https://github.com/Flood-UI/flood/raw/master/flood.png",

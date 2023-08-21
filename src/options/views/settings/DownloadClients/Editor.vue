@@ -35,6 +35,11 @@
           ></v-text-field>
 
           <v-switch
+              :label="$t('settings.downloadClients.editor.enabled')"
+              v-model="option.enabled"
+          ></v-switch>
+
+          <v-switch
             :label="$t('settings.downloadClients.editor.autoStart')"
             v-model="option.autoStart"
             v-if="['transmission', 'qbittorrent'].includes(option.type)"

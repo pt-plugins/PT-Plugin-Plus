@@ -116,12 +116,12 @@
             },
             "fields": {
                 "seeding": {
-                    "selector": ["data"],
-                    "filters": ["query.length"]
+                    "selector": ["total_count"],
+                    "filters": ["query"]
                 },
                 "seedingSize": {
                     "selector": ["total_size"],
-                    "filters":  ["query"]
+                    "filters":  ["query.sizeToNumber()"]
                 }
             }
         },
@@ -150,19 +150,15 @@
             }
         }
     },
+    "searchEntry": [{
+        "name": "全部",
+        "enabled": true
+    }],
     "searchEntryConfig": {
-        "fieldSelector": {
-            "progress": {
-                "selector": ["> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"],
-                "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
-            },
-            "status": {
-                "selector": ["> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"],
-                "filters": [
-                    "query ? query.attr('title') : ''",
-                    "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
-                ]
-            }
-        }
+        "page": "/torrents.php",
+        "queryString": "search=$key$",
+        "resultType": "html",
+        "parseScriptFile": "getSearchResult.js",
+        "resultSelector": ".torrents-table > div:nth-child(2)"
     }
 }

@@ -179,6 +179,11 @@
       "getUserInfoAbort": "{siteName} 获取用户资料请求已取消",
       "getUserInfoAbortError": "{siteName} 获取用户资料请求取消失败",
       "offline":"已离线",
+      "torrents": "种子页",
+      "mailbox": "收件箱",
+      "control_panel": "控制面板",
+      "security": "安全设置",
+      "2FA": "2FA",
       "headers": {
         "date": "日期",
         "site": "站点",
@@ -552,6 +557,7 @@
           "loginPwd": "登录密码",
           "id": "ID",
           "autoStart": "发送种子时自动开始下载",
+          "enabled": "是否启用",
           "tagIMDb": "发送种子时自动添加IMDb标签（Beta）",
           "autoCreate": "<保存后自动生成>",
           "test": "测试服务器是否可连接",
@@ -575,8 +581,11 @@
           "removeSelectedConfirm": "确认要删除已选中的下载服务器吗？",
           "ok": "确认",
           "cancel": "取消",
+          "yes": "是",
+          "no": "否",
           "headers": {
             "name": "名称",
+            "enabled": "是否启用",
             "type": "类型",
             "address": "服务器地址",
             "action": "操作"
@@ -721,6 +730,10 @@
           "timezone": "时区",
           "upLoadLimit": "上传速度限制",
           "upLoadLimitTip": "上传速度限制 (KB/s), 0或不填 不限速",
+          "enableQuickLink": "启用快捷链接",
+          "enableDefaultQuickLink": "启用默认链接",
+          "quickLinkText": "自定义快捷链接列表",
+          "quickLinkTextTip": "每行填写一个地址，逗号分隔备注和网址和颜色（支持 16进制）。如：'百度,https://baidu.com,#2196f3'",
           "disableMessageCount": "关闭消息提醒"
         },
         "userinfo": {

@@ -95,6 +95,20 @@
               {{ props.item.user.name }}
             </template>
             <template v-else> **** </template>
+            <v-card  v-if="props.item.enableQuickLink" class="userQuickLinks">
+                <template v-if="props.item.enableDefaultQuickLink">
+                  <template v-for="link of defaultQuickLinks(props.item)">
+                    <v-btn outline elevation="2" class="x-small" target="_blank"
+                           :color="link.color" :href="link.href" >{{ link.desc }}</v-btn>
+                  </template>
+                  <hr>
+                </template>
+              <!--Vuetify 点击后新开窗口也-->
+                <template v-for="link of props.item.userQuickLinks">
+                  <v-btn outline elevation="2" class="x-small" target="_blank"
+                         :color="link.color" :href="link.href" >{{ link.desc }}</v-btn>
+                </template>
+            </v-card>
           </td>
           <td v-if="showColumn('user.levelName')">
             <v-icon v-if="showLevelRequirements" small>military_tech</v-icon>
@@ -342,7 +356,6 @@
           </td>
           <td v-if="showColumn('user.uploads')" class="number">
             <template v-if="props.item.user.uploads && props.item.user.uploads > 0">{{ props.item.user.uploads}}</template>
-            
           </td>
           <td v-if="showColumn('user.seeding')" class="number">
             <div>{{ props.item.user.seeding }}</div>
@@ -424,7 +437,7 @@ import {
   Options,
   UserInfo,
   EViewKey,
-  LevelRequirement,
+  LevelRequirement, UserQuickLink,
 } from "@/interface/common";
 import dayjs from "dayjs";
 
@@ -1094,6 +1107,59 @@ export default Vue.extend({
       }
       return "";
     },
+    defaultQuickLinks: function (site: Site): UserQuickLink[] {
+      let uid = site.user?.id, uname = site.user?.name
+      let links: UserQuickLink[] = []
+      switch (site.schema) {
+        // from jpop
+        case 'Gazelle':
+          links = [
+            {color: 'primary', desc: `${uname}(${uid})`, href: new URL(`/user.php?id=${uid}`, site.activeURL).toString()},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: new URL(`/inbox.php`, site.activeURL).toString()},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: new URL(`/torrents.php`, site.activeURL).toString()},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: new URL(`/user.php?action=edit&userid=${uid}`, site.activeURL).toString()},
+            // {color: 'primary', desc: this.$t("home.security").toString(), href: new URL(`/user.php?action=edit&userid=${uid}#paranoia_settings`, site.activeURL).toString()},
+            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: new URL(`/user.php?action=edit&userid=${uid}#access_settings`, site.activeURL).toString()},
+          ]
+          break
+        // from GPW
+        case 'GazelleJSONAPI':
+          links = [
+            {color: 'primary', desc: `${uname}(${uid})`, href: new URL(`/user.php?id=${uid}`, site.activeURL).toString()},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: new URL(`/inbox.php`, site.activeURL).toString()},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: new URL(`/torrents.php`, site.activeURL).toString()},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: new URL(`/user.php?action=edit&userid=${uid}`, site.activeURL).toString()},
+            {color: 'primary', desc: this.$t("home.security").toString(), href: new URL(`/user.php?action=edit&userid=${uid}#paranoia_settings`, site.activeURL).toString()},
+            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: new URL(`/user.php?action=edit&userid=${uid}#access_settings`, site.activeURL).toString()},
+          ]
+          break
+        // from 观众
+        case 'NexusPHP':
+          links = [
+            {color: 'primary', desc: `${uname}(${uid})`, href: new URL(`/userdetails.php?id=${uid}`, site.activeURL).toString()},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: new URL(`/messages.php`, site.activeURL).toString()},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: new URL(`/torrents.php`, site.activeURL).toString()},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: new URL(`/usercp.php`, site.activeURL).toString()},
+            {color: 'primary', desc: this.$t("home.security").toString(), href: new URL(`/usercp.php?action=security`, site.activeURL).toString()},
+            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: new URL(`/usercp.php?action=secAuth`, site.activeURL).toString()},
+          ]
+          break
+        // from zhuque
+        case 'TNode':
+          links = [
+            {color: 'primary', desc: `${uname}(${uid})`, href: new URL(`/user/info`, site.activeURL).toString()},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: new URL(`/message/system`, site.activeURL).toString()},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: new URL(`/torrent/list/`, site.activeURL).toString()},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: new URL(`/user/setting`, site.activeURL).toString()},
+          ]
+          break
+        case 'Discuz':
+        case 'UNIT3D':
+        default:
+          break
+      }
+      return links
+    }
   },
 
   filters: {
@@ -1144,6 +1210,26 @@ export default Vue.extend({
     margin: 0;
     height: 30px;
     width: 30px;
+  }
+
+  td:hover div.userQuickLinks {
+    display: block;
+  }
+
+  .userQuickLinks {
+    position: absolute;
+    display: none;
+    z-index: 999;
+    border: 1px solid;
+    max-width: 50%;
+    min-width: 405px;
+  }
+
+  .x-small {
+    height: 20px;
+    min-width: 36px;
+    padding: 0 8.8888888889px;
+    margin: 5px;
   }
 
   td:hover div.levelRequirement {
