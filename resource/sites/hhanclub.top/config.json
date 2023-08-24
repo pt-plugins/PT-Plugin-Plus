@@ -109,7 +109,7 @@
             }
         },
         "userSeedingTorrents": {
-            "page": "/getusertorrentlistajax.php?type=seeding&userid=$user.id$&ajax=1",
+            "page": "/getusertorrentlistajax.php?type=size&userid=$user.id$",
             "dataType": "json",
             "headers": {
                 "Accept": "application/json, text/javascript, */*; q=0.01"
@@ -159,6 +159,6 @@
         "queryString": "search=$key$",
         "resultType": "html",
         "parseScriptFile": "getSearchResult.js",
-        "resultSelector": ".torrents-table > div:nth-child(2)"
+        "resultSelector": ".torrent-table-for-spider"
     }
 }

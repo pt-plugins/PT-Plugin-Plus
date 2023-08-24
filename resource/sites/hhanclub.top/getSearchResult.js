@@ -34,10 +34,10 @@
       }
       let site = options.site;
       let site_url_help = PTServiceFilters.parseURL(site.url);
-      let selector = options.resultSelector || ".torrents-table > div:nth-child(2)";
+      let selector = options.resultSelector || ".torrent-table-for-spider";
       let table = options.page.find(selector);
       // 获取种子列表行
-      let rows = table.find("> div:nth-child(4) > div");
+      let rows = table.find("> .torrent-table-sub-info");
       if (rows.length == 0) {
         options.status = ESearchResultParseStatus.torrentTableIsEmpty; //`[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
         return [];
@@ -52,7 +52,7 @@
         // 遍历数据行
         for (let index = 0; index < rows.length; index++) {
           const row = rows.eq(index);
-          let title = row.find(".torrent-title a[href^='details.php?id=']");
+          let title = row.find(".torrent-info-text-name");
           if (title.length == 0) {
             continue;
           }
@@ -76,15 +76,15 @@
 
           let data = {
             title: title.text(),
-            subTitle: row.find('.torrent-title > div > div:nth-child(2) > div:nth-child(2)').text() || "",
+            subTitle: row.find('.torrent-info-text-small_name').text() || "",
             link,
             url,
-            size: row.find('.torrent-info > .torrent-info-text:nth-child(1)').text() || 0,
-            time: row.find('.torrent-info > .torrent-info-text:nth-child(2) > span').attr('title') || "",
-            author: row.find('.torrent-title > div > div:nth-child(3) > :last-child').text() || "",
-            seeders: row.find('> div:nth-child(3) > .torrent-info > .torrent-info-text:nth-child(3)').text().trim() || 0,
-            leechers: row.find('> div:nth-child(3) > .torrent-info > .torrent-info-text:nth-child(4)').text().trim() || 0,
-            completed: 0, // 暂无完成数
+            size: row.find('.torrent-info-text-size').text() || 0,
+            time: row.find('.torrent-info-text-added > span').attr('title') || "",
+            author: row.find('.torrent-info-text-author').text() || "",
+            seeders: row.find('.torrent-info-text-seeders').text().trim() || 0,
+            leechers: row.find('.torrent-info-text-leechers').text().trim() || 0,
+            completed: row.find('.torrent-info-text-finished').text().trim() || 0,
             comments: 0, // 暂无评论数
             site: site,
             tags: Searcher.getRowTags(this.site, row),
@@ -141,7 +141,7 @@
         name: "",
         link: ""
       };
-      let link = row.find("> .torrent-cat:first > a");
+      let link = row.find("> .torrent-cat > a");
       let img = link.find("img:first");
 
       if (link.length) {
