@@ -1,0 +1,184 @@
+{
+  "name": "PTLSP",
+  "description": "PTLSP是一个集刮削音乐专辑、影视、剧集、游戏、纪录片、动漫、MV等众多资源为一体的综合PT站，本站旗下有着独家音乐专辑刮削制作小组以及独家压制小组",
+  "url": "https://www.ptlsp.com/",
+  "icon": "https://www.ptlsp.com/favicon.ico",
+  "tags": ["综合", "音乐"],
+  "schema": "NexusPHP",
+  "host": "ptlsp.com",
+  "cdn": ["https://www.ptlsp.com/"],
+  "collaborator": ["CosmoGao"],
+  "plugins": [
+    {
+    "name": "种子列表",
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }],
+  "levelRequirements": [{
+    "level": "1",
+    "name": "Power User",
+    "interval": "4", 
+    "downloaded": "50GB",
+    "ratio": "1.05",
+    "privilege": "首次升级PU将获得1个邀请 "
+  },{
+    "level": "2",
+    "name": "Elite User",
+    "interval": "8", 
+    "downloaded": "120GB",
+    "ratio": "1.55",
+    "privilege": "Elite User及以上等级用户封存账号（在控制面板）后不会被禁用账号"
+  },{
+    "level": "3",
+    "name": "Crazy User",
+    "interval": "15", 
+    "downloaded": "300GB",
+    "ratio": "2.05",
+    "privilege": "首次升级CU将分别2个邀请"
+  },{
+    "level": "4",
+    "name": "Insane User",
+    "interval": "25", 
+    "downloaded": "500GB",
+    "ratio": "2.55",
+    "privilege": " "
+  },{
+    "level": "5",
+    "name": "Veteran User",
+    "interval": "40", 
+    "downloaded": "750GB",
+    "ratio": "3.05",
+    "privilege": "Veteran User及以上等级用户会永远保留；首次升级VU将获得3个邀请"
+  },{
+    "level": "6",
+    "name": "Extreme User",
+    "interval": "60", 
+    "downloaded": "1000GB",
+    "ratio": "3.55",
+    "privilege": " "
+  },{
+    "level": "7",
+    "name": "Ultimate User",
+    "interval": "80", 
+    "downloaded": "1500GB",
+    "ratio": "4.05",
+    "privilege": "首次升级UU将获得5邀请"
+  },{
+    "level": "8",
+    "name": "Nexus Master",
+    "interval": "100", 
+    "downloaded": "3000GB",
+    "ratio": "4.55",
+    "privilege": "首次升级NM将获得10个邀请"
+  }],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["b:first"],
+          "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+              "query.text().match(/总大小：(.*?)上一页/g)",
+              "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
+              "(query != 0) ? query.sizeToNumber() : 0"
+          ]
+        }
+      }
+    }
+  },
+  "searchEntry": [{
+    "name": "全站",
+    "enabled": true
+  },
+  {
+    "queryString": "cat=401",
+    "name": "电影",
+    "enabled": true
+  },
+  {
+    "queryString": "cat=402",
+    "name": "电视",
+    "enabled": true
+  },
+  {
+    "queryString": "cat=405",
+    "name": "动漫",
+    "enabled": true
+  },
+  {
+    "queryString": "cat=413",
+    "name": "游戏",
+    "enabled": true
+  },
+  {
+    "queryString": "cat=412",
+    "name": "软件",
+    "enabled": true
+  },
+  {
+    "queryString": "cat=411",
+    "name": "音乐",
+    "enabled": true
+  }
+],
+  "searchEntryConfig": {
+    "merge": true,
+    "skipIMDbId": true,
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
+        ],
+        "filters": [
+          "query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"
+        ]
+      },
+      "status": {
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
+        ],
+        "filters": [
+          "query ? query.attr('title') : ''",
+          "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+        ]
+      }
+    },
+    "categories": [{
+      "entry": "torrents.php",
+      "result": "&cat=$id$",
+      "category": [{
+        "id": 401,
+        "name": "电影"
+      },
+      {
+        "id": 402,
+        "name": "电视"
+      },
+      {
+        "id": 405,
+        "name": "动漫"
+      },
+      {
+        "id": 413,
+        "name": "游戏"
+      },
+      {
+        "id": 412,
+        "name": "软件"
+      },
+      {
+        "id": 411,
+        "name": "音乐"
+      }
+    ],
+    "mergeSchemaTagSelectors": true,
+    "torrentTagSelectors": [{
+      "name": "⛔️",
+      "selector": "td.embedded > a[title] > b > font[color='red']"
+      }]
+    }]
+  }
+}
