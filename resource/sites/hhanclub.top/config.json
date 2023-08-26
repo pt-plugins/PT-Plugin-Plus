@@ -102,6 +102,10 @@
                     "selector": ["span.font-bold:contains('憨豆') + div", "span.font-bold:contains('Seed points') + div"],
                     "filters": ["parseFloat(query.text().replace(/,/g,''))"]
                 },
+                "seedingPoints": {
+                    "selector": ["span:contains('做种积分') + span", "span:contains('Seeding Points') + span"],
+                    "filters": ["parseFloat(query.text().replace(/,/g,''))"]
+                },
                 "joinTime": {
                     "selector": ["span:contains('加入日期')", "span:contains('Join'):contains('date')"],
                     "filters": ["query.next().text().split(' (')[0].trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
