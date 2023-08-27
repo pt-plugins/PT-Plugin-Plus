@@ -52,7 +52,7 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "i.fa-star.text-gold, i.fa-globe.text-blue"
+    "selector": "i.fa-star.text-gold, i.fa-globe.text-blue, i.torrent-icons__freeleech"
   }, {
     "name": "2xUp",
     "selector": "i.fa-gem.text-green"
