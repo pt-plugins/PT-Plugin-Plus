@@ -267,7 +267,9 @@
           .html(cell.html().replace("<br>", " "))
           .text();
       }
-      if (options.site.host === "pt.sjtu.edu.cn") {
+      // 存活时间样例：1年 5月，5月 3天，3天 14时，2时 1分，10分
+      const numUnitFormatSite = ['pt.sjtu.edu.cn', 'piggo.me']
+      if (numUnitFormatSite.some(s => s === options.site.host)) {
         if (time.match(/\d+[分时天月年]/g)) {
           time = Date.now() - this._parseTime(time)
           time = new Date(time).toLocaleString("zh-CN", { hour12: false }).replace(/\//g, '-')
