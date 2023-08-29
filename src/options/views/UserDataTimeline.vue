@@ -41,6 +41,7 @@
 
         <v-card-title primary-title>
           <div class="headline font-weight-bold">
+            <div >{{ $t('timeline.total.sites') }}{{ datas.length }}</div>
             <div v-if="showUserUploads">{{ $t('timeline.total.uploads') }}{{ infos.total.uploads }}</div>
             <div>{{ $t('timeline.total.uploaded') }}{{ infos.total.uploaded | formatSize }}</div>
             <div>{{ $t('timeline.total.downloaded') }}{{ infos.total.downloaded | formatSize }}</div>
