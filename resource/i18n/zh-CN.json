@@ -290,6 +290,7 @@
         "uploaded": "上传总量：",
         "downloaded": "下载总量：",
         "seedingSize": "做种总量：",
+        "seeding": "做种总数：",
         "ratio": "总分享率：",
         "years": "．．Ｐ龄：≈ {year} 年"
       },

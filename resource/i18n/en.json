@@ -295,6 +295,7 @@
         "uploaded": "Total uploaded: ",
         "downloaded": "Total download: ",
         "seedingSize": "Seeding size: ",
+        "seeding": "Total Seeding: ",
         "ratio": "Total ratio: ",
         "years": "PT ages：≈ {year} year(s)"
       },
