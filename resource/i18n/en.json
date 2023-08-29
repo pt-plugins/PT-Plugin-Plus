@@ -305,6 +305,7 @@
         "uploaded": "Uploaded: ",
         "downloaded": "Downloaded: ",
         "seedingSize": "Seeding size: ",
+        "averageSeedtime": "Average Seedtime: {day} day(s)",
         "ratio": "Ratio: ",
         "bonus": "Bonus: ",
         "bonusPerHour": "Bonus per hour: "

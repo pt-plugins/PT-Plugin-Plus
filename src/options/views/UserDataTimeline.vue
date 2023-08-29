@@ -151,6 +151,7 @@
                 <div>{{ $t('timeline.user.downloaded') }}{{ site.user.downloaded | formatSize }}</div>
                 <div>{{ $t('timeline.user.ratio') }}{{ site.user.ratio | formatRatio }}</div>
                 <div>{{ $t('timeline.user.seedingSize') }}{{ site.user.seedingSize | formatSize }} ({{ site.user.seeding }})</div>
+                <div v-if="site.user.averageSeedtime && site.user.averageSeedtime > 0">{{ $t('timeline.user.averageSeedtime', {day: site.user.averageSeedtime | formatInteger}) }}</div>
                 <div>{{ $t('timeline.user.bonus') }}{{ site.user.bonus | formatNumber }}</div>
                 <div v-if="site.user.bonusPerHour && site.user.bonusPerHour != 'N/A'">{{ $t('timeline.user.bonusPerHour') }}{{ site.user.bonusPerHour | formatNumber }}</div>
               </div>
