@@ -290,6 +290,7 @@
         "lessThanAWeek": "Less than a week"
       },
       "total": {
+        "sites": "Total sites: ",
         "uploads": "Total uploads: ",
         "uploaded": "Total uploaded: ",
         "downloaded": "Total download: ",

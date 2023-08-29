@@ -285,6 +285,7 @@
         "lessThanAWeek": "不满一周"
       },
       "total": {
+        "sites": "站点总数：",
         "uploads": "发布总数：",
         "uploaded": "上传总量：",
         "downloaded": "下载总量：",
