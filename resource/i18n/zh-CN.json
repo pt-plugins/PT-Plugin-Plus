@@ -290,6 +290,7 @@
         "uploaded": "上传总量：",
         "downloaded": "下载总量：",
         "seedingSize": "做种总量：",
+        "seeding": "做种总数：",
         "ratio": "总分享率：",
         "years": "．．Ｐ龄：≈ {year} 年"
       },
@@ -299,6 +300,7 @@
         "uploaded": "上传量：",
         "downloaded": "下载量：",
         "seedingSize": "做种量：",
+        "averageSeedtime": "均保时: {day} 天",
         "ratio": "分享率：",
         "bonus": "积分值：",
         "bonusPerHour": "时　魔："
