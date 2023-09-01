@@ -103,7 +103,7 @@
                   </template>
                   <hr>
                 </template>
-              <!--Vuetify 点击后新开窗口也-->
+                <!--点击后在新标签页打开-->
                 <template v-for="link of props.item.userQuickLinks">
                   <v-btn outline elevation="2" class="x-small" target="_blank"
                          :color="link.color" :href="link.href" >{{ link.desc }}</v-btn>
@@ -398,10 +398,10 @@
             {{ props.item.user.joinTime | timeAgo(showWeek) }}
           </td>
           <td v-if="showColumn('user.lastUpdateTime')" class="number">
-            <v-btn depressed small :to="`statistic/${props.item.host}`" :title="$t('home.statistic')">{{
-                props.item.user.lastUpdateTime |
-                formatDate("YYYY-MM-DD HH:mm:ss")
-            }}</v-btn>
+            <v-btn depressed small class="lastUpdateTime"
+                   :to="`statistic/${props.item.host}`" :title="$t('home.statistic')">
+              {{ props.item.user.lastUpdateTime | formatDate("YYYY-MM-DD HH:mm:ss") }}
+            </v-btn>
           </td>
           <td v-if="showColumn('user.lastUpdateStatus')" class="center">
             <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="props.item.user.isLoading">
@@ -1245,6 +1245,10 @@ export default Vue.extend({
 
   .select {
     max-width: 180px;
+  }
+
+  .lastUpdateTime {
+    margin-right: 0;
   }
 }
 </style>
