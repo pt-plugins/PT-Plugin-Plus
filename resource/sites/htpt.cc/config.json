@@ -98,22 +98,11 @@
     {
       "name": "种子列表",
       "pages": [
-        "/torrents.php",
         "/live.php"
       ],
       "scripts": [
         "/schemas/NexusPHP/common.js",
         "/schemas/NexusPHP/torrents.js"
-      ]
-    },
-    {
-      "name": "种子详情页面",
-      "pages": [
-        "/details.php"
-      ],
-      "scripts": [
-        "/schemas/NexusPHP/common.js",
-        "/schemas/NexusPHP/details.js"
       ]
     }
   ]
