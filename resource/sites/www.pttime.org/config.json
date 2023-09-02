@@ -64,6 +64,24 @@
     "ratio": "4.55",
     "privilege": "无"
   }],
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "div.progress_seeding"
+        ],
+        "filters": [ "query.attr('style')||''", "query.match(/width:(\\d.+)%/)", "(query && query.length>=2)?query[1]:null" ]
+      },
+      "status": {
+        "selector": [
+          "div.progress_seeding"
+        ],
+        "filters": [
+          "query.attr('style')||''", "query.match(/width:(\\d.+)%/)", "(query && query.length>=2)?parseFloat(query[1])<100?1:2:3"
+        ]
+      }
+    }
+  },
   "searchEntry": [{
     "name": "综合",
     "enabled": true
