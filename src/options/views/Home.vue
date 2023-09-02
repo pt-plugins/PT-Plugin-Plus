@@ -699,23 +699,27 @@ export default Vue.extend({
      * 等级名称有中英文之分，没法直接区分
      */
     getUserLevelGroup(site: Site) {
-      let userLevel = site.user?.levelName
-      if (userLevel?.toLowerCase().includes('vip')) {
-        return 'vip'
-      } else {
-        return 'user'
+      let userLevel = site.user?.levelName?.toLowerCase()
+      let specialNames = {
+        manager: 'admin,moderator,sys,retire,管理,版主,发种,保种,上传,退休'.split(/[,，]/ig),
+        vip: 'vip,贵宾'.split(/[,，]/ig),
       }
-      // let levels = site.levelRequirements?.map(_ => _.name)
-      // if (levels?.some(_ => _ === userLevel)) {
-      //   return 'manager'
-      // } else if (userLevel?.toLowerCase().includes('vip')) {
-      //   return 'vip'
-      // } else {
-      //   return 'user'
-      // }
+      specialNames.manager = specialNames.manager.filter(_ => !!_)
+      specialNames.vip = specialNames.vip.filter(_ => !!_)
+      let res = 'user'
+      for (let k in specialNames) {
+        // @ts-ignore
+        let levelNames = specialNames[k]
+        if (levelNames.some((n: string) => userLevel?.includes(n))) {
+          res = k
+          break
+        }
+      }
+      return res
     },
     getDoneIcon(site: Site) {
-      const icons = {manager: 'verified', vip: 'download_done', user: 'done'}
+      const icons = {manager: 'manage_accounts', vip: 'verified', user: 'done'}
+      // @ts-ignore
       return icons[this.getUserLevelGroup(site)] || icons.user
     },
     isUserGroup(site: Site) {
