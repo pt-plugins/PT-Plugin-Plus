@@ -138,7 +138,7 @@
 
         <!--上传限速-->
         <v-text-field
-                v-model="site.upLoadLimit"
+                v-model="site.upLoadLimit" type="number"
                 :label="$t('settings.sites.editor.upLoadLimit')"
                 :placeholder="$t('settings.sites.editor.upLoadLimitTip')"
         ></v-text-field>
