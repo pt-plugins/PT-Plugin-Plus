@@ -115,7 +115,7 @@
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
               <template v-if="props.item.levelRequirements">
-                <template v-if="props.item.user.nextLevels && props.item.user.nextLevels.length > 0">
+                <template v-if="isUserGroup(props.item) && props.item.user.nextLevels && props.item.user.nextLevels.length > 0">
                   <template v-for="nextLevel in props.item.user.nextLevels">
                     <div>
                       <v-icon small>keyboard_tab</v-icon>
@@ -192,7 +192,7 @@
                   </template>
                 </template>
                 <template v-else-if="props.item.user.name">
-                  <v-icon small color="green darken-4">done</v-icon>
+                  <v-icon small color="green darken-4">{{ getDoneIcon(props.item) }}</v-icon>
                 </template>
                 <v-card class="levelRequirement">
                   <template v-for="levelRequirement of props.item.levelRequirements">
@@ -696,6 +696,32 @@ export default Vue.extend({
       }
     },
     /**
+     * 等级名称有中英文之分，没法直接区分
+     */
+    getUserLevelGroup(site: Site) {
+      let userLevel = site.user?.levelName
+      if (userLevel?.toLowerCase().includes('vip')) {
+        return 'vip'
+      } else {
+        return 'user'
+      }
+      // let levels = site.levelRequirements?.map(_ => _.name)
+      // if (levels?.some(_ => _ === userLevel)) {
+      //   return 'manager'
+      // } else if (userLevel?.toLowerCase().includes('vip')) {
+      //   return 'vip'
+      // } else {
+      //   return 'user'
+      // }
+    },
+    getDoneIcon(site: Site) {
+      const icons = {manager: 'verified', vip: 'download_done', user: 'done'}
+      return icons[this.getUserLevelGroup(site)] || icons.user
+    },
+    isUserGroup(site: Site) {
+      return this.getUserLevelGroup(site) === 'user'
+    },
+    /**
      * 格式化一些用户信息
      */
     formatUserInfo(user: UserInfoEx, site: Site) {
@@ -740,19 +766,15 @@ export default Vue.extend({
             if (Number(levelRequirement.level) < userLevel)
               continue;
 
-            if (levelRequirement.alternative)
-            {
-              for (var option of levelRequirement.alternative)
-              {
+            if (levelRequirement.alternative) {
+              for (var option of levelRequirement.alternative) {
                 var newLevelRequirement = Object.assign({}, levelRequirement)
-                for(var key of Object.keys(option) as Array<keyof LevelRequirement>) {
-                  {
-
+                for(var key of Object.keys(option) as Array<keyof LevelRequirement>) {{
                     if (option[key])
                       newLevelRequirement[key] = option[key] as any
                   }
                 }
-                //console.log(newLevelRequirement)
+                // console.log(newLevelRequirement)
                 var nextLevel = this.calculateNextLeve(user, newLevelRequirement);
                 if (nextLevel) {
                   //console.log(nextLevel)
@@ -766,9 +788,7 @@ export default Vue.extend({
 
               if (user.nextLevels.length)
                   break;
-            }
-            else
-            {
+            } else {
               let nextLevel = this.calculateNextLeve(user, levelRequirement);
               if (nextLevel) {
                 if (user.nextLevels.length) {
