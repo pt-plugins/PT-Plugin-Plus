@@ -20,7 +20,7 @@
       "interval": "4",
       "downloaded": "50GB",
       "ratio": "1.05",
-      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；；可以请求续种； 可以发送邀请（开放邀请权限时）； 可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+      "privilege": "得到1个邀请名额；可以直接发布种子；可以查看NFO文档；可以请求续种； 可以发送邀请（开放邀请权限时）；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")；可以删除自己上传的字幕。"
     },
     {
       "level": 2,
@@ -28,7 +28,7 @@
       "interval": "8",
       "downloaded": "120GB",
       "ratio": "3",
-      "privilege": "无"
+      "privilege": "权限同上。"
     },
     {
       "level": 3,
@@ -36,7 +36,7 @@
       "interval": "10",
       "downloaded": "300GB",
       "ratio": "3.5",
-      "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+      "privilege": "可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
       "level": 4,
@@ -52,7 +52,7 @@
       "interval": "20",
       "downloaded": "1024GB",
       "ratio": "4.5",
-      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+      "privilege": "可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
     },
     {
       "level": 6,
@@ -68,7 +68,7 @@
       "interval": "30",
       "downloaded": "5TB",
       "ratio": "5.5",
-      "privilege": "得到五个邀请名额。"
+      "privilege": "得到1个邀请名额。"
     },
     {
       "level": 8,
@@ -76,7 +76,7 @@
       "interval": "40",
       "downloaded": "10TB",
       "ratio": "6",
-      "privilege": "得到十个邀请名额。"
+      "privilege": "得到2个邀请名额。"
     }
   ],
   "collaborator": "lzl20110",
