@@ -44,13 +44,13 @@ String.prototype.sizeToNumber = function() {
  * @return {number}
  */
 String.prototype.timeToDays = function() {
-  const timeMatch = this.match(/\d+[天周月年DWMY]/g);
+  const timeMatch = this.match(/\d+[天日周月年DWMY]/g);
   let length = 0;
   if (timeMatch == null)
     return 0;
   
   timeMatch.forEach(time => {
-    const timeMatch = time.match(/(\d+)([天周月年DWMY])/);
+    const timeMatch = time.match(/(\d+)([天日周月年DWMY])/);
     if (timeMatch == null)
       return 0;
 
@@ -59,6 +59,7 @@ String.prototype.timeToDays = function() {
     switch (true) {
       case unit === 'D':
       case unit === '天':
+      case unit === '日':
         length += number;
         break;
       case unit === 'W':
