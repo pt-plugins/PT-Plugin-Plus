@@ -63,7 +63,7 @@ String.prototype.timeToDays = function() {
         break;
       case unit === 'W':
       case unit === '周':
-        length += number;
+        length += number * 7;
         break;
       case unit === 'M':
       case unit === '月':
