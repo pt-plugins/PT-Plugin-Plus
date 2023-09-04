@@ -51,9 +51,10 @@
               <div>{{ $t('timeline.total.years', {year: infos.joinTimeInfo.years}) }}</div>
             </div>
           </v-card-title>
+          <v-divider vertical></v-divider>
           <v-card-title primary-title>
             <div class="headline font-weight-bold">
-              <div><v-icon></v-icon></div>
+              <div><v-icon color="#C9B037">emoji_events</v-icon></div>
               <div v-if="showUserUploads && infos.total.uploads && infos.total.uploads > 0"><div>
                 <v-avatar size="20">
                   <img v-if="infos.maxUploadsInfo.site.icon" :src="infos.maxUploadsInfo.site.icon" :class="{'icon-blur': blurSiteIcon}"/>
@@ -83,14 +84,14 @@
               <div><v-icon></v-icon></div>
             </div>
           </v-card-title>
-          <v-card-title primary-title>
+          <v-card-title v-if="infos.maxUploadsInfo.subSite" primary-title>
             <div class="headline font-weight-bold">
-              <div><v-icon></v-icon></div>
+              <div><v-icon color="#B4B4B4">emoji_events</v-icon></div>
               <div v-if="showUserUploads && infos.total.uploads && infos.total.uploads > 0"><div>
                 <v-avatar size="20">
                   <img v-if="infos.maxUploadsInfo.subSite.icon" :src="infos.maxUploadsInfo.subSite.icon" :class="{'icon-blur': blurSiteIcon}"/>
                 </v-avatar>
-              <span>{{ infos.maxUploadsInfo.submaxValue }}</span></div></div>
+              <span v-if="infos.maxUploadsInfo.submaxValue && infos.maxUploadsInfo.submaxValue > 0">{{ infos.maxUploadsInfo.submaxValue }}</span></div></div>
               <div>
                 <v-avatar size="20">
                   <img v-if="infos.maxUploadedInfo.subSite.icon" :src="infos.maxUploadedInfo.subSite.icon" :class="{'icon-blur': blurSiteIcon}"/>
