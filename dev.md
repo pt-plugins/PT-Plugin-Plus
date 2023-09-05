@@ -1,6 +1,6 @@
 ## PTPP 开发指引
 
-* https://github.com/pt-plugins/PT-Plugin-Plus/wiki/develop
+* https://github.com/pt-plugins/PT-Plugin-Plus/wiki/developer
 
 ## PTPP 后端日志查看
 
@@ -11,7 +11,9 @@
 
 ![img](./docs/images/1.png)
 
-5. 从项目结构上说 `src/background` 的日志将会输出到 背景页。`src/options` 里面的日志，将会输出到 `index.html`。打开F12即可看见。
+5. 从项目结构上来说, 打开F12即可看见日志。
+   1. `src/background` 的日志将会输出到 `背景页`。
+   2. `src/options` 里面的日志，将会输出到 `index.html`。
 
 ```
 .
