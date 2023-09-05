@@ -398,7 +398,13 @@ export default Vue.extend({
 
     searchTorrent(key?: string) {
       key = key || this.searchKey;
+      console.log(`searchTorrent: key: ${key}, searchKey: ${this.searchKey}`)
       if (!key) {
+        return;
+      }
+      const targetRoute = {name: "search-torrent", params: {key,},}
+      if (key === this.searchKey && this.$router.currentRoute.name === targetRoute.name) {
+        console.log(`skip same searchTorrent: key: ${key}, searchKey: ${this.searchKey}`)
         return;
       }
 
@@ -409,12 +415,7 @@ export default Vue.extend({
         lastSearchKey: this.searchKey,
       });
 
-      this.$router.push({
-        name: "search-torrent",
-        params: {
-          key: key,
-        },
-      });
+      this.$router.push(targetRoute);
     },
     changeSearchSolution(solution?: SearchSolution) {
       let defaultSearchSolutionId = "";
