@@ -498,6 +498,7 @@
         "saveSearchKey": "Save historical search keyword records",
         "showMoiveInfoCardOnSearch": "Show movie and rating information when searching by IMDb number",
         "getMovieInformationBeforeSearching": "When entering a search keyword, load relevant information from Douban for pre-selection",
+        "autoSearchWhenSwitchSolution": "When changing search solution, re-search immediately",
         "maxMovieInformationCount": "Maximum display number of entries (1-20):",
         "searchModeForItem": "When clicking on a pre-selected item:",
         "showToolbarOnContentPage": "Enable site page plugin icons and toolbars (such as one-click downloads, etc.)",

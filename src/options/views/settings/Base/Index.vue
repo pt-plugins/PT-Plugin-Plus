@@ -282,6 +282,13 @@
                       :label="$t('settings.base.showMoiveInfoCardOnSearch')"
                     ></v-switch>
 
+                    <!-- 搜索方案切换的时候是否自动搜索 -->
+                    <v-switch
+                        color="success"
+                        v-model="options.autoSearchWhenSwitchSolution"
+                        :label="$t('settings.base.autoSearchWhenSwitchSolution')"
+                    ></v-switch>
+
                     <!-- 在搜索之前一些选项配置 -->
                     <v-switch
                       color="success"
@@ -789,7 +796,7 @@ export default Vue.extend({
       ).toString();
     }
   },
-  watch: { 
+  watch: {
     successMsg: {
       handler() {
         this.haveSuccess = this.successMsg != "";

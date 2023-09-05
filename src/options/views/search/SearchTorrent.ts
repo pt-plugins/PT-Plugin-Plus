@@ -206,11 +206,13 @@ export default Vue.extend({
   watch: {
     key(newValue, oldValue) {
       if (newValue && newValue != oldValue) {
+        console.log('watch search key', newValue, oldValue)
         this.doSearch();
       }
     },
     host(newValue, oldValue) {
       if (newValue && newValue != oldValue) {
+        console.log('watch search host', newValue, oldValue)
         this.doSearch();
       }
     },
@@ -221,9 +223,14 @@ export default Vue.extend({
       this.haveError = this.errorMsg != "";
     },
     "$store.state.options.defaultSearchSolutionId"(newValue, oldValue) {
+      console.log('watch search defaultSearchSolutionId', newValue, oldValue)
       // 设置为<默认>时，newValue 为空，故与 key, host 处理方式不同
       if (newValue != oldValue) {
-        this.doSearch();
+        if (this.$store.state.options.autoSearchWhenSwitchSolution) {
+          this.doSearch();
+        } else {
+          console.log(`切换搜索方案 - 跳过搜索, 可在 常规设置 - 搜索 中开启自动搜索`)
+        }
       }
     },
     loading() {
