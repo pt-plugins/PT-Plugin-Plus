@@ -155,15 +155,6 @@
           ]
         }
       }
-    },
-    "bonusExtendInfo": {
-      "prerequisites": "!user.bonusPerHour",
-      "page": "/mybonus.php",
-      "fields": {
-        "bonusPerHour": {
-          "selector": ["#outer td[rowspan]"]
-        }
-      }
     }
   }
 }
