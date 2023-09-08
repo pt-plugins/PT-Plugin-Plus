@@ -118,20 +118,28 @@
           }
         },
         error: (jqXHR, textStatus, errorThrown) => {
+          console.log('exec failed', jqXHR.status, textStatus, errorThrown)
+          let res = {status: 'error', code: jqXHR.status, msg: ''}
           switch (jqXHR.status) {
             // Unsupported Media Type
             case 415:
-              callback({
-                status: "error",
-                code: jqXHR.status,
-                msg: i18n.t("downloadClient.unsupportedMediaType") //"种子文件有误"
-              });
-              return;
+              res.msg = i18n.t('downloadClient.unsupportedMediaType') //"种子文件有误"
+              break;
+            case 502:
+              res.msg = i18n.t('downloadClient.serverIsUnavailable') //"服务器不可用或网络错误"
+              break;
+            case 403:
+              res.msg = i18n.t('downloadClient.permissionDenied')
+              break;
 
             default:
               break;
           }
           console.log(jqXHR);
+          if (res.msg) {
+            callback(res)
+            return
+          }
           this.getSessionId()
             .then(() => {
               this.exec(options, callback, tags);
@@ -141,7 +149,7 @@
                 status: "error",
                 code,
                 msg:
-                  msg || code === 0
+                  msg || (code >= 500 && code < 600)
                     ? i18n.t("downloadClient.serverIsUnavailable")
                     : i18n.t("downloadClient.unknownError") //"服务器不可用或网络错误" : "未知错误"
               });
@@ -209,26 +217,31 @@
           params: params
         },
         resultData => {
-          if (callback) {
-            var result = Object.assign(
-              {
-                status: "",
-                msg: ""
-              },
-              resultData
-            );
-            if (
-              (!resultData.error && resultData.result) ||
-              resultData == "Ok."
-            ) {
-              result.status = "success";
-              result.msg = i18n.t("downloadClient.addURLSuccess", {
-                name: this.options.name
-              }); //"URL已添加至 qBittorrent 。";
+          console.log(`/api/v2/torrents/add: ${resultData}`)
+          let result
+          if (typeof resultData === 'string') {
+            let {name} = this.options
+            if (resultData === 'Ok.') {
+              result = {status: 'success', msg: i18n.t('downloadClient.addURLSuccess', {name})}
+            } else if (resultData === 'Fails.') {
+              // 如果前面都成功了, 这种情况是因为重复添加了种子
+              result = {status: 'error', msg: i18n.t('downloadClient.duplicate', {name})}
+            } else {
+              console.log(`unknown result: ${resultData}`)
+              if (!resultData.error && resultData.result) {
+                // 目前没有遇到这种情况, 按旧代码实现, 等待反馈
+                result = {status: 'success', msg: i18n.t('downloadClient.addURLSuccess', {name})}
+              } else {
+                result = {status: 'error', msg: `${i18n.t('downloadClient.unknownError')} -> ${resultData}`}
+              }
             }
+          } else {
+            // 目前没有遇到这种情况, 按旧代码实现, 等待反馈
+            result = Object.assign({status: '', msg: ''}, resultData)
+          }
+          if (callback) {
             callback(result);
           }
-          console.log(resultData);
         }
       );
     }

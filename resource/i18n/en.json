@@ -963,6 +963,7 @@
       "unknownError": "Unknow Error",
       "notFound": "The specified address was not found and the server returned error: 404",
       "addURLSuccess": "URL has been added into {name}",
+      "duplicate": "Torrent may already exist, please check: {name}",
       "unsupportedMediaType": "Wrong torrent file",
       "serverIsUnavailable": "Server unavailable or network error",
       "permissionDenied": "Authentication failure",

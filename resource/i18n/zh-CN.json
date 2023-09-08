@@ -959,6 +959,7 @@
       "unknownError": "未知错误",
       "notFound": "指定的地址未找到，服务器返回了 404",
       "addURLSuccess": "URL已添加至 {name} 。",
+      "duplicate": "种子可能已存在, 请检查: {name}",
       "unsupportedMediaType": "种子文件有误",
       "serverIsUnavailable": "服务器不可用或网络错误",
       "permissionDenied": "身份验证失败",
