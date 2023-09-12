@@ -268,6 +268,7 @@ import {
 } from "@/interface/common";
 
 import Extension from "@/service/extension";
+import {eventBus} from "@/options/plugins/EventBus";
 import dayjs from "dayjs";
 
 const extension = new Extension();
@@ -400,13 +401,17 @@ export default Vue.extend({
 
     searchTorrent(key?: string) {
       key = key || this.searchKey;
-      console.log(`searchTorrent: key: ${key}, searchKey: ${this.searchKey}`)
+      console.log(`searchTorrent: key: ${key}`)
       if (!key) {
         return;
       }
       const targetRoute = {name: "search-torrent", params: {key,},}
-      if (key === this.searchKey && this.$router.currentRoute.name === targetRoute.name) {
-        console.log(`skip same searchTorrent: key: ${key}, searchKey: ${this.searchKey}`)
+      // fix: NavigationDuplicated: Avoided redundant navigation to current location
+      if (this.$route.params.key === key && this.$route.name === targetRoute.name) {
+        console.log(`skip router.push same searchTorrent: key: ${key}`, this.$route)
+        // 这种情况下只能是用户手动触发的, 不能再次触发路由跳转, 使用 eventBus 触发搜索
+        console.log(`using eventBus.$emit searchTorrent: key: ${key}`)
+        eventBus.$emit("searchTorrent", {key})
         return;
       }
 

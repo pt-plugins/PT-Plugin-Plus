@@ -37,6 +37,7 @@ import AddToCollectionGroup from "./AddToCollectionGroup.vue";
 import Actions from "./Actions.vue";
 import { PPF } from "@/service/public";
 import KeepUpload from "./KeepUpload.vue";
+import {eventBus} from "@/options/plugins/EventBus";
 
 type searchResult = {
   sites: Dictionary<any>;
@@ -159,6 +160,7 @@ export default Vue.extend({
     this.loadTorrentCollections();
   },
   mounted() {
+    eventBus.$on("searchTorrent", this.eventSearchTorrent)
     // 初始化鼠标点击事件，用于按shift键多选操作
     const downEvent = "mousedown.torrentSearch";
     const upEvent = "mouseUp.torrentSearch";
@@ -180,6 +182,7 @@ export default Vue.extend({
   },
   destroyed() {
     window.removeEventListener("scroll", this.handleScroll);
+    eventBus.$off("searchTorrent", this.eventSearchTorrent)
   },
   beforeRouteUpdate(to: Route, from: Route, next: any) {
     if (!to.params.key) {
@@ -258,6 +261,10 @@ export default Vue.extend({
     }
   },
   methods: {
+    eventSearchTorrent(args: any) {
+      console.log(`Event: searchTorrent`, args)
+      this.doSearch()
+    },
     /**
      * 记录日志
      * @param options
