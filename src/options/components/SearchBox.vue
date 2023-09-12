@@ -106,39 +106,41 @@
           <v-btn slot="activator" flat small color="grey lighten-2">{{
             selectedSearchSolutionName
           }}</v-btn>
-          <v-list dense>
-            <v-list-tile
-              @click="changeSearchSolution(null)"
-              :title="$t('searchBox.defaultTip')"
-            >
-              <v-list-tile-title>{{
-                $t("searchBox.default")
-              }}</v-list-tile-title>
-            </v-list-tile>
-            <v-divider></v-divider>
-            <template
-              v-if="
+          <v-card class="scroll-card">
+            <v-list dense>
+              <v-list-tile
+                  @click="changeSearchSolution(null)"
+                  :title="$t('searchBox.defaultTip')"
+              >
+                <v-list-tile-title>{{
+                    $t("searchBox.default")
+                  }}</v-list-tile-title>
+              </v-list-tile>
+              <v-divider></v-divider>
+              <template
+                  v-if="
                 $store.state.options.searchSolutions &&
                 $store.state.options.searchSolutions.length > 0
               "
-            >
-              <v-list-tile
-                @click="changeSearchSolution(item)"
-                v-for="(item, index) in $store.state.options.searchSolutions"
-                :key="index"
               >
-                <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-              </v-list-tile>
-            </template>
-            <v-btn flat small v-else to="/set-search-solution">{{
-              $t("searchBox.noSearchSolution")
-            }}</v-btn>
+                <v-list-tile
+                    @click="changeSearchSolution(item)"
+                    v-for="(item, index) in $store.state.options.searchSolutions"
+                    :key="index"
+                >
+                  <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                </v-list-tile>
+              </template>
+              <v-btn flat small v-else to="/set-search-solution">{{
+                  $t("searchBox.noSearchSolution")
+                }}</v-btn>
 
-            <v-divider></v-divider>
-            <v-list-tile @click="changeSearchSolution(allSite)">
-              <v-list-tile-title>{{ $t("searchBox.all") }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
+              <v-divider></v-divider>
+              <v-list-tile @click="changeSearchSolution(allSite)">
+                <v-list-tile-title>{{ $t("searchBox.all") }}</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-card>
         </v-menu>
       </v-text-field>
     </template>
@@ -583,5 +585,26 @@ export default Vue.extend({
     background-color: #fff;
     padding: 1px 3px;
   }
+}
+
+.scroll-card {
+  max-height: 70%;
+  overflow-y: auto; /* 启用垂直滚动 */
+}
+
+/* 隐藏滚动条 */
+.scroll-card::-webkit-scrollbar {
+  width: 0; /* 隐藏垂直滚动条的宽度 */
+  height: 0; /* 隐藏水平滚动条的高度 */
+}
+
+/* 可选：定义滚动条轨道的颜色 */
+.scroll-card::-webkit-scrollbar-track {
+  background: transparent; /* 使用透明背景 */
+}
+
+/* 可选：定义滚动条滑块的颜色 */
+.scroll-card::-webkit-scrollbar-thumb {
+  background: transparent; /* 使用透明背景 */
 }
 </style>
