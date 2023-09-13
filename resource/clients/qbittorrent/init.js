@@ -128,9 +128,9 @@
             case 502:
               res.msg = i18n.t('downloadClient.serverIsUnavailable') //"服务器不可用或网络错误"
               break;
-            case 403:
-              res.msg = i18n.t('downloadClient.permissionDenied')
-              break;
+            // case 403:
+            //   res.msg = i18n.t('downloadClient.permissionDenied')
+            //   break;
 
             default:
               break;
@@ -140,19 +140,22 @@
             callback(res)
             return
           }
+          // 刷新 qb SessionId
           this.getSessionId()
             .then(() => {
               this.exec(options, callback, tags);
             })
             .catch((code, msg) => {
-              callback({
-                status: "error",
-                code,
-                msg:
-                  msg || (code >= 500 && code < 600)
-                    ? i18n.t("downloadClient.serverIsUnavailable")
-                    : i18n.t("downloadClient.unknownError") //"服务器不可用或网络错误" : "未知错误"
-              });
+              console.log(`getSessionId failed: ${code}, ${msg}`)
+              res.code = code
+              if (code === 403) {
+                res.msg = i18n.t('downloadClient.permissionDenied')
+              } else if (code >= 500 && code < 600) {
+                res.msg = i18n.t('downloadClient.serverIsUnavailable')
+              } else {
+                res.msg = msg || i18n.t('downloadClient.unknownError')
+              }
+              callback(res);
             });
         }
       };
@@ -219,25 +222,32 @@
         resultData => {
           console.log(`/api/v2/torrents/add: ${resultData}`)
           let result
-          if (typeof resultData === 'string') {
-            let {name} = this.options
-            if (resultData === 'Ok.') {
-              result = {status: 'success', msg: i18n.t('downloadClient.addURLSuccess', {name})}
-            } else if (resultData === 'Fails.') {
-              // 如果前面都成功了, 这种情况是因为重复添加了种子
-              result = {status: 'error', msg: i18n.t('downloadClient.duplicate', {name})}
-            } else {
-              console.log(`unknown result: ${resultData}`)
+          switch (typeof resultData) {
+            case 'object':
+              // this.exec 里面 catch 部分返回的信息
+              result = Object.assign({status: '', msg: ''}, resultData)
+              // 成功添加
               if (!resultData.error && resultData.result) {
-                // 目前没有遇到这种情况, 按旧代码实现, 等待反馈
                 result = {status: 'success', msg: i18n.t('downloadClient.addURLSuccess', {name})}
+              }
+              // 无需定义 else
+              break
+            case 'string':
+              let {name} = this.options
+              if (resultData === 'Ok.') {
+                result = {status: 'success', msg: i18n.t('downloadClient.addURLSuccess', {name})}
+              } else if (resultData === 'Fails.') {
+                // 如果前面都成功了, 这种情况是因为重复添加了种子
+                result = {status: 'error', msg: i18n.t('downloadClient.duplicate', {name})}
               } else {
+                console.log(`unknown result: ${resultData}`)
                 result = {status: 'error', msg: `${i18n.t('downloadClient.unknownError')} -> ${resultData}`}
               }
-            }
-          } else {
-            // 目前没有遇到这种情况, 按旧代码实现, 等待反馈
-            result = Object.assign({status: '', msg: ''}, resultData)
+              break
+            default:
+              console.log(`unknown result: ${resultData}`)
+              result = {status: 'error', msg: `${i18n.t('downloadClient.unknownError')} -> ${resultData}`}
+              break
           }
           if (callback) {
             callback(result);
