@@ -56,7 +56,10 @@ export default class PTPlugin {
   public keepUploadTask: KeepUploadTask = new KeepUploadTask();
 
   private reloadCount: number = 0;
+  // 定时刷新
   private autoRefreshUserDataTimer: number = 0;
+  // 定时备份
+  // private autoBackupDataTimer: number = 0;
   private autoRefreshUserDataIsWorking: boolean = false;
   private autoRefreshUserDataFailedCount: number = 0;
 
@@ -449,6 +452,25 @@ export default class PTPlugin {
             } else {
               this.debug("数据刷新完成");
               this.autoRefreshUserDataFailedCount = 0;
+            }
+            if (this.options.autoBackupData) {
+              // 可以认为数据不会再变化了
+              if (!haveError || this.autoRefreshUserDataFailedCount >= failedRetryCount) {
+                let {autoBackupDataServerId} = this.options
+                // autoBackupDataMin = parseInt(autoBackupDataMin as any) || 5
+                console.log(`上传用户数据到 -> ${autoBackupDataServerId}`)
+                let server = this.options.backupServers?.filter(_ => _.id === autoBackupDataServerId)[0]
+                if (server) {
+                  console.log(`开始上传用户数据到 -> ${server.name}`)
+                  this.controller.backupToServer(server)
+                      // @ts-ignore
+                      .then(r => console.log(`用户数据上传完成 -> ${server.name}`, r))
+                      // @ts-ignore
+                      .catch(e => console.log(`用户数据上传失败 -> ${server.name}`, e))
+                } else {
+                  console.log(`未找到备份服务器 -> ${autoBackupDataServerId}`, this.options.backupServers)
+                }
+              }
             }
           });
       }

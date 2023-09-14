@@ -136,6 +136,22 @@
                       </div>
                     </v-flex>
 
+                    <!-- 自动备份 -->
+                    <v-switch color="success" v-model="options.autoBackupData" :disabled="!options.autoRefreshUserData"
+                              :label="$t('settings.base.autoBackupDataTip1')"/>
+                    <!-- 自动备份 时间设置 -->
+                    <v-flex xs12 v-if="options.autoRefreshUserData && options.autoBackupData">
+                      <div style="margin: -20px 0 10px 45px;">
+                        <!--<span>{{ $t('settings.base.autoBackupDataTip2') }}</span>-->
+                        <!--<v-select style="max-width: 50px;max-height: 30px;" class="mx-2 d-inline-flex"-->
+                        <!--    v-model="options.autoBackupDataMin" :items="[0,5,10,20,30,45,60,120]"/>-->
+                        <!--<span>{{ $t('settings.base.autoBackupDataTip3') }}</span>-->
+                        <span>{{ $t('settings.base.autoBackupDataTip4') }}</span>
+                        <v-select v-model="options.autoBackupDataServerId" class="mx-2 d-inline-flex"
+                            :items="getBackupServers"/>
+                      </div>
+                    </v-flex>
+
                     <!-- 显示插件图标 -->
                     <v-switch
                       color="success"
@@ -808,6 +824,14 @@ export default Vue.extend({
     }
   },
   computed: {
+    getBackupServers() {
+      return [].concat(this.$store.state.options.backupServers).map((item: any) => {
+        return {
+          text: item.name,
+          value: item.id
+        };
+      });
+    },
     getClientAddress(): any {
       if (!this.options.defaultClientId) {
         return "";
