@@ -36,18 +36,18 @@ export class User {
           return false;
         }
 
+
         if (!failedOnly) {
           requests.push(this.getUserInfo(site, true));
-        } else if (
-          site.user &&
-          ((site.user.lastUpdateStatus &&
-            [
-              EUserDataRequestStatus.needLogin,
-              EUserDataRequestStatus.unknown
-            ].includes(site.user.lastUpdateStatus)) ||
-            !site.user.lastUpdateStatus)
-        ) {
-          requests.push(this.getUserInfo(site, true));
+        } else {
+          if (site.user) {
+            let enumStatus = [EUserDataRequestStatus.needLogin, EUserDataRequestStatus.unknown]
+            // @ts-ignore
+            let lastUpdateStatus = enumStatus.includes(site.user.lastUpdateStatus)
+            if ((site.user.lastUpdateStatus && lastUpdateStatus) || !site.user.lastUpdateStatus) {
+              requests.push(this.getUserInfo(site, true))
+            }
+          }
         }
       });
 
