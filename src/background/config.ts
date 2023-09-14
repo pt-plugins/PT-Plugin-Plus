@@ -500,14 +500,14 @@ class Config {
             console.log("upgradeSites.site", site, newHost);
             site.host = newHost;
             site.url = systemSite.url;
-            
+
             // 设置默认图标
             if (!systemSite.icon && !site.icon)
               site.icon = site.url + "/favicon.ico"
             else
               site.icon = systemSite.icon;
           }
-          
+
           // 更新搜索方案
           if (this.options.searchSolutions) {
             this.options.searchSolutions.forEach(
@@ -1049,7 +1049,7 @@ class Config {
    * @param server
    */
   public backupToServer(server: IBackupServer): Promise<any> {
-    console.log("backupToServer", server);
+    console.log("backupToServer", server, this.options.backupServers);
     return new Promise<any>((resolve?: any, reject?: any) => {
       const time = dayjs().valueOf();
       const fileName = this.getNewBackupFileName();

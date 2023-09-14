@@ -112,15 +112,26 @@ export interface Options {
   rowsPerPageItems?: any[];
   defaultSearchSolutionId?: string;
   searchSolutions?: SearchSolution[];
+  // 自动刷新用户数据
   autoRefreshUserData?: boolean;
+  // 自动获取用户数据时间间隔（小时）
   autoRefreshUserDataHours?: number | string;
+  // 自动获取用户数据时间间隔（分钟）
   autoRefreshUserDataMinutes?: number | string;
+  // 下一次自动获取用户数据时间（ms）
   autoRefreshUserDataNextTime?: number;
+  // 上一次自动获取用户数据时间（ms）
   autoRefreshUserDataLastTime?: number;
   // 自动获取用户数据失败重试次数
   autoRefreshUserDataFailedRetryCount?: number;
   // 自动获取用户数据失败重试间隔时间（分钟）
   autoRefreshUserDataFailedRetryInterval?: number;
+  // 是否自动备份配置
+  autoBackupData?: boolean;
+  // 自动备份配置时间间隔（分钟）
+  // autoBackupDataMin?: number | string;
+  // 自动备份服务器
+  autoBackupDataServerId?: string;
   // 最近搜索的关键字
   lastSearchKey?: string;
   // 显示的用名名称
