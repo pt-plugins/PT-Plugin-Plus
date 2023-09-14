@@ -112,7 +112,7 @@ export class User {
       }
 
       // 获取用户基本信息（用户名、ID、是否登录等）
-      this.getInfos(host, url, rule)
+      this.getInfos(host, url, rule, site)
         .then((result: any) => {
           console.log("userBaseInfo", host, result);
           userInfo = Object.assign({}, result);
