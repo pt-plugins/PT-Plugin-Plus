@@ -2,7 +2,7 @@
   "name": "Anthelion",
   "timezoneOffset": "+0000",
   "description": "Movies",
-  "url": "https://anthelion.me//",
+  "url": "https://anthelion.me/",
   "icon": "https://anthelion.me/favicon.ico",
   "tags": ["电影"],
   "schema": "GazelleJSONAPI",
