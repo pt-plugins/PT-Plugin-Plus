@@ -55,7 +55,7 @@
       <highcharts :options="chartBarData" />
       <highcharts :options="chartBaseData" class="mt-4" />
       <highcharts :options="chartExtData" class="mt-4" />
-      <highcharts :options="chartBounsData" class="mt-4" />
+      <highcharts :options="chartBonusData" class="mt-4" />
 
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -140,7 +140,7 @@ export default Vue.extend({
       chartBaseData: {},
       chartExtData: {},
       chartBarData: {},
-      chartBounsData: {},
+      chartBonusData: {},
       host: "",
       options: this.$store.state.options,
       selectedSite: {} as Site,
@@ -428,7 +428,7 @@ export default Vue.extend({
         this.resetExtData(newResult);
         const data = this.getRelativeData({[this.host]: result});
         this.resetBarData(data);
-        this.resetBounsData(data);
+        this.resetBonusData(data);
       } else {
         let data = this.getTotalData(result);
         this.selectedSite = {
@@ -439,7 +439,7 @@ export default Vue.extend({
         this.resetExtData(data);
         const data2= this.getRelativeData(result);
         this.resetBarData(data2);
-        this.resetBounsData(data2);
+        this.resetBonusData(data2);
       }
     },
     /**
@@ -902,9 +902,9 @@ export default Vue.extend({
     },
     /**
      * 时魔数据趋势
-     * @param result 
      */
-    resetBounsData(result: any){
+    resetBonusData(result: any){
+      console.log('resetBonusData')
       const $t = this.$t.bind(this);
 
       // -> [ { name: siteName, data: [ [ date, relativeUploaded ] ]}]
@@ -912,7 +912,9 @@ export default Vue.extend({
         name: siteName,
         data: data.map((v: any) => ([
           v.date.getTime(),
-          v.bonusPerHour,
+          // filters.formatNumber 计算时会丢失 U2 的数据, 还是自己处理吧
+          // parseFloat(filters.formatNumber(parseFloat(v.bonusPerHour) || 0)),
+          parseFloat((parseFloat(v.bonusPerHour) || 0).toFixed(2)),
         ]))
       }));
 
@@ -1002,7 +1004,7 @@ export default Vue.extend({
         },
       };
 
-      this.chartBounsData = chart;
+      this.chartBonusData = chart;
     },
     joinTags(tags: any): string {
       if (tags && tags.join) {
