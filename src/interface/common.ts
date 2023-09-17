@@ -37,6 +37,18 @@ export interface DownloadClient {
   autoStart?: boolean;
   tagIMDb?: boolean;
   type?: string;
+  // 发送种子的时候发送分类
+  enableCategory?: boolean;
+  qbCategories?: QbCategory[];
+}
+
+/**
+ * qb 分类
+ */
+export interface QbCategory {
+  name: string;
+  // 不支持关键字
+  path: string;
 }
 
 /**
