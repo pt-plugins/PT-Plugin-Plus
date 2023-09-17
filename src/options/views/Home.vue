@@ -15,6 +15,14 @@
           <v-icon>equalizer</v-icon>
         </v-btn>
 
+        <div v-for="tp of allOpenTypes">
+          <v-btn class="batchBtn" :color="tp.color" :title="$t(`home.${tp.type}`)"
+                 v-if="getAllUrlsByType(tp.type).length > 0" @click="openAllUrlsByType(tp.type)">
+            <!--@click="openAllUrlsByType(tp.type)">-->
+            <v-icon>{{ tp.icon }}</v-icon>
+          </v-btn>
+        </div>
+
         <v-menu :close-on-content-click="false" offset-y>
           <template v-slot:activator="{ on }">
             <v-btn color="blue" dark v-on="on" :title="$t('home.settings')">
@@ -558,6 +566,16 @@ export default Vue.extend({
       return this.headers.filter((s) =>
         this.selectedHeaders.map((sh) => sh.value).includes(s.value)
       );
+    },
+    /**
+     * 其实也可以按站点进行分组, 目前简单按状态进行分组
+     */
+    allOpenTypes() {
+      return [
+        {type: 'openAllSites', icon: 'moving', color: 'secondary'},
+        {type: 'openAllUnReadMsg', icon: 'forward_to_inbox', color: 'primary'},
+        {type: 'openAllStatusErr', icon: 'sync_problem', color: 'error'},
+      ]
     },
   },
 
@@ -1131,9 +1149,41 @@ export default Vue.extend({
       }
       return "";
     },
+    openAllUrlsByType: function (type: String) {
+      let urls = this.getAllUrlsByType(type)
+      console.log(`try open ${urls.length} tabs...`, urls)
+      for (let i = 0; i < urls.length; i++){
+        const u = urls[i];
+        // @ts-ignore
+        window.open(u);
+      }
+    },
+    getAllUrlsByType: function (type: String) {
+      // 这里应该过滤有效站点的, 但是个人数据这个页面的数据好像已经过滤过了?...
+      switch (type) {
+        case "openAllSites":
+        // case this.allOpenTypes[0].type:
+          return this.sites.filter(s => s.offline !== true).map((site: Site) => site.activeURL)
+        case "openAllStatusErr":
+        // case this.allOpenTypes[1].type:
+          return this.sites.filter(s => s.offline !== true)
+              .filter((site: Site) => site.user?.lastUpdateStatus !== EUserDataRequestStatus.success)
+              .map((site: Site) => this.defaultQuickLinks(site)[0] || site.activeURL)
+              .map(s => s.href || s)
+        case "openAllUnReadMsg":
+        // case this.allOpenTypes[2].type:
+          return this.sites.filter(s => s.offline !== true)
+              .filter((site: Site) => (site.user?.messageCount || 0) > 0)
+              .map((site: Site) => this.defaultQuickLinks(site)[0] || site.activeURL)
+              .map(s => s.href || s)
+        default:
+          throw new Error(`getAllUrlsByType: 未知的类型：${type}`)
+      }
+    },
     defaultQuickLinks: function (site: Site): UserQuickLink[] {
       let uid = site.user?.id, uname = site.user?.name
       let links: UserQuickLink[] = []
+      // 确保第一条和第二条记录是 用户详情和邮箱/站内信 的网址
       switch (site.schema) {
         // from jpop
         case 'Gazelle':
@@ -1273,6 +1323,11 @@ export default Vue.extend({
 
   .lastUpdateTime {
     margin-right: 0;
+  }
+
+  .batchBtn {
+    min-width: 0;
+    margin: 1px 1px;
   }
 }
 </style>
