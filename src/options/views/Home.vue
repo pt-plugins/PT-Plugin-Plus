@@ -336,11 +336,10 @@
           <td v-if="showColumn('user.joinTime')" class="number" :title="props.item.user.joinDateTime">
             {{ props.item.user.joinTime | timeAgo(showWeek) }}
           </td>
-          <td v-if="showColumn('user.lastUpdateTime')" class="number">
-            <v-btn depressed small :to="`statistic/${props.item.host}`" :title="$t('home.statistic')">{{
-                props.item.user.lastUpdateTime |
-                formatDate("YYYY-MM-DD HH:mm:ss")
-            }}</v-btn>
+          <td v-if="showColumn('user.lastUpdateTime')" class="center">
+            <v-btn depressed small :to="`statistic/${props.item.host}`" :title="props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') + ' ' + $t('home.statistic')">
+                {{ props.item.user.lastUpdateTime | timeAgo }}
+            </v-btn>
           </td>
           <td v-if="showColumn('user.lastUpdateStatus')" class="center">
             <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="props.item.user.isLoading">
@@ -452,7 +451,7 @@ export default Vue.extend({
         },
         {
           text: this.$t("home.headers.lastUpdateTime"),
-          align: "right",
+          align: "center",
           value: "user.lastUpdateTime",
         },
         {
@@ -669,14 +668,14 @@ export default Vue.extend({
                 if (nextLevel) {
                   console.log(newLevelRequirement)
                   console.log(nextLevel)
-                  if (user.nextLevels.length == 0 || Number(nextLevel.level) == Number(user.nextLevels[0].level))              
+                  if (user.nextLevels.length == 0 || Number(nextLevel.level) == Number(user.nextLevels[0].level))
                     user.nextLevels.push(nextLevel);
                   else if (Number(nextLevel.level) > Number(user.nextLevels[0].level))
                   {
                     user.nextLevels = [] as LevelRequirement[];
                     user.nextLevels.push(nextLevel);
                   }
-                    
+
                   break;
                 }
               }
@@ -709,7 +708,7 @@ export default Vue.extend({
 
       let downloaded = user.downloaded ?? 0;
       let uploaded = user.uploaded ?? 0;
-      
+
       if (user.levelName == levelRequirement.name) {
         return undefined;
       }
