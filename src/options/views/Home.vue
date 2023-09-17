@@ -405,10 +405,9 @@
           <td v-if="showColumn('user.joinTime')" class="number" :title="props.item.user.joinDateTime">
             {{ props.item.user.joinTime | timeAgo(showWeek) }}
           </td>
-          <td v-if="showColumn('user.lastUpdateTime')" class="number">
-            <v-btn depressed small class="lastUpdateTime"
-                   :to="`statistic/${props.item.host}`" :title="$t('home.statistic')">
-              {{ props.item.user.lastUpdateTime | formatDate("YYYY-MM-DD HH:mm:ss") }}
+          <td v-if="showColumn('user.lastUpdateTime')" class="center">
+            <v-btn depressed small :to="`statistic/${props.item.host}`" :title="props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') + ' ' + $t('home.statistic')">
+                {{ props.item.user.lastUpdateTime | timeAgo }}
             </v-btn>
           </td>
           <td v-if="showColumn('user.lastUpdateStatus')" class="center">
@@ -526,7 +525,7 @@ export default Vue.extend({
         },
         {
           text: this.$t("home.headers.lastUpdateTime"),
-          align: "right",
+          align: "center",
           value: "user.lastUpdateTime",
         },
         {
