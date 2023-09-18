@@ -1174,7 +1174,7 @@ export default Vue.extend({
         // case this.allOpenTypes[2].type:
           return this.sites.filter(s => s.offline !== true)
               .filter((site: Site) => (site.user?.messageCount || 0) > 0)
-              .map((site: Site) => this.defaultQuickLinks(site)[0] || site.activeURL)
+              .map((site: Site) => this.defaultQuickLinks(site)[1] || site.activeURL)
               .map(s => s.href || s)
         default:
           throw new Error(`getAllUrlsByType: 未知的类型：${type}`)
