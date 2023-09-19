@@ -48,6 +48,8 @@
                 @change="updateViewOptions"></v-switch>
               <v-switch color="success" v-model="showHnR" :label="$t('home.showHnR')"
                 @change="updateViewOptions"></v-switch>
+              <v-switch color="success" v-model="showLastUpdateTimeAsRelativeTime" :label="$t('home.showLastUpdateTimeAsRelativeTime')"
+                @change="updateViewOptions"></v-switch>
             </v-container>
           </v-card>
         </v-menu>
@@ -407,7 +409,8 @@
           </td>
           <td v-if="showColumn('user.lastUpdateTime')" class="center">
             <v-btn depressed small :to="`statistic/${props.item.host}`" :title="props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') + ' ' + $t('home.statistic')">
-                {{ props.item.user.lastUpdateTime | timeAgo }}
+                <template v-if="showLastUpdateTimeAsRelativeTime">{{ props.item.user.lastUpdateTime | timeAgo(false) }}</template>
+                <template v-else>{{ props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</template>
             </v-btn>
           </td>
           <td v-if="showColumn('user.lastUpdateStatus')" class="center">
@@ -553,6 +556,7 @@ export default Vue.extend({
       showSeedingPoints: true,
       // showUserUploads: false,
       showHnR: true,
+      showLastUpdateTimeAsRelativeTime:true,
       showWeek: false,
     };
   },
@@ -640,6 +644,7 @@ export default Vue.extend({
         showLevelRequirements: true,
         showSeedingPoints: true,
         showHnR: true,
+        showLastUpdateTimeAsRelativeTime:true,
         showWeek: false,
         selectedHeaders: this.selectedHeaders,
       });
@@ -1130,6 +1135,7 @@ export default Vue.extend({
           showSeedingPoints: this.showSeedingPoints,
           // showUserUploads: this.showUserUploads,
           showHnR: this.showHnR,
+          showLastUpdateTimeAsRelativeTime: this.showLastUpdateTimeAsRelativeTime,
           showWeek: this.showWeek,
           selectedHeaders: this.selectedHeaders,
         },

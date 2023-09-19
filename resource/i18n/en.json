@@ -169,6 +169,7 @@
       "levelRequirements": "Level requirements",
       "seedingPoints": "Seeding Points",
       "showHnR": "H&R",
+      "showLastUpdateTimeAsRelativeTime":"Last update time as relative time",
       "selectColumns": "Select Columns",
       "week": "Expressed in weeks",
       "timeline": "Time line",

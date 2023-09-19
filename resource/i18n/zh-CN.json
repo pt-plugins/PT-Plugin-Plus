@@ -166,6 +166,7 @@
       "levelRequirements": "等级要求",
       "seedingPoints": "保种积分",
       "showHnR": "H&R",
+      "showLastUpdateTimeAsRelativeTime": "最后更新时间显示为相对时间",
       "selectColumns": "过滤列",
       "week": "时间显示为周数",
       "timeline": "时间轴",
