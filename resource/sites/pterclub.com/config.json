@@ -8,7 +8,7 @@
   "schema": "NexusPHP",
   "host": "pterclub.com",
   "levelRequirements": [{
-    "level": "1", 
+    "level": "1",
     "name": "Power User",
     "interval": "5",
     "downloaded": "50GB",
@@ -17,7 +17,7 @@
     "uploads": "10",
     "privilege": "可以直接发布种子；可以查看邀请区；可以上传字幕和删除自己上传的字幕"
   },{
-    "level": "2", 
+    "level": "2",
     "name": "Elite User",
     "interval": "10",
     "downloaded": "120GB",
@@ -26,7 +26,7 @@
     "uploads": "20",
     "privilege": "可以请求续种"
   },{
-    "level": "3", 
+    "level": "3",
     "name": "Crazy User",
     "interval": "24",
     "downloaded": "300GB",
@@ -35,7 +35,7 @@
     "uploads": "30",
     "privilege": "可以查看排行榜"
   },{
-    "level": "4", 
+    "level": "4",
     "name": "Insane User",
     "interval": "32",
     "downloaded": "500GB",
@@ -44,7 +44,7 @@
     "uploads": "40",
     "privilege": "可以查看普通日志"
   },{
-    "level": "5", 
+    "level": "5",
     "name": "Veteran User",
     "interval": "40",
     "downloaded": "750GB",
@@ -61,7 +61,7 @@
     ],
     "privilege": "可以查看其它用户的评论、帖子历史；封存账号后，不会因不活跃原因被临时封禁"
   },{
-    "level": "6", 
+    "level": "6",
     "name": "Extreme User",
     "interval": "48",
     "downloaded": "1024GB",
@@ -78,7 +78,7 @@
     ],
     "privilege": "可2次无条件不活跃解封，可以查看邀请树统计，初次升级赠送1枚永久邀请码"
   },{
-    "level": "7", 
+    "level": "7",
     "name": "Ultimate User",
     "interval": "56",
     "downloaded": "1536GB",
@@ -95,7 +95,7 @@
     ],
     "privilege": "追加1次无条件不活跃解封，可以查看邀请树图，初次升级赠送2枚永久邀请码"
   },{
-    "level": "8", 
+    "level": "8",
     "name": "Nexus Master",
     "interval": "112",
     "downloaded": "3072GB",
@@ -155,7 +155,7 @@
     "name": "综合",
     "enabled": true
   }, {
-    "entry": "/music.php?search=$key$&notnewword=1",
+    "entry": "/music.php?search=$key$&notnewword=1&cat=413",
     "name": "音乐",
     "enabled": true
   }],

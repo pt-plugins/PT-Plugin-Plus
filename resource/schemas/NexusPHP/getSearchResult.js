@@ -179,8 +179,7 @@
             continue;
           }
 
-          url = url +
-            (site && site.passkey ? "&passkey=" + site.passkey : "");
+          url = url + (site && site.passkey ? "&passkey=" + site.passkey : "");
 
           let data = {
             title: title.attr("title") || title.text(),
@@ -188,10 +187,7 @@
             link,
             url,
             size: this.getFieldValue(row, cells, fieldIndex, "size") || 0,
-            time:
-              fieldIndex.time == -1
-                ? ""
-                : this.getTime(cells.eq(fieldIndex.time)),
+            time: fieldIndex.time == -1 ? "" : this.getTime(cells.eq(fieldIndex.time)),
             author: this.getFieldValue(row, cells, fieldIndex, "author") || "",
             seeders: this.getFieldValue(row, cells, fieldIndex, "seeders") || 0,
             leechers:
