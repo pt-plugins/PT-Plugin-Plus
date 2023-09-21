@@ -154,6 +154,7 @@ export default Vue.extend({
       }
     },
     updateItem(item: any) {
+      console.debug('updateClient', item)
       this.$store.commit("updateClient", item);
     },
 

@@ -37,6 +37,18 @@ export interface DownloadClient {
   autoStart?: boolean;
   tagIMDb?: boolean;
   type?: string;
+  // 发送种子的时候发送分类
+  enableCategory?: boolean;
+  qbCategories?: QbCategory[];
+}
+
+/**
+ * qb 分类
+ */
+export interface QbCategory {
+  name: string;
+  // 不支持关键字
+  path: string;
 }
 
 /**
@@ -112,15 +124,26 @@ export interface Options {
   rowsPerPageItems?: any[];
   defaultSearchSolutionId?: string;
   searchSolutions?: SearchSolution[];
+  // 自动刷新用户数据
   autoRefreshUserData?: boolean;
+  // 自动获取用户数据时间间隔（小时）
   autoRefreshUserDataHours?: number | string;
+  // 自动获取用户数据时间间隔（分钟）
   autoRefreshUserDataMinutes?: number | string;
+  // 下一次自动获取用户数据时间（ms）
   autoRefreshUserDataNextTime?: number;
+  // 上一次自动获取用户数据时间（ms）
   autoRefreshUserDataLastTime?: number;
   // 自动获取用户数据失败重试次数
   autoRefreshUserDataFailedRetryCount?: number;
   // 自动获取用户数据失败重试间隔时间（分钟）
   autoRefreshUserDataFailedRetryInterval?: number;
+  // 是否自动备份配置
+  autoBackupData?: boolean;
+  // 自动备份配置时间间隔（分钟）
+  // autoBackupDataMin?: number | string;
+  // 自动备份服务器
+  autoBackupDataServerId?: string;
   // 最近搜索的关键字
   lastSearchKey?: string;
   // 显示的用名名称
@@ -135,6 +158,8 @@ export interface Options {
   showMoiveInfoCardOnSearch?: boolean;
   // 在搜索之前一些选项配置
   beforeSearchingOptions?: BeforeSearching;
+  // 搜索方案切换的时候是否自动搜索
+  autoSearchWhenSwitchSolution?: boolean;
   // 在页面中显示工具栏
   showToolbarOnContentPage?: boolean;
   // 当前语言

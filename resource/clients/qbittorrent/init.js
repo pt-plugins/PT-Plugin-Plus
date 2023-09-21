@@ -118,33 +118,44 @@
           }
         },
         error: (jqXHR, textStatus, errorThrown) => {
+          console.log('exec failed', jqXHR.status, textStatus, errorThrown)
+          let res = {status: 'error', code: jqXHR.status, msg: ''}
           switch (jqXHR.status) {
             // Unsupported Media Type
             case 415:
-              callback({
-                status: "error",
-                code: jqXHR.status,
-                msg: i18n.t("downloadClient.unsupportedMediaType") //"种子文件有误"
-              });
-              return;
+              res.msg = i18n.t('downloadClient.unsupportedMediaType') //"种子文件有误"
+              break;
+            case 502:
+              res.msg = i18n.t('downloadClient.serverIsUnavailable') //"服务器不可用或网络错误"
+              break;
+            // case 403:
+            //   res.msg = i18n.t('downloadClient.permissionDenied')
+            //   break;
 
             default:
               break;
           }
           console.log(jqXHR);
+          if (res.msg) {
+            callback(res)
+            return
+          }
+          // 刷新 qb SessionId
           this.getSessionId()
             .then(() => {
               this.exec(options, callback, tags);
             })
             .catch((code, msg) => {
-              callback({
-                status: "error",
-                code,
-                msg:
-                  msg || code === 0
-                    ? i18n.t("downloadClient.serverIsUnavailable")
-                    : i18n.t("downloadClient.unknownError") //"服务器不可用或网络错误" : "未知错误"
-              });
+              console.log(`getSessionId failed: ${code}, ${msg}`)
+              res.code = code
+              if (code === 403) {
+                res.msg = i18n.t('downloadClient.permissionDenied')
+              } else if (code >= 500 && code < 600) {
+                res.msg = i18n.t('downloadClient.serverIsUnavailable')
+              } else {
+                res.msg = msg || i18n.t('downloadClient.unknownError')
+              }
+              callback(res);
             });
         }
       };
@@ -158,11 +169,34 @@
      */
     addTorrentFromUrl(data, callback) {
       let formData = new FormData();
+      let {savePath, category, clientOptions} = data, autoTMM = true, qbCategories
 
-      if (data.savePath) {
-        formData.append("savepath", data.savePath);
-        // 禁用自动管理种子
-        formData.append("autoTMM", false);
+      if (clientOptions && clientOptions.enableCategory) {
+        qbCategories = clientOptions.qbCategories
+        if (qbCategories && qbCategories.length > 0) {
+          let qbCategory = qbCategories.find(c => c.path === savePath)
+          // qb 4.5.2 实测 autoTMM 为 true 的情况下, 如果指定分类, 存储路径以分类为准.
+          // 分类不存在时, 会自动创建分类, 路径为 `默认下载路径/分类名称`.
+          // nastool 会自动维护分类, 这里不做那么细致的处理.
+          // 所以路径不匹配的情况下, 需要禁用 autoTMM
+          if (qbCategory) {
+            // 以用户手动设置为准
+            category = qbCategory.name
+            autoTMM = true
+          } else {
+            autoTMM = false
+          }
+        }
+      }
+
+      formData.append("autoTMM", autoTMM);
+
+      if (savePath) {
+        formData.append("savepath", savePath);
+      }
+
+      if (category != undefined) {
+        formData.append("category", category);
       }
 
       if (data.autoStart != undefined) {
@@ -171,10 +205,6 @@
 
       if (data.imdbId != undefined) {
         formData.append("tags", data.imdbId);
-      }
-
-      if (data.category != undefined) {
-        formData.append("category", data.category);
       }
 
       if (data.upLoadLimit && data.upLoadLimit > 0) {
@@ -209,26 +239,38 @@
           params: params
         },
         resultData => {
+          console.log(`/api/v2/torrents/add: ${resultData}`)
+          let result
+          switch (typeof resultData) {
+            case 'object':
+              // this.exec 里面 catch 部分返回的信息
+              result = Object.assign({status: '', msg: ''}, resultData)
+              // 成功添加
+              if (!resultData.error && resultData.result) {
+                result = {status: 'success', msg: i18n.t('downloadClient.addURLSuccess', {name})}
+              }
+              // 无需定义 else
+              break
+            case 'string':
+              let {name} = this.options
+              if (resultData === 'Ok.') {
+                result = {status: 'success', msg: i18n.t('downloadClient.addURLSuccess', {name})}
+              } else if (resultData === 'Fails.') {
+                // 如果前面都成功了, 这种情况是因为重复添加了种子
+                result = {status: 'error', msg: i18n.t('downloadClient.duplicate', {name})}
+              } else {
+                console.log(`unknown result: ${resultData}`)
+                result = {status: 'error', msg: `${i18n.t('downloadClient.unknownError')} -> ${resultData}`}
+              }
+              break
+            default:
+              console.log(`unknown result: ${resultData}`)
+              result = {status: 'error', msg: `${i18n.t('downloadClient.unknownError')} -> ${resultData}`}
+              break
+          }
           if (callback) {
-            var result = Object.assign(
-              {
-                status: "",
-                msg: ""
-              },
-              resultData
-            );
-            if (
-              (!resultData.error && resultData.result) ||
-              resultData == "Ok."
-            ) {
-              result.status = "success";
-              result.msg = i18n.t("downloadClient.addURLSuccess", {
-                name: this.options.name
-              }); //"URL已添加至 qBittorrent 。";
-            }
             callback(result);
           }
-          console.log(resultData);
         }
       );
     }

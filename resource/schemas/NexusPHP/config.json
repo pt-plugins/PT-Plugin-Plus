@@ -121,7 +121,7 @@
       "page": "/mybonus.php",
       "fields": {
         "bonusPerHour": {
-          "selector": ["div:contains('你当前每小时能获取'):last", "div:contains('You are currently getting'):last", "div:contains('你當前每小時能獲取'):last"],
+          "selector": ["#outer td[rowspan]", "div:contains('你当前每小时能获取'):last", "div:contains('You are currently getting'):last", "div:contains('你當前每小時能獲取'):last"],
           "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
         }
       }

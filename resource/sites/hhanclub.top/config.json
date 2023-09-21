@@ -95,8 +95,8 @@
                     "filters": ["query[0].innerText.replace(/,/g,'')", "query.sizeToNumber()"]
                 },
                 "levelName": {
-                    "selector": ["span:contains('等级')"],
-                    "filters": ["query.next().attr('title')", "query.replace(/[^a-z0-9 ]/gi, '').trim().length > 0 ? query.replace(/[^a-z0-9 ]/gi, '').trim() : query"]
+                    "selector": ["span.font-bold:contains('等级')"],
+                    "filters": ["query.next().find('img').attr('title')", "query.replace(/[^a-z0-9 ]/gi, '').trim().length > 0 ? query.replace(/[^a-z0-9 ]/gi, '').trim() : query"]
                 },
                 "bonus": {
                     "selector": ["span.font-bold:contains('憨豆') + div", "span.font-bold:contains('Seed points') + div"],

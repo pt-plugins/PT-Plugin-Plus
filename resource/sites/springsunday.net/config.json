@@ -200,6 +200,22 @@
         }
       }
     },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowfollow a[href^='mybonus.php']"],
+          "filters": ["query.text().replace(/,/g,'')", "query ? parseFloat(query.match(/[\\d.]+/)[0]) : null"]
+        },
+        "seedingPoints": {
+          "selector": ["td.rowfollow a[href^='mybonus.php']"],
+          "filters": [
+            "query.parent().clone().children().remove().end().text().replace(/,/g,'')",
+            "query ? parseFloat(query.match(/[\\d.]+/)[0]) : null"]
+        }
+      }
+    },
     "bonusExtendInfo": {
       "prerequisites": "!user.bonusPerHour",
       "page": "/mybonus.php",

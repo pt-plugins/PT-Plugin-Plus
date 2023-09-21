@@ -51,6 +51,17 @@
             v-if="['qbittorrent'].includes(option.type)"
           ></v-switch>
 
+          <!--启用 qb 分类-->
+          <v-switch
+              :label="$t('settings.downloadClients.editor.enableCategory')"
+              v-model="option.enableCategory"
+          ></v-switch>
+          <!--自定义分类列表-->
+          <v-textarea v-if="option.enableCategory" v-model="categoryText"
+              :label="$t('settings.downloadClients.editor.enableCategoryText')"
+              :hint="$t('settings.downloadClients.editor.enableCategoryTextTip')"
+          ></v-textarea>
+
           <v-text-field
             :value="option.type"
             :label="$t('settings.downloadClients.editor.type')"
@@ -94,12 +105,13 @@
 import md5 from "blueimp-md5";
 import Vue from "vue";
 import Extension from "@/service/extension";
-import { EAction, DataResult, Dictionary } from "@/interface/common";
+import {EAction, DataResult, Dictionary, QbCategory} from "@/interface/common";
 const extension = new Extension();
 export default Vue.extend({
   data() {
     return {
       showPassword: false,
+      categoryText: '',
       rules: {
         require: [(v: any) => !!v || "!"],
         url: (v: any) => {
@@ -137,6 +149,16 @@ export default Vue.extend({
     option: Object
   },
   watch: {
+    option() {
+      console.log(`watch option`, this.option)
+      let qbCategories: QbCategory[] = this.option.qbCategories || [];
+      this.categoryText = qbCategories.map(c => `${c.name},${c.path}`).join('\n')
+    },
+    categoryText() {
+      this.option.qbCategories = this.categoryText.split(/\n/).filter(_ => !!_)
+          .map(_ => _.split(/\s*[,，]\s*/)).filter(([name, path]) => !!name && !!path)
+          .map(([name, path]) => ({name, path}))
+    },
     successMsg() {
       this.haveSuccess = this.successMsg != "";
     },

@@ -93,24 +93,17 @@
   }],
   "searchEntryConfig": {
     "fieldSelector": {
-      "progress": {
-        "selector": [
-          ".torrentname td:first-child > div[title]:last-child"
-        ],
-        "filters": [
-          "query ? query.attr('title').match(/([\\d\\.]+)%/) : null",
-          "(query && query.length >= 2) ? parseFloat(query[1]) : null"
-        ]
-      },
-      "status": {
-        "selector": [
-          ".torrentname td:first-child > div[title]:last-child"
-        ],
-        "filters": [
-          "query ? query.attr('title').split(' ')[0] : null",
-          "query === 'leeching' ? 1 : query === 'seeding' ? 2 : query === 'inactivity' ? 255 : null"
-        ]
-      }
+        "progress": {
+            "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+            "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+        },
+        "status": {
+            "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+            "filters": [
+                "query ? query.attr('title') : ''",
+                "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+            ]
+        }
     }
   },
   "selectors": {
