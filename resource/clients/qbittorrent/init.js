@@ -171,6 +171,12 @@
       let formData = new FormData();
       let {savePath, category, clientOptions} = data, autoTMM = true, qbCategories
 
+      if (savePath) {
+        formData.append("savepath", data.savePath)
+        // 禁用自动管理种子
+        autoTMM = false
+      }
+
       if (clientOptions && clientOptions.enableCategory) {
         qbCategories = clientOptions.qbCategories
         if (qbCategories && qbCategories.length > 0) {
@@ -190,10 +196,6 @@
       }
 
       formData.append("autoTMM", autoTMM);
-
-      if (savePath) {
-        formData.append("savepath", savePath);
-      }
 
       if (category != undefined) {
         formData.append("category", category);
