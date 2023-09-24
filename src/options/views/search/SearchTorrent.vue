@@ -500,6 +500,13 @@
                     :label="$t('searchTorrent.showCategory')"
                     @change="updateViewOptions"
                   ></v-switch>
+                  <!-- 标题中间省略 -->
+                  <v-switch
+                    color="success"
+                    v-model="titleMiddleEllipsis"
+                    :label="$t('searchTorrent.titleMiddleEllipsis')"
+                    @change="updateViewOptions"
+                  ></v-switch>
                 </v-container>
               </v-card>
             </v-menu>
@@ -587,7 +594,36 @@
             >
               <img :src="props.item.site.icon" />
             </v-avatar>
+            <!--标题中间省略-->
+            <div
+             v-if="titleMiddleEllipsis && !$vuetify.breakpoint.xs"
+             class="titleWrap">
             <a
+              :href="props.item.link"
+              target="_blank"
+              v-html="props.item.titleHTML"
+              :title="props.item.title"
+              rel="noopener noreferrer nofollow"
+              :class="[
+                $vuetify.breakpoint.xs ? 'body-2' : 'subheading titleFull',
+                'font-weight-medium',
+              ]"
+            ></a>
+            <a
+              :href="props.item.link"
+              target="_blank"
+              v-html="props.item.titleHTML"
+              :title="'·title:'+props.item.title"
+              rel="noopener noreferrer nofollow"
+              :class="[
+                $vuetify.breakpoint.xs ? 'body-2' : 'subheading titleEllipsisMiddle',
+                'font-weight-medium',
+              ]"
+            ></a>
+            </div>
+
+             <a
+              v-else
               :href="props.item.link"
               target="_blank"
               v-html="props.item.titleHTML"

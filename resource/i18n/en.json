@@ -329,6 +329,7 @@
       "searching": "Searching, please wait...",
       "cancelSearch": "Cancel search",
       "showCheckbox": "Multiple selection",
+      "titleMiddleEllipsis": "Title Middle Ellipsis",
       "noTag": "No tag",
       "allSites": "All Sites",
       "multiDownloadConfirm": "The number of torrents currently downloaded exceeds one, and the browser may prompt multiple times to save. Do you want to continue?",

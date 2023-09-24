@@ -324,6 +324,7 @@
       "searching": "正在搜索中，请稍候……",
       "cancelSearch": "取消搜索",
       "showCheckbox": "多选",
+      "titleMiddleEllipsis": "标题中间省略",
       "noTag": "无标签",
       "allSites": "全部站点",
       "multiDownloadConfirm": "当前下载的种子数量超过一个，浏览器可能会多次提示保存，是否继续？",

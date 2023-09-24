@@ -112,6 +112,7 @@ export default Vue.extend({
         progress: 0
       },
       showCategory: false,
+      titleMiddleEllipsis: false,
       fixedTable: false,
       siteContentMenus: {} as any,
       clientContentMenus: [] as any,
@@ -153,7 +154,8 @@ export default Vue.extend({
 
     let viewOptions = this.$store.getters.viewsOptions(EViewKey.searchTorrent, {
       checkBox: false,
-      showCategory: false
+      showCategory: false,
+      titleMiddleEllipsis: false
     });
     Object.assign(this, viewOptions);
 
@@ -1940,7 +1942,8 @@ export default Vue.extend({
         key: EViewKey.searchTorrent,
         options: {
           checkBox: this.checkBox,
-          showCategory: this.showCategory
+          showCategory: this.showCategory,
+          titleMiddleEllipsis:this.titleMiddleEllipsis
         }
       });
     },
