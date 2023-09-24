@@ -241,30 +241,7 @@
     }]
   }],
   "selectors": {
-    "userBaseInfo": {
-      "page": "/index",
-      "fields": {
-        "id": {
-          "selector": ["a[href^='/profile/detail/']:first"],
-          "attribute": "href",
-          "filters": ["query ? query.split('/').pop():''"]
-        },
-        "name": {
-          "selector": ["a[href^='/profile/detail/'] strong:first"]
-        },
-        "isLogged": {
-          "selector": ["a[href^='/mybonus']"],
-          "filters": ["query.length>0"]
-        },
-        "messageCount": {
-          "selector": ["a[href^='/message/'] sup"],
-          "attribute": "title",
-          "filters": ["query ? (query.length>=2) ? parseInt(query[0]) + parseInt(query[1]) : parseInt(query[0]) : 0"]
-        }
-      }
-    },
     "userExtendInfo": {
-      "page": "/profile/detail/userid=$user.id",
       "merge": true,
       "fields": {
         "uploaded": {
@@ -293,11 +270,14 @@
     },
     "bonusExtendInfo": {
       "prerequisites": "!user.bonusPerHour",
-      "page": "/mybonus",
+      "page": "/mybonus.php",
       "fields": {
         "bonusPerHour": {
-          "selector": ["table.tablist td[rowspan='6']"],
-          "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
+          "selector": ["td:contains('您目前每小時合計可獲得'):last",
+                       "td:contains('您目前每小时合计可获得'):last",
+                       "td:contains('目前將會獲取'):last",
+                       "td:contains('目前将会获取'):last"],
+          "filters": ["parseFloat(query.text().match(/[獲获][得取](\\d+(?:\\.\\d+)?)/)[1])"]
         }
       }
     }
