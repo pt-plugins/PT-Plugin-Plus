@@ -161,6 +161,10 @@
             "query.attr('title')||query.text()",
             "dateTime(query, 'MMM DD YYYY, HH:mm').isValid()?dateTime(query, 'MMM DD YYYY, HH:mm').valueOf():query"
           ]
+        },
+        "averageSeedtime": {
+          "selector": ["dt:contains('Average Seedtime') + dd > span", "dt:contains('平均做种时间') + dd > span", "dt:contains('平均做種時間') + dd > span"],
+          "filters": ["query.text().trim().timeToDays()"]
         }
       }
     }

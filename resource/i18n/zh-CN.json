@@ -304,7 +304,7 @@
         "uploaded": "上传量：",
         "downloaded": "下载量：",
         "seedingSize": "做种量：",
-        "averageSeedtime": "均保时: {day} 天",
+        "averageSeedtime": "均保时：{day} 天",
         "ratio": "分享率：",
         "bonus": "积分值：",
         "bonusPerHour": "时　魔："
