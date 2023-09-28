@@ -132,11 +132,11 @@
       "fields": {
         "seeding": {
           "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(2)').length != 0 ? query.find('td.rowfollow:eq(2)').length : query.length"]
+          "filters": ["let l={}; query.each(function() { l[jQuery(this).find('td.rowfollow:eq(1) a').attr('href')] = jQuery(this).find('td.rowfollow:eq(2)').text(); }); Object.keys(l).length;"]
         },
         "seedingSize": {
           "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(2)').length != 0 ? jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();}) : jQuery.map(query.find('td:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          "filters": ["let l={}; query.each(function() { l[jQuery(this).find('td.rowfollow:eq(1) a').attr('href')] = jQuery(this).find('td.rowfollow:eq(2)').text(); }); _self.getTotalSize(Object.values(l));"]
         }
       }
     },
