@@ -21,7 +21,11 @@
         "page": "/users/$user.name$",
         "fields": {
           "levelName": {
-            "selector": "span[data-original-title='Class'] span"
+            "selector": "span[data-original-title='Tier'] span"
+          },
+          "joinTime": {
+            "selector": [".user-info td:contains('Registration date') + td"],
+            "filters": ["query.text().trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
           },
           "seeding": {
             "selector": [".user-info td:contains('Active Seeds') + td"],
