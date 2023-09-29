@@ -252,19 +252,6 @@
           "filters": ["query.text().match(/(?:加入日期|Join date)\\s+(.*)\\s\\(/)", "(query && query.length>=2) ? (dateTime(query[1]).isValid()?dateTime(query[1]).valueOf():query[1]) : null"]
         }
       }
-    },
-    "userSeedingTorrents": {
-      "page": "/getusertorrentlistajax?userid=$user.id$&type=seeding",
-      "fields": {
-        "seeding": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(2)').length"]
-        },
-        "seedingSize": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
-        }
-      }
     }
   }
 }
