@@ -723,7 +723,7 @@ export default Vue.extend({
     getUserLevelGroup(site: Site) {
       let userLevel = site.user?.levelName?.toLowerCase()
       let specialNames = {
-        manager: 'admin,moderator,sys,retire,管理,版主,发种,保种,上传,退休'.split(/[,，]/ig),
+        manager: 'admin,moderator,sys,retire,uploader,管理,版主,发种,保种,上传,退休'.split(/[,，]/ig),
         vip: 'vip,贵宾'.split(/[,，]/ig),
       }
       specialNames.manager = specialNames.manager.filter(_ => !!_)
