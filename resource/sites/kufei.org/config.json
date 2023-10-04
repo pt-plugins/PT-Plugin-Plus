@@ -18,7 +18,7 @@
       "interval": "4",
       "downloaded": "120GB",
       "ratio": "2.0",
-      "seedingPoints": "100000",
+      "seedingPoints": "70000",
       "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
@@ -27,7 +27,7 @@
       "interval": "8",
       "downloaded": "240GB",
       "ratio": "2.5",
-      "seedingPoints": "200000",
+      "seedingPoints": "160000",
       "privilege": "Elite User及以上用户封存账号后不会被删除。"
     },
     {
@@ -36,7 +36,7 @@
       "interval": "15",
       "downloaded": "480GB",
       "ratio": "3.0",
-      "seedingPoints": "400000",
+      "seedingPoints": "350000",
       "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
@@ -61,7 +61,7 @@
       "level": "6",
       "name": "Extreme User",
       "interval": "60",
-      "downloaded": ".3.844TB",
+      "downloaded": ".3.84TB",
       "ratio": "4.5",
       "seedingPoints": "1500000",
       "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
