@@ -70,6 +70,10 @@
             ["query ? query.getQueryString('id'):''"]
           ]
         },
+        "isLogged": {
+          "selector": ["i.fa-sign-out"],
+          "filters": ["query.length > 0"]
+        },
         "uploaded": {
           "selector": ["div.ratio-bar i.fa-arrow-up, li[title='Upload'] i.fa-arrow-up, ul.top-nav__ratio-bar i.fa-arrow-up, span[title='Upload'], span[title='上传']"],
           "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+ ?[ZEPTGMK]?i?B/)", "(query && query.length>=1)?(query[0]).sizeToNumber():0"]
