@@ -210,7 +210,7 @@ export class User {
         let host = site.host as string;
         let rule = this.service.getSiteSelector(site, name);
 
-        if (rule) {
+        if (rule&&rule.page) {
           let url = `${this.getSiteURL(site)}${rule.page
             .replace("$user.id$", userInfo.id)
             .replace("$user.name$", userInfo.name)
@@ -236,7 +236,8 @@ export class User {
             }
           }
 
-          requests.push(this.getInfos(host, url, rule, site, userInfo));
+          requests.push(this.getInfos(host, url, rule, site, userInfo).then((result: any) => {
+            console.log("Moreinfo", host, result);}));
         }
       });
       if (requests.length) {
