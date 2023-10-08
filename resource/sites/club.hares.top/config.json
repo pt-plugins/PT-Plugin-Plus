@@ -263,6 +263,20 @@
           "filters": [ "query.sizeToNumber()" ]
         }
       }
+    },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "allajax.php?action=getUserTorrentListTitle&uid=1523&type=uploaded",
+      "dataType": "json",
+      "headers": {
+        "Accept": "application/json, text/javascript, */*; q=0.01"
+      },
+      "fields": {
+        "uploads": {
+          "selector": [ "code" ],
+          "filters": ["parseInt(query)"]
+        }
+      }
     }
   },
     "plugins": [
