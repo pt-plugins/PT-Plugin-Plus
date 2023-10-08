@@ -245,7 +245,7 @@ export class User {
           .then((results: any[]) => {
             results.forEach((result: any) => {
               userInfo = Object.assign(userInfo, result);
-
+              console.log(userInfo );
               userInfo.lastUpdateStatus = EUserDataRequestStatus.success;
               this.updateStatus(site, userInfo);
             });
