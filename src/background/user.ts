@@ -236,8 +236,7 @@ export class User {
             }
           }
 
-          requests.push(this.getInfos(host, url, rule, site, userInfo).then((result: any) => {
-            console.log("Moreinfo", host, result);}));
+          requests.push(this.getInfos(host, url, rule, site, userInfo));
         }
       });
       if (requests.length) {
