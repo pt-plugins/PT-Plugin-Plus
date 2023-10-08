@@ -266,7 +266,7 @@
     },
     "userUploadedTorrents": {
       "prerequisites": "!user.uploads",
-      "page": "allajax.php?action=getUserTorrentListTitle&uid=1523&type=uploaded",
+      "page": "allajax.php?action=getUserTorrentListTitle&uid=$user.id$&type=uploaded",
       "dataType": "json",
       "headers": {
         "Accept": "application/json, text/javascript, */*; q=0.01"
