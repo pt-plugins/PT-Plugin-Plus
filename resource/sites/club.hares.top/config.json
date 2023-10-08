@@ -273,8 +273,7 @@
       },
       "fields": {
         "uploads": {
-          "selector": [ "code" ],
-          "filters": ["parseInt(query)"]
+          "selector": [ "code" ]
         }
       }
     }
