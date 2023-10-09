@@ -555,6 +555,9 @@ export default Vue.extend({
             FileSaver.saveAs(blob, "PT-Plugin-Plus-UserData.png");
           }
           this.shareing = false;
+        }).catch(error => {
+          console.log('error:', error);
+          this.shareing = false;
         });
       }, 500);
     },
