@@ -309,7 +309,6 @@ export default Vue.extend({
     this.init();
   },
   mounted() {
-    this.replaceImageToBase64();
   },
   methods: {
     init() {
@@ -516,9 +515,6 @@ export default Vue.extend({
       });
 
       this.infos.total.ratio = this.getRatio(this.infos.total);
-      setTimeout(() => {
-        this.replaceImageToBase64();
-      }, 200);
     },
     getRatio(info: any): number {
       let downloaded = info.downloaded as number;
@@ -546,6 +542,7 @@ export default Vue.extend({
       setTimeout(() => {
         let div = this.$refs.userDataCard as HTMLDivElement;
         domtoimage.toBlob(div, {
+          imagePlaceholder: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
           filter: (node) => {
             if (node.nodeType === 1) {
               return !(node as Element).classList.contains('by_pass_canvas')
@@ -557,6 +554,9 @@ export default Vue.extend({
           if (blob) {
             FileSaver.saveAs(blob, "PT-Plugin-Plus-UserData.png");
           }
+          this.shareing = false;
+        }).catch(error => {
+          console.log('error:', error);
           this.shareing = false;
         });
       }, 500);
