@@ -663,8 +663,13 @@
               <v-flex xs3 class="pt-2 captionText">
                 <v-icon style="font-size:12px;margin-bottom: 2px;">arrow_upward</v-icon>
                 {{ props.item.seeders }}
-                <v-icon style="font-size:12px;margin-bottom: 2px;">arrow_downward</v-icon>
-                {{ props.item.leechers }}
+                <v-icon style="font-size:12px;margin-bottom: 2px;">comment</v-icon>
+                {{ props.item.comments }}
+              </v-flex>
+              <v-flex xs3 class="pt-2 captionText">
+                {{
+                props.item.time | formatDate('YYYY-MM-DD')
+                }}
               </v-flex>
               <v-flex xs3>
                 <!-- 进度条 -->
