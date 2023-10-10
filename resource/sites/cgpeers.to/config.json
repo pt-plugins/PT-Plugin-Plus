@@ -2,10 +2,10 @@
   "name": "CGPeers",
   "timezoneOffset": "+0000",
   "schema": "GazelleJSONAPI",
-  "url": "https://www.cgpeers.com/",
-  "icon": "https://www.cgpeers.com/favicon.ico",
+  "url": "https://cgpeers.to/",
+  "icon": "https://cgpeers.to/favicon.ico",
   "tags": ["设计", "素材"],
-  "host": "www.cgpeers.com",
+  "host": "cgpeers.to",
   "collaborator": "bimzcy",
   "supportedFeatures": {
     "imdbSearch": false,
