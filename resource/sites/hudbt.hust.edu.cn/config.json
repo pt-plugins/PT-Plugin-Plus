@@ -83,6 +83,16 @@
           "filters": ["let l={}; query.each(function() { l[jQuery(this).find('td.torrent:eq(0) a').attr('href')] = jQuery(this).find('td:eq(2)').text(); }); _self.getTotalSize(Object.values(l));"]
         }
       }
+    },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=uploaded",
+      "fields": {
+        "uploads": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["let l=new Set(); query.each(function() { l.add(jQuery(this).find('td.torrent:eq(0) a').attr('href'));}); l.size;"]
+        }
+      }
     }
   },
   "searchEntry": [{
