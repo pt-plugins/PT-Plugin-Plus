@@ -4,6 +4,7 @@
   "description": "高清影音人士分享乐园",
   "url": "https://hdchina.org/",
   "icon": "https://hdchina.org/favicon.ico",
+  "collaborator": ["IITII"],
   "tags": [
     "影视",
     "音乐",
@@ -13,56 +14,56 @@
   "schema": "NexusPHP",
   "host": "hdchina.org",
   "levelRequirements": [{
-    "level": "1", 
+    "level": "1",
     "name": "Power User",
     "interval": "5",
     "downloaded": "200GB",
     "ratio": "1.5",
     "privilege": "可以使用道具，可以打开签名和个性化称号"
   },{
-    "level": "2", 
+    "level": "2",
     "name": "Elite User",
     "interval": "10",
     "downloaded": "500GB",
     "ratio": "2.0",
     "privilege": "可以在候选区投票，可以在论坛建议区发帖，可以上传字幕，可以删除自己上传的字幕。"
   },{
-    "level": "3", 
+    "level": "3",
     "name": "Crazy User",
     "interval": "15",
     "downloaded": "1TB",
     "ratio": "2.5",
     "privilege": "可以进入邀请区。"
   },{
-    "level": "4", 
+    "level": "4",
     "name": "Insane User",
     "interval": "20",
     "downloaded": "1.5TB",
     "ratio": "3.0",
     "privilege": "并可以直接发布种子，无需候选。"
   },{
-    "level": "5", 
+    "level": "5",
     "name": "Veteran User",
     "interval": "25",
     "downloaded": "2TB",
     "ratio": "4.0",
     "privilege": "可以在个人资料内隐藏个人信息，可以匿名做种。"
   },{
-    "level": "6", 
+    "level": "6",
     "name": "Extreme User",
     "interval": "30",
     "downloaded": "3TB",
     "ratio": "5.0",
     "privilege": "发送邀请，可以查看其它会员种子历史，可以更新IMDb信息。"
   },{
-    "level": "7", 
+    "level": "7",
     "name": "Ultimate User",
     "interval": "40",
     "downloaded": "4TB",
     "ratio": "6.0",
     "privilege": "账号挂起永久保留。取消一个月只能发送一个邀请的限制。"
   },{
-    "level": "8", 
+    "level": "8",
     "name": "Nexus Master",
     "interval": "50",
     "downloaded": "5TB",
@@ -70,6 +71,8 @@
     "privilege": "账号永久保存(无需挂起)"
   }],
   "searchEntryConfig": {
+    "asyncParse": true,
+    "parseScriptFile": "getSearchResult.js",
     "resultSelector": "table.torrent_list:last > tbody > tr",
     "fieldSelector": {
       "progress": {
@@ -327,6 +330,15 @@
     ]
   }],
   "selectors": {
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "csrfToken": {
+          "selector": ["meta[name='x-csrf']"],
+          "filters": ["query.attr('content')"]
+        }
+      }
+    },
     "userExtendInfo": {
       "merge": true,
       "topElement": "html",
