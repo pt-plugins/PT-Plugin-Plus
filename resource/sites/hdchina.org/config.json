@@ -395,7 +395,10 @@
       "fields": {
         "uploads": {
           "selector": ["message"],
-          "filters": ["jQuery('<div/>').html(query).find('b:first').text().trim().replace(/,/g,'') ? parseInt(query) : 0"]
+          "filters": [
+            "jQuery('<div/>').html(query).find('p:first').text().trim().replace(/,/g,'')",
+            "query ? parseInt(query.replace('条记录','')) : 0"
+          ]
         }
       }
     },

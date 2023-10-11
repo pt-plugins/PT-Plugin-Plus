@@ -280,6 +280,16 @@
           "filters": ["parseFloat(query.text().match(/[獲获][得取](\\d+(?:\\.\\d+)?)/)[1])"]
         }
       }
+    },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/getusertorrentlist.php?userid=$user.id$&type=uploaded",
+      "fields": {
+        "uploads": {
+          "selector": ["#outer table p:first b:last"],
+          "filters": ["query.text().replace(/,/g,'').split('-')", "(query && query.length > 1) ? parseInt(query[1]) : 0"]
+        }
+      }
     }
   },
   "cdn": ["https://kp.m-team.cc/","https://xp.m-team.cc/","https://xp.m-team.io/"]
