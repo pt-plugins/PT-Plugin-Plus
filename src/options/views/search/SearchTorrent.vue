@@ -3,7 +3,7 @@
     <MovieInfoCard
       :IMDbId="IMDbId"
       :doubanId="searchPayload.doubanId"
-      v-if="!!options.showMoiveInfoCardOnSearch"
+      v-if="!!options.showMovieInfoCardOnSearch"
     />
     <v-alert :value="true" type="info" style="padding:8px 16px;">
       {{ $t("searchTorrent.title") }} [{{ key }}], {{ searchMsg }}
