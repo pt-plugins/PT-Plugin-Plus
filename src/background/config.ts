@@ -89,7 +89,7 @@ class Config {
     ],
     searchSolutions: [],
     navBarIsOpen: true,
-    showMoiveInfoCardOnSearch: true,
+    showMovieInfoCardOnSearch: true,
     beforeSearchingOptions: {
       getMovieInformation: true,
       maxMovieInformationCount: 5,

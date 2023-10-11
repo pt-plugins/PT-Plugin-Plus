@@ -294,8 +294,8 @@
 
                     <v-switch
                       color="success"
-                      v-model="options.showMoiveInfoCardOnSearch"
-                      :label="$t('settings.base.showMoiveInfoCardOnSearch')"
+                      v-model="options.showMovieInfoCardOnSearch"
+                      :label="$t('settings.base.showMovieInfoCardOnSearch')"
                     ></v-switch>
 
                     <!-- 搜索方案切换的时候是否自动搜索 -->

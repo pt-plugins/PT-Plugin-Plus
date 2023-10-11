@@ -500,7 +500,7 @@
         "autoBackupDataTip4": "上传数据到",
         "searchResultOrderBySitePriority": "搜索结果点击站点表头时，按站点优先级别排序（保存后需刷新页面后生效）",
         "saveSearchKey": "保存搜索关键字",
-        "showMoiveInfoCardOnSearch": "当以 IMDb 编号搜索时显示电影及评分信息",
+        "showMovieInfoCardOnSearch": "当以 IMDb 编号搜索时显示电影及评分信息",
         "getMovieInformationBeforeSearching": "当输入搜索关键字时，从豆瓣加载相关信息以供预选",
         "autoSearchWhenSwitchSolution": "当搜索方案切换时，立即触发搜索",
         "maxMovieInformationCount": "最多显示条目（1-20）：",

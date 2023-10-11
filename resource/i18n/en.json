@@ -505,7 +505,7 @@
         "autoBackupDataTip4": "Backup to",
         "searchResultOrderBySitePriority": "When the search results are clicked on the site header, they are sorted by site priority (effective after refreshing the page after saving)",
         "saveSearchKey": "Save historical search keyword records",
-        "showMoiveInfoCardOnSearch": "Show movie and rating information when searching by IMDb number",
+        "showMovieInfoCardOnSearch": "Show movie and rating information when searching by IMDb number",
         "getMovieInformationBeforeSearching": "When entering a search keyword, load relevant information from Douban for pre-selection",
         "autoSearchWhenSwitchSolution": "When changing search solution, re-search immediately",
         "maxMovieInformationCount": "Maximum display number of entries (1-20):",

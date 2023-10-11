@@ -155,7 +155,7 @@ export interface Options {
   // 导航栏是否已打开
   navBarIsOpen?: boolean;
   // 在搜索时显示电影信息（搜索IMDb时有效）
-  showMoiveInfoCardOnSearch?: boolean;
+  showMovieInfoCardOnSearch?: boolean;
   // 在搜索之前一些选项配置
   beforeSearchingOptions?: BeforeSearching;
   // 搜索方案切换的时候是否自动搜索
