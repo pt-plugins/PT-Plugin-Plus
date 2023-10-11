@@ -446,3 +446,17 @@ export enum ERestoreError {
   needSecretKey = "needSecretKey",
   errorSecretKey = "errorSecretKey"
 }
+
+export enum ETagType {
+  all = "__all__",
+  unTagged = "__unTagged__",
+  unReadMsg = "__unReadMsg__",
+  statusError = "__statusError__",
+}
+
+export enum EOpenType {
+  openAllSites = "openAllSites",
+  openAllUnReadMsg = "openAllUnReadMsg",
+  openAllStatusErr = "openAllStatusErr",
+}
+

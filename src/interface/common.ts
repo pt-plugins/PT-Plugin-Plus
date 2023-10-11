@@ -304,6 +304,8 @@ export interface Site {
   // 启用默认快捷链接
   enableDefaultQuickLink?: boolean;
   userQuickLinks?: UserQuickLink[];
+  // 使用站点标签进行分组
+  // siteGroups?: string[];
 }
 
 /**

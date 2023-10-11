@@ -158,6 +158,7 @@
     "home": {
       "title": "我的数据",
       "getInfos": "刷新我的数据",
+      "getGroupInfos": "刷新分组数据",
       "cancelRequest": "取消请求",
       "requesting": "正在请求",
       "siteName": "网站名称",
@@ -168,11 +169,12 @@
       "showHnR": "H&R",
       "showLastUpdateTimeAsRelativeTime": "最后更新时间显示为相对时间",
       "selectColumns": "过滤列",
+      "selectedTags": "标签分组过滤",
       "week": "时间显示为周数",
       "timeline": "时间轴",
       "settings": "参数",
       "statistic": "数据图表",
-      "openAllSites": "打开所有站点",
+      "openAllSites": "打开分组站点",
       "openAllUnReadMsg": "打开有未读消息的站点",
       "openAllStatusErr": "打开状态异常的站点",
       "newMessage": "新消息",
@@ -188,6 +190,12 @@
       "control_panel": "控制面板",
       "security": "安全设置",
       "2FA": "2FA",
+      "tags": {
+        "__all__": "全部",
+        "__unTagged__": "未加标签",
+        "__unReadMsg__": "未读消息",
+        "__statusError__": "状态异常"
+      },
       "headers": {
         "date": "日期",
         "site": "站点",
@@ -727,6 +735,8 @@
         "editor": {
           "defaultClient": "指定下载服务器（如不选择则以基本设置的默认下载服务器为准）",
           "name": "站点名称",
+          "siteGroup": "站点分组",
+          "siteGroupTip": "分组输入完成后按回车添加，可添加多个",
           "tags": "站点标签",
           "inputTags": "标签输入完成后按回车添加，可添加多个",
           "schema": "网站架构",

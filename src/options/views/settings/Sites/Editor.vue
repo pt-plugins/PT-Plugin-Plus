@@ -12,6 +12,17 @@
           :rules="rules.require"
         ></v-text-field>
 
+        <!--&lt;!&ndash;站点分组&ndash;&gt;-->
+        <!--<v-combobox-->
+        <!--    v-model="site.siteGroups"-->
+        <!--    hide-selected-->
+        <!--    :hint="$t('settings.sites.editor.siteGroup')"-->
+        <!--    :label="$t('settings.sites.editor.siteGroupTip')"-->
+        <!--    multiple-->
+        <!--    persistent-hint-->
+        <!--    small-chips-->
+        <!--&gt;</v-combobox>-->
+
         <!-- 标签 -->
         <v-combobox
           v-model="site.tags"
