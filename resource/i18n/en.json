@@ -161,6 +161,7 @@
     "home": {
       "title": "My Data",
       "getInfos": "Refresh my data",
+      "getGroupInfos": "Refresh group data",
       "cancelRequest": "Cancel request",
       "requesting": "Requesting",
       "siteName": "Site name",
@@ -171,11 +172,12 @@
       "showHnR": "H&R",
       "showLastUpdateTimeAsRelativeTime":"Last update time as relative time",
       "selectColumns": "Select Columns",
+      "selectedTags": "Selected Tags",
       "week": "Expressed in weeks",
       "timeline": "Time line",
       "settings": "Settings",
       "statistic": "Statistic",
-      "openAllSites": "Open all sites",
+      "openAllSites": "Open group sites",
       "openAllUnReadMsg": "Open a site with unread messages",
       "openAllStatusErr": "Open a site with abnormal status",
       "newMessage": "New message",
@@ -191,6 +193,12 @@
       "control_panel": "ControlPanel",
       "security": "Security",
       "2FA": "2FA",
+      "tags": {
+        "__all__": "ALL",
+        "__unTagged__": "UnTagged",
+        "__unReadMsg__": "UnReadMsg",
+        "__statusError__": "StatusError"
+      },
       "headers": {
         "date": "Date",
         "site": "Site",
@@ -731,6 +739,8 @@
         "editor": {
           "defaultClient": "Download server (if not selected, the default download server of the basic settings will prevail)",
           "name": "Site name",
+          "siteGroup": "Site Group",
+          "siteGroupTip": "Press Enter to add multiple group.",
           "tags": "Tags",
           "inputTags": "press Enter to add multiple",
           "schema": "Site schema",
