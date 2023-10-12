@@ -4,7 +4,7 @@
     "description": "憨憨",
     "url": "https://hhanclub.top/",
     "icon": "https://hhanclub.top/favicon.ico",
-    "tags": [],
+    "tags": ["综合", "纪录片"],
     "schema": "NexusPHP",
     "host": "hhanclub.top",
     "levelRequirements": [

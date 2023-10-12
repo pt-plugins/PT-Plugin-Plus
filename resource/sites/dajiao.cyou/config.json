@@ -4,7 +4,7 @@
     "description": "打胶",
     "url": "https://dajiao.cyou/",
     "icon": "https://dajiao.cyou/favicon.ico",
-    "tags": [],
+    "tags": ["综合", "纪录片"],
     "schema": "NexusPHP",
     "host": "dajiao.cyou",
     "collaborator": [
