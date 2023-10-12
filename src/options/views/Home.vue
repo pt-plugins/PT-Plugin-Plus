@@ -64,7 +64,8 @@
           </template>
         </v-select>
         <v-select v-model="selectedTags" class="select-tags" :items="allSortedTags" :label="$t('home.selectedTags')"
-          @change="updateViewOptions" multiple outlined return-object>
+                  :menu-props="{ maxHeight: '70%' }" @change="updateViewOptions"
+                  multiple outlined return-object>
           <template v-slot:selection="{ item, index }">
             <!--tag-->
             <v-chip v-if="index === 0">
