@@ -111,6 +111,15 @@
           ]
         }
       }
+    },
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowhead:contains('象草') + td", "td.rowhead:contains('Lily') + td"],
+          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+        }
+      }
     }
   },
   "searchEntryConfig": {
