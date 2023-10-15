@@ -27,6 +27,10 @@
             "selector": [".user-info td:contains('Registration date') + td"],
             "filters": ["query.text().trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
           },
+          "uploads": {
+            "selector": [".user-info td span[data-original-title='Total Uploads']"],
+            "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"]
+          },
           "seeding": {
             "selector": [".user-info td:contains('Active Seeds') + td"],
             "filters": ["query.text().trim()"]
