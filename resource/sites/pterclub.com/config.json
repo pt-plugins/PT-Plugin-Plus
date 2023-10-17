@@ -196,7 +196,7 @@
     },{
       "name": "游戏种子详情页面",
       "pages": ["/detailsgame.php"],
-      "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+      "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/details.js"]
     }
   ],
   "mergeSchemaTagSelectors": true,
