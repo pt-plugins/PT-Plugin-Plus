@@ -7,6 +7,11 @@
   "tags": ["影视", "综合","成人"],
   "schema": "NexusPHP",
   "host": "kp.m-team.cc",
+  "cdn": ["https://kp.m-team.cc/","https://xp.m-team.cc/","https://xp.m-team.io/"],
+  "formerHosts": [
+    "pt.m-team.cc",
+    "tp.m-team.cc"
+  ],
   "levelRequirements": [{
     "level": "1",
     "name": "Power User",
@@ -63,10 +68,7 @@
     "downloaded": "3000GB",
     "ratio": "9",
     "privilege": "魔力值加成：+8%"
-  }],
-  "formerHosts": [
-    "pt.m-team.cc",
-    "tp.m-team.cc"
+  }
   ],
   "plugins": [{
     "name": "种子列表",
@@ -291,6 +293,5 @@
         }
       }
     }
-  },
-  "cdn": ["https://kp.m-team.cc/","https://xp.m-team.cc/","https://xp.m-team.io/"]
+  }
 }
