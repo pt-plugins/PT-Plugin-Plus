@@ -2,11 +2,11 @@
   "name": "DIC",
   "timezoneOffset": "+0800",
   "description": "music",
-  "url": "https://dicmusic.club/",
-  "icon": "https://dicmusic.club/favicon.ico",
+  "url": "https://dicmusic.com/",
+  "icon": "https://dicmusic.com/favicon.ico",
   "tags": ["音乐"],
   "schema": "GazelleJSONAPI",
-  "host": "dicmusic.club",
+  "host": "dicmusic.com",
   "levelRequirements": [
     {
       "level": 1,
