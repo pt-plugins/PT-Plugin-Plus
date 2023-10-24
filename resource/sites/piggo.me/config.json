@@ -13,7 +13,6 @@
     "host": "piggo.me",
     "plugins": [
         {
-            "isCustom": true,
             "name": "儿童专区",
             "pages": [
                 "/special.php"
@@ -33,10 +32,8 @@
         {
             "enabled": true,
             "entry": "/search.php",
-            "isCustom": true,
             "name": "全站搜索",
             "resultType": "html",
-            "valid": true
         }
     ],
     "levelRequirements": [{
