@@ -7,6 +7,10 @@
   "tags": ["音乐"],
   "schema": "GazelleJSONAPI",
   "host": "dicmusic.com",
+  "cdn": ["https://dicmusic.club/", "https://dicmusic.com/"],
+  "formerHosts": [
+    "dicmusic.club"
+  ],
   "levelRequirements": [
     {
       "level": 1,
@@ -79,9 +83,6 @@
       "perfectFLAC": "1000",
       "privilege": "拥有无限邀请；佩戴6枚印记；创建6个私人合集；访问「Guru」版块；查看种子检查日志"
     }
-  ],
-  "formerHosts": [
-    "dicmusic.club"
   ],
   "collaborator": [
     "ylxb2016",
