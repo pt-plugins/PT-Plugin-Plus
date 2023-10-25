@@ -1,0 +1,18 @@
+{
+  "name": "CGPeers",
+  "timezoneOffset": "+0000",
+  "schema": "GazelleJSONAPI",
+  "url": "https://cgpeers.to/",
+  "icon": "https://cgpeers.to/favicon.ico",
+  "tags": ["设计", "素材"],
+  "host": "cgpeers.to",
+  "cdn": ["https://cgpeers.to/","https://www.cgpeers.to/","https://www.cgpeers.com/"],
+  "formerHosts": [
+    "www.cgpeers.com"
+  ],
+  "collaborator": "bimzcy",
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  }
+}
