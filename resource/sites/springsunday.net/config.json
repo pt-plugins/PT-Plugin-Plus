@@ -190,6 +190,28 @@
       }
     }
   },
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "span.torrent-pro-free"
+  }, {
+    "name": "2xFree",
+    "selector": "span.torrent-pro-twoupfree"
+  }, {
+    "name": "2xUp",
+    "selector": "span.torrent-pro-twoup"
+  }, {
+    "name": "2x50%",
+    "selector": "span.torrent-pro-twouphalfdown"
+  }, {
+    "name": "30%",
+    "selector": "span.torrent-pro-thirtypercent"
+  }, {
+    "name": "50%",
+    "selector": "span.torrent-pro-halfdown"
+  }, {
+    "name": "⛔️",
+    "selector": "span.torrent-exclusive"
+  }],
   "selectors": {
     "userBaseInfo": {
       "merge": true,
