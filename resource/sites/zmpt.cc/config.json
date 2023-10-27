@@ -15,71 +15,71 @@
       "downloaded": "50GB",
       "ratio": "1.05",
       "seedingPoints": "30000",
-      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+      "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
       "level": 2,
       "name": "Elite User",
-      "interval": "7",
+      "interval": "8",
       "downloaded": "120GB",
       "ratio": "1.55",
-      "seedingPoints": "50000",
-      "privilege": "Elite User及以上用户封存账号后不会被删除。"
+      "seedingPoints": "80000",
+      "privilege": ""
     },
     {
       "level": 3,
       "name": "Crazy User",
-      "interval": "10",
+      "interval": "16",
       "downloaded": "300GB",
       "ratio": "2.05",
-      "seedingPoints": "100000",
-      "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+      "seedingPoints": "150000",
+      "privilege": "可以发送邀请；可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
       "level": 4,
       "name": "Insane User",
-      "interval": "16",
+      "interval": "28",
       "downloaded": "500GB",
       "ratio": "2.55",
-      "seedingPoints": "200000",
-      "privilege": "可以查看普通日志。"
+      "seedingPoints": "250000",
+      "privilege": "可以查看普通日志。Insane User及以上用户封存账号后不会被删除; 得到一个邀请名额。"
     },
     {
       "level": 5,
       "name": "Veteran User",
-      "interval": "20",
+      "interval": "40",
       "downloaded": "750GB",
       "ratio": "3.05",
-      "seedingPoints": "300000",
-      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+      "seedingPoints": "400000",
+      "privilege": "得到两个邀请名额；可以查看其它用户的评论、帖子历史。"
     },
     {
       "level": 6,
       "name": "Extreme User",
-      "interval": "30",
+      "interval": "56",
       "downloaded": "1TB",
       "ratio": "3.55",
-      "seedingPoints": "400000",
-      "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
+      "seedingPoints": "600000",
+      "privilege": "得到两个邀请名额；可以更新过期的外部信息；可以查看Extreme User论坛。"
       
     },
     {
       "level": 7,
       "name": "Ultimate User",
-      "interval": "30",
+      "interval": "76",
       "downloaded": "1.5TB",
       "ratio": "4.05",
-      "seedingPoints": "500000",
-      "privilege": "得到五个邀请名额。"
+      "seedingPoints": "900000",
+      "privilege": "得到两个邀请名额。"
     },
     {
       "level": 8,
       "name": "Nexus Master",
-      "interval": "30",
+      "interval": "100",
       "downloaded": "3TB",
       "ratio": "4.55",
-      "seedingPoints": "600000",
-      "privilege": "得到十个邀请名额。"
+      "seedingPoints": "1500000",
+      "privilege": "得到十个邀请名额。Nexus Master及以上用户会永远保留账号。"
     }
   ],
   "collaborator": "yeluoqiuming",
