@@ -22,8 +22,8 @@
         let id = match[1];
         key = `douban${id}|${key}`;
       }
-      let title = "用 PT 助手搜索";
-      let div = $("<div style='padding: 5px;margin-left: 20px;'/>").attr("title", `搜索 ${key}`).appendTo(parent);
+      let title = "PT 助手搜索";
+      let div = $("<div style=''/>").attr("title", `搜索 ${key}`).appendTo(parent);
       $("<a href='javascript:void(0);' class='lnk-sharing'/>").html(title).on("click", (event) => {
         let button = $(event.target);
         this.search(key, button);
