@@ -1,0 +1,110 @@
+{
+  "name": "HDKylin-麒麟",
+  "timezoneOffset": "+0800",
+  "description": "与志同道合之人前行 分享更多值得珍藏的资源",
+  "url": "https://www.hdkyl.in",
+  "icon": "https://www.hdkyl.in/favicon.ico",
+  "tags": ["综合", "电影", "电视剧", "纪录片"],
+  "schema": "NexusPHP",
+  "host": "www.hdkyl.in",
+  "levelRequirements": [{
+    "level": "1",
+    "name": "Power User",
+    "interval": "4",
+    "downloaded": "50GB",
+    "ratio": "2.0",
+    "seedingPoints": "40000",
+    "privilege": "得到一个邀请名额；可以直接发布种子；可以删除自己上传的字幕"
+  },{
+    "level": "2",
+    "name": "Elite User",
+    "interval": "8",
+    "downloaded": "120GB",
+    "ratio": "3.0",
+    "seedingPoints": "80000",
+    "privilege": "无"
+  },{
+    "level": "3",
+    "name": "Crazy User",
+    "interval": "15",
+    "downloaded": "300GB",
+    "ratio": "4.0",
+    "seedingPoints": "150000",
+    "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式"
+  },{
+    "level": "4",
+    "name": "Insane User",
+    "interval": "25",
+    "downloaded": "500GB",
+    "ratio": "5.0",
+    "seedingPoints": "250000",
+    "privilege": "可以查看普通日志"
+  },{
+    "level": "5",
+    "name": "Veteran User",
+    "interval": "40",
+    "downloaded": "750GB",
+    "ratio": "6.0",
+    "seedingPoints": "400000",
+    "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史"
+  },{
+    "level": "6",
+    "name": "Extreme User",
+    "interval": "60",
+    "downloaded": "1TB",
+    "ratio": "7.0",
+    "seedingPoints": "600000",
+    "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛；Extreme User及以上用户会永远保留账号"
+  },{
+    "level": "7",
+    "name": "Ultimate User",
+    "interval": "80",
+    "downloaded": "4TB",
+    "ratio": "8.0",
+    "seedingPoints": "800000",
+    "privilege": "得到五个邀请名额"
+  },{
+    "level": "8",
+    "name": "Nexus Master",
+    "interval": "100",
+    "downloaded": "10TB",
+    "ratio": "10.0",
+    "seedingPoints": "1000000",
+    "privilege": "得到十个邀请名额"
+  }],
+  "collaborator": ["csi0n", "zhuweitung"],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["b:first"],
+          "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)</g)",
+            "(query && query.length>0 ) ? query[0].replace('总大小：', '').replace('<', '').trim() : 0",
+            "(query != 0) ? _self.getTotalSize([query]) : 0"
+          ]
+        }
+      }
+    }
+  },
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+        "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+      },
+      "status": {
+        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+        "filters": [
+          "query ? query.attr('title') : ''",
+          "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+        ]
+      }
+    }
+  }
+}
