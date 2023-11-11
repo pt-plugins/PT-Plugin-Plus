@@ -1333,50 +1333,61 @@ export default Vue.extend({
         // from jpop
         case 'Gazelle':
           links = [
-            {color: 'primary', desc: `${uname}(${uid})`, href: new URL(`/user.php?id=${uid}`, site.activeURL).toString()},
-            {color: 'success', desc: this.$t("home.mailbox").toString(), href: new URL(`/inbox.php`, site.activeURL).toString()},
-            {color: 'success', desc: this.$t("home.torrents").toString(), href: new URL(`/torrents.php`, site.activeURL).toString()},
-            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: new URL(`/user.php?action=edit&userid=${uid}`, site.activeURL).toString()},
-            // {color: 'primary', desc: this.$t("home.security").toString(), href: new URL(`/user.php?action=edit&userid=${uid}#paranoia_settings`, site.activeURL).toString()},
-            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: new URL(`/user.php?action=edit&userid=${uid}#access_settings`, site.activeURL).toString()},
+            {color: 'primary', desc: `${uname}(${uid})`, href: `/user.php?id=${uid}`},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: `/inbox.php`},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: `/torrents.php`},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: `/user.php?action=edit&userid=${uid}`},
+            // {color: 'primary', desc: this.$t("home.security").toString(), href: `/user.php?action=edit&userid=${uid}#paranoia_settings`},
+            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: `/user.php?action=edit&userid=${uid}#access_settings`},
           ]
           break
         // from GPW
         case 'GazelleJSONAPI':
           links = [
-            {color: 'primary', desc: `${uname}(${uid})`, href: new URL(`/user.php?id=${uid}`, site.activeURL).toString()},
-            {color: 'success', desc: this.$t("home.mailbox").toString(), href: new URL(`/inbox.php`, site.activeURL).toString()},
-            {color: 'success', desc: this.$t("home.torrents").toString(), href: new URL(`/torrents.php`, site.activeURL).toString()},
-            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: new URL(`/user.php?action=edit&userid=${uid}`, site.activeURL).toString()},
-            {color: 'primary', desc: this.$t("home.security").toString(), href: new URL(`/user.php?action=edit&userid=${uid}#paranoia_settings`, site.activeURL).toString()},
-            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: new URL(`/user.php?action=edit&userid=${uid}#access_settings`, site.activeURL).toString()},
+            {color: 'primary', desc: `${uname}(${uid})`, href: `/user.php?id=${uid}`},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: `/inbox.php`},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: `/torrents.php`},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: `/user.php?action=edit&userid=${uid}`},
+            {color: 'primary', desc: this.$t("home.security").toString(), href: `/user.php?action=edit&userid=${uid}#paranoia_settings`},
+            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: `/user.php?action=edit&userid=${uid}#access_settings`},
           ]
           break
         // from 观众
         case 'NexusPHP':
           links = [
-            {color: 'primary', desc: `${uname}(${uid})`, href: new URL(`/userdetails.php?id=${uid}`, site.activeURL).toString()},
-            {color: 'success', desc: this.$t("home.mailbox").toString(), href: new URL(`/messages.php`, site.activeURL).toString()},
-            {color: 'success', desc: this.$t("home.torrents").toString(), href: new URL(`/torrents.php`, site.activeURL).toString()},
-            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: new URL(`/usercp.php`, site.activeURL).toString()},
-            {color: 'primary', desc: this.$t("home.security").toString(), href: new URL(`/usercp.php?action=security`, site.activeURL).toString()},
-            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: new URL(`/usercp.php?action=secAuth`, site.activeURL).toString()},
+            {color: 'primary', desc: `${uname}(${uid})`, href: `/userdetails.php?id=${uid}`},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: `/messages.php`},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: `/torrents.php`},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: `/usercp.php`},
+            {color: 'primary', desc: this.$t("home.security").toString(), href: `/usercp.php?action=security`},
+            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: `/usercp.php?action=secAuth`},
           ]
           break
         // from zhuque
         case 'TNode':
           links = [
-            {color: 'primary', desc: `${uname}(${uid})`, href: new URL(`/user/info`, site.activeURL).toString()},
-            {color: 'success', desc: this.$t("home.mailbox").toString(), href: new URL(`/message/system`, site.activeURL).toString()},
-            {color: 'success', desc: this.$t("home.torrents").toString(), href: new URL(`/torrent/list/`, site.activeURL).toString()},
-            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: new URL(`/user/setting`, site.activeURL).toString()},
+            {color: 'primary', desc: `${uname}(${uid})`, href: `/user/info`},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: `/message/system`},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: `/torrent/list/`},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: `/user/setting`},
+          ]
+          break
+        case 'TTG':
+          links = [
+            {color: 'primary', desc: `${uname}(${uid})`, href: `/userdetails.php?id=${uid}`},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: `/messages.php`},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: `/browse.php`},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: `/my.php`},
+            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: `/mystep.php`},
           ]
           break
         case 'Discuz':
         case 'UNIT3D':
         default:
+          console.log(`un-support schema for quickLinks: ${site.schema}`)
           break
       }
+      links = links.map(i => ({...i, href: new URL(i.href, site.activeURL).toString()}))
       return links
     }
   },
