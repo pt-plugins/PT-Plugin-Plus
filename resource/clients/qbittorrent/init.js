@@ -175,6 +175,8 @@
         formData.append("savepath", data.savePath)
         // 禁用自动管理种子
         autoTMM = false
+      } else {
+        savePath = "_"
       }
 
       if (clientOptions && clientOptions.enableCategory) {
