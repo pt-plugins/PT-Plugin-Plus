@@ -16,9 +16,20 @@
       "selector": "i.fal.fa-gift.text-orange"
     }],
     "selectors": {
+      "userBaseInfo": {
+        "page": "/achievements",
+        "merge": true,
+        "fields": {
+          "id": {
+            "selector": ["a:contains('Profile'):first"],
+            "attribute": "href",
+            "filters": ["query.split('.')", "query ? query[query.length-1]:''"]
+          }
+        }
+      },
       "userExtendInfo": {
         "merge": true,
-        "page": "/users/$user.name$",
+        "page": "/users/$user.name$.$user.id$",
         "fields": {
           "levelName": {
             "selector": "span[data-original-title='Tier'] span"
