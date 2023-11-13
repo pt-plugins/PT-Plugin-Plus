@@ -586,7 +586,7 @@
           "tagIMDb": "Add IMDb tag when sending a torrent(Beta)",
           "enableCategory": "Automatically add QB categories when sending torrents (Beta)",
           "enableCategoryText": "QB category list",
-          "enableCategoryTextTip": "Fill in one address per line, with commas separating the category name and path. Path keywords are not supported. For example: 'movie,/tmp/movie'. You also need to fill in the same download path in the download directory settings. When the download path is specified and the download path hits a certain category, the category will be added and automatic seed management will be enabled.",
+          "enableCategoryTextTip": "Fill in one address per line, with commas separating the category name and path. Only support FULL PATH (e.g. movie,/tmp/movie) or '_' (e.g. movie,_) to represent qbit's default path. The category will be assigned if corresponding path matched user-selected one,with automatic seed management enabled.",
           "autoCreate": "<Automatically generated after saving>",
           "test": "Test if the server can connect",
           "testSuccess": "Server can be connected",
