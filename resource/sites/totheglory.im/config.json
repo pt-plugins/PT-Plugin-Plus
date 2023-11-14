@@ -267,6 +267,10 @@
     "userExtendInfo": {
       "page": "/userdetails.php?id=$user.id$",
       "fields": {
+        "uploads": {
+          "selector": ["div#ka1 tr:not(:eq(0))"],
+          "filters": ["query.length"]
+        },
         "uploaded": {
           "selector": ["td.rowhead:contains('上传量') + td", "td.rowhead:contains('上傳量') + td"],
           "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
