@@ -120,6 +120,15 @@
           "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
         }
       }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["#outer td[rowspan]"]
+        }
+      }
     }
   },
   "searchEntryConfig": {
