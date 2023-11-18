@@ -1,0 +1,163 @@
+{
+  "name": "SharkPT",
+  "description": "鲨鱼PT",
+  "schema": "NexusPHP",
+  "timezoneOffset": "+0800",
+  "icon": "https://sharkpt.net/favicon.ico",
+  "tags": [
+    "影视",
+    "综合"
+  ],
+  "url": "https://sharkpt.net",
+  "host": "sharkpt.net",
+  "collaborator": [
+    "zhuweitung",
+    "yum"
+  ],
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Power User",
+      "interval": "5",
+      "downloaded": "30GB",
+      "ratio": "1.0",
+      "seedingPoints": "100000",
+      "privilege": "得到一个邀请名额；可以查看用户列表；可以请求续种；可以查看NFO文档；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")；可以直接发布种子；可以删除自己上传的字幕。"
+    },
+    {
+      "level": 2,
+      "name": "Elite User",
+      "interval": "13",
+      "downloaded": "60GB",
+      "ratio": "1.0",
+      "seedingPoints": "300000",
+      "privilege": "得到两个邀请名额；可以查看排行榜。"
+    },
+    {
+      "level": 3,
+      "name": "Crazy User",
+      "interval": "18",
+      "downloaded": "90GB",
+      "ratio": "1.0",
+      "seedingPoints": "600000",
+      "privilege": "得到三个邀请名额；可以购买、发送邀请；可以在做种、下载、发布的时候选择匿名模式。"
+    },
+    {
+      "level": 4,
+      "name": "Insane User",
+      "interval": "43",
+      "downloaded": "120GB",
+      "ratio": "1.0",
+      "seedingPoints": "1000000",
+      "privilege": "得到四个邀请名额；可以查看普通日志。"
+    },
+    {
+      "level": 5,
+      "name": "Veteran User",
+      "interval": "65",
+      "downloaded": "150GB",
+      "ratio": "1.0",
+      "seedingPoints": "1500000",
+      "privilege": "得到五个邀请名额；可以查看其它用户的评论、帖子历史。"
+    },
+    {
+      "level": 6,
+      "name": "Extreme User",
+      "interval": "90",
+      "downloaded": "180GB",
+      "ratio": "1.0",
+      "seedingPoints": "2100000",
+      "privilege": "得到六个邀请名额；可以更新过期的外部信息。Extreme User及以上用户会永远保留账号。"
+    },
+    {
+      "level": 7,
+      "name": "Ultimate User",
+      "interval": "120",
+      "downloaded": "210GB",
+      "ratio": "1.0",
+      "seedingPoints": "2800000",
+      "privilege": "得到七个邀请名额；可以查看种子结构。"
+    },
+    {
+      "level": 8,
+      "name": "Nexus Master",
+      "interval": "155",
+      "downloaded": "240GB",
+      "ratio": "1.0",
+      "seedingPoints": "3600000",
+      "privilege": "得到八个邀请名额。"
+    }
+  ],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": [
+            "td.rowhead:contains('鲨币') + td"
+          ],
+          "filters": [
+            "parseFloat(query.text().replace(/,/g,''))"
+          ]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "merge": true,
+      "fields": {
+        "seeding": {
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query.text().trim()"
+          ]
+        },
+        "seedingSize": {
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "$(query[0].nextSibling).text().trim().match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length==2)?(query[0]).sizeToNumber():0"
+          ]
+        }
+      }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": [
+            "h1:contains('每小时获得的合计鲨币') + div table tr:nth-child(2) td:last-child"
+          ],
+          "filters": [
+            "parseFloat(query.text().match(/[\\d.]+/)[0])"
+          ]
+        }
+      }
+    }
+  },
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
+        ],
+        "filters": [
+          "query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"
+        ]
+      },
+      "status": {
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
+        ],
+        "filters": [
+          "query ? query.attr('title') : ''",
+          "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+        ]
+      }
+    }
+  }
+}
