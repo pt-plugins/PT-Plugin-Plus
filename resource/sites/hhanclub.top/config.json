@@ -4,7 +4,7 @@
     "description": "憨憨",
     "url": "https://hhanclub.top/",
     "icon": "https://hhanclub.top/favicon.ico",
-    "tags": [],
+    "tags": ["综合", "纪录片"],
     "schema": "NexusPHP",
     "host": "hhanclub.top",
     "levelRequirements": [
@@ -83,33 +83,59 @@
     ],
     "collaborator": ["koal", "zhuweitung"],
     "selectors": {
+        "userBaseInfo": {
+            "merge": true,
+            "page": "/index.php",
+            "fields": {
+                "messageCount": {
+                    "selector": ["div.w-full > a[href='messages.php']"],
+                    "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+                }
+            }
+        },
         "userExtendInfo": {
             "merge": true,
             "fields": {
+                "uploaded": {
+                    "selector": ["span:contains('上传量') + span", "span:contains('Uploaded') + span"],
+                    "filters": ["query[0].innerText.replace(/,/g,'')", "query.sizeToNumber()"]
+                },
+                "downloaded": {
+                    "selector": ["span:contains('下载量') + span", "span:contains('Downloaded') + span"],
+                    "filters": ["query[0].innerText.replace(/,/g,'')", "query.sizeToNumber()"]
+                },
+                "levelName": {
+                    "selector": ["span.font-bold:contains('等级')"],
+                    "filters": ["query.next().find('img').attr('title')", "query.replace(/[^a-z0-9 ]/gi, '').trim().length > 0 ? query.replace(/[^a-z0-9 ]/gi, '').trim() : query"]
+                },
                 "bonus": {
-                    "selector": ["td.rowhead:contains('憨豆') + td", "td.rowhead:contains('Seed points') + td"],
+                    "selector": ["span.font-bold:contains('憨豆') + div", "span.font-bold:contains('Seed points') + div"],
                     "filters": ["parseFloat(query.text().replace(/,/g,''))"]
+                },
+                "seedingPoints": {
+                    "selector": ["span:contains('做种积分') + span", "span:contains('Seeding Points') + span"],
+                    "filters": ["parseFloat(query.text().replace(/,/g,''))"]
+                },
+                "joinTime": {
+                    "selector": ["span:contains('加入日期')", "span:contains('Join'):contains('date')"],
+                    "filters": ["query.next().text().split(' (')[0].trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
                 }
             }
         },
         "userSeedingTorrents": {
-            "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+            "page": "/getusertorrentlistajax.php?type=size&userid=$user.id$",
+            "dataType": "json",
+            "headers": {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+            },
             "fields": {
                 "seeding": {
-                    "selector": [
-                        "b:first"
-                    ],
-                    "filters": [
-                        "query.text()"
-                    ]
+                    "selector": ["total_count"],
+                    "filters": ["query"]
                 },
                 "seedingSize": {
-                    "selector": "",
-                    "filters": [
-                        "query.text().match(/总大小：(.*?)上一页/g)",
-                        "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
-                        "(query != 0) ? query.sizeToNumber() : 0"
-                    ]
+                    "selector": ["total_size"],
+                    "filters":  ["query.sizeToNumber()"]
                 }
             }
         },
@@ -118,25 +144,35 @@
             "page": "/mybonus.php",
             "fields": {
                 "bonusPerHour": {
-                    "selector": ["h1:contains('每小时获得的合计憨豆') + div table tr:eq(1) td:last", "h1:contains('Total bonus gained per hour') + div table tr:eq(1) td:last"],
+                    "selector": ["h1:contains('每小时获得的合计憨豆') + div div:nth-child(2) div:nth-child(8)", "h1:contains('Total bonus gained per hour') + div div:nth-child(2) div:nth-child(8)"],
                     "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
+                }
+            }
+        },
+        "userUploadedTorrents": {
+            "prerequisites": "!user.uploads",
+            "page": "/getusertorrentlistajax.php?ajax=1&type=uploaded&userid=$user.id$",
+            "dataType": "json",
+            "headers": {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+            },
+            "fields": {
+                "uploads": {
+                    "selector": ["data"],
+                    "filters": ["query.length"]
                 }
             }
         }
     },
+    "searchEntry": [{
+        "name": "全部",
+        "enabled": true
+    }],
     "searchEntryConfig": {
-        "fieldSelector": {
-            "progress": {
-                "selector": ["> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"],
-                "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
-            },
-            "status": {
-                "selector": ["> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"],
-                "filters": [
-                    "query ? query.attr('title') : ''",
-                    "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
-                ]
-            }
-        }
+        "page": "/torrents.php",
+        "queryString": "search=$key$",
+        "resultType": "html",
+        "parseScriptFile": "getSearchResult.js",
+        "resultSelector": ".torrent-table-for-spider"
     }
 }

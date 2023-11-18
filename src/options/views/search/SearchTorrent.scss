@@ -14,7 +14,9 @@
     table.v-table tbody tr:nth-child(even) {
       background-color: #f1f1f1;
     }
-
+    table.v-table tbody tr:nth-child(odd) {
+      background-color: #fff
+    }
     table.v-table tbody tr[active='true'] {
       background-color: #B3E5FC !important;
     }
@@ -22,13 +24,60 @@
     table.v-table.theme--dark tbody tr:nth-child(even) {
       background-color: #1f1f1f;
     }
+    table.v-table.theme--dark tbody tr:nth-child(odd) {
+      background-color: #424242;
+    }
 
     table.v-table.theme--dark tbody tr[active='true'] {
       background-color: #4c1a03 !important;
     }
+
+    table.v-table tbody tr:hover {
+      background-color: #f1f1f1
+    }
+
+    table.v-table.theme--dark tbody tr:hover {
+      background-color: #616161
+    }
   }
 
+  .titleWrap{
+    position: relative;
+    line-height: 2;
+    background: inherit;
+    height: 2.5em;
+    overflow: hidden
+  }
+  .titleFull {
+    display: block;
+    max-height: 4em;
+    white-space: normal;
+}
+  .titleEllipsisMiddle{
+    display: block;
+    position: relative;
+    text-align: justify;
+    background: inherit;
+    height: 2em;
+    overflow: hidden;
+    top: -4em;
+  }
+
+  .titleEllipsisMiddle:before{
+    content: attr(title);
+    width: 50%;
+    position: relative;
+    background: inherit;
+    float: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    direction: rtl;
+  }
+
+
   .titleCell {
+    background: inherit;
     max-width: 35vw;
     overflow: hidden;
     text-overflow: ellipsis;

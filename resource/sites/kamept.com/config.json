@@ -4,7 +4,7 @@
     "description": "kamept",
     "url": "https://kamept.com/",
     "icon": "https://kamept.com/favicon.ico",
-    "tags": [],
+    "tags": ["成人", "COS"],
     "schema": "NexusPHP",
     "host": "kamept.com",
     "collaborator": [

@@ -2,10 +2,10 @@
   "name": "Anthelion",
   "timezoneOffset": "+0000",
   "description": "Movies",
-  "url": "https://anthelion.me//",
+  "url": "https://anthelion.me",
   "icon": "https://anthelion.me/favicon.ico",
   "tags": ["电影"],
-  "schema": "GazelleJSONAPI",
+  "schema": "Gazelle",
   "host": "anthelion.me",
   "collaborator": "enigamz",
   "searchEntryConfig": {
@@ -17,18 +17,63 @@
       "enabled": true
   }],
   "selectors": {
-    "userSeedingTorrents": {
-      "page": "/torrents.php?type=seeding&userid=$user.id$",
+    "userBaseInfo": {
+      "page": "index.php",
       "fields": {
+        "id": {
+          "selector": ["#nav_user a.username"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["#nav_user a.username"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "user.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["li.tooltip:contains('Uploaded: ')"],
+          "filters": ["query.eq(0).text().replace(/Uploaded: /g,'').replace(/,/g,'').sizeToNumber()"]
+        },
+        "uploads": {
+          "selector": ["#comm_upload"],
+          "filters": ["query.text().match(/\\d+/g)[0]"]
+        },
+        "downloaded": {
+          "selector": ["li.tooltip:contains('Downloaded:  ')"],
+          "filters": ["query.eq(0).text().replace(/Downloaded:/g,'').replace(/,/g,'').sizeToNumber()"]
+        },
+        "ratio": {
+          "selector": ["li.tooltip:contains('Ratio: ') span"],
+          "filters": ["query.eq(0).text()"]
+        },
+        "seeding": {
+          "selector": "ul.list > li:contains('Seeding:')",
+          "filters": ["query.text().trim().replace(/,|\\n/g,'').match(/:.+?([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):null"]
+        },
+        "joinTime": {
+          "selector": ["ul.stats li:contains('Joined:') span"],
+          "filters": ["query.eq(0).attr('title').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        },
         "seedingSize": {
-          "selector": ["tr.torrent_row > td.nobr"],
-          "filters": ["jQuery.map(query, (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          "selector": ["li:contains('Seeding Size: ') span"],
+          "filters": ["query.length ? query.eq(0).text().sizeToNumber() : 0"]
         },
         "bonus": {
           "selector": ["a[href*='store.php']"],
-          "filters": ["query.text().replace(/,/g,'').match(/.+?([\\d.]+)/)", "(query && query.length>=2)?query[1]:null"]
+          "filters": ["query.eq(0).text().replace(/,/g,'')"]
+        },
+        "levelName": {
+          "selector": "ul.stats > li:contains('Class:')",
+          "filters": ["query.text().replace(/Class:/g,'').trim()"]
         }
       }
     }
-  }  
+  }
 }

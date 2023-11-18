@@ -2,14 +2,18 @@
   "name": "CHDBits",
   "timezoneOffset": "+0800",
   "description": "CHDBits",
-  "url": "https://chdbits.co/",
-  "icon": "https://chdbits.co/favicon.ico",
+  "url": "https://ptchdbits.co/",
+  "icon": "https://ptchdbits.co/favicon.ico",
   "tags": [
     "影视",
     "综合"
   ],
   "schema": "NexusPHP",
-  "host": "chdbits.co",
+  "host": "ptchdbits.co",
+  "formerHosts": [
+    "chdbits.co"
+  ],
+  "cdn": ["https://ptchdbits.co/","https://chdbits.co/"],
   "levelRequirements": [{
     "level": "1", 
     "name": "Power User",

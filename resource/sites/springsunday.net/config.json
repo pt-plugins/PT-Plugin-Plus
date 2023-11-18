@@ -190,6 +190,28 @@
       }
     }
   },
+  "torrentTagSelectors": [{
+    "name": "Free",
+    "selector": "span.torrent-pro-free"
+  }, {
+    "name": "2xFree",
+    "selector": "span.torrent-pro-twoupfree"
+  }, {
+    "name": "2xUp",
+    "selector": "span.torrent-pro-twoup"
+  }, {
+    "name": "2x50%",
+    "selector": "span.torrent-pro-twouphalfdown"
+  }, {
+    "name": "30%",
+    "selector": "span.torrent-pro-thirtypercent"
+  }, {
+    "name": "50%",
+    "selector": "span.torrent-pro-halfdown"
+  }, {
+    "name": "⛔️",
+    "selector": "span.torrent-exclusive"
+  }],
   "selectors": {
     "userBaseInfo": {
       "merge": true,
@@ -197,6 +219,22 @@
         "messageCount": {
           "selector": ["a[href*='messages.php'][style*='background: red']"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowfollow a[href^='mybonus.php']"],
+          "filters": ["query.text().replace(/,/g,'')", "query ? parseFloat(query.match(/[\\d.]+/)[0]) : null"]
+        },
+        "seedingPoints": {
+          "selector": ["td.rowfollow a[href^='mybonus.php']"],
+          "filters": [
+            "query.parent().clone().children().remove().end().text().replace(/,/g,'')",
+            "query ? parseFloat(query.match(/[\\d.]+/)[0]) : null"]
         }
       }
     },

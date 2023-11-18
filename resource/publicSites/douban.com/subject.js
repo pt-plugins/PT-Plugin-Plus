@@ -5,6 +5,16 @@
      */
     initButtons() {
       let key = this.getIMDbId() || this.getTitle();
+
+      let match = window.location.href.match(/subject\/(\d+)/);
+      if (match && match.length > 1) {
+        let id = match[1];
+        // 预转换
+        PTService.call(PTService.action.getIMDbIdFromDouban, id).catch((error) => {
+          console.log(error);
+        });
+      }
+
       if (key) {
         // 搜索
         PTService.addButton({

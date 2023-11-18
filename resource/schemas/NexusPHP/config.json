@@ -97,7 +97,7 @@
         },
         "levelName": {
           "selector": ["td.rowhead:contains('等级')", "td.rowhead:contains('等級')", "td.rowhead:contains('Class')"],
-          "filters": ["query.next().find('img').attr('title')"]
+          "filters": ["query.next().find('img').attr('title')", "query.replace(/[^a-z0-9 ]/gi, '').trim().length > 0 ? query.replace(/[^a-z0-9 ]/gi, '').trim() : query"]
         },
         "bonus": {
           "selector": ["td.rowhead:contains('魔力') + td", "td.rowhead:contains('Karma'):contains('Points') + td", "td.rowhead:contains('麦粒') + td", "td.rowfollow:contains('魔力值')", "td.rowhead:contains('bonus') + td"],
@@ -121,7 +121,7 @@
       "page": "/mybonus.php",
       "fields": {
         "bonusPerHour": {
-          "selector": ["div:contains('你当前每小时能获取'):last", "div:contains('You are currently getting'):last", "div:contains('你當前每小時能獲取'):last"],
+          "selector": ["#outer td[rowspan]", "div:contains('你当前每小时能获取'):last", "div:contains('You are currently getting'):last", "div:contains('你當前每小時能獲取'):last"],
           "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
         }
       }
@@ -132,11 +132,21 @@
       "fields": {
         "seeding": {
           "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(2)').length != 0 ? query.find('td.rowfollow:eq(2)').length : query.length"]
+          "filters": ["let l={}; query.each(function() { l[jQuery(this).find('td.rowfollow:eq(1) a').attr('href')] = jQuery(this).find('td.rowfollow:eq(2)').text(); }); Object.keys(l).length;"]
         },
         "seedingSize": {
           "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(2)').length != 0 ? jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();}) : jQuery.map(query.find('td:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          "filters": ["let l={}; query.each(function() { l[jQuery(this).find('td.rowfollow:eq(1) a').attr('href')] = jQuery(this).find('td.rowfollow:eq(2)').text(); }); _self.getTotalSize(Object.values(l));"]
+        }
+      }
+    },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=uploaded",
+      "fields": {
+        "uploads": {
+          "selector": ["b:first"],
+          "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"]
         }
       }
     },

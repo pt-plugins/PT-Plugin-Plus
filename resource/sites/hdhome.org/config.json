@@ -446,6 +446,17 @@
     }
   ],
   "selectors": {
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["td.text h1:first ~ div"],
+          "filters": ["query.text().replace(/,/g,'').match(/[\\d.]+/g)",
+          "query.length == 10 ? parseFloat(query[0]) + parseFloat(query[5]) + parseFloat(query[8]) : parseFloat(query[0])"]
+        }
+      }
+    },
     "/details.php": {
       "merge": true,
       "fields": {

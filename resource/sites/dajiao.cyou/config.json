@@ -4,7 +4,7 @@
     "description": "打胶",
     "url": "https://dajiao.cyou/",
     "icon": "https://dajiao.cyou/favicon.ico",
-    "tags": [],
+    "tags": ["综合", "纪录片"],
     "schema": "NexusPHP",
     "host": "dajiao.cyou",
     "collaborator": [
@@ -85,6 +85,16 @@
         }
     ],
     "selectors": {
+        "bonusExtendInfo": {
+            "prerequisites": "!user.bonusPerHour",
+            "page": "/mybonus.php",
+            "fields": {
+                "bonusPerHour": {
+                    "selector": ["#outer td[rowspan]", "div:contains('你当前每小时能获取'):last", "div:contains('You are currently getting'):last", "div:contains('你當前每小時能獲取'):last"],
+                    "filters": ["parseFloat(query.text().replace(/,(\\s+)?/, '').match(/[\\d.]+/)[0])"]
+                }
+            }
+        },
         "userSeedingTorrents": {
             "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
             "fields": {

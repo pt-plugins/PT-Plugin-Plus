@@ -36,18 +36,18 @@ export class User {
           return false;
         }
 
+
         if (!failedOnly) {
           requests.push(this.getUserInfo(site, true));
-        } else if (
-          site.user &&
-          ((site.user.lastUpdateStatus &&
-            [
-              EUserDataRequestStatus.needLogin,
-              EUserDataRequestStatus.unknown
-            ].includes(site.user.lastUpdateStatus)) ||
-            !site.user.lastUpdateStatus)
-        ) {
-          requests.push(this.getUserInfo(site, true));
+        } else {
+          if (site.user) {
+            let enumStatus = [EUserDataRequestStatus.needLogin, EUserDataRequestStatus.unknown]
+            // @ts-ignore
+            let lastUpdateStatus = enumStatus.includes(site.user.lastUpdateStatus)
+            if ((site.user.lastUpdateStatus && lastUpdateStatus) || !site.user.lastUpdateStatus) {
+              requests.push(this.getUserInfo(site, true))
+            }
+          }
         }
       });
 
@@ -112,7 +112,7 @@ export class User {
       }
 
       // 获取用户基本信息（用户名、ID、是否登录等）
-      this.getInfos(host, url, rule)
+      this.getInfos(host, url, rule, site)
         .then((result: any) => {
           console.log("userBaseInfo", host, result);
           userInfo = Object.assign({}, result);
@@ -210,7 +210,7 @@ export class User {
         let host = site.host as string;
         let rule = this.service.getSiteSelector(site, name);
 
-        if (rule) {
+        if (rule&&rule.page) {
           let url = `${this.getSiteURL(site)}${rule.page
             .replace("$user.id$", userInfo.id)
             .replace("$user.name$", userInfo.name)
@@ -245,7 +245,7 @@ export class User {
           .then((results: any[]) => {
             results.forEach((result: any) => {
               userInfo = Object.assign(userInfo, result);
-
+              console.log(userInfo );
               userInfo.lastUpdateStatus = EUserDataRequestStatus.success;
               this.updateStatus(site, userInfo);
             });

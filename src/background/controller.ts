@@ -259,17 +259,20 @@ export default class Controller {
     let URL = Filters.parseURL(downloadOptions.url);
     let downloadHost = URL.host;
     let siteConfig = this.getSiteFromHost(downloadHost);
+    console.log("doDownload", clientConfig, downloadOptions, host, siteConfig)
     return new Promise((resolve?: any, reject?: any) => {
       clientConfig.client
         .call(EAction.addTorrentFromURL, {
           url: downloadOptions.url,
-          savePath: downloadOptions.savePath,
+          savePath: downloadOptions.savePath !== undefined && downloadOptions.savePath.includes(',') ? downloadOptions.savePath.split(',')[0] : downloadOptions.savePath,
           autoStart:
             downloadOptions.autoStart === undefined
               ? false
               : downloadOptions.autoStart,
+          category: downloadOptions.savePath !== undefined && downloadOptions.savePath.includes(',') ? downloadOptions.savePath.split(',')[1] : null,
           imdbId: downloadOptions.tagIMDb ? downloadOptions.imdbId : null,
           upLoadLimit: siteConfig !== undefined ? siteConfig.upLoadLimit : null,
+          clientOptions: clientConfig.options,
         })
         .then((result: any) => {
           this.service.logger.add({

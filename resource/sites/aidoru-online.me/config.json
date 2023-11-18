@@ -155,6 +155,9 @@
         },
         "bonus": {
           "value": "N/A"
+        },
+        "bonusPerHour": {
+          "value": "N/A"
         }
       }
     },

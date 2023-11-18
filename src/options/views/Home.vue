@@ -3,17 +3,26 @@
     <v-alert :value="true" type="info">{{ $t("home.title") }}</v-alert>
     <v-card>
       <v-card-title v-if="sites && sites.length > 0">
-        <v-btn color="success" @click="getInfos" :loading="loading" :title="$t('home.getInfos')">
+        <v-btn class="batchBtn" color="success" @click="getInfos" :loading="loading" :title="$t('home.getGroupInfos')">
           <v-icon class="mr-2">cached</v-icon>
-          {{ $t("home.getInfos") }}
+          {{ $t("home.getGroupInfos") }}
         </v-btn>
-        <v-btn to="/user-data-timeline" color="success" :title="$t('home.timeline')">
+        <v-btn class="batchBtn" to="/user-data-timeline" color="success" :title="$t('home.timeline')">
           <v-icon>timeline</v-icon>
         </v-btn>
 
-        <v-btn to="/statistic" color="success" :title="$t('home.statistic')">
+        <v-btn class="batchBtn" to="/statistic" color="success" :title="$t('home.statistic')">
           <v-icon>equalizer</v-icon>
         </v-btn>
+
+        <!--保留这个, 提醒用户有需要进一步处理的站点-->
+        <div v-for="tp of allOpenTypes">
+          <v-btn class="batchBtn" :color="tp.color" :title="$t(`home.${tp.type}`)"
+                 v-if="getAllUrlsByType(tp.type).length > 0" @click="openAllUrlsByType(tp.type)">
+            <!--@click="openAllUrlsByType(tp.type)">-->
+            <v-icon>{{ tp.icon }}</v-icon>
+          </v-btn>
+        </div>
 
         <v-menu :close-on-content-click="false" offset-y>
           <template v-slot:activator="{ on }">
@@ -34,9 +43,13 @@
                 @change="updateViewOptions"></v-switch>
               <v-switch color="success" v-model="showWeek" :label="$t('home.week')"
                 @change="updateViewOptions"></v-switch>
+              <!--<v-switch color="success" v-model="showUserUploads" :label="$t('home.headers.uploads')"-->
+              <!--  @change="updateViewOptions"></v-switch>-->
               <v-switch color="success" v-model="showSeedingPoints" :label="$t('home.seedingPoints')"
                 @change="updateViewOptions"></v-switch>
               <v-switch color="success" v-model="showHnR" :label="$t('home.showHnR')"
+                @change="updateViewOptions"></v-switch>
+              <v-switch color="success" v-model="showLastUpdateTimeAsRelativeTime" :label="$t('home.showLastUpdateTimeAsRelativeTime')"
                 @change="updateViewOptions"></v-switch>
             </v-container>
           </v-card>
@@ -50,6 +63,20 @@
             <span v-if="index === 1" class="grey--text caption">(+{{ selectedHeaders.length - 1 }} others)</span>
           </template>
         </v-select>
+        <v-select v-model="selectedTags" class="select-tags" :items="allSortedTags" :label="$t('home.selectedTags')"
+                  :menu-props="{ maxHeight: '70%' }" @change="updateViewOptions"
+                  multiple outlined return-object>
+          <template v-slot:selection="{ item, index }">
+            <!--tag-->
+            <v-chip v-if="index === 0">
+              <!--<span>{{ selectedTags.length }} Tags</span>-->
+              <span>+{{ selectedTags.length }}</span>
+            </v-chip>
+            <!--&lt;!&ndash;(+12 others)&ndash;&gt;-->
+            <!--<span v-if="index === 1" class="grey&#45;&#45;text caption">(+{{ selectedTags.length - 1 }} others)</span>-->
+            <!--<span v-if="index === 0" class="grey&#45;&#45;text">({{ selectedTags.length }} Tags)</span>-->
+          </template>
+        </v-select>
 
         <!-- <AutoSignWarning /> -->
         <v-spacer></v-spacer>
@@ -58,7 +85,7 @@
           enterkeyhint="search"></v-text-field>
       </v-card-title>
 
-      <v-data-table :search="filterKey" :headers="showHeaders" :items="sites" :pagination.sync="pagination"
+      <v-data-table :search="filterKey" :headers="showHeaders" :items="filteredSitesByTags" :pagination.sync="pagination"
         item-key="host" class="elevation-1" ref="userDataTable" :no-data-text="$t('home.nodata')">
         <template slot="items" slot-scope="props">
           <!-- 站点 -->
@@ -93,13 +120,27 @@
               {{ props.item.user.name }}
             </template>
             <template v-else> **** </template>
+            <v-card  v-if="props.item.enableQuickLink" class="userQuickLinks">
+                <template v-if="props.item.enableDefaultQuickLink">
+                  <template v-for="link of defaultQuickLinks(props.item)">
+                    <v-btn outline elevation="2" class="x-small" target="_blank"
+                           :color="link.color" :href="link.href" >{{ link.desc }}</v-btn>
+                  </template>
+                  <hr>
+                </template>
+                <!--点击后在新标签页打开-->
+                <template v-for="link of props.item.userQuickLinks">
+                  <v-btn outline elevation="2" class="x-small" target="_blank"
+                         :color="link.color" :href="link.href" >{{ link.desc }}</v-btn>
+                </template>
+            </v-card>
           </td>
           <td v-if="showColumn('user.levelName')">
             <v-icon v-if="showLevelRequirements" small>military_tech</v-icon>
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
               <template v-if="props.item.levelRequirements">
-                <template v-if="props.item.user.nextLevels && props.item.user.nextLevels.length > 0">
+                <template v-if="isUserGroup(props.item) && props.item.user.nextLevels && props.item.user.nextLevels.length > 0">
                   <template v-for="nextLevel in props.item.user.nextLevels">
                     <div>
                       <v-icon small>keyboard_tab</v-icon>
@@ -127,6 +168,11 @@
                             nextLevel.bonus | formatNumber
                         }}&nbsp;
                       </template>
+                      <template v-if="nextLevel.seedingSize">
+                        <v-icon small color="blue darken-4">dns</v-icon>{{
+                            nextLevel.seedingSize | formatSize
+                        }}&nbsp;
+                      </template>
                       <template v-if="nextLevel.seedingPoints">
                         <v-icon small color="green darken-4">energy_savings_leaf</v-icon>{{
                             nextLevel.seedingPoints | formatNumber
@@ -136,6 +182,11 @@
                         <v-icon small color="green darken-4">timer</v-icon>{{
                             nextLevel.seedingTime | formatNumber
                         }}&nbsp;
+                      </template>
+                      <template v-if="nextLevel.averageSeedtime">
+                        <v-icon small color="green darken-4">timer</v-icon>{{
+                            nextLevel.averageSeedtime | formatNumber
+                        }}{{$t("home.levelRequirement.days")}}&nbsp;
                       </template>
                       <template v-if="nextLevel.uploads">
                         <v-icon small color="green darken-4">file_upload</v-icon>{{ nextLevel.uploads
@@ -153,6 +204,10 @@
                         <v-icon small color="green darken-4">diamond</v-icon>{{ nextLevel.perfectFLAC
                         }}&nbsp;
                       </template>
+                      <template v-if="nextLevel.posts">
+                        <v-icon small color="green darken-4">post_add</v-icon>{{ nextLevel.posts
+                        }}&nbsp;
+                      </template>
                       <template v-if="nextLevel.classPoints">
                         <v-icon small color="yellow darken-4">energy_savings_leaf</v-icon>{{
                             nextLevel.classPoints | formatNumber
@@ -162,7 +217,7 @@
                   </template>
                 </template>
                 <template v-else-if="props.item.user.name">
-                  <v-icon small color="green darken-4">done</v-icon>
+                  <v-icon small color="green darken-4">{{ getDoneIcon(props.item) }}</v-icon>
                 </template>
                 <v-card class="levelRequirement">
                   <template v-for="levelRequirement of props.item.levelRequirements">
@@ -196,6 +251,9 @@
                             formatInteger
                         }};
                       </template>
+                      <template v-if="levelRequirement.seedingSize">
+                        <v-icon small color="blue darken-4" :title="$t('home.levelRequirement.seedingSize')">dns</v-icon>{{ levelRequirement.seedingSize }};
+                      </template>
                       <template v-if="levelRequirement.seedingPoints">
                         <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.seedingPoints
                             | formatInteger
@@ -205,6 +263,11 @@
                         <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingTime')">timer</v-icon>{{ levelRequirement.seedingTime
                             | formatInteger
                         }};
+                      </template>
+                      <template v-if="levelRequirement.averageSeedtime">
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.averageSeedtime')">timer</v-icon>{{ levelRequirement.averageSeedtime
+                            | formatInteger
+                        }}{{$t("home.levelRequirement.days")}};
                       </template>
                       <template v-if="levelRequirement.classPoints">
                         <v-icon small color="yellow darken-4" :title="$t('home.levelRequirement.classPoints')">energy_savings_leaf</v-icon>{{ levelRequirement.classPoints
@@ -218,6 +281,11 @@
                       </template>
                       <template v-if="levelRequirement.perfectFLAC">
                         <v-icon small color="green darken-4" :title="$t('home.levelRequirement.perfectFLAC')">diamond</v-icon>{{ levelRequirement.perfectFLAC
+                            | formatInteger
+                        }};
+                      </template>
+                      <template v-if="levelRequirement.posts">
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.posts')">post_add</v-icon>{{ levelRequirement.posts
                             | formatInteger
                         }};
                       </template>
@@ -251,6 +319,9 @@
                                 formatInteger
                             }};
                           </template>
+                          <template v-if="option.seedingSize">
+                            <v-icon small color="blue darken-4" :title="$t('home.levelRequirement.seedingSize')">dns</v-icon>{{ option.seedingSize }};
+                          </template>
                           <template v-if="option.seedingPoints">
                             <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingPoints')">energy_savings_leaf</v-icon>{{ option.seedingPoints
                                 | formatInteger
@@ -260,6 +331,11 @@
                             <v-icon small color="green darken-4" :title="$t('home.levelRequirement.seedingTime')">timer</v-icon>{{ option.seedingTime
                                 | formatInteger
                             }};
+                          </template>
+                          <template v-if="option.averageSeedtime">
+                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.averageSeedtime')">timer</v-icon>{{ option.averageSeedtime
+                                | formatInteger
+                            }}{{$t("home.levelRequirement.days")}};
                           </template>
                           <template v-if="option.classPoints">
                             <v-icon small color="yellow darken-4" :title="$t('home.levelRequirement.classPoints')">energy_savings_leaf</v-icon>{{ option.classPoints
@@ -273,6 +349,11 @@
                           </template>
                           <template v-if="option.perfectFLAC">
                             <v-icon small color="green darken-4" :title="$t('home.levelRequirement.perfectFLAC')">diamond</v-icon>{{ option.perfectFLAC
+                                | formatInteger
+                            }};
+                          </template>
+                          <template v-if="option.posts">
+                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.posts')">post_add</v-icon>{{ option.posts
                                 | formatInteger
                             }};
                           </template>];
@@ -298,8 +379,12 @@
           <td v-if="showColumn('user.ratio')" class="number">
             {{ props.item.user.ratio | formatRatio }}
           </td>
+          <td v-if="showColumn('user.uploads')" class="number">
+            <!--{{ props.item.user.uploads === null ? 'NULL' : props.item.user.uploads === undefined ? 'N/A' : props.item.user.uploads === '' ? 'N-A' : props.item.user.uploads }}-->
+            <template>{{ props.item.user.uploads || 0 }}</template>
+          </td>
           <td v-if="showColumn('user.seeding')" class="number">
-            <div>{{ props.item.user.seeding }}</div>
+            <div>{{ props.item.user.seeding || 0 }}</div>
             <div v-if="showHnR && props.item.user.unsatisfieds && props.item.user.unsatisfieds != 0" :title="$t('home.headers.unsatisfieds')" ><v-icon small color="yellow darken-4">warning</v-icon>{{props.item.user.unsatisfieds}}</div>
           </td>
           <td v-if="showColumn('user.seedingSize')" class="number">
@@ -338,11 +423,11 @@
           <td v-if="showColumn('user.joinTime')" class="number" :title="props.item.user.joinDateTime">
             {{ props.item.user.joinTime | timeAgo(showWeek) }}
           </td>
-          <td v-if="showColumn('user.lastUpdateTime')" class="number">
-            <v-btn depressed small :to="`statistic/${props.item.host}`" :title="$t('home.statistic')">{{
-                props.item.user.lastUpdateTime |
-                formatDate("YYYY-MM-DD HH:mm:ss")
-            }}</v-btn>
+          <td v-if="showColumn('user.lastUpdateTime')" class="center">
+            <v-btn depressed small :to="`statistic/${props.item.host}`" :title="props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') + ' ' + $t('home.statistic')">
+                <template v-if="showLastUpdateTimeAsRelativeTime">{{ props.item.user.lastUpdateTime | timeAgo(false) }}</template>
+                <template v-else>{{ props.item.user.lastUpdateTime | formatDate('YYYY-MM-DD HH:mm:ss') }}</template>
+            </v-btn>
           </td>
           <td v-if="showColumn('user.lastUpdateStatus')" class="center">
             <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="props.item.user.isLoading">
@@ -371,19 +456,22 @@ import Vue from "vue";
 import Extension from "@/service/extension";
 import {
   EAction,
-  Site,
-  LogItem,
   EModule,
+  EOpenType,
+  ETagType,
   EUserDataRequestStatus,
-  Options,
-  UserInfo,
   EViewKey,
   LevelRequirement,
+  LogItem,
+  Options,
+  Site,
+  UserInfo,
+  UserQuickLink,
 } from "@/interface/common";
 import dayjs from "dayjs";
 
 import AutoSignWarning from "./AutoSignWarning.vue";
-import { PPF } from "@/service/public";
+import {PPF} from "@/service/public";
 
 interface UserInfoEx extends UserInfo {
   joinDateTime?: string;
@@ -399,6 +487,7 @@ export default Vue.extend({
       loading: false,
       items: [] as any[],
       selectedHeaders: [] as any[],
+      selectedTags: [] as any[],
       headers: [
         {
           text: this.$t("home.headers.site"),
@@ -428,6 +517,11 @@ export default Vue.extend({
           value: "user.ratio",
         },
         {
+          text: this.$t("home.headers.uploads"),
+          align: "right",
+          value: "user.uploads",
+        },
+        {
           text: this.$t("home.headers.seeding"),
           align: "right",
           value: "user.seeding",
@@ -454,7 +548,7 @@ export default Vue.extend({
         },
         {
           text: this.$t("home.headers.lastUpdateTime"),
-          align: "right",
+          align: "center",
           value: "user.lastUpdateTime",
         },
         {
@@ -480,19 +574,126 @@ export default Vue.extend({
       showUserLevel: true,
       showLevelRequirements: true,
       showSeedingPoints: true,
+      // showUserUploads: false,
       showHnR: true,
+      showLastUpdateTimeAsRelativeTime:true,
       showWeek: false,
     };
   },
   created() {
     this.init();
   },
+  // DEBUG
+  // watch: {
+  //   selectedTags: {
+  //     handler(v) {
+  //       console.log("selectedTags changed", v);
+  //     },
+  //   },
+  // },
   computed: {
     //Done to get the ordered headers
     showHeaders(): any[] {
       return this.headers.filter((s) =>
         this.selectedHeaders.map((sh) => sh.value).includes(s.value)
       );
+    },
+    /**
+     * 其实也可以按站点进行分组, 目前简单按状态进行分组
+     */
+    allOpenTypes() {
+      return [
+        {type: EOpenType.openAllSites, icon: 'moving', color: 'secondary'},
+        {type: EOpenType.openAllUnReadMsg, icon: 'forward_to_inbox', color: 'primary'},
+        {type: EOpenType.openAllStatusErr, icon: 'sync_problem', color: 'error'},
+      ]
+    },
+    isSortByPriority() {
+      // @ts-ignore
+      return this.sites.filter(_ => _.priority).length > 0
+    },
+    /**
+     * 按优先级从小到大排序
+     */
+    allSitesSorted() {
+      // @ts-ignore
+      // return this.isSortByPriority ? this.sortByPriority(this.sites) : this.sites
+      return this.sortByPriority(this.sites)
+    },
+    allStatusErrSites() {
+      // @ts-ignore
+      return this.allSitesSorted
+          // 第一个一般是未登录
+          .filter((site: Site) => site.user?.lastErrorMsg || (site.user?.lastUpdateStatus !== EUserDataRequestStatus.success))
+    },
+    allUnReadMsgSites() {
+      // @ts-ignore
+      return this.allSitesSorted.filter((site: Site) => (site.user?.messageCount || 0) > 0)
+    },
+    allTaggedSites() {
+      // @ts-ignore
+      return this.allSitesSorted.filter(s => Array.isArray(s.tags) && s.tags.length > 0)
+    },
+    allUnTaggedSites() {
+      // @ts-ignore
+      return this.allSitesSorted.filter(s => !s.tags || s.tags.length === 0)
+    },
+    selectedTagValues() {
+      // @ts-ignore
+      return this.selectedTags.map((_: any) => _.value)
+    },
+    allSortedTags() {
+      // let res = [ETagType.all]
+      // if (this.allUnTaggedSites.length > 0) res.push(ETagType.unTagged)
+      // if (this.allUnReadMsgSites.length > 0) res.push(ETagType.unReadMsg)
+      // if (this.allStatusErrSites.length > 0) res.push(ETagType.statusError)
+      // 避免添加站点后, 刷新失败后, 标签反复横跳
+      let res = [ETagType.all, ETagType.unTagged, ETagType.unReadMsg, ETagType.statusError]
+      for (let site of this.allTaggedSites) {
+        res = res.concat(site.tags)
+      }
+      res = [...new Set(res)]
+      return res.map(tag => {
+        let text, value = tag
+        switch (tag) {
+          case ETagType.all:
+          case ETagType.unTagged:
+          case ETagType.unReadMsg:
+          case ETagType.statusError:
+            text = this.$t(`home.tags.${tag}`).toString()
+            break
+          default:
+            text = tag
+        }
+        return {text, value}
+      })
+    },
+    filteredSitesByTags() {
+      // @ts-ignore
+      if (this.selectedTagValues.length === 0) return this.sites
+      // @ts-ignore
+      if (this.selectedTagValues.includes(ETagType.all)) return this.sites
+      let tags = this.clone(this.selectedTagValues)
+      let res: any[] = []
+      if (tags.includes(ETagType.unTagged)) {
+        res = res.concat(this.allUnTaggedSites)
+      }
+      if (tags.includes(ETagType.unReadMsg)) {
+        res = res.concat(this.allUnReadMsgSites)
+      }
+      if (tags.includes(ETagType.statusError)) {
+        res = res.concat(this.allStatusErrSites)
+      }
+      for (let site of this.allTaggedSites) {
+        if (site.tags?.some((s: any) => tags.includes(s))) {
+          res.push(site)
+        }
+      }
+      // console.log(`filteredSitesByTags: ${tags}`, res)
+      res = this.uniqBy(res, 'name')
+      console.log(`filteredSitesByTags uniq: ${tags}`, res)
+      res = this.sortByPriority(res)
+      return res
     },
   },
 
@@ -540,6 +741,8 @@ export default Vue.extend({
           this.sites.push(_site);
         }
       });
+      // 按优先级排序
+      this.sites = this.sortByPriority(this.sites)
     },
 
     init() {
@@ -558,6 +761,7 @@ export default Vue.extend({
         showLevelRequirements: true,
         showSeedingPoints: true,
         showHnR: true,
+        showLastUpdateTimeAsRelativeTime:true,
         showWeek: false,
         selectedHeaders: this.selectedHeaders,
       });
@@ -577,7 +781,7 @@ export default Vue.extend({
         msg: this.$t("home.startGetting").toString(),
       });
 
-      this.sites.forEach((site: Site, index: number) => {
+      this.filteredSitesByTags.forEach((site: Site, index: number) => {
         this.writeLog({
           event: `Home.getUserInfo.Processing`,
           msg: this.$t("home.gettingForSite", {
@@ -631,6 +835,36 @@ export default Vue.extend({
       }
     },
     /**
+     * 等级名称有中英文之分，没法直接区分
+     */
+    getUserLevelGroup(site: Site) {
+      let userLevel = site.user?.levelName?.toLowerCase()
+      let specialNames = {
+        manager: 'admin,moderator,sys,retire,uploader,管理,版主,发种,保种,上传,退休'.split(/[,，]/ig),
+        vip: 'vip,贵宾'.split(/[,，]/ig),
+      }
+      specialNames.manager = specialNames.manager.filter(_ => !!_)
+      specialNames.vip = specialNames.vip.filter(_ => !!_)
+      let res = 'user'
+      for (let k in specialNames) {
+        // @ts-ignore
+        let levelNames = specialNames[k]
+        if (levelNames.some((n: string) => userLevel?.includes(n))) {
+          res = k
+          break
+        }
+      }
+      return res
+    },
+    getDoneIcon(site: Site) {
+      const icons = {manager: 'manage_accounts', vip: 'verified', user: 'done'}
+      // @ts-ignore
+      return icons[this.getUserLevelGroup(site)] || icons.user
+    },
+    isUserGroup(site: Site) {
+      return this.getUserLevelGroup(site) === 'user'
+    },
+    /**
      * 格式化一些用户信息
      */
     formatUserInfo(user: UserInfoEx, site: Site) {
@@ -657,25 +891,33 @@ export default Vue.extend({
             if (levelRequirement.requiredDate) break;
 
             if (levelRequirement.interval && user.joinDateTime) {
-              levelRequirement.requiredDate = dayjs(user.joinDateTime).add(levelRequirement.interval as number, "week").format("YYYY-MM-DD");
+              levelRequirement.requiredDate = this.getRequiredDate(levelRequirement.interval, user.joinDateTime).format("YYYY-MM-DD");
             } else break;
           }
 
           user.nextLevels = [] as LevelRequirement[];
+          let userLevel = -1;
           for (var levelRequirement of site.levelRequirements) {
-            if (levelRequirement.alternative)
+            if (user.levelName?.trim()?.toUpperCase() == levelRequirement.name?.trim()?.toUpperCase())
             {
-              for (var option of levelRequirement.alternative)
-              {
+              userLevel = Number(levelRequirement.level);
+              break;
+            }
+          }
+
+          for (var levelRequirement of site.levelRequirements) {
+            if (Number(levelRequirement.level) < userLevel)
+              continue;
+
+            if (levelRequirement.alternative) {
+              for (var option of levelRequirement.alternative) {
                 var newLevelRequirement = Object.assign({}, levelRequirement)
-                for(var key of Object.keys(option) as Array<keyof LevelRequirement>) {
-                  {
-                    
+                for(var key of Object.keys(option) as Array<keyof LevelRequirement>) {{
                     if (option[key])
                       newLevelRequirement[key] = option[key] as any
                   }
                 }
-                //console.log(newLevelRequirement)
+                // console.log(newLevelRequirement)
                 var nextLevel = this.calculateNextLeve(user, newLevelRequirement);
                 if (nextLevel) {
                   //console.log(nextLevel)
@@ -689,9 +931,7 @@ export default Vue.extend({
 
               if (user.nextLevels.length)
                   break;
-            }
-            else 
-            {
+            } else {
               let nextLevel = this.calculateNextLeve(user, levelRequirement);
               if (nextLevel) {
                 if (user.nextLevels.length) {
@@ -718,14 +958,13 @@ export default Vue.extend({
 
       let downloaded = user.downloaded ?? 0;
       let uploaded = user.uploaded ?? 0;
-      
+
       if (user.levelName == levelRequirement.name) {
         return undefined;
       }
 
       if (levelRequirement.interval && user.joinDateTime) {
-        let weeks = levelRequirement.interval as number;
-        let requiredDate = dayjs(user.joinDateTime).add(weeks, "week");
+        let requiredDate = this.getRequiredDate(levelRequirement.interval, user.joinDateTime);
         if (dayjs(new Date()).isBefore(requiredDate)) {
           nextLevel.requiredDate = requiredDate.format("YYYY-MM-DD");
           nextLevel.level = levelRequirement.level;
@@ -779,11 +1018,29 @@ export default Vue.extend({
         }
       }
 
+      if (levelRequirement.seedingSize) {
+        let requiredSeedingSize = this.fileSizetoLength(levelRequirement.seedingSize as string);
+        let userSeedingSize = user.seedingSize ? user.seedingSize : 0 ;
+        if (userSeedingSize < requiredSeedingSize) {
+          nextLevel.seedingSize = requiredSeedingSize - userSeedingSize;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
       if (levelRequirement.seedingTime) {
         let userSeedingTime = user.seedingTime as number;
         let requiredSeedingTime = levelRequirement.seedingTime as number;
         if (userSeedingTime < requiredSeedingTime) {
           nextLevel.seedingTime = requiredSeedingTime - userSeedingTime;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
+      if (levelRequirement.averageSeedtime) {
+        let userAverageSeedtime = user.averageSeedtime as number;
+        let requiredAverageSeedtime = levelRequirement.averageSeedtime as number;
+        if (userAverageSeedtime < requiredAverageSeedtime) {
+          nextLevel.averageSeedtime = requiredAverageSeedtime - userAverageSeedtime;
           nextLevel.level = levelRequirement.level;
         }
       }
@@ -844,6 +1101,15 @@ export default Vue.extend({
         }
       }
 
+      if (levelRequirement.posts) {
+        let userPosts = user.posts as number;
+        let requiredPosts = levelRequirement.posts as number;
+        if (userPosts < requiredPosts) {
+          nextLevel.posts = requiredPosts - userPosts;
+          nextLevel.level = levelRequirement.level;
+        }
+      }
+
       if ((nextLevel.level as number) > 0)
       {
         nextLevel.name = levelRequirement.name;
@@ -885,6 +1151,26 @@ export default Vue.extend({
         }
       }
       return 0;
+    },
+    /**
+     * @return {dayjs.Dayjs}
+     */
+     getRequiredDate(interval: string, joinDateTime: string) : dayjs.Dayjs {
+      let unit = "week";
+      switch (interval.replace(/[^A-Za-z]/g, ""))
+      {
+        case "D":
+          unit = "day";
+          break;
+        case "M":
+          unit = "month";
+          break;
+        case "Y":
+          unit = "year";
+          break;
+      }
+      let num = interval.replace(/\D/g,'');
+      return dayjs(joinDateTime).add(parseInt(num), unit as dayjs.ManipulateType);
     },
     /**
      * 获取站点用户信息
@@ -954,6 +1240,32 @@ export default Vue.extend({
     clone(source: any) {
       return JSON.parse(JSON.stringify(source));
     },
+    uniqBy(arr: any[], predicate: any) {
+      const cb = typeof predicate === 'function' ? predicate : (o: any) => o[predicate];
+
+      return [...arr.reduce((map, item) => {
+        const key = (item === null || item === undefined) ?
+            item : cb(item);
+
+        map.has(key) || map.set(key, item);
+
+        return map;
+      }, new Map()).values()];
+    },
+    filterOnlineSites(arr: any[]) {
+      return arr.filter(s => s.offline !== true)
+    },
+    // 按优先级排序
+    sortByPriority(arr: any[]) {
+      if (this.isSortByPriority) {
+        return arr.sort((a, b) => {
+          // 兼容部分未设置优先级的站点
+          return (a.priority || Number.MAX_SAFE_INTEGER) - (b.priority || Number.MAX_SAFE_INTEGER)
+        })
+      } else {
+        return arr
+      }
+    },
 
     updateViewOptions() {
       this.$store.dispatch("updateViewOptions", {
@@ -964,9 +1276,12 @@ export default Vue.extend({
           showUserLevel: this.showUserLevel,
           showLevelRequirements: this.showLevelRequirements,
           showSeedingPoints: this.showSeedingPoints,
+          // showUserUploads: this.showUserUploads,
           showHnR: this.showHnR,
+          showLastUpdateTimeAsRelativeTime: this.showLastUpdateTimeAsRelativeTime,
           showWeek: this.showWeek,
           selectedHeaders: this.selectedHeaders,
+          selectedTags: this.selectedTags,
         },
       });
     },
@@ -983,6 +1298,98 @@ export default Vue.extend({
       }
       return "";
     },
+    openAllUrlsByType: function (type: String) {
+      let urls = this.getAllUrlsByType(type)
+      console.log(`try open ${urls.length} tabs...`, urls)
+      for (let i = 0; i < urls.length; i++){
+        const u = urls[i];
+        // @ts-ignore
+        window.open(u);
+      }
+    },
+    getAllUrlsByType: function (type: String) {
+      switch (type) {
+        case EOpenType.openAllSites:
+          return this.filterOnlineSites(this.filteredSitesByTags)
+              .map((site: Site) => site.activeURL)
+        case EOpenType.openAllStatusErr:
+          // 只打开有效站点
+          return this.filterOnlineSites(this.allStatusErrSites)
+              .map((site: Site) => this.defaultQuickLinks(site)[0] || site.activeURL)
+              .map((s: any) => s.href || s)
+        case EOpenType.openAllUnReadMsg:
+          return this.filterOnlineSites(this.allUnReadMsgSites)
+              .map((site: Site) => this.defaultQuickLinks(site)[1] || site.activeURL)
+              .map((s: any) => s.href || s)
+        default:
+          throw new Error(`getAllUrlsByType: 未知的类型：${type}`)
+      }
+    },
+    defaultQuickLinks: function (site: Site): UserQuickLink[] {
+      let uid = site.user?.id, uname = site.user?.name
+      let links: UserQuickLink[] = []
+      // 确保第一条和第二条记录是 用户详情和邮箱/站内信 的网址
+      switch (site.schema) {
+        // from jpop
+        case 'Gazelle':
+          links = [
+            {color: 'primary', desc: `${uname}(${uid})`, href: `/user.php?id=${uid}`},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: `/inbox.php`},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: `/torrents.php`},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: `/user.php?action=edit&userid=${uid}`},
+            // {color: 'primary', desc: this.$t("home.security").toString(), href: `/user.php?action=edit&userid=${uid}#paranoia_settings`},
+            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: `/user.php?action=edit&userid=${uid}#access_settings`},
+          ]
+          break
+        // from GPW
+        case 'GazelleJSONAPI':
+          links = [
+            {color: 'primary', desc: `${uname}(${uid})`, href: `/user.php?id=${uid}`},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: `/inbox.php`},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: `/torrents.php`},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: `/user.php?action=edit&userid=${uid}`},
+            {color: 'primary', desc: this.$t("home.security").toString(), href: `/user.php?action=edit&userid=${uid}#paranoia_settings`},
+            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: `/user.php?action=edit&userid=${uid}#access_settings`},
+          ]
+          break
+        // from 观众
+        case 'NexusPHP':
+          links = [
+            {color: 'primary', desc: `${uname}(${uid})`, href: `/userdetails.php?id=${uid}`},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: `/messages.php`},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: `/torrents.php`},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: `/usercp.php`},
+            {color: 'primary', desc: this.$t("home.security").toString(), href: `/usercp.php?action=security`},
+            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: `/usercp.php?action=secAuth`},
+          ]
+          break
+        // from zhuque
+        case 'TNode':
+          links = [
+            {color: 'primary', desc: `${uname}(${uid})`, href: `/user/info`},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: `/message/system`},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: `/torrent/list/`},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: `/user/setting`},
+          ]
+          break
+        case 'TTG':
+          links = [
+            {color: 'primary', desc: `${uname}(${uid})`, href: `/userdetails.php?id=${uid}`},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: `/messages.php`},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: `/browse.php`},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: `/my.php`},
+            // {color: 'primary', desc: this.$t("home.2FA").toString(), href: `/mystep.php`},
+          ]
+          break
+        case 'Discuz':
+        case 'UNIT3D':
+        default:
+          console.log(`un-support schema for quickLinks: ${site.schema}`)
+          break
+      }
+      links = links.map(i => ({...i, href: new URL(i.href, site.activeURL).toString()}))
+      return links
+    }
   },
 
   filters: {
@@ -1035,6 +1442,26 @@ export default Vue.extend({
     width: 30px;
   }
 
+  td:hover div.userQuickLinks {
+    display: block;
+  }
+
+  .userQuickLinks {
+    position: absolute;
+    display: none;
+    z-index: 999;
+    border: 1px solid;
+    max-width: 50%;
+    min-width: 405px;
+  }
+
+  .x-small {
+    height: 20px;
+    min-width: 36px;
+    padding: 0 8.8888888889px;
+    margin: 5px;
+  }
+
   td:hover div.levelRequirement {
     display: block;
   }
@@ -1047,7 +1474,21 @@ export default Vue.extend({
   }
 
   .select {
-    max-width: 180px;
+    max-width: 160px;
+  }
+  .select-tags {
+    max-width: 70px;
+    max-height: 70%;
+    margin-left: 5px;
+  }
+
+  .lastUpdateTime {
+    margin-right: 0;
+  }
+
+  .batchBtn {
+    min-width: 60px;
+    margin: 3px 3px;
   }
 }
 </style>

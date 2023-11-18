@@ -12,6 +12,17 @@
           :rules="rules.require"
         ></v-text-field>
 
+        <!--&lt;!&ndash;站点分组&ndash;&gt;-->
+        <!--<v-combobox-->
+        <!--    v-model="site.siteGroups"-->
+        <!--    hide-selected-->
+        <!--    :hint="$t('settings.sites.editor.siteGroup')"-->
+        <!--    :label="$t('settings.sites.editor.siteGroupTip')"-->
+        <!--    multiple-->
+        <!--    persistent-hint-->
+        <!--    small-chips-->
+        <!--&gt;</v-combobox>-->
+
         <!-- 标签 -->
         <v-combobox
           v-model="site.tags"
@@ -136,8 +147,9 @@
           </template>
         </v-autocomplete>
 
+        <!--上传限速-->
         <v-text-field
-                v-model="site.upLoadLimit"
+                v-model="site.upLoadLimit" type="number"
                 :label="$t('settings.sites.editor.upLoadLimit')"
                 :placeholder="$t('settings.sites.editor.upLoadLimitTip')"
         ></v-text-field>
@@ -178,6 +190,17 @@
 
         <!-- 消息提醒开关 -->
         <v-switch :label="$t('settings.sites.editor.disableMessageCount')" v-model="site.disableMessageCount"></v-switch>
+        <!--启用快捷链接-->
+        <v-switch :label="$t('settings.sites.editor.enableQuickLink')" v-model="site.enableQuickLink"/>
+        <!--启用默认链接-->
+        <v-switch :label="$t('settings.sites.editor.enableDefaultQuickLink')" :disabled="!site.enableQuickLink"
+                  v-model="site.enableDefaultQuickLink"/>
+        <!--自定义快捷链接列表-->
+        <v-textarea
+            v-model="quickLinkText" :disabled="!site.enableQuickLink"
+            :label="$t('settings.sites.editor.quickLinkText')"
+            :hint="$t('settings.sites.editor.quickLinkTextTip')"
+        ></v-textarea>
       </v-form>
     </v-card-text>
   </v-card>
@@ -200,6 +223,7 @@ export default Vue.extend({
         }
       },
       cdn: "",
+      quickLinkText: "",
       valid: false,
       site: {} as Site,
       timezone: [
@@ -343,6 +367,11 @@ export default Vue.extend({
         } else {
           this.cdn = "";
         }
+        if (this.site.userQuickLinks) {
+          this.quickLinkText = this.site.userQuickLinks.map(u => `${u.desc},${u.href},${u.color ? u.color : ''}`).join('\n')
+        } else {
+          this.quickLinkText = ""
+        }
         this.$emit("change", {
           data: this.site,
           valid: this.valid
@@ -370,6 +399,19 @@ export default Vue.extend({
       }
 
       this.site.cdn = result;
+    },
+    quickLinkText() {
+      this.site.userQuickLinks = this.quickLinkText.split(/\n/).filter(_ => !!_)
+          .map(_ => _.split(/\s*[,，]\s*/)).filter(([desc, href, color]) => {
+            let b1 = !!desc && !!href
+            let b2 = true
+            try {
+              new URL(href)
+            } catch (e) {
+              b2 = false
+            }
+            return b1 && b2
+          }).map(([desc, href, color]) => ({desc, href, color}))
     },
     initData() {
       if (this.initData) {

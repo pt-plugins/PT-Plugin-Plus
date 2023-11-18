@@ -17,7 +17,7 @@
       "interval": "2",
       "downloaded": "120GB",
       "ratio": "2.0",
-      "seedingPoints": "47040",
+      "seedingPoints": "48000",
       "privilege": "得到0个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
@@ -26,7 +26,7 @@
       "interval": "4",
       "downloaded": "256GB",
       "ratio": "2.5",
-      "seedingPoints": "94080",
+      "seedingPoints": "96000",
       "privilege": "Elite User及以上用户封存账号后不会被删除。"
     },
     {
@@ -35,7 +35,7 @@
       "interval": "8",
       "downloaded": "512GB",
       "ratio": "3.0",
-      "seedingPoints": "188160",
+      "seedingPoints": "192000",
       "privilege": "得到0个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
@@ -44,7 +44,7 @@
       "interval": "12",
       "downloaded": "768GB",
       "ratio": "3.5",
-      "seedingPoints": "282240",
+      "seedingPoints": "288000",
       "privilege": "无"
     },
     {
@@ -53,7 +53,7 @@
       "interval": "16",
       "downloaded": "1TB",
       "ratio": "4.0",
-      "seedingPoints": "376320",
+      "seedingPoints": "380000",
       "privilege": "可以查看其它用户的评论、帖子历史。"
     },
     {
@@ -62,7 +62,7 @@
       "interval": "20",
       "downloaded": "2TB",
       "ratio": "4.5",
-      "seedingPoints": "470400",
+      "seedingPoints": "476000",
       "privilege": "Extreme User及以上用户会永远保留账号。"
     },
     {
@@ -71,7 +71,7 @@
       "interval": "24",
       "downloaded": "4TB",
       "ratio": "5.0",
-      "seedingPoints": "564480",
+      "seedingPoints": "596000",
       "privilege": "无"
     },
     {
@@ -80,7 +80,7 @@
       "interval": "48",
       "downloaded": "8TB",
       "ratio": "5.5",
-      "seedingPoints": "1128960",
+      "seedingPoints": "1192000",
       "privilege": "无"
     }
   ],
@@ -219,6 +219,15 @@
     }
   ],
   "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowhead:contains('鲸币') + td", "td.rowhead:contains('Karma Points') + td"],
+          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+        }
+      }
+    },
     "/details.php": {
       "merge": true,
       "fields": {

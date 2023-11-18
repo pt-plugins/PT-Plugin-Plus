@@ -36,8 +36,10 @@
             "
           >
             <v-container fluid grid-list-lg class="pa-3">
-              <div v-if="topSearches.length == 0"> {{ $t('common.loading') }} </div>
-              <v-layout  v-else row wrap>
+              <div v-if="topSearches.length == 0">
+                {{ $t("common.loading") }}
+              </div>
+              <v-layout v-else row wrap>
                 <v-flex v-for="(item, index) in topSearches" :key="index" xs4>
                   <v-card
                     @click="searchHotItem(item)"
@@ -59,14 +61,17 @@
 
                           <!-- 评分，点击可前往豆瓣页面 -->
                           <a
-                            v-if="item.doubanRating"
                             class="caption orange--text rating"
                             :href="item.link"
                             rel="noopener noreferrer nofollow"
                             target="_blank"
                             :title="$t('searchBox.toDouban')"
                             @click.stop
-                            >{{ parseFloat(item.doubanRating).toFixed(1) }}</a
+                            >{{
+                              item.doubanRating
+                                ? parseFloat(item.doubanRating).toFixed(1)
+                                : "--"
+                            }}</a
                           >
                         </div>
                         <div
@@ -106,39 +111,41 @@
           <v-btn slot="activator" flat small color="grey lighten-2">{{
             selectedSearchSolutionName
           }}</v-btn>
-          <v-list dense>
-            <v-list-tile
-              @click="changeSearchSolution(null)"
-              :title="$t('searchBox.defaultTip')"
-            >
-              <v-list-tile-title>{{
-                $t("searchBox.default")
-              }}</v-list-tile-title>
-            </v-list-tile>
-            <v-divider></v-divider>
-            <template
-              v-if="
-                $store.state.options.searchSolutions &&
-                $store.state.options.searchSolutions.length > 0
-              "
-            >
+          <v-card class="scroll-card">
+            <v-list dense>
               <v-list-tile
-                @click="changeSearchSolution(item)"
-                v-for="(item, index) in $store.state.options.searchSolutions"
-                :key="index"
+                @click="changeSearchSolution(null)"
+                :title="$t('searchBox.defaultTip')"
               >
-                <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                <v-list-tile-title>{{
+                  $t("searchBox.default")
+                }}</v-list-tile-title>
               </v-list-tile>
-            </template>
-            <v-btn flat small v-else to="/set-search-solution">{{
-              $t("searchBox.noSearchSolution")
-            }}</v-btn>
+              <v-divider></v-divider>
+              <template
+                v-if="
+                  $store.state.options.searchSolutions &&
+                  $store.state.options.searchSolutions.length > 0
+                "
+              >
+                <v-list-tile
+                  @click="changeSearchSolution(item)"
+                  v-for="(item, index) in $store.state.options.searchSolutions"
+                  :key="index"
+                >
+                  <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                </v-list-tile>
+              </template>
+              <v-btn flat small v-else to="/set-search-solution">{{
+                $t("searchBox.noSearchSolution")
+              }}</v-btn>
 
-            <v-divider></v-divider>
-            <v-list-tile @click="changeSearchSolution(allSite)">
-              <v-list-tile-title>{{ $t("searchBox.all") }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
+              <v-divider></v-divider>
+              <v-list-tile @click="changeSearchSolution(allSite)">
+                <v-list-tile-title>{{ $t("searchBox.all") }}</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-card>
         </v-menu>
       </v-text-field>
     </template>
@@ -179,7 +186,8 @@
             <v-list-tile-avatar class="album" :size="75">
               <img
                 :src="
-                  item.image || item.img ||
+                  item.image ||
+                  item.img ||
                   (item.images
                     ? item.images.small
                     : item.pic
@@ -218,7 +226,11 @@
                 <img src="https://img3.doubanio.com/favicon.ico" width="16" />
                 {{
                   parseFloat(
-                    item.average ?item.average : item.rating? (item.rating.average || item.rating.value) : null
+                    item.average
+                      ? item.average
+                      : item.rating
+                      ? item.rating.average || item.rating.value
+                      : null
                   ).toFixed(1)
                 }}
               </a>
@@ -226,9 +238,11 @@
                 :value="
                   item.average
                     ? parseFloat(item.average) / 2
-                    : item.rating? (item.rating.stars
-                    ? parseInt(item.rating.stars) / 10
-                    : item.rating.star_count): 0
+                    : item.rating
+                    ? item.rating.stars
+                      ? parseInt(item.rating.stars) / 10
+                      : item.rating.star_count
+                    : 0
                 "
                 background-color="grey lighten-2"
                 color="yellow accent-4"
@@ -266,6 +280,7 @@ import {
 } from "@/interface/common";
 
 import Extension from "@/service/extension";
+import { eventBus } from "@/options/plugins/EventBus";
 import dayjs from "dayjs";
 
 const extension = new Extension();
@@ -398,7 +413,17 @@ export default Vue.extend({
 
     searchTorrent(key?: string) {
       key = key || this.searchKey;
+      console.log(`searchTorrent: key: ${key}`)
       if (!key) {
+        return;
+      }
+      const targetRoute = { name: "search-torrent", params: { key, }, }
+      // fix: NavigationDuplicated: Avoided redundant navigation to current location
+      if (this.$route.params.key === key && this.$route.name === targetRoute.name) {
+        console.log(`skip router.push same searchTorrent: key: ${key}`, this.$route)
+        // 这种情况下只能是用户手动触发的, 不能再次触发路由跳转, 使用 eventBus 触发搜索
+        console.log(`using eventBus.$emit searchTorrent: key: ${key}`)
+        eventBus.$emit("searchTorrent", { key })
         return;
       }
 
@@ -409,12 +434,7 @@ export default Vue.extend({
         lastSearchKey: this.searchKey,
       });
 
-      this.$router.push({
-        name: "search-torrent",
-        params: {
-          key: key,
-        },
-      });
+      this.$router.push(targetRoute);
     },
     changeSearchSolution(solution?: SearchSolution) {
       let defaultSearchSolutionId = "";
@@ -582,5 +602,26 @@ export default Vue.extend({
     background-color: #fff;
     padding: 1px 3px;
   }
+}
+
+.scroll-card {
+  max-height: 70%;
+  overflow-y: auto; /* 启用垂直滚动 */
+}
+
+/* 隐藏滚动条 */
+.scroll-card::-webkit-scrollbar {
+  width: 0; /* 隐藏垂直滚动条的宽度 */
+  height: 0; /* 隐藏水平滚动条的高度 */
+}
+
+/* 可选：定义滚动条轨道的颜色 */
+.scroll-card::-webkit-scrollbar-track {
+  background: transparent; /* 使用透明背景 */
+}
+
+/* 可选：定义滚动条滑块的颜色 */
+.scroll-card::-webkit-scrollbar-thumb {
+  background: transparent; /* 使用透明背景 */
 }
 </style>

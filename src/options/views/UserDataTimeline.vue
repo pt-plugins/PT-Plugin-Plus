@@ -38,16 +38,85 @@
           </v-btn>
           <v-progress-circular indeterminate :width="3" size="30" color="green" v-if="shareing" class="by_pass_canvas"></v-progress-circular>
         </v-card-actions>
-
-        <v-card-title primary-title>
-          <div class="headline font-weight-bold">
-            <div>{{ $t('timeline.total.uploaded') }}{{ infos.total.uploaded | formatSize }}</div>
-            <div>{{ $t('timeline.total.downloaded') }}{{ infos.total.downloaded | formatSize }}</div>
-            <div>{{ $t('timeline.total.seedingSize') }}{{ infos.total.seedingSize | formatSize }} ({{ infos.total.seeding }})</div>
-            <div>{{ $t('timeline.total.ratio') }}{{ infos.total.ratio | formatRatio }}</div>
-            <div>{{ $t('timeline.total.years', {year: infos.joinTimeInfo.years}) }}</div>
-          </div>
-        </v-card-title>
+        <v-layout row wrap>
+          <v-card-title primary-title>
+            <div class="headline font-weight-bold">
+              <div>{{ $t('timeline.total.sites') }}{{ datas.length }}</div>
+              <div v-if="showUserUploads && infos.total.uploads && infos.total.uploads > 0">{{ $t('timeline.total.uploads') }}{{ infos.total.uploads }}</div>
+              <div>{{ $t('timeline.total.uploaded') }}{{ infos.total.uploaded | formatSizetoPrecision }}</div>
+              <div>{{ $t('timeline.total.downloaded') }}{{ infos.total.downloaded | formatSizetoPrecision }}</div>
+              <div>{{ $t('timeline.total.seedingSize') }}{{ infos.total.seedingSize | formatSizetoPrecision }}</div>
+              <div>{{ $t('timeline.total.seeding') }}{{ infos.total.seeding }}</div>
+              <div>{{ $t('timeline.total.ratio') }}{{ infos.total.ratio | formatRatio }}</div>
+              <div>{{ $t('timeline.total.years', {year: infos.joinTimeInfo.years}) }}</div>
+            </div>
+          </v-card-title>
+          <v-divider vertical></v-divider>
+          <v-card-title primary-title>
+            <div class="headline font-weight-bold">
+              <div><v-icon color="#C9B037">emoji_events</v-icon></div>
+              <div v-if="showUserUploads && infos.total.uploads && infos.total.uploads > 0"><div>
+                <v-avatar size="20">
+                  <img v-if="infos.maxUploadsInfo.site.icon" :src="infos.maxUploadsInfo.site.icon" :class="{'icon-blur': blurSiteIcon}"/>
+                </v-avatar>
+              <span>{{ infos.maxUploadsInfo.maxValue }}</span></div></div>
+              <div>
+                <v-avatar size="20">
+                  <img v-if="infos.maxUploadedInfo.site.icon" :src="infos.maxUploadedInfo.site.icon" :class="{'icon-blur': blurSiteIcon}"/>
+                </v-avatar>
+              <span>{{ infos.maxUploadedInfo.maxValue | formatSizetoPrecision }}</span></div>
+              <div>
+                <v-avatar size="20">
+                  <img v-if="infos.maxDownloadedInfo.site.icon" :src="infos.maxDownloadedInfo.site.icon" :class="{'icon-blur': blurSiteIcon}"/>
+                </v-avatar>
+              <span>{{ infos.maxDownloadedInfo.maxValue | formatSizetoPrecision }}</span></div>
+              <div>
+                <v-avatar size="20">
+                  <img v-if="infos.maxSeedingSizeInfo.site.icon" :src="infos.maxSeedingSizeInfo.site.icon" :class="{'icon-blur': blurSiteIcon}"/>
+                </v-avatar>
+              <span>{{ infos.maxSeedingSizeInfo.maxValue | formatSizetoPrecision }}</span></div>
+              <div>
+                <v-avatar size="20">
+                  <img v-if="infos.maxSeedingInfo.site.icon" :src="infos.maxSeedingInfo.site.icon" :class="{'icon-blur': blurSiteIcon}"/>
+                </v-avatar>
+              <span>{{ infos.maxSeedingInfo.maxValue }}</span></div>
+              <div><v-icon></v-icon></div>
+              <div><v-icon></v-icon></div>
+            </div>
+          </v-card-title>
+          <v-card-title v-if="infos.maxUploadsInfo.subSite" primary-title>
+            <div class="headline font-weight-bold">
+              <div><v-icon color="#B4B4B4">emoji_events</v-icon></div>
+              <div v-if="showUserUploads && infos.total.uploads && infos.total.uploads > 0"><div>
+                <v-avatar size="20">
+                  <img v-if="infos.maxUploadsInfo.subSite.icon" :src="infos.maxUploadsInfo.subSite.icon" :class="{'icon-blur': blurSiteIcon}"/>
+                </v-avatar>
+              <span v-if="infos.maxUploadsInfo.submaxValue && infos.maxUploadsInfo.submaxValue > 0">{{ infos.maxUploadsInfo.submaxValue }}</span></div></div>
+              <div>
+                <v-avatar size="20">
+                  <img v-if="infos.maxUploadedInfo.subSite.icon" :src="infos.maxUploadedInfo.subSite.icon" :class="{'icon-blur': blurSiteIcon}"/>
+                </v-avatar>
+              <span>{{ infos.maxUploadedInfo.submaxValue | formatSizetoPrecision }}</span></div>
+              <div>
+                <v-avatar size="20">
+                  <img v-if="infos.maxDownloadedInfo.subSite.icon" :src="infos.maxDownloadedInfo.subSite.icon" :class="{'icon-blur': blurSiteIcon}"/>
+                </v-avatar>
+              <span>{{ infos.maxDownloadedInfo.submaxValue | formatSizetoPrecision }}</span></div>
+              <div>
+                <v-avatar size="20">
+                  <img v-if="infos.maxSeedingSizeInfo.subSite.icon" :src="infos.maxSeedingSizeInfo.subSite.icon" :class="{'icon-blur': blurSiteIcon}"/>
+                </v-avatar>
+              <span>{{ infos.maxSeedingSizeInfo.submaxValue | formatSizetoPrecision }}</span></div>
+              <div>
+                <v-avatar size="20">
+                  <img v-if="infos.maxSeedingInfo.subSite.icon" :src="infos.maxSeedingInfo.subSite.icon" :class="{'icon-blur': blurSiteIcon}"/>
+                </v-avatar>
+              <span>{{ infos.maxSeedingInfo.submaxValue }}</span></div>
+              <div><v-icon></v-icon></div>
+              <div><v-icon></v-icon></div>
+            </div>
+          </v-card-title>
+        </v-layout>
         <v-card-text>
           <v-divider></v-divider>
           <div style="text-align:center;">
@@ -78,10 +147,12 @@
               <div>
                 <v-divider v-if="i>0" class="mb-2"></v-divider>
                 <div class="headline font-weight-light mb-2" v-if="showSiteName">{{ site.name }}</div>
+                <div v-if="showUserUploads && site.user.uploads && site.user.uploads > 0">{{ $t('timeline.user.uploads') }}{{ site.user.uploads }}</div>
                 <div>{{ $t('timeline.user.uploaded') }}{{ site.user.uploaded | formatSize}}</div>
                 <div>{{ $t('timeline.user.downloaded') }}{{ site.user.downloaded | formatSize }}</div>
                 <div>{{ $t('timeline.user.ratio') }}{{ site.user.ratio | formatRatio }}</div>
                 <div>{{ $t('timeline.user.seedingSize') }}{{ site.user.seedingSize | formatSize }} ({{ site.user.seeding }})</div>
+                <div v-if="site.user.averageSeedtime && site.user.averageSeedtime > 0">{{ $t('timeline.user.averageSeedtime', {day: site.user.averageSeedtime | formatInteger}) }}</div>
                 <div>{{ $t('timeline.user.bonus') }}{{ site.user.bonus | formatNumber }}</div>
                 <div v-if="site.user.bonusPerHour && site.user.bonusPerHour != 'N/A'">{{ $t('timeline.user.bonusPerHour') }}{{ site.user.bonusPerHour | formatNumber }}</div>
               </div>
@@ -120,6 +191,12 @@
         color="success"
         v-model="showUserLevel"
         :label="$t('timeline.userLevel')"
+        class="my-0"
+      ></v-switch>
+      <v-switch
+        color="success"
+        v-model="showUserUploads"
+        :label="$t('timeline.userUploads')"
         class="my-0"
       ></v-switch>
       <v-switch
@@ -171,15 +248,38 @@ export default Vue.extend({
           time: new Date().getTime(),
           years: 0 as number | string
         },
+        maxUploadsInfo: {
+          site: {} as Site,
+          maxValue: 0,
+          subSite: {} as Site,
+          submaxValue: 0
+        },
         maxUploadedInfo: {
           site: {} as Site,
-          maxValue: 0
+          maxValue: 0,
+          subSite: {} as Site,
+          submaxValue: 0
+        },
+        maxDownloadedInfo: {
+          site: {} as Site,
+          maxValue: 0,
+          subSite: {} as Site,
+          submaxValue: 0
         },
         maxSeedingInfo: {
           site: {} as Site,
-          maxValue: 0
+          maxValue: 0,
+          subSite: {} as Site,
+          submaxValue: 0
+        },
+        maxSeedingSizeInfo: {
+          site: {} as Site,
+          maxValue: 0,
+          subSite: {} as Site,
+          submaxValue: 0
         },
         total: {
+          uploads: 0,
           uploaded: 0,
           downloaded: 0,
           seedingSize: 0,
@@ -195,6 +295,7 @@ export default Vue.extend({
       showUserName: true,
       showSiteName: false,
       showUserLevel: true,
+      showUserUploads: true,
       showUid: true,
       blurSiteIcon: true,
       iconCache: {} as Dictionary<any>
@@ -208,7 +309,6 @@ export default Vue.extend({
     this.init();
   },
   mounted() {
-    this.replaceImageToBase64();
   },
   methods: {
     init() {
@@ -233,13 +333,52 @@ export default Vue.extend({
     formatData() {
       let userNames: Dictionary<any> = {};
       let result = this.infos;
-      result.total = {
-        uploaded: 0,
-        downloaded: 0,
-        seedingSize: 0,
-        ratio: -1,
-        seeding: 0
-      };
+      result = {
+        nameInfo: { name: "test", maxCount: 0 },
+        joinTimeInfo: {
+          site: {} as Site,
+          time: new Date().getTime(),
+          years: 0 as number | string
+        },
+        maxUploadsInfo: {
+          site: {} as Site,
+          maxValue: 0,
+          subSite: {} as Site,
+          submaxValue: 0
+        },
+        maxUploadedInfo: {
+          site: {} as Site,
+          maxValue: 0,
+          subSite: {} as Site,
+          submaxValue: 0
+        },
+        maxDownloadedInfo: {
+          site: {} as Site,
+          maxValue: 0,
+          subSite: {} as Site,
+          submaxValue: 0
+        },
+        maxSeedingInfo: {
+          site: {} as Site,
+          maxValue: 0,
+          subSite: {} as Site,
+          submaxValue: 0
+        },
+        maxSeedingSizeInfo: {
+          site: {} as Site,
+          maxValue: 0,
+          subSite: {} as Site,
+          submaxValue: 0
+        },
+        total: {
+          uploads: 0,
+          uploaded: 0,
+          downloaded: 0,
+          seedingSize: 0,
+          ratio: -1,
+          seeding: 0
+        }
+      }
 
       let sites: Site[] = [];
       this.sites.forEach((site: Site) => {
@@ -252,11 +391,11 @@ export default Vue.extend({
         if (!this.showSites.includes(site.name)) {
           return;
         }
- 
+
         let user = site.user;
         if (user && user.name && user.joinTime) {
           user.joinTime = PPF.transformTime(user.joinTime, site.timezoneOffset);  //add by pxwang for gpw jointime error
-          
+
           sites.push(site);
           if (!userNames[user.name]) {
             userNames[user.name] = 0;
@@ -275,29 +414,77 @@ export default Vue.extend({
             result.joinTimeInfo.site = site;
           }
 
+          if (user.uploads && user.uploads > 0) {
+            // https://github.com/pt-plugins/PT-Plugin-Plus/pull/1517
+            if (typeof user.uploads !== 'number') {
+              console.log(`${site.url}: 当前站点 uploads 类型为 ${typeof user.uploads}，强制转换为 number 类型`)
+              user.uploads = parseInt(user.uploads) || 0;
+            }
+            result.total.uploads += user.uploads;
+            if (user.uploads > result.maxUploadsInfo.maxValue) {
+              result.maxUploadsInfo.submaxValue = result.maxUploadsInfo.maxValue
+              result.maxUploadsInfo.subSite = result.maxUploadsInfo.site
+              result.maxUploadsInfo.maxValue = user.uploads;
+              result.maxUploadsInfo.site = site;
+            } else if (user.uploads > result.maxUploadsInfo.submaxValue) {
+              result.maxUploadsInfo.submaxValue = user.uploads;
+              result.maxUploadsInfo.subSite = site;
+            }
+            // https://github.com/pt-plugins/PT-Plugin-Plus/pull/1517
+            // console.log(`${site.url}\t\t: uploads: ${user?.uploads} -> ${typeof user?.uploads}, total: ${result.total.uploads}`)
+          }
+
           if (user.uploaded && user.uploaded > 0) {
             result.total.uploaded += user.uploaded;
             // 获取上传最多的站点
             if (user.uploaded > result.maxUploadedInfo.maxValue) {
+              result.maxUploadedInfo.submaxValue = result.maxUploadedInfo.maxValue
+              result.maxUploadedInfo.subSite = result.maxUploadedInfo.site
               result.maxUploadedInfo.maxValue = user.uploaded;
               result.maxUploadedInfo.site = site;
+            } else if (user.uploaded > result.maxUploadedInfo.submaxValue) {
+              result.maxUploadedInfo.submaxValue = user.uploaded;
+              result.maxUploadedInfo.subSite = site;
             }
           }
 
           if (user.downloaded && user.downloaded > 0) {
             result.total.downloaded += user.downloaded;
+            if (user.downloaded > result.maxDownloadedInfo.maxValue) {
+              result.maxDownloadedInfo.submaxValue = result.maxDownloadedInfo.maxValue
+              result.maxDownloadedInfo.subSite = result.maxDownloadedInfo.site
+              result.maxDownloadedInfo.maxValue = user.downloaded;
+              result.maxDownloadedInfo.site = site;
+            } else if (user.downloaded > result.maxDownloadedInfo.submaxValue) {
+              result.maxDownloadedInfo.submaxValue = user.downloaded;
+              result.maxDownloadedInfo.subSite = site;
+            }
           }
 
           if (user.seeding && user.seeding > 0) {
             result.total.seeding += Math.round(user.seeding);
+            if (user.seeding > result.maxSeedingInfo.maxValue) {
+              result.maxSeedingInfo.submaxValue = result.maxSeedingInfo.maxValue
+              result.maxSeedingInfo.subSite = result.maxSeedingInfo.site
+              result.maxSeedingInfo.maxValue = Math.round(user.seeding);
+              result.maxSeedingInfo.site = site;
+            } else if (user.seeding > result.maxSeedingInfo.submaxValue) {
+              result.maxSeedingInfo.submaxValue = Math.round(user.seeding);
+              result.maxSeedingInfo.subSite = site;
+            }
           }
 
           if (user.seedingSize && user.seedingSize > 0) {
             result.total.seedingSize += user.seedingSize;
             // 获取上传最多的站点
-            if (user.seedingSize > result.maxSeedingInfo.maxValue) {
-              result.maxSeedingInfo.maxValue = user.seedingSize;
-              result.maxSeedingInfo.site = site;
+            if (user.seedingSize > result.maxSeedingSizeInfo.maxValue) {
+              result.maxSeedingSizeInfo.submaxValue = result.maxSeedingSizeInfo.maxValue
+              result.maxSeedingSizeInfo.subSite = result.maxSeedingSizeInfo.site
+              result.maxSeedingSizeInfo.maxValue = user.seedingSize;
+              result.maxSeedingSizeInfo.site = site;
+            } else if (user.seedingSize > result.maxSeedingSizeInfo.submaxValue) {
+              result.maxSeedingSizeInfo.submaxValue = user.seedingSize;
+              result.maxSeedingSizeInfo.subSite = site;
             }
           }
           user.ratio = this.getRatio(user);
@@ -315,7 +502,7 @@ export default Vue.extend({
 
       // 按加入时间排序
       this.datas = sites.sort((a, b) => {
-        
+
         if (!a.user || !b.user) {
           return 0;
         }
@@ -328,9 +515,6 @@ export default Vue.extend({
       });
 
       this.infos.total.ratio = this.getRatio(this.infos.total);
-      setTimeout(() => {
-        this.replaceImageToBase64();
-      }, 200);
     },
     getRatio(info: any): number {
       let downloaded = info.downloaded as number;
@@ -358,6 +542,7 @@ export default Vue.extend({
       setTimeout(() => {
         let div = this.$refs.userDataCard as HTMLDivElement;
         domtoimage.toBlob(div, {
+          imagePlaceholder: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
           filter: (node) => {
             if (node.nodeType === 1) {
               return !(node as Element).classList.contains('by_pass_canvas')
@@ -369,6 +554,9 @@ export default Vue.extend({
           if (blob) {
             FileSaver.saveAs(blob, "PT-Plugin-Plus-UserData.png");
           }
+          this.shareing = false;
+        }).catch(error => {
+          console.log('error:', error);
           this.shareing = false;
         });
       }, 500);

@@ -76,6 +76,10 @@
             "query.text().replace(/,/g,'')"
           ]
         },
+        "bonusPerHour": {
+          "selector": ["li:contains('Per Day: ')"],
+          "filters": ["query.eq(0).text().replace(/,/g, '').match(/\\d+/)","query ? (parseFloat(query[0]) / 24) : 0"]
+        },
         "joinTime": {
           "selector": "#section2 > div > div.statistics > div:nth-child(1) > ul > li:nth-child(1) > span",
           "filters": [

@@ -37,6 +37,7 @@ import AddToCollectionGroup from "./AddToCollectionGroup.vue";
 import Actions from "./Actions.vue";
 import { PPF } from "@/service/public";
 import KeepUpload from "./KeepUpload.vue";
+import {eventBus} from "@/options/plugins/EventBus";
 
 type searchResult = {
   sites: Dictionary<any>;
@@ -111,6 +112,7 @@ export default Vue.extend({
         progress: 0
       },
       showCategory: false,
+      titleMiddleEllipsis: false,
       fixedTable: false,
       siteContentMenus: {} as any,
       clientContentMenus: [] as any,
@@ -152,13 +154,15 @@ export default Vue.extend({
 
     let viewOptions = this.$store.getters.viewsOptions(EViewKey.searchTorrent, {
       checkBox: false,
-      showCategory: false
+      showCategory: false,
+      titleMiddleEllipsis: false
     });
     Object.assign(this, viewOptions);
 
     this.loadTorrentCollections();
   },
   mounted() {
+    eventBus.$on("searchTorrent", this.eventSearchTorrent)
     // 初始化鼠标点击事件，用于按shift键多选操作
     const downEvent = "mousedown.torrentSearch";
     const upEvent = "mouseUp.torrentSearch";
@@ -180,6 +184,7 @@ export default Vue.extend({
   },
   destroyed() {
     window.removeEventListener("scroll", this.handleScroll);
+    eventBus.$off("searchTorrent", this.eventSearchTorrent)
   },
   beforeRouteUpdate(to: Route, from: Route, next: any) {
     if (!to.params.key) {
@@ -206,11 +211,13 @@ export default Vue.extend({
   watch: {
     key(newValue, oldValue) {
       if (newValue && newValue != oldValue) {
+        console.log('watch search key', newValue, oldValue)
         this.doSearch();
       }
     },
     host(newValue, oldValue) {
       if (newValue && newValue != oldValue) {
+        console.log('watch search host', newValue, oldValue)
         this.doSearch();
       }
     },
@@ -221,9 +228,14 @@ export default Vue.extend({
       this.haveError = this.errorMsg != "";
     },
     "$store.state.options.defaultSearchSolutionId"(newValue, oldValue) {
+      console.log('watch search defaultSearchSolutionId', newValue, oldValue)
       // 设置为<默认>时，newValue 为空，故与 key, host 处理方式不同
       if (newValue != oldValue) {
-        this.doSearch();
+        if (this.$store.state.options.autoSearchWhenSwitchSolution) {
+          this.doSearch();
+        } else {
+          console.log(`切换搜索方案 - 跳过搜索, 可在 常规设置 - 搜索 中开启自动搜索`)
+        }
       }
     },
     loading() {
@@ -251,6 +263,10 @@ export default Vue.extend({
     }
   },
   methods: {
+    eventSearchTorrent(args: any) {
+      console.log(`Event: searchTorrent`, args)
+      this.doSearch()
+    },
     /**
      * 记录日志
      * @param options
@@ -1926,7 +1942,8 @@ export default Vue.extend({
         key: EViewKey.searchTorrent,
         options: {
           checkBox: this.checkBox,
-          showCategory: this.showCategory
+          showCategory: this.showCategory,
+          titleMiddleEllipsis:this.titleMiddleEllipsis
         }
       });
     },
