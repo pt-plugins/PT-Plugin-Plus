@@ -9,12 +9,12 @@
   "collaborator": "gawain",
   "plugins": [{
     "name": "种子详情页面",
-    "pages": ["/torrents.php?action=details&id=\\d+"],
+    "pages": ["/torrents.php?action=details"],
     "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
   }, {
     "name": "种子列表",
     "pages": ["/torrents.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+    "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
   }],
   "host": "ncore.pro",
   "searchEntryConfig": {
@@ -74,7 +74,7 @@
 	        },
         "seeding": {
 	        "selector": ["div.lista_mini_fej"],
-          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=1)?query[0]:''"]
+          "filters": ["query.text().match(/\\((.*)\\)/)[1]"]
 	      },
         "seedingSize": {
 	        "value": -1
