@@ -33,7 +33,7 @@
     "name": "Insane User",
     "interval": "25",
     "downloaded": "500GB",
-    "ratio": "2.45",
+    "ratio": "2.55",
     "privilege": "查看普通日志"
   },{
     "level": "5", 
@@ -83,11 +83,11 @@
   "searchEntryConfig": {
     "fieldSelector": {
       "progress": {
-        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"],
         "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
       },
       "status": {
-        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"],
         "filters": [
           "query ? query.attr('title') : ''",
           "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
