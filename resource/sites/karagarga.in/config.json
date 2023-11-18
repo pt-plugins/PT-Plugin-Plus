@@ -75,6 +75,10 @@
           "selector": ["td.rowhead:contains('Uploaded') + td"],
           "filters": ["query.text().replace(/,|\\r|\\n|\\s/g,'').match(/.*?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
+        "uploads": {
+          "selector": ["td.rowhead:contains('Uploaded') + td"],
+          "filters": ["query.text().replace(/,/g, '').match(/\\d+\\s/)","query ? parseFloat(query[0]) : 0"]
+        },
         "downloaded": {
           "selector": ["td.rowhead:contains('Downloaded') + td"],
           "filters": ["query.text().replace(/,|\\r|\\n|\\s/g,'').match(/.*?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]

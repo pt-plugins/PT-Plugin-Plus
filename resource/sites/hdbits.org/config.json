@@ -197,6 +197,10 @@
           "selector": ["td.rowhead:contains('Downloaded') + td"],
           "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
+        "uploads": {
+          "selector": ["td.heading:contains('Uploaded'):contains('torrents') + td"],
+          "filters": ["query.text().match(/([\\d.]+)/)", "(query && query.length>=1)?query[0]:''"]
+        },
         "ratio": {
           "selector": "td.rowhead:contains('Share ratio') + td",
           "filters": ["parseFloat(query.text())"]
