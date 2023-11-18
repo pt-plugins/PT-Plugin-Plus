@@ -4,9 +4,14 @@
   "description": "M-Team",
   "url": "https://kp.m-team.cc/",
   "icon": "https://kp.m-team.cc/favicon.ico",
-  "tags": ["影视", "综合","Adult"],
+  "tags": ["影视", "综合","成人"],
   "schema": "NexusPHP",
   "host": "kp.m-team.cc",
+  "cdn": ["https://kp.m-team.cc/","https://xp.m-team.cc/","https://xp.m-team.io/"],
+  "formerHosts": [
+    "pt.m-team.cc",
+    "tp.m-team.cc"
+  ],
   "levelRequirements": [{
     "level": "1",
     "name": "Power User",
@@ -63,10 +68,7 @@
     "downloaded": "3000GB",
     "ratio": "9",
     "privilege": "魔力值加成：+8%"
-  }],
-  "formerHosts": [
-    "pt.m-team.cc",
-    "tp.m-team.cc"
+  }
   ],
   "plugins": [{
     "name": "种子列表",
@@ -278,6 +280,16 @@
                        "td:contains('目前將會獲取'):last",
                        "td:contains('目前将会获取'):last"],
           "filters": ["parseFloat(query.text().match(/[獲获][得取](\\d+(?:\\.\\d+)?)/)[1])"]
+        }
+      }
+    },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/getusertorrentlist.php?userid=$user.id$&type=uploaded",
+      "fields": {
+        "uploads": {
+          "selector": ["#outer table p:first b:last"],
+          "filters": ["query.text().replace(/,/g,'').split('-')", "(query && query.length > 1) ? parseInt(query[1]) : 0"]
         }
       }
     }

@@ -650,6 +650,7 @@ export class Searcher {
 
             // 执行获取结果的脚本
             try {
+              console.log("entry.parseScript ", entry.parseScript?.length);
               if (entry.parseScript) {
                 // 异步脚本，由脚本负责调用 reject 和 resolve
                 if (entry.asyncParse) {

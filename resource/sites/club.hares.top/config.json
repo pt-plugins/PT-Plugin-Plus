@@ -263,6 +263,19 @@
           "filters": [ "query.sizeToNumber()" ]
         }
       }
+    },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "getusertorrentlistajax.php?page=1&limit=1&uid=$user.id$&type=uploaded",
+      "dataType": "json",
+      "headers": {
+        "Accept": "application/json, text/javascript, */*; q=0.01"
+      },
+      "fields": {
+        "uploads": {
+          "selector": [ "count" ]
+        }
+      }
     }
   },
     "plugins": [

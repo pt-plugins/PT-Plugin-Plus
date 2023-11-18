@@ -39,6 +39,25 @@
   }],
   "collaborator": "bright",
   "selectors": {
+    "merge": true,
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "isLogged": {
+          "selector": ["form[title='Logout']"],
+          "filters": ["query.length > 0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "messageCount": {
+          "selector": ["span.animate-ping"],
+          "filters": ["query.length?11:0"]
+        }
+      }
+    },
     "hnrExtendInfo": {
       "page": "/users/$user.name$/torrents?unsatisfied=include&perPage=100&hitrun=exclude&immune=exclude",
       "fields": {

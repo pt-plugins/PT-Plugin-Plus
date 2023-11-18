@@ -93,20 +93,5 @@
         "filters": [ "query.attr('class')", "query=='progress_seeding'?2:(query=='progress_completed'?255:(query=='progress_no_downloading'?3:1))" ]
       }
     }
-  },
-  "selectors": {
-    "userExtendInfo": {
-      "merge": true,
-      "fields": {
-        "seeding": {
-          "selector": [ "span.medium img.arrowup" ],
-          "filters": [ "$(query[0].nextSibling).text().trim().replace(/,/g,'')" ]
-        },
-        "seedingSize": {
-          "selector": [ "td.rowhead:contains('当前做种') + td", "td.rowhead:contains('目前做種') + td", "td.rowhead:contains('Current Seeding') + td" ],
-          "filters": [ "query.text().replace(/.*共计/g,'').replace(')','')", "query.sizeToNumber()" ]
-        }
-      }
-    }
   }
 }

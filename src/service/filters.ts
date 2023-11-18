@@ -1,6 +1,7 @@
 interface IFilter {
   formatNumber: (source: number, format?: string) => string;
   formatSize: (bytes: any, zeroToEmpty?: boolean, type?: string) => string;
+  formatSizetoPrecision: (bytes: any, zeroToEmpty?: boolean, type?: string) => string;
   formatSizeWithNegative: (bytes: any, zeroToEmpty?: boolean, type?: string) => string;
   formatSpeed: (bytes: any, zeroToEmpty: boolean) => string;
   parseURL: (
@@ -203,6 +204,69 @@ export const filters: IFilter = {
     }
 
     return this.formatNumber(r, format) + u;
+  },
+
+  /**
+   *
+   * @param sourceBytes 需要格式的字节
+   * @param zeroToEmpty 是否需要将0转为空输出，默认为 false
+   * @param type 类型，可指定为 `speed` 为速度，会在后面加上 /s
+   */
+  formatSizetoPrecision(
+    sourceBytes: any,
+    zeroToEmpty: boolean = false,
+    type: string = ""
+  ): string {
+    let bytes = parseFloat(sourceBytes);
+    if (isNaN(bytes)) {
+      return "";
+    }
+
+    if (bytes < 0) {
+      return "N/A";
+    }
+
+    if (bytes === 0) {
+      if (zeroToEmpty) {
+        return "";
+      } else {
+        if (type === "speed") {
+          return "0.00 KiB/s";
+        } else {
+          return "0.00";
+        }
+      }
+    }
+    let r: number;
+    let u = "KiB";
+    if (bytes < 1000 * Math.pow(2, 10)) {
+      r = bytes / Math.pow(2, 10);
+      u = "KiB";
+    } else if (bytes < 1000 * Math.pow(2, 20)) {
+      r = bytes / Math.pow(2, 20);
+      u = "MiB";
+    } else if (bytes < 1000 * Math.pow(2, 30)) {
+      r = bytes / Math.pow(2, 30);
+      u = "GiB";
+    } else if (bytes < 1000 * Math.pow(2, 40)) {
+      r = bytes / Math.pow(2, 40);
+      u = "TiB";
+    } else if (bytes < 1000 * Math.pow(2, 50)) {
+      r = bytes / Math.pow(2, 50);
+      u = "PiB";
+    } else if (bytes < 1000 * Math.pow(2, 60)) {
+      r = bytes / Math.pow(2, 60);
+      u = "EiB";
+    } else {
+      r = bytes / Math.pow(2, 70);
+      u = "ZiB";
+    }
+
+    if (type === "speed") {
+      u += "/s";
+    }
+
+    return r.toPrecision(4) + " " + u;
   },
 
   /**

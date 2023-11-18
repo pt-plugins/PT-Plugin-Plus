@@ -7,6 +7,46 @@
   "tags": ["动漫"],
   "schema": "",
   "host": "animebytes.tv",
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "User",
+    "interval": "1",
+    "uploaded": "10.5GB",
+    "ratio": "0.5",
+    "privilege": "Send invites"
+  },{
+    "level": "2", 
+    "name": "Power User",
+    "interval": "2",
+    "uploads": "10",
+    "uploaded": "25GB",
+    "ratio": "0.7",
+    "privilege": "Invites forums; Exempt from inactivity pruning"
+  },{
+    "level": "3", 
+    "name": "Elite",
+    "interval": "30D",
+    "uploads": "50",
+    "uploaded": "100GB",
+    "ratio": "0.8",
+    "privilege": ""
+  },{
+    "level": "4", 
+    "name": "Torrent Master",
+    "interval": "90D",
+    "uploads": "100",
+    "uploaded": "500GB",
+    "ratio": "0.9",
+    "privilege": "Send invites even when we are above the user limit"
+  },{
+    "level": "5", 
+    "name": "Legend",
+    "interval": "180D",
+    "uploads": "500",
+    "uploaded": "1TB",
+    "ratio": "1",
+    "privilege": ""
+  }],
   "collaborator": [
     "MewX",
     "sabersalv"
@@ -121,6 +161,10 @@
             "query.attr('title')||query.text()",
             "dateTime(query, 'MMM DD YYYY, HH:mm').isValid()?dateTime(query, 'MMM DD YYYY, HH:mm').valueOf():query"
           ]
+        },
+        "averageSeedtime": {
+          "selector": ["dt:contains('Average Seedtime') + dd > span", "dt:contains('平均做种时间') + dd > span", "dt:contains('平均做種時間') + dd > span"],
+          "filters": ["query.text().trim().timeToDays()"]
         }
       }
     }

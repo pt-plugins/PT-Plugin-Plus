@@ -35,11 +35,12 @@
         ]
       },
       "status": {
-        "selector": ["button.btn.btn-success.btn-circle, i[title*='Seeding']", "button.btn.btn-warning.btn-circle", "button.btn.btn-info.btn-circle"],
+        "selector": ["button.btn.btn-success.btn-circle, i[title*='Currently Seeding']", "button.btn.btn-warning.btn-circle", "button.btn.btn-info.btn-circle", "i[title*='Completed']"],
         "switchFilters": [
           ["2"],
           ["1"],
-          ["3"]
+          ["3"],
+          ["255"]
         ]
       }
     },
@@ -52,7 +53,7 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "i.fa-star.text-gold, i.fa-globe.text-blue"
+    "selector": "i.fa-star.text-gold, i.fa-globe.text-blue, i.torrent-icons__freeleech"
   }, {
     "name": "2xUp",
     "selector": "i.fa-gem.text-green"
@@ -68,6 +69,10 @@
             ["new URL(query).pathname.split('/')", "(query && query.length>2)?(query[2]):''"],
             ["query ? query.getQueryString('id'):''"]
           ]
+        },
+        "isLogged": {
+          "selector": ["i.fa-sign-out"],
+          "filters": ["query.length > 0"]
         },
         "uploaded": {
           "selector": ["div.ratio-bar i.fa-arrow-up, li[title='Upload'] i.fa-arrow-up, ul.top-nav__ratio-bar i.fa-arrow-up, span[title='Upload'], span[title='上传']"],
@@ -113,13 +118,21 @@
           "filters": ["query.text().replace(/(Registration date|注册日期|註冊日期)/g, '').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         },
         "uploads": {
-          "selector": [".badge-user .fa-upload + span"],
-          "filters": ["query ? parseFloat(query.text().trim()) : 0"]
+          "selector": [".badge-user .fa-upload + span", "dt a[href$='/uploads']"],
+          "switchFilters": [
+            ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"],
+            ["query ? parseInt(query.parent().next().text().trim().replace(/,/g,'')) : 0"]
+          ]
         },
         "unsatisfiedsPage": {
           "selector": ["a[href$='unsatisfieds']:first"],
           "attribute": "href",
           "filters": ["query ? new URL(query).pathname : null"]
+        },
+        "averageSeedtime": {
+          "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Average Seedtime') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('平均做种时间') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('平均做種時間') + td",
+            "dt:contains('Average Seedtime') + dd", "dt:contains('平均做种时间') + dd", "dt:contains('平均做種時間') + dd"],
+          "filters": ["query.text().trim().timeToDays()"]
         }
       }
     },
@@ -128,8 +141,8 @@
       "page": "$user.bonusPage$",
       "fields": {
         "bonusPerHour": {
-          "selector": [".table-condensed tr:last"],
-          "filters": ["parseFloat(query.text().match(/[\\d.]+/)[0])"]
+          "selector": [".table-condensed tr:last",".panelV2 dl.key-value dd:nth(2)"],
+          "filters": ["parseFloat(query.text().replace(/,/g,'').match(/[\\d.]+/)[0])"]
         }
       }
     },

@@ -1,5 +1,6 @@
 {
   "name": "qBittorrent",
+  "enabled": true,
   "type": "qbittorrent",
   "ver": "0.0.1",
   "icon": "https://www.qbittorrent.org/favicon.ico",

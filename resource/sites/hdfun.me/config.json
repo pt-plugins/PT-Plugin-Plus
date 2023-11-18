@@ -1,13 +1,13 @@
 {
     "name": "HDZone",
     "description": "",
-    "url": "https://hdzone.me/",
-    "icon": "https://hdzone.me/favicon.ico",
+    "url": "https://hdfun.me/",
+    "icon": "https://hdfun.me/favicon.ico",
     "tags": [
         "电影"
     ],
     "schema": "NexusPHP",
-    "host": "hdzone.me",
+    "host": "hdfun.me",
     "levelRequirements": [{
       "level": "1",
       "name": "Power User",
@@ -65,6 +65,9 @@
       "ratio": "5.5",
       "privilege": "得到3个邀请名额。账号永久保留。"
     }],
+    "formerHosts": [
+      "hdzone.me"
+    ],
     "collaborator": "ian",
     "searchEntryConfig": {
         "fieldSelector": {

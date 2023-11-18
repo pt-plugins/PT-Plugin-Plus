@@ -1,0 +1,68 @@
+{
+  "name": "LST",
+  "timezoneOffset": "+0000",
+  "schema": "UNIT3D",
+  "url": "https://lst.gg/",
+  "icon": "https://lst.gg/favicon.ico",
+  "tags": ["影视", "综合"],
+  "host": "lst.gg",
+  "formerHosts": [
+    "lst.gg"
+  ],
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "Minnow",
+    "interval": "1",
+    "uploaded": "500GiB",
+    "privilege": "Unlimited download slots"
+  },{
+    "level": "2", 
+    "name": "Goldfish",
+    "interval": "1",
+    "uploaded": "1TiB",
+    "privilege": "Unlimited download slots"
+  },{
+    "level": "3", 
+    "name": "Swordfish",
+    "interval": "2",
+    "uploaded": "5TiB",
+    "privilege": "Skip ModQ; Unlimited download slots"
+  },{
+    "level": "4", 
+    "name": "Dolphin",
+    "interval": "3",
+    "uploaded": "10TiB",
+    "privilege": "Global Freeleech; Skip ModQ; Unlimited download slots"
+  },{
+    "level": "5", 
+    "name": "Whale",
+    "interval": "4",
+    "uploaded": "25TiB",
+    "privilege": "Global Freeleech; Immunity to automated HnR warnings; Skip ModQ; Invite forum; Sparkly name; Unlimited download slots"
+  },{
+    "level": "6",
+    "name": "Leviathan",
+    "interval": "8",
+    "uploaded": "50TiB",
+    "privilege": "Global Freeleech; Immunity to automated HnR warnings; Skip ModQ; Invite forum; Sparkly name; Unlimited download slots"
+  },{
+    "level": "7",
+    "name": "Cthulhu",
+    "interval": "12",
+    "uploaded": "100TiB",
+    "privilege": "Global Freeleech; Immunity to automated HnR warnings; Double upload; Skip ModQ; Invite forum; Sparkly name; Unlimited download slots"
+  }],
+  "collaborator": ["bimzcy", "lengmianxia", "bright"],
+  "selectors": {
+    "hnrExtendInfo": {
+      "page": "/users/$user.name$/torrents?unsatisfied=include&perPage=100&hitrun=exclude&immune=exclude",
+      "fields": {
+        "unsatisfieds": {
+          "selector": [".table-responsive tbody tr"],
+          "filters": ["query ? query.length : 0"]
+        }
+      }
+    }
+  },
+  "cdn": ["https://lst.gg/"]
+}

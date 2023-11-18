@@ -1,0 +1,48 @@
+{
+  "name": "iAnon",
+  "timezoneOffset": "+0000",
+  "description": "music",
+  "url": "https://ianon.app/",
+  "icon": "https://ianon.app/favicon.ico",
+  "tags": [
+    "Apple",
+    "macOS",
+    "软件"
+  ],
+  "schema": "GazelleJSONAPI",
+  "host": "ianon.app",
+  "collaborator": [
+    "welladam"
+  ],
+  "searchEntryConfig": {
+    "skipIMDbId": true
+  },
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/bonus.php?action=bprates",
+      "fields": {
+        "seedingSize": {
+          "selector": [
+            "div#content > table > tbody > tr > td:eq(1)"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+          ]
+        },
+        "bonus": {
+          "selector": [
+            "div#content > table > tbody > tr > td:eq(2)"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'')"
+          ]
+        }
+      }
+    }
+  },
+  "supportedFeatures": {
+    "imdbSearch": false,
+    "userData": "◐"
+  }
+}

@@ -83,6 +83,7 @@
         "uploaded": { "selector": ["data.uploaded"]},
         "leeching": { "selector": ["data.leeching"]},
         "seeding": { "selector": ["data.seeding"]},
+        "uploads": { "selector": ["data.uploadCount"]},
         "bonusPerHour": { "selector": ["data.bonusPerHour"]},
         "seedingSize": { "selector": ["data.seedingSize"]},
         "messageCount": { "selector": ["data.messageCount"]},

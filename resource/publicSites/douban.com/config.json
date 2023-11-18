@@ -10,8 +10,12 @@
     "pages": ["/top250"],
     "scripts": ["common.js", "top250.js"]
   }, {
+    "name": "chart",
+    "pages": ["/chart", "/review/best", "/mine"],
+    "scripts": ["common.js", "chart.js"]
+  }, {
     "name": "explore",
-    "pages": ["/explore", "/tv/"],
+    "pages": ["/explore", "/tv/", "/"],
     "scripts": ["common.js", "explore.js"]
   }, {
     "name": "doulist",

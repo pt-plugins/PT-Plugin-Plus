@@ -31,6 +31,7 @@
           <td>
             <a @click="edit(props.item)">{{ props.item.name }}</a>
           </td>
+          <td>{{ props.item.enabled === false ? $t('settings.downloadClients.index.no') : $t('settings.downloadClients.index.yes') }}</td>
           <td>{{ props.item.type }}</td>
           <td>
             <a
@@ -115,6 +116,17 @@ export default Vue.extend({
   },
   created() {
     this.items = this.$store.state.options.system.clients;
+    // console.log('clients', this.$store.state.options.clients)
+    // console.log('system clients', this.$store.state.options.system.clients)
+    // 更新旧数据
+    this.$store.state.options.clients.forEach((c: { enabled: boolean | undefined; }) => {
+      if (c.enabled === undefined) {
+        c.enabled = true
+        this.updateItem(c)
+      }
+    })
+    // console.log('clients', this.$store.state.options.clients)
+    // console.log('system clients', this.$store.state.options.system.clients)
   },
   methods: {
     add() {
@@ -142,6 +154,7 @@ export default Vue.extend({
       }
     },
     updateItem(item: any) {
+      console.debug('updateClient', item)
       this.$store.commit("updateClient", item);
     },
 
@@ -186,6 +199,11 @@ export default Vue.extend({
           text: this.$t("settings.downloadClients.index.headers.name"),
           align: "left",
           value: "name"
+        },
+        {
+          text: this.$t("settings.downloadClients.index.headers.enabled"),
+          align: "left",
+          value: "enabled"
         },
         {
           text: this.$t("settings.downloadClients.index.headers.type"),

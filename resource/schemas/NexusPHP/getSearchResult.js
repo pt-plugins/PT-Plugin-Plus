@@ -179,8 +179,7 @@
             continue;
           }
 
-          url = url +
-            (site && site.passkey ? "&passkey=" + site.passkey : "");
+          url = url + (site && site.passkey ? "&passkey=" + site.passkey : "");
 
           let data = {
             title: title.attr("title") || title.text(),
@@ -188,10 +187,7 @@
             link,
             url,
             size: this.getFieldValue(row, cells, fieldIndex, "size") || 0,
-            time:
-              fieldIndex.time == -1
-                ? ""
-                : this.getTime(cells.eq(fieldIndex.time)),
+            time: fieldIndex.time == -1 ? "" : this.getTime(cells.eq(fieldIndex.time)),
             author: this.getFieldValue(row, cells, fieldIndex, "author") || "",
             seeders: this.getFieldValue(row, cells, fieldIndex, "seeders") || 0,
             leechers:
@@ -267,7 +263,9 @@
           .html(cell.html().replace("<br>", " "))
           .text();
       }
-      if (options.site.host === "pt.sjtu.edu.cn") {
+      // 存活时间样例：1年 5月，5月 3天，3天 14时，2时 1分，10分
+      const numUnitFormatSite = ['pt.sjtu.edu.cn', 'piggo.me']
+      if (numUnitFormatSite.some(s => s === options.site.host)) {
         if (time.match(/\d+[分时天月年]/g)) {
           time = Date.now() - this._parseTime(time)
           time = new Date(time).toLocaleString("zh-CN", { hour12: false }).replace(/\//g, '-')

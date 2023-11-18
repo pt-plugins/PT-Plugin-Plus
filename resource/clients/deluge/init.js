@@ -49,7 +49,7 @@
           case "addTorrentFromURL":
             this.addTorrentFromUrl(data, result => {
               resolve(result);
-            });
+            }, data.upLoadLimit);
             break;
 
           // 测试是否可连接
@@ -171,19 +171,20 @@
      * @param {*} data
      * @param {*} callback
      */
-    addTorrentFromUrl(data, callback) {
+    addTorrentFromUrl(data, callback, uploadLimit = 0) {
       let url = data.url;
+      // https://github.com/deluge-torrent/deluge/blob/a459e78268ae8002a9cfc8caf6d410fa45b1d805/deluge/ui/console/utils/config.py#L89
+      let options = {
+        download_location: data.savePath,
+        // deluge max_upload_speed 的定义也是 int
+        max_upload_speed: uploadLimit && uploadLimit > 0 ? parseInt(uploadLimit) : undefined,
+      }
 
       // 磁性连接（代码来自原版WEBUI）
       if (url.startsWith('magnet:')) {
         this.addTorrent({
             method: "core.add_torrent_url",
-            params: [
-              url,
-              {
-                download_location: data.savePath
-              }
-            ]
+            params: [ url, options ]
           },
           callback
         );
@@ -208,13 +209,7 @@
 
             this.addTorrent({
               method: "core.add_torrent_file",
-              params: [
-                "",
-                metainfo,
-                {
-                  download_location: data.savePath
-                }
-              ]
+              params: [ "", metainfo, options ]
             },
               callback
             );

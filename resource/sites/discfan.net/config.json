@@ -110,5 +110,24 @@
   }],
   "supportedFeatures": {
     "imdbSearch": false
+  },
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": ["div b:first"],
+          "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": "div div:first",
+          "filters": [
+            "query.text().match(/總大小：(.*?)B/g)",
+            "(query && query.length>0) ? query[0].replace('總大小：', '').trim() : 0",
+            "(query != 0) ? query.sizeToNumber() : 0"
+          ]
+        }
+      }
+    }
   }
 }
