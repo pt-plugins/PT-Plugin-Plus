@@ -101,9 +101,9 @@
           "selector": ["a.user-info-bar__link[href*='type=seeding']:first"],
           "filters": ["query.attr('title').replace(/,/g,'').sizeToNumber()"]
         },
-	 "uploads": {
+	      "uploads": {
           "selector": ["span[title='The parentheses contains the number of the uploads including the deleted torrents.']"],
-          "filters": ["query.text().match(/\\d+/)","query ? parseFloat(query[0].replace(/,/g, '')) : 0"]
+          "filters": ["query.text().replace(/,/g, '').match(/\\d+/)","query ? parseFloat(query[0].replace(/,/g, '')) : 0"]
         },
         "downloaded": {
           "selector": ["a.user-info-bar__link[href*='type=leeching']:first"],
