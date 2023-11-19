@@ -9,8 +9,10 @@
   "host": "anthelion.me",
   "collaborator": "enigamz",
   "searchEntryConfig": {
-    "skipIMDbId": true,
-    "parseScriptFile": "getSearchResult.js"
+      "page": "/torrents.php",
+      "resultType": "html",
+      "parseScriptFile": "getSearchResult.js",
+      "queryString": "searchstr=$key$&group_results=0&searchsubmit=1"
   },
   "searchEntry": [{
       "name": "all",
@@ -34,7 +36,7 @@
         },
         "bonusPerHour": {
           "selector": ["h3.float_right"],
-          "filters": ["query.text().match(/.+?making ([\\d]+) Orbs.+?/)", "(query && query.length>=2)?parseFloat(query[1]):null"]
+          "filters": ["query.text().match(/making ([\\d]+) Orbs/)", "(query && query.length>=2)?parseFloat(query[1]):null"]
         }
       }
     },
