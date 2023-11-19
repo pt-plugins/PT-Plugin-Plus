@@ -18,7 +18,7 @@
   }],
   "selectors": {
     "userBaseInfo": {
-      "page": "/index.php",
+      "page": "/store.php",
       "fields": {
         "id": {
           "selector": ["#nav_user a.username"],
@@ -31,6 +31,10 @@
         "isLogged": {
           "selector": ["a[href*='logout.php']"],
           "filters": ["query.length>0"]
+        },
+        "bonusPerHour": {
+          "selector": ["h3.float_right"],
+          "filters": ["query.text().match(/.+?making ([\\d]+) Orbs.+?/)", "(query && query.length>=2)?parseFloat(query[1]):null"]
         }
       }
     },
