@@ -18,7 +18,7 @@
   }],
   "selectors": {
     "userBaseInfo": {
-      "page": "index.php",
+      "page": "/index.php",
       "fields": {
         "id": {
           "selector": ["#nav_user a.username"],
@@ -35,7 +35,7 @@
       }
     },
     "userExtendInfo": {
-      "page": "user.php?id=$user.id$",
+      "page": "/user.php?id=$user.id$",
       "fields": {
         "uploaded": {
           "selector": ["li.tooltip:contains('Uploaded: ')"],
@@ -46,8 +46,8 @@
           "filters": ["query.text().match(/\\d+/g)[0]"]
         },
         "downloaded": {
-          "selector": ["li.tooltip:contains('Downloaded:  ')"],
-          "filters": ["query.eq(0).text().replace(/Downloaded:/g,'').replace(/,/g,'').sizeToNumber()"]
+          "selector": ["li.tooltip:contains('Downloaded: ')"],
+          "filters": ["query.eq(0).text().replace(/Downloaded: /g,'').replace(/,/g,'').sizeToNumber()"]
         },
         "ratio": {
           "selector": ["li.tooltip:contains('Ratio: ') span"],
