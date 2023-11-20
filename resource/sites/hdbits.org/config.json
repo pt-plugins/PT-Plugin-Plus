@@ -212,6 +212,10 @@
           "selector": ["td.rowhead:contains('Bonus') + td"],
           "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+)/)", "(query && query.length>=2)?query[1]:''"]
         },
+        "bonusPerHour": {
+          "selector": ["td.heading:contains('Bonus per hour') + td"],
+          "filters": ["query.text().replace(' BP/hour', '')"]
+        },
         "joinTime": {
           "selector": ["td.rowhead:contains('JOIN'):contains('date') + td"],
           "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]

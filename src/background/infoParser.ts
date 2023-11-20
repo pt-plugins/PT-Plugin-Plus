@@ -61,8 +61,10 @@ export class InfoParser {
       return config.value === undefined ? null : config.value;
     }
 
+    let lastSelector = '';
     // 遍历选择器
     selectors.some((selector: string) => {
+      lastSelector = selector;
       try {
         switch (rule.dataType) {
           case ERequestResultType.JSON:
@@ -106,6 +108,9 @@ export class InfoParser {
       }
     });
 
+    console.log(`selector result for ${lastSelector} :`);
+    console.log(query);
+
     let result = null;
     // 该变量 dateTime 用于 eval 内部执行，不可删除或改名
     let dateTime = dayjs;
@@ -143,6 +148,7 @@ export class InfoParser {
           });
         }
         result = query;
+        console.log(`filter result for ${filters.join(" => ")}: ${result}`);
       } else {
         switch (rule.dataType) {
           case ERequestResultType.JSON:
@@ -215,7 +221,7 @@ export class InfoParser {
     {
       if (imdbId.length < 7)
         imdbId = imdbId.padStart(7, '0');
-      
+
       imdbId = "tt" + imdbId;
     }
     return imdbId;
