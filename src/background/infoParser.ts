@@ -148,7 +148,12 @@ export class InfoParser {
           });
         }
         result = query;
-        console.log(`filter result for ${filters.join(" => ")}: ${result}`);
+
+        // be sure filters is an array
+        if (Array.isArray(filters)) {
+          console.log(`filter result for ${filters.join(" => ")}: ${result}`);
+        }
+
       } else {
         switch (rule.dataType) {
           case ERequestResultType.JSON:
