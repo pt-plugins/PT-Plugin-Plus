@@ -2,7 +2,7 @@
   class Parser {
     constructor() {
       this.haveData = false;
-      this.categories = {};
+      // this.categories = {};
       if (/auth_form/.test(options.responseText)) {
         options.status = ESearchResultParseStatus.needLogin;
         return;
@@ -27,8 +27,12 @@
       if (!this.haveData) {
         return [];
       }
+      let isIMDB = false;
       let results = [];
       let site = options.site;
+      let IMDBtitle = options.page.find("div.header > h2 > span").first();
+      if (IMDBtitle.text())
+        isIMDB = true;
       // 获取种子列表行
       let rows = options.page.find(
         options.resultSelector || "table.torrent_table:last > tbody > tr"
@@ -38,15 +42,15 @@
         return results;
       }
       // 获取表头
-      let header = rows.eq(0).find("th,td");
+      // let header = rows.eq(0).find("th,td");
 
       // 用于定位每个字段所列的位置
       let fieldIndex = {
         time: 3,
-        size: 4,
-        seeders: 6,
-        leechers: 7,
-        completed: 5
+        size: isIMDB ? 1:4,
+        seeders: isIMDB ? 3:6,
+        leechers: isIMDB ? 4:7,
+        completed: isIMDB ? 2:5
         // comments: 3,
         // author: 9
       };
@@ -59,14 +63,17 @@
         // 遍历数据行
         for (let index = 1; index < rows.length; index++) {
           const row = rows.eq(index);
+          if (!(row.hasClass("torrent") || row.hasClass("torrent_row"))){
+            continue;
+          }
           let cells = row.find(">td");
 
-          let title = row.find("a[href*='torrents.php?id=']").first();
-          if (title.length == 0) {
+          let title = isIMDB ? IMDBtitle : row.find("a[href*='torrents.php?id=']").first();
+          if (title.length == 0) {  
             continue;
           }
 
-          let subTitle = row.find("div.torrent_info").first();
+          let subTitle = isIMDB ? row.find("a[data-toggle-target*='torrent']").first() : row.find("div.torrent_info").first();
 
           // 获取下载链接
           let url = row
@@ -83,24 +90,24 @@
             url = `${site.url}${url}`;
           }
 
-          let link = title.attr("href");
-          link = `${link}&torrentid=${id}`;
-          if (link && link.substr(0, 4) !== "http") {
-            link = `${site.url}${link}`;
-          }
+          let link = `${site.url}torrents.php?torrentid=${id}`;
 
-          let time =
-            fieldIndex.time == -1
-              ? ""
-              : cells
-                  .eq(fieldIndex.time)
-                  .find("span[title],time[title]")
-                  .attr("title") ||
-                cells.eq(fieldIndex.time).text() ||
-                "";
-          // if (time) {
-          //   time += ":00";
-          // }
+          let time;
+          if (isIMDB){
+            let nextrow = rows.eq(index + 1);
+            time = nextrow.find("span[title],time[title]").first().attr("title");
+          }
+          else {
+            time =
+              fieldIndex.time == -1
+                ? ""
+                : cells
+                    .eq(fieldIndex.time)
+                    .find("span[title],time[title]")
+                    .attr("title") ||
+                  cells.eq(fieldIndex.time).text() ||
+                  "";
+          }
 
           let data = {
             id,
