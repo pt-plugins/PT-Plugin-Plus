@@ -53,19 +53,19 @@
   }],
   "torrentTagSelectors": [{
     "name": "Free",
-    "selector": "i.fa-star.text-gold, i.fa-globe.text-blue, i[title='100% Free'], i[title='Featured'], span[title='100% Free'], i[data-original-title='Featured']"
+    "selector": "i.fa-star.text-gold, i.fa-globe.text-blue, i[title*='100% Free'], i[title*='Featured'], span[title*='100% Free'], i[data-original-title*='Featured']"
   }, {
     "name": "2xUp",
-    "selector": "i.fa-gem.text-green, i[title*='Double Upload'], i[title='Featured'], i[data-original-title='Featured']"
+    "selector": "i.fa-gem.text-green, i[title*='Double Upload'], i[title*='Featured'], i[data-original-title*='Featured']"
   }, {
     "name": "75%",
-    "selector": "i[title='75% Free'], span[title='75% Free']"
+    "selector": "i[title*='75% Free'], span[title*='75% Free']"
   }, {
     "name": "50%",
-    "selector": "i[title='50% Free'], span[title='50% Free']"
+    "selector": "i[title*='50% Free'], span[title*='50% Free']"
   }, {
     "name": "25%",
-    "selector": "i[title='25% Free'], span[title='25% Free']"
+    "selector": "i[title*='25% Free'], span[title*='25% Free']"
   }],
   "selectors": {
     "userBaseInfo": {
