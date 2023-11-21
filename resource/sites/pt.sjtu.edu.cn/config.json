@@ -211,6 +211,16 @@
           "selector": ["tr:not(:eq(0))"],
           "filters": ["jQuery.map(query.find('td.rowfollow:eq(1)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
+      },
+      "userUploadedTorrents": {
+        "prerequisites": "!user.uploads",
+        "page": "/viewusertorrents.php?userid=$user.id$&type=uploaded", 
+        "fields": {
+          "uploads": { 
+            "selector": ["b:first"],
+            "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"] 
+          }
+        }
       }
     }
   }
