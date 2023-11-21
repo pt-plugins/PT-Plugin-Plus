@@ -151,14 +151,14 @@
         },
         "userUploadedTorrents": {
             "prerequisites": "!user.uploads",
-            "page": "/getusertorrentlistajax.php?ajax=1&type=uploaded&userid=$user.id$",
+            "page": "/getusertorrentlistajax.php?ajax=1&type=uploaded_size&userid=$user.id$",
             "dataType": "json",
             "headers": {
                 "Accept": "application/json, text/javascript, */*; q=0.01"
             },
             "fields": {
                 "uploads": {
-                    "selector": ["total_count"],
+                    "selector": ["count"],
                     "filters": ["query"]
                 }
             }
