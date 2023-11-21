@@ -158,8 +158,8 @@
             },
             "fields": {
                 "uploads": {
-                    "selector": ["data"],
-                    "filters": ["query.length"]
+                    "selector": ["total_count"],
+                    "filters": ["query"]
                 }
             }
         }
