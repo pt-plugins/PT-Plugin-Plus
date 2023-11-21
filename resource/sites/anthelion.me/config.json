@@ -36,7 +36,7 @@
         },
         "bonusPerHour": {
           "selector": ["h3.float_right"],
-          "filters": ["query.text().match(/making ([\\d]+) Orbs/)", "(query && query.length>=2)?parseFloat(query[1]):null"]
+          "filters": ["query.text().replace(',','').match(/making ([\\d]+) Orbs/)", "(query && query.length>=2)?parseFloat(query[1]):null"]
         }
       }
     },
@@ -78,6 +78,15 @@
         "levelName": {
           "selector": "ul.stats > li:contains('Class:')",
           "filters": ["query.text().replace(/Class:/g,'').trim()"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/torrents.php?type=seeding&userid=$user.id$",
+      "fields": {
+        "seeding": {
+          "selector": ["#search_results"],
+          "filters": ["query.text().replace(',','').match(/([\\d]+) Results/)", "(query && query.length>=2)?parseFloat(query[1]):null"]
         }
       }
     }
