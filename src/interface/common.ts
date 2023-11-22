@@ -192,6 +192,7 @@ export interface Options {
   encryptMode?: EEncryptMode;
   // 允许保存搜索结果快照
   allowSaveSnapshot?: boolean;
+  selectedTags?: string[];
 }
 
 // 在搜索之前一些选项配置

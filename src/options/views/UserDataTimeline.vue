@@ -225,7 +225,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { Site, Dictionary, EAction, Options } from "@/interface/common";
+import {Site, Dictionary, EAction, Options, EViewKey, ETagType, EUserDataRequestStatus} from "@/interface/common";
 import FileSaver from "file-saver";
 import domtoimage from 'dom-to-image';
 import Extension from "@/service/extension";
@@ -310,7 +310,43 @@ export default Vue.extend({
   },
   mounted() {
   },
+  computed: {
+    selectedTagValues() {
+      let {selectedTags} =   this.$store.getters.viewsOptions(EViewKey.home, {})
+      if (selectedTags && Array.isArray(selectedTags) && selectedTags.length > 0) {
+        return selectedTags.map(_ => _.value)
+      } else {
+        return []
+      }
+    }
+  },
   methods: {
+    filteredSitesByTags(sites: Site[]) {
+      if (this.selectedTagValues.length === 0) return sites
+      if (this.selectedTagValues.includes(ETagType.all)) return sites
+      let tags = this.clone(this.selectedTagValues)
+      let res: any[] = []
+      if (tags.includes(ETagType.unTagged)) {
+        let allUnTaggedSites = sites.filter(s => !s.tags || s.tags.length === 0)
+        res = res.concat(allUnTaggedSites)
+      }
+      if (tags.includes(ETagType.unReadMsg)) {
+        let allUnReadMsgSites = sites.filter((site: Site) => (site.user?.messageCount || 0) > 0)
+        res = res.concat(allUnReadMsgSites)
+      }
+      if (tags.includes(ETagType.statusError)) {
+        let allStatusErrSites = sites.filter((site: Site) => site.user?.lastErrorMsg || (site.user?.lastUpdateStatus !== EUserDataRequestStatus.success))
+        res = res.concat(allStatusErrSites)
+      }
+      let allTaggedSites = sites.filter(s => Array.isArray(s.tags) && s.tags.length > 0)
+      for (let site of allTaggedSites) {
+        if (site.tags?.some((s: any) => tags.includes(s))) {
+          res.push(site)
+        }
+      }
+      // 这里可能会有重复
+      return res
+    },
     init() {
       extension
         .sendRequest(EAction.readConfig)
@@ -323,10 +359,12 @@ export default Vue.extend({
           if (this.options.displayUserName) {
             this.displayUserName = this.options.displayUserName;
           }
-          this.showSites = this.sites
-                  .filter((site: Site) => {return site.allowGetUserInfo})
-                  .map((site: Site) => {return site.name});  //  只提取站点名称
+          let showSites = this.sites.filter((site: Site) => {return site.allowGetUserInfo})
+          showSites = this.filteredSitesByTags(showSites)
+          //  只提取站点名称
+          this.showSites = [...new Set(showSites.map((site: Site) => site.name))];
           this.formatData();
+          // console.log(`init`, this.showSites, this.selectedTagValues)
         })
         .catch();
     },
