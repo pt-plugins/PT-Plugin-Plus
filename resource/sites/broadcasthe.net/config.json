@@ -14,6 +14,64 @@
     "parseScriptFile": "getSearchResult.js",
     "queryString": "searchstr=$key$"
   },
+  "levelRequirements": [{
+      "level": "1",
+      "name": "Member",
+      "interval": "2",
+      "totalData": "100GiB",
+      "bonus":"100000",
+      "snatches":"100",
+      "privilege": "Can access the XXX forum."
+    },{
+      "level": "2",
+      "name": "Power User",
+      "interval": "4",
+      "totalData": "250GiB",
+      "bonus":"250000",
+      "snatches":"250",
+      "privilege": "Has access to the Power User forum, Official and Unofficial Invites forums, Top 10 filters, and can access notifications."
+    },{
+      "level": "3",
+      "name": "Extreme User",
+      "interval": "82D",
+      "totalData": "500GiB",
+      "bonus":"500000",
+      "snatches":"500",
+      "privilege": "Has access to the Extreme User forum."
+    },{
+      "level": "4",
+      "name": "Elite",
+      "interval": "166D",
+      "totalData": "1TiB",
+      "bonus":"850000",
+      "snatches":"1000",
+      "privilege": "Has access to the Elite forum and can set own Custom Title, and the ability to send invites purchased from the Lumens Store."
+    },{
+      "level": "5",
+      "name": "Guru",
+      "interval": "251D",
+      "totalData": "2.5TiB",
+      "bonus":"1500000",
+      "snatches":"1500",
+      "privilege": "Has access to the Guru forum."
+    },{
+      "level": "6",
+      "name": "Master",
+      "interval": "365D",
+      "totalData": "7.5TiB",
+      "bonus":"3000000",
+      "snatches":"3000",
+      "privilege": "Has access to the Master forum."
+    },{
+      "level": "7",
+      "name": "Overlord",
+      "interval": "1065D",
+      "totalData": "100TiB",
+      "bonus":"250000000",
+      "snatches":"35000",
+      "totalSeedtime":"250000",
+      "privilege": "Has access to the Overlord forum, Custom Title, Unlimited Invites, and more to come!"
+  }],
   "searchEntry": [{
       "name": "all",
       "enabled": true
@@ -76,15 +134,32 @@
             "query.text().replace(/,/g,'')"
           ]
         },
-        "bonusPerHour": {
-          "selector": ["li:contains('Per Day: ')"],
-          "filters": ["query.eq(0).text().replace(/,/g, '').match(/\\d+/)","query ? (parseFloat(query[0]) / 24) : 0"]
-        },
         "joinTime": {
           "selector": "#section2 > div > div.statistics > div:nth-child(1) > ul > li:nth-child(1) > span",
           "filters": [
             "query.attr('title')||query.text()",
             "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        },
+        "totalData": {
+          "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(13)",
+          "filters": [
+            "query.text().replace(/,/g,'').match(/Total Traffic:.+?([\\d.]+ ?[TGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+        ]
+       },
+        "snatches": {
+          "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul",
+          "filters": [ 
+            "query.text().match(/Snatched: (\\d+)/g)",
+            "query.reduce((sum, match) => sum + Number(match.split(\": \")[1]), 0)"
+          ]
+        },
+        "totalSeedtime": {
+          "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(12)",
+          "filters": [
+            "query.text().replace(/,/g,'').match(/Total Time Seeded:.+?(\\d+).+?/)",
+            "(query && query.length>=2)?(query[1]):null"
           ]
         },
         "seeding": {
@@ -93,6 +168,17 @@
             "query.text().replace(/,/g,'').match(/Seeding:.+?(\\d+).+?/)",
             "(query && query.length>=2)?(query[1]):null"
           ]
+        },
+        "uploads": {
+          "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(2)",
+          "filters": [
+            "query.text().replace(/,/g,'').match(/Uploaded:.+?(\\d+).+?/)",
+            "(query && query.length>=2)?(query[1]):null"
+          ]
+        },
+        "bonusPerHour": {
+          "selector": ["li:contains('Per Day: ')"],
+          "filters": ["query.eq(0).text().replace(/,/g, '').match(/\\d+/)","query ? (parseFloat(query[0]) / 24) : 0"]
         },
         "seedingSize": {
           "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(5)",

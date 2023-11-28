@@ -330,12 +330,16 @@ export interface LevelRequirement {
   uploads?: number;
   // 下载数要求
   downloads?: number;
+  // snatch
+  snatches?: number;
   // 上传量要求
   uploaded?: string | number;
   // 下载量要求
   downloaded?: string | number;
   // 真实下载量
   trueDownloaded?: string | number;
+  // 总流量
+  totalData?: string | number;
   // 积分要求
   bonus?: number;
   // 做种积分要求
@@ -344,6 +348,8 @@ export interface LevelRequirement {
   seedingTime?: number;
   // 平均保种时间要求
   averageSeedtime?: number;
+  // 总保种时间要求
+  totalSeedtime?: number
   // 保种体积要求
   seedingSize?: string | number;
   // 分享率要求
@@ -620,8 +626,12 @@ export interface UserInfo {
   downloaded?: number;
   // 真实下载量
   trueDownloaded?: string | number;
+  // 总流量
+  totalData?: string | number;
   // 下载数
   downloads?: number;
+  // snatch
+  snatches?: number;
   // 分享率
   ratio?: number;
   // 当前做种数量
@@ -642,6 +652,8 @@ export interface UserInfo {
   seedingTime?: number;
   // 平均保种时间
   averageSeedtime?: number;
+  // 总保种时间
+  totalSeedtime?: number;
   // 时魔
   bonusPerHour?: number;
   // 积分页面
