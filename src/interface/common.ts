@@ -348,7 +348,7 @@ export interface LevelRequirement {
   // 平均保种时间要求
   averageSeedtime?: number;
   // 总保种时间要求
-  TotalSeedtime?: number
+  totalSeedtime?: number
   // 保种体积要求
   seedingSize?: string | number;
   // 分享率要求
@@ -652,7 +652,7 @@ export interface UserInfo {
   // 平均保种时间
   averageSeedtime?: number;
   // 总保种时间
-  TotalSeedtime?: number;
+  totalSeedtime?: number;
   // 时魔
   bonusPerHour?: number;
   // 积分页面

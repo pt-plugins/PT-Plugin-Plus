@@ -69,7 +69,7 @@
       "totalData": "100TiB",
       "bonus":"250000000",
       "snatches":"35000",
-      "TotalSeedtime":"250000",
+      "totalSeedtime":"250000",
       "privilege": "Has access to the Overlord forum, Custom Title, Unlimited Invites, and more to come!"
   }],
   "searchEntry": [{
@@ -155,7 +155,7 @@
             "query.reduce((sum, match) => sum + Number(match.split(\": \")[1]), 0)"
           ]
         },
-        "TotalSeedtime": {
+        "totalSeedtime": {
           "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(12)",
           "filters": [
             "query.text().replace(/,/g,'').match(/Total Time Seeded:.+?(\\d+).+?/)",

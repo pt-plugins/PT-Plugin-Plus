@@ -245,7 +245,7 @@
         "downloaded":"Downloaded",
         "uploads": "Uploaded",
         "downloads": "Downloaded",
-        "TotalSeedtime":"TotalSeedtime",
+        "totalSeedtime":"totalSeedtime",
         "snatches":"snatched",
         "trueDownloaded": "True Downloaded",
         "totalData":"Total Data",

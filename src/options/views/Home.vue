@@ -194,9 +194,9 @@
                             nextLevel.averageSeedtime | formatNumber
                         }}{{$t("home.levelRequirement.days")}}&nbsp;
                       </template>
-                      <template v-if="nextLevel.TotalSeedtime">
+                      <template v-if="nextLevel.totalSeedtime">
                         <v-icon small color="green darken-4">timer</v-icon>{{
-                            nextLevel.TotalSeedtime | formatNumber
+                            nextLevel.totalSeedtime | formatNumber
                         }}{{$t("home.levelRequirement.days")}}&nbsp;
                       </template>
                       <template v-if="nextLevel.uploads">
@@ -291,8 +291,8 @@
                             | formatInteger
                         }}{{$t("home.levelRequirement.days")}};
                       </template>
-                      <template v-if="levelRequirement.TotalSeedtime">
-                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.TotalSeedtime')">timer</v-icon>{{ levelRequirement.TotalSeedtime
+                      <template v-if="levelRequirement.totalSeedtime">
+                        <v-icon small color="green darken-4" :title="$t('home.levelRequirement.totalSeedtime')">timer</v-icon>{{ levelRequirement.totalSeedtime
                             | formatInteger
                         }}{{$t("home.levelRequirement.days")}};
                       </template>
@@ -371,8 +371,8 @@
                                 | formatInteger
                             }}{{$t("home.levelRequirement.days")}};
                           </template>
-                          <template v-if="option.TotalSeedtime">
-                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.TotalSeedtime')">timer</v-icon>{{ option.TotalSeedtime
+                          <template v-if="option.totalSeedtime">
+                            <v-icon small color="green darken-4" :title="$t('home.levelRequirement.totalSeedtime')">timer</v-icon>{{ option.totalSeedtime
                                 | formatInteger
                             }}{{$t("home.levelRequirement.days")}};
                           </template>
@@ -1083,11 +1083,11 @@ export default Vue.extend({
           nextLevel.level = levelRequirement.level;
         }
       }
-      if (levelRequirement.TotalSeedtime) {
-        let userTotalSeedtime = user.TotalSeedtime as number;
-        let requiredTotalSeedtime = levelRequirement.TotalSeedtime as number;
-        if (userTotalSeedtime < requiredTotalSeedtime) {
-          nextLevel.TotalSeedtime = requiredTotalSeedtime - userTotalSeedtime;
+      if (levelRequirement.totalSeedtime) {
+        let usertotalSeedtime = user.totalSeedtime as number;
+        let requiredtotalSeedtime = levelRequirement.totalSeedtime as number;
+        if (usertotalSeedtime < requiredtotalSeedtime) {
+          nextLevel.totalSeedtime = requiredtotalSeedtime - usertotalSeedtime;
           nextLevel.level = levelRequirement.level;
         }
       }
