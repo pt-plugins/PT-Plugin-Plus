@@ -140,7 +140,8 @@
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
               <template v-if="props.item.levelRequirements">
-                <template v-if="isUserGroup(props.item) && props.item.user.nextLevels && props.item.user.nextLevels.length > 0">
+                <template v-if="isUserGroup(props.item) && isNotMaxUserLevel(props.item)
+                 && props.item.user.nextLevels && props.item.user.nextLevels.length > 0">
                   <template v-for="nextLevel in props.item.user.nextLevels">
                     <div>
                       <v-icon small>keyboard_tab</v-icon>
@@ -902,6 +903,15 @@ export default Vue.extend({
     },
     isUserGroup(site: Site) {
       return this.getUserLevelGroup(site) === 'user'
+    },
+    /**
+     * 适用于站点更改等级规则后, 显示距离下一等级的条件
+     * 因为有些站点可能改了等级名称, 所以这里只做简单的判断是否为 NM. 可以将 config.json 里面的数据同步修改
+     */
+    isNotMaxUserLevel(site: Site) {
+      let maxLevel = site.levelRequirements?.slice(-1)[0]?.name,
+          userLevel = site.user?.levelName
+      return maxLevel !== userLevel
     },
     /**
      * 格式化一些用户信息
