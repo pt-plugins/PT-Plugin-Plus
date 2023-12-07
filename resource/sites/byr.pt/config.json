@@ -72,6 +72,47 @@
     "ratio": "4.55",
     "privilege": "更加高级"
   }],
+  "selectors": {
+      "userBaseInfo": {
+          "page": "/index.php",
+          "fields": {
+              "id": {
+                  "selector": [
+                      "a[href*='userdetails.php']:first"
+                  ],
+                  "attribute": "href",
+                  "filters": [
+                      "query?query.getQueryString('id'):''"
+                  ]
+              },
+              "name": {
+                  "selector": [
+                      "a[href*='userdetails.php']:first"
+                  ],
+                  "filters": [
+                      "query&&query.attr('href').getQueryString('id')>0?query.text():''"
+                  ]
+              },
+              "isLogged": {
+                  "selector": [
+                      "a[href*='usercp.php']"
+                  ],
+                  "filters": [
+                      "query.length>0"
+                  ]
+              },
+              "messageCount": {
+                  "selector": [
+                      "td[style*='background:red']a[href*='messages.php']"
+                  ],
+                  "filters": [
+                      "query.text().match(/(\\d+)/)",
+                      "(query&&query.length>=2)?parseInt(query[1]):0"
+                  ]
+              }
+          }
+      }
+  },
   "searchEntry": [{
       "entry": "/torrents.php?search=$key$&notnewword=1",
       "name": "全站",
