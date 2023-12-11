@@ -5,7 +5,7 @@
   "url": "https://www.agsvpt.com/",
   "description": "The Ultimate File Sharing Experience",
   "icon": "https://www.agsvpt.com/favicon.ico",
-  "cdn": ["https://agsvpt.com/","https://abroad.leaves.red/"],
+  "cdn": ["https://agsvpt.com/","https://abroad.agsvpt.com/"],
   "tags": [
     "综合"
   ],
