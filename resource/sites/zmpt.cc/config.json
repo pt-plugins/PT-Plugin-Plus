@@ -4,7 +4,7 @@
   "description": "为爱启航，造就梦想！",
   "url": "https://zmpt.cc/",
   "icon": "https://zmpt.cc/favicon.ico",
-  "tags": [],
+  "tags": ["影视","综合","游戏"],
   "schema": "NexusPHP",
   "host": "zmpt.cc",
   "levelRequirements": [
@@ -88,7 +88,7 @@
     "fieldSelector": {
       "progress": {
         "selector": [
-          "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
+          ".torrentname td.embedded:first-child > div:last"
         ],
         "filters": [
           "query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"
@@ -96,7 +96,7 @@
       },
       "status": {
         "selector": [
-          "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
+          ".torrentname td.embedded:first-child > div:last"
         ],
         "filters": [
           "query ? query.attr('title') : ''",
@@ -124,6 +124,48 @@
             "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
             "(query != 0) ? query.sizeToNumber() : 0"
           ]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.rowhead:contains('传输') + td",  "td.rowfollow:contains('分享率')"],
+          "filters": ["query.text().replace(/,/g,'').match(/(上[传傳]量|Uploaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==3)?(query[2]).sizeToNumber():0"]
+        },
+        "downloaded": {
+          "selector": ["td.rowhead:contains('传输') + td", "td.rowfollow:contains('分享率')"],
+          "filters": ["query.text().replace(/,/g,'').match(/(下[载載]量|Downloaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==3)?(query[2]).sizeToNumber():0"]
+        },
+        "levelName": {
+          "selector": ["td.rowhead:contains('等级')"],
+          "filters": ["query.next().find('img').attr('title')", "query.replace(/[^a-z0-9 ]/gi, '').trim().length > 0 ? query.replace(/[^a-z0-9 ]/gi, '').trim() : query"]
+        },
+        "bonus": {
+          "selector": ["td.rowhead:contains('电力') + td", "td.rowhead:contains('Karma'):contains('Points') + td", "td.rowhead:contains('麦粒') + td", "td.rowfollow:contains('电力值')", "td.rowhead:contains('bonus') + td"],
+          "filters": ["query.is(\":contains('电力值:')\")||query.is(\":contains('Bonus Points:')\")?query.text().replace(/,/g,'').match(/(?:电力值|Bonus Points).+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')", "parseFloat(query)"]
+        },
+        "seedingPoints": {
+          "selector": ["td.rowhead:contains('做种积分') + td", "td.rowhead:contains('Seeding Points') + td", "td.rowhead:contains('做種積分') + td", "td.rowhead:contains('保种积分') + td", "td.rowfollow:contains('做种积分')", "td.rowfollow:contains('Seeding Points')", "td.rowfollow:contains('做種積分')"],
+          "filters": [
+            "query.text().replace(/,/g,'')",
+            "query.includes('做种积分') || query.includes('做種積分') || query.includes('Seeding Points') ? query.match(/(做种积分|做種積分|Seeding Points).+?[\\d.]+/g)[0] : query",
+            "query ? parseFloat(query.match(/[\\d.]+/)[0]) : null"]
+        },
+        "joinTime": {
+          "selector": ["td.rowhead:contains('加入日期')", "td.rowhead:contains('Join'):contains('date')"],
+          "filters": ["query.next().text().split(' (')[0].trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["#outer td[rowspan]"],
+          "filters": ["parseFloat(query.text().replace(/,/g,'').match(/[\\d.]+/)[0])"]
         }
       }
     }
