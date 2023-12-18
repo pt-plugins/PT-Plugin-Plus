@@ -40,6 +40,8 @@ export interface DownloadClient {
   // 发送种子的时候发送分类
   enableCategory?: boolean;
   qbCategories?: QbCategory[];
+  hostnameAsTag?: boolean;
+  siteNameAsTag?: boolean;
 }
 
 /**
