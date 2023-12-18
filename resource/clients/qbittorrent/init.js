@@ -169,7 +169,8 @@
      */
     addTorrentFromUrl(data, callback) {
       let formData = new FormData();
-      let {savePath, category, clientOptions} = data, autoTMM = undefined, qbCategories
+      let {savePath, category, clientOptions, siteConfig} = data, autoTMM = undefined, qbCategories
+      let tags = [data.imdbId]
 
       if (savePath) {
         formData.append("savepath", data.savePath)
@@ -197,6 +198,21 @@
         }
       }
 
+      if (clientOptions && siteConfig)  {
+        // 以 frds 为例, 这里是 keepfrds
+        if (clientOptions.hostnameAsTag) {
+          let url = new URL(siteConfig.activeURL).hostname
+          let arr = url.split('.')
+          arr.pop()
+          tags.push(arr.pop())
+        }
+        // 以 frds 为例, 这里是 pt@keepfrds
+        if (clientOptions.siteNameAsTag) {
+          tags.push(siteConfig.name)
+        }
+      }
+      tags = tags.filter(_ => !!_).map(_ => _.toLowerCase()).join(',')
+
       if (autoTMM !== undefined) {
         formData.append("autoTMM", autoTMM);
       }
@@ -209,8 +225,8 @@
         formData.append("paused", !data.autoStart);
       }
 
-      if (data.imdbId != undefined) {
-        formData.append("tags", data.imdbId);
+      if (tags) {
+        formData.append("tags", tags);
       }
 
       if (data.upLoadLimit && data.upLoadLimit > 0) {

@@ -51,6 +51,16 @@
             v-if="['qbittorrent'].includes(option.type)"
           ></v-switch>
 
+          <!--站点 host 作为 qb 标签-->
+          <v-switch
+              :label="$t('settings.downloadClients.editor.hostnameAsTag')"
+              v-model="option.hostnameAsTag"
+          ></v-switch>
+          <!--站点名 作为 qb 标签-->
+          <v-switch
+              :label="$t('settings.downloadClients.editor.siteNameAsTag')"
+              v-model="option.siteNameAsTag"
+          ></v-switch>
           <!--启用 qb 分类-->
           <v-switch
               :label="$t('settings.downloadClients.editor.enableCategory')"

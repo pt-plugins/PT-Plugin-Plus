@@ -587,6 +587,8 @@
           "loginPwd": "login password",
           "id": "ID",
           "autoStart": "Automatically start downloading when sending a torrent",
+          "hostnameAsTag": "Add lowercase host name to tags when sending torrents (Beta)",
+          "siteNameAsTag": "Add lowercase site name to tags when sending torrents (Beta)",
           "tagIMDb": "Add IMDb tag when sending a torrent(Beta)",
           "enableCategory": "Automatically add QB categories when sending torrents (Beta)",
           "enableCategoryText": "QB category list",
