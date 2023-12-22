@@ -4,7 +4,7 @@
     "schema": "UNIT3D",
     "url": "https://kimoji.club/",
     "icon": "https://kimoji.club/favicon.ico",
-    "description": "",
+    "description": "我们致力于打造一个真正能给PT玩家们提供优质内容的综合门户，为此，我们将永远虚心采纳来自用户的所有建议与意见。",
     "host": "kimoji.club",
     "levelRequirements": [{
             "level": "1",
@@ -48,5 +48,7 @@
             "averageSeedtime": "60"
         }
     ],
-    "collaborator": "Exception"
+    "collaborator": [
+        "Exception"
+    ]
 }
