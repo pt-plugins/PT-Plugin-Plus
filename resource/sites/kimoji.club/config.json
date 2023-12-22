@@ -1,0 +1,52 @@
+{
+    "name": "KIMOJI",
+    "timezoneOffset": "+0800",
+    "schema": "UNIT3D",
+    "url": "https://kimoji.club/",
+    "icon": "https://kimoji.club/favicon.ico",
+    "description": "",
+    "host": "kimoji.club",
+    "levelRequirements": [{
+            "level": "1",
+            "name": "壮士",
+            "interval": "45D",
+            "uploaded": "500GB"
+        }, {
+            "level": "2",
+            "name": "力士",
+            "interval": "90D",
+            "uploaded": "2TB"
+        }, {
+            "level": "3",
+            "name": "剑客",
+            "interval": "150D",
+            "uploaded": "5TB"
+        }, {
+            "level": "4",
+            "name": "大侠",
+            "interval": "240D",
+            "uploaded": "10TB"
+        }, {
+            "level": "5",
+            "name": "盟主",
+            "interval": "365D",
+            "uploaded": "20TB",
+            "averageSeedtime": "30"
+        },
+        {
+            "level": "6",
+            "name": "至尊",
+            "interval": "545D",
+            "seedingSize": "50TB",
+            "averageSeedtime": "60"
+        },
+        {
+            "level": "7",
+            "name": "剑圣",
+            "interval": "730D",
+            "seedingSize": "100TB",
+            "averageSeedtime": "60"
+        }
+    ],
+    "collaborator": "Exception"
+}
