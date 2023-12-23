@@ -34,6 +34,10 @@
           "selector": ["a[href*='logout.php']"],
           "filters": ["query.length>0"]
         },
+        "messageCount": {
+          "selector": ["span.noty-notification"],
+          "filters": ["query.text().match(/have (\\d+|a) new/)", "(query && query.length>=2)?(query[1]=='a'?1:parseInt(query[1])):0"]
+        },
         "bonusPerHour": {
           "selector": ["h3.float_right"],
           "filters": ["query.text().replace(',','').match(/making ([\\d]+) Orbs/)", "(query && query.length>=2)?parseFloat(query[1]):null"]
