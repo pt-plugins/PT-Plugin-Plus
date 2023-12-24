@@ -264,6 +264,14 @@
         "bonus": {
           "selector": ["td.rowhead:contains('UCoin') + td"],
           "filters": ["query.text().replace(/,/g,'').match(/\\(([\\d.]+)/)", "(query && query.length>=2)?parseFloat(query[1]):null"]
+        },
+        "uploaded": {
+          "selector": [".color_uploaded"],
+          "filters": ["$(query[0].nextSibling).text().trim().sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": [".color_downloaded"],
+          "filters": ["$(query[0].nextSibling).text().trim().sizeToNumber()"]
         }
       }
     },
