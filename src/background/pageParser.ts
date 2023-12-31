@@ -139,8 +139,7 @@ export class PageParser {
         dataType: "text",
         headers: this.options.headers,
         data: this.requestData,
-        timeout: this.timeout,
-        cache: false
+        timeout: this.timeout
       })
         .done(result => {
           let content: any;

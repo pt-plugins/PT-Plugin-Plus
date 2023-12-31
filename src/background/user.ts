@@ -320,7 +320,8 @@ export class User {
         dataType: "text",
         data: requestData,
         headers: rule.headers,
-        timeout: this.service.options.connectClientTimeout || 30000
+        timeout: this.service.options.connectClientTimeout || 30000,
+        cache: false
       })
         .done(result => {
           this.removeQueue(host, url);
