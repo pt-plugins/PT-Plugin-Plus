@@ -236,6 +236,10 @@
         "uploaded": {
           "selector": [".color_uploaded"],
           "filters": ["$(query[0].nextSibling).text().trim().sizeToNumber()"]
+        },
+        "unsatisfieds": {
+          "selector": ["a[href*='/hnr_details.php']:last"],
+          "filters": ["parseInt(query.text())"]
         }
       }
     },
