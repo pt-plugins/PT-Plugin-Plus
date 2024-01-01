@@ -5,56 +5,62 @@
   "url": "https://www.empornium.is/",
   "tags": ["Adult"],
   "schema": "Common",
-  "plugins": [{
-    "name": "种子列表",
-    "pages": ["/torrents.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
-  }],
+  "plugins": [
+    {
+      "name": "种子列表",
+      "pages": ["/torrents.php"],
+      "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+    }
+  ],
   "host": "www.empornium.is",
   "formerHosts": [
     "www.empornium.me",
     "www.empornium.sx"
   ],
+  "cdn": ["https://www.empornium.sx/", "https://www.empornium.is/"],
   "searchEntryConfig": {
     "page": "torrents.php?searchtext=$key$",
     "resultType": "html",
     "resultSelector": "table.torrent_table.grouping",
     "dataRowSelector": " > tbody > tr:not(:first-child)",
     "fieldIndex": {
-	    "category": 0,
-	    "title": 1,
-	    "link": 1,
-        "comments": 3,
-        "time": 4,
-        "size": 5,
-        "author": 9,
-        "seeders": 7,
-        "leechers": 8,
-        "completed": 6
-	},
-	"fieldSelector": {
-	  "category": {
-		"selector": ["div[title]"],
+      "category": 0,
+      "title": 1,
+      "link": 1,
+      "comments": 3,
+      "time": 4,
+      "size": 5,
+      "author": 9,
+      "seeders": 7,
+      "leechers": 8,
+      "completed": 6
+    },
+    "fieldSelector": {
+      "category": {
+        "selector": ["div[title]"],
         "filters": ["query.attr('title')"]
-	  },
-	  "title": {
-		"selector": ["a[onmouseout]"],
+      },
+      "title": {
+        "selector": ["a[onmouseout]"],
         "filters": ["query.text()"]
-	  },
-	  "link": {
-		"selector": ["a[onmouseout]"],
+      },
+      "link": {
+        "selector": ["a[onmouseout]"],
         "filters": ["query.attr('href')"]
-	  },
-	  "url": {
-		"selector": ["a[href*='action=download&id=']"],
+      },
+      "url": {
+        "selector": ["a[href*='action=download&id=']"],
         "filters": ["query.attr('href')"]
-	  },
-	  "time": {
-		"selector": [""],
+      },
+      "time": {
+        "selector": [""],
         "filters": ["query.text()"]
-	  },
-	  "progress": {
-        "selector": ["a[title='Currently Seeding Torrent'], a[title='Previously Snatched Torrent']", "a[title='Previously Grabbed Torrent File']", ""],
+      },
+      "progress": {
+        "selector": [
+          "a[title='Currently Seeding Torrent'], a[title='Previously Snatched Torrent']",
+          "a[title='Previously Grabbed Torrent File']", ""
+        ],
         "switchFilters": [
           ["100"],
           ["0"],
@@ -62,28 +68,35 @@
         ]
       },
       "status": {
-        "selector": ["a[title='Currently Seeding Torrent']", "a[title='Previously Snatched Torrent']", "a[title='Previously Grabbed Torrent File']"],
+        "selector": [
+          "a[title='Currently Seeding Torrent']", "a[title='Previously Snatched Torrent']",
+          "a[title='Previously Grabbed Torrent File']"
+        ],
         "switchFilters": [
           ["2"],
           ["255"],
           ["3"]
         ]
       }
-	}
+    }
   },
-  "searchEntry": [{
-    "name": "全部",
-    "enabled": true
-  }],
-  "torrentTagSelectors": [{
-    "name": "Free",
-    "selector": "span[title='Unlimited Freeleech']"
-  }],
+  "searchEntry": [
+    {
+      "name": "全部",
+      "enabled": true
+    }
+  ],
+  "torrentTagSelectors": [
+    {
+      "name": "Free",
+      "selector": "span[title='Unlimited Freeleech']"
+    }
+  ],
   "selectors": {
     "userBaseInfo": {
       "page": "/index.php",
       "fields": {
-	    "id": {
+        "id": {
           "selector": ["a.username[href*='user.php']:first"],
           "attribute": "href",
           "filters": ["query ? query.getQueryString('id'):''"]
@@ -100,16 +113,22 @@
           "filters": ["(query && query.length>=1)?11:0"]
         },
         "seeding": {
-	      "selector": ["#nav_seeding_r"],
+          "selector": ["#nav_seeding_r"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):null"]
         },
         "uploaded": {
           "selector": ["td:contains('Up:') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
+          "filters": [
+            "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():null"
+          ]
         },
         "downloaded": {
           "selector": ["td:contains('Down:') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
+          "filters": [
+            "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():null"
+          ]
         },
         "ratio": {
           "selector": ["td:contains('Ratio:') + td"],
@@ -130,20 +149,23 @@
         },
         "levelName": {
           "selector": ["span.rank"],
-          "filters":  ["query.text()"]
+          "filters": ["query.text()"]
         },
         "seedingSize": {
-	        "selector": ["ul.stats.nobullet > li:contains('Seeding Size:')"],
-	        "filters": ["query.text().replace('Seeding Size: ', '').replace(/,/g,'')","query.sizeToNumber()"]
+          "selector": ["ul.stats.nobullet > li:contains('Seeding Size:')"],
+          "filters": ["query.text().replace('Seeding Size: ', '').replace(/,/g,'')", "query.sizeToNumber()"]
         }
       }
     },
     "common": {
-	  "page": "/torrents.php",
+      "page": "/torrents.php",
       "fields": {
         "size": {
           "selector": ["#content > div > div:nth-child(4)  td:contains('iB')"],
-          "filters": ["query.parent().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0"]
+          "filters": [
+            "query.parent().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>1)?(query[1]).sizeToNumber():0"
+          ]
         },
         "sayThanksButton": {
           "selector": ["#thanksbutton"],
@@ -160,5 +182,57 @@
       }
     }
   },
-  "cdn": ["https://www.empornium.sx/","https://www.empornium.is/"]
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "Perv",
+      "interval": "1",
+      "uploaded": "10GB",
+      "ratio": "0.6",
+      "privilege": "访问 Top10 列表, 创建 tag, 给 tag 投票, 使用 upload templates, 设置论坛签名(128 char)"
+    },
+    {
+      "level": "2",
+      "name": "Good Perv",
+      "interval": "4",
+      "uploaded": "25GB",
+      "ratio": "1.05",
+      "privilege": "访问站点统计数据, 创建公开 upload templates, 访问摇摇乐(Slot Machine), 论坛个性签名 256 char"
+    },
+    {
+      "level": "3",
+      "name": "Better Perv",
+      "interval": "261",
+      "uploaded": "25TB",
+      "ratio": "1.05",
+      "privilege": "发送邀请, 论坛个性签名 512 char"
+    },
+    {
+      "level": "4",
+      "name": "Great Perv",
+      "interval": "8",
+      "uploaded": "100GB",
+      "ratio": "1.05",
+      "uploads": "5",
+      "privilege": "发送邀请, 访问邀请区, 论坛个性签名 512 char"
+    },
+    {
+      "level": "5",
+      "name": "Sextreme Perv",
+      "interval": "13",
+      "uploaded": "1TB",
+      "ratio": "1.05",
+      "uploads": "50",
+      "privilege": "论坛个性签名 1024 char"
+    },
+    {
+      "level": "6",
+      "name": "Smut Peddler",
+      "interval": "26",
+      "uploaded": "10TB",
+      "ratio": "1.05",
+      "uploads": "250",
+      "privilege": "论坛个性签名 2480 char"
+    }
+  ]
 }
