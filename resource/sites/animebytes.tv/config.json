@@ -157,10 +157,7 @@
         },
         "joinTime": {
           "selector": ["dt:contains('Joined:') + dd > span"],
-          "filters": [
-            "query.attr('title')||query.text()",
-            "dateTime(query, 'MMM DD YYYY, HH:mm').isValid()?dateTime(query, 'MMM DD YYYY, HH:mm').valueOf():query"
-          ]
+          "filters": ["dateTime(query.attr('title')).isValid() ? query.attr('title') : query.text()", "dateTime(query).isValid() ? dateTime(query).valueOf() : query"]
         },
         "averageSeedtime": {
           "selector": ["dt:contains('Average Seedtime') + dd > span", "dt:contains('平均做种时间') + dd > span", "dt:contains('平均做種時間') + dd > span"],
