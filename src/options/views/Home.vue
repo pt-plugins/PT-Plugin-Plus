@@ -165,8 +165,7 @@
                         }}&nbsp;
                       </template>
                       <template v-if="nextLevel.totalData">
-                        {{ $t("home.levelRequirement.totalData") }}
-                        {{
+                        <v-icon small color="orange darken-4">swap_vert</v-icon>{{
                             nextLevel.totalData | formatSize
                         }}&nbsp;
                       </template>
@@ -260,8 +259,7 @@
                         {{ levelRequirement.trueDownloaded }};
                       </template>
                       <template v-if="levelRequirement.totalData">
-                        {{ $t("home.levelRequirement.totalData") }}
-                        {{ levelRequirement.totalData }};
+                        <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.totalData')">swap_vert</v-icon>{{ levelRequirement.totalData }};
                       </template>
                       <template v-if="levelRequirement.downloads">
                         <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ levelRequirement.downloads }};
@@ -340,8 +338,7 @@
                             {{ option.trueDownloaded }};
                           </template>
                           <template v-if="option.totalData">
-                            {{ $t("home.levelRequirement.totalData") }}
-                            {{ option.totalData }};
+                            <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.totalData')">swap_vert</v-icon>{{ option.totalData }};
                           </template>
                           <template v-if="option.downloads">
                             <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ option.downloads }};
