@@ -149,10 +149,9 @@
         ]
        },
         "snatches": {
-          "selector": "ul.nobullet > li:contains('Snatched:')",
+          "selector": "ul.nobullet > li:contains('Snatched:'):last",
           "filters": [ 
-            "query.text().match(/Snatched: (\\d+)/g)",
-            "query.reduce((sum, match) => sum + Number(match.split(\": \")[1]), 0)"
+            "query.text().replace(/,/g,'').match(/[\\d]+/)[0]", "parseInt(query)"
           ]
         },
         "totalSeedtime": {
