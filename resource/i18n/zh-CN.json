@@ -213,7 +213,7 @@
         "status": "状态",
         "uploads": "发布数",
         "trueDownloaded": "真实下载",
-        "totalData":"总流量",
+        "totalTraffic":"总流量",
         "classPoints": "等级积分",
         "unsatisfieds": "H&R考核中",
         "prewarn": "H&R预警"
@@ -242,7 +242,7 @@
         "downloads": "完成",
         "snatches":"完成数",
         "trueDownloaded": "真实下载",
-        "totalData":"总流量",
+        "totalTraffic":"总流量",
         "classPoints": "等级积分",
         "posts": "论坛帖子",
         "uniqueGroups": "独特分组",

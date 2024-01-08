@@ -341,7 +341,7 @@ export interface LevelRequirement {
   // 真实下载量
   trueDownloaded?: string | number;
   // 总流量
-  totalData?: string | number;
+  totalTraffic?: string | number;
   // 积分要求
   bonus?: number;
   // 做种积分要求
@@ -629,7 +629,7 @@ export interface UserInfo {
   // 真实下载量
   trueDownloaded?: string | number;
   // 总流量
-  totalData?: string | number;
+  totalTraffic?: string | number;
   // 下载数
   downloads?: number;
   // snatch

@@ -217,7 +217,7 @@
         "comments": "Comments",
         "uploads": "Uploaded",
         "trueDownloaded": "True Downloaded",
-        "totalData":"Total Data",
+        "totalTraffic":"Total Traffic",
         "classPoints": "Class Points",
         "unsatisfieds": "Unsatisfieds",
         "prewarn": "H&R Prewarn"
@@ -248,7 +248,7 @@
         "totalSeedtime":"totalSeedtime",
         "snatches":"snatched",
         "trueDownloaded": "True Downloaded",
-        "totalData":"Total Data",
+        "totalTraffic":"Total Traffic",
         "classPoints": "Class Points",
         "uniqueGroups": "Unique Groups",
         "perfectFLAC": "\"Perfect\" FLAC",

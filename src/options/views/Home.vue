@@ -164,9 +164,9 @@
                             nextLevel.trueDownloaded | formatSize
                         }}&nbsp;
                       </template>
-                      <template v-if="nextLevel.totalData">
+                      <template v-if="nextLevel.totalTraffic">
                         <v-icon small color="orange darken-4">swap_vert</v-icon>{{
-                            nextLevel.totalData | formatSize
+                            nextLevel.totalTraffic | formatSize
                         }}&nbsp;
                       </template>
                       <template v-if="nextLevel.bonus">
@@ -258,8 +258,8 @@
                         {{ $t("home.levelRequirement.trueDownloaded") }}
                         {{ levelRequirement.trueDownloaded }};
                       </template>
-                      <template v-if="levelRequirement.totalData">
-                        <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.totalData')">swap_vert</v-icon>{{ levelRequirement.totalData }};
+                      <template v-if="levelRequirement.totalTraffic">
+                        <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.totalTraffic')">swap_vert</v-icon>{{ levelRequirement.totalTraffic }};
                       </template>
                       <template v-if="levelRequirement.downloads">
                         <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ levelRequirement.downloads }};
@@ -337,8 +337,8 @@
                             {{ $t("home.levelRequirement.trueDownloaded") }}
                             {{ option.trueDownloaded }};
                           </template>
-                          <template v-if="option.totalData">
-                            <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.totalData')">swap_vert</v-icon>{{ option.totalData }};
+                          <template v-if="option.totalTraffic">
+                            <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.totalTraffic')">swap_vert</v-icon>{{ option.totalTraffic }};
                           </template>
                           <template v-if="option.downloads">
                             <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ option.downloads }};
@@ -1134,13 +1134,13 @@ export default Vue.extend({
           nextLevel.level = levelRequirement.level;
         }
       }
-      if (levelRequirement.totalData) {
-        let usertotalData = user.totalData ? (user.totalData as number) : 0;
-        let requiredtotalData = this.fileSizetoLength(
-          levelRequirement.totalData as string
+      if (levelRequirement.totalTraffic) {
+        let userTotalTraffic = user.totalTraffic ? (user.totalTraffic as number) : 0;
+        let requiredTotalTraffic = this.fileSizetoLength(
+          levelRequirement.totalTraffic as string
         );
-        if (usertotalData < requiredtotalData) {
-          nextLevel.totalData = requiredtotalData - usertotalData;
+        if (userTotalTraffic < requiredTotalTraffic) {
+          nextLevel.totalTraffic = requiredTotalTraffic - userTotalTraffic;
           nextLevel.level = levelRequirement.level;
         }
       }
