@@ -11,7 +11,7 @@
   ],
   "schema": "NexusPHP",
   "host": "byr.pt",
-  "collaborator": ["Rhilip", "yuanyiwei"],
+  "collaborator": ["Rhilip", "yuanyiwei", "hui-shao"],
   "formerHosts": [
     "bt.byr.cn"
   ],
@@ -119,6 +119,15 @@
                 ]
             }
         }
+    },
+    "/details.php": {
+      "merge": true,
+      "fields": {
+        "downloadURL": {
+          "selector": [ "a#tlink[data-clipboard-text*='passkey']" ],
+          "filters": [ "query.attr('data-clipboard-text')" ]
+        }
+      }
     }
   },
   "searchEntry": [{
