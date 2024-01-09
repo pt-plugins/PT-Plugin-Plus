@@ -207,10 +207,6 @@
                         <v-icon small color="red darken-4">file_download</v-icon>{{ nextLevel.snatches
                         }}&nbsp;
                       </template>
-                      <template v-if="nextLevel.downloads">
-                        <v-icon small color="red darken-4">file_download</v-icon>{{ nextLevel.downloads
-                        }}&nbsp;
-                      </template>
                       <template v-if="nextLevel.uniqueGroups">
                         <v-icon small color="green darken-4">library_music</v-icon>{{ nextLevel.uniqueGroups
                         }}&nbsp;
@@ -260,9 +256,6 @@
                       </template>
                       <template v-if="levelRequirement.totalTraffic">
                         <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.totalTraffic')">swap_vert</v-icon>{{ levelRequirement.totalTraffic }};
-                      </template>
-                      <template v-if="levelRequirement.downloads">
-                        <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ levelRequirement.downloads }};
                       </template>
                       <template v-if="levelRequirement.ratio">
                         <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.ratio')">balance</v-icon>{{ levelRequirement.ratio }};
@@ -339,9 +332,6 @@
                           </template>
                           <template v-if="option.totalTraffic">
                             <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.totalTraffic')">swap_vert</v-icon>{{ option.totalTraffic }};
-                          </template>
-                          <template v-if="option.downloads">
-                            <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ option.downloads }};
                           </template>
                           <template v-if="option.ratio">
                             <v-icon small color="orange darken-4" :title="$t('home.levelRequirement.ratio')">balance</v-icon>{{ option.ratio }};
@@ -1112,14 +1102,6 @@ export default Vue.extend({
         let requiredSnatches = levelRequirement.snatches as number;
         if (userSnatches < requiredSnatches) {
           nextLevel.snatches = requiredSnatches - userSnatches;
-          nextLevel.level = levelRequirement.level;
-        }
-      }
-      if (levelRequirement.downloads) {
-        let userDownloads = user.downloads ? user.downloads as number : 0;
-        let requiredDownloads = levelRequirement.downloads as number;
-        if (userDownloads < requiredDownloads) {
-          nextLevel.downloads = requiredDownloads - userDownloads;
           nextLevel.level = levelRequirement.level;
         }
       }

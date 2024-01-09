@@ -331,8 +331,6 @@ export interface LevelRequirement {
   // 上传数要求
   uploads?: number;
   // 下载数要求
-  downloads?: number;
-  // snatch
   snatches?: number;
   // 上传量要求
   uploaded?: string | number;
@@ -631,8 +629,6 @@ export interface UserInfo {
   // 总流量
   totalTraffic?: string | number;
   // 下载数
-  downloads?: number;
-  // snatch
   snatches?: number;
   // 分享率
   ratio?: number;

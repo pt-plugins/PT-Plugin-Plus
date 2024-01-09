@@ -125,7 +125,7 @@
           "selector": "div.box:eq(5) > div.head + ul.stats > li:eq(3)",
           "filters": ["query.text().match(/[\\d.]+/)", " query ? query[0] : null"]
         },
-        "downloads": {
+        "snatches": {
           "selector": "div.box:eq(5) > div.head + ul.stats > li:eq(7)",
           "filters": ["query.text().match(/[\\d.]+/)", " query ? query[0] : null"]
         }
