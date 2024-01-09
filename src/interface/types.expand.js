@@ -44,15 +44,20 @@ String.prototype.sizeToNumber = function() {
  * @return {number}
  */
 String.prototype.timeToDays = function() {
-  let t = this.replace("weeks", "W").replace("days", "D").replace("months", "M").replace("years", "Y").replace(" ", "");
-  const timeMatch = t.match(/\d+[天日周月年DWMY]/g);
+  let t = this.replace(/weeks/ig, "W")
+    .replace(/days/ig, "D")
+    .replace(/months/ig, "M")
+    .replace(/years/ig, "Y")
+    .replace(/hours/ig, "H")
+    .replace(/\s+/g, "");
+  const timeMatch = t.match(/\d+[天日周月年时DWMYH]/g);
   let length = 0;
   if (timeMatch == null)
     return 0;
   
   timeMatch.forEach(time => {
 
-    const timeMatch = time.match(/(\d+)([天日周月年DWMY])/);
+    const timeMatch = time.match(/(\d+)([天日周月年时DWMYH])/);
     if (timeMatch == null)
       return 0;
 
@@ -75,6 +80,10 @@ String.prototype.timeToDays = function() {
       case unit === 'Y':
       case unit === '年':
         length += number * 365;
+        break;
+      case unit === 'H':
+      case unit === '时':
+        length += Math.floor(number / 24);
         break;
       default:
     }

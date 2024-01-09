@@ -592,7 +592,8 @@ export class Searcher {
           delete this.searchRequestQueue[url];
           if (
             (result && typeof result == "string" && result.length > 100) ||
-            typeof result == "object"
+            typeof result == "object" ||
+            (result && entry.resultType == ERequestResultType.JSON && result.toLowerCase().includes("success"))
           ) {
             let page: any;
             let doc: any;
