@@ -176,6 +176,59 @@ export class Searcher {
                 searchEntryConfigQueryString += area.appendQueryString;
               }
 
+              // 获取TVDB的信息以支持对网站的IMDB搜索
+              if (area.name == "IMDB" && area.replaceKeyByTVDB)
+              {
+                try {
+                  $.ajax({
+                    url: "https://thetvdb.com/api/GetSeriesByRemoteID.php?imdbid=" + key,
+                    cache: true,
+                    dataType: "text",
+                    contentType: "text/plain",
+                    timeout: this.options.connectClientTimeout || 30000,
+                    method: ERequestMethod.GET,
+                    async: false
+                  }).done((result: any) => {
+                    let doc = new DOMParser().parseFromString(result, "text/html");
+                    for (var replaceKey of area.replaceKeyByTVDB as string[]) {
+                      switch (replaceKey)
+                      {
+                        case "year":
+                          let year = "";
+                          let date = $(doc).find("FirstAired").text();
+                          if (date != "")
+                          {
+                            year = new Date(date).getFullYear().toString();
+                          }
+                          searchEntryConfigQueryString = searchEntryConfigQueryString.replace("$year$", year);
+                          break;
+                        case "name":
+                          let seriesName = $(doc).find("SeriesName").text();
+                          if (seriesName != "")
+                            searchEntryConfigQueryString = searchEntryConfigQueryString.replace("$name$", seriesName);
+                          else
+                          {
+                            resolve(result);
+                            return;
+                          }
+                          break;
+                        default:
+                          break;
+                      }
+                    }
+                  })
+                  .fail((jqXHR, textStatus, errorThrown) => {
+                    result.type = EDataResultType.unknown;
+                    reject(result);
+                    return;
+                  });
+                }catch {
+                  result.type = EDataResultType.unknown;
+                  reject(result);
+                  return;
+                }
+              }
+
               // 替换关键字
               if (area.replaceKey) {
                 key = key.replace(

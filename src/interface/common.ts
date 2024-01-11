@@ -479,6 +479,7 @@ export interface SearchEntryConfigArea {
   parseScript?: string;
   // 替换默认页面
   page?: string;
+  replaceKeyByTVDB?: string[];
 }
 
 export interface ISearchFieldIndex {

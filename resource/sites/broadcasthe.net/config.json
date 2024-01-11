@@ -12,7 +12,18 @@
     "page": "/torrents.php",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "queryString": "searchstr=$key$"
+    "queryString": "searchstr=$key$",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "artistname=$name$&exactartist=1&action=advanced&year=$year$",
+      "replaceKeyByTVDB": [
+        "name", "year"
+      ],
+      "replaceKey": [
+        " ", "+"
+      ]
+    }]
   },
   "levelRequirements": [{
       "level": "1",
@@ -201,8 +212,5 @@
         }
       }
     }
-  },
-  "supportedFeatures": {
-    "imdbSearch": false
   }
 }
