@@ -239,7 +239,7 @@
         "uploaded": "上传量",
         "downloaded":"下载量",
         "uploads": "发布数",
-        "snatches":"下载数",
+        "snatches":"完成数",
         "trueDownloaded": "真实下载",
         "totalTraffic":"总流量",
         "classPoints": "等级积分",

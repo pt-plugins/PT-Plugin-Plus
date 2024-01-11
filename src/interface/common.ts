@@ -328,9 +328,9 @@ export interface LevelRequirement {
   interval?: string;
   // 日期要求
   requiredDate?: string;
-  // 上传数要求
+  // 发布数要求
   uploads?: number;
-  // 下载数要求
+  // 完成数要求
   snatches?: number;
   // 上传量要求
   uploaded?: string | number;
@@ -628,7 +628,7 @@ export interface UserInfo {
   trueDownloaded?: string | number;
   // 总流量
   totalTraffic?: string | number;
-  // 下载数
+  // 完成数
   snatches?: number;
   // 分享率
   ratio?: number;
