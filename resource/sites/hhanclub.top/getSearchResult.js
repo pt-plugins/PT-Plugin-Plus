@@ -90,8 +90,8 @@
             tags: Searcher.getRowTags(this.site, row),
             entryName: options.entry.name,
             category: this.getCategory(row),
-            progress: null, // 暂无进度
-            status: null, // 暂无状态
+            progress: Searcher.getFieldValue(this.site, row, "progress"),
+            status: Searcher.getFieldValue(this.site, row, "status"),
             imdbId: this.getIMDbId(row)
           };
 
