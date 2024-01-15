@@ -208,8 +208,19 @@ export class Searcher {
                             searchEntryConfigQueryString = searchEntryConfigQueryString.replace("$name$", seriesName);
                           else
                           {
-                            resolve(result);
-                            return;
+                            resolve({
+                              status: 'success',
+                              success: true,
+                              msg: this.getErrorMessage(
+                                site,
+                                ESearchResultParseStatus.noTorrents,
+                                ""
+                              ),
+                              data: {
+                              },
+                              type: EDataResultType.success
+                            });
+                            return true;
                           }
                           break;
                         default:
