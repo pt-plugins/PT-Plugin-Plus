@@ -94,7 +94,7 @@ export default Vue.extend({
         failedSites: [],
         noResultsSites: []
       } as searchResult,
-      checkBox: false,
+      checkBox: true,
       // 正在下载的种子文件进度信息
       downloading: {
         count: 0,
@@ -153,7 +153,7 @@ export default Vue.extend({
     );
 
     let viewOptions = this.$store.getters.viewsOptions(EViewKey.searchTorrent, {
-      checkBox: false,
+      checkBox: true,
       showCategory: false,
       titleMiddleEllipsis: false
     });
