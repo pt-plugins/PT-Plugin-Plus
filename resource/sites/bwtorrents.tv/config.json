@@ -17,6 +17,8 @@
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
   }],
   "searchEntryConfig": {
+    "skipIMDbId": true,
+    "skipNonLatinCharacters": true,
     "page": "/index.php",
     "resultType": "html",
     "queryString": "search=$key$&blah=0&cat=0&incldead=1",
