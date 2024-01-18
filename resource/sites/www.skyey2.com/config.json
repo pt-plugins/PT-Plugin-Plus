@@ -145,6 +145,7 @@
     "imdbSearch": false
   },
   "searchEntryConfig": {
+    "skipIMDbId": true,
     "fieldSelector": {
       "progress": {
         "selector": ["div.tline1, div.tline2"],

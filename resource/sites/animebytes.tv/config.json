@@ -75,6 +75,9 @@
     "authkey",
     "torrent_pass"
   ],
+  "searchEntryConfig": {
+    "skipIMDbId": true
+  },
   "searchEntry": [
     {
       "entry": "/torrents.php?searchstr=$key$&force_default=1",

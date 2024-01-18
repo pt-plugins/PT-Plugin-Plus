@@ -553,6 +553,8 @@ export interface SearchEntryConfig {
   headers?: Dictionary<any>;
   // 跳过IMDb搜索
   skipIMDbId?: boolean;
+  // 跳过非拉丁字符搜索
+  skipNonLatinCharacters?: boolean;
   // 搜索解析字段索引
   fieldIndex?: ISearchFieldIndex;
   // 数据字段选择器

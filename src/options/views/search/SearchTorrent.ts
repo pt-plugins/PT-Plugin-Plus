@@ -582,6 +582,17 @@ export default Vue.extend({
       this.loading = true;
       this.searchMsg = this.$t("searchTorrent.searching").toString();
       sites.forEach((site: Site, index: number) => {
+        // 站点是否跳过非拉丁字符搜索
+        if (
+          site.searchEntryConfig &&
+          site.searchEntryConfig.skipNonLatinCharacters
+        ) {
+          if (!this.key.match(/^[\p{Script_Extensions=Latin}\p{Script_Extensions=Common}]+$/gu))
+          {
+            return;
+          }
+        }
+
         // 站点是否跳过IMDbId搜索
         if (
           this.IMDbId &&
