@@ -145,7 +145,17 @@
     "imdbSearch": false
   },
   "searchEntryConfig": {
-    "skipIMDbId": true,
+    "page": "/forum.php",
+    "queryString": "mod=torrents&search=$key$",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/Discuz/getSearchResult.js",
+    "resultSelector": "table.torrents:last",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "mod=torrents&search=%24$anidb$",
+      "convertToANIDB": true
+    }],
     "fieldSelector": {
       "progress": {
         "selector": ["div.tline1, div.tline2"],

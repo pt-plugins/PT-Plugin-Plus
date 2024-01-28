@@ -148,6 +148,7 @@ export class Searcher {
       // 将所有 . 替换为空格
       key = key.replace(/\./g, " ");
 
+      let skipSearch = false;
       // 是否有搜索入口配置项
       if (searchEntryConfig && searchEntryConfig.page) {
         siteSearchPage = searchEntryConfig.page;
@@ -155,7 +156,7 @@ export class Searcher {
 
         // 搜索区域
         if (searchEntryConfig.area) {
-          searchEntryConfig.area.some((area: SearchEntryConfigArea) => {
+                    searchEntryConfig.area.some((area: SearchEntryConfigArea) => {
             // 是否有自动匹配关键字的正则
             if (
               area.keyAutoMatch &&
@@ -208,19 +209,8 @@ export class Searcher {
                             searchEntryConfigQueryString = searchEntryConfigQueryString.replace("$name$", seriesName);
                           else
                           {
-                            resolve({
-                              status: 'success',
-                              success: true,
-                              msg: this.getErrorMessage(
-                                site,
-                                ESearchResultParseStatus.noTorrents,
-                                ""
-                              ),
-                              data: {
-                              },
-                              type: EDataResultType.success
-                            });
-                            return true;
+                            skipSearch = true;
+                            return;
                           }
                           break;
                         default:
@@ -229,11 +219,52 @@ export class Searcher {
                     }
                   })
                   .fail((jqXHR, textStatus, errorThrown) => {
+                    skipSearch = true;
                     result.type = EDataResultType.unknown;
                     reject(result);
                     return;
                   });
                 }catch {
+                  skipSearch = true;
+                  result.type = EDataResultType.unknown;
+                  reject(result);
+                  return;
+                }
+              }
+
+              // 转换成ANIDB ID以支持对网站的IMDB搜索
+              if (area.name == "IMDB" && area.convertToANIDB)
+              {
+                try {
+                  $.ajax({
+                    url: "https://raw.githubusercontent.com/Anime-Lists/anime-lists/master/anime-list.xml",
+                    cache: true,
+                    dataType: "text",
+                    contentType: "text/plain",
+                    timeout: this.options.connectClientTimeout || 30000,
+                    method: ERequestMethod.GET,
+                    async: false
+                  }).done((result: any) => {
+                    let doc = $.parseHTML(result);
+                    let selector = "anime[imdbid*='" + key + "']:first";
+                    let anime = $(selector, doc);
+                    if (anime.length > 0 && key.length >= 9)
+                    {
+                      let anidbid = anime.attr("anidbid");
+                      if (anidbid)
+                        searchEntryConfigQueryString = searchEntryConfigQueryString.replace("$anidb$", anidbid);
+                    } else {
+                      skipSearch = true;
+                     }
+                  })
+                  .fail((jqXHR, textStatus, errorThrown) => {
+                    skipSearch = true;
+                    result.type = EDataResultType.unknown;
+                    reject(result);
+                    return;
+                  });
+                } catch (error) {
+                  skipSearch = true;
                   result.type = EDataResultType.unknown;
                   reject(result);
                   return;
@@ -260,6 +291,22 @@ export class Searcher {
             return false;
           });
         }
+      }
+
+      if (skipSearch) {
+        resolve({
+          status: 'success',
+          success: true,
+          msg: this.getErrorMessage(
+            site,
+            ESearchResultParseStatus.noTorrents,
+            ""
+          ),
+          data: {
+          },
+          type: EDataResultType.success
+        });
+        return;
       }
 
       this.searchConfigs[host] = searchConfig;

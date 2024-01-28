@@ -68,8 +68,18 @@
     "privilege": "账号永久保留"
   }],
   "searchEntryConfig": {
-    "merge": true,
-    "skipIMDbId": true,
+    "page": "/torrents.php",
+    "queryString": "search=$key$&notnewword=1",
+    "resultType": "html",
+    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+    "resultSelector": "table.torrents:last",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "search=$anidb$&notnewword=1&search_area=4",
+      "appendQueryString": "",
+      "convertToANIDB": true
+    }],
     "fieldSelector": {
       "progress": {
         "selector": ["td[class*='seedhlc_']", "td[class*='leechhlc_']", ""],

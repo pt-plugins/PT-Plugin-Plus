@@ -480,6 +480,7 @@ export interface SearchEntryConfigArea {
   // 替换默认页面
   page?: string;
   replaceKeyByTVDB?: string[];
+  convertToANIDB?: boolean;
 }
 
 export interface ISearchFieldIndex {
