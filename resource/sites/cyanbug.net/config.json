@@ -12,7 +12,8 @@
     "影视"
   ],
   "collaborator": [
-    "jinglekang"
+    "jinglekang",
+    "hui-shao"
   ],
   "levelRequirements": [
     {
@@ -241,22 +242,6 @@
           "filters": [
             "query.next().text().split(' (')[0].trim()",
             "dateTime(query).isValid()?dateTime(query).valueOf():query"
-          ]
-        }
-      }
-    },
-    "bonusExtendInfo": {
-      "prerequisites": "!user.bonusPerHour",
-      "page": "/mybonus.php",
-      "fields": {
-        "bonusPerHour": {
-          "selector": [
-            "div:contains('你当前每小时能获取'):last",
-            "div:contains('You are currently getting'):last",
-            "div:contains('你當前每小時能獲取'):last"
-          ],
-          "filters": [
-            "parseFloat(query.text().match(/[\\d.]+/)[0])"
           ]
         }
       }
