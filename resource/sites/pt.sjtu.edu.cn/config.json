@@ -203,6 +203,24 @@
     ]
   }],
   "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploads": {
+            "selector": ["td.rowfollow div#ka"],
+            "filters": [
+              "query.parent().clone().children().remove().end().text().replace(/,/g,'')",
+              "query ? parseInt(query.match(/[\\d]+/)[0]) : null"]
+        },
+        "seeding": {
+          "selector": ["td.rowfollow div#ka1"],
+          "filters": [
+            "query.parent().clone().children().remove().end().text().replace(/,/g,'')",
+            "query ? parseInt(query.match(/[\\d]+/)[0]) : null"]
+        }
+      }
+    },
     "userSeedingTorrents": {
       "merge": true,
       "page": "/viewusertorrents.php?id=$user.id$&show=seeding",
@@ -210,16 +228,6 @@
         "seedingSize": {
           "selector": ["tr:not(:eq(0))"],
           "filters": ["jQuery.map(query.find('td.rowfollow:eq(1)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
-        }
-      }
-    },
-    "userUploadedTorrents": {
-      "prerequisites": "!user.uploads",
-      "page": "/viewusertorrents.php?userid=$user.id$&type=uploaded", 
-      "fields": {
-        "uploads": { 
-          "selector": ["b:first"],
-          "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"] 
         }
       }
     }
