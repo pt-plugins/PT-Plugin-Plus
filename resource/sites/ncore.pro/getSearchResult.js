@@ -1,3 +1,15 @@
+if (!"".getQueryString) {
+  String.prototype.getQueryString = function(name, split) {
+    if (split == undefined) split = "&";
+    var reg = new RegExp(
+        "(^|" + split + "|\\?)" + name + "=([^" + split + "]*)(" + split + "|$)"
+      ),
+      r;
+    if ((r = this.match(reg))) return decodeURI(r[2]);
+    return null;
+  };
+}
+
 (function(options) {
   class Parser {
     constructor() {
@@ -10,11 +22,7 @@
 
       options.isLogged = true;
 
-      if (
-        /没有种子|No [Tt]orrents?|Your search did not match anything|用准确的关键字重试/.test(
-          options.responseText
-        )
-      ) {
+      if (/Nothing found!/.test(options.responseText)) {
         options.status = ESearchResultParseStatus.noTorrents; //`[${options.site.name}]没有搜索到相关的种子`;
         return;
       }
@@ -29,10 +37,11 @@
       let site = options.site;
       let results = [];
       // 获取种子列表行
-      let rows = options.page.find(
-        options.resultSelector || "table[border='1']:last > tbody > tr"
-      );
-      if (rows.length == 0) {
+      let rows = options.page.find(options.resultSelector);
+      const browsecheck = options.page
+        .find("a[href*='browse.php?page']:contains('-'):last")
+        .attr("href");
+      if (rows.length == 0 || browsecheck) {
         options.status = ESearchResultParseStatus.torrentTableIsEmpty; //`[${options.site.name}]没有定位到种子列表，或没有相关的种子`;
         return results;
       }
@@ -41,13 +50,13 @@
 
       // 用于定位每个字段所列的位置
       let fieldIndex = {
-        time: 10,
-        size: 6,
-        seeders: 8,
-        leechers: 9,
-        completed: 7,
-        comments: -1,
-        author: -1,
+        time: 3,
+        size: 4,
+        seeders: 6,
+        leechers: 7,
+        completed: 5,
+        comments: 2,
+        author: 8,
         category: 0,
         title: 1
       };
@@ -58,7 +67,7 @@
 
       try {
         // 遍历数据行
-        for (let index = 1; index < rows.length; index++) {
+        for (let index = 0; index < rows.length; index++) {
           const row = rows.eq(index);
           let cells = row.find(">td");
 
@@ -72,26 +81,24 @@
             link = `${site.url}${link}`;
           }
 
-          let id = link.getQueryString("id");
-
           // 获取下载链接
-          let url = `${site.url}download.php?id=${id}`;
+          let url = row.find("a[href*='download.php?id=']:first").attr("href");
+          if (url && url.substr(0, 4) !== "http") {
+            url = `${site.url}${url}`;
+          }
 
-          let time =
-            fieldIndex.time == -1
-              ? ""
-              : cells
-                  .eq(fieldIndex.time)
-                  .find("div.addedtor")
-                  .text() || "";
+          cells
+            .eq(fieldIndex.size)
+            .find("span")
+            .remove();
 
           let data = {
             title: title.text(),
             subTitle: "",
             link,
-            url: url,
-            size: cells.eq(fieldIndex.size).html() || 0,
-            time: time,
+            url,
+            size: cells.eq(fieldIndex.size).text() || 0,
+            time: this.getTime(cells.eq(fieldIndex.time)),
             author:
               fieldIndex.author == -1
                 ? ""
@@ -115,7 +122,7 @@
             site: site,
             entryName: options.entry.name,
             category: this.getCategory(cells.eq(fieldIndex.category)),
-            tags: options.searcher.getRowTags(site, row)
+            tags: this.getTags(row, options.torrentTagSelectors)
           };
           results.push(data);
         }
@@ -129,6 +136,17 @@
       }
 
       return results;
+    }
+
+    /**
+     * 获取时间
+     * @param {*} cell
+     */
+    getTime(cell) {
+      let time = $("<span>")
+        .html(cell.html().replace("<br>", " "))
+        .text();
+      return time || "";
     }
 
     /**
@@ -150,6 +168,32 @@
 
       result.name = img.attr("alt");
       return result;
+    }
+
+    /**
+     * 获取标签
+     * @param {*} row
+     * @param {*} selectors
+     * @return array
+     */
+    getTags(row, selectors) {
+      let tags = [];
+      if (selectors && selectors.length > 0) {
+        // 使用 some 避免错误的背景类名返回多个标签
+        selectors.some(item => {
+          if (item.selector) {
+            let result = row.find(item.selector);
+            if (result.length) {
+              tags.push({
+                name: item.name,
+                color: item.color
+              });
+              return true;
+            }
+          }
+        });
+      }
+      return tags;
     }
   }
 

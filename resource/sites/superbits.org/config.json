@@ -1,0 +1,79 @@
+{
+  "name": "Superbits",
+  "timezoneOffset": "+0000",
+  "description": "Superbits",
+  "url": "https://superbits.org/",
+  "icon": "https://superbits.org/favicon.ico",
+  "tags": ["影视", "综合"],
+  "schema": "Superbits",
+  "host": "superbits.org",
+  "collaborator": "gawain",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/torrents.php?action=details&id=\\d+"],
+    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/torrents.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "torrents.js"]
+  }],
+  "searchEntry": [{
+    "name": "All",
+    "enabled": true
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ["a[href*='userdetails.php?id=']:first"],
+          "attribute": "href",
+          "filters": ["query ? query.split('=')[1] : ''"]
+        },
+        "name": {
+          "selector": ["a[href*='userdetails.php?id=']:first"]
+        },
+        "isLogged": {
+          "value":true
+        },
+        "messageCount": {
+          "selector": [".alert a[href*='inbox.php']"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "uploaded": {
+          "selector": ["span.centerTopBar div[title^='Uploaded'] span"],
+          "filters": ["query.text()?query.text().trim().replace(/,/g,'').sizeToNumber():null"]
+        },
+        "downloaded": {
+          "selector": ["span.centerTopBar div[title^='Downloaded'] span"],
+          "filters": ["query.text()?query.text().trim().replace(/,/g,'').sizeToNumber():null"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/user/$user.id$/$user.name$",
+      "fields": {
+        "levelName": {
+	        "selector": ["div#infosav_adatok"],
+          "filters": ["query.text().match(/\\((.*?)\\)/)[1]"]
+	        },
+         
+    	  "bonus": {
+          "selector": ["div.profil_jobb_elso2:contains('Pontok száma:') + div.profil_jobb_masodik2"],
+          "filters": ["query.text().replace(/,/g, '')"]
+    	    },
+	      "joinTime": {
+          "selector": ["div.profil_jobb_masodik2 > span"],
+          "filters": ["query.attr('title') || query.text()", "dateTime(query).isValid() ? dateTime(query).valueOf() : query"]
+	        },
+        "seeding": {
+	        "selector": ["div.lista_mini_fej"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=1)?query[0]:''"]
+	      },
+        "seedingSize": {
+	        "value": -1
+	      }
+    }
+    }
+  }
+}

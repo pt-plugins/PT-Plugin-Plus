@@ -1,0 +1,82 @@
+{
+  "name": "Cinematik",
+  "timezoneOffset": "+0800",
+  "schema": "UNIT3D",
+  "url": "https://cinematik.net/",
+  "icon": "https://cinematik.net/favicon.ico",
+  "tags": ["影视"],
+  "host": "cinematik.net",
+  "collaborator": "gawain",
+  "levelRequirements": [{
+      "level": "1", 
+      "name": "Cinephile",
+      "interval": "30D",
+      "uploaded": "1TB",
+      "privilege": ""
+    },{
+      "level": "2", 
+      "name": "Cinemaster",
+      "interval": "60D",
+      "uploaded": "2TB",
+      "privilege": ""
+    },{
+      "level": "3", 
+      "name": "FilmExtremist",
+      "interval": "60D",
+      "uploaded": "5TB",
+      "privilege": ""
+    },{
+      "level": "4", 
+      "name": "CineLegend",
+      "interval": "60D",
+      "uploaded": "10TB",
+      "privilege": ""
+    },{
+      "level": "5", 
+      "name": "Cinemaniac",
+      "interval": "365D",
+      "uploaded": "15TB",
+      "privilege": ""
+    },
+    {
+      "level": "6", 
+      "name": "CineSeeder",
+      "interval": "60D",
+      "seedingSize": "10TB",
+      "averageSeedtime": "60",
+      "privilege": "Auto torrent approvals, Invite forums, no automatic HnR warnings, 20 download slots."
+    },
+    {
+      "level": "7", 
+      "name": "FilmArchivist",
+      "interval": "90D",
+      "seedingSize": "20TB",
+      "averageSeedtime": "90",
+      "privilege": "Auto torrent approvals, Invite forums, HnR warning immunity, 50 download slots"
+    }],
+  "searchEntryConfig": {
+    "merge": true,
+    "resultSelector": "#torrent-list-table",
+    "fieldSelector": {
+      "subTitle": {
+        "selector": ["td.torrent-listings-overview span:first"]
+      },
+      "progress": {
+        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle, button.btn.btn-info.btn-circle", ""],
+        "switchFilters": [
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
+      },
+      "status": {
+        "selector": ["button.btn.btn-success.btn-circle", "button.btn.btn-warning.btn-circle", "button.btn.btn-info.btn-circle"],
+        "switchFilters": [
+          ["2"],
+          ["1"],
+          ["3"]
+        ]
+      }
+    }
+  }
+}
