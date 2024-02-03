@@ -213,7 +213,11 @@
         "status": "状态",
         "uploads": "发布数",
         "trueDownloaded": "真实下载",
+<<<<<<< HEAD
         "totalData":"总流量",
+=======
+        "totalTraffic":"总流量",
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
         "classPoints": "等级积分",
         "unsatisfieds": "H&R考核中",
         "prewarn": "H&R预警"
@@ -238,11 +242,18 @@
         "status": "状态",
         "uploaded": "上传量",
         "downloaded":"下载量",
+<<<<<<< HEAD
         "uploads": "发布",
         "downloads": "完成",
         "snatches":"完成数",
         "trueDownloaded": "真实下载",
         "totalData":"总流量",
+=======
+        "uploads": "发布数",
+        "snatches":"完成数",
+        "trueDownloaded": "真实下载",
+        "totalTraffic":"总流量",
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
         "classPoints": "等级积分",
         "posts": "论坛帖子",
         "uniqueGroups": "独特分组",
@@ -583,6 +594,8 @@
           "autoStart": "发送种子时自动开始下载",
           "enabled": "是否启用",
           "tagIMDb": "发送种子时自动添加IMDb标签（Beta）",
+          "hostnameAsTag": "发送种子时将小写 host 添加到标签 (Beta)",
+          "siteNameAsTag": "发送种子时将小写站点名添加到标签 (Beta)",
           "enableCategory": "发送种子时自动添加 QB 分类 (Beta)",
           "enableCategoryText": "QB 分类列表",
           "enableCategoryTextTip": "每行填写一个地址，逗号分隔分类名称和路径, 不支持路径关键字。如：'movie,/tmp/movie'。默认分类请使用'movie,_'的格式。还需在下载目录设置里面填写一样的下载路径. 当指定了下载路径且下载路径命中了某一个分类, 才会添加分类并启用自动种子管理.",

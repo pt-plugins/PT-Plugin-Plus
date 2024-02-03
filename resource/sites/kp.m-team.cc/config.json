@@ -46,14 +46,14 @@
     "interval": "20",
     "downloaded": "1000GB",
     "ratio": "6",
-    "privilege": "魔力值加成：+5%"
+    "privilege": "魔力值加成：+5%；封存帳號（在控制面板）後不會被刪除帳號"
   },{
     "level": "6",
     "name": "Extreme User",
     "interval": "24",
     "downloaded": "2000GB",
     "ratio": "7",
-    "privilege": "魔力值加成：+6%"
+    "privilege": "魔力值加成：+6%；永遠保留"
   },{
     "level": "7",
     "name": "Ultimate User",

@@ -181,12 +181,23 @@
         "filters": ["query.prop('lastChild').nodeValue.trim()"]
       },
       "progress": {
-        "selector": ["a[id*='subscription'] > img"],
-        "filters": ["query.is('.uploading') ? 100 : query.is('.downloading') ? query.attr('title').match(/(\\d.+)%/)[1] : null"]
+        "selector": [".p_seeding", ".p_downloading", ".p_completed", ".p_inactive", ""],
+        "switchFilters": [
+          ["100"],
+          ["query.prev().attr('style').replace('width: ','').replace('%;','')"],
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
       },
       "status": {
-        "selector": ["a[id*='subscription'] > img"],
-        "filters": ["query.is('.uploading') ? 2 : query.is('.downloading') ? 1: null"]
+        "selector": [".p_seeding", ".p_downloading", ".p_completed", ".p_inactive"],
+        "switchFilters": [
+          ["2"],
+          ["1"],
+          ["255"],
+          ["3"]
+        ]
       }
     }
   },
@@ -217,7 +228,7 @@
       "merge": true,
       "fields": {
         "messageCount": {
-          "selector": ["a[href*='messages.php'][style*='background: red']"],
+          "selector": ["a[href*='messages.php'] > b[style*='background: red']"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         }
       }

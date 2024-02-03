@@ -217,7 +217,11 @@
         "comments": "Comments",
         "uploads": "Uploaded",
         "trueDownloaded": "True Downloaded",
+<<<<<<< HEAD
         "totalData":"Total Data",
+=======
+        "totalTraffic":"Total Traffic",
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
         "classPoints": "Class Points",
         "unsatisfieds": "Unsatisfieds",
         "prewarn": "H&R Prewarn"
@@ -244,11 +248,18 @@
         "uploaded": "Uploaded",
         "downloaded":"Downloaded",
         "uploads": "Uploaded",
+<<<<<<< HEAD
         "downloads": "Downloaded",
         "totalSeedtime":"totalSeedtime",
         "snatches":"snatched",
         "trueDownloaded": "True Downloaded",
         "totalData":"Total Data",
+=======
+        "totalSeedtime":"totalSeedtime",
+        "snatches":"snatched",
+        "trueDownloaded": "True Downloaded",
+        "totalTraffic":"Total Traffic",
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
         "classPoints": "Class Points",
         "uniqueGroups": "Unique Groups",
         "perfectFLAC": "\"Perfect\" FLAC",
@@ -587,6 +598,8 @@
           "loginPwd": "login password",
           "id": "ID",
           "autoStart": "Automatically start downloading when sending a torrent",
+          "hostnameAsTag": "Add lowercase host name to tags when sending torrents (Beta)",
+          "siteNameAsTag": "Add lowercase site name to tags when sending torrents (Beta)",
           "tagIMDb": "Add IMDb tag when sending a torrent(Beta)",
           "enableCategory": "Automatically add QB categories when sending torrents (Beta)",
           "enableCategoryText": "QB category list",

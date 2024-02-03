@@ -1,13 +1,13 @@
 {
-    "name": "影",
+    "name": "星空",
     "timezoneOffset": "+0800",
-    "description": "shadowflow.org",
-    "url": "https://shadowflow.org/",
-    "icon": "https://shadowflow.org/favicon.ico",
-
+    "description": "star-space.net",
+    "url": "https://star-space.net/",
+    "icon": "https://star-space.net/favicon.ico",
     "tags": ["影视"],
     "schema": "NexusPHP",
-    "host": "shadowflow.org",
+    "host": "star-space.net",
+    "formerHosts": ["shadowflow.org"],
     "collaborator": [
         "yiyule",
         "milangree"
@@ -175,4 +175,4 @@
       }
     }
   }
-  
+

@@ -103,6 +103,16 @@
         }
       }
     },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["#outer table[cellpadding='4'] td[rowspan='4']"],
+          "filters": ["parseFloat(query.text().replace(/,(\\s+)?/, '').match(/[\\d.]+/)[0])"]
+        }
+      }
+    },
     "userSeedingTorrents": {
       "merge": true,
       "fields": {

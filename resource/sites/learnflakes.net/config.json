@@ -11,6 +11,8 @@
   ],
   "host": "learnflakes.net",
   "searchEntryConfig": {
+    "skipIMDbId": true,
+    "skipNonLatinCharacters": true,
     "page": "/",
     "queryString": "p=torrents&pid=10&keywords=$key$&search_type=name",
     "resultType": "html",

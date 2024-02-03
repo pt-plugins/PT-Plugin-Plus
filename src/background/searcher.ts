@@ -148,6 +148,7 @@ export class Searcher {
       // 将所有 . 替换为空格
       key = key.replace(/\./g, " ");
 
+      let skipSearch = false;
       // 是否有搜索入口配置项
       if (searchEntryConfig && searchEntryConfig.page) {
         siteSearchPage = searchEntryConfig.page;
@@ -155,7 +156,7 @@ export class Searcher {
 
         // 搜索区域
         if (searchEntryConfig.area) {
-          searchEntryConfig.area.some((area: SearchEntryConfigArea) => {
+                    searchEntryConfig.area.some((area: SearchEntryConfigArea) => {
             // 是否有自动匹配关键字的正则
             if (
               area.keyAutoMatch &&
@@ -174,6 +175,100 @@ export class Searcher {
               // 追加查询字符串
               if (area.appendQueryString) {
                 searchEntryConfigQueryString += area.appendQueryString;
+              }
+
+              // 获取TVDB的信息以支持对网站的IMDB搜索
+              if (area.name == "IMDB" && area.replaceKeyByTVDB)
+              {
+                try {
+                  $.ajax({
+                    url: "https://thetvdb.com/api/GetSeriesByRemoteID.php?imdbid=" + key,
+                    cache: true,
+                    dataType: "text",
+                    contentType: "text/plain",
+                    timeout: this.options.connectClientTimeout || 30000,
+                    method: ERequestMethod.GET,
+                    async: false
+                  }).done((result: any) => {
+                    let doc = new DOMParser().parseFromString(result, "text/html");
+                    for (var replaceKey of area.replaceKeyByTVDB as string[]) {
+                      switch (replaceKey)
+                      {
+                        case "year":
+                          let year = "";
+                          let date = $(doc).find("FirstAired").text();
+                          if (date != "")
+                          {
+                            year = new Date(date).getFullYear().toString();
+                          }
+                          searchEntryConfigQueryString = searchEntryConfigQueryString.replace("$year$", year);
+                          break;
+                        case "name":
+                          let seriesName = $(doc).find("SeriesName").text();
+                          if (seriesName != "")
+                            searchEntryConfigQueryString = searchEntryConfigQueryString.replace("$name$", seriesName);
+                          else
+                          {
+                            skipSearch = true;
+                            return;
+                          }
+                          break;
+                        default:
+                          break;
+                      }
+                    }
+                  })
+                  .fail((jqXHR, textStatus, errorThrown) => {
+                    skipSearch = true;
+                    result.type = EDataResultType.unknown;
+                    reject(result);
+                    return;
+                  });
+                }catch {
+                  skipSearch = true;
+                  result.type = EDataResultType.unknown;
+                  reject(result);
+                  return;
+                }
+              }
+
+              // 转换成ANIDB ID以支持对网站的IMDB搜索
+              if (area.name == "IMDB" && area.convertToANIDB)
+              {
+                try {
+                  $.ajax({
+                    url: "https://raw.githubusercontent.com/Anime-Lists/anime-lists/master/anime-list.xml",
+                    cache: true,
+                    dataType: "text",
+                    contentType: "text/plain",
+                    timeout: this.options.connectClientTimeout || 30000,
+                    method: ERequestMethod.GET,
+                    async: false
+                  }).done((result: any) => {
+                    let doc = $.parseHTML(result);
+                    let selector = "anime[imdbid*='" + key + "']:first";
+                    let anime = $(selector, doc);
+                    if (anime.length > 0 && key.length >= 9)
+                    {
+                      let anidbid = anime.attr("anidbid");
+                      if (anidbid)
+                        searchEntryConfigQueryString = searchEntryConfigQueryString.replace("$anidb$", anidbid);
+                    } else {
+                      skipSearch = true;
+                     }
+                  })
+                  .fail((jqXHR, textStatus, errorThrown) => {
+                    skipSearch = true;
+                    result.type = EDataResultType.unknown;
+                    reject(result);
+                    return;
+                  });
+                } catch (error) {
+                  skipSearch = true;
+                  result.type = EDataResultType.unknown;
+                  reject(result);
+                  return;
+                }
               }
 
               // 替换关键字
@@ -196,6 +291,22 @@ export class Searcher {
             return false;
           });
         }
+      }
+
+      if (skipSearch) {
+        resolve({
+          status: 'success',
+          success: true,
+          msg: this.getErrorMessage(
+            site,
+            ESearchResultParseStatus.noTorrents,
+            ""
+          ),
+          data: {
+          },
+          type: EDataResultType.success
+        });
+        return;
       }
 
       this.searchConfigs[host] = searchConfig;
@@ -592,7 +703,8 @@ export class Searcher {
           delete this.searchRequestQueue[url];
           if (
             (result && typeof result == "string" && result.length > 100) ||
-            typeof result == "object"
+            typeof result == "object" ||
+            (result && entry.resultType == ERequestResultType.JSON && result.toLowerCase().includes("success"))
           ) {
             let page: any;
             let doc: any;

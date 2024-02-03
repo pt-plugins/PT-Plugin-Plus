@@ -9,6 +9,7 @@
     "collaborator": ["fzlins"],
     "searchEntryConfig": {
         "merge": true,
+        "skipNonLatinCharacters": true,
         "resultSelector": "#torrent-list-table"
     },
     "torrentTagSelectors": [{

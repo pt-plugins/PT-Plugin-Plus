@@ -11,67 +11,125 @@
   ],
   "schema": "NexusPHP",
   "host": "byr.pt",
-  "collaborator": ["Rhilip", "yuanyiwei"],
+  "collaborator": ["Rhilip", "yuanyiwei", "hui-shao"],
   "formerHosts": [
     "bt.byr.cn"
   ],
   "levelRequirements": [{
-    "level": "1",
-    "name": "Power User",
-    "interval": "2",
-    "uploaded": "32GB",
-    "ratio": "1.05",
-    "privilege": "可以查看NFO文档；可以查看用户列表；可以请求续种；可以查看排行榜；可以查看其它用户的种子历史（如果用户隐私等级未设置为“强”）；可以删除自己上传的字幕"
-  },{
-    "level": "2",
-    "name": "Elite User",
-    "interval": "8",
-    "uploaded": "512GB",
-    "ratio": "1.55",
-    "privilege": "Elite User及以上用户封存账号后不会被删除；可以发送邀请；可以直接发布种子"
-  },{
-    "level": "3",
-    "name": "Crazy User",
-    "interval": "12",
-    "uploaded": "1024GB",
-    "ratio": "2.05",
-    "privilege": "可以在做种/下载/发布的时候选择匿名模式"
-  },{
-    "level": "4",
-    "name": "Insane User",
-    "interval": "24",
-    "uploaded": "2048GB",
-    "ratio": "2.55",
-    "privilege": "可以查看普通日志"
-  },{
-    "level": "5",
-    "name": "Veteran User",
-    "interval": "24",
-    "uploaded": "4096GB",
-    "ratio": "3.05",
-    "privilege": "可以查看其它用户的评论、帖子历史。Veteran User及以上的用户会永远保留账号"
-  },{
-    "level": "6",
-    "name": "Extreme User",
-    "interval": "24",
-    "uploaded": "8192GB",
-    "ratio": "3.55",
-    "privilege": "可以更新过期的外部信息"
-  },{
-    "level": "7",
-    "name": "Ultimate User",
-    "interval": "48",
-    "uploaded": "32768GB",
-    "ratio": "4.05",
-    "privilege": "更加高级"
-  },{
-    "level": "8",
-    "name": "Nexus Master",
-    "interval": "48",
-    "uploaded": "131072GB",
-    "ratio": "4.55",
-    "privilege": "更加高级"
-  }],
+      "level": "1",
+      "name": "PowerUser",
+      "interval": "2",
+      "uploaded": "32GB",
+      "ratio": "1.05",
+      "privilege": "可以上传字幕；可以发布趣味盒；可以查看用户列表；可以查看NFO文档；可以请求续种；可以查看排行榜；可以查看普通日志；可以删除自己上传的字幕；可以使用流量条；可以新增求种"
+    },
+    {
+      "level": "2",
+      "name": "EliteUser",
+      "interval": "8",
+      "uploaded": "512GB",
+      "ratio": "1.55",
+      "privilege": "可以查看其它用户的种子历史（如果用户隐私等级未设置为“强”）；可以直接发布种子"
+    },
+    {
+      "level": "3",
+      "name": "CrazyUser",
+      "interval": "12",
+      "uploaded": "1024GB",
+      "ratio": "2.05",
+      "privilege": "可以购买邀请；可以发送邀请；可以在做种/下载/发布的时候选择匿名模式"
+    },
+    {
+      "level": "4",
+      "name": "InsaneUser",
+      "interval": "24",
+      "uploaded": "2048GB",
+      "ratio": "2.55",
+      "privilege": "可以申请发布徽章；可以更新外部信息；可以购买用户名特效"
+    },
+    {
+      "level": "5",
+      "name": "VeteranUser",
+      "interval": "24",
+      "uploaded": "4096GB",
+      "ratio": "3.05",
+      "privilege": "可以查看其它用户的评论、帖子历史；可以查看种子结构"
+    },
+    {
+      "level": "6",
+      "name": "ExtremeUser",
+      "interval": "24",
+      "uploaded": "8192GB",
+      "ratio": "3.55",
+      "privilege": "可以购买用户名特效（动态）"
+    },
+    {
+      "level": "7",
+      "name": "UltimateUser",
+      "interval": "48",
+      "uploaded": "32768GB",
+      "ratio": "4.05",
+      "privilege": "更加高级"
+    },
+    {
+      "level": "8",
+      "name": "NexusMaster",
+      "interval": "48",
+      "uploaded": "131072GB",
+      "ratio": "4.55",
+      "privilege": "可以领取专属荣誉徽章"
+    }
+],
+"selectors": {
+    "userBaseInfo": {
+        "page": "/index.php",
+        "fields": {
+            "id": {
+                "selector": [
+                    "a[href*='userdetails.php']:first"
+                ],
+                "attribute": "href",
+                "filters": [
+                    "query?query.getQueryString('id'):''"
+                ]
+            },
+            "name": {
+                "selector": [
+                    "a[href*='userdetails.php']:first"
+                ],
+                "filters": [
+                    "query&&query.attr('href').getQueryString('id')>0?query.text():''"
+                ]
+            },
+            "isLogged": {
+                "selector": [
+                    "a[href*='usercp.php']"
+                ],
+                "filters": [
+                    "query.length>0"
+                ]
+            },
+            "messageCount": {
+                "selector": [
+                    "td[style*='background:red']a[href*='messages.php']"
+                ],
+                "filters": [
+                    "query.text().match(/(\\d+)/)",
+                    "(query&&query.length>=2)?parseInt(query[1]):0"
+                ]
+            }
+        }
+    },
+    "/details.php": {
+      "merge": true,
+      "fields": {
+        "downloadURL": {
+          "selector": [ "a#tlink[data-clipboard-text*='passkey']" ],
+          "filters": [ "query.attr('data-clipboard-text')" ]
+        }
+      }
+    }
+  },
   "searchEntry": [{
       "entry": "/torrents.php?search=$key$&notnewword=1",
       "name": "全站",

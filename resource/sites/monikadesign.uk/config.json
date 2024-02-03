@@ -83,5 +83,16 @@
         ]
       }
     }
+  },
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "uploads": {
+          "selector": ["i.fas.fa-upload + a[href$='/uploads']"],
+          "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"]
+        }
+      }
+    }
   }
 }

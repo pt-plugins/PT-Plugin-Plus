@@ -45,8 +45,18 @@
       let site = options.site;
       let groups = options.page.response.results;
       if (groups.length == 0) {
-        options.status = ESearchResultParseStatus.noTorrents;
-        return [];
+        options.reject({
+          success: false,
+          msg: options.searcher.getErrorMessage(
+            options.site,
+            ESearchResultParseStatus.noTorrents,
+            options.errorMsg
+          ),
+          data: {
+            site: options.site,
+            isLogged: options.isLogged
+          }
+        });
       }
       let results = [];
       let authkey = this.authkey;

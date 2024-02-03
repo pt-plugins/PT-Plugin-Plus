@@ -9,16 +9,32 @@
   "host": "broadcasthe.net",
   "collaborator": ["ylxb2016", "enigmaz"],
   "searchEntryConfig": {
+    "skipNonLatinCharacters": true,
     "page": "/torrents.php",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "queryString": "searchstr=$key$"
+    "queryString": "searchstr=$key$",
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "queryString": "artistname=$name$&exactartist=1&action=advanced&year=$year$",
+      "replaceKeyByTVDB": [
+        "name", "year"
+      ],
+      "replaceKey": [
+        " ", "+"
+      ]
+    }]
   },
   "levelRequirements": [{
       "level": "1",
       "name": "Member",
       "interval": "2",
+<<<<<<< HEAD
       "totalData": "100GiB",
+=======
+      "totalTraffic": "100GiB",
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
       "bonus":"100000",
       "snatches":"100",
       "privilege": "Can access the XXX forum."
@@ -26,7 +42,11 @@
       "level": "2",
       "name": "Power User",
       "interval": "4",
+<<<<<<< HEAD
       "totalData": "250GiB",
+=======
+      "totalTraffic": "250GiB",
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
       "bonus":"250000",
       "snatches":"250",
       "privilege": "Has access to the Power User forum, Official and Unofficial Invites forums, Top 10 filters, and can access notifications."
@@ -34,7 +54,11 @@
       "level": "3",
       "name": "Extreme User",
       "interval": "82D",
+<<<<<<< HEAD
       "totalData": "500GiB",
+=======
+      "totalTraffic": "500GiB",
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
       "bonus":"500000",
       "snatches":"500",
       "privilege": "Has access to the Extreme User forum."
@@ -42,7 +66,11 @@
       "level": "4",
       "name": "Elite",
       "interval": "166D",
+<<<<<<< HEAD
       "totalData": "1TiB",
+=======
+      "totalTraffic": "1TiB",
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
       "bonus":"850000",
       "snatches":"1000",
       "privilege": "Has access to the Elite forum and can set own Custom Title, and the ability to send invites purchased from the Lumens Store."
@@ -50,7 +78,11 @@
       "level": "5",
       "name": "Guru",
       "interval": "251D",
+<<<<<<< HEAD
       "totalData": "2.5TiB",
+=======
+      "totalTraffic": "2.5TiB",
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
       "bonus":"1500000",
       "snatches":"1500",
       "privilege": "Has access to the Guru forum."
@@ -58,7 +90,11 @@
       "level": "6",
       "name": "Master",
       "interval": "365D",
+<<<<<<< HEAD
       "totalData": "7.5TiB",
+=======
+      "totalTraffic": "7.5TiB",
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
       "bonus":"3000000",
       "snatches":"3000",
       "privilege": "Has access to the Master forum."
@@ -66,7 +102,11 @@
       "level": "7",
       "name": "Overlord",
       "interval": "1065D",
+<<<<<<< HEAD
       "totalData": "100TiB",
+=======
+      "totalTraffic": "100TiB",
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
       "bonus":"250000000",
       "snatches":"35000",
       "totalSeedtime":"250000",
@@ -105,14 +145,14 @@
       "page": "/user.php?id=$user.id$",
       "fields": {
         "uploaded": {
-          "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(1)",
+          "selector": "ul.nobullet > li:contains('Upload:')",
           "filters": [
             "query.text().replace(/,/g,'').match(/Upload.+?([\\d.]+ ?[TGMK]?i?B)/)",
             "(query && query.length>=2)?(query[1]).sizeToNumber():null"
           ]
         },
         "downloaded": {
-          "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(7)",
+          "selector": "ul.nobullet > li:contains('Downloaded:')",
           "filters": [
             "query.text().replace(/,/g,'').match(/Downloaded.+?([\\d.]+ ?[TGMK]?i?B)/)",
             "(query && query.length>=2)?(query[1]).sizeToNumber():null"
@@ -122,23 +162,37 @@
           "value": null
         },
         "levelName": {
-          "selector": "#section2 > div > div.statistics > div:nth-child(1) > ul > li:nth-child(2)",
+          "selector": "ul.nobullet > li:contains('User Class:')",
           "filters": [
             "query.text().match(/Class:.+?(.+)/)",
             "(query && query.length>=2)?query[1]:''"
           ]
         },
         "bonus": {
-          "selector": "#section2 > div > div.statistics > div:nth-child(1) > ul > li:nth-child(5) > a",
+          "selector": "ul.nobullet > li:contains('Bonus Points:') > a",
           "filters": [
-            "query.text().replace(/,/g,'')"
+            "query.text().replace(/,/g,'')","parseFloat(query)"
           ]
         },
         "joinTime": {
-          "selector": "#section2 > div > div.statistics > div:nth-child(1) > ul > li:nth-child(1) > span",
+          "selector": "ul.nobullet > li:contains('Joined:') > span",
           "filters": [
-            "query.attr('title')||query.text()",
-            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+            "dateTime(query.attr('title')).isValid() ? query.attr('title') : query.text()",
+            "dateTime(query).isValid() ? dateTime(query).valueOf() : query"
+          ]
+        },
+        "totalTraffic": {
+          "selector": "ul.nobullet > li:contains('Total Traffic:')",
+          "filters": [
+            "query.text().replace(/,/g,'').match(/Total Traffic:.+?([\\d.]+ ?[TGMK]?i?B)/)",
+            "(query && query.length>=2)?(query[1]).sizeToNumber():0"
+        ]
+       },
+        "totalSeedtime": {
+          "selector": "ul.nobullet > li:contains('Total Time Seeded:')",
+          "filters": [
+            "query.text().replace(/,/g,'').match(/Total Time Seeded:.+?(\\d+).+?/)",
+            "(query && query.length>=2)?(query[1]):null"
           ]
         },
         "totalData": {
@@ -163,29 +217,42 @@
           ]
         },
         "seeding": {
-          "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(4)",
+          "selector": "ul.nobullet > li:contains('Seeding:')",
           "filters": [
             "query.text().replace(/,/g,'').match(/Seeding:.+?(\\d+).+?/)",
             "(query && query.length>=2)?(query[1]):null"
           ]
         },
         "uploads": {
+<<<<<<< HEAD
           "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(2)",
+=======
+          "selector": "ul.nobullet > li:contains('Uploaded:')",
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
           "filters": [
             "query.text().replace(/,/g,'').match(/Uploaded:.+?(\\d+).+?/)",
             "(query && query.length>=2)?(query[1]):null"
           ]
         },
         "bonusPerHour": {
+<<<<<<< HEAD
           "selector": ["li:contains('Per Day: ')"],
           "filters": ["query.eq(0).text().replace(/,/g, '').match(/\\d+/)","query ? (parseFloat(query[0]) / 24) : 0"]
+=======
+          "selector": "ul.nobullet > li:contains('Per Day:')",
+          "filters": ["query.text().replace(/,/g, '').match(/\\d+/)","query ? (parseFloat(query[0]) / 24) : 0"]
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
         },
         "seedingSize": {
-          "selector": "#section2 > div > div.statistics > div:nth-child(3) > ul > li:nth-child(5)",
+          "selector": "ul.nobullet > li:contains('Seeding Size:')",
           "filters": [
             "query.text().replace(/,/g,'').match(/Seeding Size:.+?([\\d.]+ ?[TGMK]?i?B)/)",
             "(query && query.length>=2)?(query[1]).sizeToNumber():0"
           ]
+        },
+        "averageSeedtime": {
+          "selector": ["ul.nobullet > li:contains('Average Time Seeded:')"],
+          "filters": ["query.text().replace('Average Time Seeded:', '').trim().timeToDays()"]
         }
       }
     },
@@ -197,9 +264,17 @@
           "filters": ["jQuery.map(query, item=>$(item).attr('href').match(/torrentid=(\\d+)/)[1])"]
         }
       }
+    },
+    "levelExtendInfo": {
+      "page": "/user.php?action=next_class",
+      "fields": {
+        "snatches": {
+          "selector": "td:contains('Minimum snatches') + td + td",
+          "filters": [ 
+            "query.text().replace(/,/g,'').match(/[\\d]+/)[0]", "parseInt(query)"
+          ]
+        }
+      }
     }
-  },
-  "supportedFeatures": {
-    "imdbSearch": false
   }
 }

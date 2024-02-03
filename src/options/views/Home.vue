@@ -140,7 +140,8 @@
             {{ showUserLevel ? props.item.user.levelName : "****" }}
             <template v-if="showLevelRequirements">
               <template v-if="props.item.levelRequirements">
-                <template v-if="isUserGroup(props.item) && props.item.user.nextLevels && props.item.user.nextLevels.length > 0">
+                <template v-if="isUserGroup(props.item) && isNotMaxUserLevel(props.item)
+                 && props.item.user.nextLevels && props.item.user.nextLevels.length > 0">
                   <template v-for="nextLevel in props.item.user.nextLevels">
                     <div>
                       <v-icon small>keyboard_tab</v-icon>
@@ -161,12 +162,6 @@
                         {{ $t("home.levelRequirement.trueDownloaded") }}
                         {{
                             nextLevel.trueDownloaded | formatSize
-                        }}&nbsp;
-                      </template>
-                      <template v-if="nextLevel.totalData">
-                        {{ $t("home.levelRequirement.totalData") }}
-                        {{
-                            nextLevel.totalData | formatSize
                         }}&nbsp;
                       </template>
                       <template v-if="nextLevel.bonus">
@@ -201,10 +196,6 @@
                       </template>
                       <template v-if="nextLevel.uploads">
                         <v-icon small color="green darken-4">file_upload</v-icon>{{ nextLevel.uploads
-                        }}&nbsp;
-                      </template>
-                      <template v-if="nextLevel.snatches">
-                        <v-icon small color="red darken-4">file_download</v-icon>{{ nextLevel.snatches
                         }}&nbsp;
                       </template>
                       <template v-if="nextLevel.downloads">
@@ -257,10 +248,6 @@
                       <template v-if="levelRequirement.trueDownloaded">
                         {{ $t("home.levelRequirement.trueDownloaded") }}
                         {{ levelRequirement.trueDownloaded }};
-                      </template>
-                      <template v-if="levelRequirement.totalData">
-                        {{ $t("home.levelRequirement.totalData") }}
-                        {{ levelRequirement.totalData }};
                       </template>
                       <template v-if="levelRequirement.downloads">
                         <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ levelRequirement.downloads }};
@@ -337,10 +324,6 @@
                           <template v-if="option.trueDownloaded">
                             {{ $t("home.levelRequirement.trueDownloaded") }}
                             {{ option.trueDownloaded }};
-                          </template>
-                          <template v-if="option.totalData">
-                            {{ $t("home.levelRequirement.totalData") }}
-                            {{ option.totalData }};
                           </template>
                           <template v-if="option.downloads">
                             <v-icon small color="red darken-4" :title="$t('home.levelRequirement.downloads')">file_download</v-icon>{{ option.downloads }};
@@ -904,6 +887,15 @@ export default Vue.extend({
       return this.getUserLevelGroup(site) === 'user'
     },
     /**
+     * 适用于站点更改等级规则后, 显示距离下一等级的条件
+     * 因为有些站点可能改了等级名称, 所以这里只做简单的判断是否为 NM. 可以将 config.json 里面的数据同步修改
+     */
+    isNotMaxUserLevel(site: Site) {
+      let maxLevel = site.levelRequirements?.slice(-1)[0]?.name,
+          userLevel = site.user?.levelName
+      return maxLevel !== userLevel
+    },
+    /**
      * 格式化一些用户信息
      */
     formatUserInfo(user: UserInfoEx, site: Site) {
@@ -1100,14 +1092,7 @@ export default Vue.extend({
           nextLevel.level = levelRequirement.level;
         }
       }
-      if (levelRequirement.snatches) {
-        let userSnatches = user.snatches ? user.snatches as number : 0;
-        let requiredSnatches = levelRequirement.snatches as number;
-        if (userSnatches < requiredSnatches) {
-          nextLevel.snatches = requiredSnatches - userSnatches;
-          nextLevel.level = levelRequirement.level;
-        }
-      }
+
       if (levelRequirement.downloads) {
         let userDownloads = user.downloads ? user.downloads as number : 0;
         let requiredDownloads = levelRequirement.downloads as number;
@@ -1127,16 +1112,7 @@ export default Vue.extend({
           nextLevel.level = levelRequirement.level;
         }
       }
-      if (levelRequirement.totalData) {
-        let usertotalData = user.totalData ? (user.totalData as number) : 0;
-        let requiredtotalData = this.fileSizetoLength(
-          levelRequirement.totalData as string
-        );
-        if (usertotalData < requiredtotalData) {
-          nextLevel.totalData = requiredtotalData - usertotalData;
-          nextLevel.level = levelRequirement.level;
-        }
-      }
+
       if (levelRequirement.classPoints) {
         let userClassPoints = user.classPoints as number;
         let requiredClassPoints = levelRequirement.classPoints as number;

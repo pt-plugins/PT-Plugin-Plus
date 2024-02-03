@@ -67,11 +67,14 @@
       "page": "/users/$user.name$/torrents?unsatisfied=include&perPage=100&hitrun=exclude&immune=exclude",
       "fields": {
         "unsatisfieds": {
-          "selector": [".table-responsive tbody tr"],
+          "selector": [".data-table tbody tr"],
           "filters": ["query ? query.length : 0"]
         }
       }
     }
   },
-  "cdn": ["https://blutopia.cc/","https://blutopia.xyz/"]
+  "cdn": ["https://blutopia.cc/","https://blutopia.xyz/"],
+  "searchEntryConfig": {
+    "skipNonLatinCharacters": true
+  }
 }

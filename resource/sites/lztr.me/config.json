@@ -18,7 +18,7 @@
       "interval": "1",
       "uploaded": "10GB",
       "ratio": "0.7",
-      "downloads": "1",
+      "snatches": "1",
       "privilege": "Can make requests, bookmarks, edit Collages, and can access the Top 10"
     },
     {
@@ -61,7 +61,7 @@
           "selector": "li:contains('Uploaded:')",
           "filters": ["query.text().match(/[\\d.]+/)", " query ? query[0] : null"]
         },
-        "downloads": {
+        "snatches": {
           "selector": "li:contains('Snatched:')",
           "filters": ["query.text().match(/[\\d.]+/)", " query ? query[0] : null"]
         }

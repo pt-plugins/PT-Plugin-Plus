@@ -40,6 +40,8 @@ export interface DownloadClient {
   // 发送种子的时候发送分类
   enableCategory?: boolean;
   qbCategories?: QbCategory[];
+  hostnameAsTag?: boolean;
+  siteNameAsTag?: boolean;
 }
 
 /**
@@ -192,6 +194,7 @@ export interface Options {
   encryptMode?: EEncryptMode;
   // 允许保存搜索结果快照
   allowSaveSnapshot?: boolean;
+  selectedTags?: string[];
 }
 
 // 在搜索之前一些选项配置
@@ -325,11 +328,15 @@ export interface LevelRequirement {
   interval?: string;
   // 日期要求
   requiredDate?: string;
-  // 上传数要求
+  // 发布数要求
   uploads?: number;
+<<<<<<< HEAD
   // 下载数要求
   downloads?: number;
   // snatch
+=======
+  // 完成数要求
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
   snatches?: number;
   // 上传量要求
   uploaded?: string | number;
@@ -338,7 +345,11 @@ export interface LevelRequirement {
   // 真实下载量
   trueDownloaded?: string | number;
   // 总流量
+<<<<<<< HEAD
   totalData?: string | number;
+=======
+  totalTraffic?: string | number;
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
   // 积分要求
   bonus?: number;
   // 做种积分要求
@@ -478,6 +489,8 @@ export interface SearchEntryConfigArea {
   parseScript?: string;
   // 替换默认页面
   page?: string;
+  replaceKeyByTVDB?: string[];
+  convertToANIDB?: boolean;
 }
 
 export interface ISearchFieldIndex {
@@ -551,6 +564,8 @@ export interface SearchEntryConfig {
   headers?: Dictionary<any>;
   // 跳过IMDb搜索
   skipIMDbId?: boolean;
+  // 跳过非拉丁字符搜索
+  skipNonLatinCharacters?: boolean;
   // 搜索解析字段索引
   fieldIndex?: ISearchFieldIndex;
   // 数据字段选择器
@@ -626,10 +641,15 @@ export interface UserInfo {
   // 真实下载量
   trueDownloaded?: string | number;
   // 总流量
+<<<<<<< HEAD
   totalData?: string | number;
   // 下载数
   downloads?: number;
   // snatch
+=======
+  totalTraffic?: string | number;
+  // 完成数
+>>>>>>> bf2723b4ebf12174908828fa4ef51cb780b7f38e
   snatches?: number;
   // 分享率
   ratio?: number;

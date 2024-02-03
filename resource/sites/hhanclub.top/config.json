@@ -135,7 +135,7 @@
                 },
                 "seedingSize": {
                     "selector": ["total_size"],
-                    "filters":  ["query.sizeToNumber()"]
+                    "filters": ["query.sizeToNumber()"]
                 }
             }
         },
@@ -151,15 +151,15 @@
         },
         "userUploadedTorrents": {
             "prerequisites": "!user.uploads",
-            "page": "/getusertorrentlistajax.php?ajax=1&type=uploaded&userid=$user.id$",
+            "page": "/getusertorrentlistajax.php?ajax=1&type=uploaded_size&userid=$user.id$",
             "dataType": "json",
             "headers": {
                 "Accept": "application/json, text/javascript, */*; q=0.01"
             },
             "fields": {
                 "uploads": {
-                    "selector": ["data"],
-                    "filters": ["query.length"]
+                    "selector": ["count"],
+                    "filters": ["query"]
                 }
             }
         }
@@ -168,11 +168,34 @@
         "name": "全部",
         "enabled": true
     }],
+    "torrentTagSelectors": [{
+        "name": "Free",
+        "selector": "span.promotion-tag-free"
+    }, {
+        "name": "30%",
+        "selector": "span.promotion-tag-30"
+    }, {
+        "name": "50%",
+        "selector": "span.promotion-tag-50"
+    }, {
+        "name": "⛔️",
+        "selector": "span[style*='background-color:#990000']"
+    }],
     "searchEntryConfig": {
         "page": "/torrents.php",
         "queryString": "search=$key$",
         "resultType": "html",
         "parseScriptFile": "getSearchResult.js",
-        "resultSelector": ".torrent-table-for-spider"
+        "resultSelector": ".torrent-table-for-spider",
+        "fieldSelector": {
+            "progress": {
+                "selector": ["div[title^='seeding'], div[title^='leeching'], div[title^='inactivity']"],
+                "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+            },
+            "status": {
+                "selector": ["div[title^='seeding'], div[title^='leeching'], div[title^='inactivity']"],
+                "filters": ["query ? query.attr('title') : ''", "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"]
+            }
+        }
     }
 }

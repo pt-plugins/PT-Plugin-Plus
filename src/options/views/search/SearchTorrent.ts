@@ -94,7 +94,7 @@ export default Vue.extend({
         failedSites: [],
         noResultsSites: []
       } as searchResult,
-      checkBox: false,
+      checkBox: true,
       // 正在下载的种子文件进度信息
       downloading: {
         count: 0,
@@ -153,7 +153,7 @@ export default Vue.extend({
     );
 
     let viewOptions = this.$store.getters.viewsOptions(EViewKey.searchTorrent, {
-      checkBox: false,
+      checkBox: true,
       showCategory: false,
       titleMiddleEllipsis: false
     });
@@ -582,6 +582,17 @@ export default Vue.extend({
       this.loading = true;
       this.searchMsg = this.$t("searchTorrent.searching").toString();
       sites.forEach((site: Site, index: number) => {
+        // 站点是否跳过非拉丁字符搜索
+        if (
+          site.searchEntryConfig &&
+          site.searchEntryConfig.skipNonLatinCharacters
+        ) {
+          if (!this.key.match(/^[\p{Script_Extensions=Latin}\p{Script_Extensions=Common}]+$/gu))
+          {
+            return;
+          }
+        }
+
         // 站点是否跳过IMDbId搜索
         if (
           this.IMDbId &&

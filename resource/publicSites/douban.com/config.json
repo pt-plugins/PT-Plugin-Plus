@@ -11,7 +11,7 @@
     "scripts": ["common.js", "top250.js"]
   }, {
     "name": "chart",
-    "pages": ["/chart", "/review/best", "/mine"],
+    "pages": ["/chart", "/review/best", "/mine","/wish"],
     "scripts": ["common.js", "chart.js"]
   }, {
     "name": "explore",

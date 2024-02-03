@@ -55,6 +55,18 @@
         "messageCount": {
           "selector": ["span.animate-ping"],
           "filters": ["query.length?11:0"]
+        },
+        "joinTime": {
+          "selector": ["div.dt-user-header-stats h4:contains('Registration date')"],
+          "filters": ["query.text().replace(/(Registration date|注册日期|註冊日期)/g, '').trim()"]
+        },
+        "levelName": {
+          "selector": ["div.dt-user-header-stats span.badge-user"],
+          "filters": ["query.text()"]
+        },
+        "uploads": {
+          "selector": ["i.fa-upload:contains('Total Uploads') + span"],
+          "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"]
         }
       }
     },
