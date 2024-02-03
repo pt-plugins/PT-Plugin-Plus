@@ -13,7 +13,7 @@
     "page": "/torrents.php",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "queryString": "searchstr=$key$",
+    "queryString": "artistname==$key$",
     "area": [{
       "name": "IMDB",
       "keyAutoMatch": "^(tt\\d+)$",
