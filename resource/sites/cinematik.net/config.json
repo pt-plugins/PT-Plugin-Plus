@@ -6,7 +6,6 @@
   "icon": "https://cinematik.net/favicon.ico",
   "tags": ["影视"],
   "host": "cinematik.net",
-  "collaborator": "gawain",
   "levelRequirements": [{
       "level": "1", 
       "name": "Cinephile",
@@ -54,6 +53,7 @@
       "averageSeedtime": "90",
       "privilege": "Auto torrent approvals, Invite forums, HnR warning immunity, 50 download slots"
     }],
+  "collaborator": "gawain",
   "searchEntryConfig": {
     "merge": true,
     "resultSelector": "#torrent-list-table",
