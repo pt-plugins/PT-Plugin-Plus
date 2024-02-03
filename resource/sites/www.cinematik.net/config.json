@@ -1,104 +1,65 @@
 {
   "name": "Cinematik",
   "timezoneOffset": "+0000",
-  "schema": "Cinematik",
+  "schema": "UNIT3D",
   "url": "https://www.cinematik.net/",
   "icon": "https://www.cinematik.net/favicon.ico",
   "tags": ["影视"],
   "host": "www.cinematik.net",
-  "collaborator": "DXV5",
-  "plugins": [{
-    "name": "种子详情页面",
-    "pages": ["/details.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
-  }, {
-    "name": "种子列表",
-    "pages": ["/browse.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "browse.js"]
-  }],
-  "levelRequirements": [
-    {
-      "level": "1",
-      "name": "Power User",
-      "interval": "8",
-      "uploaded": "100GB",
-      "ratio": "1.1",
-      "privilege": "More download slots"
-    }
-  ],
-  "searchEntryConfig": {
-    "page": "/browse.php",
-    "resultType": "html",
-    "parseScriptFile": "getSearchResult.js",
-    "queryString": "search=$key$&incldead=1",
-    "area": [{
-      "name": "IMDB",
-      "queryString": "search=$key$&incldead=1&srchdtls=1",
-      "keyAutoMatch": "^(tt\\d+)$"
-    }]
+  "collaborator": "DXV5, gawain",
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "Cinephile",
+    "interval": "30D",
+    "uploaded": "1TB",
+    "privilege": ""
+  },{
+    "level": "2", 
+    "name": "Cinemaster",
+    "interval": "60D",
+    "uploaded": "2TB",
+    "privilege": ""
+  },{
+    "level": "3", 
+    "name": "FilmExtremist",
+    "interval": "60D",
+    "uploaded": "5TB",
+    "privilege": ""
+  },{
+    "level": "4", 
+    "name": "CineLegend",
+    "interval": "60D",
+    "uploaded": "10TB",
+    "privilege": ""
+  },{
+    "level": "5", 
+    "name": "Cinemaniac",
+    "interval": "365D",
+    "uploaded": "15TB",
+    "privilege": ""
   },
-  "searchEntry": [{
-    "name": "all",
-    "enabled": true
+  {
+    "level": "6", 
+    "name": "CineSeeder",
+    "interval": "60D",
+    "seedingSize": "10TB",
+    "averageSeedtime": "60",
+    "privilege": "Auto torrent approvals, Invite forums, no automatic HnR warnings, 20 download slots."
+  },
+  {
+    "level": "7", 
+    "name": "FilmArchivist",
+    "interval": "90D",
+    "seedingSize": "20TB",
+    "averageSeedtime": "90",
+    "privilege": "Auto torrent approvals, Invite forums, HnR warning immunity, 50 download slots"
   }],
-  "torrentTagSelectors": [{
-    "name": "Free",
-    "selector": "img[src*='freedownload.png']"
-  }, {
-    "name": "2xFree",
-    "selector": "img[src*='platinumdownload.png']"
-  }, {
-    "name": "25%",
-    "selector": "img[src*='silverdownload.png']"
-  }],
-  "selectors": {
-    "userBaseInfo": {
-      "page": "/index.php",
-      "fields": {
-        "id": {
-          "selector": "div#menu a[href*='userdetails.php']",
-          "attribute": "href",
-          "filters": ["query ? query.getQueryString('id'):''"]
-        }
-      }
-    },
-    "userExtendInfo": {
-      "page": "/userdetails.php?id=$user.id$",
-      "fields": {
-        "name": {
-          "selector": "table.mainouter > tbody > tr > td > table.main h1"
-        },
-        "uploaded": {
-          "selector": ["#user-default td.rowhead:contains('Uploaded') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
-        },
-        "downloaded": {
-          "selector": ["#user-default td.rowhead:contains('Downloaded') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
-        },
-        "levelName": {
-          "selector": "#user-default td.rowhead:contains('Class') + td"
-        },
-        "bonus": {
-          "value": "N/A"
-        },
-        "joinTime": {
-          "selector": "#user-default td.rowhead:contains('Join') + td",
-          "filters": ["query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
-        }
-      }
-    },
-    "userSeedingTorrents": {
-      "page": "/userdetails-tab.php?SID=&id=$user.id$&mode=7&page=0",
-      "fields": {
-        "seeding": {
-          "selector": ["table:first tr:not(:eq(0))"],
-          "filters": ["query.length"]
-        },
-        "seedingSize": {
-          "selector": ["table:first tr:not(:eq(0))"],
-          "filters": ["jQuery.map(query.find('td:eq(4)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
-        }
+  "searchEntryConfig": {
+    "merge": true,
+    "resultSelector": "#torrent-list-table",
+    "fieldSelector": {
+      "subTitle": {
+        "selector": ["td.torrent-listings-overview span:first"]
       }
     }
   }
