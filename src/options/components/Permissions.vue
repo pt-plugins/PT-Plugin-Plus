@@ -44,7 +44,7 @@
           <v-btn
             flat
             color="success"
-            :disabled="selected.length==0"
+            :disabled="selected.length === 0"
             @click="authorize"
           >{{ $t("permissions.authorize") }}</v-btn>
           <v-btn flat color="orange" @click="cancel">{{ $t("permissions.cancel") }}</v-btn>
@@ -71,7 +71,8 @@ export default Vue.extend({
           visible: true,
           title: "permissions.details.downloads"
         },
-        { key: "cookies", visible: true, title: "permissions.details.cookies" }
+        { key: "cookies", visible: true, title: "permissions.details.cookies" },
+        { key: "alarms", visible: true, title: "permissions.details.alarms" }
       ],
       selected: [] as any,
       cancelled: false,

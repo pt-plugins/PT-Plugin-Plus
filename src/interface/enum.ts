@@ -460,3 +460,7 @@ export enum EOpenType {
   openAllStatusErr = "openAllStatusErr",
 }
 
+export enum EAlarm {
+  refreshJob = 'PTPP_RefreshUserData_JOB'
+}
+

@@ -107,6 +107,7 @@
         "allSites": "所有网站的访问权限，用于搜索和读取做种数据；",
         "tabs": "所有打开页面的读取权限，用于显示助手图标及各项操作；",
         "downloads": "下载权限，用于批量下载种子文件",
+        "alarms": "定时任务权限，用于新版定时刷新",
         "cookies": "Cookies操作权限，用于备份和恢复站点的登录状态等内容"
       },
       "headers": {
@@ -504,6 +505,7 @@
         "autoRefreshUserDataTip3": "失败后重试",
         "autoRefreshUserDataTip4": "次，每次间隔",
         "autoRefreshUserDataTip5": "分钟",
+        "autoRefreshByAlarmTip1": "使用新版刷新方式, 更稳定, 需要对应授权（Beta）",
         "autoBackupDataTip1": "在浏览器打开的情况下自动上传用户数据（Beta）",
         "autoBackupDataTip2": "自动刷新数据后间隔",
         "autoBackupDataTip3": "分钟, 上传数据到",

@@ -136,6 +136,9 @@
                       </div>
                     </v-flex>
 
+                    <!-- 新版刷新策略, 更稳定 -->
+                    <v-switch color="success" v-model="options.autoRefreshByAlarm"
+                              :label="$t('settings.base.autoRefreshByAlarmTip1')"/>
                     <!-- 自动备份 -->
                     <v-switch color="success" v-model="options.autoBackupData" :disabled="!options.autoRefreshUserData"
                               :label="$t('settings.base.autoBackupDataTip1')"/>

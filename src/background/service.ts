@@ -8,7 +8,7 @@ import {
   SiteSchema,
   Dictionary,
   EUserDataRequestStatus,
-  LogItem
+  LogItem, EAlarm
 } from "@/interface/common";
 import Config from "./config";
 import Controller from "./controller";
@@ -141,7 +141,7 @@ export default class PTPlugin {
             setTimeout(() => {
               this.contentMenus.init(this.options);
             }, 100);
-            this.resetAutoRefreshUserDataTimer();
+            this.resetTimer();
             resolve(this.options);
             break;
 
@@ -364,14 +364,33 @@ export default class PTPlugin {
     });
   }
 
+  private resetTimer(isInit: boolean = false) {
+    clearInterval(this.autoRefreshUserDataTimer)
+    let self = this
+    chrome.alarms.clear(EAlarm.refreshJob, function(wasCleared) {
+      if (wasCleared) {
+        console.log(`Alarm ${EAlarm.refreshJob} was successfully cleared.`);
+      } else {
+        console.log(`Alarm ${EAlarm.refreshJob} was not cleared.`);
+      }
+
+      if (!self.options.autoRefreshUserData) {
+        return;
+      }
+      if (self.options.autoRefreshByAlarm) {
+        self.setRefreshUserDataJob(isInit)
+      } else {
+        self.resetAutoRefreshUserDataTimer(isInit)
+      }
+    });
+  }
+
   /**
    * 重设自动获取用户数据定时器
    */
   private resetAutoRefreshUserDataTimer(isInit: boolean = false) {
+    console.log(`resetAutoRefreshUserDataTimer`)
     clearInterval(this.autoRefreshUserDataTimer);
-    if (!this.options.autoRefreshUserData) {
-      return;
-    }
 
     // 先尝试当天
     this.options.autoRefreshUserDataNextTime = this.getNextTime(0);
@@ -394,23 +413,30 @@ export default class PTPlugin {
       }
     }
 
+    this.autoRefreshUserDataTimer = window.setInterval(() => {
+      this.refreshUserData()
+    }, 1000);
+  }
+
+  private refreshUserData() {
+    console.log('refreshUserData')
+    let time = new Date().getTime();
     this.autoRefreshUserDataFailedCount = 0;
     let failedRetryCount =
-      this.options.autoRefreshUserDataFailedRetryCount || 3;
+        this.options.autoRefreshUserDataFailedRetryCount || 3;
     let failedRetryInterval =
-      this.options.autoRefreshUserDataFailedRetryInterval || 5;
+        this.options.autoRefreshUserDataFailedRetryInterval || 5;
 
-    this.autoRefreshUserDataTimer = window.setInterval(() => {
-      let time = new Date().getTime();
+    // let time = new Date().getTime();
 
-      if (
+    if (
         this.options.autoRefreshUserDataNextTime &&
         time >= this.options.autoRefreshUserDataNextTime &&
         !this.autoRefreshUserDataIsWorking
-      ) {
-        this.options.autoRefreshUserDataNextTime = this.getNextTime();
-        this.autoRefreshUserDataIsWorking = true;
-        this.controller.userService
+    ) {
+      this.options.autoRefreshUserDataNextTime = this.getNextTime();
+      this.autoRefreshUserDataIsWorking = true;
+      this.controller.userService
           .refreshUserData(this.autoRefreshUserDataFailedCount > 0)
           .then((results: any) => {
             this.debug("refreshUserData DONE.", results);
@@ -424,8 +450,8 @@ export default class PTPlugin {
 
               if (!result.id) {
                 if (
-                  result.msg &&
-                  result.msg.status != EUserDataRequestStatus.notSupported
+                    result.msg &&
+                    result.msg.status != EUserDataRequestStatus.notSupported
                 ) {
                   haveError = true;
                   return true;
@@ -438,13 +464,15 @@ export default class PTPlugin {
               if (this.autoRefreshUserDataFailedCount < failedRetryCount) {
                 // 设置几分钟后重试
                 this.options.autoRefreshUserDataNextTime =
-                  new Date().getTime() + failedRetryInterval * 60000;
+                    new Date().getTime() + failedRetryInterval * 60000;
                 this.debug(
-                  "数据刷新失败, 下次重试时间",
-                  new Date(
-                    this.options.autoRefreshUserDataNextTime as number
-                  ).toLocaleString()
+                    "数据刷新失败, 下次重试时间",
+                    new Date(
+                        this.options.autoRefreshUserDataNextTime as number
+                    ).toLocaleString()
                 );
+                // for refresh retry
+                this.resetTimer()
               } else {
                 this.debug("数据刷新失败, 重试次数已超限制");
               }
@@ -473,8 +501,9 @@ export default class PTPlugin {
               }
             }
           });
-      }
-    }, 1000);
+    } else {
+      console.debug(`refresh data skipped...`)
+    }
   }
 
   /**
@@ -504,7 +533,7 @@ export default class PTPlugin {
   public init() {
     if (!this.localMode) {
       this.contentMenus.init(this.options);
-      this.resetAutoRefreshUserDataTimer(true);
+      this.resetTimer(true);
     }
   }
 
@@ -691,5 +720,46 @@ export default class PTPlugin {
    */
   public requestPermissions(permissions: string[]): Promise<any> {
     return PPF.requestPermissions(permissions);
+  }
+
+  /**
+   * call this only when init, or meanness
+   */
+  public setRefreshUserDataJob(isInit: boolean = false) {
+    // 配置更新后触发定时任务更新
+    // if (!isInit) return
+    // let delayInMinutes, periodInMinutes = 24 * 60
+    // let delayInMinutes = 0, periodInMinutes = 24 * 60, nextTime = this.getNextTime(0)
+    // 间隔两分钟, 兼容重试
+    let delayInMinutes = 0, periodInMinutes = 2, nextTime = this.getNextTime(0)
+    // 尝试当天
+    if (Date.now() > nextTime) {
+      if (isInit) {
+        if (PPF.getToDay() != PPF.getToDay(this.options.autoRefreshUserDataLastTime)) {
+          delayInMinutes = 1
+        }
+      }
+
+      if (delayInMinutes < 1) {
+        this.options.autoRefreshUserDataNextTime = this.getNextTime();
+        delayInMinutes = Math.round((this.options.autoRefreshUserDataNextTime - Date.now()) / 1000 / 60)
+        delayInMinutes = delayInMinutes > 1 ? delayInMinutes : 1
+      }
+    } else {
+      this.options.autoRefreshUserDataNextTime = nextTime
+      delayInMinutes = 1
+    }
+
+    console.log(`setRefreshUserDataJob delay in ${delayInMinutes}, period: ${periodInMinutes}`)
+    // 同名创建会使用最新的
+    chrome.alarms.create(EAlarm.refreshJob, {
+      delayInMinutes, periodInMinutes
+    })
+    chrome.alarms.onAlarm.addListener(alarm => {
+      if (alarm.name === EAlarm.refreshJob) {
+        console.debug('alarm RefreshUserDataJob invoked')
+        this.refreshUserData()
+      }
+    })
   }
 }

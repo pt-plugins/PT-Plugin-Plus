@@ -128,6 +128,8 @@ export interface Options {
   searchSolutions?: SearchSolution[];
   // 自动刷新用户数据
   autoRefreshUserData?: boolean;
+  // 使用 chrome.alarm 进行时间刷新
+  autoRefreshByAlarm?: boolean;
   // 自动获取用户数据时间间隔（小时）
   autoRefreshUserDataHours?: number | string;
   // 自动获取用户数据时间间隔（分钟）
