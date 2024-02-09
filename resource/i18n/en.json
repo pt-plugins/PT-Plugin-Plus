@@ -110,6 +110,7 @@
         "allSites": "Access to all trackers for searching and get torrents data;",
         "tabs": "Read permission of the activity tab to display the PT Plugin Plus icon;",
         "downloads": "Download permission for batch download of torrents",
+        "alarms": "Scheduled task permissions, used for scheduled refresh of the new version",
         "cookies": "Import/Export site cookies"
       },
       "headers": {
@@ -510,6 +511,7 @@
         "autoRefreshUserDataTip3": "Retry",
         "autoRefreshUserDataTip4": "times after failure,",
         "autoRefreshUserDataTip5": "minute apart",
+        "autoRefreshByAlarmTip1": "Using the new version refresh method, more stable, requires corresponding authorization (Beta)",
         "autoBackupDataTip1": "Automatically backup user data when the browser is open（Beta）",
         "autoBackupDataTip2": "Auto upload after ",
         "autoBackupDataTip3": "automatically refreshes",
