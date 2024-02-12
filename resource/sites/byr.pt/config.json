@@ -111,7 +111,8 @@
             },
             "messageCount": {
                 "selector": [
-                    "td[style*='background:red']a[href*='messages.php']"
+                    "div[style*='background: red'] a[href*='messages.php']",
+                    "td[style*='background:red'] a[href*='messages.php']"
                 ],
                 "filters": [
                     "query.text().match(/(\\d+)/)",
