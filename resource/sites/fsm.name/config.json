@@ -2,7 +2,7 @@
   "name": "FSM",
   "timezoneOffset": "+0800",
   "description": "飞天拉面神教 - FSM",
-  "url": "https://fsm.name/",
+  "url": "https://api.fsm.name/",
   "tags": [ "成人" ],
   "schema": "Common",
   "host": "fsm.name",
@@ -77,20 +77,21 @@
   },
   "selectors": {
     "userBaseInfo": {
-      "page": "/Rules",
+      "page": "/Users/infos",
+      "dataType": "json",
+      "headers": {
+        "Authorization": "$site.authToken$"
+      },
       "fields": {
         "isLogged": {
           "selector": [ "a.adminUser" ],
           "filters": [ "query.length>0" ]
         },
         "name": {
-          "selector": [ "#header-navbar .dropdown-toggle" ],
-          "filters": [ "query.text().trim().replace(/工具\\s?/,'')" ]
+          "selector": [ "response.data.username" ]
         },
         "id": {
-          "selector": [ "a[href*='/Users/profile']" ],
-          "attribute": "href",
-          "filters": [ "query ? query.getQueryString('uid'):''" ]
+          "selector": [ "response.data.uid" ]
         },
         "messageCount": {
           "selector": [ "a[href='/Mail']" ],
