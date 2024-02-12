@@ -311,6 +311,8 @@ export interface Site {
   userQuickLinks?: UserQuickLink[];
   // 使用站点标签进行分组
   // siteGroups?: string[];
+  // token in headers
+  authToken?: string
 }
 
 /**

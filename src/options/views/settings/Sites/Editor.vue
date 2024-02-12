@@ -153,6 +153,12 @@
                 :label="$t('settings.sites.editor.upLoadLimit')"
                 :placeholder="$t('settings.sites.editor.upLoadLimitTip')"
         ></v-text-field>
+        <!--token-->
+        <v-text-field
+                v-model="site.authToken"
+                :label="$t('settings.sites.editor.authToken')"
+                :placeholder="$t('settings.sites.editor.authTokenTip')"
+        ></v-text-field>
         <!-- 允许获取用户信息 -->
         <v-switch
           :label="$t('settings.sites.editor.allowGetUserInfo')"

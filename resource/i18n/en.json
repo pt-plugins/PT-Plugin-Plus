@@ -767,6 +767,8 @@
           "timezone": "Timezone",
           "upLoadLimit": "Upload limit",
           "upLoadLimitTip": "Upload limit (KB\/s), 0 or empty for no limit",
+          "authToken": "Authorization Token",
+          "authTokenTip": "Authorization Token",
           "enableQuickLink": "Enable QuickLink",
           "enableDefaultQuickLink": "Enable Default QuickLink",
           "quickLinkText": "Custom QuickLink Text",
