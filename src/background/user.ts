@@ -303,6 +303,18 @@ export class User {
           console.log(error);
         }
       }
+      if (headers && site) {
+        try {
+          for (const key in headers) {
+            if (headers.hasOwnProperty(key)) {
+              const value = headers[key];
+              headers[key] = PPF.replaceKeys(value, site, "site");
+            }
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
       /**
        * 是否有脚本解析器

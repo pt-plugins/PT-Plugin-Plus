@@ -762,6 +762,8 @@
           "timezone": "时区",
           "upLoadLimit": "上传速度限制",
           "upLoadLimitTip": "上传速度限制 (KB/s), 0或不填 不限速",
+          "authToken": "鉴权 Token",
+          "authTokenTip": "鉴权 Token (一般无需填写",
           "enableQuickLink": "启用快捷链接",
           "enableDefaultQuickLink": "启用默认链接",
           "quickLinkText": "自定义快捷链接列表",
