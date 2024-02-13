@@ -195,6 +195,11 @@
         "averageSeedtime": {
           "selector": ["ul.nobullet > li:contains('Average Time Seeded:')"],
           "filters": ["query.text().replace('Average Time Seeded:', '').trim().timeToDays()"]
+        },
+        "snatches": {
+          "selector": "ul.nobullet > li:contains('Snatched:')",
+          "filters": ["query.text().replace(/,/g,'').match(/(\\d+)/g)",
+                      "query ? query.map(Number).reduce((sum, current) => {return sum + current;}, 0) : 0"]
         }
       }
     },
@@ -204,17 +209,6 @@
         "seedingList": {
           "selector": ["a[href*='torrentid=']"],
           "filters": ["jQuery.map(query, item=>$(item).attr('href').match(/torrentid=(\\d+)/)[1])"]
-        }
-      }
-    },
-    "levelExtendInfo": {
-      "page": "/user.php?action=next_class",
-      "fields": {
-        "snatches": {
-          "selector": "td:contains('Minimum snatches') + td + td",
-          "filters": [ 
-            "query.text().replace(/,/g,'').match(/[\\d]+/)[0]", "parseInt(query)"
-          ]
         }
       }
     }
