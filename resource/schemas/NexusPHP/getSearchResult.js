@@ -402,9 +402,10 @@
               }
               break;
 
-            case "tp.m-team.cc":
-            case "pt.m-team.cc":
+            case "xp.m-team.io":
             case "kp.m-team.cc":
+            case "xp.m-team.cc":
+            case "ap.m-team.cc":
               title = row.find("a[href*='hit'][title]").last();
               subTitle = title
                 .parent()

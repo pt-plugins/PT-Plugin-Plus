@@ -2,14 +2,17 @@
   "name": "M-Team",
   "timezoneOffset": "+0800",
   "description": "M-Team",
-  "url": "https://kp.m-team.cc/",
-  "icon": "https://kp.m-team.cc/favicon.ico",
+  "url": "https://xp.m-team.io/",
+  "icon": "https://xp.m-team.io/favicon.ico",
   "tags": ["影视", "综合","成人"],
   "schema": "NexusPHP",
-  "host": "kp.m-team.cc",
-  "cdn": ["https://kp.m-team.cc/","https://xp.m-team.cc/","https://xp.m-team.io/"],
+  "host": "xp.m-team.io",
+  "cdn": ["https://kp.m-team.cc","https://xp.m-team.cc","https://ap.m-team.cc"],
   "formerHosts": [
     "pt.m-team.cc",
+    "kp.m-team.cc",
+    "xp.m-team.cc",
+    "ap.m-team.cc",
     "tp.m-team.cc"
   ],
   "levelRequirements": [{
