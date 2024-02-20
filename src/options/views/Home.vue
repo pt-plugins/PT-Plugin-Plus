@@ -894,11 +894,12 @@ export default Vue.extend({
     /**
      * 适用于站点更改等级规则后, 显示距离下一等级的条件
      * 因为有些站点可能改了等级名称, 所以这里只做简单的判断是否为 NM. 可以将 config.json 里面的数据同步修改
+     * 因为如果没有达到 NM, 还是需要升级滴~
      */
     isNotMaxUserLevel(site: Site) {
       let maxLevel = site.levelRequirements?.slice(-1)[0]?.name,
           userLevel = site.user?.levelName
-      return maxLevel !== userLevel
+      return maxLevel?.toLowerCase() !== userLevel?.toLowerCase()
     },
     /**
      * 格式化一些用户信息
@@ -995,7 +996,7 @@ export default Vue.extend({
       let downloaded = user.downloaded ?? 0;
       let uploaded = user.uploaded ?? 0;
 
-      if (user.levelName == levelRequirement.name) {
+      if (user.levelName?.toLowerCase() == levelRequirement.name?.toLowerCase()) {
         return undefined;
       }
 
