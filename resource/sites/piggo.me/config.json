@@ -103,6 +103,15 @@
     }],
     "collaborator": "koal",
     "selectors": {
+        "userBaseInfo": {
+            "merge": true,
+            "fields": {
+                "messageCount": {
+                    "selector": ["div[id^='messages']"],
+                    "filters": ["parseInt(query.text().match(/(\\d+)/))"]
+                }
+            }
+        },
         "userSeedingTorrents": {
             "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
             "fields": {
