@@ -7,12 +7,10 @@
   "tags": ["影视", "综合","成人"],
   "schema": "NexusPHP",
   "host": "xp.m-team.io",
-  "cdn": ["https://kp.m-team.cc","https://xp.m-team.cc","https://ap.m-team.cc"],
+  "cdn": ["https://xp.m-team.io/", "https://kp.m-team.cc","https://xp.m-team.cc","https://ap.m-team.cc"],
   "formerHosts": [
     "pt.m-team.cc",
     "kp.m-team.cc",
-    "xp.m-team.cc",
-    "ap.m-team.cc",
     "tp.m-team.cc"
   ],
   "levelRequirements": [{
