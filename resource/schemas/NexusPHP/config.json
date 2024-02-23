@@ -116,7 +116,7 @@
         },
         "unsatisfieds": {
           "selector": ["a[href*='myhr.php']:last"],
-          "filters": ["query ? parseInt(query.text().match(/[\\d.]+/)[0]) : null"]
+          "filters": ["query.length ? parseInt(query.text().match(/[\\d.]+/)[0]) : null"]
         }
       }
     },
