@@ -203,18 +203,18 @@
     ]
   }],
   "selectors": {
-    "userExtendInfo": {
+    "userUploadedTorrents": {
       "merge": true,
-      "page": "/userdetails.php?id=$user.id$",
+      "page": "/viewtorrentsdetail.php?id=$user.id$",
       "fields": {
         "uploads": {
-            "selector": ["td.rowfollow div#ka"],
+            "selector": ["div#ka"],
             "filters": [
               "query.parent().clone().children().remove().end().text().replace(/,/g,'')",
               "query ? parseInt(query.match(/[\\d]+/)[0]) : null"]
         },
         "seeding": {
-          "selector": ["td.rowfollow div#ka1"],
+          "selector": ["div#ka1"],
           "filters": [
             "query.parent().clone().children().remove().end().text().replace(/,/g,'')",
             "query ? parseInt(query.match(/[\\d]+/)[0]) : null"]
