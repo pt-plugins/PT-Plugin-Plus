@@ -2,9 +2,11 @@ name: Build Action Release
 
 on:
   push:
-    branches: [ dev ]
+    branches:
+      - dev
   pull_request:
-    branches: [ dev ]
+    branches:
+      - dev
   workflow_call:
     inputs:
       ref:
