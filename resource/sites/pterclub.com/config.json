@@ -4,176 +4,245 @@
   "description": "PT之友俱乐部",
   "url": "https://pterclub.com/",
   "icon": "https://pterclub.com/favicon.ico",
-  "tags": ["影视", "综合"],
+  "tags": [
+    "影视",
+    "综合"
+  ],
   "schema": "NexusPHP",
   "host": "pterclub.com",
-  "levelRequirements": [{
-    "level": "1",
-    "name": "Power User",
-    "interval": "5",
-    "downloaded": "50GB",
-    "ratio": "1.05",
-    "seedingPoints": "10000",
-    "uploads": "10",
-    "privilege": "可以直接发布种子；可以查看邀请区；可以上传字幕和删除自己上传的字幕"
-  },{
-    "level": "2",
-    "name": "Elite User",
-    "interval": "10",
-    "downloaded": "120GB",
-    "ratio": "1.55",
-    "seedingPoints": "30000",
-    "uploads": "20",
-    "privilege": "可以请求续种"
-  },{
-    "level": "3",
-    "name": "Crazy User",
-    "interval": "24",
-    "downloaded": "300GB",
-    "ratio": "2.05",
-    "seedingPoints": "80000",
-    "uploads": "30",
-    "privilege": "可以查看排行榜"
-  },{
-    "level": "4",
-    "name": "Insane User",
-    "interval": "32",
-    "downloaded": "500GB",
-    "ratio": "2.55",
-    "seedingPoints": "150000",
-    "uploads": "40",
-    "privilege": "可以查看普通日志"
-  },{
-    "level": "5",
-    "name": "Veteran User",
-    "interval": "40",
-    "downloaded": "750GB",
-    "ratio": "3.05",
-    "alternative": [
-      {
-        "seedingPoints": "300000",
-        "uploads": "50"
-      },
-      {
-        "seedingPoints": "900000",
-        "uploads": "10"
-      }
-    ],
-    "privilege": "可以查看其它用户的评论、帖子历史；封存账号后，不会因不活跃原因被临时封禁"
-  },{
-    "level": "6",
-    "name": "Extreme User",
-    "interval": "48",
-    "downloaded": "1024GB",
-    "ratio": "3.55",
-    "alternative": [
-      {
-        "seedingPoints": "600000",
-        "uploads": "60"
-      },
-      {
-        "seedingPoints": "1800000",
-        "uploads": "10"
-      }
-    ],
-    "privilege": "可2次无条件不活跃解封，可以查看邀请树统计，初次升级赠送1枚永久邀请码"
-  },{
-    "level": "7",
-    "name": "Ultimate User",
-    "interval": "56",
-    "downloaded": "1536GB",
-    "ratio": "4.05",
-    "alternative": [
-      {
-        "seedingPoints": "1200000",
-        "uploads": "70"
-      },
-      {
-        "seedingPoints": "3600000",
-        "uploads": "10"
-      }
-    ],
-    "privilege": "追加1次无条件不活跃解封，可以查看邀请树图，初次升级赠送2枚永久邀请码"
-  },{
-    "level": "8",
-    "name": "Nexus Master",
-    "interval": "112",
-    "downloaded": "3072GB",
-    "ratio": "4.55",
-    "alternative": [
-      {
-        "seedingPoints": "2400000",
-        "uploads": "100"
-      },
-      {
-        "seedingPoints": "9600000",
-        "uploads": "10"
-      }
-    ],
-    "privilege": "用户不会因不活跃原因被临时封禁，初次升级赠送3枚永久邀请码"
-  }],
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "Power User",
+      "interval": "5",
+      "downloaded": "50GB",
+      "ratio": "1.05",
+      "seedingPoints": "10000",
+      "uploads": "10",
+      "privilege": "可以直接发布种子；可以查看邀请区；可以上传字幕和删除自己上传的字幕"
+    },
+    {
+      "level": "2",
+      "name": "Elite User",
+      "interval": "10",
+      "downloaded": "120GB",
+      "ratio": "1.55",
+      "seedingPoints": "30000",
+      "uploads": "20",
+      "privilege": "可以请求续种"
+    },
+    {
+      "level": "3",
+      "name": "Crazy User",
+      "interval": "24",
+      "downloaded": "300GB",
+      "ratio": "2.05",
+      "seedingPoints": "80000",
+      "uploads": "30",
+      "privilege": "可以查看排行榜"
+    },
+    {
+      "level": "4",
+      "name": "Insane User",
+      "interval": "32",
+      "downloaded": "500GB",
+      "ratio": "2.55",
+      "seedingPoints": "150000",
+      "uploads": "40",
+      "privilege": "可以查看普通日志"
+    },
+    {
+      "level": "5",
+      "name": "Veteran User",
+      "interval": "40",
+      "downloaded": "750GB",
+      "ratio": "3.05",
+      "alternative": [
+        {
+          "seedingPoints": "300000",
+          "uploads": "50"
+        },
+        {
+          "seedingPoints": "900000",
+          "uploads": "10"
+        }
+      ],
+      "privilege": "可以查看其它用户的评论、帖子历史；封存账号后，不会因不活跃原因被临时封禁"
+    },
+    {
+      "level": "6",
+      "name": "Extreme User",
+      "interval": "48",
+      "downloaded": "1024GB",
+      "ratio": "3.55",
+      "alternative": [
+        {
+          "seedingPoints": "600000",
+          "uploads": "60"
+        },
+        {
+          "seedingPoints": "1800000",
+          "uploads": "10"
+        }
+      ],
+      "privilege": "可2次无条件不活跃解封，可以查看邀请树统计，初次升级赠送1枚永久邀请码"
+    },
+    {
+      "level": "7",
+      "name": "Ultimate User",
+      "interval": "56",
+      "downloaded": "1536GB",
+      "ratio": "4.05",
+      "alternative": [
+        {
+          "seedingPoints": "1200000",
+          "uploads": "70"
+        },
+        {
+          "seedingPoints": "3600000",
+          "uploads": "10"
+        }
+      ],
+      "privilege": "追加1次无条件不活跃解封，可以查看邀请树图，初次升级赠送2枚永久邀请码"
+    },
+    {
+      "level": "8",
+      "name": "Nexus Master",
+      "interval": "112",
+      "downloaded": "3072GB",
+      "ratio": "4.55",
+      "alternative": [
+        {
+          "seedingPoints": "2400000",
+          "uploads": "100"
+        },
+        {
+          "seedingPoints": "9600000",
+          "uploads": "10"
+        }
+      ],
+      "privilege": "用户不会因不活跃原因被临时封禁，初次升级赠送3枚永久邀请码"
+    }
+  ],
   "formerHosts": [
     "pter.club"
   ],
   "searchEntryConfig": {
     "fieldSelector": {
       "title": {
-        "selector": ["a[href*='details'][href*='php?id=']:first"],
-        "filters": ["query"]
+        "selector": [
+          "a[href*='details'][href*='php?id=']:first"
+        ],
+        "filters": [
+          "query"
+        ]
       },
       "subTitle": {
-        "selector": ["div>span:eq(0)"],
-        "filters": ["query.text().trim()"]
+        "selector": [
+          "div>span:eq(0)"
+        ],
+        "filters": [
+          "query.text().trim()"
+        ]
       },
       "imdbId": {
-        "selector": ["a span[data-imdbid]:first"],
+        "selector": [
+          "a span[data-imdbid]:first"
+        ],
         "attribute": "data-imdbid",
-        "filters": ["this.formatIMDbId(query)"]
+        "filters": [
+          "this.formatIMDbId(query)"
+        ]
       },
       "progress": {
-        "selector": [".progbargreen", ".progbarred + .progbarrest", ".progbarred", ".progbarrest", ""],
+        "selector": [
+          ".progbargreen",
+          ".progbarred + .progbarrest",
+          ".progbarred",
+          ".progbarrest",
+          ""
+        ],
         "switchFilters": [
-          ["100"],
-          ["query.prev().attr('style').replace('width: ','').replace('%;','')"],
-          ["100"],
-          ["0"],
-          ["null"]
+          [
+            "100"
+          ],
+          [
+            "query.prev().attr('style').replace('width: ','').replace('%;','')"
+          ],
+          [
+            "100"
+          ],
+          [
+            "0"
+          ],
+          [
+            "null"
+          ]
         ]
       },
       "status": {
-        "selector": [".progbargreen", ".progbarred + .progbarrest", ".progbarred", ".progbarrest"],
+        "selector": [
+          ".progbargreen",
+          ".progbarred + .progbarrest",
+          ".progbarred",
+          ".progbarrest"
+        ],
         "switchFilters": [
-          ["2"],
-          ["3"],
-          ["255"],
-          ["3"]
+          [
+            "2"
+          ],
+          [
+            "3"
+          ],
+          [
+            "255"
+          ],
+          [
+            "3"
+          ]
         ]
       }
     }
   },
-  "searchEntry": [{
-    "name": "综合",
-    "enabled": true
-  }, {
-    "entry": "/music.php?search=$key$&notnewword=1&cat=413",
-    "name": "音乐",
-    "enabled": true
-  }],
+  "searchEntry": [
+    {
+      "name": "综合",
+      "enabled": true
+    },
+    {
+      "entry": "/music.php?search=$key$&notnewword=1&cat=413",
+      "name": "音乐",
+      "enabled": true
+    }
+  ],
   "selectors": {
     "userExtendInfo": {
       "merge": true,
       "fields": {
         "bonus": {
-          "selector": ["td.rowhead:contains('猫粮') + td, td.rowhead:contains('Karma Points') + td, td.rowhead:contains('貓糧') + td"],
-          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+          "selector": [
+            "td.rowhead:contains('猫粮') + td, td.rowhead:contains('Karma Points') + td, td.rowhead:contains('貓糧') + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'')",
+            "parseFloat(query)"
+          ]
         },
         "seeding": {
-          "selector": ["a[href*='getusertorrentlist.php'][href*='seeding']"],
-          "filters": ["query ? parseInt(query.text().replace(/,/g,'')) : 0"]
+          "selector": [
+            "a[href*='getusertorrentlist.php'][href*='seeding']"
+          ],
+          "filters": [
+            "query ? parseInt(query.text().replace(/,/g,'')) : 0"
+          ]
         },
         "seedingSize": {
-          "selector": ["td.rowhead:contains('做种大小') + td, td.rowhead:contains('Seeding Size') + td, td.rowhead:contains('做種大小') + td"],
-          "filters": ["query.text().trim().sizeToNumber()"]
+          "selector": [
+            "td.rowhead:contains('做种大小') + td, td.rowhead:contains('Seeding Size') + td, td.rowhead:contains('做種大小') + td"
+          ],
+          "filters": [
+            "query.text().trim().sizeToNumber()"
+          ]
         }
       }
     },
@@ -182,26 +251,45 @@
       "page": "/torrents.php?incldead=1&check=checked&search=$user.name$&search_area=3",
       "fields": {
         "uploads": {
-          "selector": ["p.np-pager:first b:last"],
-          "filters": ["query.text().replace(/,/g,'').split('-')", "(query && query.length > 1) ? parseInt(query[1]) : 0"]
+          "selector": [
+            "p.np-pager:first b:last"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').split('-')",
+            "(query && query.length > 1) ? parseInt(query[1]) : 0"
+          ]
         }
       }
     }
   },
   "plugins": [
     {
-    "name": "保种和官方列表",
-    "pages": ["/reseed.php", "/officialgroup.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
-    },{
+      "name": "保种和官方列表",
+      "pages": [
+        "/reseed.php",
+        "/officialgroup.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/NexusPHP/torrents.js"
+      ]
+    },
+    {
       "name": "游戏种子详情页面",
-      "pages": ["/detailsgame.php"],
-      "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/details.js"]
+      "pages": [
+        "/detailsgame.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/NexusPHP/details.js"
+      ]
     }
   ],
   "mergeSchemaTagSelectors": true,
-  "torrentTagSelectors": [{
-    "name": "⛔️",
-    "selector": "a[href*='torrents.php?tag_exclusive=yes']"
-  }]
+  "torrentTagSelectors": [
+    {
+      "name": "⛔️",
+      "selector": "a[href*='torrents.php?tag_exclusive=yes']"
+    }
+  ]
 }

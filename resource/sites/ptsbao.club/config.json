@@ -5,7 +5,10 @@
   "url": "https://ptsbao.club/",
   "description": "烧包 - 扬帆远航 风雨同路",
   "icon": "https://ptsbao.club/favicon.ico",
-  "tags": ["影视", "综合"],
+  "tags": [
+    "影视",
+    "综合"
+  ],
   "host": "ptsbao.club",
   "levelRequirements": [
     {
@@ -65,19 +68,33 @@
       "ratio": "4.55"
     }
   ],
-  "collaborator": ["laizony", "ted423"],
+  "collaborator": [
+    "laizony",
+    "ted423"
+  ],
   "searchEntryConfig": {
-	"merge": true,
+    "merge": true,
     "fieldSelector": {
       "progress": {
-        "selector": ["tr.finished,tr.seeders"],
-        "filters": ["query.length?100:null"]
+        "selector": [
+          "tr.finished,tr.seeders"
+        ],
+        "filters": [
+          "query.length?100:null"
+        ]
       },
       "status": {
-        "selector": ["tr.finished", "tr.seeders"],
+        "selector": [
+          "tr.finished",
+          "tr.seeders"
+        ],
         "switchFilters": [
-        	["255"],
-        	["2"]
+          [
+            "255"
+          ],
+          [
+            "2"
+          ]
         ]
       }
     }
@@ -87,8 +104,13 @@
       "merge": true,
       "fields": {
         "messageCount": {
-          "selector": ["td[style*='background: indigo'] a[href*='messages.php']"],
-          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+          "selector": [
+            "td[style*='background: indigo'] a[href*='messages.php']"
+          ],
+          "filters": [
+            "query.text().match(/(\\d+)/)",
+            "(query && query.length>=2)?parseInt(query[1]):0"
+          ]
         }
       }
     },
@@ -96,8 +118,12 @@
       "merge": true,
       "fields": {
         "levelName": {
-          "selector": ["td.rowhead:contains('等级') + td b b[class]"],
-          "filters": ["query.text().trim() + '(' + query.attr('class').replace('User_Name',' User') + ')'"]
+          "selector": [
+            "td.rowhead:contains('等级') + td b b[class]"
+          ],
+          "filters": [
+            "query.text().trim() + '(' + query.attr('class').replace('User_Name',' User') + ')'"
+          ]
         }
       }
     }
