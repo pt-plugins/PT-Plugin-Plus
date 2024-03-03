@@ -9,5 +9,37 @@
     "电视剧"
   ],
   "schema": "UNIT3D",
-  "host": "pt.hdpost.top"
+  "host": "pt.hdpost.top",
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "PowerUser",
+      "interval": "4",
+      "uploaded": "1T"
+    },
+    {
+      "level": 2,
+      "name": "SuperUser",
+      "interval": "8",
+      "uploaded": "5T"
+    },
+    {
+      "level": 3,
+      "name": "ExtremeUser",
+      "interval": "12",
+      "uploaded": "20T"
+    },
+    {
+      "level": 4,
+      "name": "InsaneUser",
+      "interval": "24",
+      "uploaded": "50T"
+    },
+    {
+      "level": 5,
+      "name": "Veteran",
+      "interval": "48",
+      "uploaded": "100T"
+    }
+  ]
 }
