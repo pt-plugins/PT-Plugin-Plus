@@ -1,19 +1,17 @@
 {
-  "name": "CyanBug",
-  "description": "大青虫们在此聚集",
+  "name": "青蛙",
+  "description": "青蛙",
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
-  "host": "cyanbug.net",
-  "url": "https://cyanbug.net",
-  "icon": "https://cyanbug.net/favicon.ico",
+  "host": "new.qingwa.pro",
+  "url": "https://new.qingwa.pro/",
+  "icon": "https://new.qingwa.pro/favicon.ico",
   "ver": "0.0.1",
   "tags": [
     "综合",
     "影视"
   ],
   "collaborator": [
-    "jinglekang",
-    "hui-shao",
     "EasonWong"
   ],
   "levelRequirements": [
