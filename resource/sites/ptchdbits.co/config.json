@@ -167,6 +167,17 @@
       "enabled": false
     }
   ],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "unsatisfieds": {
+          "selector": ["a[href*='hnr.php']"],
+          "filters": ["query.length ? parseInt($(query[0].nextSibling).text()) : null"]
+        }
+      }
+    }
+  },
   "torrentTagSelectors": [{
     "name": "Free",
     "selector": "img.pro_free"
