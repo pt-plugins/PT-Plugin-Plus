@@ -646,7 +646,11 @@ export default Vue.extend({
       extension
         .sendRequest(EAction.resetFavicons)
         .then(options => {
-          this.$store.commit("updateOptions", options);
+          if (options) {
+            this.$store.commit("updateOptions", options);
+          } else {
+            console.error(`重置站点图标缓存失败, options: ${options}`)
+          }
         })
         .finally(() => {
           this.faviconReseting = false;

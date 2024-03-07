@@ -49,6 +49,7 @@ export class Favicon {
       urls.forEach((url: string) => {
         requests.push(this.get(url));
       });
+      // 理论上这里不会有报错
       Promise.all(requests)
         .then((results: any[]) => {
           resolve(results);
@@ -89,7 +90,8 @@ export class Favicon {
    */
   private cacheFavicon(url: string, host: string): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      this.download(`${url}/favicon.ico`)
+      let iconUrl = new URL(url).pathname?.length > 1 ? url : `${url}/favicon.ico`
+      this.download(iconUrl)
         .then(result => {
           if (result && result.size > 0) {
             this.transformBlob(result, "base64")
@@ -142,7 +144,7 @@ export class Favicon {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.download(url)
         .then(result => {
-          if (result && /text/gi.test(result.type)) {
+          if (result && result.size > 0 && /text/gi.test(result.type)) {
             this.transformBlob(result, "text")
               .then(text => {
                 try {
@@ -191,7 +193,7 @@ export class Favicon {
                 }
               })
               .catch(e => {
-                this.debug(e);
+                this.debug(`cacheFromIndex.error, url: ${url}, host: ${host}, result.length: ${result?.length}`, e);
                 reject(e);
               });
           } else {
@@ -211,6 +213,7 @@ export class Favicon {
         if (reader.result) {
           resolve(reader.result);
         } else {
+          this.debug("transformBlob.error", blob, to);
           reject();
         }
       });

@@ -133,21 +133,32 @@ class Config {
     return new Promise<any>((resolve?: any, reject?: any) => {
       let urls: string[] = [];
       this.sites.forEach((site: Site) => {
+        /**
+         * 这里不写 icon 地址也可以，因为会自动获取
+         * @see Favicon.cacheFromIndex
+         */
         urls.push(site.activeURL || site.url || "");
       });
 
       if (this.options.sites) {
         this.options.sites.forEach((site: Site) => {
+          /**
+           * 这里不写 icon 地址也可以，因为会自动获取
+           * @see Favicon.cacheFromIndex
+           */
           urls.push(site.activeURL || site.url || "");
         });
       }
 
+      // 去重
+      urls = [...new Set(urls)]
       this.favicon
         .gets(urls)
         .then((results: any[]) => {
           results.forEach((result: any) => {
             let site = this.options.sites.find((item: Site) => {
-              let cdn = [item.url].concat(item.cdn, item.formerHosts?.map(x => `//${x}`));
+              let cdn = [item.url].concat(item.cdn);
+              cdn = cdn.concat(item.formerHosts?.map(x => `//${x}`)).filter(_ => !!_)
               return (
                 item.host == result.host ||
                 cdn.join("").indexOf(`//${result.host}`) > -1
