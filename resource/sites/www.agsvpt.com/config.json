@@ -1,11 +1,10 @@
 {
-  "name": "agsv",
+  "name": "AGSV",
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "url": "https://www.agsvpt.com/",
   "description": "The Ultimate File Sharing Experience",
   "icon": "https://www.agsvpt.com/favicon.ico",
-  "cdn": ["https://agsvpt.com/","https://abroad.agsvpt.com/"],
   "tags": [
     "综合"
   ],
@@ -115,8 +114,38 @@
           "selector": "",
           "filters": [
             "query.text().match(/总大小：(.*?)上一页/g)",
-            "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
+            "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<<span 上一页', '').trim() : 0",
             "(query != 0) ? query.sizeToNumber() : 0"
+          ]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": [
+            "td.rowhead:contains('冰晶') + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'')",
+            "parseFloat(query)"
+          ]
+        },
+        "seeding": {
+          "selector": [
+            "a[href*='getusertorrentlist.php'][href*='seeding']"
+          ],
+          "filters": [
+            "query ? parseInt(query.text().replace(/,/g,'')) : 0"
+          ]
+        },
+        "seedingSize": {
+          "selector": [
+            "td.rowhead:contains('做种大小') + td, td.rowhead:contains('Seeding Size') + td, td.rowhead:contains('做種大小') + td"
+          ],
+          "filters": [
+            "query.text().trim().sizeToNumber()"
           ]
         }
       }
@@ -131,20 +160,25 @@
       }
     ],
     "fieldSelector": {
+      "subTitle": {
+        "selector": [".torrent_title_desc"],
+        "filters": ["query.html().split('</span>').pop()"]
+      },
       "progress": {
         "selector": [
-          "> td:eq(8)"
+          "div[title^='seeding'], div[title^='leeching'], div[title^='inactivity']"
         ],
         "filters": [
-          "query.text()==='-'?null:parseFloat(query.text().split('%')[0])"
+          "query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"
         ]
       },
       "status": {
         "selector": [
-          "> td:eq(8)"
+          "div[title^='seeding'], div[title^='leeching'], div[title^='inactivity']"
         ],
         "filters": [
-          "query.text()==='-'?null:(query.is(\"[bgcolor='#44cef6']\")?1:(parseFloat(query.text().split('%')[0])==100?(query.is(\"[bgcolor='#d0d0d0']\")?255:2):3))"
+          "query ? query.attr('title') : ''",
+          "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
         ]
       }
     }
@@ -224,6 +258,13 @@
           "name": "体育"
         }
       ]
+    }
+  ],
+  "mergeSchemaTagSelectors": true,
+  "torrentTagSelectors": [
+    {
+      "name": "⛔️",
+      "selector": "span[style*='background-color:#e50014']"
     }
   ]
 }
