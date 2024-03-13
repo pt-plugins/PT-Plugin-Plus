@@ -66,7 +66,8 @@
             tags: tags,
             entryName: options.entry.name,
             category: category.id ? category : { id: "-1", "name": "Porn" },
-            status: options.searcher.getFieldValue(site, row, "status")
+            progress: row.find('.tocolsnatched').length ? 100 : row.find('.tocolloaded').length ? 0 : null,
+            status: row.find('.tocolsnatched').length ? 255 : row.find('.tocolloaded').length ? 3 : null
           };
           results.push(data);
         }
