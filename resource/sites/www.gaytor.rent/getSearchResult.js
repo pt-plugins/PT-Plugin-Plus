@@ -49,11 +49,12 @@
           if (title_elem.text().startsWith('♺')) {
             tags.push({ name: 'Bumped', color: 'grey' })
           }
+          let url_components = `${row.find('.index').first().attr('href')}`.split('/')
 
           let data = {
             title: title_elem.text().replace(/^♺ /g, ''),
             link: `${site.url}${title_elem.attr("href")}`,
-            url: `${site.url}${row.find('.index').first().attr('href')}`,
+            url: `${site.url}download.php?id=${url_components[1]}&n=${url_components[2]}&rss=1`,
             size: row.find('.tsize').first().text(),
             time: `${time.match(/\d{4}-\d{2}-\d{2}/g)[0]} ${time.match(/\d{2}:\d{2}:\d{2}/g)[0]}`,
             author: '(Anonymous)',
@@ -65,7 +66,8 @@
             tags: tags,
             entryName: options.entry.name,
             category: category.id ? category : { id: "-1", "name": "Porn" },
-            status: options.searcher.getFieldValue(site, row, "status")
+            progress: row.find('.tocolsnatched').length ? 100 : row.find('.tocolloaded').length ? 0 : null,
+            status: row.find('.tocolsnatched').length ? 255 : row.find('.tocolloaded').length ? 3 : null
           };
           results.push(data);
         }

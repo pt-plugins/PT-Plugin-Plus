@@ -22,13 +22,7 @@
     "queryString": "search=$key$&incldead=1&inname=1&indesc=1&infn=1&orderby=added&sort=desc",
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js",
-    "resultSelector": "#mysearchtable",
-    "fieldSelector": {
-      "status": {
-        "selector": [".tocolsnatched", ".tocolloaded"],
-        "switchFilters": [["255"], ["3"]]
-      }
-    }
+    "resultSelector": "#mysearchtable"
   },
   "searchEntry": [
     {
