@@ -82,6 +82,23 @@
         }
     ],
     "collaborator": "koal",
+    "plugins": [
+        {
+            "isCustom": true,
+            "name": "特别区",
+            "pages": [
+                "/special.php"
+            ],
+            "readonly": false,
+            "script": "",
+            "scripts": [
+                "/schemas/nexusPHP/common.js",
+                "/schemas/nexusPHP/torrents.js"
+            ],
+            "style": "",
+            "styles": []
+        }
+    ],
     "selectors": {
         "userSeedingTorrents": {
             "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
