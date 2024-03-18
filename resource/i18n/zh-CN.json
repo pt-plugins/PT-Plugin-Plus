@@ -505,7 +505,7 @@
         "autoRefreshUserDataTip3": "失败后重试",
         "autoRefreshUserDataTip4": "次，每次间隔",
         "autoRefreshUserDataTip5": "分钟",
-        "autoRefreshByAlarmTip1": "使用新版刷新方式, 更稳定, 需要对应授权（Beta）",
+        "autoRefreshByAlarmTip1": "使用新版刷新方式, 更稳定, 需要对应授权(仅适配 Chrome 内核)（Beta）",
         "autoBackupDataTip1": "在浏览器打开的情况下自动上传用户数据（Beta）",
         "autoBackupDataTip2": "自动刷新数据后间隔",
         "autoBackupDataTip3": "分钟, 上传数据到",

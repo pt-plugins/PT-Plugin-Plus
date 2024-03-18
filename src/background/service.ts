@@ -367,22 +367,26 @@ export default class PTPlugin {
   private resetTimer(isInit: boolean = false) {
     clearInterval(this.autoRefreshUserDataTimer)
     let self = this
-    chrome.alarms.clear(EAlarm.refreshJob, function(wasCleared) {
-      if (wasCleared) {
-        console.log(`Alarm ${EAlarm.refreshJob} was successfully cleared.`);
-      } else {
-        console.log(`Alarm ${EAlarm.refreshJob} was not cleared.`);
-      }
+    if (typeof chrome === 'object' && chrome.alarms) {
+      chrome.alarms.clear(EAlarm.refreshJob, function(wasCleared) {
+        if (wasCleared) {
+          console.log(`Alarm ${EAlarm.refreshJob} was successfully cleared.`);
+        } else {
+          console.log(`Alarm ${EAlarm.refreshJob} was not cleared.`);
+        }
 
-      if (!self.options.autoRefreshUserData) {
-        return;
-      }
-      if (self.options.autoRefreshByAlarm) {
-        self.setRefreshUserDataJob(isInit)
-      } else {
-        self.resetAutoRefreshUserDataTimer(isInit)
-      }
-    });
+        if (!self.options.autoRefreshUserData) {
+          return;
+        }
+        if (self.options.autoRefreshByAlarm) {
+          self.setRefreshUserDataJob(isInit)
+        } else {
+          self.resetAutoRefreshUserDataTimer(isInit)
+        }
+      });
+    } else if (self.options.autoRefreshUserData) {
+      self.resetAutoRefreshUserDataTimer(isInit)
+    }
   }
 
   /**

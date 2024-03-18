@@ -511,7 +511,7 @@
         "autoRefreshUserDataTip3": "Retry",
         "autoRefreshUserDataTip4": "times after failure,",
         "autoRefreshUserDataTip5": "minute apart",
-        "autoRefreshByAlarmTip1": "Using the new version refresh method, more stable, requires corresponding authorization (Beta)",
+        "autoRefreshByAlarmTip1": "Using the new version refresh method, more stable, requires corresponding authorization(Chromium Only) (Beta)",
         "autoBackupDataTip1": "Automatically backup user data when the browser is open（Beta）",
         "autoBackupDataTip2": "Auto upload after ",
         "autoBackupDataTip3": "automatically refreshes",
