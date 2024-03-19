@@ -18,7 +18,7 @@
   "levelRequirements": [
     {
       "level": 1,
-      "name": "大天使(Power Angel)",
+      "name": "大天使/Power Angel",
       "interval": "4",
       "uploaded": "50GB",
       "ratio": "1.0",
@@ -26,7 +26,7 @@
     },
     {
       "level": 2,
-      "name": "权天使(Elite Angel)",
+      "name": "权天使/Elite Angel",
       "interval": "8",
       "uploaded": "150GB",
       "ratio": "1.1",
@@ -34,7 +34,7 @@
     },
     {
       "level": 3,
-      "name": "能天使(Crazy Angel)",
+      "name": "能天使/Crazy Angel",
       "interval": "12",
       "uploaded": "500GB",
       "ratio": "1.5",
@@ -42,7 +42,7 @@
     },
     {
       "level": 4,
-      "name": "力天使(Insane Angel)",
+      "name": "力天使/Insane Angel",
       "interval": "16",
       "uploaded": "1TB",
       "ratio": "2.0",
@@ -50,7 +50,7 @@
     },
     {
       "level": 5,
-      "name": "主天使(Veteran Angel)",
+      "name": "主天使/Veteran Angel",
       "interval": "24",
       "uploaded": "5TB",
       "ratio": "2.5",
@@ -58,7 +58,7 @@
     },
     {
       "level": 6,
-      "name": "座天使(Extreme Angel)",
+      "name": "座天使/Extreme Angel",
       "interval": "36",
       "uploaded": "10TB",
       "ratio": "2.6",
@@ -66,7 +66,7 @@
     },
     {
       "level": 7,
-      "name": "智天使(Ultimate Angel)",
+      "name": "智天使/Ultimate Angel",
       "interval": "72",
       "uploaded": "20TB",
       "ratio": "2.8",
@@ -74,7 +74,7 @@
     },
     {
       "level": 8,
-      "name": "炽天使(Master Angel)",
+      "name": "炽天使/Master Angel",
       "interval": "100",
       "uploaded": "40TB",
       "ratio": "4.0",
