@@ -1,0 +1,89 @@
+{
+  "name": "ABTorrents",
+  "url": "https://abtorrents.me/",
+  "icon": "https://abtorrents.me/favicon.ico",
+  "host": "abtorrents.me",
+  "schema": "abtorrents",
+  "tags": ["电子书", "有声书"],
+  "collaborator": "haowenwu",
+  "levelRequirements": [
+    {
+    "level": 1,
+    "name": "Power User",
+    "interval": "4",
+    "uploaded": "50 GB",
+    "ratio": "1.2"
+    },
+    {
+    "level": 2,
+    "name": "Elite User",
+    "interval": "12",
+    "uploaded": "500 GB",
+    "ratio": "1.5"
+    }
+  ],
+  "searchEntry": [{
+    "name": "all",
+    "enabled": true
+  }],
+  "searchEntryConfig": {
+    "page": "/browse.php",
+    "queryString": "search=$key$&searchin=title",
+    "resultType": "html",
+    "parseScriptFile": "getSearchResult.js"
+  },
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/mybonus.php",
+      "fields": {
+        "id": {
+          "selector": ["a[class*=user]"],
+          "attribute": "class",
+          "filters": ["query.match(/\\d+/)[0]"]
+        },
+        "name": {
+          "selector": ".user"
+        },
+        "levelName": {
+          "selector": ["#slidingDiv > div:nth-child(2) > span.slide_b > b"]
+        },
+        "bonus": {
+          "selector": ["thead > tr:eq(0)"],
+          "filters": ["query.text().match(/current (.*) ]/)[1]"]
+        },
+        "uploaded": {
+          "selector": ["#slidingDiv > div:eq(8) > span:eq(1)"],
+          "filters":["query.text().sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ["#slidingDiv > div:eq(9) > span:eq(1)"],
+          "filters":["query.text().sizeToNumber()"]
+        },
+        "seeding": {
+          "selector": ["#slidingDiv > div:eq(10) > span:eq(1)"],
+          "filters": ["query.text().match(/\\d+/)[0]"]
+        },
+        "leeching": {
+          "selector": ["#slidingDiv > div:eq(11) > span:eq(1)"],
+          "filters": ["query.text().match(/\\d+/)[0]"]
+        },
+        "bonusPerHour": {
+          "selector": ["tbody:eq(1) > tr:eq(0) > td:eq(1)"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "joinTime": {
+          "selector": ["#general > table > tbody > tr:nth-child(1) > td:nth-child(2)"],
+          "filters": ["dateTime(query.text()).valueOf()"]
+        },
+        "seedingSize": {
+          "selector": ["div[id*=seeding] > span"],
+          "filters": ["query.text().match(/: (.*)/)[1].sizeToNumber()"]
+        }
+      }
+    }
+  }
+}
