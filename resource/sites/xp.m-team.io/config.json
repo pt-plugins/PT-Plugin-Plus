@@ -5,7 +5,6 @@
   "url": "https://xp.m-team.io/",
   "icon": "https://xp.m-team.io/favicon.ico",
   "tags": ["影视", "综合","成人"],
-  "schema": "NexusPHP",
   "host": "xp.m-team.io",
   "cdn": ["https://xp.m-team.io", "https://kp.m-team.cc","https://xp.m-team.cc","https://ap.m-team.cc"],
   "formerHosts": [
@@ -244,53 +243,35 @@
     }]
   }],
   "selectors": {
-    "userExtendInfo": {
-      "merge": true,
+    "userBaseInfo": {
+      "page": "/api/member/profile",
+      "dataType": "json",
+      "requestMethod": "POST",
       "fields": {
+        "id": {
+          "selector": ["data.id"]
+        },
+        "name": {
+          "selector": ["data.username"]
+        },
+        "joinTime": {
+          "selector": ["data.createdDate"]
+        },
         "uploaded": {
-          "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td", "td.rowhead:contains('傳送') + td", "td.rowhead:contains('Transfers') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/(?:上[传傳]量|Uploaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "selector": ["data.memberCount.uploaded"]
         },
         "downloaded": {
-          "selector": ["td.rowfollow:contains('分享率')", "td.rowhead:contains('传输') + td", "td.rowhead:contains('傳送') + td", "td.rowhead:contains('Transfers') + td"],
-          "filters": ["query.text().replace(/,/g,'').match(/(?:下[载載]量|Downloaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
-        }
-      }
-    },
-    "userSeedingTorrents": {
-      "page": "/getusertorrentlist.php?userid=$user.id$&type=seeding",
-      "parser": "getUserSeedingTorrents.js",
-      "fields": {
-        "seeding": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["query.find('td.rowfollow:eq(2)').length"]
+          "selector": ["data.memberCount.downloaded"]
         },
-        "seedingSize": {
-          "selector": ["tr:not(:eq(0))"],
-          "filters": ["jQuery.map(query.find('td.rowfollow:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
-        }
-      }
-    },
-    "bonusExtendInfo": {
-      "prerequisites": "!user.bonusPerHour",
-      "page": "/mybonus.php",
-      "fields": {
-        "bonusPerHour": {
-          "selector": ["td:contains('您目前每小時合計可獲得'):last",
-                       "td:contains('您目前每小时合计可获得'):last",
-                       "td:contains('目前將會獲取'):last",
-                       "td:contains('目前将会获取'):last"],
-          "filters": ["parseFloat(query.text().match(/[獲获][得取](\\d+(?:\\.\\d+)?)/)[1])"]
-        }
-      }
-    },
-    "userUploadedTorrents": {
-      "prerequisites": "!user.uploads",
-      "page": "/getusertorrentlist.php?userid=$user.id$&type=uploaded",
-      "fields": {
-        "uploads": {
-          "selector": ["#outer table p:first b:last"],
-          "filters": ["query.text().replace(/,/g,'').split('-')", "(query && query.length > 1) ? parseInt(query[1]) : 0"]
+        "ratio": {
+          "selector": ["data.memberCount.shareRate"]
+        },
+        "levelName": {
+          "selector": ["data.role"],
+          "filters": ["if (query == '1') { 'User'; } else if (query == '2') { 'Power User'; } else if (query == '3') { 'Elite User'; } else if (query == '4') { 'Crazy User'; } else if (query == '5') { 'Insane User'; } else if (query == '6') { 'Veteran User'; } else if (query == '7') { 'Extreme User'; } else if (query == '8') { 'Ultimate User'; } else if (query == '9') { 'Nexus Master'; } else { query; }"]
+        },
+        "bonus": {
+          "selector": ["data.memberCount.bonus"]
         }
       }
     }
