@@ -188,6 +188,25 @@
       "selector": "img.pro_50pctdown, .halfdown_bg, font.halfdown"
     }
   ],
+  "selectors": {
+    "userSeedingTorrents": {
+      "merge": true,
+      "fields": {
+        "seeding": {
+          "selector": ["div b:first"],
+          "filters": ["query.text()"]
+        },
+        "seedingSize": {
+          "selector": "div div:first",
+          "filters": [
+            "query.text().match(/(總大小：|总大小：|Total size:)(.*?B)/i)",
+            "(query && query.length>0) ? query[2].trim() : 0",
+            "(query != 0) ? query.sizeToNumber() : 0"
+          ]
+        }
+      }
+    }
+  },
   "searchEntryConfig": {
     "fieldSelector": {
       "progress": {
