@@ -7,12 +7,11 @@
       this.rawData = "";
       this.pageInfo = {
         count: 0,
-        current: 0,
-        size: 100
+        current: 0
       };
       this.result = {
-        uploads: 0,
-        uploadsSize: 0
+        seeding: 0,
+        seedingSize: 0
       };
       this.load();
     }
@@ -32,18 +31,18 @@
 
       let datas = this.rawData.data.data;
       let results = {
-        uploads: 0,
-        uploadsSize: 0
+        seeding: 0,
+        seedingSize: 0
       };
       if (datas) {
         datas.forEach(item => {
-          results.uploads++;
-          results.uploadsSize += item[0].size;
+          results.seeding++;
+          results.seedingSize += Number(item.torrent.size);
         });
       }
 
-      this.result.uploads += results.uploads;
-      this.result.uploadsSize += results.uploadsSize;
+      this.result.seeding += results.seeding;
+      this.result.seedingSize += results.seedingSize;
 
       this.pageInfo.current++;
       // 是否已到最后一页

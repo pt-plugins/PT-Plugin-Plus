@@ -285,19 +285,15 @@
     },
     "userSeedingTorrents": {
       "page": "/api/member/getUserTorrentList",
+      "parser": "getUserSeedingTorrents.js",
       "dataType": "json",
       "requestMethod": "POST",
       "requestContentType": "application/json",
       "requestData": {
         "userid": "$user.id$",
         "type": "SEEDING",
-        "pageNumber": "1",
-        "pageSize": "1"
-      },
-      "fields": {
-        "seeding": {
-          "selector": ["data.total"]
-        }
+        "pageNumber": 1,
+        "pageSize": 200
       }
     },
     "userUploadedTorrents": {
@@ -308,8 +304,8 @@
       "requestData": {
         "userid": "$user.id$",
         "type": "UPLOADED",
-        "pageNumber": "1",
-        "pageSize": "1"
+        "pageNumber": 1,
+        "pageSize": 1
       },
       "fields": {
         "uploads": {
