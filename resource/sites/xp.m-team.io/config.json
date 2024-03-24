@@ -274,12 +274,13 @@
       }
     },
     "userExtendInfo":{
-      "page": "/api/msg/statistic",
+      "page": "/api/member/updateLastBrowse",
       "dataType": "json",
       "requestMethod": "POST",
       "fields": {
-        "message": {
-          "selector": ["data.unMake"]
+        "isLogged": {
+          "selector": ["message"],
+          "filters": ["(query === 'SUCCESS') ? true : false"]
         }
       }
     },
