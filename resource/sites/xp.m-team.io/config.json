@@ -6,6 +6,7 @@
   "icon": "https://xp.m-team.io/favicon.ico",
   "tags": ["影视", "综合","成人"],
   "host": "xp.m-team.io",
+  "schema": "mTorrent",
   "cdn": ["https://xp.m-team.io", "https://kp.m-team.cc","https://xp.m-team.cc","https://ap.m-team.cc"],
   "formerHosts": [
     "pt.m-team.cc",
@@ -263,15 +264,56 @@
         "downloaded": {
           "selector": ["data.memberCount.downloaded"]
         },
-        "ratio": {
-          "selector": ["data.memberCount.shareRate"]
-        },
         "levelName": {
           "selector": ["data.role"],
           "filters": ["if (query == '1') { 'User'; } else if (query == '2') { 'Power User'; } else if (query == '3') { 'Elite User'; } else if (query == '4') { 'Crazy User'; } else if (query == '5') { 'Insane User'; } else if (query == '6') { 'Veteran User'; } else if (query == '7') { 'Extreme User'; } else if (query == '8') { 'Ultimate User'; } else if (query == '9') { 'Nexus Master'; } else { query; }"]
         },
         "bonus": {
           "selector": ["data.memberCount.bonus"]
+        }
+      }
+    },
+    "userExtendInfo":{
+      "page": "/api/msg/statistic",
+      "dataType": "json",
+      "requestMethod": "POST",
+      "fields": {
+        "message": {
+          "selector": ["data.unMake"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/api/member/getUserTorrentList",
+      "dataType": "json",
+      "requestMethod": "POST",
+      "requestContentType": "application/json",
+      "requestData": {
+        "userid": "$user.id$",
+        "type": "SEEDING",
+        "pageNumber": "1",
+        "pageSize": "1"
+      },
+      "fields": {
+        "seeding": {
+          "selector": ["data.total"]
+        }
+      }
+    },
+    "userUploadedTorrents": {
+      "page": "/api/member/getUserTorrentList",
+      "dataType": "json",
+      "requestMethod": "POST",
+      "requestContentType": "application/json",
+      "requestData": {
+        "userid": "$user.id$",
+        "type": "UPLOADED",
+        "pageNumber": "1",
+        "pageSize": "1"
+      },
+      "fields": {
+        "uploads": {
+          "selector": ["data.total"]
         }
       }
     }

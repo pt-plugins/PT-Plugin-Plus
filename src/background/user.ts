@@ -330,7 +330,8 @@ export class User {
         url,
         method: rule.requestMethod || ERequestMethod.GET,
         dataType: "text",
-        data: requestData,
+        data: rule.requestContentType == "application/json" ? JSON.stringify(requestData) : requestData,
+        contentType: rule.requestContentType == "application/json" ? "application/json" : "application/x-www-form-urlencoded",
         headers: rule.headers,
         timeout: this.service.options.connectClientTimeout || 30000,
         cache: false
