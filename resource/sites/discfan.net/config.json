@@ -113,7 +113,7 @@
   },
   "selectors": {
     "userSeedingTorrents": {
-      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "merge": true,
       "fields": {
         "seeding": {
           "selector": ["div b:first"],
@@ -122,8 +122,8 @@
         "seedingSize": {
           "selector": "div div:first",
           "filters": [
-            "query.text().match(/總大小：(.*?)B/g)",
-            "(query && query.length>0) ? query[0].replace('總大小：', '').trim() : 0",
+            "query.text().match(/(總大小：|总大小：|Total size:)(.*?B)/i)",
+            "(query && query.length>0) ? query[2].trim() : 0",
             "(query != 0) ? query.sizeToNumber() : 0"
           ]
         }
