@@ -266,7 +266,7 @@
         },
         "levelName": {
           "selector": ["data.role"],
-          "filters": ["if (query == '1') { 'User'; } else if (query == '2') { 'Power User'; } else if (query == '3') { 'Elite User'; } else if (query == '4') { 'Crazy User'; } else if (query == '5') { 'Insane User'; } else if (query == '6') { 'Veteran User'; } else if (query == '7') { 'Extreme User'; } else if (query == '8') { 'Ultimate User'; } else if (query == '9') { 'Nexus Master'; } else { query; }"]
+          "filters": ["if (query == '1') { 'User'; } else if (query == '2') { 'Power User'; } else if (query == '3') { 'Elite User'; } else if (query == '4') { 'Crazy User'; } else if (query == '5') { 'Insane User'; } else if (query == '6') { 'Veteran User'; } else if (query == '7') { 'Extreme User'; } else if (query == '8') { 'Ultimate User'; } else if (query == '9') { 'Nexus Master'; } else if (query == '10') { 'VIP'; } else { query; }"]
         },
         "bonus": {
           "selector": ["data.memberCount.bonus"],
