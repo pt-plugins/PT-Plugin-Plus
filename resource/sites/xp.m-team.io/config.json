@@ -288,6 +288,22 @@
         }
       }
     },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/api/tracker/mybonus",
+      "dataType": "json",
+      "requestMethod": "POST",
+      "requestContentType": "application/json",
+      "headers": {
+        "x-api-key": "$site.authToken$"
+      },
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["data.formulaParams"],
+          "filters": ["const myall_bs = Number(query.allBonus) + Number(query.h24UpBs) + Number(query.userClassBs) + Number(query.callBonus); const twostep_bs = query.enable2fa ? (myall_bs * query.twoStepBonus) : 0; if (query.donor) { (myall_bs + twostep_bs + Number(query.allBonus)).toFixed(2); } else { (myall_bs + twostep_bs).toFixed(2); }"]
+        }
+      }
+    },
     "userSeedingTorrents": {
       "page": "/api/member/getUserTorrentList",
       "parser": "getUserSeedingTorrents.js",
