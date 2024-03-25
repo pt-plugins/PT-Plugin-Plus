@@ -1434,6 +1434,15 @@ export default Vue.extend({
             // {color: 'primary', desc: this.$t("home.2FA").toString(), href: `/mystep.php`},
           ]
           break
+        case 'mTorrent':
+          links = [
+            {color: 'primary', desc: `${uname}(${uid})`, href: `/profile/detail/${uid}`},
+            {color: 'success', desc: this.$t("home.mailbox").toString(), href: `/message/1`},
+            {color: 'success', desc: this.$t("home.torrents").toString(), href: `/browse`},
+            {color: 'primary', desc: this.$t("home.control_panel").toString(), href: `/usercp?tab=home`},
+            {color: 'primary', desc: this.$t("home.security").toString(), href: `/usercp?tab=security`},
+          ]
+          break
         case 'Discuz':
         case 'UNIT3D':
         default:
