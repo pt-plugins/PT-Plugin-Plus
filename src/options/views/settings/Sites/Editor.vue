@@ -156,6 +156,7 @@
         <!--token-->
         <v-text-field
                 v-model="site.authToken"
+                :disabled="!site.tokenRequired" :rules="site.tokenRequired ? rules.require : []"
                 :label="$t('settings.sites.editor.authToken')"
                 :placeholder="$t('settings.sites.editor.authTokenTip')"
         ></v-text-field>

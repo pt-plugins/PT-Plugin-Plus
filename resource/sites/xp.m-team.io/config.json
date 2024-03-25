@@ -8,6 +8,7 @@
   "host": "xp.m-team.io",
   "schema": "mTorrent",
   "cdn": ["https://xp.m-team.io", "https://kp.m-team.cc","https://xp.m-team.cc","https://ap.m-team.cc"],
+  "tokenRequired": true,
   "formerHosts": [
     "pt.m-team.cc",
     "kp.m-team.cc",
@@ -88,6 +89,9 @@
     "parseScriptFile": "getSearchResult.js",
     "keepOriginKey": true,
     "requestMethod": "POST",
+    "headers": {
+      "x-api-key": "$site.authToken$"
+    },
     "requestData": {
       "pageNumber": 1,
       "pageSize": 100,
@@ -239,6 +243,9 @@
       "page": "/api/member/profile",
       "dataType": "json",
       "requestMethod": "POST",
+      "headers": {
+        "x-api-key": "$site.authToken$"
+      },
       "fields": {
         "id": {
           "selector": ["data.id"]
@@ -271,6 +278,9 @@
       "page": "/api/member/updateLastBrowse",
       "dataType": "json",
       "requestMethod": "POST",
+      "headers": {
+        "x-api-key": "$site.authToken$"
+      },
       "fields": {
         "isLogged": {
           "selector": ["message"],
@@ -284,6 +294,9 @@
       "dataType": "json",
       "requestMethod": "POST",
       "requestContentType": "application/json",
+      "headers": {
+        "x-api-key": "$site.authToken$"
+      },
       "requestData": {
         "userid": "$user.id$",
         "type": "SEEDING",
@@ -296,6 +309,9 @@
       "dataType": "json",
       "requestMethod": "POST",
       "requestContentType": "application/json",
+      "headers": {
+        "x-api-key": "$site.authToken$"
+      },
       "requestData": {
         "userid": "$user.id$",
         "type": "UPLOADED",
