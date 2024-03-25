@@ -61,7 +61,7 @@
         return;
       }
 
-      this.pageInfo.count = this.rawData.data.totalPages;
+      this.pageInfo.count = Number(this.rawData.data.totalPages);
     }
 
     /**

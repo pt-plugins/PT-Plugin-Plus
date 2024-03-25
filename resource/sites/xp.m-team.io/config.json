@@ -82,31 +82,22 @@
     "styles": ["/libs/album/style.css"]
   }],
   "searchEntryConfig": {
-    "fieldSelector": {
-      "progress": {
-        "selector": ["> td:eq(8)"],
-        "filters": ["query.text()==='--'?null:parseFloat(query.text())"]
-      },
-      "status": {
-        "selector": ["> td:eq(8)"],
-        "filters": ["query.text()==='--'?null:query.is('.peer-active')?(parseFloat(query.text())==100?2:1):(parseFloat(query.text())==100?255:3)"]
-      }
+    "page": "/api/torrent/search",
+    "resultType": "json",
+    "requestDataType": "json",
+    "parseScriptFile": "getSearchResult.js",
+    "keepOriginKey": true,
+    "requestMethod": "POST",
+    "requestData": {
+      "pageNumber": 1,
+      "pageSize": 100,
+      "keyword": "$key$",
+      "categories": [],
+      "imdb": ""
     }
   },
   "searchEntry": [{
     "name": "综合",
-    "enabled": true
-  }, {
-    "entry": "/movie.php?search=$key$&notnewword=1",
-    "name": "电影",
-    "enabled": false
-  }, {
-    "entry": "/music.php?search=$key$&notnewword=1",
-    "name": "音乐",
-    "enabled": true
-  }, {
-    "entry": "/adult.php?search=$key$&notnewword=1",
-    "name": "adult",
     "enabled": true
   }],
   "categories": [{
@@ -259,17 +250,20 @@
           "selector": ["data.createdDate"]
         },
         "uploaded": {
-          "selector": ["data.memberCount.uploaded"]
+          "selector": ["data.memberCount.uploaded"],
+          "filters": ["Number(query)"]
         },
         "downloaded": {
-          "selector": ["data.memberCount.downloaded"]
+          "selector": ["data.memberCount.downloaded"],
+          "filters": ["Number(query)"]
         },
         "levelName": {
           "selector": ["data.role"],
           "filters": ["if (query == '1') { 'User'; } else if (query == '2') { 'Power User'; } else if (query == '3') { 'Elite User'; } else if (query == '4') { 'Crazy User'; } else if (query == '5') { 'Insane User'; } else if (query == '6') { 'Veteran User'; } else if (query == '7') { 'Extreme User'; } else if (query == '8') { 'Ultimate User'; } else if (query == '9') { 'Nexus Master'; } else { query; }"]
         },
         "bonus": {
-          "selector": ["data.memberCount.bonus"]
+          "selector": ["data.memberCount.bonus"],
+          "filters": ["Number(query)"]
         }
       }
     },
@@ -310,7 +304,8 @@
       },
       "fields": {
         "uploads": {
-          "selector": ["data.total"]
+          "selector": ["data.total"],
+          "filters": ["Number(query)"]
         }
       }
     }
