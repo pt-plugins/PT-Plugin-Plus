@@ -95,10 +95,17 @@
     "requestData": {
       "pageNumber": 1,
       "pageSize": 100,
-      "keyword": "$key$",
-      "categories": [],
-      "imdb": ""
-    }
+      "keyword": "$key$"
+    },
+    "area": [{
+      "name": "IMDB",
+      "keyAutoMatch": "^(tt\\d+)$",
+      "requestData": {
+        "pageNumber": 1,
+        "pageSize": 100,
+        "imdb": "$key$"
+      }
+    }]
   },
   "searchEntry": [{
     "name": "综合",
