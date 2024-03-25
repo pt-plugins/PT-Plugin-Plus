@@ -448,6 +448,10 @@ export class Searcher {
                     "user"
                   );
                 }
+
+                entry.headers[key] = PPF.replaceKeys(
+                  entry.headers[key], site, "site"
+                );
               }
             }
           }
