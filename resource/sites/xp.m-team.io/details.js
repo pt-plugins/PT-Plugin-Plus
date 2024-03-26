@@ -77,24 +77,24 @@
      * 获取当前种子IMDb Id
      */
     getIMDbId() {
+      let url = window.location.href
+      let imdbId = null
       try {
-        let imdbId = PTService.getFieldValue('imdbId');
-        console.log(imdbId);
-        if (imdbId)
-          return imdbId;
-        else {
+        imdbId = PTService.getFieldValue('imdbId')
+        console.log(imdbId)
+        if (!imdbId) {
           const link = $('a[href*=\'www.imdb.com/title/\']:first');
           if (link.length > 0) {
-            let match = link.attr('href').match(/(tt\d+)/);
-
-            if (match && match.length >= 2)
-              return imdbId = match[1];
-
+            let match = link.attr('href').match(/(tt\d+)/)
+            if (match && match.length >= 2) {
+              imdbId = match[1];
+            }
           }
         }
-      } catch {
+      } catch (e) {
+        console.log(`${url} 获取IMDb Id 失败`, e)
       }
-      return null;
+      return imdbId
     }
   }
 
