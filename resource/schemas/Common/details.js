@@ -46,7 +46,6 @@
       let imdbId = null
       try {
         imdbId = PTService.getFieldValue('imdbId')
-        console.log(imdbId)
         if (!imdbId) {
           const link = $('a[href*=\'www.imdb.com/title/\']:first');
           if (link.length > 0) {
@@ -59,6 +58,7 @@
       } catch (e) {
         console.log(`${url} 获取IMDb Id 失败`, e)
       }
+      console.log(imdbId)
       return imdbId
     }
   }
