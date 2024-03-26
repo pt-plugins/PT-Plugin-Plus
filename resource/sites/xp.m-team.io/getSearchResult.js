@@ -3,6 +3,10 @@
     constructor() {
       this.haveData = false;
       this.categories = {};
+      if (options.page.message != "SUCCESS") {
+        options.status = ESearchResultParseStatus.needLogin;
+        return;
+      }
       options.isLogged = true;
       this.haveData = true;
     }
