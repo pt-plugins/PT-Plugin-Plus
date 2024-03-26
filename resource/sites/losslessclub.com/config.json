@@ -62,10 +62,10 @@
       "page": "/userdetails.php?id=$user.id$",
       "fields": {
         "levelName": {
-          "selector": ["td:contains('Класс') + td"]
+          "selector": ["td.rowhead:contains('Класс') + td"]
         },
         "joinTime": {
-          "selector": ["td:contains('Зарегистрирован') + td"],
+          "selector": ["td.rowhead:contains('Зарегистрирован') + td"],
           "filters": [
             "query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"
           ]
