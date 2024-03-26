@@ -128,7 +128,7 @@ export class UserData {
               if (formerHosts && formerHosts.length > 0) {
                 formerHosts.forEach((host: string) => {
                   for (const key in datas) {
-                    if (key == host && datas.hasOwnProperty(key)) {
+                    if (key == host && datas.hasOwnProperty(key) && key != newHost) {
                       const element = datas[key];
                       datas[newHost] = Object.assign({}, element);
                       delete datas[key];
