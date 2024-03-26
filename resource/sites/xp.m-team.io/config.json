@@ -72,16 +72,22 @@
     "privilege": "魔力值加成：+8%"
   }
   ],
-  "plugins": [{
-    "name": "种子列表",
-    "pages": ["/adult.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
-  }, {
-    "name": "种子列表封面模式",
-    "pages": ["/torrents.php", "/movie.php", "/music.php", "/adult.php"],
-    "scripts": ["/libs/album/album.js", "torrents.js"],
-    "styles": ["/libs/album/style.css"]
-  }],
+  "plugins": [
+    {
+      "name": "种子详情页面",
+      "pages": ["/detail/", "\/t-\\d+"],
+      "scripts": ["common.js", "details.js"]
+    }, {
+      "name": "种子列表",
+      "pages": ["/browse"],
+      "scripts": ["common.js", "torrents.js"]
+    }, {
+      "name": "种子列表封面模式",
+      "pages": ["/torrents.php", "/movie.php", "/music.php", "/adult.php"],
+      "scripts": ["/libs/album/album.js", "torrents.js"],
+      "styles": ["/libs/album/style.css"]
+    }
+  ],
   "searchEntryConfig": {
     "page": "/api/torrent/search",
     "resultType": "json",
