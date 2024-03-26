@@ -12,6 +12,7 @@
   ],
   "schema": "NexusPHP",
   "host": "ourbits.club",
+  "cdn": ["https://pt.ourhelp.club/"],
   "levelRequirements": [{
     "level": "1",
     "name": "Power User",
