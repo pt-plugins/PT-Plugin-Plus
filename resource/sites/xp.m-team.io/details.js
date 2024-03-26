@@ -24,6 +24,9 @@
       return $.ajax('/api/torrent/genDlToken', {
         method: 'POST',
         data: {id},
+        headers: {
+          "x-api-key": PTService.site.authToken
+        },
         success: function (data) {
           if (data.code === '0') {
             console.log(`种子 ${id} 下载链接获取成功`, data)
