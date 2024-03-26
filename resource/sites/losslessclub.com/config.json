@@ -1,0 +1,110 @@
+{
+  "name": "LosslessClub",
+  "timezoneOffset": "+0000",
+  "description": "LC",
+  "url": "https://losslessclub.com/",
+  "icon": "https://losslessclub.com/favicon.ico",
+  "tags": ["音乐"],
+  "schema": "Common",
+  "host": "losslessclub.com",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/browse.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": ["span.bar_user_welcome + b > a[href*='userdetails.php']"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": ["span.bar_user_welcome + b > a[href*='userdetails.php'] > span"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='logout.php']"],
+          "filters": ["query.length>0"]
+        },
+        "uploaded": {
+          "selector": ["td.bottom.bar_user:first > span.smallfont"],
+          "filters": ["query.contents().eq(18).text().trim().sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ["td.bottom.bar_user:first > span.smallfont"],
+          "filters": ["query.contents().eq(20).text().replace('|','').trim().sizeToNumber()"]
+        },
+        "ratio": {
+          "selector": ["span.bar_user_ratio"],
+          "filters": ["query.next().text()"]
+        },
+        "seeding": {
+          "selector": ["td.bottom.bar_user:first > span.smallfont"],
+          "filters": [
+            "query.contents().eq(24).text().trim()"
+          ]
+        },
+        "bonus": {
+          "selector": ["td.bottom.bar_user a[href*='mybonus.php']"]
+        },
+        "bonusPerHour": {
+          "value":"N/A"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "levelName": {
+          "selector": ["td:contains('Класс') + td"]
+        },
+        "joinTime": {
+          "selector": ["td:contains('Зарегистрирован') + td"],
+          "filters": [
+            "query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/userdetails.i.php?ajax=&id=$user.id$&do=torrents-seeding",
+      "fields": {
+          "seedingSize": {
+            "selector": ["tr:not(:eq(0))"],
+            "filters": ["jQuery.map(query.find('td:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
+          }
+      }
+    },
+    "common": {
+      "page": "/details.php",
+      "fields": {
+        "downloadURL": {
+          "selector": ["a[alt='Download'][href*='download.php?id=']"],
+          "filters": ["query.attr('href')"]
+        },
+        "size": {
+          "selector": ["td.heading:contains('Size') + td"],
+          "filters": ["parseFloat(query.text().match(/\\(([^)]+)\\)/)[1].replace(/,/g, ''))"]
+        },
+        "sayThanksButton": {
+          "selector": ["input[value='Thanks']"],
+          "filters": ["query"]
+        },
+        "downloadURLs": {
+          "selector": ["a:has(img[src='pic/download.gif'])"],
+          "filters": ["query.toArray()"]
+        },
+        "confirmSize": {
+          "selector": ["tr td:not(.colhead, .pager):nth-child(5)"],
+          "filters": ["query"]
+        }
+      }
+    }
+  }
+}

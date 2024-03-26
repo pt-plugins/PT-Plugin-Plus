@@ -1,0 +1,125 @@
+{
+  "name": "SuperBits",
+  "timezoneOffset": "+0100",
+  "description": "SBS",
+  "url": "https://login.superbits.org/",
+  "icon": "https://login.superbits.org/favicon.ico",
+  "tags": [
+    "综合"
+  ],
+  "schema": "Common",
+  "host": "login.superbits.org",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/torrent/"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/search","/nytt","/allt","/xxx","/p2p","/musik","/tvserier","/arkiv"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+  }],
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Fullvärdig medlem",
+      "interval": "14D",
+      "uploaded": "50GB",
+      "ratio": "1.05",
+      "privilege": "Can make and upload requests, use the bonus system and other features of the site."
+    },
+    {
+      "level": 2,
+      "name": "Trogen medlem",
+      "interval": "15",
+      "uploaded": "100GB",
+      "ratio": "1.10",
+      "privilege": "Access to all Top Lists and you have access to the invite system. All IP logs are deleted and IP logging is turned off."
+    },
+    {
+      "level": 3,
+      "name": "Veteran",
+      "interval": "30",
+      "uploaded": "1.2TB",
+      "ratio": "1.10",
+      "privilege": "Can see the Veteran forum."
+    },
+    {
+      "level": 4,
+      "name": "Legend",
+      "interval": "3Y",
+      "uploaded": "30TB",
+      "ratio": "2.10",
+      "privilege": "Access to most things."
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/api/v1/status",
+      "dataType": "json",
+      "fields": {
+        "bonus": { "selector": ["user.bonuspoang"]},
+        "downloaded": { "selector": ["user.downloaded"]},
+        "id": { "selector": ["user.id"]},
+        "levelName": { 
+          "selector": ["user.class"],
+          "filters": [
+            "['Medlem', 'Fullvärdig medlem', 'Trogen medlem', 'Veteran', 'Legend'][query]"
+          ]
+        },
+        "name": { "selector": ["user.username"]},
+        "uploaded": { "selector": ["user.uploaded"]},
+        "messageCount": { "selector": ["user.newMessages"]},
+        "bonusPerHour": {
+          "value":"N/A"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/api/v1/users/$user.id$",
+      "dataType": "json",
+      "fields": {
+        "joinTime": {
+          "selector": [
+            "added"
+          ],
+          "filters": [
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/api/v1/users/$user.id$/peers",
+      "dataType": "json",
+      "fields": {
+          "seedingSize": {
+            "selector": ["seeding.reduce((acc, cur) => acc + cur.size, 0)"]
+          },
+          "seeding": {
+            "selector": ["seeding.length"]
+          }
+      }
+    },
+    "common": {
+      "page": "/torrent",
+      "fields": {
+        "downloadURL": {
+          "selector": ["a:has(i.fa.fa-link)"],
+          "filters": ["query.attr('href')"]
+        },
+        "size": {
+          "selector": ["td[translate='TORRENTS.SIZE']:contains('Size') + td"],
+          "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
+        },
+        "downloadURLs": {
+          "selector": ["a:has(i.fa.fa-download)"],
+          "filters": ["query.toArray()"]
+        },
+        "confirmSize": {
+          "selector": ["td[ng-if=\"vm.colSize == 'true'\"]"],
+          "filters": ["query.contents().eq(0)"]
+        }
+      }
+    }
+  }
+}

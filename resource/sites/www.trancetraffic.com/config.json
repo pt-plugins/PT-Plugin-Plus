@@ -1,0 +1,139 @@
+{
+  "name": "TranceTraffic",
+  "timezoneOffset": "+0800",
+  "description": "TT",
+  "url": "https://www.trancetraffic.com/",
+  "icon": "https://www.trancetraffic.com/favicon.ico",
+  "tags": [
+    "音乐"
+  ],
+  "schema": "Common",
+  "host": "www.trancetraffic.com",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/details.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/browse.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+  }],
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Power User",
+      "interval": "4",
+      "uploaded": "25GB",
+      "ratio": "1.05",
+      "privilege": "Can view ReadMe files."
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": [
+            "a[href*='userdetails.php']:first"
+          ],
+          "attribute": "href",
+          "filters": [
+            "query ? query.getQueryString('id'):''"
+          ]
+        },
+        "name": {
+          "selector": [
+            "a[href*='userdetails.php']:first"
+          ]
+        },
+        "isLogged": {
+          "selector": [
+            "a[href*='logout.php']"
+          ],
+          "filters": [
+            "query.length>0"
+          ]
+        },
+        "uploaded": {
+          "selector": [
+            "span:contains('Uploaded:') + span"
+          ],
+          "filters": [
+            "query.text().trim().replace(/,/g,'').sizeToNumber()"
+          ]
+        },
+        "downloaded": {
+          "selector": [
+            "span:contains('Downloaded:') + span"
+          ],
+          "filters": [
+            "query.text().trim().replace(/,/g,'').sizeToNumber()"
+          ]
+        },
+        "ratio": {
+          "selector": [
+            "span:contains('Ratio:') + span"
+          ]
+        },
+        "seeding": {
+          "selector": [
+            "img[alt='Torrents seeding'] + span"
+          ]
+        },
+        "seedingSize": {
+          "value": -1
+        },
+        "bonus": {
+          "value": "N/A"
+        },
+        "bonusPerHour": {
+          "value": "N/A"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "levelName": {
+          "selector": [
+            "td.rowhead:contains('Class') + td"
+          ]
+        },
+        "joinTime": {
+          "selector": [
+            "td.rowhead:contains('Join date') + td"
+          ],
+          "filters": [
+            "query.text().split(' (')[0]",
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        }
+      }
+    },
+    "common": {
+      "page": "/details.php",
+      "fields": {
+        "downloadURL": {
+          "selector": ["td.heading:contains('Download') + td > a"],
+          "filters": ["query.attr('href')"]
+        },
+        "size": {
+          "selector": ["td.heading:contains('Size') + td"],
+          "filters": ["parseFloat(query.text().match(/\\(([^)]+)\\)/)[1].replace(/,/g, ''))"]
+        },
+        "sayThanksButton": {
+          "selector": ["#thanks-checkbox"],
+          "filters": ["query"]
+        },
+        "downloadURLs": {
+          "selector": ["a[href*='download.php']"],
+          "filters": ["query.toArray()"]
+        },
+        "confirmSize": {
+          "selector": ["table[border='1'] tr td:not(.colhead):nth-child(7)"],
+          "filters": ["query"]
+        }
+      }
+    }
+  }
+}
