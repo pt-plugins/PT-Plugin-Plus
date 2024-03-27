@@ -1,0 +1,133 @@
+{
+  "name": "DigitalCore.Club",
+  "timezoneOffset": "+0800",
+  "description": "DCC",
+  "url": "https://digitalcore.club/",
+  "icon": "https://digitalcore.club/favicon.ico",
+  "tags": [
+    "综合"
+  ],
+  "schema": "Common",
+  "host": "digitalcore.club",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/torrent/"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/search","/alltorrents","/xxx","/movies","/music","/tvseries","/apps","/games"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+  }],
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Sentinel",
+      "interval": "14D",
+      "uploaded": "50GB",
+      "ratio": "1.05",
+      "privilege": "You get access to the request system and the bonus system. You can upload (moderated) torrents."
+    },
+    {
+      "level": 2,
+      "name": "Viceroy",
+      "interval": "105D",
+      "uploaded": "300GB",
+      "ratio": "1.10",
+      "privilege": "All of the above. See all 'top' lists. See extended statistics. IP logging disabled. All IP logs are now cleared."
+    },
+    {
+      "level": 3,
+      "name": "Sentry",
+      "interval": "210D",
+      "uploaded": "1200GB",
+      "ratio": "1.10",
+      "privilege": "All of the above. You get 3 request slots, 2 invites and above perks."
+    },
+    {
+      "level": 4,
+      "name": "Guardian",
+      "interval": "500D",
+      "uploaded": "5TB",
+      "ratio": "20.00",
+      "privilege": "All of the above, plus 5 extra invites and 6 additional request slots. Can upload unmoderated torrents."
+    },
+    {
+      "level": 5,
+      "name": "Vanguard",
+      "interval": "730D",
+      "uploaded": "20TB",
+      "ratio": "20.00",
+      "privilege": "All of the above, plus 10 extra invites and 10 additional request slots. Can upload unmoderated torrents."
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/api/v1/status",
+      "dataType": "json",
+      "fields": {
+        "bonus": { "selector": ["user.bonuspoang"]},
+        "downloaded": { "selector": ["user.downloaded"]},
+        "id": { "selector": ["user.id"]},
+        "levelName": { 
+          "selector": ["user.class"],
+          "filters": [
+            "['Rogue', 'Sentinel', 'Viceroy', 'Sentry', 'Guardian', 'Vanguard'][query]"
+          ]
+        },
+        "name": { "selector": ["user.username"]},
+        "uploaded": { "selector": ["user.uploaded"]},
+        "messageCount": { "selector": ["user.newMessages"]},
+        "bonusPerHour": {
+          "value":"N/A"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/api/v1/users/$user.id$",
+      "dataType": "json",
+      "fields": {
+        "joinTime": {
+          "selector": [
+            "added"
+          ],
+          "filters": [
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "page": "/api/v1/users/$user.id$/peers",
+      "dataType": "json",
+      "fields": {
+          "seedingSize": {
+            "selector": ["seeding.reduce((acc, cur) => acc + cur.size, 0)"]
+          },
+          "seeding": {
+            "selector": ["seeding.length"]
+          }
+      }
+    },
+    "common": {
+      "page": "/torrent",
+      "fields": {
+        "downloadURL": {
+          "selector": ["a:has(i.fa.fa-link)"],
+          "filters": ["query.attr('href')"]
+        },
+        "size": {
+          "selector": ["td[translate='TORRENTS.SIZE']:contains('Size') + td"],
+          "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
+        },
+        "downloadURLs": {
+          "selector": ["a:has(i.fa.fa-download)"],
+          "filters": ["query.toArray()"]
+        },
+        "confirmSize": {
+          "selector": ["td[ng-if=\"vm.colSize == 'true'\"]"],
+          "filters": ["query.contents().eq(0)"]
+        }
+      }
+    }
+  }
+}

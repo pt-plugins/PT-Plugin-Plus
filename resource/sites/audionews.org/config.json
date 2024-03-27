@@ -1,0 +1,105 @@
+{
+  "name": "Audionews",
+  "timezoneOffset": "+0800",
+  "description": "AN",
+  "url": "https://audionews.org/",
+  "icon": "https://audionews.org/favicon.ico",
+  "tags": ["软件", "0day"],
+  "schema": "Common",
+  "host": "audionews.org",
+  "plugins": [{
+    "name": "种子详情页面",
+    "pages": ["/viewtopic.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
+  }, {
+    "name": "种子列表",
+    "pages": ["/tracker.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
+  }],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": ["a.user_photo[title='Your profile']"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('u'):''"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='./login.php?logout=1']"],
+          "filters": ["query.length>0"]
+        },
+        "uploaded": {
+          "selector": ["dt:contains('Uploaded') + dd.seedmed"],
+          "filters": ["query.text().trim().sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ["dd.leechmed"],
+          "filters": ["query.text().trim().sizeToNumber()"]
+        },
+        "ratio": {
+          "selector": ["dl.pairsUser_ratio > dt:contains('Ratio') + dd"]
+        },
+        "seedingSize": {
+          "value": -1
+        },
+        "bonus": {
+          "value":"N/A"
+        },
+        "bonusPerHour": {
+          "value":"N/A"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/profile.php?mode=viewprofile&u=$user.id$",
+      "fields": {
+        "name": {
+          "selector": ["h4#username > span"]
+        },
+        "levelName": {
+          "selector": ["b#rank-name"]
+        },
+        "joinTime": {
+          "selector": ["td#user_regdate > span"],
+          "filters": [
+            "query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        },
+        "seeding": {
+          "selector": ["span.dls-cnt"],
+          "filters": [
+            "query.text().match(/Seed: (\\d+)/)[1]"
+          ]
+        },
+        "uploads": {
+          "selector": ["span.dls-cnt"],
+          "filters": [
+            "query.text().match(/Self: (\\d+)/)[1]"
+          ]
+        }
+      }
+    },
+    "common": {
+      "page": "/viewtopic.php",
+      "fields": {
+        "downloadURL": {
+          "selector": ["a.genmed[href*='dl.php?id=']"],
+          "filters": ["query.attr('href')"]
+        },
+        "size": {
+          "selector": ["tr.row1 > td:contains('Size:') + td"],
+          "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
+        },
+        "downloadURLs": {
+          "selector": ["a.genmed[title='Download'][href*='dl.php?id=']"],
+          "filters": ["query.toArray()"]
+        },
+        "confirmSize": {
+          "selector": ["tr td:nth-child(9)"],
+          "filters": ["query"]
+        }
+      }
+    }
+  }
+}
