@@ -979,6 +979,7 @@
       "exceedSizeCanceled": "容量超限，已取消",
       "downloadURLsFinished": "{count}条链接已发送完成。",
       "downloadURLsTip": "正在发送：{text}",
+      "resolveURLsTip": "正在解析种子 id：{id}, 进度：{current}/{total}, 大约还需 {min} 分钟",
       "search": {
         "needLogin": "[{siteName}]需要登录后再搜索",
         "noTorrents": "[{siteName}]没有搜索到相关的种子",

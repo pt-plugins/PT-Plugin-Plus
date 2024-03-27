@@ -21,27 +21,7 @@
 
     _getDownloadUrlByPossibleHrefs() {
       let id = window.location.pathname.split('/').pop()
-      return $.ajax('/api/torrent/genDlToken', {
-        method: 'POST',
-        data: {id},
-        headers: {
-          "x-api-key": PTService.site.authToken
-        },
-        success: function (data) {
-          if (data.code === '0') {
-            console.log(`种子 ${id} 下载链接获取成功`, data)
-            // return data.data
-          } else {
-            console.log(`种子 ${id} 下载链接获取失败, code != 0`, data)
-            // return null
-          }
-        },
-        error: function (data) {
-          console.log(`种子 ${id} 下载链接获取失败`, data)
-          // return null
-        },
-        async: false
-      })
+      return this.resolveDownloadURLById(id)
     }
 
 
@@ -51,11 +31,7 @@
     getDownloadURL() {
       let url = PTService.getFieldValue('downloadURL')
       if (!url) {
-        let res = this._getDownloadUrlByPossibleHrefs()
-        if (res.status === 200 && res.responseJSON.code === '0') {
-          url = res.responseJSON.data
-        }
-        return url ? url : ''
+        return this._getDownloadUrlByPossibleHrefs()
       }
 
       return this.getFullURL(url);

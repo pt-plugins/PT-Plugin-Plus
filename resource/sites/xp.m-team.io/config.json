@@ -81,11 +81,6 @@
       "name": "种子列表",
       "pages": ["/browse"],
       "scripts": ["common.js", "torrents.js"]
-    }, {
-      "name": "种子列表封面模式",
-      "pages": ["/torrents.php", "/movie.php", "/music.php", "/adult.php"],
-      "scripts": ["/libs/album/album.js", "torrents.js"],
-      "styles": ["/libs/album/style.css"]
     }
   ],
   "searchEntryConfig": {
