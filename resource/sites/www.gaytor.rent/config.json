@@ -97,6 +97,10 @@
           "selector": "td:contains('Join') + td",
           "filters": ["dateTime(query.text().split(' (')[0]).valueOf()"]
         },
+        "uploads": {
+          "selector": "td:contains('uploaded')",
+          "filters": ["query.text().match(/and (.*) uploaded/)[1]"]
+        },
         "seedingSize": {
           "selector": "#SeedingTorrents > div > table > tbody > tr:not(:first-of-type) > td:nth-of-type(3)",
           "filters": ["jQuery.map(query, (item) => {return $(item).text()})", "_self.getTotalSize(query)"]
@@ -104,6 +108,10 @@
         "seeding": {
           "selector": "#SeedingTorrents > div > table > tbody > tr:not(:first-of-type)",
           "filters": ["query.length"]
+        },
+        "bonusPerHour": {
+          "selector": "#SeedingTorrents > div > table > tbody > tr:not(:first-of-type)",
+          "filters": ["query.length != 0 ? 0.5 : 0"]
         }
       }
     }
