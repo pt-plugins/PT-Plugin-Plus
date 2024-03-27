@@ -108,6 +108,10 @@
         "seeding": {
           "selector": "#SeedingTorrents > div > table > tbody > tr:not(:first-of-type)",
           "filters": ["query.length"]
+        },
+        "bonusPerHour": {
+          "selector": "#SeedingTorrents > div > table > tbody > tr:not(:first-of-type)",
+          "filters": ["query.length != 0 ? 0.5 : 0"]
         }
       }
     }
