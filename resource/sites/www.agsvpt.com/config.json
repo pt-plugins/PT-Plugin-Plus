@@ -63,7 +63,7 @@
       "name": "Veteran User",
       "interval": "28",
       "downloaded": "750GB",
-      "ratio": "4",
+      "ratio": "4.05",
       "seedingPoints": "800000",
       "privilege": "永远保留账号；查看其它用户的评论、帖子历史"
     },
@@ -72,7 +72,7 @@
       "name": "Extreme User",
       "interval": "40",
       "downloaded": "1TB",
-      "ratio": "5",
+      "ratio": "5.05",
       "seedingPoints": "1400000",
       "privilege": "更新过期的外部信息；"
     },
@@ -81,7 +81,7 @@
       "name": "Ultimate User",
       "interval": "52",
       "downloaded": "1.5TB",
-      "ratio": "6",
+      "ratio": "6.05",
       "seedingPoints": "2200000",
       "privilege": "首次升级至此等级的用户将获得2个邀请名额。"
     },
@@ -90,7 +90,7 @@
       "name": "Nexus Master",
       "interval": "70",
       "downloaded": "3TB",
-      "ratio": "7",
+      "ratio": "7.05",
       "seedingPoints": "3200000",
       "privilege": "首次升级至此等级的用户将获得2个邀请名额。"
     }
