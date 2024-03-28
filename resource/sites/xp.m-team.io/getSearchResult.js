@@ -32,7 +32,7 @@
             title: group.name,
             subTitle: group.smallDescr,
             link: `${site.url}/detail/${group.id}`,
-            url: `${site.url}/api/torrent/genDlToken?id=${group.id}`,
+            url: `m-teamdetail${group.id}`,
             size: Number(group.size),
             time: group.createdDate,
             author: "",
