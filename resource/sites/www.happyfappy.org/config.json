@@ -1,0 +1,50 @@
+{
+    "name": "HappyFappy",
+    "url": "https://www.happyfappy.org/",
+    "icon": "https://www.happyfappy.org/favicon.ico",
+    "host": "www.happyfappy.org",
+    "schema": "Luminance",
+    "tags": ["成人"],
+    "collaborator": "haowenwu",
+    "levelRequirements": [
+      {
+        "level": 1,
+        "name": "Pimp",
+        "interval": "2",
+        "uploaded": "25 GB",
+        "ratio": "1.15"
+      },
+      {
+        "level": 2,
+        "name": "Pornstar Trainee",
+        "interval": "4",
+        "uploads": "10",
+        "uploaded": "50 GB",
+        "ratio": "1.5"
+      },
+      {
+        "level": 3,
+        "name": "Lube Handler",
+        "interval": "16",
+        "uploads": "150",
+        "uploaded": "10 TB",
+        "ratio": "2.5"
+      },
+      {
+        "level": 4,
+        "name": "Toy Expert",
+        "interval": "28",
+        "uploads": "500",
+        "uploaded": "25 TB",
+        "ratio": "5.0"
+      },
+      {
+        "level": 5,
+        "name": "Pornstar",
+        "interval": "28",
+        "uploads": "1000",
+        "uploaded": "50 TB",
+        "ratio": "7.0"
+      }
+    ]
+}

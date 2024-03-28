@@ -3,7 +3,7 @@
     "url": "https://kufirc.com/",
     "icon": "https://kufirc.com/favicon.ico",
     "host": "kufirc.com",
-    "schema": "kufirc",
+    "schema": "Luminance",
     "tags": ["成人"],
     "collaborator": "haowenwu",
     "levelRequirements": [
@@ -42,71 +42,5 @@
         "uploaded": "30 TB",
         "ratio": "2.05"
       }
-    ],
-    "searchEntry": [],
-    "searchEntryConfig": {
-        "page": "/torrents.php",
-        "queryString": "title=$key$",
-        "resultType": "html",
-        "parseScriptFile": "getSearchResult.js"
-    },
-    "selectors": {
-        "userBaseInfo": {
-            "page": "/index.php",
-            "fields": {
-                "id": {
-                    "selector": ["a[href*=user]"],
-                    "attribute": "href",
-                    "filters": ["query.match(/\\d+/)[0]"]
-                },
-                "name": {
-                    "selector": ".username"
-                },
-                "bonus": {
-                    "selector": [".stat:eq(0)"]
-                },
-                "uploaded": {
-                    "selector": [".stat:eq(1)"],
-                    "filters":["query.text().sizeToNumber()"]
-                },
-                "downloaded": {
-                    "selector": [".stat:eq(3)"],
-                    "filters":["query.text().sizeToNumber()"]
-                },
-                "seeding": {
-                    "selector": ["#nav_seeding_r"]
-                },
-                "leeching": {
-                    "selector": ["#nav_leeching"],
-                    "filters": ["query.match(/\\d+/)[0]"]
-                }
-            }
-        },
-        "userExtendInfo": {
-            "page": "/user.php?id=$user.id$",
-            "fields": {
-                "levelName": {
-                    "selector": [".rank"]
-                },
-                "uploads": {
-                    "selector": [".stats:eq(3) > li:eq(8)"],
-                    "filters": ["query.match(/\\d+/)[0]"]
-                },
-                "joinTime": {
-                    "selector": [".time:eq(1)"],
-                    "attribute": "title",
-                    "filters": ["dateTime(query).valueOf()"]
-                }
-            }
-        },
-        "userSeedingTorrents": {
-            "page": "/torrents.php?type=seeding&userid=$user.id$",
-            "fields": {
-                "seedingSize": {
-                    "selector": [".head:eq(1)"],
-                    "filters": ["query.text().match(/Size: (.*)/)[1].sizeToNumber()"]
-                }
-            }
-        }
-    }
+    ]
 }
