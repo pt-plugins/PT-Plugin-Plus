@@ -1327,7 +1327,7 @@ export default Vue.extend({
       if (item.site) {
         requestMethod = item.site.downloadMethod || ERequestMethod.GET;
       }
-      let url = item.url + "";
+      let url = this.processURLWithPrefix("m-teamdetail", item.site,item.url + "");
       let file = new FileDownloader({
         url,
         timeout: this.options.connectClientTimeout,
@@ -1362,8 +1362,9 @@ export default Vue.extend({
       }
       let data: SearchResultItem = datas.shift() as SearchResultItem;
       console.log(data.imdbId)
+      let url = this.processURLWithPrefix("m-teamdetail", data.site , data.url);
       this.sendToClient(
-        data.url as string,
+        url  as string,
         data.title,
         downloadOptions,
         () => {
@@ -1387,9 +1388,12 @@ export default Vue.extend({
      * 复制当前链接到剪切板
      * @param url
      */
-    copyLinkToClipboard(url: string) {
+    copyLinkToClipboard(item: SearchResultItem) {
       this.successMsg = "";
       this.errorMsg = "";
+      var url = item.url;
+
+      url = this.processURLWithPrefix("m-teamdetail", item.site,url);
       extension
         .sendRequest(EAction.copyTextToClipboard, null, url)
         .then((result) => {
@@ -1405,10 +1409,49 @@ export default Vue.extend({
     },
     getSelectedURLs() {
       let urls: string[] = [];
+      const prefix = "m-teamdetail";
       this.selected.forEach((item: SearchResultItem) => {
-        item.url && urls.push(item.url);
+        var url = item.url;
+
+        url = this.processURLWithPrefix(prefix, item.site,url);
+
+        url && urls.push(url);
       });
       return urls;
+    },
+    processURLWithPrefix(prefix: string, site: Site, url?: string) {
+      if (url && url.startsWith(prefix)) {
+        const id = url.substring(prefix.length);
+        return this.resolveDownloadURLById(id, site);
+      } else {
+        return url;
+      }
+    },
+    resolveDownloadURLById(id:string, site:Site,showNotice = true) {
+      let res = $.ajax(site.url+'api/torrent/genDlToken', {
+        method: 'POST',
+        data: {id},
+        cache: true,
+        headers: {
+          "x-api-key": site.authToken
+        },
+        success: function (data) {
+          if (data.code === '0') {
+            console.log(`种子 ${id} 下载链接获取成功`, data)
+            // return data.data
+          } else {
+            let msg = `种子 ${id} 下载链接获取失败, code != 0`
+            console.log(msg, data)
+            // return null
+          }
+        },
+        error: function (data) {
+          let msg = `种子 ${id} 下载链接获取失败`
+          console.log(msg, data)
+        },
+        async: false
+      })
+      return res.responseJSON.data || ''
     },
     /**
      * 复制下载链接到剪切板
@@ -1537,9 +1580,10 @@ export default Vue.extend({
             }).toString(),
             fn: () => {
               if (options.url) {
+                let url = this.processURLWithPrefix("m-teamdetail", options.site , options.url);
                 // console.log(options, item);
                 this.sendToClient(
-                  options.url,
+                  url,
                   options.title,
                   item,
                   null,
