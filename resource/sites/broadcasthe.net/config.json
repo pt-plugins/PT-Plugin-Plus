@@ -45,7 +45,7 @@
     },{
       "level": "3",
       "name": "Extreme User",
-      "interval": "82D",
+      "interval": "12",
       "totalTraffic": "500GiB",
       "bonus":"500000",
       "snatches":"500",
@@ -53,7 +53,7 @@
     },{
       "level": "4",
       "name": "Elite",
-      "interval": "166D",
+      "interval": "24",
       "totalTraffic": "1TiB",
       "bonus":"850000",
       "snatches":"1000",
@@ -61,7 +61,7 @@
     },{
       "level": "5",
       "name": "Guru",
-      "interval": "251D",
+      "interval": "36",
       "totalTraffic": "2.5TiB",
       "bonus":"1500000",
       "snatches":"1500",
@@ -69,7 +69,7 @@
     },{
       "level": "6",
       "name": "Master",
-      "interval": "365D",
+      "interval": "52",
       "totalTraffic": "7.5TiB",
       "bonus":"3000000",
       "snatches":"3000",
