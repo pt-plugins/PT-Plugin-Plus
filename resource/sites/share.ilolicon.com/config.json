@@ -112,6 +112,11 @@
       "enabled": true
     },
     {
+      "queryString": "tag_id=8",
+      "name": " 9KG",
+      "enabled": true
+    },
+    {
       "queryString": "cat408=1",
       "name": "无损音乐",
       "enabled": false

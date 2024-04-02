@@ -331,9 +331,9 @@ export class Searcher {
 
         // 当已自动匹配规则时，去除入口页面中已指定的关键字字段
         if (
-          autoMatched &&
-          searchPage.indexOf(KEY) !== -1 &&
-          searchEntryConfigQueryString.indexOf(KEY) !== -1
+            autoMatched &&
+            searchPage.indexOf(KEY) !== -1 &&
+            searchEntryConfigQueryString.indexOf(KEY) !== -1
         ) {
           searchPage = PPF.removeQueryStringFromValue(searchPage, KEY);
         }
@@ -355,23 +355,23 @@ export class Searcher {
           queryString += entry.appendQueryString;
         }
         if (searchEntryConfig) {
-          entry.parseScriptFile =
-            searchEntryConfig.parseScriptFile || entry.parseScriptFile;
-          entry.resultType = searchEntryConfig.resultType || entry.resultType;
-          entry.requestDataType = searchEntryConfig.requestDataType || entry.requestDataType;
-          entry.resultSelector =
-            searchEntryConfig.resultSelector || entry.resultSelector;
-          entry.headers = searchEntryConfig.headers || entry.headers;
-          entry.asyncParse = searchEntryConfig.asyncParse || entry.asyncParse;
-          entry.requestData = searchEntryConfigRequestData || searchEntryConfig.requestData;
+          entry.parseScriptFile = searchEntryConfig.parseScriptFile || entry.parseScriptFile
+          entry.resultType = searchEntryConfig.resultType || entry.resultType
+          entry.requestDataType = searchEntryConfig.requestDataType || entry.requestDataType
+          entry.resultSelector = searchEntryConfig.resultSelector || entry.resultSelector
+          entry.headers = searchEntryConfig.headers || entry.headers
+          entry.asyncParse = searchEntryConfig.asyncParse || entry.asyncParse
+          entry.requestData = searchEntryConfigRequestData || searchEntryConfig.requestData || entry.requestData
+          // console.log("entry.requestData1", entry)
         }
 
+        // console.log("entry.requestData2", entry)
         // 判断是否指定了搜索页和用于获取搜索结果的脚本
         if (searchPage && entry.parseScriptFile && entry.enabled !== false) {
           let rows: number =
-            this.options.search && this.options.search.rows
-              ? this.options.search.rows
-              : 10;
+              this.options.search && this.options.search.rows
+                  ? this.options.search.rows
+                  : 10;
 
           // 如果有自定义地址，则使用自定义地址
           if (site.cdn && site.cdn.length > 0) {
@@ -398,11 +398,7 @@ export class Searcher {
           // 支除重复的参数
           url = PPF.removeDuplicateQueryString(url);
 
-          let searchKey =
-            key +
-            (entry.appendToSearchKeyString
-              ? ` ${entry.appendToSearchKeyString}`
-              : "");
+          let searchKey = key + (entry.appendToSearchKeyString ? ` ${entry.appendToSearchKeyString}` : "");
           url = this.replaceKeys(url, {
             key: searchKey,
             rows: rows,
@@ -422,11 +418,7 @@ export class Searcher {
                   });
 
                   if (site.user) {
-                    entry.requestData[key] = PPF.replaceKeys(
-                      entry.requestData[key],
-                      site.user,
-                      "user"
-                    );
+                    entry.requestData[key] = PPF.replaceKeys(entry.requestData[key], site.user, "user");
                   }
                 }
               }
@@ -446,16 +438,10 @@ export class Searcher {
                 });
 
                 if (site.user) {
-                  entry.headers[key] = PPF.replaceKeys(
-                    entry.headers[key],
-                    site.user,
-                    "user"
-                  );
+                  entry.headers[key] = PPF.replaceKeys(entry.headers[key], site.user, "user");
                 }
 
-                entry.headers[key] = PPF.replaceKeys(
-                  entry.headers[key], site, "site"
-                );
+                entry.headers[key] = PPF.replaceKeys(entry.headers[key], site, "site");
               }
             }
           }
@@ -477,84 +463,84 @@ export class Searcher {
           if (!entry.parseScript) {
             this.service.debug("searchTorrent: getScriptContent", scriptPath);
             APP.getScriptContent(scriptPath)
-              .done((script: string) => {
-                this.service.debug(
-                  "searchTorrent: getScriptContent done",
-                  scriptPath
-                );
-                this.parseScriptCache[scriptPath] = script;
-                entry.parseScript = script;
-                this.getSearchResult(
-                  url,
-                  site,
-                  Object.assign(PPF.clone(searchEntryConfig), PPF.clone(entry)),
-                  searchConfig.torrentTagSelectors
-                )
-                  .then((result: any) => {
-                    this.service.debug(
-                      "searchTorrent: getSearchResult done",
-                      url
-                    );
-                    if (result && result.length) {
-                      results.push(...result);
-                    }
-                    doneCount++;
-
-                    if (doneCount === entryCount || results.length >= rows) {
-                      resolve(results.slice(0, rows));
-                    }
-                  })
-                  .catch((result: any) => {
-                    this.service.debug(
-                      "searchTorrent: getSearchResult catch",
+                .done((script: string) => {
+                  this.service.debug(
+                      "searchTorrent: getScriptContent done",
+                      scriptPath
+                  );
+                  this.parseScriptCache[scriptPath] = script;
+                  entry.parseScript = script;
+                  this.getSearchResult(
                       url,
-                      result
-                    );
-                    doneCount++;
+                      site,
+                      Object.assign(PPF.clone(searchEntryConfig), PPF.clone(entry)),
+                      searchConfig.torrentTagSelectors
+                  )
+                      .then((result: any) => {
+                        this.service.debug(
+                            "searchTorrent: getSearchResult done",
+                            url
+                        );
+                        if (result && result.length) {
+                          results.push(...result);
+                        }
+                        doneCount++;
 
-                    if (doneCount === entryCount) {
-                      if (results.length > 0) {
-                        resolve(results.slice(0, rows));
-                      } else {
-                        reject(result);
-                      }
-                    }
-                  });
-              })
-              .fail(error => {
-                this.service.debug(
-                  "searchTorrent: getScriptContent fail",
-                  error
-                );
-              });
+                        if (doneCount === entryCount || results.length >= rows) {
+                          resolve(results.slice(0, rows));
+                        }
+                      })
+                      .catch((result: any) => {
+                        this.service.debug(
+                            "searchTorrent: getSearchResult catch",
+                            url,
+                            result
+                        );
+                        doneCount++;
+
+                        if (doneCount === entryCount) {
+                          if (results.length > 0) {
+                            resolve(results.slice(0, rows));
+                          } else {
+                            reject(result);
+                          }
+                        }
+                      });
+                })
+                .fail(error => {
+                  this.service.debug(
+                      "searchTorrent: getScriptContent fail",
+                      error
+                  );
+                });
           } else {
             this.getSearchResult(
-              url,
-              site,
-              Object.assign(PPF.clone(searchEntryConfig), PPF.clone(entry)),
-              searchConfig.torrentTagSelectors
+                url,
+                site,
+                Object.assign(PPF.clone(searchEntryConfig), PPF.clone(entry)),
+                searchConfig.torrentTagSelectors
             )
-              .then((result: any) => {
-                if (result && result.length) {
-                  results.push(...result);
-                }
-                doneCount++;
-
-                if (doneCount === entryCount || results.length >= rows) {
-                  resolve(results.slice(0, rows));
-                }
-              })
-              .catch((result: any) => {
-                doneCount++;
-
-                if (doneCount === entryCount) {
-                  if (results.length > 0) {
-                    resolve(results.slice(0, rows));
-                  } else {
-                    reject(result);
+                .then((result: any) => {
+                  if (result && result.length) {
+                    results.push(...result);
                   }
-                }
-              });
+                  doneCount++;
+
+                  if (doneCount === entryCount || results.length >= rows) {
+                    resolve(results.slice(0, rows));
+                  }
+                })
+                .catch((result: any) => {
+                  doneCount++;
+
+                  if (doneCount === entryCount) {
+                    if (results.length > 0) {
+                      resolve(results.slice(0, rows));
+                    } else {
+                      reject(result);
+                    }
+                  }
+                });
           }
         }
       });
@@ -571,7 +557,7 @@ export class Searcher {
         reject(result);
       }
 
-      this.service.debug("searchTorrent: quene done");
+      this.service.debug("searchTorrent: queue done");
     });
   }
 
