@@ -127,11 +127,6 @@
       "enabled": false
     },
     {
-      "queryString": "tag_id=8",
-      "name": " 9KG",
-      "enabled": false
-    },
-    {
       "queryString": "cat405=1",
       "name": "动漫",
       "enabled": false
