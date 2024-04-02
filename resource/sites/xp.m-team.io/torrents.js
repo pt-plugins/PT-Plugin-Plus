@@ -26,7 +26,8 @@
       let urls = []
       return new Promise(async (resolve, reject) => {
         for (let i = 0; i < ids.length; i++) {
-          const id = ids[i], timeout = 4000
+          // 流控调整
+          const id = ids[i], timeout = 8000
           let min = Math.ceil(timeout * (ids.length - i) / 1000 / 60)
           let msg = this.t('resolveURLsTip', {id, current: i + 1, total: ids.length, min})
           this.showStatusMessage(msg, 480)
