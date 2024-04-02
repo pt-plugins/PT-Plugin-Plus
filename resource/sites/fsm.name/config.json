@@ -4,8 +4,9 @@
   "description": "飞天拉面神教 - FSM",
   "url": "https://api.fsm.name/",
   "tags": [ "成人" ],
-  "schema": "Common",
+  "schema": "common",
   "host": "fsm.name",
+  "tokenRequired": true,
   "formerHosts": [
     "nextpt.net"
   ],
@@ -79,75 +80,64 @@
     "userBaseInfo": {
       "page": "/Users/infos",
       "dataType": "json",
+      "requestMethod": "POST",
       "headers": {
-        "Authorization": "$site.authToken$"
+        "APITOKEN": "$site.authToken$"
       },
       "fields": {
-        "isLogged": {
-          "selector": [ "a.adminUser" ],
-          "filters": [ "query.length>0" ]
-        },
-        "name": {
-          "selector": [ "response.data.username" ]
-        },
         "id": {
-          "selector": [ "response.data.uid" ]
-        },
-        "messageCount": {
-          "selector": [ "a[href='/Mail']" ],
-          "filters": [ "query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0" ]
-        },
-        "uploaded": {
-          "selector": [ "#data-upload" ],
-          "filters": [ "query.text().replace(/,/g,'').replace('上传量：','').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null" ]
-        },
-        "downloaded": {
-          "selector": [ "#data-download" ],
-          "filters": [ "query.text().replace(/,/g,'').replace('下载量：','').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null" ]
-        },
-        "seeding": {
-          "selector": [ "#data-now-seed" ],
-          "filters": [ "query.text().replace(/当前做种[：:]/,'')" ]
-        }
-      }
-    },
-    "userExtendInfo": {
-      "page": "/Users/profile?uid=$user.id$",
-      "fields": {
-        "comment": "暂不获取的数据置 0",
-        "bonusPerHour": {"value":"0"},
-        "joinTime": {
-          "selector": [ "th:contains('加入时间') + td" ],
-          "filters": [ "dateTime(query.text().trim()).isValid()?dateTime(query.text().trim()).valueOf():query.text().trim()"]
-        },
-        "levelName": {
-          "selector": [ "a[href*='/Users/profile'][class*='User']" ],
-          "filters": [ "query.attr('class').replace(/[^ ]*\\s/,'').replace(/User.*/,'').toUpperCase()"]
+          "selector": ["data.uid"]
         },
         "bonus": {
-          "selector": [ "th:contains('魔力值') + td" ],
-          "filters": [ "query.text()"]
+          "selector": ["data.point"]
+        },
+        "name": {
+          "selector": ["data.username"]
+        },
+        "uploaded": {
+          "selector": ["data.upload"],
+          "filters": ["query.replace(/,/g,'').sizeToNumber()"]
+        },
+        "seeding": {
+          "selector": ["data.peers.upload"]
         },
         "seedingSize": {
-          "selector": [ "th:contains('当前做种种子') + td:nth-child(2)" ],
-          "filters": [ "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
+          "selector": ["data.peers.upload"],
+          "filters": ["query.replace(/,/g,'').sizeToNumber()"]
+        },
+        "downloaded": {
+          "selector": ["data.download"],
+          "filters": ["query.replace(/,/g,'').sizeToNumber()"],
+          "levelName": {
+            "selector": ["data.voteRank"],
+            "filters": ["if (query == '1') { 'User'; } else if (query == '2') { 'Power User'; } else if (query == '3') { 'Elite User'; } else if (query == '4') { 'Crazy User'; } else if (query == '5') { 'Insane User'; } else if (query == '6') { 'Veteran User'; } else if (query == '7') { 'Extreme User'; } else if (query == '8') { 'Ultimate User'; } else if (query == '9') { 'Nexus Master'; } else if (query == '10') { 'VIP'; } else { query; }"]
+          }
         }
       }
     },
       "userSeedingTorrents": {
         "page": "/Torrents/mySeed",
+        "dataType": "json",
+        "requestMethod": "POST",
+        "headers": {
+          "APITOKEN": "$site.authToken$"
+        },
         "fields": {
           "seedingSize": {
             "selector": ".panel-primary .panel-body td(6)",
             "filters": [
               "(query != 0) ? query.sizeToNumber() : 0",
-              "query.text()"
-            ]
+              "query.text()"]
           }
         }
       },
     "common": {
       "page": "/Torrents",
+      "dataType": "json",
+      "requestMethod": "POST",
+      "headers": {
+        "APITOKEN": "$site.authToken$"
+      },
       "fields": {
         "downloadURL": {
           "selector": [ "a[href*='/Torrents/download']" ],
