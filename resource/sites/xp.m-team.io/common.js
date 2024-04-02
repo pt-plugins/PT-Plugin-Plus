@@ -1257,39 +1257,6 @@
       }
     }
 
-    resolveDownloadURLById(id, showNotice = true) {
-      let res = $.ajax('/api/torrent/genDlToken', {
-        method: 'POST',
-        data: {id},
-        cache: true,
-        headers: {
-          "x-api-key": PTService.site.authToken
-        },
-        success: function (data) {
-          if (data.code === '0') {
-            console.log(`种子 ${id} 下载链接获取成功`, data)
-            // return data.data
-          } else {
-            let msg = `种子 ${id} 下载链接获取失败, code != 0`
-            console.log(msg, data)
-            if (showNotice) {
-              PTService.showNotice({msg})
-            }
-            // return null
-          }
-        },
-        error: function (data) {
-          let msg = `种子 ${id} 下载链接获取失败`
-          console.log(msg, data)
-          if (showNotice) {
-            PTService.showNotice({msg})
-          }
-        },
-        async: false
-      })
-      return res.responseJSON.data || ''
-    }
-
     // @ts-ignore
     // eslint-disable-next-line
     async sleep(ms) {

@@ -1422,36 +1422,10 @@ export default Vue.extend({
     processURLWithPrefix(prefix: string, site: Site, url?: string) {
       if (url && url.startsWith(prefix)) {
         const id = url.substring(prefix.length);
-        return this.resolveDownloadURLById(id, site);
+        return PPF.resolveMTDownloadURL(id, site);
       } else {
         return url;
       }
-    },
-    resolveDownloadURLById(id:string, site:Site,showNotice = true) {
-      let res = $.ajax(site.url+'api/torrent/genDlToken', {
-        method: 'POST',
-        data: {id},
-        cache: true,
-        headers: {
-          "x-api-key": site.authToken
-        },
-        success: function (data) {
-          if (data.code === '0') {
-            console.log(`种子 ${id} 下载链接获取成功`, data)
-            // return data.data
-          } else {
-            let msg = `种子 ${id} 下载链接获取失败, code != 0`
-            console.log(msg, data)
-            // return null
-          }
-        },
-        error: function (data) {
-          let msg = `种子 ${id} 下载链接获取失败`
-          console.log(msg, data)
-        },
-        async: false
-      })
-      return res.responseJSON.data || ''
     },
     /**
      * 复制下载链接到剪切板

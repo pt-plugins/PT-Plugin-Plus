@@ -455,6 +455,59 @@ class HelpFunctions {
     result = new Date(`${datetime}${timezoneOffset}`).getTime();
     return result;
   }
+
+  /**
+   * @see https://nodejs.org/api/url.html#url_url_resolve_from_to
+   */
+  public resolveURL(from: string, to: string) {
+    const resolvedUrl = new URL(to, new URL(from, 'resolve://'));
+    if (resolvedUrl.protocol === 'resolve:') {
+      // `from` is a relative URL.
+      const { pathname, search, hash } = resolvedUrl;
+      return pathname + search + hash;
+    }
+    return resolvedUrl.toString();
+  }
+
+  /**
+   * 解析 mt 下载链接
+   * @param id 种子 id
+   * @param showNotice 是否显示提示
+   * @param site 站点信息
+   */
+  public resolveMTDownloadURL(id: String, site: Site, showNotice: any = undefined) {
+    // @ts-ignore
+    let res = $.ajax(this.resolveURL(site.activeURL, '/api/torrent/genDlToken'), {
+        method: 'POST',
+        data: {id},
+        cache: true,
+        headers: {
+          "x-api-key": site.authToken
+        },
+        success: function (data) {
+          if (data.code === '0') {
+            console.log(`种子 ${id} 下载链接获取成功`, data)
+            // return data.data
+          } else {
+            let msg = `种子 ${id} 下载链接获取失败, code != 0`
+            console.log(msg, data)
+            if (showNotice) {
+              showNotice({msg})
+            }
+            // return null
+          }
+        },
+        error: function (data) {
+          let msg = `种子 ${id} 下载链接获取失败`
+          console.log(msg, data)
+          if (showNotice) {
+            showNotice({msg})
+          }
+        },
+        async: false
+      })
+      return res.responseJSON.data || ''
+  }
 }
 
 /**

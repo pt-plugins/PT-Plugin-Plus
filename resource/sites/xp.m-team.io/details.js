@@ -21,7 +21,7 @@
 
     _getDownloadUrlByPossibleHrefs() {
       let id = window.location.pathname.split('/').pop()
-      return this.resolveDownloadURLById(id)
+      return PTService.resolveMTDownloadURL(id)
     }
 
 

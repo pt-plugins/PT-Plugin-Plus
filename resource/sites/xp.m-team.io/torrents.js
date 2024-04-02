@@ -31,7 +31,7 @@
           let min = Math.ceil(timeout * (ids.length - i) / 1000 / 60)
           let msg = this.t('resolveURLsTip', {id, current: i + 1, total: ids.length, min})
           this.showStatusMessage(msg, 480)
-          let url = this.resolveDownloadURLById(id)
+          let url = PTService.resolveMTDownloadURL(id)
           if (url) {
             urls.push(url)
           } else {
