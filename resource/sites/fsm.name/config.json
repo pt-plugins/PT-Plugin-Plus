@@ -13,7 +13,8 @@
   "collaborator": [
     "Ted423",
     "IITII",
-    "tedzhu"
+    "tedzhu",
+    "Banxia"
   ],
   "plugins": [
     {
@@ -109,7 +110,7 @@
           "value": "1711715887"
         },
         "bonusPerHour": {
-          "value": "77.77"
+          "value": "未知算法，注册时间也未知随便填写一个方便ptpp出图"
         },
         "downloaded": {
           "selector": ["data.download"],
@@ -127,10 +128,13 @@
       "fields": {
         "seedingSize": {
           "selector": ["data.nowActiveUploadSize"],
-          "filters": ["query.replace(/,/g,'').sizeToNumber()"],
-          "uploads": {
-            "selector": ["data.torrent"],
-            "filters": ["query.replace(/,/g,'').sizeToNumber()"]
+          "filters": ["query.replace(/,/g,'').sizeToNumber()"]
+        },
+        "levelName": {
+          "selector": ["data.userRank.name"]
+        },
+        "uploads": {
+          "selector": ["data.torrent"]
         }
       }
     },
