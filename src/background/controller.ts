@@ -1109,6 +1109,13 @@ export default class Controller {
   public resetUserDatas(datas: any) {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.service.userData.reset(datas);
+      setTimeout(() => {
+        this.service.userData.upgrade().then(r => {
+          console.log('升级站点数据完成')
+        }).catch(e => {
+          console.error('升级站点数据失败', e)
+        })
+      }, 1000)
       resolve();
     });
   }

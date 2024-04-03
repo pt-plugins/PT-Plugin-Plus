@@ -4,10 +4,10 @@
   "description": "M-Team",
   "url": "https://xp.m-team.io/",
   "icon": "https://xp.m-team.io/favicon.ico",
-  "tags": ["影视", "综合","成人"],
+  "tags": ["影视", "综合", "成人"],
   "host": "xp.m-team.io",
   "schema": "mTorrent",
-  "cdn": ["https://xp.m-team.io", "https://kp.m-team.cc","https://xp.m-team.cc","https://ap.m-team.cc"],
+  "cdn": ["https://xp.m-team.io/", "https://kp.m-team.cc/","https://xp.m-team.cc/","https://ap.m-team.cc/"],
   "tokenRequired": true,
   "formerHosts": [
     "pt.m-team.cc",
