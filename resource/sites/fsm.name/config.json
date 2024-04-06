@@ -1,7 +1,7 @@
 {
   "name": "FSM",
   "timezoneOffset": "+0800",
-  "description": "飞天拉面神教 - FSM",
+  "description": "飞天拉面神教 - FSM - 需要填写鉴权TOKEN",
   "url": "https://api.fsm.name/",
   "tags": [ "成人" ],
   "schema": "common",
@@ -14,6 +14,7 @@
     "Ted423",
     "IITII",
     "tedzhu",
+    "joker",
     "Banxia"
   ],
   "plugins": [
