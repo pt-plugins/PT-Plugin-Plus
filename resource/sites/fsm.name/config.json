@@ -140,11 +140,6 @@
     },
       "userSeedingTorrents": {
         "page": "/Torrents/mySeed",
-        "dataType": "json",
-        "requestMethod": "POST",
-        "headers": {
-          "APITOKEN": "$site.authToken$"
-        },
         "fields": {
           "seedingSize": {
             "selector": ".panel-primary .panel-body td(6)",
@@ -156,11 +151,6 @@
       },
     "common": {
       "page": "/Torrents",
-      "dataType": "json",
-      "requestMethod": "POST",
-      "headers": {
-        "APITOKEN": "$site.authToken$"
-      },
       "fields": {
         "downloadURL": {
           "selector": [ "a[href*='/Torrents/download']" ],
