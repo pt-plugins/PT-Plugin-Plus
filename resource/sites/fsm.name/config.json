@@ -1,8 +1,8 @@
 {
   "name": "FSM",
   "timezoneOffset": "+0800",
-  "description": "飞天拉面神教 - FSM",
-  "url": "https://api.fsm.name/",
+  "description": "飞天拉面神教 - FSM - 需要填写鉴权TOKEN",
+  "url": "https://fsm.name/",
   "tags": [ "成人" ],
   "schema": "common",
   "host": "fsm.name",
@@ -14,6 +14,7 @@
     "Ted423",
     "IITII",
     "tedzhu",
+    "joker",
     "Banxia"
   ],
   "plugins": [
@@ -30,7 +31,7 @@
   ],
   "searchEntryConfig": {
     "skipIMDbId": true,
-    "page": "/Torrents?type=0&systematics=0&keyword=$key$",
+    "page": "/api/Torrents?type=0&systematics=0&keyword=$key$",
     "loggedRegex": "container-fluid",
     "resultType": "html",
     "resultSelector": "table",
@@ -79,7 +80,7 @@
   },
   "selectors": {
     "userBaseInfo": {
-      "page": "/Users/infos",
+      "page": "/api/Users/infos",
       "dataType": "json",
       "requestMethod": "POST",
       "headers": {
@@ -110,7 +111,7 @@
           "value": "1711715887"
         },
         "bonusPerHour": {
-          "value": "未知算法，注册时间也未知随便填写一个方便ptpp出图"
+          "value": "未知，注册时间也未知"
         },
         "downloaded": {
           "selector": ["data.download"],
@@ -119,7 +120,7 @@
       }
     },
     "userExtendInfo":{
-      "page": "/Users/profile?uid=$user.id$",
+      "page": "/api/Users/profile?uid=$user.id$",
       "dataType": "json",
       "requestMethod": "POST",
       "headers": {
@@ -139,12 +140,7 @@
       }
     },
       "userSeedingTorrents": {
-        "page": "/Torrents/mySeed",
-        "dataType": "json",
-        "requestMethod": "POST",
-        "headers": {
-          "APITOKEN": "$site.authToken$"
-        },
+        "page": "/api/Torrents/mySeed",
         "fields": {
           "seedingSize": {
             "selector": ".panel-primary .panel-body td(6)",
@@ -155,12 +151,7 @@
         }
       },
     "common": {
-      "page": "/Torrents",
-      "dataType": "json",
-      "requestMethod": "POST",
-      "headers": {
-        "APITOKEN": "$site.authToken$"
-      },
+      "page": "/api/Torrents",
       "fields": {
         "downloadURL": {
           "selector": [ "a[href*='/Torrents/download']" ],
