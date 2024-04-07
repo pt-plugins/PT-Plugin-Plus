@@ -1,7 +1,7 @@
 {
   "name": "FSM",
   "timezoneOffset": "+0800",
-  "description": "飞天拉面神教 - FSM - 需要填写鉴权TOKEN",
+  "description": "飞天拉面神教 - FSM",
   "url": "https://fsm.name/",
   "tags": [ "成人" ],
   "schema": "common",
