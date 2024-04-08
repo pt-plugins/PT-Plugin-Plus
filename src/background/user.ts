@@ -145,6 +145,8 @@ export class User {
 
           if (!rule) {
             this.updateStatus(site, userInfo);
+            // 未定义扩展信息规则时，直接设置完成并返回
+            userInfo.lastUpdateStatus = EUserDataRequestStatus.success;
             resolve(userInfo);
             return;
           }
