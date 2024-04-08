@@ -469,6 +469,29 @@ class HelpFunctions {
     return resolvedUrl.toString();
   }
 
+  public getIdFromMTURL(url: string) {
+    try {
+      let id = new URL(url).pathname.split('/').pop()
+      if (id) {
+        parseInt(id)
+        return id
+      }
+    } catch (error) {
+      console.log('getIdFromMTURL error', error)
+    }
+    return undefined
+  }
+
+  /**
+   * activeURL 这个字段可能不存在,,,
+   * 比如右键种子发送到 PTPP, 按正常逻辑筛选一遍
+   */
+  public getSiteActiveUrl(site: Site) {
+    if (site.activeURL) return site.activeURL
+    if (site.cdn && site.cdn.length > 0) return site.cdn[0]
+    return site.url
+  }
+
   /**
    * 解析 mt 下载链接
    * @param id 种子 id
@@ -476,8 +499,9 @@ class HelpFunctions {
    * @param site 站点信息
    */
   public resolveMTDownloadURL(id: String, site: Site, showNotice: any = undefined) {
+    let activeURL = this.getSiteActiveUrl(site)
     // @ts-ignore
-    let res = $.ajax(this.resolveURL(site.activeURL, '/api/torrent/genDlToken'), {
+    let res = $.ajax(this.resolveURL(activeURL, '/api/torrent/genDlToken'), {
         method: 'POST',
         data: {id},
         cache: true,
