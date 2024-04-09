@@ -4,10 +4,10 @@
   "description": "M-Team",
   "url": "https://xp.m-team.io/",
   "icon": "https://xp.m-team.io/favicon.ico",
-  "tags": ["影视", "综合","成人"],
+  "tags": ["影视", "综合", "成人"],
   "host": "xp.m-team.io",
   "schema": "mTorrent",
-  "cdn": ["https://xp.m-team.io", "https://kp.m-team.cc","https://xp.m-team.cc","https://ap.m-team.cc"],
+  "cdn": ["https://xp.m-team.io/", "https://kp.m-team.cc/","https://xp.m-team.cc/","https://ap.m-team.cc/"],
   "tokenRequired": true,
   "formerHosts": [
     "pt.m-team.cc",
@@ -81,11 +81,6 @@
       "name": "种子列表",
       "pages": ["/browse"],
       "scripts": ["common.js", "torrents.js"]
-    }, {
-      "name": "种子列表封面模式",
-      "pages": ["/torrents.php", "/movie.php", "/music.php", "/adult.php"],
-      "scripts": ["/libs/album/album.js", "torrents.js"],
-      "styles": ["/libs/album/style.css"]
     }
   ],
   "searchEntryConfig": {
@@ -97,26 +92,39 @@
     "requestMethod": "POST",
     "headers": {
       "x-api-key": "$site.authToken$"
-    },
-    "requestData": {
-      "pageNumber": 1,
-      "pageSize": 100,
-      "keyword": "$key$"
-    },
-    "area": [{
-      "name": "IMDB",
-      "keyAutoMatch": "^(tt\\d+)$",
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "综合",
+      "enabled": true,
       "requestData": {
         "pageNumber": 1,
         "pageSize": 100,
-        "imdb": "$key$"
+        "mode": "normal",
+        "keyword": "$key$"
+      },
+      "area": [{
+        "name": "IMDB",
+        "keyAutoMatch": "^(tt\\d+)$",
+        "requestData": {
+          "pageNumber": 1,
+          "pageSize": 100,
+          "imdb": "$key$"
+        }
+      }]
+    },
+    {
+      "name": "9kg",
+      "enabled": true,
+      "requestData": {
+        "pageNumber": 1,
+        "pageSize": 100,
+        "mode": "adult",
+        "keyword": "$key$"
       }
-    }]
-  },
-  "searchEntry": [{
-    "name": "综合",
-    "enabled": true
-  }],
+    }
+  ],
   "categories": [{
     "entry": "torrents.php",
     "result": "&cat$id$=1",
@@ -288,7 +296,7 @@
       }
     },
     "userExtendInfo":{
-      "page": "/api/member/updateLastBrowse",
+      "page": "/api/member/profile",
       "dataType": "json",
       "requestMethod": "POST",
       "headers": {
@@ -313,7 +321,7 @@
       "fields": {
         "bonusPerHour": {
           "selector": ["data.formulaParams"],
-          "filters": ["const myall_bs = Number(query.allBonus) + Number(query.h24UpBs) + Number(query.userClassBs) + Number(query.callBonus); const twostep_bs = query.enable2fa ? (myall_bs * query.twoStepBonus) : 0; if (query.donor) { (myall_bs + twostep_bs + Number(query.allBonus)).toFixed(2); } else { (myall_bs + twostep_bs).toFixed(2); }"]
+          "filters": ["Number(query.finalBs)"]
         }
       }
     },

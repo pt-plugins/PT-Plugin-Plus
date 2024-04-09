@@ -146,21 +146,20 @@
             error(this.t("needPasskey"));
             return;
           }
-          let urls = this.getDownloadURLs();
-
-          if (!urls.length || typeof urls == "string") {
-            error(urls);
-            return;
-          }
-
-          PTService.call(PTService.action.copyTextToClipboard, urls.join("\n"))
+          this.getDownloadURLs().then(urls => {
+            if (!urls.length || typeof urls == 'string') {
+              error(urls);
+              throw new Error('ignore')
+            }
+            return PTService.call(PTService.action.copyTextToClipboard, urls.join('\n'))
+          })
             .then(result => {
-              console.log("命令执行完成", result);
+              console.log('命令执行完成', result);
               success();
             })
             .catch(() => {
               error();
-            });
+            })
         },
         onDrop: (data, event, success, error) => {
           if (checkPasskey && !PTService.site.passkey) {
@@ -214,26 +213,19 @@
             error(this.t("needPasskey"));
             return;
           }
-          let urls = this.getDownloadURLs();
-
-          if (!urls.length || typeof urls == "string") {
-            error(urls);
-            return;
-          }
-
-          let downloads = [];
-          urls.forEach(url => {
-            downloads.push({
-              url,
-              method: PTService.site.downloadMethod
-            });
-          });
-
-          console.log(downloads);
-
-          PTService.call(PTService.action.addBrowserDownloads, downloads)
+          this.getDownloadURLs().then(urls => {
+            if (!urls.length || typeof urls == 'string') {
+              error(urls);
+              throw new Error('ignore')
+            }
+            return urls.map(url => ({url, method: PTService.site.downloadMethod}))
+          })
+            .then(downloads => {
+              console.log(downloads)
+              return PTService.call(PTService.action.addBrowserDownloads, downloads)
+            })
             .then(result => {
-              console.log("命令执行完成", result);
+              console.log('命令执行完成', result);
               success();
             })
             .catch(e => {
@@ -989,35 +981,27 @@
         return;
       }
 
-      let urls = this.getDownloadURLs();
-      if (!urls.length || typeof urls == "string") {
-        error(urls);
-        return;
-      }
-
-      // 是否启用后台下载任务
-      if (PTService.options.enableBackgroundDownload) {
-        this.downloadURLsInBackground(
-          urls,
-          msg => {
-            success({
-              msg
-            });
-          },
-          downloadOptions
-        );
-      } else {
-        this.downloadURLs(
-          urls,
-          urls.length,
-          msg => {
-            success({
-              msg
-            });
-          },
-          downloadOptions
-        );
-      }
+      this.getDownloadURLs().then(urls => {
+        if (!urls.length || typeof urls == 'string') {
+          error(urls);
+          throw new Error('ignore')
+        }
+        // 是否启用后台下载任务
+        if (PTService.options.enableBackgroundDownload) {
+          this.downloadURLsInBackground(
+            urls, msg => {
+              success({msg});
+            },
+            downloadOptions
+          );
+        } else {
+          this.downloadURLs(urls, urls.length,
+            msg => {
+              success({msg});
+            }, downloadOptions
+          );
+        }
+      }).catch(console.error)
     }
 
     downloadURLsInBackground(urls, callback, downloadOptions) {
@@ -1086,8 +1070,7 @@
             "/" +
             count +
             ")"
-        }),
-        0
+        })
       );
 
       if (!downloadOptions) {
@@ -1127,13 +1110,12 @@
       }
     }
 
-    showStatusMessage(msg) {
+    showStatusMessage(msg, width = 600) {
       if (!this.statusBar) {
         this.statusBar = PTService.showNotice({
           text: msg,
           type: "info",
-          width: 600,
-          progressBar: false
+          width, progressBar: false
         });
       } else {
         this.statusBar.find(".noticejs-content").html(msg);
@@ -1273,6 +1255,12 @@
           }
         });
       }
+    }
+
+    // @ts-ignore
+    // eslint-disable-next-line
+    async sleep(ms) {
+      return new Promise(resolve => setTimeout(() => resolve(), ms))
     }
   }
 

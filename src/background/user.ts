@@ -145,6 +145,8 @@ export class User {
 
           if (!rule) {
             this.updateStatus(site, userInfo);
+            // 未定义扩展信息规则时，直接设置完成并返回
+            userInfo.lastUpdateStatus = EUserDataRequestStatus.success;
             resolve(userInfo);
             return;
           }
@@ -334,7 +336,7 @@ export class User {
         contentType: rule.requestContentType == "application/json" ? "application/json" : "application/x-www-form-urlencoded",
         headers: rule.headers,
         timeout: this.service.options.connectClientTimeout || 30000,
-        cache: false
+        cache: (rule.dataType) && rule.dataType !== ERequestResultType.JSON ? false : true
       })
         .done(result => {
           this.removeQueue(host, url);

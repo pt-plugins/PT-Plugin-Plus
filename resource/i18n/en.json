@@ -984,6 +984,7 @@
       "exceedSizeCanceled": "Oversized has been cancelled",
       "downloadURLsFinished": "{count} links have been sent.",
       "downloadURLsTip": "Sending: {text}",
+      "resolveURLsTip": "Resolving torrent id：{id}, progress：{current}/{total}, approximately {min} minutes left",
       "search": {
         "needLogin": "[{siteName}] needs to log in and search again",
         "noTorrents": "[{siteName}] did not find the relevant torrent",

@@ -6,8 +6,7 @@
   "icon": "https://ourbits.club/favicon.ico",
   "schema": "NexusPHP",
   "host": "ourbits.club",
-  "cdn": ["https://pt.ourhelp.club/"],
-  "formerHosts": ["ourbits.club"],
+  "cdn": ["https://ourbits.club/", "https://pt.ourhelp.club/"],
   "tags": [
     "影视",
     "动漫",

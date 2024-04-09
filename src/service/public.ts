@@ -455,6 +455,83 @@ class HelpFunctions {
     result = new Date(`${datetime}${timezoneOffset}`).getTime();
     return result;
   }
+
+  /**
+   * @see https://nodejs.org/api/url.html#url_url_resolve_from_to
+   */
+  public resolveURL(from: string, to: string) {
+    const resolvedUrl = new URL(to, new URL(from, 'resolve://'));
+    if (resolvedUrl.protocol === 'resolve:') {
+      // `from` is a relative URL.
+      const { pathname, search, hash } = resolvedUrl;
+      return pathname + search + hash;
+    }
+    return resolvedUrl.toString();
+  }
+
+  public getIdFromMTURL(url: string) {
+    try {
+      let id = new URL(url).pathname.split('/').pop()
+      if (id) {
+        parseInt(id)
+        return id
+      }
+    } catch (error) {
+      console.log('getIdFromMTURL error', error)
+    }
+    return undefined
+  }
+
+  /**
+   * activeURL 这个字段可能不存在,,,
+   * 比如右键种子发送到 PTPP, 按正常逻辑筛选一遍
+   */
+  public getSiteActiveUrl(site: Site) {
+    if (site.activeURL) return site.activeURL
+    if (site.cdn && site.cdn.length > 0) return site.cdn[0]
+    return site.url
+  }
+
+  /**
+   * 解析 mt 下载链接
+   * @param id 种子 id
+   * @param showNotice 是否显示提示
+   * @param site 站点信息
+   */
+  public resolveMTDownloadURL(id: String, site: Site, showNotice: any = undefined) {
+    let activeURL = this.getSiteActiveUrl(site)
+    // @ts-ignore
+    let res = $.ajax(this.resolveURL(activeURL, '/api/torrent/genDlToken'), {
+        method: 'POST',
+        data: {id},
+        cache: true,
+        headers: {
+          "x-api-key": site.authToken
+        },
+        success: function (data) {
+          if (data.code === '0') {
+            console.log(`种子 ${id} 下载链接获取成功`, data)
+            // return data.data
+          } else {
+            let msg = `种子 ${id} 下载链接获取失败, code != 0`
+            console.log(msg, data)
+            if (showNotice) {
+              showNotice({msg})
+            }
+            // return null
+          }
+        },
+        error: function (data) {
+          let msg = `种子 ${id} 下载链接获取失败`
+          console.log(msg, data)
+          if (showNotice) {
+            showNotice({msg})
+          }
+        },
+        async: false
+      })
+      return res.responseJSON.data || ''
+  }
 }
 
 /**

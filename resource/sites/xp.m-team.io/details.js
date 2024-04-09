@@ -21,24 +21,7 @@
 
     _getDownloadUrlByPossibleHrefs() {
       let id = window.location.pathname.split('/').pop()
-      return $.ajax('/api/torrent/genDlToken', {
-        method: 'POST',
-        data: {id},
-        success: function (data) {
-          if (data.code === '0') {
-            console.log(`种子 ${id} 下载链接获取成功`, data)
-            // return data.data
-          } else {
-            console.log(`种子 ${id} 下载链接获取失败, code != 0`, data)
-            // return null
-          }
-        },
-        error: function (data) {
-          console.log(`种子 ${id} 下载链接获取失败`, data)
-          // return null
-        },
-        async: false
-      })
+      return PTService.resolveMTDownloadURL(id)
     }
 
 
@@ -48,11 +31,7 @@
     getDownloadURL() {
       let url = PTService.getFieldValue('downloadURL')
       if (!url) {
-        let res = this._getDownloadUrlByPossibleHrefs()
-        if (res.status === 200 && res.responseJSON.code === '0') {
-          url = res.responseJSON.data
-        }
-        return url ? url : ''
+        return this._getDownloadUrlByPossibleHrefs()
       }
 
       return this.getFullURL(url);
@@ -74,24 +53,24 @@
      * 获取当前种子IMDb Id
      */
     getIMDbId() {
+      let url = window.location.href
+      let imdbId = null
       try {
-        let imdbId = PTService.getFieldValue('imdbId');
-        console.log(imdbId);
-        if (imdbId)
-          return imdbId;
-        else {
+        imdbId = PTService.getFieldValue('imdbId')
+        if (!imdbId) {
           const link = $('a[href*=\'www.imdb.com/title/\']:first');
           if (link.length > 0) {
-            let match = link.attr('href').match(/(tt\d+)/);
-
-            if (match && match.length >= 2)
-              return imdbId = match[1];
-
+            let match = link.attr('href').match(/(tt\d+)/)
+            if (match && match.length >= 2) {
+              imdbId = match[1];
+            }
           }
         }
-      } catch {
+      } catch (e) {
+        console.log(`${url} 获取IMDb Id 失败`, e)
       }
-      return null;
+      console.log(imdbId)
+      return imdbId
     }
   }
 

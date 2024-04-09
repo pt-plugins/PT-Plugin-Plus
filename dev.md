@@ -54,3 +54,29 @@
 > [右键菜单注入代码](https://github.com/pt-plugins/PT-Plugin-Plus/blob/f00d6972ac079d1cfc4b64f2eed52a1c37aeca52/src/background/contextMenus.ts#L90)  
 
 * 重启浏览器试试
+
+## formerHosts 使用说明
+
+* 只有在插件升级的时候才会被使用到，用于迁移旧的配置文件。
+* src/background/service.ts:601
+* src/background/userData.ts:111
+
+> 适用于站点 URL 变更之后旧数据的迁移合并.  
+>
+
+1. 假设之前的 URL 是: `https://kp.m-team.cc` 现在变更为 `https://xp.m-team.io`
+2. 那么在 `formerHosts` 中配置加上 `kp.m-team.cc`，如下所示：
+
+```json
+{
+   "formerHosts": [
+      "kp.m-team.cc"
+   ]
+}
+```
+
+## userExtendInfo 是否必须？
+
+* 因为代码问题, 必须填写, 要不然部分数据会缺失...
+
+* 大概位置在 `user.ts`, 可以参考 `7b8d2e00342ac2734494c47b60e8c9886df69b71` 这个 commit.
