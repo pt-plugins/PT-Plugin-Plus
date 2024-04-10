@@ -7,6 +7,9 @@
   "tags": ["软件", "0day"],
   "schema": "Common",
   "host": "audionews.org",
+  "collaborator": [
+    "KyokoMiki"
+  ],
   "plugins": [{
     "name": "种子详情页面",
     "pages": ["/viewtopic.php"],
@@ -16,6 +19,86 @@
     "pages": ["/tracker.php"],
     "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
   }],
+  "searchEntryConfig": {
+    "skipIMDbId": true,
+    "page": "/tracker.php?nm=$key$",
+    "loggedRegex": "login\\.php\\?logout=1",
+    "resultType": "html",
+    "resultSelector": "table#tor-tbl",
+    "dataRowSelector": " > tbody > tr.hl-tr",
+    "firstDataRowIndex": 0,
+    "fieldIndex": {
+      "category": 2,
+      "title": 5,
+      "link": 5,
+      "url": 9,
+      "comments": 5,
+      "time": 6,
+      "size": 8,
+      "author": 7,
+      "seeders": 11,
+      "leechers": 12,
+      "completed": 13
+    },
+    "fieldSelector": {
+      "category": {
+        "selector": [
+          ""
+        ],
+        "filters": [
+          "query.text().trim() + ' - ' + query.next().text().replace('[+]','').trim() + ' - ' + (query.next().next().find('img').attr('src').includes('p2p') ? 'P2P' : 'SCENE')"
+        ]
+      },
+      "link": {
+        "selector": [
+          "a.tLink"
+        ],
+        "filters": [
+          "query.attr('href')"
+        ]
+      },
+      "url": {
+        "selector": [
+          "a.genmed[title='Download'][href*='dl.php?id=']"
+        ],
+        "filters": [
+          "query.attr('href')"
+        ]
+      },
+      "comments": {
+        "selector": [
+          "span.tracker_topic_replies"
+        ],
+        "filters": [
+          "query.length > 0 ? query.text().trim():0"
+        ]
+      },
+      "time": {
+        "selector": [
+          ""
+        ],
+        "filters": [
+          "query.text().replace(/\\[|\\]/g,'').trim()"
+        ]
+      }
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "全部",
+      "enabled": true
+    },
+    {
+      "appendQueryString": "&show_torrents=5",
+      "name": "AUDIONEWS",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&show_torrents=6",
+      "name": "GFXNEWS",
+      "enabled": false
+    }
+  ],
   "selectors": {
     "userBaseInfo": {
       "page": "/index.php",
