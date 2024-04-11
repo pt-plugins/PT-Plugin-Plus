@@ -910,9 +910,13 @@ export default class Controller {
             let id = PPF.getIdFromMTURL(url)
             console.log(`getTorrentDataFromURL.M-Team ${url} -> ${id}`, options)
             if (id) {
-              let torrentURL = PPF.resolveMTDownloadURL(id, site)
-              console.log(`getTorrentDataFromURL.M-Team ${url} -> ${torrentURL}`, options)
-              url = torrentURL
+              if (parseInt(id)) {
+                let torrentURL = PPF.resolveMTDownloadURL(id, site)
+                console.log(`getTorrentDataFromURL.M-Team1 ${url} -> ${torrentURL}`, options)
+                url = torrentURL
+              } else {
+                console.log(`getTorrentDataFromURL.M-Team2 ${url}, id 链接可能已是直链, 不进行转换...`, options)
+              }
             } else {
               reject(APP.createErrorMessage(
                   this.service.i18n.t("service.controller.invalidTorrent", {
