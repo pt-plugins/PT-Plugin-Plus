@@ -1,7 +1,7 @@
 {
   "name": "TranceTraffic",
   "timezoneOffset": "+0800",
-  "description": "TT",
+  "description": "TranceTraffic is a Private site for MUSIC",
   "url": "https://www.trancetraffic.com/",
   "icon": "https://www.trancetraffic.com/favicon.ico",
   "tags": [
@@ -9,15 +9,258 @@
   ],
   "schema": "Common",
   "host": "www.trancetraffic.com",
-  "plugins": [{
-    "name": "种子详情页面",
-    "pages": ["/details.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
-  }, {
-    "name": "种子列表",
-    "pages": ["/browse.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
-  }],
+  "collaborator": [
+    "KyokoMiki"
+  ],
+  "plugins": [
+    {
+      "name": "种子详情页面",
+      "pages": [
+        "/details.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/Common/details.js"
+      ]
+    },
+    {
+      "name": "种子列表",
+      "pages": [
+        "/browse.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/Common/torrents.js"
+      ]
+    }
+  ],
+  "searchEntryConfig": {
+    "skipIMDbId": true,
+    "page": "/browse.php?search=$key$",
+    "loggedRegex": "logout\\.php",
+    "resultType": "html",
+    "resultSelector": "table.mainouter table:has(a[href^='details.php?id='])",
+    "firstDataRowIndex": 1,
+    "fieldIndex": {
+      "category": 0,
+      "title": 1,
+      "link": 1,
+      "url": 2,
+      "comments": 4,
+      "time": 5,
+      "size": 6,
+      "author": 10,
+      "seeders": 8,
+      "leechers": 9,
+      "completed": 7
+    },
+    "fieldSelector": {
+      "category": {
+        "selector": [
+          "img"
+        ],
+        "filters": [
+          "query.attr('alt')"
+        ]
+      },
+      "title": {
+        "selector": [
+          "a[href*='details.php?id=']"
+        ]
+      },
+      "link": {
+        "selector": [
+          "a[href*='details.php?id=']"
+        ],
+        "filters": [
+          "query.attr('href')"
+        ]
+      },
+      "url": {
+        "selector": [
+          "a[href*='download.php']"
+        ],
+        "filters": [
+          "query.attr('href')"
+        ]
+      },
+      "completed": {
+        "selector": [
+          ""
+        ],
+        "filters": [
+          "query.replace('times', '')"
+        ]
+      }
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "全部",
+      "enabled": true
+    },
+    {
+      "appendQueryString": "&cat[]=35",
+      "name": "Albums - Dance",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=28",
+      "name": "Albums - Goa/Psy",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=29",
+      "name": "Albums - Hardcore",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=26",
+      "name": "Albums - Hardstyle",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=38",
+      "name": "Albums - House",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=39",
+      "name": "Albums - Other",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=27",
+      "name": "Albums - Techno",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=24",
+      "name": "Albums - Trance",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=10",
+      "name": "Amateur",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=40",
+      "name": "Ambient/Chill/Lo-Fi",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=42",
+      "name": "Beat/Breaks",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=41",
+      "name": "Drum & Bass/Jungle",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=5",
+      "name": "DVD/Video/Clips",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=43",
+      "name": "Electronic",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=37",
+      "name": "Livesets - Goa/Psy",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=17",
+      "name": "Livesets - Hardstyle",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=16",
+      "name": "Livesets - House",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=18",
+      "name": "Livesets - Other",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=14",
+      "name": "Livesets - Techno",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=12",
+      "name": "Livesets - Trance",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=45",
+      "name": "Music Plugins/Apps/Misc",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=46",
+      "name": "Non-scene Releases",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=36",
+      "name": "Singles - Dance",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=25",
+      "name": "Singles - Goa/Psy",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=32",
+      "name": "Singles - Hardcore",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=22",
+      "name": "Singles - Hardstyle",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=21",
+      "name": "Singles - House",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=23",
+      "name": "Singles - Other",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=20",
+      "name": "Singles - Techno",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=19",
+      "name": "Singles - Trance",
+      "enabled": false
+    },
+    {
+      "appendQueryString": "&cat[]=6",
+      "name": "TranceTraffic Packs",
+      "enabled": false
+    }
+  ],
+  "torrentTagSelectors": [
+    {
+      "name": "Free",
+      "selector": "span:contains('FREELEECH!')"
+    }
+  ],
   "levelRequirements": [
     {
       "level": 1,
@@ -80,9 +323,6 @@
             "img[alt='Torrents seeding'] + span"
           ]
         },
-        "seedingSize": {
-          "value": -1
-        },
         "bonus": {
           "value": "N/A"
         },
@@ -92,11 +332,20 @@
       }
     },
     "userExtendInfo": {
-      "page": "/userdetails.php?id=$user.id$",
+      "page": "/userdetails.php?id=$user.id$&sdlist=1",
       "fields": {
         "levelName": {
           "selector": [
             "td.rowhead:contains('Class') + td"
+          ]
+        },
+        "seedingSize": {
+          "selector": [
+            "td:has(a[href*='sdlist=0']) + td > table tr:not(:eq(0))"
+          ],
+          "filters": [
+            "jQuery.map(query.find('td:eq(2)'), (item)=>{return $(item).text();})",
+            "_self.getTotalSize(query)"
           ]
         },
         "joinTime": {
@@ -114,24 +363,44 @@
       "page": "/details.php",
       "fields": {
         "downloadURL": {
-          "selector": ["td.heading:contains('Download') + td > a"],
-          "filters": ["query.attr('href')"]
+          "selector": [
+            "td.heading:contains('Download') + td > a"
+          ],
+          "filters": [
+            "query.attr('href')"
+          ]
         },
         "size": {
-          "selector": ["td.heading:contains('Size') + td"],
-          "filters": ["parseFloat(query.text().match(/\\(([^)]+)\\)/)[1].replace(/,/g, ''))"]
+          "selector": [
+            "td.heading:contains('Size') + td"
+          ],
+          "filters": [
+            "parseFloat(query.text().match(/\\(([^)]+)\\)/)[1].replace(/,/g, ''))"
+          ]
         },
         "sayThanksButton": {
-          "selector": ["#thanks-checkbox"],
-          "filters": ["query"]
+          "selector": [
+            "#thanks-checkbox"
+          ],
+          "filters": [
+            "query"
+          ]
         },
         "downloadURLs": {
-          "selector": ["a[href*='download.php']"],
-          "filters": ["query.toArray()"]
+          "selector": [
+            "a[href*='download.php']"
+          ],
+          "filters": [
+            "query.toArray()"
+          ]
         },
         "confirmSize": {
-          "selector": ["table[border='1'] tr td:not(.colhead):nth-child(7)"],
-          "filters": ["query"]
+          "selector": [
+            "table[border='1'] tr td:not(.colhead):nth-child(7)"
+          ],
+          "filters": [
+            "query"
+          ]
         }
       }
     }

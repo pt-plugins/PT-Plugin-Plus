@@ -1,0 +1,221 @@
+{
+  "name": "RuTracker.org",
+  "timezoneOffset": "+0800",
+  "description": "RuTracker.org is a Semi-Private Russian torrent site with a thriving file-sharing community",
+  "url": "https://rutracker.org/",
+  "icon": "https://rutracker.org/favicon.ico",
+  "tags": [
+    "综合"
+  ],
+  "schema": "Common",
+  "cdn": [
+    "https://rutracker.org/",
+    "https://rutracker.net/",
+    "https://rutracker.nl/"
+  ],
+  "host": "rutracker.org",
+  "collaborator": [
+    "KyokoMiki"
+  ],
+  "plugins": [
+    {
+      "name": "种子详情页面",
+      "pages": [
+        "/forum/viewtopic.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/Common/details.js"
+      ]
+    },
+    {
+      "name": "种子列表",
+      "pages": [
+        "/forum/tracker.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/Common/torrents.js"
+      ]
+    }
+  ],
+  "searchEntryConfig": {
+    "skipIMDbId": true,
+    "page": "/forum/tracker.php?nm=$key$",
+    "loggedRegex": "",
+    "resultType": "html",
+    "resultSelector": "table#tor-tbl",
+    "dataRowSelector": " > tbody > tr:has(a.tr-dl)",
+    "firstDataRowIndex": 0,
+    "fieldIndex": {
+      "category": 2,
+      "title": 3,
+      "link": 3,
+      "url": 5,
+      "time": 9,
+      "size": 5,
+      "author": 4,
+      "seeders": 6,
+      "leechers": 7,
+      "completed": 8
+    },
+    "fieldSelector": {
+      "link": {
+        "selector": [
+          "div.t-title > a.tLink"
+        ],
+        "filters": [
+          "'forum/' + query.attr('href')"
+        ]
+      },
+      "url": {
+        "selector": [
+          "a.tr-dl"
+        ],
+        "filters": [
+          "'forum/' + query.attr('href')"
+        ]
+      },
+      "time": {
+        "selector": [
+          ""
+        ],
+        "filters": [
+          "query.attr('data-ts_text')"
+        ]
+      },
+      "size": {
+        "selector": [
+          ""
+        ],
+        "filters": [
+          "query.text().replace('↓', '')"
+        ]
+      },
+      "completed": {
+        "selector": [
+          ""
+        ],
+        "filters": [
+          "query.replace(/,/g,'')"
+        ]
+      }
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "全部",
+      "enabled": true
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/forum/index.php",
+      "fields": {
+        "id": {
+          "selector": [
+            "a#logged-in-username"
+          ],
+          "attribute": "href",
+          "filters": [
+            "query ? query.getQueryString('u'):''"
+          ]
+        },
+        "name": {
+          "selector": [
+            "a#logged-in-username"
+          ]
+        },
+        "isLogged": {
+          "selector": [
+            "a#logged-in-username"
+          ],
+          "filters": [
+            "query.length>0"
+          ]
+        },
+        "bonus": {
+          "value": "N/A"
+        },
+        "bonusPerHour": {
+          "value": "N/A"
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/forum/profile.php?mode=viewprofile&u=$user.id$",
+      "fields": {
+        "levelName": {
+          "selector": [
+            "td#role"
+          ]
+        },
+        "joinTime": {
+          "selector": [
+            "th:contains('Зарегистрирован:') + td"
+          ],
+          "filters": [
+            "query.text().trim()",
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        },
+        "uploaded": {
+          "selector": [
+            "td#uploaded_total"
+          ],
+          "filters": [
+            "query.text().trim().sizeToNumber()"
+          ]
+        },
+        "downloaded": {
+          "value": 0
+        },
+        "seeding": {
+          "selector": [
+            "h1.pagetitle.tCenter > b"
+          ]
+        },
+        "uploads": {
+          "value": 0
+        }
+      }
+    },
+    "common": {
+      "page": "/forum/viewtopic.php",
+      "fields": {
+        "downloadURL": {
+          "selector": [
+            "a.dl-link[href*='dl.php?t=']"
+          ],
+          "filters": [
+            "'forum/' + query.attr('href')"
+          ]
+        },
+        "size": {
+          "selector": [
+            "span#tor-size-humn"
+          ],
+          "filters": [
+            "query.attr('title')"
+          ]
+        },
+        "downloadURLs": {
+          "selector": [
+            "a.tr-dl[href*='dl.php?t=']"
+          ],
+          "filters": [
+            "query.clone().attr('href', function(index, oldValue) { return 'forum/' + oldValue; }).toArray()"
+          ]
+        },
+        "confirmSize": {
+          "selector": [
+            "td.tor-size > a.tr-dl"
+          ],
+          "filters": [
+            "query.text().replace('↓', '')"
+          ]
+        }
+      }
+    }
+  }
+}

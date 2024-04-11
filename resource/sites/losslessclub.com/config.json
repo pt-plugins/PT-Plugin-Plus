@@ -1,60 +1,209 @@
 {
   "name": "LosslessClub",
   "timezoneOffset": "+0000",
-  "description": "LC",
+  "description": "LosslessClub is a RUSSIAN Private site for High Quality Music",
   "url": "https://losslessclub.com/",
   "icon": "https://losslessclub.com/favicon.ico",
-  "tags": ["音乐"],
+  "tags": [
+    "音乐"
+  ],
   "schema": "Common",
   "host": "losslessclub.com",
-  "plugins": [{
-    "name": "种子详情页面",
-    "pages": ["/details.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/details.js"]
-  }, {
-    "name": "种子列表",
-    "pages": ["/browse.php"],
-    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js"]
-  }],
+  "collaborator": [
+    "KyokoMiki"
+  ],
+  "plugins": [
+    {
+      "name": "种子详情页面",
+      "pages": [
+        "/details.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/Common/details.js"
+      ]
+    },
+    {
+      "name": "种子列表",
+      "pages": [
+        "/browse.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/Common/torrents.js"
+      ]
+    }
+  ],
+  "searchEntryConfig": {
+    "skipIMDbId": true,
+    "page": "/browse.php?search=$key$&t=all&act=all",
+    "loggedRegex": "logout\\.php",
+    "resultType": "html",
+    "resultSelector": "div#releases-table table.embedded",
+    "firstDataRowIndex": 2,
+    "fieldIndex": {
+      "category": 0,
+      "title": 2,
+      "link": 2,
+      "url": 2,
+      "comments": 3,
+      "time": 6,
+      "size": 4,
+      "author": 6,
+      "seeders": 5,
+      "leechers": 5,
+      "completed": 5
+    },
+    "fieldSelector": {
+      "category":{
+        "selector": [
+          "img"
+        ],
+        "filters": [
+          "query.attr('title')"
+        ]
+      },
+      "title": {
+        "selector": [
+          "a.browselink"
+        ]
+      },
+      "link": {
+        "selector": [
+          "a.browselink"
+        ],
+        "filters": [
+          "query.attr('href')"
+        ]
+      },
+      "url": {
+        "selector": [
+          "a[href*='download.php?id=']"
+        ],
+        "filters": [
+          "query.attr('href')"
+        ]
+      },
+      "time": {
+        "selector": [
+          ""
+        ],
+        "filters": [
+          "query.contents().eq(0).text().trim()",
+          "query.replace(/^(\\d{1,2})\\/(\\d{2})\\/(\\d{2})$/, (_, d, m, y) => `${m}/${d.padStart(2,'0')}/${y}`)"
+        ]
+      },
+      "author": {
+        "selector": [
+          ""
+        ],
+        "filters": [
+          "query.contents().eq(3).text().trim()"
+        ]
+      },
+      "seeders": {
+        "selector": [
+          "a[href*='list=peers#seeders']"
+        ],
+        "filters": [
+          "query.length > 0 ? query.text().trim():0"
+        ]
+      },
+      "leechers": {
+        "selector": [
+          "a[href*='list=peers#leechers']"
+        ],
+        "filters": [
+          "query.length > 0 ? query.text().trim():0"
+        ]
+      },
+      "completed": {
+        "selector": [
+          "span.green"
+        ],
+        "filters": [
+          "query.length > 0 ? query.text().trim():0"
+        ]
+      }
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "全部",
+      "enabled": true
+    }
+  ],
+  "torrentTagSelectors": [
+    {
+      "name": "Free",
+      "selector": "img[title='Golden torrent']"
+    }
+  ],
   "selectors": {
     "userBaseInfo": {
       "page": "/index.php",
       "fields": {
         "id": {
-          "selector": ["span.bar_user_welcome + b > a[href*='userdetails.php']"],
+          "selector": [
+            "span.bar_user_welcome + b > a[href*='userdetails.php']"
+          ],
           "attribute": "href",
-          "filters": ["query ? query.getQueryString('id'):''"]
+          "filters": [
+            "query ? query.getQueryString('id'):''"
+          ]
         },
         "name": {
-          "selector": ["span.bar_user_welcome + b > a[href*='userdetails.php'] > span"]
+          "selector": [
+            "span.bar_user_welcome + b > a[href*='userdetails.php'] > span"
+          ]
         },
         "isLogged": {
-          "selector": ["a[href*='logout.php']"],
-          "filters": ["query.length>0"]
+          "selector": [
+            "a[href*='logout.php']"
+          ],
+          "filters": [
+            "query.length>0"
+          ]
         },
         "uploaded": {
-          "selector": ["td.bottom.bar_user:first > span.smallfont"],
-          "filters": ["query.contents().eq(18).text().trim().sizeToNumber()"]
+          "selector": [
+            "td.bottom.bar_user:first > span.smallfont"
+          ],
+          "filters": [
+            "query.contents().eq(18).text().trim().sizeToNumber()"
+          ]
         },
         "downloaded": {
-          "selector": ["td.bottom.bar_user:first > span.smallfont"],
-          "filters": ["query.contents().eq(20).text().replace('|','').trim().sizeToNumber()"]
+          "selector": [
+            "td.bottom.bar_user:first > span.smallfont"
+          ],
+          "filters": [
+            "query.contents().eq(20).text().replace('|','').trim().sizeToNumber()"
+          ]
         },
         "ratio": {
-          "selector": ["span.bar_user_ratio"],
-          "filters": ["query.next().text()"]
+          "selector": [
+            "span.bar_user_ratio"
+          ],
+          "filters": [
+            "query.next().text()"
+          ]
         },
         "seeding": {
-          "selector": ["td.bottom.bar_user:first > span.smallfont"],
+          "selector": [
+            "td.bottom.bar_user:first > span.smallfont"
+          ],
           "filters": [
             "query.contents().eq(24).text().trim()"
           ]
         },
         "bonus": {
-          "selector": ["td.bottom.bar_user a[href*='mybonus.php']"]
+          "selector": [
+            "td.bottom.bar_user a[href*='mybonus.php']"
+          ]
         },
         "bonusPerHour": {
-          "value":"N/A"
+          "value": "N/A"
         }
       }
     },
@@ -62,12 +211,17 @@
       "page": "/userdetails.php?id=$user.id$",
       "fields": {
         "levelName": {
-          "selector": ["td.rowhead:contains('Класс') + td"]
+          "selector": [
+            "td.rowhead:contains('Класс') + td"
+          ]
         },
         "joinTime": {
-          "selector": ["td.rowhead:contains('Зарегистрирован') + td"],
+          "selector": [
+            "td.rowhead:contains('Зарегистрирован') + td"
+          ],
           "filters": [
-            "query.text().split(' (')[0]", "dateTime(query).isValid()?dateTime(query).valueOf():query"
+            "query.text().split(' (')[0]",
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
           ]
         }
       }
@@ -75,34 +229,59 @@
     "userSeedingTorrents": {
       "page": "/userdetails.i.php?ajax=&id=$user.id$&do=torrents-seeding",
       "fields": {
-          "seedingSize": {
-            "selector": ["tr:not(:eq(0))"],
-            "filters": ["jQuery.map(query.find('td:eq(2)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
-          }
+        "seedingSize": {
+          "selector": [
+            "tr:not(:eq(0))"
+          ],
+          "filters": [
+            "jQuery.map(query.find('td:eq(2)'), (item)=>{return $(item).text();})",
+            "_self.getTotalSize(query)"
+          ]
+        }
       }
     },
     "common": {
       "page": "/details.php",
       "fields": {
         "downloadURL": {
-          "selector": ["a[alt='Download'][href*='download.php?id=']"],
-          "filters": ["query.attr('href')"]
+          "selector": [
+            "a[alt='Download'][href*='download.php?id=']"
+          ],
+          "filters": [
+            "query.attr('href')"
+          ]
         },
         "size": {
-          "selector": ["td.heading:contains('Size') + td"],
-          "filters": ["parseFloat(query.text().match(/\\(([^)]+)\\)/)[1].replace(/,/g, ''))"]
+          "selector": [
+            "td.heading:contains('Size') + td"
+          ],
+          "filters": [
+            "parseFloat(query.text().match(/\\(([^)]+)\\)/)[1].replace(/,/g, ''))"
+          ]
         },
         "sayThanksButton": {
-          "selector": ["input[value='Thanks']"],
-          "filters": ["query"]
+          "selector": [
+            "input[value='Thanks']"
+          ],
+          "filters": [
+            "query"
+          ]
         },
         "downloadURLs": {
-          "selector": ["a:has(img[src='pic/download.gif'])"],
-          "filters": ["query.toArray()"]
+          "selector": [
+            "a:has(img[src='pic/download.gif'])"
+          ],
+          "filters": [
+            "query.toArray()"
+          ]
         },
         "confirmSize": {
-          "selector": ["tr td:not(.colhead, .pager):nth-child(5)"],
-          "filters": ["query"]
+          "selector": [
+            "tr td:not(.colhead, .pager):nth-child(5)"
+          ],
+          "filters": [
+            "query"
+          ]
         }
       }
     }
