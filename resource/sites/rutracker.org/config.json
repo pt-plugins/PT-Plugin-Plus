@@ -204,7 +204,7 @@
             "a.tr-dl[href*='dl.php?t=']"
           ],
           "filters": [
-            "query.toArray()"
+            "query.clone().attr('href', function(index, oldValue) { return 'forum/' + oldValue; }).toArray()"
           ]
         },
         "confirmSize": {
