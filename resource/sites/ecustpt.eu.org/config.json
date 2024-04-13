@@ -4,8 +4,11 @@
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "host": "ecustpt.eu.org",
-  "url": "https://public.ecustpt.eu.org/",
-  "icon": "https://public.ecustpt.eu.org/favicon.ico",
+  "url": "https://pt.ecust.pp.ua/",
+  "icon": "https://pt.ecust.pp.ua/favicon.ico",
+  "formerHosts": [
+    "public.ecustpt.eu.org"
+  ],
   "tags": [
     "教育网",
     "影视",
@@ -40,7 +43,7 @@
       "interval": "15",
       "downloaded": "30GB",
       "ratio": "2.05",
-      "seedingPoints": "3000",
+      "seedingPoints": "30000",
       "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
