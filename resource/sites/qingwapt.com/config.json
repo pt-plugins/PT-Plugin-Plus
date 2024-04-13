@@ -3,9 +3,9 @@
   "description": "青蛙",
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
-  "host": "www.qingwapt.com",
-  "url": "https://www.qingwapt.com/",
-  "icon": "https://www.qingwapt.com/favicon.ico",
+  "host": "qingwapt.com",
+  "url": "https://qingwapt.com/",
+  "icon": "https://qingwapt.com/favicon.ico",
   "ver": "1.0.0",
   "tags": [
     "综合",
@@ -17,6 +17,9 @@
   "cdn": [
     "https://qingwapt.com",
     "https://www.qingwapt.com"
+  ],
+  "formerHosts": [
+    "new.qingwa.pro"
   ],
   "levelRequirements": [
     {
