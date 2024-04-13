@@ -4,8 +4,11 @@
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "host": "ecustpt.eu.org",
-  "url": "https://public.ecustpt.eu.org/",
-  "icon": "https://public.ecustpt.eu.org/favicon.ico",
+  "url": "https://pt.ecust.pp.ua/",
+  "icon": "https://pt.ecust.pp.ua/favicon.ico",
+  "formerHosts": [
+    "public.ecustpt.eu.org"
+  ],
   "tags": [
     "教育网",
     "影视",
