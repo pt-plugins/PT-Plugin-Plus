@@ -3,89 +3,87 @@
   "description": "青蛙",
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
-  "host": "new.qingwa.pro",
-  "url": "https://new.qingwa.pro/",
-  "icon": "https://new.qingwa.pro/favicon.ico",
-  "ver": "0.0.1",
+  "host": "qingwapt.com",
+  "url": "https://qingwapt.com/",
+  "icon": "https://qingwapt.com/favicon.ico",
+  "ver": "1.0.0",
   "tags": [
     "综合",
     "影视"
   ],
   "collaborator": [
-    "EasonWong"
+    "Eason Wong"
+  ],
+  "cdn": [
+    "https://qingwapt.com",
+    "https://www.qingwapt.com"
+  ],
+  "formerHosts": [
+    "new.qingwa.pro"
   ],
   "levelRequirements": [
     {
       "level": "1",
-      "name": "Power User",
+      "name": "幼蛙",
       "interval": "4",
-      "downloaded": "50GB",
-      "ratio": "1.05",
+      "downloaded": "150GiB",
       "seedingPoints": "40000",
-      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以请求续种；可以发送邀请；可以查看排行榜；可以删除自己上传的字幕。"
+      "ratio": "1.0-1.5",
+      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
       "level": "2",
-      "name": "Elite User",
+      "name": "成蛙",
       "interval": "8",
-      "downloaded": "120GB",
-      "ratio": "1.55",
+      "downloaded": "400GiB",
       "seedingPoints": "80000",
-      "privilege": "Elite User及以上用户封存账号后不会被删除。"
+      "ratio": "1.0-1.5",
+      "privilege": "成蛙及以上用户封存账号后不会被删除。"
     },
     {
       "level": "3",
-      "name": "Crazy User",
+      "name": "妙蛙种子",
       "interval": "15",
-      "downloaded": "300GB",
-      "ratio": "2.05",
-      "seedingPoints": "150000",
+      "downloaded": "1024GiB",
+      "seedingPoints": "160000",
+      "ratio": "1.0-1.5",
       "privilege": "得到两个邀请名额; 可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
       "level": "4",
-      "name": "Insane User",
+      "name": "妙蛙草",
       "interval": "25",
-      "downloaded": "500GB",
-      "ratio": "2.55",
-      "seedingPoints": "250000",
+      "downloaded": "2048GiB",
+      "seedingPoints": "320000",
+      "ratio": "1.0-1.5",
       "privilege": "可以查看普通日志。"
     },
     {
       "level": "5",
-      "name": "Veteran User",
+      "name": "妙蛙花",
       "interval": "40",
-      "downloaded": "750GB",
-      "ratio": "3.05",
-      "seedingPoints": "400000",
-      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史；Veteran User及以上用户会永远保留账号。"
+      "downloaded": "4096GiB",
+      "seedingPoints": "640000",
+      "ratio": "1.0-1.5",
+      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史；妙蛙花及以上用户会永远保留账号。"
     },
     {
       "level": "6",
-      "name": "Extreme User",
+      "name": "蛙蛙大王",
       "interval": "60",
-      "downloaded": "1TB",
-      "ratio": "3.55",
-      "seedingPoints": "600000",
-      "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
+      "downloaded": "8192GiB",
+      "seedingPoints": "1280000",
+      "ratio": "1.0-1.5",
+      "privilege": "可以更新过期的外部信息。"
     },
     {
       "level": "7",
-      "name": "Ultimate User",
+      "name": "蛙蛙皇",
       "interval": "80",
-      "downloaded": "1.5TB",
-      "ratio": "4.05",
-      "seedingPoints": "800000",
+      "downloaded": "16384GiB",
+      "seedingPoints": "2560000",
+      "ratio": "1.0-1.5",
       "privilege": "得到五个邀请名额。"
-    },
-    {
-      "level": "8",
-      "name": "Nexus Master",
-      "interval": "100",
-      "downloaded": "3TB",
-      "ratio": "4.55",
-      "seedingPoints": "1000000",
-      "privilege": "得到十个邀请名额。"
     }
   ],
   "securityKeyFields": [
@@ -169,6 +167,7 @@
     },
     "userExtendInfo": {
       "page": "/userdetails.php?id=$user.id$",
+      "merge": true,
       "fields": {
         "uploaded": {
           "selector": [
@@ -206,14 +205,11 @@
         },
         "bonus": {
           "selector": [
-            "td.rowhead:contains('魔力') + td",
-            "td.rowhead:contains('Karma'):contains('Points') + td",
-            "td.rowhead:contains('麦粒') + td",
-            "td.rowfollow:contains('魔力值')",
-            "td.rowhead:contains('bonus') + td"
+            "td.rowhead:contains('蝌蚪') + td",
+            "td.rowhead:contains('Bonus') + td"
           ],
           "filters": [
-            "query.is(\":contains('魔力值:')\")||query.is(\":contains('Bonus Points:')\")?query.text().replace(/,/g,'').match(/(?:魔力值|Bonus Points).+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')",
+            "query.text().replace(/,/g,'')",
             "parseFloat(query)"
           ]
         },
@@ -233,14 +229,20 @@
             "query ? parseFloat(query.match(/[\\d.]+/)[0]) : null"
           ]
         },
-        "joinTime": {
+        "seeding": {
           "selector": [
-            "td.rowhead:contains('加入日期')",
-            "td.rowhead:contains('Join'):contains('date')"
+            "a[href*='getusertorrentlist.php'][href*='seeding']"
           ],
           "filters": [
-            "query.next().text().split(' (')[0].trim()",
-            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+            "query ? parseInt(query.text().replace(/,/g,'')) : 0"
+          ]
+        },
+        "seedingSize": {
+          "selector": [
+            "td.rowhead:contains('做种大小') + td, td.rowhead:contains('Seeding Size') + td, td.rowhead:contains('做種大小') + td"
+          ],
+          "filters": [
+            "query.text().trim().sizeToNumber()"
           ]
         }
       }
