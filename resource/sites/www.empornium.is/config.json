@@ -154,6 +154,10 @@
         "seedingSize": {
           "selector": ["ul.stats.nobullet > li:contains('Seeding Size:')"],
           "filters": ["query.text().replace('Seeding Size: ', '').replace(/,/g,'')", "query.sizeToNumber()"]
+        },
+        "uploads": {
+          "selector": ["div:contains('Community') + div.box > ul.stats.nobullet > li:contains('Uploaded:')"],
+          "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=1)?parseInt(query[1]):null"]
         }
       }
     },
