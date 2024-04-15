@@ -115,6 +115,9 @@
         "seedingSize": {
           "selector": ["#seeding_size"],
           "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
+        },
+        "uploads": {
+          "selector": ["span.profile_link:contains('Uploads') + span.profile_link_count"]
         }
       }
     }
