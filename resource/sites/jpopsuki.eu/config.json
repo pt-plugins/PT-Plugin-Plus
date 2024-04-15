@@ -122,11 +122,11 @@
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         },
         "uploads": {
-          "selector": "div.box:eq(5) > div.head + ul.stats > li:eq(3)",
+          "selector": ["div:contains('Community') + ul.stats > li:contains('Uploaded:')", "div:contains('コミュニティ') + ul.stats > li:contains('アップロード数')"],
           "filters": ["query.text().match(/[\\d.]+/)", " query ? query[0] : null"]
         },
         "snatches": {
-          "selector": "div.box:eq(5) > div.head + ul.stats > li:eq(7)",
+          "selector": ["div:contains('Community') + ul.stats > li:contains('Snatched:')", "div:contains('コミュニティ') + ul.stats > li:contains('入手数')"],
           "filters": ["query.text().match(/[\\d.]+/)", " query ? query[0] : null"]
         }
       }
