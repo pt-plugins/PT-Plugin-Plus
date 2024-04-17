@@ -4,7 +4,7 @@
   "cdn": ["https://gay-torrents.se/", "https://gay-area.org/"],
   "icon": "https://gay-torrents.org/favicon.ico",
   "tags": ["影视", "成人", "综合"],
-  "schema": "GTorg",
+  "schema": "Common",
   "host": "gay-torrents.org",
   "collaborator": "davidxuang",
   "levelRequirements": [
@@ -27,8 +27,63 @@
     "page": "/torrents_beta.php",
     "queryString": "search=$key$&active=0&options=1",
     "resultType": "html",
-    "parseScriptFile": "getSearchResult.js",
-    "resultSelector": ".torrentsContainer"
+    "loggedRegex": "Forum",
+    "resultSelector": ".torrentsContainer",
+    "dataRowSelector": "> div.torrent",
+    "firstDataRowIndex": 0,
+    "dataCellSelector": "> div",
+    "fieldIndex": {
+      "title": 0,
+      "url": 1,
+      "link": 0,
+      "size": 1,
+      "time": 0,
+      "author": 0,
+      "seeders": 1,
+      "leechers": 1,
+      "completed": 1,
+      "comments": 1,
+      "category": 0
+    },
+    "fieldSelector": {
+      "title": {
+        "selector": ".torrent_link"
+      },
+      "url": {
+        "selector": ".downloadLink",
+        "filters": ["`${query.attr('href')}&secure=1`"]
+      },
+      "link": {
+        "selector": ".torrent_link",
+        "attribute": "href"
+      },
+      "size": {
+        "selector": ".size"
+      },
+      "time": {
+        "selector": ".date",
+        "filters": ["query.text().replace(\/on\\s*(\\d{2}:\\d{2}(?::\\d{2})?)\\s*(\\d{1,2})-(\\w{3,4})-(\\d{4,})\/, '$4 $3 $2 $1')"]
+      },
+      "author": {
+        "selector": ".uploader > span"
+      },
+      "seeders": {
+        "selector": ".downloadPeers > div:first-child > a"
+      },
+      "leechers": {
+        "selector": ".downloadPeers > div:last-child > a"
+      },
+      "completed": {
+        "selector": ".downloadTimes"
+      },
+      "comments": {
+        "selector": ".downloadInfo > a:first-of-type",
+        "filters": ["query.text().split(' ')[0] || 0"]
+      },
+      "category": {
+        "selector": ".categoryNew > a"
+      }
+    }
   },
   "searchEntry": [
     {
@@ -127,37 +182,37 @@
       "entry": "*",
       "result": "&category[]=$id$",
       "category": [
-        { "id": "15", "name": "Amateur" },
-        { "id": "16", "name": "Anal" },
-        { "id": "42", "name": "Animation" },
-        { "id": "18", "name": "Asian" },
-        { "id": "19", "name": "Bareback" },
-        { "id": "20", "name": "Bears" },
-        { "id": "22", "name": "Bisexual" },
-        { "id": "21", "name": "Black" },
-        { "id": "23", "name": "Chubs" },
-        { "id": "25", "name": "Cross Generation" },
-        { "id": "51", "name": "Doctor/Medical" },
-        { "id": "71", "name": "Fan Sites" },
-        { "id": "27", "name": "Fetish" },
-        { "id": "28", "name": "Group Sex" },
-        { "id": "30", "name": "Hunks" },
-        { "id": "52", "name": "Interracial" },
-        { "id": "68", "name": "Homo Erotic" },
-        { "id": "32", "name": "Latino" },
-        { "id": "50", "name": "Middle Eastern" },
-        { "id": "33", "name": "Military" },
-        { "id": "34", "name": "Oral-Sex" },
-        { "id": "40", "name": "Other" },
-        { "id": "35", "name": "Solo" },
-        { "id": "36", "name": "Trans" },
-        { "id": "37", "name": "Twinks" },
-        { "id": "38", "name": "Vintage" },
-        { "id": "39", "name": "Wrestling" },
-        { "id": "17", "name": "Applications" },
-        { "id": "31", "name": "Images" },
-        { "id": "49", "name": "Books" },
-        { "id": "41", "name": "Non-Porn" }
+        { "id": 15, "name": "Amateur" },
+        { "id": 16, "name": "Anal" },
+        { "id": 42, "name": "Animation" },
+        { "id": 18, "name": "Asian" },
+        { "id": 19, "name": "Bareback" },
+        { "id": 20, "name": "Bears" },
+        { "id": 22, "name": "Bisexual" },
+        { "id": 21, "name": "Black" },
+        { "id": 23, "name": "Chubs" },
+        { "id": 25, "name": "Cross Generation" },
+        { "id": 51, "name": "Doctor/Medical" },
+        { "id": 71, "name": "Fan Sites" },
+        { "id": 27, "name": "Fetish" },
+        { "id": 28, "name": "Group Sex" },
+        { "id": 30, "name": "Hunks" },
+        { "id": 52, "name": "Interracial" },
+        { "id": 68, "name": "Homo Erotic" },
+        { "id": 32, "name": "Latino" },
+        { "id": 50, "name": "Middle Eastern" },
+        { "id": 33, "name": "Military" },
+        { "id": 34, "name": "Oral-Sex" },
+        { "id": 40, "name": "Other" },
+        { "id": 35, "name": "Solo" },
+        { "id": 36, "name": "Trans" },
+        { "id": 37, "name": "Twinks" },
+        { "id": 38, "name": "Vintage" },
+        { "id": 39, "name": "Wrestling" },
+        { "id": 17, "name": "Applications" },
+        { "id": 31, "name": "Images" },
+        { "id": 49, "name": "Books" },
+        { "id": 41, "name": "Non-Porn" }
       ]
     }
   ]
