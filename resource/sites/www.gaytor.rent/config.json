@@ -7,7 +7,7 @@
   "tags": ["影视", "成人", "综合"],
   "schema": "GTru",
   "host": "www.gaytor.rent",
-  "collaborator": "davidxuang",
+  "collaborator": ["davidxuang", "haowenwu"],
   "levelRequirements": [
     {
       "level": 1,
