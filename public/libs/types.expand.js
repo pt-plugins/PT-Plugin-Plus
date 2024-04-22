@@ -39,3 +39,9 @@ String.prototype.sizeToNumber = function() {
   }
   return 0;
 };
+/**
+ * @return {number}
+ */
+String.prototype.toNumber = function() {
+  return parseFloat(this)
+};
