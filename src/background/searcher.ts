@@ -267,7 +267,7 @@ export class Searcher {
                     reject(result);
                     return;
                   });
-                } catch (error: any) {
+                } catch (error) {
                   skipSearch = true;
                   result.type = EDataResultType.unknown;
                   reject(result);
@@ -287,7 +287,7 @@ export class Searcher {
               if (area.parseScript) {
                 try {
                   key = eval(area.parseScript);
-                } catch (error: any) { }
+                } catch (error) { }
               }
 
               return true;
@@ -422,7 +422,7 @@ export class Searcher {
                   }
                 }
               }
-            } catch (error: any) {
+            } catch (error) {
               this.service.writeErrorLog(error);
               this.service.debug(error);
             }
@@ -658,7 +658,7 @@ export class Searcher {
               );
             }
           }
-        } catch (error: any) {
+        } catch (error) {
           this.service.writeErrorLog(error);
           this.service.debug(error);
         }
@@ -714,7 +714,7 @@ export class Searcher {
                   page = $(doc).find("body");
                   break;
               }
-            } catch (error: any) {
+            } catch (error) {
               logId = this.service.logger.add({
                 module: EModule.background,
                 event:
@@ -792,7 +792,7 @@ export class Searcher {
               } else {
                 resolve(PPF.clone(options.results));
               }
-            } catch (error: any) {
+            } catch (error) {
               console.error(error);
               logId = this.service.logger.add({
                 module: EModule.background,
@@ -940,7 +940,7 @@ export class Searcher {
               try {
                 queue.abort();
                 resolve();
-              } catch (error: any) {
+              } catch (error) {
                 this.service.logger.add({
                   module: EModule.background,
                   event: "searcher.abortSearch.error",

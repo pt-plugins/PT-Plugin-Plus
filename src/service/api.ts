@@ -26,7 +26,7 @@ try {
   }
 
   isDebugMode && console.log("is extension mode.");
-} catch (error: any) {
+} catch (error) {
   isExtensionMode = false;
   isDebugMode && console.log("is not extension mode.");
 }
@@ -183,7 +183,7 @@ export const APP = {
                     }
                   });
               }
-            } catch (error: any) {
+            } catch (error) {
               reject(error);
             }
           }

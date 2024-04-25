@@ -186,7 +186,7 @@ export class Favicon {
                   } else {
                     resolve(this.set(url, NOIMAGE));
                   }
-                } catch (error: any) {
+                } catch (error) {
                   console.log(error);
                   this.debug(error);
                   resolve(this.set(url, NOIMAGE));

@@ -65,7 +65,7 @@ export default class Extension {
               }
             }
           );
-        } catch (error: any) {
+        } catch (error) {
           // @see https://groups.google.com/a/chromium.org/forum/#!topic/chromium-extensions/QLC4gNlYjbA
           if (
             /Invocation of form runtime\.connect|doesn't match definition runtime\.connect|Extension context invalidated/.test(

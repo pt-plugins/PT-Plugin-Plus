@@ -19,7 +19,7 @@ export class SyncStorage {
         } else {
           resolve();
         }
-      } catch (error: any) {
+      } catch (error) {
         reject(error);
       }
     });
@@ -141,7 +141,7 @@ export class SyncStorage {
             onError("参数不存在");
             return;
           }
-        } catch (error: any) {
+        } catch (error) {
           onError(error);
           return;
         }
@@ -160,7 +160,7 @@ export class SyncStorage {
           this._get(key, false, index, onSuccess, onError);
         }
       });
-    } catch (error: any) {
+    } catch (error) {
       onError(error);
     }
   }
@@ -185,7 +185,7 @@ export class SyncStorage {
               reject(error);
             }
           );
-        } catch (error: any) {
+        } catch (error) {
           reject(error);
         }
       } else {
@@ -213,7 +213,7 @@ export class SyncStorage {
               reject(error);
             }
           );
-        } catch (error: any) {
+        } catch (error) {
           reject(error);
         }
       } else {

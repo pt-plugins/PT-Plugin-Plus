@@ -128,7 +128,7 @@ export class BackupFileParser {
           .then((blob: any) => {
             resolve(blob);
           });
-      } catch (error: any) {
+      } catch (error) {
         reject(error);
       }
     });
@@ -282,7 +282,7 @@ export class BackupFileParser {
       if (md5(keys.join("")) === checkInfo.hash) {
         return true;
       }
-    } catch (error: any) {}
+    } catch (error) {}
 
     return false;
   }
@@ -310,7 +310,7 @@ export class BackupFileParser {
     }
     try {
       return JSON.parse(this.decrypt(data, secretKey));
-    } catch (error: any) {
+    } catch (error) {
       return null;
     }
   }

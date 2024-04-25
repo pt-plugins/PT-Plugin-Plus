@@ -100,7 +100,7 @@ export class InfoParser {
         }
 
         selectorIndex++;
-      } catch (error: any) {
+      } catch (error) {
         this.debug(
           "InfoParser.getFieldData.Error",
           selector,
@@ -137,7 +137,7 @@ export class InfoParser {
           filters.every((filter: string) => {
             try {
               query = eval(filter);
-            } catch (error: any) {
+            } catch (error) {
               this.debug(
                 "InfoParser.filter.Error",
                 filter,
