@@ -71,7 +71,7 @@ export class PageParser {
             }
           }
         }
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
       }
     }
@@ -152,7 +152,7 @@ export class PageParser {
             } else {
               content = JSON.parse(result);
             }
-          } catch (error) {
+          } catch (error: any) {
             reject(error);
             return;
           }
@@ -163,7 +163,7 @@ export class PageParser {
               this.resultData = results;
               this.setCache();
               resolve(results);
-            } catch (error) {
+            } catch (error: any) {
               reject(error);
             }
           }

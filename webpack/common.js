@@ -16,11 +16,10 @@ module.exports = {
     splitChunks: {
       chunks: "all",
       minSize: 30000,
-      maxSize: 0,
       minChunks: 1,
       maxAsyncRequests: 5,
       maxInitialRequests: 3,
-      name: true,
+      name: 'main',
       cacheGroups: {
         // 第三方库
         vendors: {
@@ -44,7 +43,7 @@ module.exports = {
       new TerserPlugin({
         // 防止因编码问题导致Chrome无法加载插件
         terserOptions: {
-          output: { ascii_only: true }
+          output: {ascii_only: true}
         }
       })
     ]
@@ -53,7 +52,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
+        use: "esbuild-loader",
         exclude: /node_modules/
       },
       {
@@ -80,10 +79,16 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js"],
     alias: {
       "@": resolve("src")
+    },
+    fallback: {
+      "path": require.resolve("path-browserify"),
+      "http": require.resolve("stream-http"),
+      "https": require.resolve("https-browserify"),
+      "util": require.resolve("util/"),
     }
   },
   // 防止一些模块中使用了fs时无法编译的错误
   node: {
-    fs: "empty"
+    // fs: "empty"
   }
 };

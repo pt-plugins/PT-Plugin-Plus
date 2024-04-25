@@ -1,4 +1,4 @@
-const merge = require("webpack-merge");
+const {merge} = require("webpack-merge");
 const common = require("./common.js");
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -19,12 +19,16 @@ module.exports = merge(common, {
   devtool: "inline-source-map",
   mode: "development",
   plugins: [
-    new CopyWebpackPlugin([
-      {
-        from: resolve("/resource/"),
-        to: path.join(resolve("/dist/"), "resource"),
-        ignore: [".DS_Store", "README.md", "testSearchData.json"]
-      }
-    ])
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: resolve("/resource/"),
+          to: path.join(resolve("/dist/"), "resource"),
+          globOptions: {
+            ignoreFiles: [".DS_Store", "README.md", "testSearchData.json"]
+          }
+        }
+      ],
+    })
   ]
 });

@@ -386,7 +386,7 @@ export class ContextMenus {
           notice = result;
         }
       );
-    } catch (error) {
+    } catch (error: any) {
       APP.showNotifications({
         message: error
       });
@@ -816,7 +816,7 @@ export class ContextMenus {
       if (chrome.runtime.lastError) {
         console.log(chrome.runtime.lastError);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
     }
   }
@@ -867,7 +867,7 @@ export class ContextMenus {
     if (parser) {
       try {
         eval(parser);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
       }
     }

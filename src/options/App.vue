@@ -1,7 +1,12 @@
 <template>
   <v-app id="inspire" :dark="this.darkMode">
     <template v-if="initializing">
-      <v-progress-linear :indeterminate="true" color="info" height="5" class="pa-0 ma-0"></v-progress-linear>
+      <v-progress-linear
+        :indeterminate="true"
+        color="info"
+        height="5"
+        class="pa-0 ma-0"
+      ></v-progress-linear>
       <v-alert :value="true" type="info">
         <div>
           <div>{{ $t("app.initializing", "zh-CN") }}</div>
@@ -11,7 +16,9 @@
     </template>
 
     <template v-else>
-      <v-alert :value="!$store.state.initialized" type="error">{{ $t("app.initError") }}</v-alert>
+      <v-alert :value="!$store.state.initialized" type="error">{{
+        $t("app.initError")
+      }}</v-alert>
       <template v-if="$store.state.initialized && havePermissions">
         <!-- 导航栏 -->
         <Navigation v-model="drawer"></Navigation>
@@ -28,12 +35,12 @@
 </template>
 
 <script>
-import { EAction, Options } from "../interface/common";
 import Navigation from "./components/Navigation.vue";
 import Topbar from "./components/Topbar.vue";
 import Footer from "./components/Footer.vue";
 import Content from "./components/Content.vue";
 import Permissions from "./components/Permissions";
+
 export default {
   name: "App",
   components: {
@@ -41,7 +48,7 @@ export default {
     Topbar,
     Footer,
     Content,
-    Permissions
+    Permissions,
   },
   data() {
     return {
@@ -49,28 +56,28 @@ export default {
       drawer: this.$store.state.options.navBarIsOpen,
       havePermissions: false,
       initializing: true,
-      darkMode: false
+      darkMode: false,
     };
   },
   created() {
     // this.init();
-    if (localStorage.getItem('DarkMode'))
-      this.darkMode = localStorage.getItem('DarkMode') == 'true';
+    if (localStorage.getItem("DarkMode"))
+      this.darkMode = localStorage.getItem("DarkMode") == "true";
   },
   mounted() {
-    this.$root.$on("ToggleDarkMode",() => {
+    this.$root.$on("ToggleDarkMode", () => {
       this.darkMode = !this.darkMode;
-      localStorage.setItem('DarkMode', this.darkMode);
+      localStorage.setItem("DarkMode", this.darkMode);
     });
   },
   watch: {
     drawer() {
       if (this.$store.state.options.navBarIsOpen != this.drawer) {
         this.$store.dispatch("saveConfig", {
-          navBarIsOpen: this.drawer
+          navBarIsOpen: this.drawer,
         });
       }
-    }
+    },
   },
   methods: {
     init() {
@@ -79,9 +86,9 @@ export default {
         // 查询当前权限
         chrome.permissions.contains(
           {
-            origins: ["http://*/*", "https://*/*"]
+            origins: ["http://*/*", "https://*/*"],
           },
-          result => {
+          (result) => {
             this.havePermissions = result;
             this.initializing = false;
           }
@@ -93,8 +100,8 @@ export default {
     },
     reload(havePermissions) {
       this.havePermissions = havePermissions;
-    }
-  }
+    },
+  },
 };
 </script>
 

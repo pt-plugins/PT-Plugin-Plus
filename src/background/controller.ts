@@ -847,7 +847,7 @@ export default class Controller {
           this.contentPages.push(sender.tab.id);
         }
         resolve();
-      } catch (error) {
+      } catch (error: any) {
         reject(error);
       }
     });

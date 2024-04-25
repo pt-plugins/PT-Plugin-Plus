@@ -232,7 +232,7 @@ export class User {
               if (result !== true) {
                 return;
               }
-            } catch (error) {
+            } catch (error: any) {
               console.log(error);
               return;
             }
@@ -288,7 +288,7 @@ export class User {
               requestData[key] = PPF.replaceKeys(value, userInfo, "user");
             }
           }
-        } catch (error) {
+        } catch (error: any) {
           console.log(error);
         }
       }
@@ -301,7 +301,7 @@ export class User {
               headers[key] = PPF.replaceKeys(value, userInfo, "user");
             }
           }
-        } catch (error) {
+        } catch (error: any) {
           console.log(error);
         }
       }
@@ -313,7 +313,7 @@ export class User {
               headers[key] = PPF.replaceKeys(value, site, "site");
             }
           }
-        } catch (error) {
+        } catch (error: any) {
           console.log(error);
         }
       }
@@ -351,7 +351,7 @@ export class User {
             } else {
               content = JSON.parse(result);
             }
-          } catch (error) {
+          } catch (error: any) {
             this.service.debug("getInfos.error", host, url, error);
             reject(error);
             return;
@@ -361,7 +361,7 @@ export class User {
             try {
               let results = new InfoParser().getResult(content, rule);
               resolve(results);
-            } catch (error) {
+            } catch (error: any) {
               this.service.debug(error);
               reject(error);
             }
@@ -470,7 +470,7 @@ export class User {
             const request = queues[key];
             try {
               request.abort();
-            } catch (error) {
+            } catch (error: any) {
               this.service.logger.add({
                 module: EModule.background,
                 event: "user.abortGetUserInfo.error",

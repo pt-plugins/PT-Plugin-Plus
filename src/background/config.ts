@@ -845,7 +845,7 @@ class Config {
           .catch(() => {
             resolve(rawData);
           });
-      } catch (error) {
+      } catch (error: any) {
         reject(error);
       }
     });
@@ -885,7 +885,7 @@ class Config {
           .catch(error => {
             reject(error);
           });
-      } catch (error) {
+      } catch (error: any) {
         reject(error);
       }
     });

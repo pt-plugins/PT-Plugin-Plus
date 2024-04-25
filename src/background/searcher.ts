@@ -267,7 +267,7 @@ export class Searcher {
                     reject(result);
                     return;
                   });
-                } catch (error) {
+                } catch (error: any) {
                   skipSearch = true;
                   result.type = EDataResultType.unknown;
                   reject(result);
@@ -287,7 +287,7 @@ export class Searcher {
               if (area.parseScript) {
                 try {
                   key = eval(area.parseScript);
-                } catch (error) { }
+                } catch (error: any) { }
               }
 
               return true;
@@ -422,7 +422,7 @@ export class Searcher {
                   }
                 }
               }
-            } catch (error) {
+            } catch (error: any) {
               this.service.writeErrorLog(error);
               this.service.debug(error);
             }
@@ -658,7 +658,7 @@ export class Searcher {
               );
             }
           }
-        } catch (error) {
+        } catch (error: any) {
           this.service.writeErrorLog(error);
           this.service.debug(error);
         }
@@ -714,12 +714,12 @@ export class Searcher {
                   page = $(doc).find("body");
                   break;
               }
-            } catch (error) {
+            } catch (error: any) {
               logId = this.service.logger.add({
                 module: EModule.background,
                 event:
                   "service.searcher.getSearchResult.siteSearchResultParseFailed",
-                msg: error
+                msg: error as string
               });
 
               // 数据解析失败
@@ -792,12 +792,12 @@ export class Searcher {
               } else {
                 resolve(PPF.clone(options.results));
               }
-            } catch (error) {
+            } catch (error: any) {
               console.error(error);
               logId = this.service.logger.add({
                 module: EModule.background,
                 event: "service.searcher.getSearchResult.siteEvalScriptFailed",
-                msg: error
+                msg: error as string
               });
               // 脚本执行出错
               reject({
@@ -940,7 +940,7 @@ export class Searcher {
               try {
                 queue.abort();
                 resolve();
-              } catch (error) {
+              } catch (error: any) {
                 this.service.logger.add({
                   module: EModule.background,
                   event: "searcher.abortSearch.error",

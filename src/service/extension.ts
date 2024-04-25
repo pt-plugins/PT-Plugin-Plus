@@ -1,5 +1,5 @@
-import { EAction, EDataResultType } from "@/interface/common";
-import { APP } from "./api";
+import {EAction, EDataResultType} from "@/interface/common";
+import {APP} from "./api";
 
 export default class Extension {
   public isExtensionMode: boolean = APP.isExtensionMode;
@@ -65,7 +65,7 @@ export default class Extension {
               }
             }
           );
-        } catch (error) {
+        } catch (error: any) {
           // @see https://groups.google.com/a/chromium.org/forum/#!topic/chromium-extensions/QLC4gNlYjbA
           if (
             /Invocation of form runtime\.connect|doesn't match definition runtime\.connect|Extension context invalidated/.test(

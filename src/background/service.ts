@@ -292,7 +292,7 @@ export default class PTPlugin {
               });
             break;
         }
-      } catch (error) {
+      } catch (error: any) {
         reject(error);
       }
     });

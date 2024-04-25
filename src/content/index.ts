@@ -407,7 +407,7 @@ class PTPContent {
           .catch((result: any) => {
             reject(result);
           });
-      } catch (error) {
+      } catch (error: any) {
         //`${action} 执行出错，可能后台服务不可用`
         this.showNotice(
           i18n.t("actionExecutionFailed", {
@@ -474,7 +474,7 @@ class PTPContent {
         });
         this.autoPosition = false;
         return;
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
       }
     }
@@ -842,7 +842,7 @@ class PTPContent {
               this.logo.removeClass("pt-plugin-onLoading");
             }
           }
-        } catch (error) {
+        } catch (error: any) {
           this.logo.removeClass("pt-plugin-onLoading");
         }
       },
@@ -901,7 +901,7 @@ class PTPContent {
         if (data && data.url) {
           onDrop.call(this, data, e, onSuccess, onError);
         }
-      } catch (error) {
+      } catch (error: any) {
         // 错误时，尝试直接使用文本内容
         let data = e.originalEvent.dataTransfer.getData("text/plain");
         if (data) {

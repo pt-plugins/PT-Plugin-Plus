@@ -21,7 +21,7 @@ class HelpFunctions {
       );
 
       this.manifest = chrome.runtime.getManifest();
-    } catch (error) {
+    } catch (error: any) {
       console.log("HelpFunctions: is not extension mode.", error);
     }
 
@@ -63,7 +63,7 @@ class HelpFunctions {
         });
         chrome.browserAction.disable();
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
     }
   }
@@ -254,7 +254,7 @@ class HelpFunctions {
         left: "-=20px",
         top: "+=10px"
       });
-    } catch (error) {}
+    } catch (error: any) {}
   }
 
   public getCleaningURL(url: string) {
@@ -476,7 +476,7 @@ class HelpFunctions {
         parseInt(id)
         return id
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log('getIdFromMTURL error', error)
     }
     return undefined
