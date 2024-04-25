@@ -11,7 +11,7 @@
   "homepage": "https://github.com/pt-plugins/PT-Plugin-Plus",
   "scripts": {
     "build": "yarn build:index && yarn build:background && yarn build:content && yarn resource",
-    "lint": "vue-cli-service lint",
+    "lint": "eslint ./src/ --ext ts,vue,js",
     "background": "webpack --config webpack/prod-background.js && webpack --config webpack/prod-content.js",
     "dev": "yarn dev:index && yarn dev:background && yarn dev:content && yarn resource",
     "dev-s": "cd debug && yarn install && tsc && node ./dist/index.js",
@@ -62,6 +62,7 @@
     "@types/extend": "^3.0.1",
     "@types/file-saver": "^2.0.5",
     "@types/jquery": "^3.5.14",
+    "@types/node": "20",
     "@types/parse-torrent": "^5.8.7",
     "@types/ua-parser-js": "^0.7.36",
     "@types/url-parse": "^1.4.8",
@@ -84,27 +85,6 @@
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4",
     "webpack-merge": "^5.10.0"
-  },
-  "resolutions": {
-    "@types/node": "~18.11.9"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended",
-      "@vue/typescript"
-    ],
-    "rules": {
-      "no-console": 0
-    },
-    "parserOptions": {
-      "sourceType": "module",
-      "parser": "@typescript-eslint/parser"
-    }
   },
   "browserslist": [
     "> 1%",

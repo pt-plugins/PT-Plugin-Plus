@@ -1,8 +1,22 @@
 {
-"env": {
-  "browser": true,
-  "commonjs": true,
-  "es6": true,
-  "jquery": true
-}
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jquery": true
+  },
+  "root": true,
+  "extends": [
+    "plugin:vue/essential",
+    "eslint:recommended",
+    "@vue/typescript"
+  ],
+  "rules": {
+    "no-console": 0
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2022,
+    "parser": "@typescript-eslint/parser"
+  }
 }
