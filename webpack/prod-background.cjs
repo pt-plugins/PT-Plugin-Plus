@@ -1,5 +1,5 @@
 const { merge } = require("webpack-merge");
-const common = require("./common.js");
+const common = require("./common.cjs");
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const git = require('git-rev-sync');

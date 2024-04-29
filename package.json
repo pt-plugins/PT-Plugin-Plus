@@ -2,6 +2,7 @@
   "name": "pt-plugin-plus",
   "version": "1.6.1",
   "packageManager": "yarn@1.22.22",
+  "type": "module",
   "author": {
     "name": "ronggang",
     "url": "https://github.com/ronggang"
@@ -12,17 +13,17 @@
   "scripts": {
     "build": "yarn build:index && yarn build:background && yarn build:content && yarn resource",
     "lint": "eslint ./src/ --ext ts,vue,js",
-    "background": "webpack --config webpack/prod-background.js && webpack --config webpack/prod-content.js",
+    "background": "webpack --config webpack/prod-background.cjs && webpack --config webpack/prod-content.cjs",
     "dev": "yarn dev:index && yarn dev:background && yarn dev:content && yarn resource",
     "dev-s": "cd debug && yarn install && tsc && node ./dist/index.js",
     "dev:index": "vite build --watch",
-    "dev:background": "webpack --config webpack/dev-background.js --progress",
-    "dev:content": "webpack --config webpack/dev-content.js --progress",
+    "dev:background": "webpack --config webpack/dev-background.cjs --progress",
+    "dev:content": "webpack --config webpack/dev-content.cjs --progress",
     "dev:bc": "yarn dev:background && yarn dev:content",
     "resource": "cd debug && yarn install && tsc && node ./dist/buildResource.js",
     "build:index": "vite build",
-    "build:background": "webpack --config webpack/prod-background.js --progress",
-    "build:content": "webpack --config webpack/prod-content.js --progress"
+    "build:background": "webpack --config webpack/prod-background.cjs --progress",
+    "build:content": "webpack --config webpack/prod-content.cjs --progress"
   },
   "dependencies": {
     "basiccontext": "^3.5.1",
