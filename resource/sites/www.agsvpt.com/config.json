@@ -29,7 +29,7 @@
       "downloaded": "50GB",
       "ratio": "1.05",
       "seedingPoints": "40000",
-      "privilege": "直接发布种子；查看NFO文档；查看用户列表；请求续种；发送邀请；查看排行榜；查看其它用户的种子历史；删除自己上传的字幕。"
+      "privilege": ""
     },
     {
       "level": "2",
@@ -38,7 +38,7 @@
       "downloaded": "120GB",
       "ratio": "1.55",
       "seedingPoints": "80000",
-      "privilege": "首次升级至此等级的用户将获得1个邀请名额。"
+      "privilege": ""
     },
     {
       "level": "3",
@@ -52,7 +52,7 @@
     {
       "level": "4",
       "name": "Insane User",
-      "interval": "25",
+      "interval": "20",
       "downloaded": "500GB",
       "ratio": "2.55",
       "seedingPoints": "400000",
@@ -74,7 +74,7 @@
       "downloaded": "1TB",
       "ratio": "5.05",
       "seedingPoints": "1400000",
-      "privilege": "更新过期的外部信息；"
+      "privilege": ""
     },
     {
       "level": "7",
