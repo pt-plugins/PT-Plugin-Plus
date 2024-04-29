@@ -1,16 +1,13 @@
-import {Dictionary, ERequestResultType} from "@/interface/common";
+import { Dictionary, ERequestResultType } from "@/interface/common";
 import dayjs from "dayjs";
-import {PPF} from "@/service/public";
+import { PPF } from "@/service/public";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import advancedFormat from "dayjs/plugin/advancedFormat";
-
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
 
 export class InfoParser {
-  constructor(public service?: any) {
-  }
-
+  constructor(public service?: any) { }
   /**
    * 根据指定规则和原始获取需要的数据
    * @param content 原始内容
@@ -90,7 +87,7 @@ export class InfoParser {
               query = content;
             } else {
               query = content.find(selector);
-              if (query.length == 0) query = content.filter(selector)
+              if (query.length == 0)query = content.filter(selector)
             }
 
             if (query.length > 0) {
@@ -225,7 +222,8 @@ export class InfoParser {
    * @param imdbId 表示大小的数组
    */
   formatIMDbId(imdbId: string) {
-    if (Number(imdbId)) {
+    if (Number(imdbId))
+    {
       if (imdbId.length < 7)
         imdbId = imdbId.padStart(7, '0');
 

@@ -1,5 +1,5 @@
-import {EAction, EDataResultType} from "@/interface/common";
-import {APP} from "./api";
+import { EAction, EDataResultType } from "@/interface/common";
+import { APP } from "./api";
 
 export default class Extension {
   public isExtensionMode: boolean = APP.isExtensionMode;
