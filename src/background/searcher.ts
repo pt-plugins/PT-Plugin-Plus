@@ -721,7 +721,7 @@ export class Searcher {
                 module: EModule.background,
                 event:
                   "service.searcher.getSearchResult.siteSearchResultParseFailed",
-                msg: error as string
+                msg: error
               });
 
               // 数据解析失败
@@ -799,7 +799,7 @@ export class Searcher {
               logId = this.service.logger.add({
                 module: EModule.background,
                 event: "service.searcher.getSearchResult.siteEvalScriptFailed",
-                msg: error as string
+                msg: error
               });
               // 脚本执行出错
               reject({
