@@ -48,7 +48,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload Built to action
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-dist-folder
           path: dist
@@ -60,7 +60,7 @@ jobs:
     outputs:
       version: ${{ steps.zip.outputs.extensionVersion }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: build-dist-folder
           path: dist
@@ -73,7 +73,7 @@ jobs:
           zipFilePath: 'artifact/extension.zip'
 
       - name: Upload Built Zip to action
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dev-build-${{ steps.zip.outputs.extensionVersion }}-zip
           path: artifact/*
@@ -92,7 +92,7 @@ jobs:
           USER_INPUT=${{ inputs.auto_update_file }}
           echo "value=${USER_INPUT:-"stable.xml"}" >> $GITHUB_OUTPUT
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         env:
           CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
         if: ${{ env.CRX_PRIVATE_KEY != ''  }}
@@ -132,7 +132,7 @@ jobs:
         env:
           CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
         if: ${{ env.CRX_PRIVATE_KEY != '' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dev-build-${{ steps.zip.outputs.extensionVersion }}-crx
           path: artifact/*
@@ -145,7 +145,7 @@ jobs:
     outputs:
       exist_xpi_file: ${{ steps.addonsDeploy.outcome }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: dev-build-${{ needs.zip.outputs.version }}-zip
 
@@ -164,7 +164,7 @@ jobs:
           jwtSecret: ${{ secrets.FF_JWT_SECRET }}
 
       - name: Upload Built Xpi to action
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ steps.addonsDeploy.outcome == 'success' }}
         with:
           name: dev-build-${{ needs.zip.outputs.version }}-xpi
