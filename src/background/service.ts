@@ -23,6 +23,7 @@ import DownloadQuene from "./downloadQuene";
 import Collection from "./collection";
 import SearchResultSnapshot from "./searchResultSnapshot";
 import KeepUploadTask from "./keepUploadTask";
+import { color } from "highcharts";
 
 /**
  * PT 助手后台服务类
@@ -605,6 +606,29 @@ export default class PTPlugin {
         this.upgrade();
       }
     });
+
+    chrome.webRequest.onBeforeSendHeaders.addListener(
+      function(details: chrome.webRequest.WebRequestHeadersDetails) {
+          let headers: chrome.webRequest.HttpHeader[] = [];
+          if (details.requestHeaders) {
+              headers = details.requestHeaders.map(header => ({ name: header.name, value: header.value }));
+          }
+          if (details.url.includes("getusertorrentlistajax")) {
+
+            const userIdMatch = details.url.match(/userid=(\d+)/);
+            if (userIdMatch && userIdMatch.length > 1) {
+                const userId = userIdMatch[1];
+                headers.push({ name: "Referer", value: "https://audiences.me/userdetails.php?id="+userId });
+            }
+          }
+          return { requestHeaders: headers };
+      },
+      {
+        urls: ["https://audiences.me/*"]
+      },
+      ["requestHeaders", "blocking", "extraHeaders"]
+  );
+  
   }
 
   /**
