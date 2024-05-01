@@ -1,0 +1,134 @@
+{
+  "name": "蟹黄堡",
+  "timezoneOffset": "+0800",
+  "description": "综合性网站，有分享率要求",
+  "url": "https://crabpt.vip/",
+  "icon": "https://crabpt.vip/favicon.ico",
+  "schema": "NexusPHP",
+  "host": "crabpt.vip",
+  "cdn": [
+    "https://crabpt.vip/"
+  ],
+  "tags": [
+    "影视"
+  ],
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "Power User",
+      "interval": "4",
+      "downloaded": "50GB",
+      "ratio": "1.05",
+      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+    }
+  ],
+  "collaborator": "trim21",
+  "searchEntry": [
+    {
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "queryString": "cat=401",
+      "name": "电影 / Movies",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=402",
+      "name": "电视剧 / TVSeries",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=413",
+      "name": "短剧 / Playlet",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=408",
+      "name": "音乐 / Music",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=405",
+      "name": "动漫 / Anime",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=406",
+      "name": "MV",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=403",
+      "name": "综艺 / TV-Shows",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=407",
+      "name": "竞技体育 / Sports",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=409",
+      "name": "其他 / Others",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=404",
+      "name": "纪录片 / Documentary",
+      "enabled": false
+    }
+  ],
+  "categories": [
+  ],
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "div.progressBar > div"
+        ],
+        "filters": [
+          "query.attr('style')||''",
+          "query.match(/width:.?(\\d.+)%/)",
+          "(query && query.length>=2)?query[1]:null"
+        ]
+      },
+      "status": {
+        "selector": [
+          "div.progressBar.doing > div",
+          "div.progressBar > div"
+        ],
+        "switchFilters": [
+          [
+            "query.attr('style')||''",
+            "query.match(/width:.?(\\d.+)%/)",
+            "(query && query.length>=2)?query[1]:0",
+            "parseInt(query)==100?2:1"
+          ],
+          [
+            "255"
+          ]
+        ]
+      }
+    }
+  },
+  "plugins": [
+    {
+      "name": "保种列表",
+      "pages": [
+        "/rescue.php"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/NexusPHP/torrents.js"
+      ]
+    }
+  ],
+  "mergeSchemaTagSelectors": true,
+  "torrentTagSelectors": [
+    {
+      "name": "⛔️",
+      "selector": "div.tag-jz"
+    }
+  ]
+}
