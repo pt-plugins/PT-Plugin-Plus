@@ -10,7 +10,8 @@
     "https://crabpt.vip/"
   ],
   "tags": [
-    "影视"
+    "影视",
+    "综合"
   ],
   "levelRequirements": [
     {
@@ -79,8 +80,7 @@
       "enabled": false
     }
   ],
-  "categories": [
-  ],
+  "categories": [],
   "searchEntryConfig": {
     "fieldSelector": {
       "progress": {
