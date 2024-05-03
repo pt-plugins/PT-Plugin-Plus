@@ -295,6 +295,7 @@ export class Searcher {
         }
       }
 
+
       if (skipSearch) {
         resolve({
           status: 'success',
@@ -324,7 +325,7 @@ export class Searcher {
       }
       // 遍历需要搜索的入口
       searchConfig.entry.forEach((entry: SearchEntry) => {
-        if (entry.skipIMDbId && isImdbSearch) {
+        if (entry.skipIMDbId && isImdbSearch){
           return
         }
 
