@@ -452,7 +452,6 @@
               }
               break;
 
-            case "xp.m-team.io":
             case "kp.m-team.cc":
             case "xp.m-team.cc":
             case "ap.m-team.cc":
