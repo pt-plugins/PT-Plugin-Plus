@@ -2,17 +2,16 @@
   "name": "M-Team",
   "timezoneOffset": "+0800",
   "description": "M-Team",
-  "url": "https://xp.m-team.io/",
-  "icon": "https://xp.m-team.io/favicon.ico",
+  "url": "https://xp.m-team.cc/",
+  "icon": "https://xp.m-team.cc/favicon.ico",
   "tags": [
     "影视",
     "综合",
     "成人"
   ],
-  "host": "xp.m-team.io",
+  "host": "xp.m-team.cc",
   "schema": "mTorrent",
   "cdn": [
-    "https://xp.m-team.io/",
     "https://kp.m-team.cc/",
     "https://xp.m-team.cc/",
     "https://ap.m-team.cc/"
