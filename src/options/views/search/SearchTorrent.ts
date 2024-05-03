@@ -587,11 +587,9 @@ export default Vue.extend({
           site.searchEntryConfig &&
           site.searchEntryConfig.skipNonLatinCharacters
         ) {
-          return false;
-        }
-
-        if (!this.key.match(/^[\p{Script_Extensions=Latin}\p{Script_Extensions=Common}]+$/gu)) {
-          return false;
+          if (!this.key.match(/^[\p{Script_Extensions=Latin}\p{Script_Extensions=Common}]+$/gu)) {
+            return false;
+          }
         }
         // 站点是否跳过IMDbId搜索
         if (
