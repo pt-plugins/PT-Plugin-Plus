@@ -18,6 +18,7 @@
   ],
   "tokenRequired": true,
   "formerHosts": [
+    "xp.m-team.io",
     "pt.m-team.cc",
     "kp.m-team.cc",
     "tp.m-team.cc"
