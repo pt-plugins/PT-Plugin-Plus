@@ -589,6 +589,15 @@ export default Vue.extend({
         ) {
           return false;
         }
+        // 站点是否跳过IMDbId搜索
+        if (
+          this.IMDbId &&
+          site.searchEntryConfig &&
+          site.searchEntryConfig.skipIMDbId
+        ) {
+          return false;
+        }
+
         return true
       })
 
