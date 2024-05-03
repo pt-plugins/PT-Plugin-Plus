@@ -594,20 +594,18 @@ export default Vue.extend({
 
       if (q.length === 0) {
         this.loading = false;
-        if (this.searchQueue.length == 0) {
-          this.searchMsg = this.$t("searchTorrent.searchFinished", {
-            count: this.datas.length,
-            second: dayjs().diff(this.beginTime, "second", true)
-          }).toString();
-          this.loading = false;
-          this.writeLog({
-            event: `SearchTorrent.Search.Finished`,
-            msg: this.searchMsg,
-            data: {
-              key: this.key
-            }
-          });
-        }
+        this.searchMsg = this.$t("searchTorrent.searchFinished", {
+          count: this.datas.length,
+          second: dayjs().diff(this.beginTime, "second", true)
+        }).toString();
+        this.loading = false;
+        this.writeLog({
+          event: `SearchTorrent.Search.Finished`,
+          msg: this.searchMsg,
+          data: {
+            key: this.key
+          }
+        });
         return
       }
 
