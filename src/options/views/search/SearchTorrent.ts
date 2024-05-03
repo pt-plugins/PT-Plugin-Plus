@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Extension from "@/service/extension";
-import {Route} from "vue-router";
+import { Route } from "vue-router";
 import {
   EAction,
   Site,
@@ -26,16 +26,16 @@ import {
   EViewKey,
   EDataResultType
 } from "@/interface/common";
-import {filters} from "@/service/filters";
+import { filters } from "@/service/filters";
 import dayjs from "dayjs";
-import {Downloader, downloadFile, FileDownloader} from "@/service/downloader";
+import { Downloader, downloadFile, FileDownloader } from "@/service/downloader";
 import * as basicContext from "basiccontext";
-import {PathHandler} from "@/service/pathHandler";
+import { PathHandler } from "@/service/pathHandler";
 import MovieInfoCard from "@/options/components/MovieInfoCard.vue";
 import TorrentProgress from "@/options/components/TorrentProgress.vue";
 import AddToCollectionGroup from "./AddToCollectionGroup.vue";
 import Actions from "./Actions.vue";
-import {PPF} from "@/service/public";
+import { PPF } from "@/service/public";
 import KeepUpload from "./KeepUpload.vue";
 import {eventBus} from "@/options/plugins/EventBus";
 
@@ -178,7 +178,7 @@ export default Vue.extend({
     window.addEventListener("scroll", this.handleScroll);
 
     // 生成辅种任务后清除选择
-    this.$root.$on("KeepUploadTaskCreateSuccess", () => {
+    this.$root.$on("KeepUploadTaskCreateSuccess",() => {
       this.toggleAll();
     });
   },
@@ -478,10 +478,10 @@ export default Vue.extend({
         let searchSolution:
           | SearchSolution
           | undefined = this.options.searchSolutions.find(
-          (solution: SearchSolution) => {
-            return solution.id === searchSolutionId;
-          }
-        );
+            (solution: SearchSolution) => {
+              return solution.id === searchSolutionId;
+            }
+          );
 
         if (searchSolution) {
           searchSolution.range.forEach((range: SearchSolutionRange) => {
@@ -497,16 +497,16 @@ export default Vue.extend({
                   siteEntry[index].enabled = false;
                 });
                 range.entry &&
-                range.entry.forEach((key: string) => {
-                  let index: number = siteEntry.findIndex(
-                    (entry: SearchEntry) => {
-                      return entry.id == key || entry.name == key;
+                  range.entry.forEach((key: string) => {
+                    let index: number = siteEntry.findIndex(
+                      (entry: SearchEntry) => {
+                        return entry.id == key || entry.name == key;
+                      }
+                    );
+                    if (siteEntry[index] && siteEntry[index].name) {
+                      siteEntry[index].enabled = true;
                     }
-                  );
-                  if (siteEntry[index] && siteEntry[index].name) {
-                    siteEntry[index].enabled = true;
-                  }
-                });
+                  });
               }
 
               sites.push(site);
@@ -586,17 +586,6 @@ export default Vue.extend({
         if (
           site.searchEntryConfig &&
           site.searchEntryConfig.skipNonLatinCharacters
-        ) {
-          if (!this.key.match(/^[\p{Script_Extensions=Latin}\p{Script_Extensions=Common}]+$/gu)) {
-            return false;
-          }
-        }
-
-        // 站点是否跳过IMDbId搜索
-        if (
-          this.IMDbId &&
-          site.searchEntryConfig &&
-          site.searchEntryConfig.skipIMDbId
         ) {
           return false;
         }
@@ -985,7 +974,7 @@ export default Vue.extend({
         this.addCategoryResult(item);
       });
 
-      this.searchResult.sites[allSites] = (this.datas as SearchResultItem[]).sort((a, b) => a.title.localeCompare(b.title, undefined, {sensitivity: 'base'}));
+      this.searchResult.sites[allSites] = (this.datas as SearchResultItem[]).sort((a , b) => a.title.localeCompare(b.title, undefined, {sensitivity: 'base'}));
     },
 
     /**
@@ -1252,12 +1241,12 @@ export default Vue.extend({
       let files: downloadFile[] = [];
       this.selected.forEach((item: SearchResultItem) => {
         item.url &&
-        files.push({
-          url: item.url,
-          fileName: `[${item.site.name}][${item.title}].torrent`,
-          method: item.site.downloadMethod,
-          timeout: this.options.connectClientTimeout
-        });
+          files.push({
+            url: item.url,
+            fileName: `[${item.site.name}][${item.title}].torrent`,
+            method: item.site.downloadMethod,
+            timeout: this.options.connectClientTimeout
+          });
       });
       console.log(files);
       if (files.length) {
@@ -1349,7 +1338,7 @@ export default Vue.extend({
       if (item.site) {
         requestMethod = item.site.downloadMethod || ERequestMethod.GET;
       }
-      let url = this.processURLWithPrefix("m-teamdetail", item.site, item.url + "");
+      let url = this.processURLWithPrefix("m-teamdetail", item.site,item.url + "");
       let file = new FileDownloader({
         url,
         timeout: this.options.connectClientTimeout,
@@ -1357,8 +1346,7 @@ export default Vue.extend({
       });
 
       file.requestMethod = requestMethod;
-      file.onError = (error: any) => {
-      };
+      file.onError = (error: any) => { };
       file.start();
     },
     /**
@@ -1385,9 +1373,9 @@ export default Vue.extend({
       }
       let data: SearchResultItem = datas.shift() as SearchResultItem;
       console.log(data.imdbId)
-      let url = this.processURLWithPrefix("m-teamdetail", data.site, data.url);
+      let url = this.processURLWithPrefix("m-teamdetail", data.site , data.url);
       this.sendToClient(
-        url as string,
+        url  as string,
         data.title,
         downloadOptions,
         () => {
@@ -1416,7 +1404,7 @@ export default Vue.extend({
       this.errorMsg = "";
       var url = item.url;
 
-      url = this.processURLWithPrefix("m-teamdetail", item.site, url);
+      url = this.processURLWithPrefix("m-teamdetail", item.site,url);
       extension
         .sendRequest(EAction.copyTextToClipboard, null, url)
         .then((result) => {
@@ -1436,7 +1424,7 @@ export default Vue.extend({
       this.selected.forEach((item: SearchResultItem) => {
         var url = item.url;
 
-        url = this.processURLWithPrefix(prefix, item.site, url);
+        url = this.processURLWithPrefix(prefix, item.site,url);
 
         url && urls.push(url);
       });
@@ -1577,7 +1565,7 @@ export default Vue.extend({
             }).toString(),
             fn: () => {
               if (options.url) {
-                let url = this.processURLWithPrefix("m-teamdetail", options.site, options.url);
+                let url = this.processURLWithPrefix("m-teamdetail", options.site , options.url);
                 // console.log(options, item);
                 this.sendToClient(
                   url,
@@ -1861,7 +1849,6 @@ export default Vue.extend({
       function getObjectValue(obj: any, path: string) {
         return new Function("o", "return o." + path)(obj);
       }
-
       return function (object1: any, object2: any) {
         var value1 = getObjectValue(object1, field);
         var value2 = getObjectValue(object2, field);
@@ -1996,7 +1983,7 @@ export default Vue.extend({
         options: {
           checkBox: this.checkBox,
           showCategory: this.showCategory,
-          titleMiddleEllipsis: this.titleMiddleEllipsis
+          titleMiddleEllipsis:this.titleMiddleEllipsis
         }
       });
     },
