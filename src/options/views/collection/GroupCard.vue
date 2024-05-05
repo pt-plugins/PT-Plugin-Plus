@@ -102,7 +102,6 @@
 </style>
 <script lang="ts">
 import Vue from "vue";
-import { isNumber } from "util";
 import ColorSelector from "@/options/components/ColorSelector.vue";
 import DownloadTo from "@/options/components/DownloadTo.vue";
 import { ICollection, EAction } from "@/interface/common";
@@ -234,12 +233,12 @@ export default Vue.extend({
         height: this.height
       };
 
-      if (isNumber(this.width)) {
+      if (typeof this.width === "number") {
         result.width = this.width.toString() + "px";
       } else {
         result.width = this.width;
       }
-      if (isNumber(this.height)) {
+      if (typeof this.height === "number") {
         result.height = this.height.toString() + "px";
       } else {
         result.height = this.height;

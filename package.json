@@ -45,7 +45,6 @@
     "stream-http": "^3.2.0",
     "ua-parser-js": "^1.0.2",
     "url-parse": "^1.5.10",
-    "util": "^0.12.5",
     "vue": "~2.7.0",
     "vue-class-component": "^6.3.2",
     "vue-i18n": "^8.11.2",
