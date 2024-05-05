@@ -149,8 +149,10 @@ export class Searcher {
         isImdbSearch = true
       }
 
+      // 2019.6.26 refactor: 调整搜索方式，”." 转为空格以获取更多搜索结果
+      // 实际测试过程中, np 架构能正常返回, 但是 mt 架构无法返回结果. 从搜索关键词来说这里的替换没有必要
       // 将所有 . 替换为空格
-      key = key.replace(/\./g, " ");
+      // key = key.replace(/\./g, " ");
 
       let skipSearch = false;
       // 是否有搜索入口配置项
