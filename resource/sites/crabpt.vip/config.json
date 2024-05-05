@@ -130,5 +130,64 @@
       "name": "⛔️",
       "selector": "div.tag-jz"
     }
-  ]
+  ],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": [
+            "td.rowhead:contains('蟹币值') + td",
+            "td.rowhead:contains('做种积分') + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'')",
+            "parseFloat(query)"
+          ]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "prerequisites": "!user.seeding",
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "headers": {
+        "Overwrite-Referer": "https://audiences.me/userdetails.php?id=$user.id$"
+      },
+      "fields": {
+        "seeding": {
+          "selector": [
+            "tr:not(:eq(0))"
+          ],
+          "filters": [
+            "let l={}; query.each(function() { l[jQuery(this).find('td.rowfollow:eq(1) a').attr('href')] = jQuery(this).find('td.rowfollow:eq(2)').text(); }); Object.keys(l).length;"
+          ]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)上一页/g)",
+            "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
+            "(query != 0) ? query.sizeToNumber() : 0"
+          ]
+        }
+      }
+    },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=uploaded",
+      "headers": {
+        "Overwrite-Referer": "https://audiences.me/userdetails.php?id=$user.id$"
+      },
+      "fields": {
+        "uploads": {
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"
+          ]
+        }
+      }
+    }
+  }
 }
