@@ -581,7 +581,7 @@ export default Vue.extend({
     doSearchTorrentWithQueue(sites: Site[]) {
       this.loading = true;
       this.searchMsg = this.$t("searchTorrent.searching").toString();
-      const q = sites.filter((site: Site) => {
+      const searchSites = sites.filter((site: Site) => {
         // 站点是否跳过非拉丁字符搜索
         if (
           site.searchEntryConfig &&
@@ -603,7 +603,7 @@ export default Vue.extend({
         return true
       })
 
-      if (q.length === 0) {
+      if (searchSites.length === 0) {
         this.loading = false;
         this.searchMsg = this.$t("searchTorrent.searchFinished", {
           count: this.datas.length,
@@ -620,7 +620,7 @@ export default Vue.extend({
         return
       }
 
-      q.forEach((site: Site, index: number) => {
+      searchSites.forEach((site: Site, index: number) => {
         this.searchQueue.push({
           site,
           key: this.key
