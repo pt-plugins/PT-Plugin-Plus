@@ -655,7 +655,7 @@ export default Vue.extend({
     },
     allUnReadMsgSites() {
       // @ts-ignore
-      return this.allSitesSorted.filter((site: Site) => (site.user?.messageCount || 0) > 0)
+      return this.allSitesSorted.filter((site: Site) => !site.disableMessageCount && ((site.user?.messageCount || 0) > 0))
     },
     allTaggedSites() {
       // @ts-ignore
@@ -670,10 +670,6 @@ export default Vue.extend({
       return this.selectedTags.map((_: any) => _.value)
     },
     allSortedTags() {
-      // let res = [ETagType.all]
-      // if (this.allUnTaggedSites.length > 0) res.push(ETagType.unTagged)
-      // if (this.allUnReadMsgSites.length > 0) res.push(ETagType.unReadMsg)
-      // if (this.allStatusErrSites.length > 0) res.push(ETagType.statusError)
       // 避免添加站点后, 刷新失败后, 标签反复横跳
       let res = [ETagType.all, ETagType.unTagged, ETagType.unReadMsg, ETagType.statusError]
       for (let site of this.allTaggedSites) {
