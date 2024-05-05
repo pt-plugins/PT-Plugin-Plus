@@ -20,6 +20,8 @@
      * 完成
      */
     done() {
+      this.result.messageCount = this.getUnReadMessageCount()
+      console.log(`[mt] getUserSeedingTorrents done`, this.result)
       this.options.resolve(this.result);
     }
 
@@ -92,24 +94,60 @@
           this.done();
         });
     }
+
+    /**
+     * 获取未读消息数量, 包括站内信和系统通知
+     * 这是两个接口, 直接写 config.json 是无法实现的. 在这里加点魔法
+     */
+    getUnReadMessageCount() {
+      return this.getMailBoxCnt() + this.getSystemNoticeCnt()
+    }
+
+    /**
+     * 获取站内信未读数量
+     */
+    getMailBoxCnt() {
+      return this.getNotifyCnt(resolveURL(activeURL, '/api/msg/statistic'))
+    }
+
+    /**
+     * 获取系统通知未读数量
+     */
+    getSystemNoticeCnt() {
+      return this.getNotifyCnt(resolveURL(activeURL, '/api/msg/notify/statistic'))
+    }
+
+    getNotifyCnt(url) {
+      const res = $.ajax(url, {
+        method: "POST",
+        data: {},
+        headers: this.options.rule.headers,
+        async: false
+      })
+      return parseInt(res.responseJSON.data.unMake) || 0
+    }
   }
 
-  let dataURL;
-  if (
-    options.site.activeURL.endsWith("/") &&
-    options.rule.page.startsWith("/")
-  ) {
-    // 避免拼接出双斜杆网址，馒头会报错500
-    dataURL = options.site.activeURL + options.rule.page.substr(1);
-  } else {
-    dataURL = options.site.activeURL + options.rule.page;
+  function resolveURL(from, to) {
+    const resolvedUrl = new URL(to, new URL(from, 'resolve://'));
+    if (resolvedUrl.protocol === 'resolve:') {
+      // `from` is a relative URL.
+      const { pathname, search, hash } = resolvedUrl;
+      return pathname + search + hash;
+    }
+    return resolvedUrl.toString();
   }
+
+  let activeURL = options.site.activeURL
+  console.log(`[mt] getUserSeedingTorrents`, options, User);
+
+  let dataURL = resolveURL(activeURL, options.rule.page);
 
   new Parser(options, dataURL);
 })(_options, _self);
 /**
- * 
-  _options 表示当前参数 
+ *
+  _options 表示当前参数
   {
     site,
     rule,
@@ -117,5 +155,5 @@
     resolve,
     reject
   }
-  _self 表示 User(/src/background/user.ts) 类实例 
+  _self 表示 User(/src/background/user.ts) 类实例
  */
