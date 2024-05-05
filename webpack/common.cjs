@@ -71,8 +71,7 @@ module.exports = {
     fallback: {
       "path": require.resolve("path-browserify"),
       "http": require.resolve("stream-http"),
-      "https": require.resolve("https-browserify"),
-      "util": require.resolve("util/"),
+      "https": require.resolve("https-browserify")
     }
   },
   // 防止一些模块中使用了fs时无法编译的错误
