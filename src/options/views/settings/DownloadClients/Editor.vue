@@ -112,7 +112,6 @@
 </template>
 
 <script lang="ts">
-import md5 from "blueimp-md5";
 import Vue from "vue";
 import Extension from "@/service/extension";
 import {EAction, DataResult, Dictionary, QbCategory} from "@/interface/common";

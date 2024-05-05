@@ -1,6 +1,5 @@
 import JSZip from "jszip";
-import md5 from "blueimp-md5";
-import * as CryptoJS from "crypto-js";
+import { MD5, AES,enc } from "crypto-js";
 
 import {
   Dictionary,
@@ -34,7 +33,7 @@ export class BackupFileParser {
       result.keyMap.push(index);
     }
 
-    result.hash = md5(keys.join(""));
+    result.hash = MD5(keys.join("")).toString();
 
     return result;
   }
@@ -279,7 +278,7 @@ export class BackupFileParser {
         keys.push(data.substr(index, 1));
       }
 
-      if (md5(keys.join("")) === checkInfo.hash) {
+      if (MD5(keys.join("")).toString() === checkInfo.hash) {
         return true;
       }
     } catch (error) {}
@@ -321,7 +320,7 @@ export class BackupFileParser {
    * @param secretKey 密钥
    */
   public encrypt(data: string, secretKey: string = "") {
-    return CryptoJS.AES.encrypt(data, secretKey).toString();
+    return AES.encrypt(data, secretKey).toString();
   }
 
   /**
@@ -330,6 +329,6 @@ export class BackupFileParser {
    * @param secretKey 密钥
    */
   public decrypt(data: string, secretKey: string = "") {
-    return CryptoJS.AES.decrypt(data, secretKey).toString(CryptoJS.enc.Utf8);
+    return AES.decrypt(data, secretKey).toString(enc.Utf8);
   }
 }
