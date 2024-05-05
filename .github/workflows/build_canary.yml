@@ -35,15 +35,14 @@ jobs:
         run: mkdir build
 
       - name: Get And rename Zip build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name:
-            dev-build-${{ needs.action.outputs.version }}-zip
+          name: dev-build-${{ needs.action.outputs.version }}-zip
 
       - run: mv extension.zip build/PT-Plugin-Plus-${{ needs.action.outputs.version }}.zip
 
       - name: Get And remove Crx Build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name:
             dev-build-${{ needs.action.outputs.version }}-crx
@@ -53,11 +52,10 @@ jobs:
           mv extension.crx build/PT-Plugin-Plus-${{ needs.action.outputs.version }}.crx
 
       - name: Get And move Xpi Build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         if: ${{ needs.action.outputs.buildXPI == 'success' }}
         with:
-          name:
-            dev-build-${{ needs.action.outputs.version }}-xpi
+          name: dev-build-${{ needs.action.outputs.version }}-xpi
 
       - if: ${{ needs.action.outputs.buildXPI == 'success' }}
         run: | 
@@ -65,7 +63,7 @@ jobs:
           echo $(jq '.addons[].updates += [{"version": "${{ needs.action.outputs.version }}", "update_link": "https://github.com/pt-plugins/PT-Plugin-Plus/releases/download/v${{ needs.action.outputs.version }}/PT-Plugin-Plus-${{ needs.action.outputs.version }}.xpi"}]' pages/update/firefox.json) > pages/update/firefox.json
 
       - name: Deploy update xml and json
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./pages
