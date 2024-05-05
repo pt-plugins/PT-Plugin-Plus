@@ -23,6 +23,7 @@ import DownloadQuene from "./downloadQuene";
 import Collection from "./collection";
 import SearchResultSnapshot from "./searchResultSnapshot";
 import KeepUploadTask from "./keepUploadTask";
+import { color } from "highcharts";
 
 /**
  * PT 助手后台服务类
@@ -62,6 +63,8 @@ export default class PTPlugin {
   // private autoBackupDataTimer: number = 0;
   private autoRefreshUserDataIsWorking: boolean = false;
   private autoRefreshUserDataFailedCount: number = 0;
+
+  private gDummyHeaderPrefix: string = 'Overwrite-';
 
   constructor(localMode: boolean = false) {
     if (!localMode) {
@@ -273,7 +276,7 @@ export default class PTPlugin {
           default:
             if ((this as any)[request.action]) {
               (this as any)
-                [request.action](request.data, sender)
+              [request.action](request.data, sender)
                 .then((result: any) => {
                   resolve(result);
                 })
@@ -368,7 +371,7 @@ export default class PTPlugin {
     clearInterval(this.autoRefreshUserDataTimer)
     let self = this
     if (typeof chrome === 'object' && chrome.alarms) {
-      chrome.alarms.clear(EAlarm.refreshJob, function(wasCleared) {
+      chrome.alarms.clear(EAlarm.refreshJob, function (wasCleared) {
         if (wasCleared) {
           console.log(`Alarm ${EAlarm.refreshJob} was successfully cleared.`);
         } else {
@@ -427,84 +430,84 @@ export default class PTPlugin {
     let time = new Date().getTime();
     this.autoRefreshUserDataFailedCount = 0;
     let failedRetryCount =
-        this.options.autoRefreshUserDataFailedRetryCount || 3;
+      this.options.autoRefreshUserDataFailedRetryCount || 3;
     let failedRetryInterval =
-        this.options.autoRefreshUserDataFailedRetryInterval || 5;
+      this.options.autoRefreshUserDataFailedRetryInterval || 5;
 
     // let time = new Date().getTime();
 
     if (
-        this.options.autoRefreshUserDataNextTime &&
-        time >= this.options.autoRefreshUserDataNextTime &&
-        !this.autoRefreshUserDataIsWorking
+      this.options.autoRefreshUserDataNextTime &&
+      time >= this.options.autoRefreshUserDataNextTime &&
+      !this.autoRefreshUserDataIsWorking
     ) {
       this.options.autoRefreshUserDataNextTime = this.getNextTime();
       this.autoRefreshUserDataIsWorking = true;
       this.controller.userService
-          .refreshUserData(this.autoRefreshUserDataFailedCount > 0)
-          .then((results: any) => {
-            this.debug("refreshUserData DONE.", results);
-            this.autoRefreshUserDataIsWorking = false;
-            let haveError = false;
-            results.some((result: any) => {
-              if (!result) {
+        .refreshUserData(this.autoRefreshUserDataFailedCount > 0)
+        .then((results: any) => {
+          this.debug("refreshUserData DONE.", results);
+          this.autoRefreshUserDataIsWorking = false;
+          let haveError = false;
+          results.some((result: any) => {
+            if (!result) {
+              haveError = true;
+              return true;
+            }
+
+            if (!result.id) {
+              if (
+                result.msg &&
+                result.msg.status != EUserDataRequestStatus.notSupported
+              ) {
                 haveError = true;
                 return true;
               }
-
-              if (!result.id) {
-                if (
-                    result.msg &&
-                    result.msg.status != EUserDataRequestStatus.notSupported
-                ) {
-                  haveError = true;
-                  return true;
-                }
-              }
-            });
-
-            if (haveError) {
-              // 失败重试
-              if (this.autoRefreshUserDataFailedCount < failedRetryCount) {
-                // 设置几分钟后重试
-                this.options.autoRefreshUserDataNextTime =
-                    new Date().getTime() + failedRetryInterval * 60000;
-                this.debug(
-                    "数据刷新失败, 下次重试时间",
-                    new Date(
-                        this.options.autoRefreshUserDataNextTime as number
-                    ).toLocaleString()
-                );
-                // for refresh retry
-                this.resetTimer()
-              } else {
-                this.debug("数据刷新失败, 重试次数已超限制");
-              }
-              this.autoRefreshUserDataFailedCount++;
-            } else {
-              this.debug("数据刷新完成");
-              this.autoRefreshUserDataFailedCount = 0;
-            }
-            if (this.options.autoBackupData) {
-              // 可以认为数据不会再变化了
-              if (!haveError || this.autoRefreshUserDataFailedCount >= failedRetryCount) {
-                let {autoBackupDataServerId} = this.options
-                // autoBackupDataMin = parseInt(autoBackupDataMin as any) || 5
-                console.log(`上传用户数据到 -> ${autoBackupDataServerId}`)
-                let server = this.options.backupServers?.filter(_ => _.id === autoBackupDataServerId)[0]
-                if (server) {
-                  console.log(`开始上传用户数据到 -> ${server.name}`)
-                  this.controller.backupToServer(server)
-                      // @ts-ignore
-                      .then(r => console.log(`用户数据上传完成 -> ${server.name}`, r))
-                      // @ts-ignore
-                      .catch(e => console.log(`用户数据上传失败 -> ${server.name}`, e))
-                } else {
-                  console.log(`未找到备份服务器 -> ${autoBackupDataServerId}`, this.options.backupServers)
-                }
-              }
             }
           });
+
+          if (haveError) {
+            // 失败重试
+            if (this.autoRefreshUserDataFailedCount < failedRetryCount) {
+              // 设置几分钟后重试
+              this.options.autoRefreshUserDataNextTime =
+                new Date().getTime() + failedRetryInterval * 60000;
+              this.debug(
+                "数据刷新失败, 下次重试时间",
+                new Date(
+                  this.options.autoRefreshUserDataNextTime as number
+                ).toLocaleString()
+              );
+              // for refresh retry
+              this.resetTimer()
+            } else {
+              this.debug("数据刷新失败, 重试次数已超限制");
+            }
+            this.autoRefreshUserDataFailedCount++;
+          } else {
+            this.debug("数据刷新完成");
+            this.autoRefreshUserDataFailedCount = 0;
+          }
+          if (this.options.autoBackupData) {
+            // 可以认为数据不会再变化了
+            if (!haveError || this.autoRefreshUserDataFailedCount >= failedRetryCount) {
+              let { autoBackupDataServerId } = this.options
+              // autoBackupDataMin = parseInt(autoBackupDataMin as any) || 5
+              console.log(`上传用户数据到 -> ${autoBackupDataServerId}`)
+              let server = this.options.backupServers?.filter(_ => _.id === autoBackupDataServerId)[0]
+              if (server) {
+                console.log(`开始上传用户数据到 -> ${server.name}`)
+                this.controller.backupToServer(server)
+                  // @ts-ignore
+                  .then(r => console.log(`用户数据上传完成 -> ${server.name}`, r))
+                  // @ts-ignore
+                  .catch(e => console.log(`用户数据上传失败 -> ${server.name}`, e))
+              } else {
+                console.log(`未找到备份服务器 -> ${autoBackupDataServerId}`, this.options.backupServers)
+              }
+            }
+          }
+        });
     } else {
       console.debug(`refresh data skipped...`)
     }
@@ -562,7 +565,6 @@ export default class PTPlugin {
       msg: typeof msg === "string" ? msg : JSON.stringify(msg)
     });
   }
-
   /**
    * 初始化浏览器事件
    */
@@ -605,6 +607,28 @@ export default class PTPlugin {
         this.upgrade();
       }
     });
+
+    chrome.webRequest.onBeforeSendHeaders.addListener(
+      (details: chrome.webRequest.WebRequestHeadersDetails) => {
+        let headers: chrome.webRequest.HttpHeader[] = [];
+        if (details.requestHeaders) {
+          headers = details.requestHeaders.map((header: chrome.webRequest.HttpHeader) => {
+            if (header.name.startsWith(this.gDummyHeaderPrefix)) {
+              const modifiedName = header.name.replace(this.gDummyHeaderPrefix, '');
+              return { name: modifiedName, value: header.value };
+            } else {
+              return { name: header.name, value: header.value };
+            }
+          });
+        }
+        return { requestHeaders: headers };
+      },
+      {
+        urls: ["<all_urls>"]
+      },
+      ["requestHeaders", "blocking", "extraHeaders"]
+    );
+
   }
 
   /**

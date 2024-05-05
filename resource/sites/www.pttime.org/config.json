@@ -65,6 +65,7 @@
     "privilege": "无"
   }],
   "searchEntryConfig": {
+    "skipIMDbId": true,
     "fieldSelector": {
       "progress": {
         "selector": [

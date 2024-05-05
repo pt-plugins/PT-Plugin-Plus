@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { EAction, Options } from "../interface/common";
 import Navigation from "./components/Navigation.vue";
 import Topbar from "./components/Topbar.vue";
 import Footer from "./components/Footer.vue";

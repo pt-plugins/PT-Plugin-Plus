@@ -19,8 +19,10 @@
 		"notifications",
 		"http://*/*",
 		"https://*/*",
-		"unlimitedStorage"
-	],
+		"unlimitedStorage",
+		"webRequest",
+		"webRequestBlocking"
+	  ],
 	"optional_permissions": ["downloads", "cookies", "alarms"],
 	"icons": {
 		"16": "assets/icon.png",
