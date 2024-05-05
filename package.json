@@ -27,9 +27,8 @@
   },
   "dependencies": {
     "basiccontext": "^3.5.1",
-    "blueimp-md5": "^2.19.0",
     "caniuse-lite": "^1.0.30001612",
-    "crypto-js": "^3.1.9-1",
+    "crypto-js": "^4.2.0",
     "dayjs": "^1.11.5",
     "dom-to-image": "^2.6.0",
     "dotenv": "^8.2.0",

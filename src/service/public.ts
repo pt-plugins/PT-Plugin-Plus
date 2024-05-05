@@ -1,8 +1,8 @@
-import md5 from "blueimp-md5";
 import * as basicContext from "basiccontext";
 import { Options, Site, Dictionary } from "@/interface/common";
 import dayjs from "dayjs";
 import { UAParser } from "ua-parser-js";
+import {MD5} from "crypto-js";
 
 class HelpFunctions {
   public isExtensionMode: boolean = false;
@@ -106,7 +106,7 @@ class HelpFunctions {
    * 获取一个编号
    */
   public getNewId(): string {
-    return md5(
+    return MD5(
       new Date().getTime().toString() + this.getRandomString()
     ).toString();
   }

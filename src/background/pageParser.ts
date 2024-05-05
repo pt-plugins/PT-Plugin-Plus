@@ -8,7 +8,7 @@ import {
 import { PPF } from "@/service/public";
 import { APP } from "@/service/api";
 import { InfoParser } from "./infoParser";
-import md5 from "blueimp-md5";
+import {MD5} from "crypto-js";
 
 /**
  * 通用页面数据解析类
@@ -76,7 +76,7 @@ export class PageParser {
       }
     }
 
-    this.cacheKey = md5(this.url + JSON.stringify(this.requestData || {}));
+    this.cacheKey = MD5(this.url + JSON.stringify(this.requestData || {})).toString();
   }
 
   /**

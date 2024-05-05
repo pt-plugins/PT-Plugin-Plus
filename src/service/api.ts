@@ -1,5 +1,5 @@
 import localStorage from "./localStorage";
-import md5 from "blueimp-md5";
+import {MD5} from "crypto-js";
 import {
   EConfigKey,
   DataResult,
@@ -8,6 +8,7 @@ import {
 } from "@/interface/common";
 import { PPF } from "./public";
 import "./favicon";
+
 
 let rootPath = "";
 let isExtensionMode = false;
@@ -78,7 +79,7 @@ export const APP = {
      */
     get(key: string): string | null {
       if (this.contents) {
-        return this.contents[md5(key)];
+        return this.contents[MD5(key).toString()];
       }
       return null;
     },
@@ -88,7 +89,7 @@ export const APP = {
      * @param content
      */
     set(key: string, content: string) {
-      this.contents[md5(key)] = content;
+      this.contents[MD5(key).toString()] = content;
       this.contents["update"] = new Date().getTime();
       this.contents["expires"] = new Date().getTime() + this.expires;
       this.localStorage.set(this.cacheKey, this.contents);
