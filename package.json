@@ -78,7 +78,6 @@
     "git-rev-sync": "^3.0.2",
     "sass": "^1.75.0",
     "sass-loader": "^14.2.1",
-    "terser-webpack-plugin": "^5.3.10",
     "typescript": "^5.4.5",
     "vite": "^5.2.10",
     "vue-template-compiler": "~2.7.0",
