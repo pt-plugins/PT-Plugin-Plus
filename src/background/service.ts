@@ -6,6 +6,7 @@ import {
   ELogEvent,
   Site,
   SiteSchema,
+  EBrowserType,
   Dictionary,
   EUserDataRequestStatus,
   LogItem, EAlarm
@@ -608,6 +609,17 @@ export default class PTPlugin {
       }
     });
 
+    let opt_extraInfoSpec: string[] = [];
+
+    switch (PPF.browserName) {
+      case EBrowserType.Chrome:
+        opt_extraInfoSpec = ["requestHeaders", "blocking", "extraHeaders"];
+        break;
+      case EBrowserType.Firefox:
+        opt_extraInfoSpec = ["requestHeaders", "blocking"];
+        break;
+    }
+
     chrome.webRequest.onBeforeSendHeaders.addListener(
       (details: chrome.webRequest.WebRequestHeadersDetails) => {
         let headers: chrome.webRequest.HttpHeader[] = [];
@@ -625,8 +637,7 @@ export default class PTPlugin {
       },
       {
         urls: ["<all_urls>"]
-      },
-      ["requestHeaders", "blocking", "extraHeaders"]
+      },opt_extraInfoSpec
     );
 
   }
