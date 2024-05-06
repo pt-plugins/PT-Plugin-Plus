@@ -11,10 +11,10 @@
   "displayName": "PT 助手 Plus",
   "homepage": "https://github.com/pt-plugins/PT-Plugin-Plus",
   "scripts": {
-    "build": "yarn build:index && yarn build:background && yarn build:content && yarn resource",
+    "build": "yarn build:background && yarn build:content && yarn build:index",
     "lint": "eslint ./src/ --ext ts,vue,js",
     "background": "webpack --config webpack/prod-background.cjs && webpack --config webpack/prod-content.cjs",
-    "dev": "yarn dev:index && yarn dev:background && yarn dev:content && yarn resource",
+    "dev": "yarn dev:background && yarn dev:content && yarn dev:index",
     "dev-s": "cd debug && yarn install && tsc && node ./dist/index.js",
     "dev:index": "vite build --watch",
     "dev:background": "webpack --config webpack/dev-background.cjs --progress",

@@ -14,7 +14,8 @@ module.exports = merge(common, {
   },
   output: {
     path: path.join(__dirname, "../dist/js/background"),
-    filename: "[name].js"
+    filename: "[name].js",
+    clean: true
   },
   devtool: "inline-source-map",
   mode: "development",
