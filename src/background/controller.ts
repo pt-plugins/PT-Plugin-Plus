@@ -27,7 +27,7 @@ import { APP } from "@/service/api";
 import URLParse from "url-parse";
 import { User } from "./user";
 import { MovieInfoService } from "@/service/movieInfoService";
-import parseTorrent from "parse-torrent";
+import {remote as parseTorrentRemote} from "parse-torrent";
 import {PPF} from "@/service/public";
 
 type Service = PTPlugin;
@@ -942,7 +942,7 @@ export default class Controller {
           file.content &&
           /octet-stream|x-bittorrent/gi.test(file.content.type)
         ) {
-          parseTorrent.remote(file.content, (err, torrent) => {
+          parseTorrentRemote(file.content, (err, torrent) => {
             if (err) {
               console.log("parse.error", err);
               // 是否解析种子文件
