@@ -101,18 +101,22 @@ export class WebDAV {
    */
   public add(formData: FormData): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      this.service
-        .putFileContents(formData.get("name"), formData.get("data"))
-        .then((result: any) => {
-          if (result) {
-            resolve(true);
-          } else {
-            reject(false);
-          }
+        (formData.get("data") as Blob).arrayBuffer().then(data => {
+            this.service
+                .putFileContents(formData.get("name"), data)
+                .then((result: any) => {
+                    console.log(result)
+                    if (result) {
+                        resolve(true);
+                    } else {
+                        reject(false);
+                    }
+                })
+                .catch((error: any) => {
+                    console.log(error)
+                    reject(error);
+                });
         })
-        .catch((error: any) => {
-          reject(error);
-        });
     });
   }
 
