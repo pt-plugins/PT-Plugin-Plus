@@ -262,9 +262,6 @@ export default function buildResource() {
         buildEnd() {
             buildResource();
             getSupportedSites();
-            FS.readdirSync(resourcePath).forEach((name: string) => {
-                console.log(name);
-            })
         }
     }
 }
