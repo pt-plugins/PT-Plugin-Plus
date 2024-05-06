@@ -1,5 +1,5 @@
 import JSZip from "jszip";
-import { MD5, AES,enc } from "crypto-js";
+import {MD5, AES, enc} from "crypto-js";
 
 import {
   Dictionary,
@@ -10,7 +10,7 @@ import {
   ERestoreError,
   IBackupRawData
 } from "@/interface/common";
-import { PPF } from "./public";
+import {PPF} from "./public";
 
 export class BackupFileParser {
   /**
