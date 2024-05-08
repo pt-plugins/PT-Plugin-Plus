@@ -612,6 +612,7 @@ export default class PTPlugin {
     let opt_extraInfoSpec: string[] = [];
 
     switch (PPF.browserName) {
+      case EBrowserType.Edge:
       case EBrowserType.Chrome:
         opt_extraInfoSpec = ["requestHeaders", "blocking", "extraHeaders"];
         break;
