@@ -12,7 +12,14 @@ export default function buildResource() {
      */
     function prepareResource() {
         const rawResourcePath = PATH.resolve(__dirname, '..', './resource');
-        FS.cpSync(rawResourcePath, resourcePath, {recursive: true});
+        FS.cpSync(rawResourcePath, resourcePath, {
+            recursive: true, filter(source: string, destination: string) {
+                if (source.endsWith("README.md")) {
+                    return false;
+                }
+                return true;
+            }
+        });
     }
 
     /**
