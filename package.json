@@ -11,19 +11,14 @@
   "displayName": "PT 助手 Plus",
   "homepage": "https://github.com/pt-plugins/PT-Plugin-Plus",
   "scripts": {
-    "build": "yarn build:background && yarn build:content && yarn build:index",
     "lint": "eslint ./src/ --ext ts,vue,js",
-    "background": "webpack --config webpack/prod-background.cjs && webpack --config webpack/prod-content.cjs",
-    "dev": "yarn dev:background && yarn dev:content && yarn dev:index",
-    "dev-s": "cd debug && yarn install && tsc && node ./dist/index.js",
+    "build": "yarn build:index && yarn build:content && yarn build:background",
     "dev:index": "vite build --watch",
-    "dev:background": "webpack --config webpack/dev-background.cjs --progress",
-    "dev:content": "webpack --config webpack/dev-content.cjs --progress",
-    "dev:bc": "yarn dev:background && yarn dev:content",
-    "resource": "cd debug && yarn install && tsc && node ./dist/buildResource.js",
+    "dev:background": "yarn build:background -- --mode development",
+    "dev:content": "yarn build:content -- --mode development",
     "build:index": "vite build",
-    "build:background": "webpack --config webpack/prod-background.cjs --progress",
-    "build:content": "webpack --config webpack/prod-content.cjs --progress"
+    "build:background": "vite build --config vite.config.background.ts",
+    "build:content": "vite build --config vite.config.content.ts"
   },
   "dependencies": {
     "basiccontext": "^3.5.1",
@@ -69,7 +64,6 @@
     "@typescript-eslint/parser": "^7.7.1",
     "@vitejs/plugin-vue2": "^2.3.1",
     "@vue/eslint-config-typescript": "^13.0.0",
-    "copy-webpack-plugin": "^12.0.2",
     "esbuild-loader": "^4.1.0",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.25.0",
@@ -79,10 +73,7 @@
     "typescript": "^5.4.5",
     "vite": "^5.2.10",
     "vue-template-compiler": "~2.7.0",
-    "vuetify-loader": "~1.7.3",
-    "webpack": "^5.91.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-merge": "^5.10.0"
+    "vuetify-loader": "~1.7.3"
   },
   "browserslist": [
     "> 1%",

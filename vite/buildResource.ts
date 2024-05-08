@@ -8,6 +8,14 @@ export default function buildResource() {
     const resourceMap = ["sites", "schemas", "clients", "publicSites"];
 
     /**
+     * 将resource目录复制到dist下
+     */
+    function prepareResource() {
+        const rawResourcePath = PATH.resolve(__dirname, '..', './resource');
+        FS.cpSync(rawResourcePath, resourcePath, {recursive: true});
+    }
+
+    /**
      * 创建资源文件列表
      */
     function buildResource() {
@@ -260,6 +268,7 @@ export default function buildResource() {
     return {
         name: 'build_resource',
         buildEnd() {
+            prepareResource();
             buildResource();
             getSupportedSites();
         }
