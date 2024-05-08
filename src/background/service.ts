@@ -612,12 +612,13 @@ export default class PTPlugin {
     let opt_extraInfoSpec: string[] = [];
 
     switch (PPF.browserName) {
-      case EBrowserType.Edge:
-      case EBrowserType.Chrome:
-        opt_extraInfoSpec = ["requestHeaders", "blocking", "extraHeaders"];
-        break;
       case EBrowserType.Firefox:
         opt_extraInfoSpec = ["requestHeaders", "blocking"];
+        break;
+      case EBrowserType.Edge:
+      case EBrowserType.Chrome:
+      default:
+        opt_extraInfoSpec = ["requestHeaders", "blocking", "extraHeaders"];
         break;
     }
 
@@ -638,9 +639,7 @@ export default class PTPlugin {
       },
       {
         urls: ["<all_urls>"]
-      },opt_extraInfoSpec
-    );
-
+      }, opt_extraInfoSpec);
   }
 
   /**
