@@ -17,7 +17,7 @@ export default defineConfig({
   ...sharedConfig,
   publicDir: 'public',
   build: {
-    chunkSizeWarningLimit: 0,
+    chunkSizeWarningLimit: Number.MAX_SAFE_INTEGER,
     emptyOutDir: false
   },
   plugins: [

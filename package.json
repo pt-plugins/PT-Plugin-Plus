@@ -64,7 +64,6 @@
     "@typescript-eslint/parser": "^7.7.1",
     "@vitejs/plugin-vue2": "^2.3.1",
     "@vue/eslint-config-typescript": "^13.0.0",
-    "esbuild-loader": "^4.1.0",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.25.0",
     "git-rev-sync": "^3.0.2",
@@ -72,8 +71,7 @@
     "sass-loader": "^14.2.1",
     "typescript": "^5.4.5",
     "vite": "^5.2.10",
-    "vue-template-compiler": "~2.7.0",
-    "vuetify-loader": "~1.7.3"
+    "vue-template-compiler": "~2.7.0"
   },
   "browserslist": [
     "> 1%",

@@ -18,7 +18,7 @@ export default defineConfig({
         extend: true,
       },
     },
-    chunkSizeWarningLimit: 0,
+    chunkSizeWarningLimit: Number.MAX_SAFE_INTEGER,
     emptyOutDir: false,
     copyPublicDir: false
   }
