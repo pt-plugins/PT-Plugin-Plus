@@ -3,6 +3,7 @@ import {defineConfig} from 'vite'
 import {sharedConfig} from "./vite.config";
 import fs from "node:fs";
 import git from 'git-rev-sync'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import buildResource from "./vite/buildResource";
 
 // https://vitejs.dev/config/
@@ -26,6 +27,9 @@ export default defineConfig({
     copyPublicDir: false
   },
   plugins: [
+    nodePolyfills({
+      include: ['path'],
+    }),
     buildResource(),
     {
       name: 'update_manifest_version',

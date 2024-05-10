@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import {sharedConfig} from "./vite.config";
 
 // https://vitejs.dev/config/
@@ -21,5 +22,10 @@ export default defineConfig({
     chunkSizeWarningLimit: Number.MAX_SAFE_INTEGER,
     emptyOutDir: false,
     copyPublicDir: false
-  }
+  },
+  plugins: [
+    nodePolyfills({
+      include: ['path'],
+    }),
+  ]
 })

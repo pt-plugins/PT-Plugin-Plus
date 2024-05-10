@@ -31,12 +31,9 @@
     "file-saver": "^2.0.5",
     "highcharts": "^10.2.1",
     "highcharts-vue": "^1.4.0",
-    "https-browserify": "^1.0.0",
     "i18next": "^21.9.1",
     "jszip": "^3.10.1",
     "parse-torrent": "^11.0.16",
-    "path-browserify": "^1.0.1",
-    "stream-http": "^3.2.0",
     "ua-parser-js": "^1.0.2",
     "url-parse": "^1.5.10",
     "vue": "~2.7.0",
@@ -71,6 +68,7 @@
     "sass-loader": "^14.2.1",
     "typescript": "^5.4.5",
     "vite": "^5.2.10",
+    "vite-plugin-node-polyfills": "^0.21.0",
     "vue-template-compiler": "~2.7.0"
   },
   "browserslist": [
