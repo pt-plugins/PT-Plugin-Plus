@@ -159,7 +159,11 @@
                 :disabled="!site.tokenRequired" :rules="site.tokenRequired ? rules.require : []"
                 :label="$t('settings.sites.editor.authToken')"
                 :placeholder="$t('settings.sites.editor.authTokenTip')"
-        ></v-text-field>
+        ></v-text-field>       
+
+        <!-- 站点已离线（停机/关闭） -->
+        <v-switch :label="$t('settings.sites.editor.offline')" v-model="site.offline" />
+
         <!-- 允许获取用户信息 -->
         <v-switch
           :label="$t('settings.sites.editor.allowGetUserInfo')"
@@ -192,8 +196,12 @@
           </v-container>
         </template>
 
-        <!-- 站点已离线（停机/关闭） -->
-        <v-switch :label="$t('settings.sites.editor.offline')" v-model="site.offline"></v-switch>
+        <!-- 禁用搜索替换  -->
+        <v-switch
+          v-model="site.disableSearchTransform"
+          :disabled="!site.allowSearch || site.offline"
+          :label="$t('settings.sites.editor.disableSearchTransform')"
+        />
 
         <!-- 消息提醒开关 -->
         <v-switch :label="$t('settings.sites.editor.disableMessageCount')" v-model="site.disableMessageCount"></v-switch>

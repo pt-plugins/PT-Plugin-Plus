@@ -756,6 +756,7 @@
           "passkey": "密钥",
           "passkeyTip": "密钥仅用于复制下载地址操作，如果不需要用到此功能，请留空",
           "allowSearch": "允许搜索",
+          "disableSearchTransform": "禁用搜索替换",
           "allowGetUserInfo": "允许获取用户信息（Beta）",
           "cdn": "站点CDN列表",
           "cdnTip": "如您使用的网址和系统定义的不同，可在此填写当前使用的网站地址，每行填写一个地址，第一个将做为搜索时使用的地址",
