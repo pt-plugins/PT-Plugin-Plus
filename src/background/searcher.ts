@@ -161,7 +161,7 @@ export class Searcher {
             // 是否有自动匹配关键字的正则
             if (
               area.keyAutoMatch &&
-              new RegExp(area.keyAutoMatch, "").test(key)
+              new RegExp(area.keyAutoMatch, "u").test(key)
             ) {
               // 是否替换默认页面
               if (area.page) {
