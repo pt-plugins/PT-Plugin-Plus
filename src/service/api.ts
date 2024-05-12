@@ -12,7 +12,7 @@ import "./favicon";
 
 let rootPath = "";
 let isExtensionMode = false;
-const isDebugMode = process.env.NODE_ENV === "development";
+const isDebugMode = import.meta.env.DEV;
 // 检测浏览器当前状态和模式
 try {
   let runtime = chrome.runtime as any;

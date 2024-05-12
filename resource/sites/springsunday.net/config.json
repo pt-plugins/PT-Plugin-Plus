@@ -177,8 +177,7 @@
   "searchEntryConfig": {
     "fieldSelector": {
       "subTitle": {
-        "selector": ["div.torrent-smalldescr:first"],
-        "filters": ["query.prop('lastChild').nodeValue.trim()"]
+        "selector": ["div.torrent-smalldescr:first > span"]
       },
       "progress": {
         "selector": [".p_seeding", ".p_downloading", ".p_completed", ".p_inactive", ""],
@@ -222,6 +221,10 @@
   }, {
     "name": "⛔️",
     "selector": "span.torrent-exclusive"
+  }, {
+    "name": "MiniDB",
+    "color": "amber",
+    "selector": "span.torrent-minibd"
   }],
   "selectors": {
     "userBaseInfo": {
