@@ -1,5 +1,5 @@
-import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vite'
+import {fileURLToPath, URL} from 'node:url'
+import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue2'
 
 export const sharedConfig = {
@@ -18,7 +18,11 @@ export default defineConfig({
   publicDir: 'public',
   build: {
     chunkSizeWarningLimit: Number.MAX_SAFE_INTEGER,
-    emptyOutDir: false
+    minify: false,
+    emptyOutDir: false,
+    rollupOptions: {
+      treeshake: false,
+    }
   },
   plugins: [
     vue(),
