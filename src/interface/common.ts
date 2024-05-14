@@ -270,6 +270,7 @@ export interface Site {
   defaultClientId?: string;
   plugins?: any[];
   allowSearch?: boolean;
+  disableSearchTransform?: boolean;
   securityKeys?: object;
   searchEntryConfig?: SearchEntryConfig;
   searchEntry?: SearchEntry[];

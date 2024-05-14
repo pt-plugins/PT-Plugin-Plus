@@ -161,12 +161,12 @@ export class Searcher {
         searchEntryConfigQueryString = searchEntryConfig.queryString + "";
 
         // 搜索区域
-        if (searchEntryConfig.area) {
+        if (searchEntryConfig.area && !site.disableSearchTransform) {
           searchEntryConfig.area.some((area: SearchEntryConfigArea) => {
             // 是否有自动匹配关键字的正则
             if (
               area.keyAutoMatch &&
-              new RegExp(area.keyAutoMatch, "").test(key)
+              new RegExp(area.keyAutoMatch, "u").test(key)
             ) {
               // 是否替换默认页面
               if (area.page) {
@@ -276,10 +276,12 @@ export class Searcher {
 
               // 替换关键字
               if (area.replaceKey) {
+                const old = key;
                 key = key.replace(
                   new RegExp(area.replaceKey[0], "g"),
                   area.replaceKey[1]
                 );
+                console.log(`[${site.name}] "${old}" => "${key}"`);
               }
 
               // 解析脚本，最终返回搜索关键字，可调用 payload 里的数据进行关键字替换
