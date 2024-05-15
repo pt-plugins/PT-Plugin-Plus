@@ -5,7 +5,8 @@ import {
   UserInfo,
   EUserDataRequestStatus,
   ERequestResultType,
-  ERequestMethod
+  ERequestMethod,
+  ExtendedGetAllDetails
 } from "@/interface/common";
 import PTPlugin from "./service";
 import { InfoParser } from "./infoParser";
@@ -13,6 +14,7 @@ import { APP } from "@/service/api";
 import { PPF } from "@/service/public";
 
 type Service = PTPlugin;
+
 
 export class User {
   private requestQueue: any = {};
@@ -328,60 +330,152 @@ export class User {
 
       PPF.updateBadge(++this.requestQueueCount);
 
-      let request = $.ajax({
-        url,
-        method: rule.requestMethod || ERequestMethod.GET,
-        dataType: "text",
-        data: rule.requestContentType == "application/json" ? JSON.stringify(requestData) : requestData,
-        contentType: rule.requestContentType == "application/json" ? "application/json" : "application/x-www-form-urlencoded",
-        headers: rule.headers,
-        timeout: this.service.options.connectClientTimeout || 30000,
-        cache: (rule.dataType) && rule.dataType !== ERequestResultType.JSON ? false : true
-      })
-        .done(result => {
-          this.removeQueue(host, url);
-          PPF.updateBadge(--this.requestQueueCount);
-          let content: any;
-          try {
-            if (rule.dataType !== ERequestResultType.JSON) {
-              let doc = new DOMParser().parseFromString(result, "text/html");
-              // 构造 jQuery 对象
-              let topElement = rule.topElement || "body";
-              content = $(doc).find(topElement);
-            } else {
-              content = JSON.parse(result);
-            }
-          } catch (error) {
-            this.service.debug("getInfos.error", host, url, error);
-            reject(error);
-            return;
-          }
 
-          if (content && rule) {
-            try {
-              let results = new InfoParser().getResult(content, rule);
-              resolve(results);
-            } catch (error) {
-              this.service.debug(error);
-              reject(error);
-            }
-          }
+      let request ;
+      if(url.includes("pt.btschool.club")){
+        
+        this.getAllCookies(url,"https://btschool.club", (cookies) => {
+        const cookiesString = cookies.map(function(cookie) {
+            return cookie.name + '=' + cookie.value;
+          }).join('; ');
+        
+        if (!rule.headers) {
+            rule.headers = {};
+        }
+        rule.headers["Overwrite-Cookie"] = cookiesString;
+
+        request = $.ajax({
+          url,
+          method: rule.requestMethod || ERequestMethod.GET,
+          dataType: "text",
+          data: rule.requestContentType == "application/json" ? JSON.stringify(requestData) : requestData,
+          contentType: rule.requestContentType == "application/json" ? "application/json" : "application/x-www-form-urlencoded",
+          headers: rule.headers,
+          timeout: this.service.options.connectClientTimeout || 30000,
+          cache: (rule.dataType) && rule.dataType !== ERequestResultType.JSON ? false : true
         })
-        .fail((jqXHR, textStatus, errorThrown) => {
-          this.removeQueue(host, url);
-          PPF.updateBadge(--this.requestQueueCount);
-          let msg = this.service.i18n.t("service.searcher.siteNetworkFailed", {
-            site,
-            msg: `${jqXHR.status} ${errorThrown}, ${textStatus}`
+          .done(result => {
+            this.removeQueue(host, url);
+            PPF.updateBadge(--this.requestQueueCount);
+            let content: any;
+            try {
+              if (rule.dataType !== ERequestResultType.JSON) {
+                let doc = new DOMParser().parseFromString(result, "text/html");
+                // 构造 jQuery 对象
+                let topElement = rule.topElement || "body";
+                content = $(doc).find(topElement);
+              } else {
+                content = JSON.parse(result);
+              }
+            } catch (error) {
+              this.service.debug("getInfos.error", host, url, error);
+              reject(error);
+              return;
+            }
+  
+            if (content && rule) {
+              try {
+                let results = new InfoParser().getResult(content, rule);
+                resolve(results);
+              } catch (error) {
+                this.service.debug(error);
+                reject(error);
+              }
+            }
+          })
+          .fail((jqXHR, textStatus, errorThrown) => {
+            this.removeQueue(host, url);
+            PPF.updateBadge(--this.requestQueueCount);
+            let msg = this.service.i18n.t("service.searcher.siteNetworkFailed", {
+              site,
+              msg: `${jqXHR.status} ${errorThrown}, ${textStatus}`
+            });
+            this.service.debug(msg, host, url, jqXHR.responseText);
+            reject(msg);
           });
-          this.service.debug(msg, host, url, jqXHR.responseText);
-          reject(msg);
-        });
 
-      this.addQueue(host, url, request);
+          
+      this.addQueue(host, url, request);  
+        });
+      }else{
+         request = $.ajax({
+          url,
+          method: rule.requestMethod || ERequestMethod.GET,
+          dataType: "text",
+          data: rule.requestContentType == "application/json" ? JSON.stringify(requestData) : requestData,
+          contentType: rule.requestContentType == "application/json" ? "application/json" : "application/x-www-form-urlencoded",
+          headers: rule.headers,
+          timeout: this.service.options.connectClientTimeout || 30000,
+          cache: (rule.dataType) && rule.dataType !== ERequestResultType.JSON ? false : true
+        })
+          .done(result => {
+            this.removeQueue(host, url);
+            PPF.updateBadge(--this.requestQueueCount);
+            let content: any;
+            try {
+              if (rule.dataType !== ERequestResultType.JSON) {
+                let doc = new DOMParser().parseFromString(result, "text/html");
+                // 构造 jQuery 对象
+                let topElement = rule.topElement || "body";
+                content = $(doc).find(topElement);
+              } else {
+                content = JSON.parse(result);
+              }
+            } catch (error) {
+              this.service.debug("getInfos.error", host, url, error);
+              reject(error);
+              return;
+            }
+  
+            if (content && rule) {
+              try {
+                let results = new InfoParser().getResult(content, rule);
+                resolve(results);
+              } catch (error) {
+                this.service.debug(error);
+                reject(error);
+              }
+            }
+          })
+          .fail((jqXHR, textStatus, errorThrown) => {
+            this.removeQueue(host, url);
+            PPF.updateBadge(--this.requestQueueCount);
+            let msg = this.service.i18n.t("service.searcher.siteNetworkFailed", {
+              site,
+              msg: `${jqXHR.status} ${errorThrown}, ${textStatus}`
+            });
+            this.service.debug(msg, host, url, jqXHR.responseText);
+            reject(msg);
+          });
+  
+          this.addQueue(host, url, request);
+      }
+
+
+   
     });
   }
 
+
+
+  public getAllCookies(url: string, topLevelSite: string, callback: (cookies: chrome.cookies.Cookie[]) => void): void {
+    let allCookies: chrome.cookies.Cookie[] = [];
+    chrome.cookies.getAll({ url: url }, (cookies1) => {
+        allCookies = allCookies.concat(cookies1);
+        const cookieDetails: ExtendedGetAllDetails = {
+            url: url,
+            partitionKey: {
+                topLevelSite: topLevelSite
+            }
+        };
+        chrome.cookies.getAll(cookieDetails, (cookies2) => {
+            allCookies = allCookies.concat(cookies2);
+            callback(allCookies);
+        });
+    });
+}
+
+  
   /**
    * 执行脚本解析器
    * @param rule

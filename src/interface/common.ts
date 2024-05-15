@@ -883,3 +883,10 @@ export interface ISiteIcon {
   host: string;
   data: string;
 }
+
+
+export interface ExtendedGetAllDetails extends chrome.cookies.GetAllDetails {
+  partitionKey?: {
+    topLevelSite?: string;
+  };
+}

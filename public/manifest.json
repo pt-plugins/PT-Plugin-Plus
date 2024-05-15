@@ -15,6 +15,7 @@
 		"clipboardRead",
 		"clipboardWrite",
 		"storage",
+		"cookies",
 		"contextMenus",
 		"notifications",
 		"http://*/*",

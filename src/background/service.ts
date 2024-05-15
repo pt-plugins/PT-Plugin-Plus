@@ -625,8 +625,17 @@ export default class PTPlugin {
     chrome.webRequest.onBeforeSendHeaders.addListener(
       (details: chrome.webRequest.WebRequestHeadersDetails) => {
         let headers: chrome.webRequest.HttpHeader[] = [];
+
         if (details.requestHeaders) {
+          if (details.url.includes("btschool.club")){
+            const hasOverwriteHeader = details.requestHeaders.some(header => header.name.startsWith(this.gDummyHeaderPrefix));
+            if (hasOverwriteHeader) {
+              details.requestHeaders = details.requestHeaders.filter(header => header.name !== "Cookie");
+            }
+          }
+
           headers = details.requestHeaders.map((header: chrome.webRequest.HttpHeader) => {
+
             if (header.name.startsWith(this.gDummyHeaderPrefix)) {
               const modifiedName = header.name.replace(this.gDummyHeaderPrefix, '');
               return { name: modifiedName, value: header.value };
