@@ -627,12 +627,11 @@ export default class PTPlugin {
         let headers: chrome.webRequest.HttpHeader[] = [];
 
         if (details.requestHeaders) {
-          if (details.url.includes("btschool.club")){
-            const hasOverwriteHeader = details.requestHeaders.some(header => header.name.startsWith(this.gDummyHeaderPrefix));
-            if (hasOverwriteHeader) {
-              details.requestHeaders = details.requestHeaders.filter(header => header.name !== "Cookie");
-            }
-          }
+          const headersToRemove = details.requestHeaders
+          .filter(header => header.name.startsWith(this.gDummyHeaderPrefix))
+          .map(header => header.name.replace(this.gDummyHeaderPrefix, ''));
+
+          details.requestHeaders = details.requestHeaders.filter(header => !headersToRemove.includes(header.name));
 
           headers = details.requestHeaders.map((header: chrome.webRequest.HttpHeader) => {
 

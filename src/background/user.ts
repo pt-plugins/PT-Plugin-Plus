@@ -331,134 +331,94 @@ export class User {
       PPF.updateBadge(++this.requestQueueCount);
 
 
-      let request ;
-      if(url.includes("pt.btschool.club")){
-        
-        this.getAllCookies(url,"https://btschool.club", (cookies) => {
-        const cookiesString = cookies.map(function(cookie) {
-            return cookie.name + '=' + cookie.value;
-          }).join('; ');
-        
-        if (!rule.headers) {
-            rule.headers = {};
-        }
-        rule.headers["Overwrite-Cookie"] = cookiesString;
-
-        request = $.ajax({
-          url,
-          method: rule.requestMethod || ERequestMethod.GET,
-          dataType: "text",
-          data: rule.requestContentType == "application/json" ? JSON.stringify(requestData) : requestData,
-          contentType: rule.requestContentType == "application/json" ? "application/json" : "application/x-www-form-urlencoded",
-          headers: rule.headers,
-          timeout: this.service.options.connectClientTimeout || 30000,
-          cache: (rule.dataType) && rule.dataType !== ERequestResultType.JSON ? false : true
-        })
-          .done(result => {
-            this.removeQueue(host, url);
-            PPF.updateBadge(--this.requestQueueCount);
-            let content: any;
-            try {
-              if (rule.dataType !== ERequestResultType.JSON) {
-                let doc = new DOMParser().parseFromString(result, "text/html");
-                // 构造 jQuery 对象
-                let topElement = rule.topElement || "body";
-                content = $(doc).find(topElement);
-              } else {
-                content = JSON.parse(result);
-              }
-            } catch (error) {
-              this.service.debug("getInfos.error", host, url, error);
-              reject(error);
-              return;
-            }
-  
-            if (content && rule) {
-              try {
-                let results = new InfoParser().getResult(content, rule);
-                resolve(results);
-              } catch (error) {
-                this.service.debug(error);
-                reject(error);
-              }
-            }
-          })
-          .fail((jqXHR, textStatus, errorThrown) => {
-            this.removeQueue(host, url);
-            PPF.updateBadge(--this.requestQueueCount);
-            let msg = this.service.i18n.t("service.searcher.siteNetworkFailed", {
-              site,
-              msg: `${jqXHR.status} ${errorThrown}, ${textStatus}`
-            });
-            this.service.debug(msg, host, url, jqXHR.responseText);
-            reject(msg);
-          });
-
+      if(site && site.allCookie && site.sldURL){
+        this.getAllCookies(url,site.sldURL, (cookies: chrome.cookies.Cookie[]) => {
+          const cookiesString = cookies.map(function(cookie: chrome.cookies.Cookie) {
+              return cookie.name + '=' + cookie.value;
+            }).join('; ');
           
-      this.addQueue(host, url, request);  
-        });
-      }else{
-         request = $.ajax({
-          url,
-          method: rule.requestMethod || ERequestMethod.GET,
-          dataType: "text",
-          data: rule.requestContentType == "application/json" ? JSON.stringify(requestData) : requestData,
-          contentType: rule.requestContentType == "application/json" ? "application/json" : "application/x-www-form-urlencoded",
-          headers: rule.headers,
-          timeout: this.service.options.connectClientTimeout || 30000,
-          cache: (rule.dataType) && rule.dataType !== ERequestResultType.JSON ? false : true
-        })
-          .done(result => {
-            this.removeQueue(host, url);
-            PPF.updateBadge(--this.requestQueueCount);
-            let content: any;
-            try {
-              if (rule.dataType !== ERequestResultType.JSON) {
-                let doc = new DOMParser().parseFromString(result, "text/html");
-                // 构造 jQuery 对象
-                let topElement = rule.topElement || "body";
-                content = $(doc).find(topElement);
-              } else {
-                content = JSON.parse(result);
-              }
-            } catch (error) {
-              this.service.debug("getInfos.error", host, url, error);
-              reject(error);
-              return;
-            }
-  
-            if (content && rule) {
-              try {
-                let results = new InfoParser().getResult(content, rule);
-                resolve(results);
-              } catch (error) {
-                this.service.debug(error);
-                reject(error);
-              }
-            }
-          })
-          .fail((jqXHR, textStatus, errorThrown) => {
-            this.removeQueue(host, url);
-            PPF.updateBadge(--this.requestQueueCount);
-            let msg = this.service.i18n.t("service.searcher.siteNetworkFailed", {
-              site,
-              msg: `${jqXHR.status} ${errorThrown}, ${textStatus}`
-            });
-            this.service.debug(msg, host, url, jqXHR.responseText);
-            reject(msg);
+          if (!rule.headers) {
+              rule.headers = {};
+          }
+          rule.headers["Overwrite-Cookie"] = cookiesString;
+          
+          this.getData(host, url, rule, site)
+          .then(results => resolve(results))
+          .catch(error => reject(error)); 
+
           });
-  
-          this.addQueue(host, url, request);
       }
 
-
-   
+      this.getData(host, url, rule, site)
+      .then(results => resolve(results))
+      .catch(error => reject(error)); 
     });
+  }
+  
+  getData(
+      host: string,
+      url: string,
+      rule: Dictionary<any>,
+      requestData :any,
+      site?: Site
+    ): Promise<any> {
+      return new Promise<any>((resolve, reject) => {
+        let request = $.ajax({
+          url,
+          method: rule.requestMethod || ERequestMethod.GET,
+          dataType: "text",
+          data: rule.requestContentType == "application/json" ? JSON.stringify(requestData) : requestData,
+          contentType: rule.requestContentType == "application/json" ? "application/json" : "application/x-www-form-urlencoded",
+          headers: rule.headers,
+          timeout: this.service.options.connectClientTimeout || 30000,
+          cache: (rule.dataType) && rule.dataType !== ERequestResultType.JSON ? false : true
+        })
+          .done(result => {
+            this.removeQueue(host, url);
+            PPF.updateBadge(--this.requestQueueCount);
+            let content: any;
+            try {
+              if (rule.dataType !== ERequestResultType.JSON) {
+                let doc = new DOMParser().parseFromString(result, "text/html");
+                // 构造 jQuery 对象
+                let topElement = rule.topElement || "body";
+                content = $(doc).find(topElement);
+              } else {
+                content = JSON.parse(result);
+              }
+            } catch (error) {
+              this.service.debug("getInfos.error", host, url, error);
+              reject(error);
+              return;
+            }
+
+            if (content && rule) {
+              try {
+                let results = new InfoParser().getResult(content, rule);
+                resolve(results);
+              } catch (error) {
+                this.service.debug(error);
+                reject(error);
+              }
+            }
+          })
+          .fail((jqXHR, textStatus, errorThrown) => {
+            this.removeQueue(host, url);
+            PPF.updateBadge(--this.requestQueueCount);
+            let msg = this.service.i18n.t("service.searcher.siteNetworkFailed", {
+              site,
+              msg: `${jqXHR.status} ${errorThrown}, ${textStatus}`
+            });
+            this.service.debug(msg, host, url, jqXHR.responseText);
+            reject(msg);
+          });
+
+          this.addQueue(host, url, request);
+      });
   }
 
 
-
-  public getAllCookies(url: string, topLevelSite: string, callback: (cookies: chrome.cookies.Cookie[]) => void): void {
+  getAllCookies(url: string, topLevelSite: string, callback: (cookies: chrome.cookies.Cookie[]) => void): void {
     let allCookies: chrome.cookies.Cookie[] = [];
     chrome.cookies.getAll({ url: url }, (cookies1) => {
         allCookies = allCookies.concat(cookies1);

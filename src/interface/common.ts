@@ -313,7 +313,11 @@ export interface Site {
   // 使用站点标签进行分组
   // siteGroups?: string[];
   // token in headers
-  authToken?: string
+  authToken?: string;
+  // 是否拦截SLD
+  allCookie?: boolean;
+  // SLD地址
+  sldURL?: string;
 }
 
 /**

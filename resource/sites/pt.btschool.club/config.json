@@ -7,6 +7,8 @@
   "tags": [ "影视", "综合" ],
   "schema": "NexusPHP",
   "host": "pt.btschool.club",
+  "allCookie":true,
+  "sldURL":"https://btschool.club",
   "formerHosts": [
     "pt.btschool.net"
   ],
