@@ -128,7 +128,7 @@
         "keyAutoMatch": "^(tt\\d+)$",
         "requestData": {
           "pageNumber": 1,
-          "pageSize": 100,
+          "pageSize": 200,
           "mode": "normal",
           "imdb": "$key$"
         }
@@ -141,7 +141,7 @@
       "enabled": true,
       "requestData": {
         "pageNumber": 1,
-        "pageSize": 100,
+        "pageSize": 200,
         "mode": "normal",
         "keyword": "$key$"
       }
@@ -152,7 +152,7 @@
       "skipIMDbId": true,
       "requestData": {
         "pageNumber": 1,
-        "pageSize": 100,
+        "pageSize": 200,
         "mode": "adult",
         "keyword": "$key$"
       }
