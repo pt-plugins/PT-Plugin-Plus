@@ -189,6 +189,7 @@
       "gettingForSite": "Getting {siteName} user profile",
       "requestCompleted": "Request completed, time: {second} seconds.",
       "getUserInfoError": "An error occurred",
+      "openWebsiteError": "Please open the website",
       "getUserInfoAbort": "Get user profile request has been canceled. ({siteName})",
       "getUserInfoAbortError": "Cancellation failed to get user profile request. ({siteName})",
       "offline": "Offline",

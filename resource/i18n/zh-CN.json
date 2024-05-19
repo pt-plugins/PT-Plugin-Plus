@@ -186,6 +186,7 @@
       "gettingForSite": "正在获取 {siteName} 个人数据",
       "requestCompleted": "请求完成，耗时：{second} 秒。",
       "getUserInfoError": "发生错误",
+      "openWebsiteError": "请先打开网站",
       "getUserInfoAbort": "{siteName} 获取用户资料请求已取消",
       "getUserInfoAbortError": "{siteName} 获取用户资料请求取消失败",
       "offline": "已离线",

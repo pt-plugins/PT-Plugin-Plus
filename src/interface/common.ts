@@ -314,8 +314,8 @@ export interface Site {
   // siteGroups?: string[];
   // token in headers
   authToken?: string;
-  // 是否拦截SLD
-  allCookie?: boolean;
+  // 是否是cf站点
+  cfSite?: boolean;
   // SLD地址
   sldURL?: string;
 }

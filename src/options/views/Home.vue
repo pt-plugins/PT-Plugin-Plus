@@ -1250,7 +1250,11 @@ export default Vue.extend({
           if (result.msg && result.msg.status) {
             user.lastErrorMsg = result.msg.msg;
           } else {
+          if(site.cfSite){
+            user.lastErrorMsg = this.$t("home.openWebsiteError").toString();
+          }else{
             user.lastErrorMsg = this.$t("home.getUserInfoError").toString();
+          }
           }
         })
         .finally(() => {
