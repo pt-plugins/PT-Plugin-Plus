@@ -752,7 +752,8 @@ class PTPContent {
       if (e.target.tagName == "A") {
         let data = {
           url: e.target.getAttribute("href"),
-          title: e.target.getAttribute("title")
+          // fix: 修复 mt 拖放时无法获取到title的问题
+          title: e.target.getAttribute("title") || e.target.querySelector('.ant-tooltip-open')?.innerText || e.target.innerText
         };
         e.dataTransfer.setData("text/plain", JSON.stringify(data));
       }
