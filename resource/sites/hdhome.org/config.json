@@ -57,7 +57,7 @@
     "downloaded": "2TB",
     "ratio": "4.5",
     "seedingPoints": "540000",
-    "privilege": "得到1个邀请名额，可以更新过期的外部信息，可以查看Extreme User论坛，账号封存后永久保留"
+    "privilege": "得到1个邀请名额，可以更新过期的外部信息；可以查看Extreme User论坛"
   },{
     "level": "7",
     "name": "Ultimate User",
@@ -65,7 +65,7 @@
     "downloaded": "8TB",
     "ratio": "5.0",
     "seedingPoints": "700000",
-    "privilege": "得到1个邀请名额，账号永久保留"
+    "privilege": "得到1个邀请名额"
   },{
     "level": "8",
     "name": "Nexus Master",
@@ -73,7 +73,7 @@
     "downloaded": "10TB",
     "ratio": "10",
     "seedingPoints": "1000000",
-    "privilege": "得到1个邀请名额"
+    "privilege": "得到1个邀请名额，账号永久保留"
   }],
   "collaborator": ["tongyifan", "yuanyiwei"],
   "plugins": [
