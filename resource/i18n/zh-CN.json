@@ -592,6 +592,8 @@
           "enableCategory": "发送种子时自动添加 QB 分类 (Beta)",
           "enableCategoryText": "QB 分类列表",
           "enableCategoryTextTip": "每行填写一个地址，逗号分隔分类名称和路径, 不支持路径关键字。如：'movie,/tmp/movie'。默认分类请使用'movie,_'的格式。还需在下载目录设置里面填写一样的下载路径. 当指定了下载路径且下载路径命中了某一个分类, 才会添加分类并启用自动种子管理.",
+          "customTagText": "QB 自定义标签列表",
+          "customTagTextTip": "不需要留空即可，逗号分隔. 比如: PTPP,MOVIEPILOT",
           "autoCreate": "<保存后自动生成>",
           "test": "测试服务器是否可连接",
           "testSuccess": "服务器可连接",

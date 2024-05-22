@@ -199,19 +199,26 @@
       }
 
       if (clientOptions && siteConfig)  {
+        let tmpTags = []
         // 以 frds 为例, 这里是 keepfrds
         if (clientOptions.hostnameAsTag) {
           let url = new URL(siteConfig.activeURL).hostname
           let arr = url.split('.')
           arr.pop()
-          tags.push(arr.pop())
+          tmpTags.push(arr.pop())
         }
         // 以 frds 为例, 这里是 pt@keepfrds
         if (clientOptions.siteNameAsTag) {
-          tags.push(siteConfig.name)
+          tmpTags.push(siteConfig.name)
         }
+        tmpTags = tmpTags.filter(_ => !!_).map(_ => _.toLowerCase())
+        if (clientOptions.customTags && clientOptions.customTags.length > 0) {
+          tmpTags = tmpTags.concat(clientOptions.customTags)
+        }
+        tags = tags.concat(tmpTags)
       }
-      tags = tags.filter(_ => !!_).map(_ => _.toLowerCase()).join(',')
+
+      tags = tags.filter(_ => !!_).join(',')
 
       if (autoTMM !== undefined) {
         formData.append("autoTMM", autoTMM);
@@ -261,7 +268,7 @@
           params: params
         },
         resultData => {
-          console.log(`/api/v2/torrents/add: ${resultData}`)
+          console.log(`/api/v2/torrents/add: ${JSON.stringify(resultData)}`)
           let result
           switch (typeof resultData) {
             case 'object':
