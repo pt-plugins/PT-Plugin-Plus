@@ -337,7 +337,7 @@ export default Vue.extend({
           status: this.$t("keepUploadTask.status.downloading").toString()
         });
         // requests.push(this.getTorrent(item.url, index));
-        this.getTorrent(item.url, index)
+        this.getTorrent(item, index)
           .then((result: any) => {
             this.verification(result, index);
           })
@@ -352,7 +352,7 @@ export default Vue.extend({
       this.verifiedItems[index].loading = true;
       this.verifiedItems[index].status = this.$t("keepUploadTask.status.downloading").toString();
 
-      this.getTorrent(this.verifiedItems[index].data.url, index)
+      this.getTorrent(this.verifiedItems[index].data, index)
         .then((result: any) => {
           this.verification(result, index);
         })
@@ -462,11 +462,30 @@ export default Vue.extend({
     /**
      * 获取种子文件内容
      */
-    getTorrent(url: string, index: number): Promise<any> {
+    getTorrent(item: SearchResultItem, index: number): Promise<any> {
+      if (item.url) {
+        switch (item.site.name) {
+          case "M-Team":
+            let id = item.url.replace(/^\D+/g, '');
+            console.log(`getTorrentDataFromURL.M-Team ${item.url} -> ${id}`);
+            if (id) {
+              if (parseInt(id)) {
+                let torrentURL = PPF.resolveMTDownloadURL(id, item.site);
+                console.log(`getTorrentDataFromURL.M-Team1 ${item.url} -> ${torrentURL}`);
+                item.url = torrentURL;
+              } else {
+                console.log(`getTorrentDataFromURL.M-Team2 ${item.url}, id 链接可能已是直链, 不进行转换...`);
+              }
+            }
+            break
+          default:
+            break
+        }
+      }
       return new Promise<any>((resolve?: any, reject?: any) => {
         extension
           .sendRequest(EAction.getTorrentDataFromURL, null, {
-            url,
+            url: item.url,
             parseTorrent: true
           })
           .then(result => {
