@@ -228,6 +228,16 @@
         }
       }
     },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["#outer table:last tr:last td:last"],
+          "filters": ["parseFloat(query.text().split('/')[0].trim())"]
+        }
+      }
+    },
     "/details.php": {
       "merge": true,
       "fields": {

@@ -6,6 +6,8 @@
   "icon": "https://hd-torrents.org/favicon.ico",
   "tags": ["综合"],
   "schema": "Common",
+  "cfSite":true,
+  "sldURL":"https://hd-torrents.org",
   "plugins": [{
     "name": "种子详情页面",
     "pages": ["/details.php"],
