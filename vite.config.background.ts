@@ -2,7 +2,7 @@ import path from 'node:path'
 import {defineConfig} from 'vite'
 import {sharedConfig} from "./vite.config";
 import fs from "node:fs";
-import git from 'git-rev-sync'
+import * as cp from 'node:child_process'
 import {nodePolyfills} from 'vite-plugin-node-polyfills'
 import buildResource from "./vite/buildResource";
 
@@ -38,7 +38,7 @@ export default defineConfig({
       closeBundle() {
         const manifest_file_path = path.resolve(__dirname, './dist/manifest.json');
         const manifest = JSON.parse(fs.readFileSync(manifest_file_path, 'utf-8'));
-        const build_number = git.count() % 65535;
+        const build_number = (parseInt(cp.execSync('git rev-list HEAD --count').toString()) + 45) % 65535;
         manifest.version = `${manifest.version}.${build_number}`;
 
         fs.writeFileSync(manifest_file_path, JSON.stringify(manifest, null, 2));
