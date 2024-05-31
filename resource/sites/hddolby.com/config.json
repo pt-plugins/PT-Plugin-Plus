@@ -84,7 +84,10 @@
       "privilege": "无"
     }
   ],
-  "collaborator": ["iceyuamao0510", "tongyifan"],
+  "collaborator": [
+    "iceyuamao0510",
+    "tongyifan"
+  ],
   "searchEntryConfig": {
     "fieldSelector": {
       "progress": {
@@ -223,8 +226,27 @@
       "merge": true,
       "fields": {
         "bonus": {
-          "selector": ["td.rowhead:contains('鲸币') + td", "td.rowhead:contains('Karma Points') + td"],
-          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+          "selector": [
+            "td.rowhead:contains('鲸币') + td",
+            "td.rowhead:contains('Karma Points') + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'')",
+            "parseFloat(query)"
+          ]
+        }
+      }
+    },
+    "bonusExtendInfo": {
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": [
+            "table[width='800'] > tbody > tr:contains('合计') > td:last-of-type"
+          ],
+          "filters": [
+            "parseFloat(query.text().split('/')[0].trim())"
+          ]
         }
       }
     },
