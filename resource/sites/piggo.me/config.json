@@ -112,6 +112,15 @@
                 }
             }
         },
+        "userExtendInfo": {
+            "merge": true,
+            "fields": {
+              "unsatisfieds": {
+                "selector": ["a[href*='myhr.php']:last"],
+                "filters": ["query.length ? (parseInt(query.text().match(/[\\d.]+/g)[0]) + parseInt(query.text().match(/[\\d.]+/g)[3])) : null"]
+              }
+            }
+        },
         "userSeedingTorrents": {
             "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
             "fields": {
