@@ -1,0 +1,127 @@
+{
+    "name": "YemaPT",
+    "timezoneOffset": "+0800",
+    "description": "由全新技术架构构建而来PT站点。（因站点限制，单次最多返回40个搜索结果。）",
+    "url": "https://www.yemapt.org/",
+    "icon": "https://static-a.yemapt.org/icons/icons8-mustang-96.png",
+    "tags": [
+        "综合"
+    ],
+    "schema": "YemaPT",
+    "host": "www.yemapt.org",
+    "searchEntryConfig": {
+        "page": "/api/torrent/fetchCategoryOpenTorrentList",
+        "resultType": "json",
+        "requestDataType": "json",
+        "parseScriptFile": "getSearchResult.js",
+        "keepOriginKey": true,
+        "requestMethod": "POST"
+    },
+    "searchEntry": [
+        {
+            "name": "电影",
+            "enabled": true,
+            "requestData": {
+                "categoryId": 4,
+                "keyword": "$key$",
+                "pageParam": {
+                    "current": 1,
+                    "pageSize": 40,
+                    "total": 1000
+                },
+                "sorter": {
+                    "order":"descend",
+                    "field":"gmtCreate"
+                }
+            }
+        },
+        {
+            "name": "剧集",
+            "enabled": true,
+            "requestData": {
+                "categoryId": 5,
+                "keyword": "$key$",
+                "pageParam": {
+                    "current": 1,
+                    "pageSize": 40,
+                    "total": 1000
+                },
+                "sorter": {
+                    "order":"descend",
+                    "field":"gmtCreate"
+                }
+            }
+        },
+        {
+            "name": "软件",
+            "enabled": false,
+            "requestData": {
+                "categoryId": 3,
+                "keyword": "$key$",
+                "pageParam": {
+                    "current": 1,
+                    "pageSize": 40,
+                    "total": 1000
+                },
+                "sorter": {
+                    "order":"descend",
+                    "field":"gmtCreate"
+                }
+            }
+        }
+    ],
+    "selectors": {
+        "userBaseInfo": {
+            "page": "/api/consumer/fetchSelfDetail",
+            "dataType": "json",
+            "fields": {
+                "isLogged": {
+                    "selector": [
+                        "success"
+                    ],
+                    "filters": [
+                        "Boolean(query)"
+                    ]
+                },
+                "id": {
+                    "selector": [
+                        "data.id"
+                    ]
+                },
+                "name": {
+                    "selector": [
+                        "data.name"
+                    ]
+                },
+                "joinTime": {
+                    "selector": [
+                        "data.registerTime"
+                    ]
+                },
+                "uploaded": {
+                    "selector": [
+                        "data.promotionUploadSize"
+                    ]
+                },
+                "downloaded": {
+                    "selector": [
+                        "data.promotionDownloadSize"
+                    ]
+                },
+                "levelName": {
+                    "selector": [
+                        "data.level"
+                    ],
+                    "filters": [
+                        "'Level ' + query"
+                    ]
+                },
+                "bonus": {
+                    "selector": [
+                        "data.bonus"
+                    ]
+                }
+            }
+        }
+    }
+}
