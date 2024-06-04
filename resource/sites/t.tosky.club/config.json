@@ -12,72 +12,72 @@
       "name": "Power User",
       "interval": "4",
       "downloaded": "50GB",
-      "ratio": "1.05",
+      "ratio": "1",
       "seedingPoints": "40000",
-      "privilege": "直接发布种子；查看NFO文档；查看用户列表；请求续种；发送邀请；查看排行榜；查看其它用户的种子历史；删除自己上传的字幕。"
+      "privilege": "直接发布种子；查看NFO文档；删除自己上传的字幕。"
     },
     {
       "level": "2",
       "name": "Elite User",
       "interval": "8",
-      "downloaded": "120GB",
-      "ratio": "1.55",
+      "downloaded": "150GB",
+      "ratio": "1.5",
       "seedingPoints": "80000",
       "privilege": "首次升级至此等级的用户将获得1个邀请名额。"
     },
     {
       "level": "3",
       "name": "Crazy User",
-      "interval": "12",
-      "downloaded": "300GB",
-      "ratio": "2.05",
+      "interval": "13",
+      "downloaded": "500GB",
+      "ratio": "2",
       "seedingPoints": "150000",
       "privilege": ""
     },
     {
       "level": "4",
       "name": "Insane User",
-      "interval": "25",
-      "downloaded": "500GB",
-      "ratio": "2.55",
-      "seedingPoints": "400000",
-      "privilege": "查看普通日志"
+      "interval": "23",
+      "downloaded": "800GB",
+      "ratio": "2.5",
+      "seedingPoints": "250000",
+      "privilege": ""
     },
     {
       "level": "5",
       "name": "Veteran User",
-      "interval": "28",
-      "downloaded": "750GB",
-      "ratio": "4",
-      "seedingPoints": "800000",
-      "privilege": "永远保留账号；查看其它用户的评论、帖子历史"
+      "interval": "35",
+      "downloaded": "1.5TB",
+      "ratio": "3",
+      "seedingPoints": "400000",
+      "privilege": ""
     },
     {
       "level": "6",
       "name": "Extreme User",
-      "interval": "40",
-      "downloaded": "1TB",
-      "ratio": "5",
-      "seedingPoints": "1400000",
-      "privilege": "更新过期的外部信息；"
+      "interval": "50",
+      "downloaded": "2.5TB",
+      "ratio": "3.5",
+      "seedingPoints": "600000",
+      "privilege": ""
     },
     {
       "level": "7",
       "name": "Ultimate User",
-      "interval": "52",
-      "downloaded": "1.5TB",
-      "ratio": "6",
-      "seedingPoints": "2200000",
-      "privilege": "首次升级至此等级的用户将获得2个邀请名额。"
+      "interval": "65",
+      "downloaded": "3.5TB",
+      "ratio": "4",
+      "seedingPoints": "800000",
+      "privilege": ""
     },
     {
       "level": "8",
       "name": "Nexus Master",
-      "interval": "70",
-      "downloaded": "3TB",
-      "ratio": "7",
-      "seedingPoints": "3200000",
-      "privilege": "首次升级至此等级的用户将获得2个邀请名额。"
+      "interval": "80",
+      "downloaded": "4.5TB",
+      "ratio": "5",
+      "seedingPoints": "1000000",
+      "privilege": ""
     }
   ],
   "searchEntry": [
