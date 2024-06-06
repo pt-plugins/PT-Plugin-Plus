@@ -30,7 +30,7 @@
           let data = {
             title: group.title,
             subTitle: group.tags,
-            link: `${site.url}/detail/?tid=${group.tid}`,
+            link: `${site.url}/Torrents/details?tid=${group.tid}`,
             url: `${site.url}/api/Torrents/download?tid=${group.tid}&passkey=${site.passkey}`,
             size: Number(group.fileRawSize),
             time: Date(group.createdTs),
