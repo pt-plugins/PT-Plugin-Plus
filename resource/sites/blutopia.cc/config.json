@@ -73,7 +73,6 @@
       }
     }
   },
-  "cdn": ["https://blutopia.cc/","https://blutopia.xyz/"],
   "searchEntryConfig": {
     "skipNonLatinCharacters": true
   }
