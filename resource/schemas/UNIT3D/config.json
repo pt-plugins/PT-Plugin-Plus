@@ -27,10 +27,9 @@
     }],
     "fieldSelector": {
       "progress": {
-        "selector": ["span.torrent-icons > i.fas.fa-arrow-circle-up.text-success.torrent-icons, span.torrent-icons > i.fas.fa-thumbs-down.text-warning.torrent-icons", "span.torrent-icons > i.fas.fa-thumbs-down.text-warning.torrent-icons", ""],
+        "selector": ["span.torrent-icons > i.fas.fa-arrow-circle-up.text-success.torrent-icons, span.torrent-icons > i.fas.fa-thumbs-down.text-warning.torrent-icons", ""],
         "switchFilters": [
           ["100"],
-          ["0"],
           ["null"]
         ]
       },
