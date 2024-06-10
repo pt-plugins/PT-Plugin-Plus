@@ -65,11 +65,11 @@ export class UserData {
    * @param data 用户数据
    */
   public update(site: Site, data: UserInfo) {
-    let host = site.host;
+    const host = site.host;
     if (!host) {
       return;
     }
-    let saveData: UserInfo = Object.assign({}, data);
+    const saveData: UserInfo = Object.assign({}, data);
     if (this.items == null) {
       this.load().then(() => {
         this.update(site, data);
@@ -110,12 +110,8 @@ export class UserData {
    */
   public upgrade(): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      if (
-        this.service.options &&
-        this.service.options.system &&
-        this.service.options.system.sites
-      ) {
-        let sites = this.service.options.system.sites;
+      if (this.service.options?.system?.sites) {
+        const sites = this.service.options.system.sites;
 
         this.load().then(datas => {
           if (datas) {
@@ -123,14 +119,14 @@ export class UserData {
               if (!systemSite.host) {
                 return;
               }
-              let formerHosts = systemSite.formerHosts;
-              let newHost = systemSite.host;
+              const formerHosts = systemSite.formerHosts;
+              const newHost = systemSite.host;
               if (formerHosts && formerHosts.length > 0) {
                 formerHosts.forEach((host: string) => {
                   for (const key in datas) {
                     if (key == host && datas.hasOwnProperty(key)) {
                       const element = datas[key];
-                      datas[newHost] = Object.assign({}, element);
+                      datas[newHost] = Object.assign({}, element, datas[newHost] ?? {});
                       delete datas[key];
                     }
                   }

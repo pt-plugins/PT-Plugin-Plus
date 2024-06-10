@@ -97,7 +97,7 @@ export class Searcher {
         {
           torrentTagSelectors: []
         },
-        schema && schema.searchEntryConfig ? schema.searchEntryConfig : {},
+        schema?.searchEntryConfig ?? {},
         siteService.options.searchEntryConfig
       );
       let searchEntryConfigQueryString = "";

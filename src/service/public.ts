@@ -267,7 +267,7 @@ class HelpFunctions {
    */
   public checkPermissions(permissions: string[]): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      if (chrome && chrome.permissions) {
+      if (chrome?.permissions) {
         // 查询当前权限
         chrome.permissions.contains(
           {
@@ -297,7 +297,7 @@ class HelpFunctions {
    */
   public requestPermissions(permissions: string[]): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      if (chrome && chrome.permissions) {
+      if (chrome?.permissions) {
         chrome.permissions.request(
           {
             permissions: permissions
@@ -367,7 +367,7 @@ class HelpFunctions {
       sites.push(...options.sites);
     }
 
-    if (options.system && options.system.publicSites) {
+    if (options.system?.publicSites) {
       sites.push(...options.system.publicSites);
     }
 

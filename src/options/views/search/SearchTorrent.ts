@@ -315,18 +315,6 @@ export default Vue.extend({
       if (this.loading || !this.key) return;
 
       this.reset();
-      if (window.location.protocol === "http:") {
-        $.getJSON(
-          `http://${window.location.hostname}:8001/test/searchData.json`
-        ).done((result: any) => {
-          if (result) {
-            this.addSearchResult(result);
-            // this.datas = result;
-          }
-          // console.log(result);
-        });
-        return;
-      }
 
       if (!this.options.system) {
         if (this.reloadCount >= 10) {
@@ -353,7 +341,7 @@ export default Vue.extend({
 
       // 显示搜索快照
       if (/(show-snapshot)-([a-z0-9]{32})/.test(this.key)) {
-        let match = this.key.match(/(show-snapshot)-([a-z0-9]{32})/);
+        const match = this.key.match(/(show-snapshot)-([a-z0-9]{32})/);
         if (match) {
           this.loadSearchResultSnapshot(match[2]);
           return;

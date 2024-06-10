@@ -201,12 +201,11 @@ class PTPContent {
             });
         } else {
           let site =
-            this.options.system &&
-            this.options.system.sites &&
+            this.options.system?.sites &&
             this.options.system.sites.find((item: Site) => {
               return item.host == this.site.host;
             });
-          if (site && site.schema && typeof site.schema !== "string") {
+          if (site?.schema && typeof site.schema !== "string") {
             this.schema = site.schema;
             this.schema.siteOnly = true;
           }

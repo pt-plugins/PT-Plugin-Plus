@@ -175,7 +175,7 @@ export default new Vuex.Store({
           client.paths = {};
         }
 
-        if (options.site && options.site.host) {
+        if (options.site?.host) {
           client.paths[options.site.host] = options.paths;
         } else {
           // 如果未指定网站，则用于所有站点
@@ -703,7 +703,7 @@ export default new Vuex.Store({
         return item.id === clientId;
       });
       let path = "";
-      if (client && client.paths) {
+      if (client?.paths) {
         for (const host in client.paths) {
           if (site.host === host) {
             path = client.paths[host][0];
@@ -735,7 +735,7 @@ export default new Vuex.Store({
 window.chrome = window.chrome || {};
 
 // 更新当前TabId
-if (chrome && chrome.tabs) {
+if (chrome?.tabs) {
   chrome.tabs.getCurrent((tab: any) => {
     extension.sendRequest(EAction.updateOptionsTabId, null, tab.id);
   });
