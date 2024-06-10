@@ -146,18 +146,19 @@
       "fields": {
         "seeding": {
           "selector": [
-            "tr:not(:eq(0))"
+            "b:first"
           ],
           "filters": [
-            "let l={}; query.each(function() { l[jQuery(this).find('td.rowfollow:eq(1) a').attr('href')] = jQuery(this).find('td.rowfollow:eq(2)').text(); }); Object.keys(l).length;"
+            "query.text()"
           ]
         },
         "seedingSize": {
           "selector": [
-            "tr:not(:eq(0))"
+            ""
           ],
           "filters": [
-            "let l={}; query.each(function() { l[jQuery(this).find('td.rowfollow:eq(1) a').attr('href')] = jQuery(this).find('td.rowfollow:eq(2)').text(); }); _self.getTotalSize(Object.values(l));"
+            "query.clone().children().remove().end().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>1)?(query[1]).sizeToNumber():0"
           ]
         }
       }
