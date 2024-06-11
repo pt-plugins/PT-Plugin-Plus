@@ -29,10 +29,14 @@
       "progress": {
         "selector": [
           "span.torrent-icons > i.fas.fa-arrow-circle-up.text-success.torrent-icons, i.fas.fa-thumbs-down",
-          ".fa-do-not-enter",
+          "span.torrent-icons > i.fas.fa-do-not-enter.torrent-icons, span.torrent-icons > i.fa-arrow-circle-down.text-danger.torrent-icons",
           ""
         ],
-        "switchFilters": [["100"], ["0"], ["null"]]
+        "switchFilters": [
+          ["100"],
+          ["0"],
+          ["null"]
+        ]
       },
       "status": {
         "selector": ["span.torrent-icons > i.fas.fa-arrow-circle-up.text-success.torrent-icons", "span.torrent-icons > i.fa-arrow-circle-down.text-danger.torrent-icons", "span.torrent-icons > i.fas.fa-thumbs-down.text-warning.torrent-icons", "span.torrent-icons > i.fas.fa-do-not-enter.torrent-icons"],
