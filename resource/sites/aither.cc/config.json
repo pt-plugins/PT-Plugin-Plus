@@ -49,23 +49,5 @@
       "uploaded": "40TiB",
       "privilege": "Mod Q skip, Special FL, Invite Forum, Sparkly name, HnR immunity"
     }
-  ],
-  "searchEntryConfig": {
-    "fieldSelector": {
-      "progress": {
-        "selector": ["span.torrent-icons > i.fas.fa-arrow-circle-up.text-success.torrent-icons, span.torrent-icons > i.fas.fa-do-not-enter.torrent-icons", ""],
-        "switchFilters": [
-          ["100"],
-          ["null"]
-        ]
-      },
-      "status": {
-        "selector": ["span.torrent-icons > i.fas.fa-arrow-circle-up.text-success.torrent-icons", "span.torrent-icons > i.fas.fa-do-not-enter.torrent-icons"],
-        "switchFilters": [
-          ["2"],
-          ["255"]
-        ]
-      }
-    }
-  }
+  ]
 }
