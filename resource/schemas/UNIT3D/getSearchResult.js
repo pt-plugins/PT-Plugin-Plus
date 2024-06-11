@@ -258,7 +258,7 @@
         }
         result = cell.text().trim();
       }
-      if(result == "")return null;
+      if(result === "")return null;
       return result;
     }
   }

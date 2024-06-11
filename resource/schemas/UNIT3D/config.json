@@ -27,7 +27,11 @@
     }],
     "fieldSelector": {
       "progress": {
-        "selector": ["button.btn.btn-success.btn-circle, i[title*='Seeding']", "button.btn.btn-warning.btn-circle, button.btn.btn-info.btn-circle", ""],
+        "selector": [
+          "span.torrent-icons > i.fas.fa-arrow-circle-up.text-success.torrent-icons, i.fas.fa-thumbs-down",
+          "span.torrent-icons > i.fas.fa-do-not-enter.torrent-icons, span.torrent-icons > i.fa-arrow-circle-down.text-danger.torrent-icons",
+          ""
+        ],
         "switchFilters": [
           ["100"],
           ["0"],
@@ -35,12 +39,12 @@
         ]
       },
       "status": {
-        "selector": ["button.btn.btn-success.btn-circle, i[title*='Currently Seeding']", "button.btn.btn-warning.btn-circle", "button.btn.btn-info.btn-circle", "i[title*='Completed']"],
+        "selector": ["span.torrent-icons > i.fas.fa-arrow-circle-up.text-success.torrent-icons", "span.torrent-icons > i.fa-arrow-circle-down.text-danger.torrent-icons", "span.torrent-icons > i.fas.fa-thumbs-down.text-warning.torrent-icons", "span.torrent-icons > i.fas.fa-do-not-enter.torrent-icons"],
         "switchFilters": [
           ["2"],
           ["1"],
-          ["3"],
-          ["255"]
+          ["255"],
+          ["3"]
         ]
       }
     },
