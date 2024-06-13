@@ -1234,17 +1234,19 @@ export default Vue.extend({
     /**
      * 下载已选中的种子文件
      */
-    downloadSelected() {
+    async downloadSelected() {
       let files: downloadFile[] = [];
-      this.selected.forEach((item: SearchResultItem) => {
-        item.url &&
-          files.push({
-            url: item.url,
-            fileName: `[${item.site.name}][${item.title}].torrent`,
-            method: item.site.downloadMethod,
-            timeout: this.options.connectClientTimeout
-          });
-      });
+      for (let i = 0; i < this.selected.length; i++) {
+        const item = this.selected[i];
+        console.log(`[${i}]解析 ${item.title} 的 url: ${item.url}`)
+        const url = this.processURLWithPrefix("m-teamdetail", item.site, item.url)
+        url && files.push({
+          url: url,
+          fileName: `[${item.site.name}][${item.title}].torrent`,
+          method: item.site.downloadMethod,
+          timeout: this.options.connectClientTimeout
+        });
+      }
       console.log(files);
       if (files.length) {
         if (files.length > 1) {
