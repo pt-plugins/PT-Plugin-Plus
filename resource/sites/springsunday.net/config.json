@@ -231,7 +231,7 @@
       "merge": true,
       "fields": {
         "messageCount": {
-          "selector": ["a[href*='messages.php'] > b[style*='background: red']"],
+          "selector": ["a[href*='messages.php'] > b[style*='background: red'], a[href*='messages.php'] > b[style*='background: darkorange']"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
         }
       }
