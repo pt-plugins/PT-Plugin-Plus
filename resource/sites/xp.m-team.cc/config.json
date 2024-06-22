@@ -16,6 +16,7 @@
     "https://xp.m-team.cc/",
     "https://ap.m-team.cc/"
   ],
+  "apiHost":"https://api.m-team.io/",
   "tokenRequired": true,
   "formerHosts": [
     "xp.m-team.io",

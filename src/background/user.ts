@@ -63,6 +63,10 @@ export class User {
   }
 
   private getSiteURL(site: Site) {
+    if (site.apiHost) {
+      return site.apiHost;
+    }
+
     if (site.cdn && site.cdn.length > 0) {
       return site.cdn[0];
     }

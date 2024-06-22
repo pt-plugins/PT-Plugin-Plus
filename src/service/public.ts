@@ -487,6 +487,7 @@ class HelpFunctions {
    * 比如右键种子发送到 PTPP, 按正常逻辑筛选一遍
    */
   public getSiteActiveUrl(site: Site) {
+    if (site.apiHost) return site.apiHost
     if (site.activeURL) return site.activeURL
     if (site.cdn && site.cdn.length > 0) return site.cdn[0]
     return site.url
