@@ -103,7 +103,7 @@
           "> td:eq(8)"
         ],
         "filters": [
-          "query.text()==='-'?null:(query.is(\"[bgcolor='#CC0066']\")?1:(parseFloat(query.text().split('%')[0])==100?(query.is(\"[bgcolor='#d0d0d0']\")?255:2):3))"
+          "query.text()==='-'?null:(query.is(\"[bgcolor='#CC0066']\")?1:(parseFloat(query.text().split('%')[0])==100?(query.is(\"[bgcolor='#F7D358']\")?255:2):3))"
         ]
       }
     }
