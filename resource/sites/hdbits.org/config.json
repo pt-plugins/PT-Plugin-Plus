@@ -163,6 +163,9 @@
   }, {
     "name": "25%",
     "selector": "a[title^='25% Free Leech:']"
+  }, {
+    "name": "⛔️",
+    "selector": "a[href*='/browse.php?exclusive=1']"
   }],
   "selectors": {
     "userBaseInfo": {
