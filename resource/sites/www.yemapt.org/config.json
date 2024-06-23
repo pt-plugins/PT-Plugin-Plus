@@ -9,6 +9,104 @@
     ],
     "schema": "YemaPT",
     "host": "www.yemapt.org",
+    "levelRequirements": [
+        {
+            "level": "0",
+            "name": "乱民",
+            "interval": "0",
+            "downloaded": "0",
+            "ratio": "0.3",
+            "privilege": "无"
+        },
+        {
+            "level": "1",
+            "name": "小卒",
+            "interval": "0",
+            "downloaded": "0",
+            "ratio": "0.5",
+            "privilege": "无"
+        },
+        {
+            "level": "2",
+            "name": "教谕",
+            "interval": "0",
+            "downloaded": "0",
+            "ratio": "0.6",
+            "privilege": "无"
+        },
+        {
+            "level": "3",
+            "name": "登仕郎",
+            "interval": "0",
+            "downloaded": "100GB",
+            "ratio": "1",
+            "privilege": "无"
+        },
+        {
+            "level": "4",
+            "name": "修职郎",
+            "interval": "4",
+            "downloaded": "200GB",
+            "ratio": "2",
+            "privilege": "无"
+        },
+        {
+            "level": "5",
+            "name": "文林郎",
+            "interval": "8",
+            "downloaded": "400GB",
+            "ratio": "3",
+            "privilege": "无"
+        },
+        {
+            "level": "6",
+            "name": "忠武校尉",
+            "interval": "12",
+            "downloaded": "500GB",
+            "ratio": "4",
+            "privilege": "无"
+        },
+        {
+            "level": "7",
+            "name": "承信将军",
+            "interval": "16",
+            "downloaded": "800GB",
+            "ratio": "5",
+            "privilege": "无"
+        },
+        {
+            "level": "8",
+            "name": "武毅将军",
+            "interval": "20",
+            "downloaded": "1TB",
+            "ratio": "6",
+            "privilege": "无"
+        },
+        {
+            "level": "9",
+            "name": "武节将军",
+            "interval": "24",
+            "downloaded": "2TB",
+            "ratio": "7",
+            "privilege": "无"
+        },
+        {
+            "level": "10",
+            "name": "显威将军",
+            "interval": "28",
+            "downloaded": "2.5TB",
+            "ratio": "8",
+            "privilege": "无"
+        },
+        {
+            "level": "11",
+            "name": "宣武将军",
+            "interval": "32",
+            "downloaded": "3TB",
+            "ratio": "9",
+            "privilege": "无"
+        }
+    ],
     "searchEntryConfig": {
         "page": "/api/torrent/fetchCategoryOpenTorrentList",
         "resultType": "json",
@@ -113,8 +211,7 @@
                         "data.level"
                     ],
                     "filters": [
-                        "'Level ' + query"
-                    ]
+                        "({0:'乱民',1: '小卒',2: '教谕',3:'登仕郎',4:'修职郎',5:'文林郎',6:'忠武校尉',7:'承信将军',8:'武毅将军',9:'武节将军',10:'显威将军',11:'宣武将军'})[query]"]
                 },
                 "bonus": {
                     "selector": [
