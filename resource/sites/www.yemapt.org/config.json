@@ -219,6 +219,54 @@
                     ]
                 }
             }
+        },
+        "userExtendInfo": {
+            "page": "/api/torrent/fetchSelfTorrentCount",
+            "requestMethod": "POST",
+            "requestContentType": "application/json",
+            "dataType": "json",
+            "requestData": {
+                "status": ""
+            },
+            "fields": {
+                "uploads": {
+                    "selector": [
+                        "data"
+                    ]
+                }
+            }
+        },
+        "userSeedingTorrents": {
+            "page": "/api/userTorrent/fetchSeedTorrentInfo",
+            "requestMethod": "POST",
+            "dataType": "json",
+            "fields": {
+                "seeding": {
+                    "selector": [
+                        "data.num"
+                    ]
+                },
+                "seedingSize": {
+                    "selector": [
+                        "data.fileSize"
+                    ]
+                }
+            }
+        },
+        "bonusExtendInfo": {
+            "prerequisites": "!user.bonusPerHour",
+            "page": "/api/consumer/fetchUserPointAcc",
+            "dataType": "json",
+            "fields": {
+                "bonusPerHour": {
+                    "selector": [
+                        "data"
+                    ],
+                    "filters": [
+                        "query ? (query.hourPoint + query.hourBasePoint + query.hourOwnerPoint) : 0"
+                    ]
+                }
+            }
         }
     }
 }
