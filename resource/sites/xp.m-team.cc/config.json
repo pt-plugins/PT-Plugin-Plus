@@ -14,7 +14,8 @@
   "cdn": [
     "https://kp.m-team.cc/",
     "https://xp.m-team.cc/",
-    "https://ap.m-team.cc/"
+    "https://ap.m-team.cc/",
+    "https://api.m-team.io/"
   ],
   "apiHost":"https://api.m-team.io/",
   "tokenRequired": true,
