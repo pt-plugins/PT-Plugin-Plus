@@ -137,7 +137,7 @@
     }
     return resolvedUrl.toString();
   }
-  let activeURL = this.getSiteActiveUrl(site);
+  let activeURL = PPF.getSiteActiveUrl(site);
   console.log(`[mt] getUserSeedingTorrents`, options, User);
 
   let dataURL = resolveURL(activeURL, options.rule.page);
