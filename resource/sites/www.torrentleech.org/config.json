@@ -87,7 +87,7 @@
           "filters": ["query.text().replace(/,/g,'')"]
         },
         "messageCount": {
-          "selector": ["span.link[onclick*='/notifications']"],
+          "selector": ["span.div-menu-item[onclick*='/notifications'] div.notificatinTooltip span.tooltip-title"],
           "filters": ["parseInt(query.text().trim())"]
         }
       }
