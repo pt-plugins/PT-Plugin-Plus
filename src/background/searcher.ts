@@ -379,8 +379,9 @@ export class Searcher {
               ? this.options.search.rows
               : 10;
 
-          if (site.apiHost) {
-            site.url = site.apiHost;
+          if (site.apiCdn && site.apiCdn.length > 0) {
+            // 如果有api地址，则使用api地址
+            site.url = site.apiCdn[0];
           } else if (site.cdn && site.cdn.length > 0) {
             // 如果有自定义地址，则使用自定义地址
             site.url = site.cdn[0];

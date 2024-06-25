@@ -14,10 +14,14 @@
   "cdn": [
     "https://kp.m-team.cc/",
     "https://xp.m-team.cc/",
-    "https://ap.m-team.cc/",
-    "https://api.m-team.io/"
+    "https://ap.m-team.cc/"
   ],
-  "apiHost":"https://api.m-team.io/",
+  "apiCdn":[
+    "https://api.m-team.io/",
+    "https://api.m-team.cc/",
+    "https://api2.m-team.cc/",
+    "https://mtapi.m-team.cc/"
+  ],
   "tokenRequired": true,
   "formerHosts": [
     "xp.m-team.io",

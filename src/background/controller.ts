@@ -476,7 +476,7 @@ export default class Controller {
    */
   public getSiteFromHost(host: string): Site {
     return this.options.sites.find((item: Site) => {
-      let cdn = [item.url].concat(item.cdn);
+      let cdn = [item.url].concat(item.cdn, item.apiCdn);
       return item.host == host || cdn.join("").indexOf(host) > -1;
     });
   }

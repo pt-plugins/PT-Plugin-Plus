@@ -316,7 +316,7 @@ export interface Site {
   // siteGroups?: string[];
   // token in headers
   authToken?: string;
-  apiHost?: string;
+  apiCdn?: string[];
 }
 
 /**

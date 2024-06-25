@@ -372,9 +372,10 @@ class HelpFunctions {
     }
 
     let site = sites.find((item: Site) => {
-      let cdn = [item.url].concat(item.cdn, item.formerHosts?.map(x => `//${x}`));
+      let cdn = [item.url].concat(item.cdn, item.apiCdn, item.formerHosts?.map(x => `//${x}`));
       return item.host == host || cdn.join("").indexOf(`//${host}`) > -1;
     });
+
 
     if (site) {
       return this.clone(site);
@@ -487,7 +488,7 @@ class HelpFunctions {
    * 比如右键种子发送到 PTPP, 按正常逻辑筛选一遍
    */
   public getSiteActiveUrl(site: Site) {
-    if (site.apiHost) return site.apiHost
+    if (site.apiCdn && site.apiCdn.length > 0) return site.apiCdn[0]
     if (site.activeURL) return site.activeURL
     if (site.cdn && site.cdn.length > 0) return site.cdn[0]
     return site.url
