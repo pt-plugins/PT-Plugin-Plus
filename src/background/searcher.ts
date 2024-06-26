@@ -379,10 +379,7 @@ export class Searcher {
               ? this.options.search.rows
               : 10;
 
-          if (site.apiCdn && site.apiCdn.length > 0) {
-            // 如果有api地址，则使用api地址
-            site.url = site.apiCdn[0];
-          } else if (site.cdn && site.cdn.length > 0) {
+         if (site.cdn && site.cdn.length > 0) {
             // 如果有自定义地址，则使用自定义地址
             site.url = site.cdn[0];
           }
@@ -394,7 +391,17 @@ export class Searcher {
           if ((searchPage + "").substr(0, 1) == "/") {
             searchPage = (searchPage + "").substr(1);
           }
-          let url: string = site.url + searchPage;
+          let url: string =  "";
+
+          if (site.apiCdn && site.apiCdn.length > 0) {
+            if (!site.apiCdn[0].endsWith("/")) {
+              site.apiCdn[0] += "/";
+            }
+            // 如果有api地址，则使用api地址请求
+            url = site.apiCdn[0] + searchPage;
+          } else {
+            url = site.url + searchPage;
+          }
 
           if (queryString) {
             if (searchPage.indexOf("?") !== -1) {
