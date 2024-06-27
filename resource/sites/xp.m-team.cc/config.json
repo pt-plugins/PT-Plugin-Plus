@@ -16,6 +16,12 @@
     "https://xp.m-team.cc/",
     "https://ap.m-team.cc/"
   ],
+  "apiCdn":[
+    "https://api.m-team.io/",
+    "https://api.m-team.cc/",
+    "https://api2.m-team.cc/",
+    "https://mtapi.m-team.cc/"
+  ],
   "tokenRequired": true,
   "formerHosts": [
     "xp.m-team.io",

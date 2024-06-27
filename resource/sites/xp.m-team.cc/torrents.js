@@ -19,9 +19,18 @@
     // eslint-disable-next-line
     async resolveDownloadURLs() {
       let ids = $('tr').map(function () {
-        return $(this).data('row-key')
-      }).toArray().filter(_ => !!_)
-      ids = [...new Set(ids)]
+        let rowIds = $(this).find('td').map(function() {
+          let href = $(this).find('a').attr('href');
+          if (href) {
+            let match = href.match(/\/detail\/(\d+)/);
+            return match ? match[1] : null;
+          }
+        }).toArray().filter(id => !!id);
+      
+        return rowIds;
+      }).toArray().flat().filter(id => !!id);
+      
+      ids = [...new Set(ids)];
       console.log('ids', ids)
       let urls = []
       return new Promise(async (resolve, reject) => {
