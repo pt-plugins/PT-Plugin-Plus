@@ -183,7 +183,7 @@
     },
     "userUploadedTorrents": {
       "prerequisites": "!user.uploads",
-      "page": "/torrents.php?incldead=0&spstate=0&inclbookmarked=0&search=$user.name$&search_area=3&search_mode=3",
+      "page": "/torrents.php?incldead=1&spstate=0&inclbookmarked=0&search=$user.name$&search_area=3&search_mode=3",
       "fields": {
         "uploads": {
           "selector": ["p.np-pager:first b:last"],
