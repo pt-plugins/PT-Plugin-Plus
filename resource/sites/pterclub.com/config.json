@@ -9,7 +9,7 @@
   "host": "pterclub.com",
   "levelRequirements": [{
     "level": "1",
-    "name": "加菲猫/POWER USER",
+    "name": "加菲猫 POWER USER",
     "interval": "5",
     "downloaded": "50GB",
     "ratio": "1.05",
@@ -18,7 +18,7 @@
     "privilege": "可以直接发布种子；可以查看邀请区；可以上传字幕和删除自己上传的字幕"
   },{
     "level": "2",
-    "name": "布偶猫/ELITE USER",
+    "name": "布偶猫 ELITE USER",
     "interval": "10",
     "downloaded": "120GB",
     "ratio": "1.55",
@@ -27,7 +27,7 @@
     "privilege": "可以请求续种"
   },{
     "level": "3",
-    "name": "雪鞋猫/CRAZY USER",
+    "name": "雪鞋猫 CRAZY USER",
     "interval": "24",
     "downloaded": "300GB",
     "ratio": "2.05",
@@ -36,7 +36,7 @@
     "privilege": "可以查看排行榜"
   },{
     "level": "4",
-    "name": "暹罗猫/INSANE USER",
+    "name": "暹罗猫 INSANE USER",
     "interval": "32",
     "downloaded": "500GB",
     "ratio": "2.55",
@@ -45,7 +45,7 @@
     "privilege": "可以查看普通日志"
   },{
     "level": "5",
-    "name": "安哥拉猫/VETERAN USER",
+    "name": "安哥拉猫 VETERAN USER",
     "interval": "40",
     "downloaded": "750GB",
     "ratio": "3.05",
@@ -62,7 +62,7 @@
     "privilege": "可以查看其它用户的评论、帖子历史；封存账号后，不会因不活跃原因被临时封禁"
   },{
     "level": "6",
-    "name": "孟加拉猫/EXTREME USER",
+    "name": "孟加拉猫 EXTREME USER",
     "interval": "48",
     "downloaded": "1024GB",
     "ratio": "3.55",
@@ -79,7 +79,7 @@
     "privilege": "可2次无条件不活跃解封，可以查看邀请树统计，初次升级赠送1枚永久邀请码"
   },{
     "level": "7",
-    "name": "山东狮子猫/ULTIMATE USER",
+    "name": "山东狮子猫 ULTIMATE USER",
     "interval": "56",
     "downloaded": "1536GB",
     "ratio": "4.05",
@@ -96,7 +96,7 @@
     "privilege": "追加1次无条件不活跃解封，可以查看邀请树图，初次升级赠送2枚永久邀请码"
   },{
     "level": "8",
-    "name": "四川简州猫/NEXUS MASTER",
+    "name": "四川简州猫 NEXUS MASTER",
     "interval": "112",
     "downloaded": "3072GB",
     "ratio": "4.55",
@@ -163,6 +163,10 @@
     "userExtendInfo": {
       "merge": true,
       "fields": {
+        "levelName": {
+          "selector": ["img[src*='pic/user_class/']"],
+          "filters": ["query ? query.attr('title') : ''"]
+        },
         "bonus": {
           "selector": ["td.rowhead:contains('猫粮') + td, td.rowhead:contains('Karma Points') + td, td.rowhead:contains('貓糧') + td"],
           "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
