@@ -2,10 +2,10 @@
   "name": "Desitorrents",
   "timezoneOffset": "+0000",
   "schema": "UNIT3D",
-  "url": "https://desitorrents.tv/",
-  "icon": "https://desitorrents.tv/favicon.ico",
+  "url": "https://torrent.desi/",
+  "icon": "https://torrent.desi/favicon.ico",
   "tags": ["影视", "综合", "印度"],
-  "host": "desitorrents.tv",
+  "host": "torrent.desi",
   "levelRequirements": [{
       "level": "1",
       "name": "PowerUser",
