@@ -2,11 +2,14 @@
   "name": "AsianCinema",
   "timezoneOffset": "+0000",
   "description": "综合",
-  "url": "https://asiancinema.me/",
-  "icon": "https://asiancinema.me/favicon.ico",
+  "url": "https://eiga.moi/",
+  "icon": "https://eiga.moi/favicon.ico",
   "tags": ["综合"],
   "schema": "UNIT3D",
-  "host": "asiancinema.me",
+  "host": "eiga.moi",
+  "formerHosts": [
+    "asiancinema.me"
+  ],
   "levelRequirements": [{
     "level": "1", 
     "name": "Power User",
