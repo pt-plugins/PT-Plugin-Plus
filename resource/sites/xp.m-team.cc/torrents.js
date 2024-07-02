@@ -26,17 +26,17 @@
             return match ? match[1] : null;
           }
         }).toArray().filter(id => !!id);
-      
+
         return rowIds;
       }).toArray().flat().filter(id => !!id);
-      
+
       ids = [...new Set(ids)];
       console.log('ids', ids)
       let urls = []
       return new Promise(async (resolve, reject) => {
         for (let i = 0; i < ids.length; i++) {
           // 流控调整
-          const id = ids[i], timeout = 8000
+          const id = ids[i], timeout = 7500
           let min = Math.ceil(timeout * (ids.length - i) / 1000 / 60)
           let msg = this.t('resolveURLsTip', {id, current: i + 1, total: ids.length, min})
           this.showStatusMessage(msg, 480)
