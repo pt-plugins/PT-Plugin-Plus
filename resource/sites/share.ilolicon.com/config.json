@@ -15,8 +15,7 @@
   "collaborator": [
     "AllenPu"
   ],
-  "plugins": [
-  ],
+  "plugins": [],
   "levelRequirements": [
     {
       "level": "1",
@@ -24,6 +23,7 @@
       "interval": "4",
       "downloaded": "50GB",
       "ratio": "1.05",
+      "seedingPoints": "50000",
       "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
@@ -32,6 +32,7 @@
       "interval": "8",
       "downloaded": "120GB",
       "ratio": "1.55",
+      "seedingPoints": "200000",
       "privilege": "封存账号后不会被删除"
     },
     {
@@ -40,6 +41,7 @@
       "interval": "15",
       "downloaded": "300GB",
       "ratio": "2.05",
+      "seedingPoints": "400000",
       "privilege": "得到两个邀请名额；在做种/下载/发布的时候选择匿名模式"
     },
     {
@@ -48,6 +50,7 @@
       "interval": "25",
       "downloaded": "500GB",
       "ratio": "2.55",
+      "seedingPoints": "688888",
       "privilege": "查看普通日志"
     },
     {
@@ -56,6 +59,7 @@
       "interval": "40",
       "downloaded": "750GB",
       "ratio": "3.05",
+      "seedingPoints": "1011000",
       "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。此级别及以上用户会永远保留账号。"
     },
     {
@@ -64,6 +68,7 @@
       "interval": "60",
       "downloaded": "1TB",
       "ratio": "3.55",
+      "seedingPoints": "1500000",
       "privilege": "可以更新过期的外部信息。"
     },
     {
@@ -72,6 +77,7 @@
       "interval": "80",
       "downloaded": "1.5TB",
       "ratio": "4.05",
+      "seedingPoints": "2000000",
       "privilege": "得到五个邀请名额。"
     },
     {
@@ -80,6 +86,7 @@
       "interval": "100",
       "downloaded": "3TB",
       "ratio": "4.55",
+      "seedingPoints": "3000000",
       "privilege": "得到十个邀请名额。"
     }
   ],

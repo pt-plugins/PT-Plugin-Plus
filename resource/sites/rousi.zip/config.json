@@ -29,7 +29,7 @@
       "downloaded": "120GB",
       "ratio": "1.55",
       "seedingPoints": "80000",
-      "privilege": "首次升级至此等级的用户将获得1个邀请名额。"
+      "privilege": "首次升级至此等级的用户将获得1个邀请名额，封存后永久保留。"
     },
     {
       "level": "3",
@@ -38,7 +38,7 @@
       "downloaded": "1024GB",
       "ratio": "2.05",
       "seedingPoints": "1000000",
-      "privilege": "首次升级至此等级的用户将获得2个邀请名额，封存后永久保留。"
+      "privilege": "首次升级至此等级的用户将获得2个邀请名额。"
     },
     {
       "level": "4",
