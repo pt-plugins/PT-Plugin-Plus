@@ -1,16 +1,12 @@
 {
   "name": "蟹黄堡",
+  "description": "蟹黄堡",
   "timezoneOffset": "+0800",
-  "description": "综合性网站，有分享率要求",
-  "url": "https://crabpt.vip/",
-  "icon": "https://crabpt.vip/favicon.ico",
   "schema": "NexusPHP",
   "host": "crabpt.vip",
-  "cdn": [
-    "https://crabpt.vip/"
-  ],
+  "url": "https://crabpt.vip",
+  "icon": "https://crabpt.vip/favicon.ico",
   "tags": [
-    "影视",
     "综合"
   ],
   "levelRequirements": [
@@ -21,7 +17,7 @@
       "downloaded": "50GB",
       "ratio": "1.05",
       "seedingPoints": "40000",
-      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以请求续种；可以发送邀请；可以查看排行榜；可以删除自己上传的字幕。"
     },
     {
       "level": "2",
@@ -87,143 +83,170 @@
       "privilege": "得到十个邀请名额。"
     }
   ],
-  "collaborator": "trim21",
+  "securityKeyFields": [
+    "passkey"
+  ],
+  "searchEntryConfig": {
+    "page": "/torrents.php",
+    "queryString": "search=$key$&notnewword=1",
+    "area": [
+      {
+        "name": "标题",
+        "appendQueryString": "&search_area=0"
+      },
+      {
+        "name": "简介",
+        "appendQueryString": "&search_area=1"
+      },
+      {
+        "name": "IMDB",
+        "keyAutoMatch": "^(tt\\d+)$",
+        "appendQueryString": "&search_area=4"
+      }
+    ],
+    "resultType": "html",
+    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
+    "resultSelector": "table.torrents:last"
+  },
   "searchEntry": [
     {
-      "name": "全站",
+      "name": "全部",
       "enabled": true
-    },
-    {
-      "queryString": "cat=401",
-      "name": "电影 / Movies",
-      "enabled": false
-    },
-    {
-      "queryString": "cat=402",
-      "name": "电视剧 / TVSeries",
-      "enabled": false
-    },
-    {
-      "queryString": "cat=413",
-      "name": "短剧 / Playlet",
-      "enabled": false
-    },
-    {
-      "queryString": "cat=408",
-      "name": "音乐 / Music",
-      "enabled": false
-    },
-    {
-      "queryString": "cat=405",
-      "name": "动漫 / Anime",
-      "enabled": false
-    },
-    {
-      "queryString": "cat=406",
-      "name": "MV",
-      "enabled": false
-    },
-    {
-      "queryString": "cat=403",
-      "name": "综艺 / TV-Shows",
-      "enabled": false
-    },
-    {
-      "queryString": "cat=407",
-      "name": "竞技体育 / Sports",
-      "enabled": false
-    },
-    {
-      "queryString": "cat=409",
-      "name": "其他 / Others",
-      "enabled": false
-    },
-    {
-      "queryString": "cat=404",
-      "name": "纪录片 / Documentary",
-      "enabled": false
     }
   ],
-  "categories": [],
-  "searchEntryConfig": {
-    "fieldSelector": {
-      "progress": {
-        "selector": [
-          "div.progressBar > div"
-        ],
-        "filters": [
-          "query.attr('style')||''",
-          "query.match(/width:.?(\\d.+)%/)",
-          "(query && query.length>=2)?query[1]:null"
-        ]
-      },
-      "status": {
-        "selector": [
-          "div.progressBar.doing > div",
-          "div.progressBar > div"
-        ],
-        "switchFilters": [
-          [
-            "query.attr('style')||''",
-            "query.match(/width:.?(\\d.+)%/)",
-            "(query && query.length>=2)?query[1]:0",
-            "parseInt(query)==100?2:1"
-          ],
-          [
-            "255"
-          ]
-        ]
-      }
+  "checker": {
+    "isLogin": {
+      "page": "/usercp.php",
+      "contains": "logout.php"
     }
   },
-  "plugins": [
-    {
-      "name": "保种列表",
-      "pages": [
-        "/rescue.php"
-      ],
-      "scripts": [
-        "/schemas/NexusPHP/common.js",
-        "/schemas/NexusPHP/torrents.js"
-      ]
-    }
-  ],
-  "mergeSchemaTagSelectors": true,
-  "torrentTagSelectors": [
-    {
-      "name": "⛔️",
-      "selector": "div.tag-jz"
-    }
-  ],
   "selectors": {
-    "userExtendInfo": {
-      "merge": true,
+    "userBaseInfo": {
+      "page": "/index.php",
       "fields": {
+        "id": {
+          "selector": [
+            "a[href*='userdetails.php'][class*='Name']:first",
+            "a[href*='userdetails.php']:first"
+          ],
+          "attribute": "href",
+          "filters": [
+            "query ? query.getQueryString('id'):''"
+          ]
+        },
+        "name": {
+          "selector": [
+            "a[href*='userdetails.php'][class*='Name']:first",
+            "a[href*='userdetails.php']:first"
+          ],
+          "filters": [
+            "query && query.attr('href').getQueryString('id') > 0 ? query.text(): ''"
+          ]
+        },
+        "isLogged": {
+          "selector": [
+            "a[href*='usercp.php']"
+          ],
+          "filters": [
+            "query.length>0"
+          ]
+        },
+        "messageCount": {
+          "selector": [
+            "td[style*='background: red'] a[href*='messages.php']"
+          ],
+          "filters": [
+            "query.text().match(/(\\d+)/)",
+            "(query && query.length>=2)?parseInt(query[1]):0"
+          ]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": [
+            "td.rowhead:contains('传输') + td",
+            "td.rowhead:contains('傳送') + td",
+            "td.rowhead:contains('Transfers') + td",
+            "td.rowfollow:contains('分享率')"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/(上[传傳]量|Uploaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length==3)?(query[2]).sizeToNumber():0"
+          ]
+        },
+        "downloaded": {
+          "selector": [
+            "td.rowhead:contains('传输') + td",
+            "td.rowhead:contains('傳送') + td",
+            "td.rowhead:contains('Transfers') + td",
+            "td.rowfollow:contains('分享率')"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/(下[载載]量|Downloaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length==3)?(query[2]).sizeToNumber():0"
+          ]
+        },
+        "levelName": {
+          "selector": [
+            "td.rowhead:contains('等级')",
+            "td.rowhead:contains('等級')",
+            "td.rowhead:contains('Class')"
+          ],
+          "filters": [
+            "query.next().find('img').attr('title')"
+          ]
+        },
         "bonus": {
           "selector": [
-            "td.rowhead:contains('蟹币值') + td",
-            "td.rowhead:contains('做种积分') + td"
+            "td.rowhead:contains('蟹币') + td",
+            "td.rowfollow:contains('蟹币值')",
+            "td.rowhead:contains('bonus') + td"
+          ],
+          "filters": [
+            "query.is(\":contains('蟹币值:')\")||query.is(\":contains('Bonus Points:')\")?query.text().replace(/,/g,'').match(/(?:蟹币值|Bonus Points).+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')",
+            "parseFloat(query)"
+          ]
+        },
+        "seedingPoints": {
+          "selector": [
+            "td.rowhead:contains('做种积分') + td",
+            "td.rowhead:contains('Seeding Points') + td",
+            "td.rowhead:contains('做種積分') + td",
+            "td.rowhead:contains('保种积分') + td",
+            "td.rowfollow:contains('做种积分')",
+            "td.rowfollow:contains('Seeding Points')",
+            "td.rowfollow:contains('做種積分')"
           ],
           "filters": [
             "query.text().replace(/,/g,'')",
-            "parseFloat(query)"
+            "query.includes('做种积分') || query.includes('做種積分') || query.includes('Seeding Points') ? query.match(/(做种积分|做種積分|Seeding Points).+?[\\d.]+/g)[0] : query",
+            "query ? parseFloat(query.match(/[\\d.]+/)[0]) : null"
+          ]
+        },
+        "joinTime": {
+          "selector": [
+            "td.rowhead:contains('加入日期')",
+            "td.rowhead:contains('Join'):contains('date')"
+          ],
+          "filters": [
+            "query.next().text().split(' (')[0].trim()",
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
           ]
         }
       }
     },
     "userSeedingTorrents": {
-      "prerequisites": "!user.seeding",
       "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
-      "headers": {
-        "Overwrite-Referer": "https://audiences.me/userdetails.php?id=$user.id$"
-      },
       "fields": {
         "seeding": {
           "selector": [
-            "tr:not(:eq(0))"
+            "b:first"
           ],
           "filters": [
-            "let l={}; query.each(function() { l[jQuery(this).find('td.rowfollow:eq(1) a').attr('href')] = jQuery(this).find('td.rowfollow:eq(2)').text(); }); Object.keys(l).length;"
+            "query.text()"
           ]
         },
         "seedingSize": {
@@ -232,23 +255,6 @@
             "query.text().match(/总大小：(.*?)上一页/g)",
             "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
             "(query != 0) ? query.sizeToNumber() : 0"
-          ]
-        }
-      }
-    },
-    "userUploadedTorrents": {
-      "prerequisites": "!user.uploads",
-      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=uploaded",
-      "headers": {
-        "Overwrite-Referer": "https://audiences.me/userdetails.php?id=$user.id$"
-      },
-      "fields": {
-        "uploads": {
-          "selector": [
-            "b:first"
-          ],
-          "filters": [
-            "query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"
           ]
         }
       }
