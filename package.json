@@ -63,7 +63,6 @@
     "@vue/eslint-config-typescript": "^13.0.0",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.25.0",
-    "git-rev-sync": "^3.0.2",
     "sass": "^1.75.0",
     "sass-loader": "^14.2.1",
     "typescript": "^5.4.5",
