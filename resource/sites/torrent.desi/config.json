@@ -6,6 +6,9 @@
   "icon": "https://torrent.desi/favicon.ico",
   "tags": ["影视", "综合", "印度"],
   "host": "torrent.desi",
+  "formerHosts": [
+    "desitorrents.tv"
+  ],
   "levelRequirements": [{
       "level": "1",
       "name": "PowerUser",
