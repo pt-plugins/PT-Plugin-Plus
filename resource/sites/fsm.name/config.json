@@ -103,6 +103,14 @@
             "data.peers.upload"
           ]
         },
+        "joinTime": {
+          "selector": [
+            ""
+          ],
+          "filters": [
+            "new Date().getTime()"
+          ]
+        },
         "bonusPerHour": {
           "value": "N/A"
         }
