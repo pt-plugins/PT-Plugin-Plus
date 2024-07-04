@@ -136,48 +136,7 @@
         }
       });
 
-      // 复制下载链接
-      PTService.addButton({
-        title: this.t("buttons.copyAllToClipboardTip"), // "复制下载链接到剪切板",
-        icon: "file_copy",
-        label: this.t("buttons.copyAllToClipboard"), //"复制链接",
-        click: (success, error) => {
-          if (checkPasskey && !PTService.site.passkey) {
-            error(this.t("needPasskey"));
-            return;
-          }
-          this.getDownloadURLs().then(urls => {
-            if (!urls.length || typeof urls == 'string') {
-              error(urls);
-              throw new Error('ignore')
-            }
-            return PTService.call(PTService.action.copyTextToClipboard, urls.join('\n'))
-          })
-            .then(result => {
-              console.log('命令执行完成', result);
-              success();
-            })
-            .catch(() => {
-              error();
-            })
-        },
-        onDrop: (data, event, success, error) => {
-          if (checkPasskey && !PTService.site.passkey) {
-            error(this.t("needPasskey"));
-            return;
-          }
-          let url = this.getDroperURL(data.url);
-          url &&
-            PTService.call(PTService.action.copyTextToClipboard, url)
-              .then(result => {
-                console.log("命令执行完成", result);
-                success();
-              })
-              .catch(() => {
-                error();
-              });
-        }
-      });
+      // 复制下载链接, 功能上和解析推送种子冲突, 而且解析推送种子更方便.
 
       // 检查是否有下载管理权限
       this.checkPermissions(["downloads"])
@@ -213,17 +172,10 @@
             error(this.t("needPasskey"));
             return;
           }
-          this.getDownloadURLs().then(urls => {
-            if (!urls.length || typeof urls == 'string') {
-              error(urls);
-              throw new Error('ignore')
-            }
-            return urls.map(url => ({url, method: PTService.site.downloadMethod}))
+          this.resolveDownloadURLs(async (url, id) => {
+            let data = {url, method: PTService.site.downloadMethod}
+            return await PTService.call(PTService.action.addBrowserDownloads, data)
           })
-            .then(downloads => {
-              console.log(downloads)
-              return PTService.call(PTService.action.addBrowserDownloads, downloads)
-            })
             .then(result => {
               console.log('命令执行完成', result);
               success();
@@ -981,28 +933,35 @@
         return;
       }
 
-      this.getDownloadURLs().then(urls => {
-        if (!urls.length || typeof urls == 'string') {
-          error(urls);
-          throw new Error('ignore')
+      function hanleDownloadURLsCB(msg) {
+        switch (msg.status) {
+          case 'success':
+            successCnt+=1
+            break
+          case 'failed':
+            PTService.showNotice({text: msg?.msg || msg, type: "error", width: 480});
         }
+      }
+
+      let successCnt = 0, totalCnt = 0
+      this.resolveDownloadURLs(async (url, id) => {
+        totalCnt += 1
+        let urls = [url]
         // 是否启用后台下载任务
         if (PTService.options.enableBackgroundDownload) {
-          this.downloadURLsInBackground(
-            urls, msg => {
-              success({msg});
-            },
-            downloadOptions
-          );
+          this.downloadURLsInBackground(urls, hanleDownloadURLsCB, downloadOptions);
         } else {
-          this.downloadURLs(urls, urls.length,
-            msg => {
-              success({msg});
-            }, downloadOptions
-          );
+          this.downloadURLs(urls, urls.length, hanleDownloadURLsCB, downloadOptions);
         }
-      }).catch(console.error)
+      }).then(() => {
+        success({msg: this.t('downloadURLsFinished', {count: ` ${count}/${totalCnt}`})});
+      })
+        .catch(e => {
+          console.error(e);
+          error({msg: e.message})
+        })
     }
+
 
     downloadURLsInBackground(urls, callback, downloadOptions) {
       const items = [];
@@ -1047,31 +1006,21 @@
      * @param {*} downloadOptions 下载选项，如不指定，则发送至默认下载服务器
      */
     downloadURLs(urls, count, callback, downloadOptions) {
-      let index = count - urls.length;
+      // let index = count - urls.length;
       let url = urls.shift();
       if (!url) {
-        $(this.statusBar).remove();
-        this.statusBar = null;
+        // $(this.statusBar).remove();
+        // this.statusBar = null;
         // count + "条链接已发送完成。"
-        callback(
-          this.t("downloadURLsFinished", {
-            count
-          })
-        );
+        callback({status: 'success', count: 1});
         return;
       }
 
-      this.showStatusMessage(
-        this.t("downloadURLsTip", {
-          text:
-            url.replace(PTService.site.passkey, "***") +
-            "(" +
-            (count - index) +
-            "/" +
-            count +
-            ")"
-        })
-      );
+      let msg = this.t("downloadURLsTip", {
+        // text: url.replace(/sign=[\s\S]+tid/, 'sign=***&') + ` (${index + 1}/${count})`
+        text: url.replace(/sign=[\s\S]+tid/, 'sign=***&')
+      })
+      PTService.showNotice({text: msg, type: "info", width: 480});
 
       if (!downloadOptions) {
         this.sendTorrentToDefaultClient(url, false)
@@ -1106,6 +1055,7 @@
           })
           .catch(error => {
             console.log(error);
+            callback({status: 'failed', msg: error?.msg});
           });
       }
     }

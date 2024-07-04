@@ -17,7 +17,7 @@
     }
 
     // eslint-disable-next-line
-    async resolveDownloadURLs() {
+    async resolveDownloadURLs(func) {
       let ids = $('tr').map(function () {
         let rowIds = $(this).find('td').map(function() {
           let href = $(this).find('a').attr('href');
@@ -34,26 +34,35 @@
       console.log('ids', ids)
       let urls = []
       return new Promise(async (resolve, reject) => {
-        for (let i = 0; i < ids.length; i++) {
-          // 流控调整
-          const id = ids[i], timeout = 7500
-          let min = Math.ceil(timeout * (ids.length - i) / 1000 / 60)
-          let msg = this.t('resolveURLsTip', {id, current: i + 1, total: ids.length, min})
-          this.showStatusMessage(msg, 480)
-          let url = PTService.resolveMTDownloadURL(id)
-          if (url) {
-            urls.push(url)
-          } else {
-            // 限流
-            console.error(`can't get download url by id: ${id}`)
-            break
+        try {
+          for (let i = 0; i < ids.length; i++) {
+            // 流控调整
+            const id = ids[i], timeout = 8000
+            let min = Math.ceil(timeout * (ids.length - i) / 1000 / 60)
+            let msg = this.t('resolveURLsTip', {id, current: i + 1, total: ids.length, min})
+            this.showStatusMessage(msg, 480)
+            let url = PTService.resolveMTDownloadURL(id)
+            if (url) {
+              let res = url
+
+              // handle custom function
+              if (func) {
+                res = {url, func: await func(url, id)}
+              }
+              urls.push(res)
+            } else {
+              // 限流
+              console.error(`can't get download url by id: ${id}`)
+              break
+            }
+            // 强制等待, 减缓站点压力. 觉得太慢自行修改站点每页种子数量
+            await this.sleep(timeout)
           }
-          // 强制等待, 减缓站点压力. 觉得太慢自行修改站点每页种子数量
-          await this.sleep(timeout)
+        } finally {
+          $(this.statusBar).remove()
+          console.log(`已解析 ${urls.length} 个下载链接`, urls)
+          resolve(urls)
         }
-        $(this.statusBar).remove()
-        console.log(`已解析 ${urls.length} 个下载链接`, urls)
-        resolve(urls)
       })
     }
 
@@ -61,23 +70,11 @@
      * 获取下载链接
      */
     getDownloadURLs() {
+      console.log(`MT 不应该使用这个函数获取下载链接, 请使用 resolveDownloadURLs`)
       let urlParser = PTService.filters.parseURL(location.href);
       let site = PTService.getSiteFromHost(urlParser.host);
 
       let urls = PTService.getFieldValue('downloadURLs');
-      if (!urls) {
-        return this.resolveDownloadURLs().then(links => {
-          if (links.length === 0) {
-            //  "获取下载链接失败，未能正确定位到链接";
-            return this.t('getDownloadURLsFailed');
-          }
-          return links
-        })
-          .catch(e => {
-            console.error(e)
-            return null
-          })
-      }
 
       return Promise.resolve(urls)
     }
