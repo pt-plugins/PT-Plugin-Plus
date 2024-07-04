@@ -1,7 +1,7 @@
 (function(options, User) {
   class Parser {
     static MAX_RETRIES = 2;
-    static RETRY_DELAY_MS = 8000;
+    static RETRY_DELAY_MS = 2100;
 
     constructor(options, dataURL) {
       this.options = options;
