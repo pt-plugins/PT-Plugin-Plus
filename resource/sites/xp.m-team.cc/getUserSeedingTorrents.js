@@ -10,11 +10,11 @@
       this.rawData = "";
       this.pageInfo = {
         count: 0,
-        current: 0,
+        current: 0
       };
       this.result = {
         seeding: 0,
-        seedingSize: 0,
+        seedingSize: 0
       };
       this.load();
     }
@@ -23,8 +23,8 @@
      * 完成
      */
     done() {
-      this.result.messageCount = this.getUnReadMessageCount();
-      console.log(`[mt] getUserSeedingTorrents done`, this.result);
+      this.result.messageCount = this.getUnReadMessageCount()
+      console.log(`[mt] getUserSeedingTorrents done`, this.result)
       this.options.resolve(this.result);
     }
 
@@ -37,10 +37,10 @@
       let datas = this.rawData.data.data;
       let results = {
         seeding: 0,
-        seedingSize: 0,
+        seedingSize: 0
       };
       if (datas) {
-        datas.forEach((item) => {
+        datas.forEach(item => {
           results.seeding++;
           results.seedingSize += Number(item.torrent.size);
         });
@@ -119,23 +119,21 @@
      * 这是两个接口, 直接写 config.json 是无法实现的. 在这里加点魔法
      */
     getUnReadMessageCount() {
-      return this.getMailBoxCnt() + this.getSystemNoticeCnt();
+      return this.getMailBoxCnt() + this.getSystemNoticeCnt()
     }
 
     /**
      * 获取站内信未读数量
      */
     getMailBoxCnt() {
-      return this.getNotifyCnt(resolveURL(activeURL, "/api/msg/statistic"));
+      return this.getNotifyCnt(resolveURL(activeURL, '/api/msg/statistic'))
     }
 
     /**
      * 获取系统通知未读数量
      */
     getSystemNoticeCnt() {
-      return this.getNotifyCnt(
-        resolveURL(activeURL, "/api/msg/notify/statistic")
-      );
+      return this.getNotifyCnt(resolveURL(activeURL, '/api/msg/notify/statistic'))
     }
 
     getNotifyCnt(url) {
@@ -143,9 +141,9 @@
         method: "POST",
         data: {},
         headers: this.options.rule.headers,
-        async: false,
-      });
-      return parseInt(res.responseJSON.data.unMake) || 0;
+        async: false
+      })
+      return parseInt(res.responseJSON.data.unMake) || 0
     }
   }
 
