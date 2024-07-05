@@ -1,5 +1,8 @@
 (function(options, User) {
   class Parser {
+    static MAX_RETRIES = 2;
+    static RETRY_DELAY_MS = 2100;
+
     constructor(options, dataURL) {
       this.options = options;
       this.dataURL = dataURL;
@@ -74,25 +77,41 @@
       let postData = this.options.rule.requestData;
       postData.pageNumber = this.pageInfo.current + 1;
 
-      $.ajax({
-        url,
-        method: "POST",
-        dataType: "JSON",
-        data: JSON.stringify(postData),
-        contentType: "application/json",
-        headers: this.options.rule.headers
-      })
-        .done(result => {
-          this.rawData = result;
-          if (this.rawData.data.data.length > 0) {
-            this.parse();
-          } else {
-            this.done();
-          }
-        })
-        .fail(() => {
-          this.done();
-        });
+      function makeRequest(retryCount = 0) {
+        setTimeout(() => {
+          $.ajax({
+            url,
+            method: "POST",
+            dataType: "JSON",
+            data: JSON.stringify(postData),
+            contentType: "application/json",
+            headers: this.options.rule.headers,
+          })
+            .done((result) => {
+              try {
+                this.rawData = result;
+                if (this.rawData.data.data.length > 0) {
+                  this.parse();
+                } else {
+                  this.done();
+                }
+              } catch (error) {
+                console.error("[mt] Error processing result:", error);
+                if (retryCount < Parser.MAX_RETRIES) {
+                  makeRequest.call(this, retryCount + 1);
+                } else {
+                  this.done();
+                }
+              }
+            })
+            .fail(() => {
+              this.done();
+            });
+        }, Parser.RETRY_DELAY_MS);
+      }
+
+      // Call the function for the first time
+      makeRequest.call(this);
     }
 
     /**
