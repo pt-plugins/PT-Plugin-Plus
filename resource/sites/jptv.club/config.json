@@ -38,8 +38,22 @@
       "level": "5", 
       "name": "Veteran",
       "interval": "12",
-      "uploaded": "15TB",
-      "privilege": "Special FL"
+      "uploaded": "100TB",
+      "privilege": ""
+    },{
+      "level": "6", 
+      "name": "Seeder",
+      "interval": "1",
+      "seedingSize": "5TB",
+      "averageSeedtime": "30",
+      "privilege": ""
+    },{
+      "level": "7", 
+      "name": "Archivist",
+      "interval": "3",
+      "seedingSize": "10TB",
+      "averageSeedtime": "60",
+      "privilege": ""
     }],
     "collaborator": "MewX",
     "searchEntryConfig": {
