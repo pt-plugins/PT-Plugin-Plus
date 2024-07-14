@@ -212,12 +212,6 @@
             "filters": [
               "query.parent().clone().children().remove().end().text().replace(/,/g,'')",
               "query ? parseInt(query.match(/[\\d]+/)[0]) : null"]
-        },
-        "seeding": {
-          "selector": ["div#ka1"],
-          "filters": [
-            "query.parent().clone().children().remove().end().text().replace(/,/g,'')",
-            "query ? parseInt(query.match(/[\\d]+/)[0]) : null"]
         }
       }
     },
@@ -225,6 +219,10 @@
       "merge": true,
       "page": "/viewusertorrents.php?id=$user.id$&show=seeding",
       "fields": {
+        "seeding": {
+          "selector": ["tr:not(:eq(0))"],
+          "filters": ["query.find('td.rowfollow:eq(2)').length != 0 ? query.find('td.rowfollow:eq(2)').length : query.length"]
+        },
         "seedingSize": {
           "selector": ["tr:not(:eq(0))"],
           "filters": ["jQuery.map(query.find('td.rowfollow:eq(1)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
