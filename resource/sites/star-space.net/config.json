@@ -196,7 +196,7 @@
           "uploaded": {
             "selector": "a[href*='p_user/user_upload.php']:first",
             "filters": [
-              "(query && query.length > 0) ? query.text().replace('上传：', '').replace('Upload :', '').sizeToNumber():null"
+              "(query && query.length > 0) ? query.text().replace('上传：', '').replace('Upload :', '').concat('B').sizeToNumber():null"
             ]
           },
           "uploads": {
@@ -208,19 +208,19 @@
           "downloaded": {
             "selector": "#user_info_no_hover",
             "filters": [
-              "(query && query.length > 0) ? query.text().replace('下载：', '').replace('Download :', '').sizeToNumber().trim():null"
+              "(query && query.length > 0) ? query.text().replace('下载：', '').replace('Download :', '').concat('B').sizeToNumber():null"
             ]
           },
           "bonus": {
             "selector": "a[href*='p_bonus/bonus_hour.php']:first",
             "filters": [
-              "(query && query.length > 0) ? parseFloat(query.text().replace('魔力：', '').replace('Bonus :', '')).trim():null"
+              "(query && query.length > 0) ? parseFloat(query.text().replace('魔力：', '').replace('Bonus :', '')):null"
             ]
           },
           "seedingPoints": {
             "selector": "a[href*='p_bonus/bonus_hour.php']:last",
             "filters": [
-              "(query && query.length > 0) ? parseFloat(query.text().replace('积分：', '').replace('Seed Bonus :', '')).trim():null"
+              "(query && query.length > 0) ? parseFloat(query.text().replace('积分：', '').replace('Seed Bonus :', '')):null"
             ]
           },
           "seeding": {
@@ -254,7 +254,7 @@
         },
         "seedingSize": {
           "selector": ["td:contains('合计体积') + td + td + td, td:contains('All Size') + td + td + td"],
-          "filters": ["query ?query.text().sizeToNumber().trim():0"]
+          "filters": ["query ?query.text().concat('B').sizeToNumber():0"]
         }
       }
     }
