@@ -126,16 +126,13 @@
     ],
     "searchEntryConfig": {
       "page": "/p_torrent/video_list_t.php",
-      "queryString": "search=$key$&sort=desc",
+      "queryString": "search=$key$&sort=desc&area=name&seeder=&source=&column=tr_create_time&suggest=",
       "resultType": "html",
       "resultSelector": "table",
-      "area": [{
-        "name": "标题",
-        "appendQueryString": "&area=name"
-      }, {
+      "area": [ {
         "name": "IMDB",
         "keyAutoMatch": "^(tt\\d+)$",
-        "appendQueryString": "&area=imdb"
+        "queryString": "search=$key$&sort=desc&area=imdb&seeder=&source=&column=tr_create_time&suggest="
       }],
       "fieldIndex": {
         "category": 0,
