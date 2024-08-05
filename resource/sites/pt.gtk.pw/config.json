@@ -20,7 +20,7 @@
       "level": 2,
       "name": "Elite User",
       "interval": "8",
-      "downloaded": "120G",
+      "downloaded": "120GB",
       "ratio": "1.55",
       "privilege": "Elite User及以上用户封存账号后不会被删除。"
     },
@@ -28,7 +28,7 @@
       "level": 3,
       "name": "Crazy User",
       "interval": "15",
-      "downloaded": "300G",
+      "downloaded": "300GB",
       "ratio": "2.05",
       "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
     },
@@ -36,7 +36,7 @@
       "level": 4,
       "name": "Insane User",
       "interval": "25",
-      "downloaded": "500G",
+      "downloaded": "500GB",
       "ratio": "2.55",
       "privilege": "可以查看普通日志。"
     },
@@ -44,7 +44,7 @@
       "level": 5,
       "name": "Veteran User",
       "interval": "40",
-      "downloaded": "750G",
+      "downloaded": "750GB",
       "ratio": "3.05",
       "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
     },
@@ -52,7 +52,7 @@
       "level": 6,
       "name": "Extreme User",
       "interval": "60",
-      "downloaded": "1T",
+      "downloaded": "1TB",
       "ratio": "3.55",
       "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
     },
@@ -60,7 +60,7 @@
       "level": 7,
       "name": "Ultimate User",
       "interval": "80",
-      "downloaded": "1.5T",
+      "downloaded": "1.5TB",
       "ratio": "4.05",
       "privilege": "得到五个邀请名额。"
     },
@@ -68,7 +68,7 @@
       "level": 8,
       "name": "Nexus Master",
       "interval": "100",
-      "downloaded": "3T",
+      "downloaded": "3TB",
       "ratio": "4.55",
       "privilege": "得到十个邀请名额。"
     }
