@@ -23,7 +23,7 @@
         "level": 2,
         "name": "Elite User",
         "interval": "8",
-        "downloaded": "100G",
+        "downloaded": "100GB",
         "ratio": "2.5",
         "seedingPoints": "80000",
         "privilege": "没有新权限增加"
@@ -32,7 +32,7 @@
         "level": 3,
         "name": "Crazy User",
         "interval": "15",
-        "downloaded": "300G",
+        "downloaded": "300GB",
         "ratio": "3",
         "seedingPoints": "150000",
         "privilege": "可以在做种/下载/发布的时候选择匿名模式。"
@@ -41,7 +41,7 @@
         "level": 4,
         "name": "Insane User",
         "interval": "25",
-        "downloaded": "500G",
+        "downloaded": "500GB",
         "ratio": "3.5",
         "seedingPoints": "250000",
         "privilege": "可以查看普通日志。"
@@ -50,7 +50,7 @@
         "level": 5,
         "name": "Veteran User",
         "interval": "40",
-        "downloaded": "1T",
+        "downloaded": "1TB",
         "ratio": "4",
         "seedingPoints": "400000",
         "privilege": "可以查看其它用户的评论、帖子历史。"
@@ -59,7 +59,7 @@
         "level": 6,
         "name": "Extreme User",
         "interval": "60",
-        "downloaded": "2T",
+        "downloaded": "2TB",
         "ratio": "4.5",
         "seedingPoints": "600000",
         "privilege": "可以更新过期的外部信息。六级烧伤(Extreme User)及以上用户会永远保留账号。"
@@ -68,7 +68,7 @@
         "level": 7,
         "name": "Ultimate User",
         "interval": "80",
-        "downloaded": "5T",
+        "downloaded": "5TB",
         "ratio": "5",
         "seedingPoints": "800000",
         "privilege": "这个等级会永远保留账号。"
@@ -77,7 +77,7 @@
         "level": 8,
         "name": "Nexus Master",
         "interval": "100",
-        "downloaded": "10T",
+        "downloaded": "10TB",
         "ratio": "5.5",
         "seedingPoints": "1000000",
         "privilege": "这个等级会永远保留账号。"
