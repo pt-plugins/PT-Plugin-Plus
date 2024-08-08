@@ -183,11 +183,11 @@
     },
     "userUploadedTorrents": {
       "prerequisites": "!user.uploads",
-      "page": "/torrents.php?incldead=1&spstate=0&inclbookmarked=0&check=checked&search=$user.name$&search_area=3&search_mode=3",
+      "page": "/getusertorrentlist.php?do_ajax=1&userid=$user.id$&type=uploaded",
       "fields": {
         "uploads": {
-          "selector": ["p.np-pager:first b:last"],
-          "filters": ["query.text().replace(/,/g,'').split('-')", "(query && query.length > 1) ? parseInt(query[1]) : 0"]
+          "selector": ["b:first"],
+          "filters": ["query.text()"]
         }
       }
     }
