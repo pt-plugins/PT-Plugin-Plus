@@ -16,67 +16,49 @@
   ],
   "levelRequirements": [{
     "level": "1", 
-    "name": "入门/Power User",
-    "downloaded": "100GB",
-    "ratio": "1.1",
-    "seedingPoints": "20000",
-    "privilege": "查看NFO文档；请求续种；上传字幕或删除自己上传的字幕。"
-  },{
-    "level": "2", 
-    "name": "发烧/Elite User",
-    "downloaded": "200GB",
-    "ratio": "1.2",
-    "seedingPoints": "50000",
-    "privilege": "查看用户列表；查看排行榜。"
-  },{
-    "level": "3", 
-    "name": "着迷/Crazy User",
+    "name": "精英",
     "downloaded": "500GB",
     "ratio": "1.2",
-    "seedingPoints": "100000",
-    "privilege": "在做种/下载/发布的时候选择匿名模式, 浏览论坛邀请区。封存账号后不会被删除"
+    "alternative": [
+      {
+        "seedingPoints": "100000",
+        "uploads": "1"
+      },
+      {
+        "seedingPoints": "150000"
+      }
+    ],
+    "privilege": "可以在做种/下载/发布的时候选择匿名模式；可以查看用户列表；可以查看排行榜；可以浏览论坛邀请区；自助申请保种员；等级加成 0.05。"
   },{
-    "level": "4", 
-    "name": "狂热/Insane User",
+    "level": "2", 
+    "name": "大师",
     "downloaded": "1TB",
     "ratio": "1.2",
-    "seedingPoints": "200000",
-    "privilege": "查看其它用户的种子历史"
+    "alternative": [
+      {
+        "seedingPoints": "500000",
+        "uploads": "100"
+      },
+      {
+        "seedingPoints": "1000000"
+      }
+    ],
+    "privilege": "可以访问高级用户论坛，等级加成 0.15。"
   },{
-    "level": "5", 
-    "name": "资深/Veteran User",
-    "downloaded": "2TB",
-    "ratio": "1.2",
-    "seedingPoints": "400000",
-    "privilege": "永远保留账号。免除站点常规考核"
-  },{
-    "level": "6", 
-    "name": "大师/Extreme User",
+    "level": "3", 
+    "name": "神仙",
     "downloaded": "3TB",
-    "ratio": "1.5",
-    "seedingPoints": "600000",
-    "privilege": "得到1个邀请名额。"
-  },{
-    "level": "7", 
-    "name": "宗师/Ultimate User",
-    "downloaded": "4TB",
-    "ratio": "1.5",
-    "seedingPoints": "800000",
-    "privilege": "查看其它用户的评论、帖子历史。"
-  },{
-    "level": "8", 
-    "name": "骨灰/Nexus Master",
-    "downloaded": "5TB",
-    "ratio": "1.5",
-    "seedingPoints": "1000000",
-    "privilege": "得到1个邀请名额。"
-  },{
-    "level": "9", 
-    "name": "神仙/Nexus God",
-    "downloaded": "11.5TB",
-    "ratio": "2.0",
-    "seedingPoints": "2300000",
-    "privilege": "彩色ID特权；查看普通日志；购买及发送邀请。"
+    "ratio": "2",
+    "alternative": [
+      {
+        "seedingPoints": "1200000",
+        "uploads": "300"
+      },
+      {
+        "seedingPoints": "2400000"
+      }
+    ],
+    "privilege": "彩色 ID 特权；可以查看普通日志；等级加成 0.25。"
   }],
   "searchEntry": [{
       "name": "全部",
