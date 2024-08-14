@@ -228,7 +228,7 @@
           "filters": ["query.text().match(/([\\d.]+)/)", "(query && query.length>=1)?query[0]:''"]
         },
         "seedingSize": {
-          "selector": ["td.heading:contains('Seeding size') + td"],
+          "selector": ["td.rowhead:contains('Seeding size (total)') + td"],
           "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         }
       }
