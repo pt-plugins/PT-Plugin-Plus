@@ -1,8 +1,8 @@
-import md5 from "blueimp-md5";
 import * as basicContext from "basiccontext";
 import { Options, Site, Dictionary } from "@/interface/common";
 import dayjs from "dayjs";
 import { UAParser } from "ua-parser-js";
+import {MD5} from "crypto-js";
 
 class HelpFunctions {
   public isExtensionMode: boolean = false;
@@ -106,7 +106,7 @@ class HelpFunctions {
    * 获取一个编号
    */
   public getNewId(): string {
-    return md5(
+    return MD5(
       new Date().getTime().toString() + this.getRandomString()
     ).toString();
   }
@@ -267,7 +267,7 @@ class HelpFunctions {
    */
   public checkPermissions(permissions: string[]): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      if (chrome && chrome.permissions) {
+      if (chrome?.permissions) {
         // 查询当前权限
         chrome.permissions.contains(
           {
@@ -297,7 +297,7 @@ class HelpFunctions {
    */
   public requestPermissions(permissions: string[]): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      if (chrome && chrome.permissions) {
+      if (chrome?.permissions) {
         chrome.permissions.request(
           {
             permissions: permissions
@@ -367,14 +367,15 @@ class HelpFunctions {
       sites.push(...options.sites);
     }
 
-    if (options.system && options.system.publicSites) {
+    if (options.system?.publicSites) {
       sites.push(...options.system.publicSites);
     }
 
     let site = sites.find((item: Site) => {
-      let cdn = [item.url].concat(item.cdn, item.formerHosts?.map(x => `//${x}`));
+      let cdn = [item.url].concat(item.cdn, item.apiCdn, item.formerHosts?.map(x => `//${x}`));
       return item.host == host || cdn.join("").indexOf(`//${host}`) > -1;
     });
+
 
     if (site) {
       return this.clone(site);
@@ -487,6 +488,7 @@ class HelpFunctions {
    * 比如右键种子发送到 PTPP, 按正常逻辑筛选一遍
    */
   public getSiteActiveUrl(site: Site) {
+    if (site.apiCdn && site.apiCdn.length > 0) return site.apiCdn[0]
     if (site.activeURL) return site.activeURL
     if (site.cdn && site.cdn.length > 0) return site.cdn[0]
     return site.url

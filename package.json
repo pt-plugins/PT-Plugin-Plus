@@ -1,7 +1,8 @@
 {
   "name": "pt-plugin-plus",
   "version": "1.6.1",
-  "packageManager": "yarn@1.19.1",
+  "packageManager": "yarn@1.22.22",
+  "type": "module",
   "author": {
     "name": "ronggang",
     "url": "https://github.com/ronggang"
@@ -10,27 +11,19 @@
   "displayName": "PT 助手 Plus",
   "homepage": "https://github.com/pt-plugins/PT-Plugin-Plus",
   "scripts": {
-    "serve": "set NODE_OPTIONS=--openssl-legacy-provider & vue-cli-service serve --mode=test",
-    "build": "set NODE_OPTIONS=--openssl-legacy-provider & yarn build:index && yarn build:background && yarn build:content && yarn resource",
-    "lint": "vue-cli-service lint",
-    "background": "webpack --config webpack/prod-background.js && webpack --config webpack/prod-content.js",
-    "dev": "yarn dev:index && yarn dev:background && yarn dev:content && yarn resource",
-    "dev-s": "cd debug && yarn install && tsc && node ./dist/index.js",
-    "dev:index": "yarn install && vue-cli-service build --mode=development",
-    "dev:background": "webpack --config webpack/dev-background.js --progress",
-    "dev:content": "webpack --config webpack/dev-content.js --progress",
-    "dev:bc": "yarn dev:background && yarn dev:content",
-    "resource": "cd debug && yarn install && tsc && node ./dist/buildResource.js",
-    "build:index": "yarn install && vue-cli-service build",
-    "build:background": "webpack --config webpack/prod-background.js --progress",
-    "build:content": "webpack --config webpack/prod-content.js --progress"
+    "lint": "eslint ./src/ --ext ts,vue,js",
+    "build": "yarn build:index && yarn build:content && yarn build:background",
+    "dev:index": "vite build --watch",
+    "dev:background": "yarn build:background -- --mode development",
+    "dev:content": "yarn build:content -- --mode development",
+    "build:index": "vite build",
+    "build:background": "vite build --config vite.config.background.ts",
+    "build:content": "vite build --config vite.config.content.ts"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.4.0",
-    "@typescript-eslint/parser": "^4.4.0",
     "basiccontext": "^3.5.1",
-    "blueimp-md5": "^2.19.0",
-    "crypto-js": "^3.1.9-1",
+    "caniuse-lite": "^1.0.30001612",
+    "crypto-js": "^4.2.0",
     "dayjs": "^1.11.5",
     "dom-to-image": "^2.6.0",
     "dotenv": "^8.2.0",
@@ -40,17 +33,17 @@
     "highcharts-vue": "^1.4.0",
     "i18next": "^21.9.1",
     "jszip": "^3.10.1",
-    "parse-torrent": "^7.0.1",
+    "parse-torrent": "^11.0.16",
     "ua-parser-js": "^1.0.2",
     "url-parse": "^1.5.10",
-    "vue": "~2.6.14",
+    "vue": "~2.7.0",
     "vue-class-component": "^6.3.2",
     "vue-i18n": "^8.11.2",
     "vue-property-decorator": "^7.0.0",
     "vue-router": "~3.5.4",
     "vuetify": "^1.3.0",
     "vuex": "^3.0.1",
-    "webdav": "^3.6.2"
+    "webdav": "^5.6.0"
   },
   "devDependencies": {
     "@types/blueimp-md5": "^2.18.0",
@@ -60,59 +53,23 @@
     "@types/extend": "^3.0.1",
     "@types/file-saver": "^2.0.5",
     "@types/jquery": "^3.5.14",
-    "@types/parse-torrent": "^5.8.4",
+    "@types/node": "20",
+    "@types/parse-torrent": "^5.8.7",
     "@types/ua-parser-js": "^0.7.36",
     "@types/url-parse": "^1.4.8",
-    "@vue/cli-plugin-babel": "^3.0.5",
-    "@vue/cli-plugin-eslint": "^5.0.0",
-    "@vue/cli-plugin-typescript": "^3.2.0",
-    "@vue/cli-service": "^3.0.5",
-    "@vue/eslint-config-typescript": "^11.0.0",
-    "babel-eslint": "^10.0.1",
-    "copy-webpack-plugin": "^4.6.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
+    "@vitejs/plugin-vue2": "^2.3.1",
+    "@vue/eslint-config-typescript": "^13.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.25.0",
     "git-rev-sync": "^3.0.2",
-    "sass": "^1.54.8",
-    "sass-loader": "~7.3.1",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.1",
-    "terser-webpack-plugin": "^2.2.1",
-    "ts-loader": "^5.3.1",
-    "ts-node": "^8.5.2",
-    "typescript": "^3.0.0",
-    "uglifyjs-webpack-plugin": "~2.1.3",
-    "vue-cli-plugin-vuetify": "^0.4.6",
-    "vue-template-compiler": "~2.6.14",
-    "vuetify-loader": "~1.7.3",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-merge": "^4.2.2"
-  },
-  "resolutions": {
-    "@types/node": "~18.11.9"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended",
-      "@vue/typescript"
-    ],
-    "rules": {
-      "no-console": 0
-    },
-    "parserOptions": {
-      "parser": "@typescript-eslint/parser"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
+    "sass": "^1.75.0",
+    "sass-loader": "^14.2.1",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.10",
+    "vite-plugin-node-polyfills": "^0.21.0",
+    "vue-template-compiler": "~2.7.0"
   },
   "browserslist": [
     "> 1%",

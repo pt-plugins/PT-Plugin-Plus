@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
-import md5 from "blueimp-md5";
+import {MD5} from "crypto-js";
 import {
   Options,
   EAction,
@@ -114,7 +113,7 @@ export default new Vuex.Store({
      * @param item
      */
     addClient(state, item) {
-      item.id = md5(new Date().toString());
+      item.id = MD5(new Date().toString()).toString();
       state.options.clients.push(item);
 
       extension.sendRequest(EAction.saveConfig, null, state.options);
@@ -176,7 +175,7 @@ export default new Vuex.Store({
           client.paths = {};
         }
 
-        if (options.site && options.site.host) {
+        if (options.site?.host) {
           client.paths[options.site.host] = options.paths;
         } else {
           // 如果未指定网站，则用于所有站点
@@ -222,7 +221,7 @@ export default new Vuex.Store({
         if (!site.plugins) {
           site.plugins = [];
         }
-        options.plugin.id = md5(new Date().toString());
+        options.plugin.id = MD5(new Date().toString()).toString();
         site.plugins.push(options.plugin);
         extension.sendRequest(EAction.saveConfig, null, state.options);
       }
@@ -433,7 +432,7 @@ export default new Vuex.Store({
         _options.searchSolutions = [];
       }
       if (index == -1) {
-        options.id = md5(new Date().toString());
+        options.id = MD5(new Date().toString()).toString();
         _options.searchSolutions.push(options);
       } else {
         _options.searchSolutions[index] = options;
@@ -496,7 +495,7 @@ export default new Vuex.Store({
         if (!site.searchEntry) {
           site.searchEntry = [];
         }
-        options.item.id = md5(new Date().toString());
+        options.item.id = MD5(new Date().toString()).toString();
         site.searchEntry.push(options.item);
 
         commit("updateOptions", _options);
@@ -578,7 +577,7 @@ export default new Vuex.Store({
         _options.backupServers = [];
       }
 
-      server.id = md5(new Date().toString());
+      server.id = MD5(new Date().toString()).toString();
       _options.backupServers.push(server);
 
       commit("updateOptions", _options);
@@ -704,7 +703,7 @@ export default new Vuex.Store({
         return item.id === clientId;
       });
       let path = "";
-      if (client && client.paths) {
+      if (client?.paths) {
         for (const host in client.paths) {
           if (site.host === host) {
             path = client.paths[host][0];
@@ -736,7 +735,7 @@ export default new Vuex.Store({
 window.chrome = window.chrome || {};
 
 // 更新当前TabId
-if (chrome && chrome.tabs) {
+if (chrome?.tabs) {
   chrome.tabs.getCurrent((tab: any) => {
     extension.sendRequest(EAction.updateOptionsTabId, null, tab.id);
   });

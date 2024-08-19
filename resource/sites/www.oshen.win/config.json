@@ -9,9 +9,6 @@
   ],
   "schema": "NexusPHP",
   "host": "oshen.win",
-  "cdn": [
-    "https://www.oshen.win/"
-  ],
   "collaborator": [
     "AllenPu"
   ],

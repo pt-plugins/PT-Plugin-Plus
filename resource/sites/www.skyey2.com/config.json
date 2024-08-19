@@ -112,8 +112,8 @@
         "bonus": {
           "selector": ["#ratio"],
           "filters": [
-            "query.text().replace('积分: ', '').replace(/,/g,'').trim()",
-            "parseFloat(query)"
+            "query ? query.text().match(/[\\d.]+/) : 0",
+            "(query && query.length > 0) ? parseInt(query[0]) : 0"
           ]
         },
         "joinTime": {
@@ -139,7 +139,18 @@
           "filters": ["jQuery.map(query.find('td.rowfollow:eq(3)'), (item)=>{return $(item).text();})", "_self.getTotalSize(query)"]
         }
       }
-    } 
+    },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/forum.php?mod=torrents&search=%23$user.id$",
+      "fields": {
+        "uploads": {
+          "selector": ["#frame_torrents b:contains('-'):last"],
+          "filters": ["query ? query.text().split('-') : 0",
+            "(query.length == 2) ? parseInt(query[1].trim()) : 0"]
+        }
+      }
+    }
   },
   "supportedFeatures": {
     "imdbSearch": false

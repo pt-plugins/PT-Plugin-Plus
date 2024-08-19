@@ -3,7 +3,9 @@ import Vuetify from "vuetify";
 // Translation provided by Vuetify (typescript)
 import zhHans from "vuetify/src/locale/zh-Hans";
 import en from "vuetify/src/locale/en";
-import "vuetify/src/stylus/app.styl";
+// import "vuetify/src/stylus/app.styl";
+import "vuetify/dist/vuetify.css";
+
 
 class VuetifyService {
   public init(lang: string = "zh-Hans") {

@@ -1,12 +1,9 @@
-import {
-  IBackupServer,
-  EResourceOrderBy,
-  EResourceOrderMode
-} from "@/interface/common";
-import { createClient as WebDAVClient } from "webdav";
+import {EResourceOrderBy, EResourceOrderMode, IBackupServer} from "@/interface/common";
+import {AuthType, createClient as WebDAVClient} from "webdav";
 
 export class WebDAV {
   private service: any;
+
   constructor(public options: IBackupServer) {
     this.initServer();
   }
@@ -16,9 +13,9 @@ export class WebDAV {
    */
   private initServer() {
     this.service = WebDAVClient(this.options.address, {
+      authType: this.options.digest ? AuthType.Digest : AuthType.Password,
       username: this.options.loginName,
       password: this.options.loginPwd,
-      digest: this.options.digest ? true : undefined
     });
   }
 
@@ -29,7 +26,7 @@ export class WebDAV {
   public list(options: any = {}): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.service
-        .getDirectoryContents("/", { glob: "*.zip" })
+        .getDirectoryContents("/", {glob: "*.zip"})
         .then((data: any[]) => {
           console.log(data);
 
@@ -104,18 +101,22 @@ export class WebDAV {
    */
   public add(formData: FormData): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
-      this.service
-        .putFileContents(formData.get("name"), formData.get("data"))
-        .then((result: any) => {
-          if (result) {
-            resolve(true);
-          } else {
-            reject(false);
-          }
+        (formData.get("data") as Blob).arrayBuffer().then(data => {
+            this.service
+                .putFileContents(formData.get("name"), data)
+                .then((result: any) => {
+                    console.log(result)
+                    if (result) {
+                        resolve(true);
+                    } else {
+                        reject(false);
+                    }
+                })
+                .catch((error: any) => {
+                    console.log(error)
+                    reject(error);
+                });
         })
-        .catch((error: any) => {
-          reject(error);
-        });
     });
   }
 

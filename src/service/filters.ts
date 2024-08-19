@@ -174,29 +174,36 @@ export const filters: IFilter = {
     let format2 = '###,###,###,###.000 ';
     if (bytes < 1000 * Math.pow(2, 10)) {
       r = bytes / Math.pow(2, 10);
+      r = Math.round(r * 100) / 100;
       u = "KiB";
     } else if (bytes < 1000 * Math.pow(2, 20)) {
       r = bytes / Math.pow(2, 20);
+      r = Math.round(r * 100) / 100;
       u = "MiB";
     } else if (bytes < 1000 * Math.pow(2, 30)) {
       r = bytes / Math.pow(2, 30);
+      r = Math.round(r * 100) / 100;
       u = "GiB";
     } else if (bytes < 1000 * Math.pow(2, 40)) {
       r = bytes / Math.pow(2, 40);
+      r = Math.round(r * 100) / 100;
       u = "TiB";
-      format = format2;
+      //format = format2;
     } else if (bytes < 1000 * Math.pow(2, 50)) {
       r = bytes / Math.pow(2, 50);
+      r = Math.round(r * 100) / 100;
       u = "PiB";
-      format = format2;
+      //format = format2;
     } else if (bytes < 1000 * Math.pow(2, 60)) {
       r = bytes / Math.pow(2, 60);
+      r = Math.round(r * 100) / 100;
       u = "EiB";
-      format = format2;
+      //format = format2;
     } else {
       r = bytes / Math.pow(2, 70);
+      r = Math.round(r * 100) / 100;
       u = "ZiB";
-      format = format2;
+      //format = format2;
     }
 
     if (type === "speed") {

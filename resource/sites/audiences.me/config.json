@@ -13,71 +13,80 @@
   ],
   "schema": "NexusPHP",
   "host": "audiences.me",
-  "levelRequirements": [{
-    "level": "1",
-    "name": "Power User",
-    "interval": "5",
-    "downloaded": "120GB",
-    "ratio": "2.0",
-    "seedingPoints": "100000",
-    "privilege": "查看NFO文档；查看用户列表；请求续种；查看其它用户的种子历史；删除自己上传的字幕"
-  },{
-    "level": "2",
-    "name": "Elite User",
-    "interval": "15",
-    "downloaded": "240GB",
-    "ratio": "2.5",
-    "seedingPoints": "200000",
-    "privilege": "无"
-  },{
-    "level": "3",
-    "name": "Crazy User",
-    "interval": "24",
-    "downloaded": "400GB",
-    "ratio": "3.0",
-    "seedingPoints": "400000",
-    "privilege": "查看排行榜"
-  },{
-    "level": "4",
-    "name": "Insane User",
-    "interval": "40",
-    "downloaded": "600GB",
-    "ratio": "3.5",
-    "seedingPoints": "640000",
-    "privilege": "无"
-  },{
-    "level": "5",
-    "name": "Veteran User",
-    "interval": "60",
-    "downloaded": "900GB",
-    "ratio": "4.0",
-    "seedingPoints": "880000",
-    "privilege": "查看其它用户的评论、帖子历史"
-  },{
-    "level": "6",
-    "name": "Extreme User",
-    "interval": "80",
-    "downloaded": "2048GB",
-    "ratio": "4.5",
-    "seedingPoints": "1200000",
-    "privilege": "永远保留账号；更新过期的外部信息"
-  },{
-    "level": "7",
-    "name": "Ultimate User",
-    "interval": "100",
-    "downloaded": "4096GB",
-    "ratio": "5.0",
-    "seedingPoints": "1500000",
-    "privilege": "无"
-  },{
-    "level": "8",
-    "name": "Nexus Master",
-    "interval": "112",
-    "downloaded": "8192GB",
-    "ratio": "6.0",
-    "seedingPoints": "1800000",
-    "privilege": "无"
-  }],
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "Power User",
+      "interval": "5",
+      "downloaded": "120GB",
+      "ratio": "2.0",
+      "seedingPoints": "100000",
+      "privilege": "查看NFO文档；查看用户列表；请求续种；查看其它用户的种子历史；删除自己上传的字幕"
+    },
+    {
+      "level": "2",
+      "name": "Elite User",
+      "interval": "15",
+      "downloaded": "240GB",
+      "ratio": "2.5",
+      "seedingPoints": "200000",
+      "privilege": "无"
+    },
+    {
+      "level": "3",
+      "name": "Crazy User",
+      "interval": "24",
+      "downloaded": "400GB",
+      "ratio": "3.0",
+      "seedingPoints": "400000",
+      "privilege": "查看排行榜"
+    },
+    {
+      "level": "4",
+      "name": "Insane User",
+      "interval": "40",
+      "downloaded": "600GB",
+      "ratio": "3.5",
+      "seedingPoints": "640000",
+      "privilege": "无"
+    },
+    {
+      "level": "5",
+      "name": "Veteran User",
+      "interval": "60",
+      "downloaded": "900GB",
+      "ratio": "4.0",
+      "seedingPoints": "880000",
+      "privilege": "查看其它用户的评论、帖子历史"
+    },
+    {
+      "level": "6",
+      "name": "Extreme User",
+      "interval": "80",
+      "downloaded": "2048GB",
+      "ratio": "4.5",
+      "seedingPoints": "1200000",
+      "privilege": "永远保留账号；更新过期的外部信息"
+    },
+    {
+      "level": "7",
+      "name": "Ultimate User",
+      "interval": "100",
+      "downloaded": "4096GB",
+      "ratio": "5.0",
+      "seedingPoints": "1500000",
+      "privilege": "无"
+    },
+    {
+      "level": "8",
+      "name": "Nexus Master",
+      "interval": "112",
+      "downloaded": "8192GB",
+      "ratio": "6.0",
+      "seedingPoints": "1800000",
+      "privilege": "无"
+    }
+  ],
   "collaborator": "Audiences",
   "searchEntryConfig": {
     "fieldSelector": {
@@ -91,11 +100,16 @@
       },
       "status": {
         "selector": [
-          ".torrents-progress", ".torrents-progress2"
+          ".torrents-progress",
+          ".torrents-progress2"
         ],
         "switchFilters": [
-          ["query.attr('style').indexOf('100%')!=-1?2:3"],
-          ["255"]
+          [
+            "query.attr('style').indexOf('100%')!=-1?2:3"
+          ],
+          [
+            "255"
+          ]
         ]
       }
     }
@@ -106,13 +120,63 @@
       "enabled": true
     }
   ],
-  "selectors":{
+  "selectors": {
     "userExtendInfo": {
       "merge": true,
       "fields": {
         "bonus": {
-          "selector": ["td.rowhead:contains('票根') + td", "td.rowhead:contains('爆米花') + td", "td.rowhead:contains('Karma Points') + td"],
-          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+          "selector": [
+            "td.rowhead:contains('票根') + td",
+            "td.rowhead:contains('爆米花') + td",
+            "td.rowhead:contains('Karma Points') + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'')",
+            "parseFloat(query)"
+          ]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "prerequisites": "!user.seeding",
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "headers": {
+        "Overwrite-Referer": "https://audiences.me/userdetails.php?id=$user.id$"
+      },
+      "fields": {
+        "seeding": {
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query.text()"
+          ]
+        },
+        "seedingSize": {
+          "selector": [
+            ""
+          ],
+          "filters": [
+            "query.clone().children().remove().end().text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>1)?(query[1]).sizeToNumber():0"
+          ]
+        }
+      }
+    },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=uploaded",
+      "headers": {
+        "Overwrite-Referer": "https://audiences.me/userdetails.php?id=$user.id$"
+      },
+      "fields": {
+        "uploads": {
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"
+          ]
         }
       }
     }

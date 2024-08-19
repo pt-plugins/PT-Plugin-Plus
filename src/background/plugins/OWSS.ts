@@ -55,7 +55,7 @@ export class OWSS {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.request("create")
         .then(result => {
-          if (result && result.data) {
+          if (result?.data) {
             resolve(result.data);
           } else {
             reject();
@@ -79,7 +79,7 @@ export class OWSS {
         formData
       )
         .then(result => {
-          if (result && result.data === true) {
+          if (result?.data === true) {
             resolve(true);
           } else {
             reject(false);
@@ -128,7 +128,7 @@ export class OWSS {
         ERequestMethod.POST
       )
         .then(result => {
-          if (result && result.data) {
+          if (result?.data) {
             resolve(result.data);
           } else {
             reject(false);
@@ -148,7 +148,7 @@ export class OWSS {
     return new Promise<any>((resolve?: any, reject?: any) => {
       this.request(`${this.options.authCode}/list`, ERequestMethod.GET, options)
         .then(result => {
-          if (result && result.data) {
+          if (result?.data) {
             resolve(result.data);
           } else {
             reject(false);

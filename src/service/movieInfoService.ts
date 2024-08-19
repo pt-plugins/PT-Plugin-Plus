@@ -29,7 +29,7 @@ export class MovieInfoService {
       methods: {
         movie: {
           search: `${this.doubanFrodoApi}/search?q=$key$&count=$count$&apiKey=$apikey$`,
-          /* 
+          /*
             数据示例
             request: https://movie.douban.com/j/subject_suggest?q=tt0120762
             response:
@@ -559,7 +559,7 @@ export class MovieInfoService {
         timeout: this.timeout
       })
         .then(result => {
-          if (result && result.data) {
+          if (result?.data) {
             resolve(result.data);
           } else {
             reject();

@@ -417,7 +417,8 @@ export enum ERestoreContent {
 
 export enum EBrowserType {
   Chrome = "Chrome",
-  Firefox = "Firefox"
+  Firefox = "Firefox",
+  Edge = "Edge"
 }
 
 export enum EWorkingStatus {

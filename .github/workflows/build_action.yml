@@ -31,33 +31,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
-          fetch-depth: 0
+          fetch-depth: ${{ github.event_name == 'pull_request' && 1 || 0 }}
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '20'
+          cache: yarn
 
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+      - run: yarn
 
       - run: yarn build
         continue-on-error: true
 
       - name: Upload Built to action
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-dist-folder
           path: dist
@@ -69,7 +60,7 @@ jobs:
     outputs:
       version: ${{ steps.zip.outputs.extensionVersion }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: build-dist-folder
           path: dist
@@ -82,7 +73,7 @@ jobs:
           zipFilePath: 'artifact/extension.zip'
 
       - name: Upload Built Zip to action
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dev-build-${{ steps.zip.outputs.extensionVersion }}-zip
           path: artifact/*
@@ -101,7 +92,7 @@ jobs:
           USER_INPUT=${{ inputs.auto_update_file }}
           echo "value=${USER_INPUT:-"stable.xml"}" >> $GITHUB_OUTPUT
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         env:
           CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
         if: ${{ env.CRX_PRIVATE_KEY != ''  }}
@@ -141,7 +132,7 @@ jobs:
         env:
           CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
         if: ${{ env.CRX_PRIVATE_KEY != '' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dev-build-${{ steps.zip.outputs.extensionVersion }}-crx
           path: artifact/*
@@ -154,7 +145,7 @@ jobs:
     outputs:
       exist_xpi_file: ${{ steps.addonsDeploy.outcome }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: dev-build-${{ needs.zip.outputs.version }}-zip
 
@@ -173,7 +164,7 @@ jobs:
           jwtSecret: ${{ secrets.FF_JWT_SECRET }}
 
       - name: Upload Built Xpi to action
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ steps.addonsDeploy.outcome == 'success' }}
         with:
           name: dev-build-${{ needs.zip.outputs.version }}-xpi

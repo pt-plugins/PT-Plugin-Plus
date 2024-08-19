@@ -18,53 +18,54 @@
     "level": "2",
     "name": "Elite User",
     "interval": "8",
-    "downloaded": "1TB",
+    "downloaded": "2048GB",
     "ratio": "1.55",
     "privilege": "无"
   },{
     "level": "3",
     "name": "Crazy User",
     "interval": "15",
-    "downloaded": "2TB",
+    "downloaded": "4096GB",
     "ratio": "2.05",
     "privilege": "无"
   },{
     "level": "4",
     "name": "Insane User",
     "interval": "25",
-    "downloaded": "4TB",
+    "downloaded": "8192GB",
     "ratio": "2.55",
     "privilege": "无"
   },{
     "level": "5",
     "name": "Veteran User",
     "interval": "52",
-    "downloaded": "8TB",
+    "downloaded": "16384GB",
     "ratio": "3.05",
     "privilege": "无"
   },{
     "level": "6",
     "name": "Extreme User",
     "interval": "80",
-    "downloaded": "16TB",
+    "downloaded": "25000GB",
     "ratio": "3.55",
     "privilege": "无"
   },{
     "level": "7",
     "name": "Ultimate User",
     "interval": "104",
-    "downloaded": "35000GB",
+    "downloaded": "45000GB",
     "ratio": "4.05",
     "privilege": "无"
   },{
     "level": "8",
     "name": "Nexus Master",
     "interval": "130",
-    "downloaded": "70000GB",
+    "downloaded": "90000GB",
     "ratio": "4.55",
     "privilege": "无"
   }],
   "searchEntryConfig": {
+    "skipIMDbId": true,
     "fieldSelector": {
       "progress": {
         "selector": [
@@ -129,8 +130,8 @@
           "filters": ["query.text().replace(/,/g,'').match(/(下[载載]量|Downloaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length==3)?(query[2]).sizeToNumber():null"]
         },
         "levelName": {
-          "selector": ["td.rowhead:contains('等级')", "td.rowhead:contains('等級')", "td.rowhead:contains('Class')"],
-          "filters": ["query.next().find('img').attr('title')"]
+          "selector": ["td.rowhead:contains('用户等级')", "td.rowhead:contains('用戶等級')", "td.rowhead:contains('Class')"],
+          "filters": ["query.next().children('b').attr('title')"]
         },
         "bonus": {
           "selector": ["td.rowhead:contains('魔力') + td", "td.rowhead:contains('Karma'):contains('Points') + td", "td.rowhead:contains('麦粒') + td", "td.rowfollow:contains('魔力值')"],

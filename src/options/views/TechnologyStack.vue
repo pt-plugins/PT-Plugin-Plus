@@ -28,9 +28,9 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import axios from 'axios';
 
-const rawDependencies = require('@/../package.json').dependencies;
+import {dependencies as rawDependencies} from "@/../package.json";
+
 const dependencies = Object.entries(rawDependencies).map(value => {
   const [name, version] = value
   return {
@@ -75,9 +75,10 @@ export default Vue.extend({
             url = cacheDependMetaData[name]
           } else {
             try {
-              const req = await axios.get(`https://registry.npm.taobao.org/${name}`)
-              if (req.data?.homepage) {
-                url = cacheDependMetaData[name] = req.data?.homepage
+              const req = await fetch(`https://registry.npmmirror.com/${name}`)
+              const data = await req.json()
+              if (data?.homepage) {
+                url = cacheDependMetaData[name] = data?.homepage
               }
             } catch (e) {
               //

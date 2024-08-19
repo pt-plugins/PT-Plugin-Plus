@@ -5,174 +5,256 @@
     "url": "https://star-space.net/",
     "icon": "https://star-space.net/favicon.ico",
     "tags": ["影视"],
-    "schema": "NexusPHP",
+    "schema": "Common",
     "host": "star-space.net",
     "formerHosts": ["shadowflow.org"],
     "collaborator": [
         "yiyule",
         "milangree"
     ],
+    "plugins": [{
+      "name": "resource/schemas/Common/details.js",
+      "pages": ["/video_detail.php"],
+      "scripts": ["/schemas/NexusPHP/common.js", "details.js"]
+    }, {
+      "name": "种子列表",
+      "pages": [
+                "/video_list_h.php", 
+                "/video_list_g.php", 
+                "/video_list_t.php"
+              ],
+      "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+    }],
     "levelRequirements": [
       {
         "level": 1,
-        "name": "Power User",
-        "interval": "5",
-        "downloaded": "30GB",
-        "ratio": "2",
-        "seedingPoints": "100000",
-        "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+        "name": "User",
+        "privilege": ""
       },
       {
         "level": 2,
-        "name": "Elite User",
-        "interval": "13",
-        "downloaded": "90G",
-        "ratio": "2",
-        "seedingPoints": "300000",
-        "privilege": "Elite User及以上用户封存账号后不会被删除。"
+        "name": "Power User",
+        "privilege": ""
       },
       {
         "level": 3,
-        "name": "Crazy User",
-        "interval": "18",
-        "downloaded": "120G",
-        "ratio": "2",
-        "seedingPoints": "600000",
-        "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+        "name": "Elite User",
+        "privilege": ""
       },
       {
         "level": 4,
-        "name": "Insane User",
-        "interval": "43",
-        "downloaded": "300G",
-        "ratio": "2",
-        "seedingPoints": "1000000",
-        "privilege": "可以查看普通日志。"
+        "name": "Crazy User",
+        "privilege": "此等级及以上用户不会因为长期不登录被禁用"
       },
       {
         "level": 5,
-        "name": "Veteran User",
-        "interval": "65",
-        "downloaded": "450G",
-        "ratio": "2",
-        "seedingPoints": "1500000",
-        "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+        "name": "Insane User",
+        "privilege": "此等级及以上用户可以购买限时邀请"
       },
       {
         "level": 6,
-        "name": "Extreme User",
-        "interval": "90",
-        "downloaded": "630G",
-        "ratio": "2",
-        "seedingPoints": "2100000",
-        "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
+        "name": "Veteran User",
+        "privilege": ""
       },
       {
         "level": 7,
-        "name": "Ultimate User",
-        "interval": "120",
-        "downloaded": "840G",
-        "ratio": "2",
-        "seedingPoints": "2800000",
-        "privilege": "得到五个邀请名额。"
+        "name": "Extreme User",
+        "privilege": ""
       },
       {
         "level": 8,
-        "name": "Nexus Master",
-        "interval": "155",
-        "downloaded": "1.08T",
-        "ratio": "2",
-        "seedingPoints": "3600000",
-        "privilege": "得到十个邀请名额。"
+        "name": "Ultimate User",
+        "privilege": ""
+      },
+      {
+        "level": 9,
+        "name": "Master User",
+        "privilege": ""
+      },
+      {
+        "level": 10,
+        "name": "Star User",
+        "privilege": ""
+      },
+      {
+        "level": 11,
+        "name": "God User",
+        "privilege": ""
       }
     ],
     "searchEntry": [
       {
-        "name": "影视区",
+        "name": "全部",
+        "queryString": "cat=",
         "enabled": true
-      }
-    ],
-    "categories": [
+      },
       {
-        "entry": "torrents.php",
-        "result": "&cat$id$=1",
-        "category": [
-          {
-            "id": 401,
-            "name": "电影"
-          },
-          {
-            "id": 402,
-            "name": "电视剧"
-          },
-          {
-            "id": 403,
-            "name": "综艺"
-          },
-          {
-            "id": 404,
-            "name": "纪录片"
-          },
-          {
-            "id": 407,
-            "name": "体育"
-          },
-          {
-            "id": 405,
-            "name": "动漫"
-          },
-          {
-            "id": 406,
-            "name": "MV"
-          },
-          {
-            "id": 408,
-            "name": "音频文件"
-          },
-          {
-            "id": 409,
-            "name": "其他"
-          }
-        ]
+        "name": "电影",
+        "queryString": "cat=mo",
+        "enabled": false
+      },
+      {
+        "name": "剧集",
+        "queryString": "cat=tv",
+        "enabled": false
+      },
+      {
+        "name": "动画",
+        "queryString": "cat=an",
+        "enabled": false
+      },
+      {
+        "name": "纪录片",
+        "queryString": "cat=do",
+        "enabled": false
+      },
+      {
+        "name": "MV",
+        "queryString": "cat=mv",
+        "enabled": false
+      },
+      {
+        "name": "体育",
+        "queryString": "cat=sp",
+        "enabled": false
+      },
+      {
+        "name": "综艺",
+        "queryString": "cat=ot",
+        "enabled": false
       }
     ],
     "searchEntryConfig": {
+      "page": "/p_torrent/video_list_t.php",
+      "queryString": "search=$key$&sort=desc&area=name&seeder=&source=&column=tr_create_time&suggest=",
+      "resultType": "html",
+      "resultSelector": "table",
+      "area": [ {
+        "name": "IMDB",
+        "keyAutoMatch": "^(tt\\d+)$",
+        "queryString": "search=$key$&sort=desc&area=imdb&seeder=&source=&column=tr_create_time&suggest="
+      }],
+      "fieldIndex": {
+        "category": 0,
+        "title": 2,
+        "link": 2,
+        "url": 2,
+        "time": 8,
+        "size": 4,
+        "seeders": 5,
+        "leechers": 6,
+        "completed": 7
+      }, 
       "fieldSelector": {
-        "progress": {
-          "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
-          "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+        "title": {
+          "selector": ["a[href*='video_detail.php?tid=']:first"],
+          "filters": ["query.text()"]
         },
-        "status": {
-          "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+        "subTitle": {
+          "selector": ["#tm_div_desc:first"],
+          "filters": ["query.text()"]
+        },
+        "url": {
+          "selector": ["a[href*='download.php?tid=']:first"],
+          "filters": ["query.attr('href').slice(3)"]
+        },
+        "link": {
+          "selector": ["a[href*='video_detail.php?tid=']:first"],
+          "filters": ["'p_torrent/'+query.attr('href')"]
+        },
+        "time": {
+          "selector": [
+            "#tm_td_uploader"
+          ],
           "filters": [
-            "query ? query.attr('title') : ''",
-            "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+            "query.contents().filter(function() {return this.nodeType === Node.TEXT_NODE || (this.nodeType === Node.ELEMENT_NODE && this.tagName !== 'SPAN');}).text().trim()"
           ]
+        },
+        "size": {
+          "selector": [""],
+          "filters": ["query.text().split(' ').join('')+'B'"]
         }
       }
     },
     "selectors": {
-      "userSeedingTorrents": {
-        "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "userBaseInfo": {
+        "page": "/p_index/index.php",
+        "merge": true,
         "fields": {
-          "seeding": {
-            "selector": [
-              "b:first"
-            ],
+          "id": {
+            "selector": "a[href*='p_user/user_detail.php?uid=']:first",
+            "attribute": "href",
+            "filters": ["query ? query.getQueryString('uid').trim():''"]
+          },
+          "isLogged": {
+            "selector": ["a[href*='/p_login/logout.php']"],
+            "filters": ["query.length>0"]
+          },
+          "uploaded": {
+            "selector": "a[href*='p_user/user_upload.php']:first",
             "filters": [
-              "query.text()"
+              "(query && query.length > 0) ? query.text().replace('上传：', '').replace('Upload :', '').concat('B').sizeToNumber():null"
             ]
           },
-          "seedingSize": {
-            "selector": "",
+          "uploads": {
+            "selector": "a[href*='p_torrent/torrent_user.php?pop=7']:first",
             "filters": [
-              "query.text().match(/总大小：(.*?)上一页/g)",
-              "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
-              "(query != 0) ? query.sizeToNumber() : 0"
+              "(query && query.length > 0) ? query.text().replace('发种：', '').replace('Publish :', '').trim():0"
             ]
+          },
+          "downloaded": {
+            "selector": "#user_info_no_hover",
+            "filters": [
+              "(query && query.length > 0) ? query.text().replace('下载：', '').replace('Download :', '').concat('B').sizeToNumber():null"
+            ]
+          },
+          "bonus": {
+            "selector": "a[href*='p_bonus/bonus_hour.php']:first",
+            "filters": [
+              "(query && query.length > 0) ? parseFloat(query.text().replace('魔力：', '').replace('Bonus :', '')):null"
+            ]
+          },
+          "seedingPoints": {
+            "selector": "a[href*='p_bonus/bonus_hour.php']:last",
+            "filters": [
+              "(query && query.length > 0) ? parseFloat(query.text().replace('积分：', '').replace('Seed Bonus :', '')):null"
+            ]
+          },
+          "seeding": {
+            "selector": "a[href*='p_torrent/torrent_user.php?pop=8']:last",
+            "filters": ["query ? query.text().trim():0"]
+          },
+          "name": {
+            "selector": "a[href*='p_user/user_detail.php?uid=']:first",
+            "filters": ["query ? query.text().trim():''"]
           }
         }
+      },
+    "userExtendInfo": {
+      "page": "/p_user/user_detail.php?uid=$user.id$",
+      "merge": true,
+      "fields": {
+        "joinTime": {
+          "selector": ["td.nowrap:contains('加入日期') + td","td.nowrap:contains('Join') + td"],
+          "filters": [
+            "query ? dateTime(query.text()).valueOf():query"
+          ]
+        }
       }
+    },
+    "userSeedingTorrents": {
+      "page": "/p_bonus/bonus_hour.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["td:contains('合计时魔/保种积分') + td + td + td + td, td:contains('Seed Bonus') + td + td + td + td"],
+          "filters": ["query ?query.text().trim():0"]
+        },
+        "seedingSize": {
+          "selector": ["td:contains('合计体积') + td + td + td, td:contains('All Size') + td + td + td"],
+          "filters": ["query ?query.text().concat('B').sizeToNumber():0"]
+        }
+      }
+    }
     }
   }
 

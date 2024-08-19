@@ -3,7 +3,9 @@
   "timezoneOffset": "+0800",
   "description": "飞天拉面神教 - FSM",
   "url": "https://fsm.name/",
-  "tags": [ "成人" ],
+  "tags": [
+    "成人"
+  ],
   "schema": "common",
   "host": "fsm.name",
   "tokenRequired": true,
@@ -20,64 +22,58 @@
   "plugins": [
     {
       "name": "种子详情页面",
-      "pages": [ "/Torrents/details" ],
-      "scripts": [ "/schemas/NexusPHP/common.js", "/schemas/Common/details.js" ]
+      "pages": [
+        "/Torrents/details"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/Common/details.js"
+      ]
     },
     {
       "name": "种子列表",
-      "pages": [ "/Torrents$" ],
-      "scripts": [ "/schemas/NexusPHP/common.js", "/schemas/Common/torrents.js" ]
+      "pages": [
+        "/Torrents$"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/Common/torrents.js"
+      ]
     }
   ],
   "searchEntryConfig": {
     "skipIMDbId": true,
-    "page": "/api/Torrents?type=0&systematics=0&keyword=$key$",
-    "loggedRegex": "container-fluid",
-    "resultType": "html",
-    "resultSelector": "table",
-    "fieldIndex": {
-      "category": 0,
-      "title": 2,
-      "link": 2,
-      "url": 3,
-      "comments": 4,
-      "time": 5,
-      "size": 6,
-      "seeders": 7,
-      "leechers": 8,
-      "completed": 9
-    },
-    "fieldSelector": {
-      "title": {
-        "selector": [ "a[href*='/Torrents/details']" ],
-        "filters": [ "query" ]
-      },
-      "link": {
-        "selector": [ "a[href*='/Torrents/details']" ],
-        "filters": [ "query.attr('href')" ]
-      },
-      "url": {
-        "selector": [ "a[href*='/Torrents/download?passkey=']" ],
-        "filters": [ "query.attr('href')", "'https://fsm.name'+query" ]
-      },
-      "progress": {
-        "selector": [ ".progress-bar.progress-bar-success", ".progress-bar.progress-bar-info,.progress-bar.progress-bar-danger", "" ],
-        "switchFilters": [
-          [ "100" ],
-          [ "query.attr('style').replace('width: ','').replace('%;','')" ],
-          [ "null" ]
-        ]
-      },
-      "status": {
-        "selector": [ ".progress-bar.progress-bar-success", ".progress-bar.progress-bar-info", ".progress-bar.progress-bar-danger" ],
-        "switchFilters": [
-          [ "2" ],
-          [ "1" ],
-          [ "3" ]
-        ]
-      }
+    "page": "/api/Torrents/listTorrents?systematics=0&keyword=$key$",
+    "resultType": "json",
+    "requestMethod": "GET",
+    "parseScriptFile": "getSearchResult.js",
+    "keepOriginKey": true,
+    "headers": {
+      "APITOKEN": "$site.authToken$"
     }
   },
+  "searchEntry": [
+    {
+      "queryString": "type=0",
+      "name": "9kg",
+      "enabled": true
+    },
+    {
+      "queryString": "type=1",
+      "name": "日本AV",
+      "enabled": false
+    },
+    {
+      "queryString": "type=2",
+      "name": "国产视频",
+      "enabled": false
+    },
+    {
+      "queryString": "type=7",
+      "name": "欧美视频",
+      "enabled": false
+    }
+  ],
   "selectors": {
     "userBaseInfo": {
       "page": "/api/Users/infos",
@@ -88,38 +84,31 @@
       },
       "fields": {
         "id": {
-          "selector": ["data.uid"]
+          "selector": [
+            "data.uid"
+          ]
         },
         "bonus": {
-          "selector": ["data.point"]
+          "selector": [
+            "data.point"
+          ]
         },
         "name": {
-          "selector": ["data.username"]
-        },
-        "uploaded": {
-          "selector": ["data.upload"],
-          "filters": ["query.replace(/,/g,'').sizeToNumber()"]
+          "selector": [
+            "data.username"
+          ]
         },
         "seeding": {
-          "selector": ["data.peers.upload"]
-        },
-        "seedingSize": {
-          "selector": ["data.peers.upload"],
-          "filters": ["query.replace(/,/g,'').sizeToNumber()"]
-        },
-        "joinTime": {
-          "value": "1711715887"
+          "selector": [
+            "data.peers.upload"
+          ]
         },
         "bonusPerHour": {
-          "value": "未知，注册时间也未知"
-        },
-        "downloaded": {
-          "selector": ["data.download"],
-          "filters": ["query.replace(/,/g,'').sizeToNumber()"]
+          "value": "N/A"
         }
       }
     },
-    "userExtendInfo":{
+    "userExtendInfo": {
       "page": "/api/Users/profile?uid=$user.id$",
       "dataType": "json",
       "requestMethod": "POST",
@@ -128,46 +117,88 @@
       },
       "fields": {
         "seedingSize": {
-          "selector": ["data.nowActiveUploadSize"],
-          "filters": ["query.replace(/,/g,'').sizeToNumber()"]
+          "selector": [
+            "data.nowActiveUploadSize"
+          ],
+          "filters": [
+            "query.toNumber()"
+          ]
         },
         "levelName": {
-          "selector": ["data.userRank.name"]
+          "selector": [
+            "data.userRank.name"
+          ]
+        },
+        "uploaded": {
+          "selector": [
+            "data.upload"
+          ],
+          "filters": [
+            "query.toNumber()"
+          ]
+        },
+        "downloaded": {
+          "selector": [
+            "data.download"
+          ],
+          "filters": [
+            "query.toNumber()"
+          ]
         },
         "uploads": {
-          "selector": ["data.torrent"]
+          "selector": [
+            "data.torrent"
+          ]
         }
       }
     },
-      "userSeedingTorrents": {
-        "page": "/api/Torrents/mySeed",
-        "fields": {
-          "seedingSize": {
-            "selector": ".panel-primary .panel-body td(6)",
-            "filters": [
-              "(query != 0) ? query.sizeToNumber() : 0",
-              "query.text()"]
-          }
+    "userSeedingTorrents": {
+      "page": "/api/Torrents/listMySeed",
+      "fields": {
+        "seedingSize": {
+          "selector": ".panel-primary .panel-body td(6)",
+          "filters": [
+            "(query != 0) ? query.sizeToNumber() : 0",
+            "query.text()"
+          ]
         }
-      },
+      }
+    },
     "common": {
       "page": "/api/Torrents",
       "fields": {
         "downloadURL": {
-          "selector": [ "a[href*='/Torrents/download']" ],
-          "filters": [ "query.attr('href')" ]
+          "selector": [
+            "a[href*='/Torrents/download']"
+          ],
+          "filters": [
+            "query.attr('href')"
+          ]
         },
         "size": {
-          "selector": [ "div.visible-xs:contains('种子大小') + div" ],
-          "filters": [ "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>1)?(query[1]).sizeToNumber():0" ]
+          "selector": [
+            "div.visible-xs:contains('种子大小') + div"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)",
+            "(query && query.length>1)?(query[1]).sizeToNumber():0"
+          ]
         },
         "downloadURLs": {
-          "selector": [ "a[href*='/Torrents/download']" ],
-          "filters": [ "query.toArray()" ]
+          "selector": [
+            "a[href*='/Torrents/download']"
+          ],
+          "filters": [
+            "query.toArray()"
+          ]
         },
         "confirmSize": {
-          "selector": [ "table.table.table-bordered > tbody td.center.tdCenter > div:contains('B')" ],
-          "filters": [ "query" ]
+          "selector": [
+            "table.table.table-bordered > tbody td.center.tdCenter > div:contains('B')"
+          ],
+          "filters": [
+            "query"
+          ]
         }
       }
     }

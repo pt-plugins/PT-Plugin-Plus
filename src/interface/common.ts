@@ -42,6 +42,8 @@ export interface DownloadClient {
   qbCategories?: QbCategory[];
   hostnameAsTag?: boolean;
   siteNameAsTag?: boolean;
+  // 自定义 QB 标签
+  customTags?: string[];
 }
 
 /**
@@ -270,6 +272,7 @@ export interface Site {
   defaultClientId?: string;
   plugins?: any[];
   allowSearch?: boolean;
+  disableSearchTransform?: boolean;
   securityKeys?: object;
   searchEntryConfig?: SearchEntryConfig;
   searchEntry?: SearchEntry[];
@@ -312,7 +315,8 @@ export interface Site {
   // 使用站点标签进行分组
   // siteGroups?: string[];
   // token in headers
-  authToken?: string
+  authToken?: string;
+  apiCdn?: string[];
 }
 
 /**

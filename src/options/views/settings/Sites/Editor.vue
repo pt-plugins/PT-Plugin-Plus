@@ -112,6 +112,13 @@
           :hint="$t('settings.sites.editor.cdnTip')"
         ></v-textarea>
 
+        <v-textarea
+          v-model="apiCdn"
+          :label="$t('settings.sites.editor.apiCdn')"
+          value
+          :hint="$t('settings.sites.editor.cdnTip')"
+        ></v-textarea>
+
         <!-- 时区 -->
         <v-autocomplete
           v-model="site.timezoneOffset"
@@ -159,7 +166,11 @@
                 :disabled="!site.tokenRequired" :rules="site.tokenRequired ? rules.require : []"
                 :label="$t('settings.sites.editor.authToken')"
                 :placeholder="$t('settings.sites.editor.authTokenTip')"
-        ></v-text-field>
+        ></v-text-field>       
+
+        <!-- 站点已离线（停机/关闭） -->
+        <v-switch :label="$t('settings.sites.editor.offline')" v-model="site.offline" />
+
         <!-- 允许获取用户信息 -->
         <v-switch
           :label="$t('settings.sites.editor.allowGetUserInfo')"
@@ -192,8 +203,12 @@
           </v-container>
         </template>
 
-        <!-- 站点已离线（停机/关闭） -->
-        <v-switch :label="$t('settings.sites.editor.offline')" v-model="site.offline"></v-switch>
+        <!-- 禁用搜索替换  -->
+        <v-switch
+          v-model="site.disableSearchTransform"
+          :disabled="!site.allowSearch || site.offline"
+          :label="$t('settings.sites.editor.disableSearchTransform')"
+        />
 
         <!-- 消息提醒开关 -->
         <v-switch :label="$t('settings.sites.editor.disableMessageCount')" v-model="site.disableMessageCount"></v-switch>
@@ -230,6 +245,7 @@ export default Vue.extend({
         }
       },
       cdn: "",
+      apiCdn: "",
       quickLinkText: "",
       valid: false,
       site: {} as Site,
@@ -374,6 +390,14 @@ export default Vue.extend({
         } else {
           this.cdn = "";
         }
+
+        
+        if (this.site.apiCdn) {
+          this.apiCdn = this.site.apiCdn.join("\n");
+        } else {
+          this.apiCdn = "";
+        }
+
         if (this.site.userQuickLinks) {
           this.quickLinkText = this.site.userQuickLinks.map(u => `${u.desc},${u.href},${u.color ? u.color : ''}`).join('\n')
         } else {
@@ -406,6 +430,20 @@ export default Vue.extend({
       }
 
       this.site.cdn = result;
+    },
+    apiCdn() {
+      let items = this.apiCdn.split("\n");
+      let result: string[] = [];
+      items.forEach(apiCdn => {
+        if (
+          /(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/.test(
+            apiCdn
+          )
+        ) {
+          result.push(apiCdn);
+        }
+      });
+      this.site.apiCdn = result;
     },
     quickLinkText() {
       this.site.userQuickLinks = this.quickLinkText.split(/\n/).filter(_ => !!_)

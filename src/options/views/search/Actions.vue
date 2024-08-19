@@ -30,7 +30,6 @@
 
     <!-- 下载种子文件 -->
     <v-btn
-      v-if="downloadMethod=='POST'"
       flat
       icon
       small
@@ -38,21 +37,6 @@
       color="grey darken-1"
     >
       <v-icon @click.stop="saveTorrentFile" small :title="$t('searchTorrent.saveTip')">save</v-icon>
-    </v-btn>
-
-    <v-btn
-      v-else
-      flat
-      icon
-      small
-      :class="$vuetify.breakpoint.mdAndUp? 'mx-0': 'mx-0 btn-mini'"
-      :href="url"
-      target="_blank"
-      rel="noopener noreferrer nofollow"
-      :title="$t('searchTorrent.saveTip')"
-      color="grey darken-1"
-    >
-      <v-icon small>save</v-icon>
     </v-btn>
 
     <!-- 收藏 -->

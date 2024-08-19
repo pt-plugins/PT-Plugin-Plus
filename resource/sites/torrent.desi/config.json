@@ -1,0 +1,86 @@
+{
+  "name": "Desitorrents",
+  "timezoneOffset": "+0000",
+  "schema": "UNIT3D",
+  "url": "https://torrent.desi/",
+  "icon": "https://torrent.desi/favicon.ico",
+  "tags": ["影视", "综合", "印度"],
+  "host": "torrent.desi",
+  "formerHosts": [
+    "desitorrents.tv"
+  ],
+  "levelRequirements": [{
+      "level": "1",
+      "name": "PowerUser",
+      "interval": "4",
+      "uploaded": "1TB",
+      "privilege": "Power User Special Forum Acess"
+  }, {
+      "level": "2",
+      "name": "SuperUser",
+      "interval": "8",
+      "uploaded": "5TB",
+      "privilege": "Automatic torrent approvals, Super User Special Forum Acess"
+  }, {
+      "level": "3",
+      "name": "ExtremeUser",
+      "interval": "13",
+      "uploaded": "20TB",
+      "privilege": "Invite forums"
+  }, {
+      "level": "4",
+      "name": "InsaneUser",
+      "interval": "26",
+      "uploaded": "50TB",
+      "privilege": ""
+  }, {
+      "level": "5",
+      "name": "Veteran",
+      "interval": "52",
+      "uploaded": "100TB",
+      "privilege": ""
+  }],
+  "collaborator": "bright",
+  "selectors": {
+    "merge": true,
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "isLogged": {
+          "selector": ["form[title='Logout']"],
+          "filters": ["query.length > 0"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "messageCount": {
+          "selector": ["span.animate-ping"],
+          "filters": ["query.length?11:0"]
+        },
+        "joinTime": {
+          "selector": ["div.dt-user-header-stats h4:contains('Registration date')"],
+          "filters": ["query.text().replace(/(Registration date|注册日期|註冊日期)/g, '').trim()"]
+        },
+        "levelName": {
+          "selector": ["div.dt-user-header-stats span.badge-user"],
+          "filters": ["query.text()"]
+        },
+        "uploads": {
+          "selector": ["i.fa-upload:contains('Total Uploads') + span"],
+          "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"]
+        }
+      }
+    },
+    "hnrExtendInfo": {
+      "page": "/users/$user.name$/torrents?unsatisfied=include&perPage=100&hitrun=exclude&immune=exclude",
+      "fields": {
+        "unsatisfieds": {
+          "selector": [".table-responsive tbody tr"],
+          "filters": ["query ? query.length : 0"]
+        }
+      }
+    }
+  }
+}

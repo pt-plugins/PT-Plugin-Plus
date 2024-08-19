@@ -315,18 +315,6 @@ export default Vue.extend({
       if (this.loading || !this.key) return;
 
       this.reset();
-      if (window.location.protocol === "http:") {
-        $.getJSON(
-          `http://${window.location.hostname}:8001/test/searchData.json`
-        ).done((result: any) => {
-          if (result) {
-            this.addSearchResult(result);
-            // this.datas = result;
-          }
-          // console.log(result);
-        });
-        return;
-      }
 
       if (!this.options.system) {
         if (this.reloadCount >= 10) {
@@ -353,7 +341,7 @@ export default Vue.extend({
 
       // 显示搜索快照
       if (/(show-snapshot)-([a-z0-9]{32})/.test(this.key)) {
-        let match = this.key.match(/(show-snapshot)-([a-z0-9]{32})/);
+        const match = this.key.match(/(show-snapshot)-([a-z0-9]{32})/);
         if (match) {
           this.loadSearchResultSnapshot(match[2]);
           return;
@@ -581,26 +569,46 @@ export default Vue.extend({
     doSearchTorrentWithQueue(sites: Site[]) {
       this.loading = true;
       this.searchMsg = this.$t("searchTorrent.searching").toString();
-      sites.forEach((site: Site, index: number) => {
+      const searchSites = sites.filter((site: Site) => {
         // 站点是否跳过非拉丁字符搜索
         if (
           site.searchEntryConfig &&
           site.searchEntryConfig.skipNonLatinCharacters
         ) {
-          if (!this.key.match(/^[\p{Script_Extensions=Latin}\p{Script_Extensions=Common}]+$/gu))
-          {
-            return;
+          if (!this.key.match(/^[\p{Script_Extensions=Latin}\p{Script_Extensions=Common}]+$/gu)) {
+            return false;
           }
         }
-
         // 站点是否跳过IMDbId搜索
         if (
           this.IMDbId &&
           site.searchEntryConfig &&
           site.searchEntryConfig.skipIMDbId
         ) {
-          return;
+          return false;
         }
+
+        return true
+      })
+
+      if (searchSites.length === 0) {
+        this.loading = false;
+        this.searchMsg = this.$t("searchTorrent.searchFinished", {
+          count: this.datas.length,
+          second: dayjs().diff(this.beginTime, "second", true)
+        }).toString();
+        this.loading = false;
+        this.writeLog({
+          event: `SearchTorrent.Search.Finished`,
+          msg: this.searchMsg,
+          data: {
+            key: this.key
+          }
+        });
+        return
+      }
+
+      searchSites.forEach((site: Site, index: number) => {
         this.searchQueue.push({
           site,
           key: this.key
@@ -1226,17 +1234,19 @@ export default Vue.extend({
     /**
      * 下载已选中的种子文件
      */
-    downloadSelected() {
+    async downloadSelected() {
       let files: downloadFile[] = [];
-      this.selected.forEach((item: SearchResultItem) => {
-        item.url &&
-          files.push({
-            url: item.url,
-            fileName: `[${item.site.name}][${item.title}].torrent`,
-            method: item.site.downloadMethod,
-            timeout: this.options.connectClientTimeout
-          });
-      });
+      for (let i = 0; i < this.selected.length; i++) {
+        const item = this.selected[i];
+        console.log(`[${i}]解析 ${item.title} 的 url: ${item.url}`)
+        const url = this.processURLWithPrefix("m-teamdetail", item.site, item.url)
+        url && files.push({
+          url: url,
+          fileName: `[${item.site.name}][${item.title}].torrent`,
+          method: item.site.downloadMethod,
+          timeout: this.options.connectClientTimeout
+        });
+      }
       console.log(files);
       if (files.length) {
         if (files.length > 1) {

@@ -19,8 +19,10 @@
 		"notifications",
 		"http://*/*",
 		"https://*/*",
-		"unlimitedStorage"
-	],
+		"unlimitedStorage",
+		"webRequest",
+		"webRequestBlocking"
+	  ],
 	"optional_permissions": ["downloads", "cookies", "alarms"],
 	"icons": {
 		"16": "assets/icon.png",
@@ -37,8 +39,7 @@
 			"libs/types.expand.js",
 			"libs/jquery/jquery-3.3.1.min.js",
 			"libs/Base64.js",
-			"js/background/libs.js",
-			"js/background/background.js"
+			"background/index.js"
 		]
 	},
 	"content_scripts": [{
@@ -63,8 +64,7 @@
 			"libs/notice/notice.js",
 			"libs/basicContext/basicContext.min.js",
 			"libs/drag.js",
-			"js/content/libs.js",
-			"js/content/content.js"
+			"contentScripts/index.js"
 		]
 	}],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
@@ -76,10 +76,11 @@
 	"omnibox": {
 		"keyword": "pt"
 	},
-	"minimum_chrome_version": "64.0.3242",
+	"minimum_chrome_version": "80",
 	"browser_specific_settings": {
 		"gecko": {
-			"update_url": "https://pt-plugins.github.io/PT-Plugin-Plus/update/firefox.json"
+			"update_url": "https://pt-plugins.github.io/PT-Plugin-Plus/update/firefox.json",
+			"strict_min_version": "80.0"
 		}
 	}
 }

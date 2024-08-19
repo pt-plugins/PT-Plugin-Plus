@@ -63,6 +63,10 @@ export class User {
   }
 
   private getSiteURL(site: Site) {
+    if (site.apiCdn && site.apiCdn.length > 0) {
+      return site.apiCdn[0];
+    }
+
     if (site.cdn && site.cdn.length > 0) {
       return site.cdn[0];
     }
@@ -117,7 +121,7 @@ export class User {
           console.log("userBaseInfo", host, result);
           userInfo = Object.assign({}, result);
           // 是否已定义已登录选择器
-          if (rule && rule.fields && rule.fields.isLogged) {
+          if (rule?.fields?.isLogged) {
             // 如果已定义则以选择器匹配为准
             if (userInfo.isLogged && (userInfo.name || userInfo.id)) {
               userInfo.isLogged = true;
