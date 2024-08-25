@@ -167,7 +167,7 @@
             "#tm_td_uploader"
           ],
           "filters": [
-            "new Date(Date.now() - (query.text().match(/\\d+[分时天月年]/g).reduce((acc, time) => {const [, number, unit] = time.match(/(\\d+)([分时天月年])/);return acc + (parseInt(number) * (unit === '分' ? 1 :unit === '时' ? 60 :unit === '天' ? 60 * 24 :unit === '月' ? 60 * 24 * 30 :unit === '年' ? 60 * 24 * 365 : 0));}, 0) * 60 * 1000)).toLocaleString('zh-CN', { hour12: false }).replace(/\\//g, '-')"
+            "query.text().parseTime()"
           ]
         },
         "size": {
