@@ -340,7 +340,7 @@ export class User {
         contentType: rule.requestContentType == "application/json" ? "application/json" : "application/x-www-form-urlencoded",
         headers: rule.headers,
         timeout: this.service.options.connectClientTimeout || 30000,
-        cache: (rule.dataType) && rule.dataType !== ERequestResultType.JSON ? false : true
+        cache: (rule.dataType) && rule.dataType == ERequestResultType.JSON ? true : false 
       })
         .done(result => {
           this.removeQueue(host, url);
