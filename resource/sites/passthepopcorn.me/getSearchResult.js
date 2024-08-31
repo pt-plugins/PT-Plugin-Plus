@@ -79,7 +79,7 @@ if (!"".getQueryString) {
             completed: torrent.Snatched,
             comments: 0,
             site: site,
-            tags: null,
+            tags: this.getTags(torrent),
             entryName: options.entry.name,
             category: "Movie"
           };
@@ -96,6 +96,18 @@ if (!"".getQueryString) {
       }
 
       return results;
+    }
+
+    getTags(torrent) {
+      let tags = [];
+      if (torrent.FreeleechType == "Freeleech") {
+        tags.push({
+          name: "Free",
+          color: "blue"
+        });
+      }
+
+      return tags;
     }
   }
 
