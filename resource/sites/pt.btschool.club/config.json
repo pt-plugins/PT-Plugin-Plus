@@ -93,5 +93,18 @@
         "filters": [ "query.attr('class')", "query=='progress_seeding'?2:(query=='progress_completed'?255:(query=='progress_no_downloading'?3:1))" ]
       }
     }
+  },
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "dataType":"html",
+      "merge": true
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "dataType":"html",
+      "page": "/mybonus.php",
+      "merge": true
+    }
   }
 }
