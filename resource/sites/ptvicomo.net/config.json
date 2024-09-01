@@ -162,6 +162,13 @@
         "appendQueryString": "&search_area=1"
       }
     ],
+    "fieldIndex": {
+      "time": 2,
+      "size": 3,
+      "seeders": 4,
+      "leechers": 5,
+      "completed": 6
+    }, 
     "fieldSelector": {
       "progress": {
         "selector": [
