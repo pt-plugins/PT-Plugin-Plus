@@ -1,0 +1,112 @@
+{
+    "name": "BitPorn",
+    "timezoneOffset": "+0200",
+    "description": "BitPorn",
+    "url": "https://bitporn.eu/",
+    "icon": "https://bitporn.eu/favicon.ico",
+    "tags": ["成人"],
+    "schema": "NexusPHP",
+    "host": "bitporn.eu",
+    "levelRequirements": [
+        {
+            "level": 1,
+            "name": "Power User",
+            "interval": "4",
+            "downloaded": "5GB",
+            "ratio": "1",
+            "seedingPoints": "5",
+            "privilege": "可以发送邀请；可以直接发布种子；可以查看用户列表；可以请求续种；可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")"
+        },
+        {
+            "level": 2,
+            "name": "Elite User",
+            "interval": "4",
+            "downloaded": "100GB",
+            "ratio": "1.2",
+            "seedingPoints": "500",
+            "privilege": "Elite User及以上用户封存账号后不会被删除。"
+        },
+        {
+            "level": 3,
+            "name": "Crazy User",
+            "interval": "8",
+            "downloaded": "250GB",
+            "ratio": "1.8",
+            "seedingPoints": "1500",
+            "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+        },
+        {
+            "level": 4,
+            "name": "Insane User",
+            "interval": "24",
+            "downloaded": "500GB",
+            "ratio": "2.2",
+            "seedingPoints": "10000",
+            "privilege": "可以查看普通日志。"
+        },
+        {
+            "level": 5,
+            "name": "Veteran User",
+            "interval": "32",
+            "downloaded": "750GB",
+            "ratio": "3",
+            "seedingPoints": "50000",
+            "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+        },
+        {
+            "level": 6,
+            "name": "Extreme User",
+            "interval": "50",
+            "downloaded": "1TB",
+            "ratio": "3.55",
+            "seedingPoints": "100000",
+            "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
+        },
+        {
+            "level": 7,
+            "name": "Ultimate User",
+            "interval": "70",
+            "downloaded": "1.5TB",
+            "ratio": "4",
+            "seedingPoints": "150000",
+            "privilege": "得到五个邀请名额。"
+        },
+        {
+            "level": 8,
+            "name": "BitPorn Master",
+            "interval": "100",
+            "downloaded": "3TB",
+            "ratio": "4.55",
+            "seedingPoints": "500000",
+            "privilege": "得到十个邀请名额。"
+        }
+    ],
+    "collaborator": ["tomyangsh"],
+    "selectors": {
+        "userSeedingTorrents": {
+            "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+            "fields": {
+                "seeding": {
+                    "selector": [
+                        "b:first"
+                    ],
+                    "filters": [
+                        "query.text()"
+                    ]
+                },
+                "seedingSize": {
+                    "selector": "",
+                    "filters": [
+                        "query.text().match(/Total size:(.*?)Prev/g)",
+                        "(query && query.length>0) ? query[0].replace('Total size:', '').replace('<< Prev', '').trim() : 0",
+                        "(query != 0) ? query.sizeToNumber() : 0"
+                    ]
+                }
+            }
+        }
+    },
+    "torrentTagSelectors": [{
+      "name": "Free",
+      "selector": "span[title='Free']"
+    }]
+}
