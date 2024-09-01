@@ -1,0 +1,51 @@
+{
+    "name": "PornBay",
+    "url": "https://pornbay.org/",
+    "icon": "https://pornbay.org/favicon.ico",
+    "host": "pornbay.org",
+    "schema": "Luminance",
+    "tags": ["成人"],
+    "collaborator": "tomyangsh",
+    "levelRequirements": [
+      {
+        "level": 1,
+        "name": "User",
+        "interval": "1",
+        "uploaded": "10 GB",
+        "ratio": "0.7"
+      },
+      {
+        "level": 2,
+        "name": "Power User",
+        "interval": "4",
+        "uploaded": "25 GB",
+        "ratio": "1.05",
+	"privilege": "can create and vote in Requests"
+      },
+      {
+        "level": 3,
+        "name": "Expert User",
+        "interval": "8",
+        "uploads": "25",
+        "uploaded": "100 GB",
+        "ratio": "1.05",
+	"privilege": "can access the Invites Forum"
+      },
+      {
+        "level": 4,
+        "name": "Super User",
+        "interval": "13",
+        "uploads": "50",
+        "uploaded": "1 TB",
+        "ratio": "1.05"
+      },
+      {
+        "level": 5,
+        "name": "Fapinator",
+        "interval": "26",
+        "uploads": "250",
+        "uploaded": "10 TB",
+        "ratio": "1.05"
+      }
+    ]
+}
