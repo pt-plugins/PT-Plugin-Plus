@@ -21,19 +21,9 @@
   ],
   "plugins": [
     {
-      "name": "种子详情页面",
-      "pages": [
-        "/Torrents/details"
-      ],
-      "scripts": [
-        "/schemas/NexusPHP/common.js",
-        "/schemas/Common/details.js"
-      ]
-    },
-    {
       "name": "种子列表",
       "pages": [
-        "/Torrents$"
+        "/Torrents"
       ],
       "scripts": [
         "/schemas/NexusPHP/common.js",
@@ -165,16 +155,8 @@
       }
     },
     "common": {
-      "page": "/api/Torrents",
+      "page": "/Torrents",
       "fields": {
-        "downloadURL": {
-          "selector": [
-            "a[href*='/Torrents/download']"
-          ],
-          "filters": [
-            "query.attr('href')"
-          ]
-        },
         "size": {
           "selector": [
             "div.visible-xs:contains('种子大小') + div"
