@@ -30,7 +30,7 @@
           let data = {
             title: group.releaseName,
             link: `${site.url}/browse/${group.id}`,
-            url: `${site.url}/api/v1/torrents/${group.id}/torrent?key=${encodeURIComponent(site.passkey)}`,
+            url: `${site.url}/api/v1/torrents/${group.id}/torrent?key=${encodeURIComponent(site.authToken)}`,
             size: group.size,
             time: Date(group.createdAt),
             seeders: group.seeders,
