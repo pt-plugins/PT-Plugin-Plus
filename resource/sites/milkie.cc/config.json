@@ -33,7 +33,7 @@
     "parseScriptFile": "getSearchResult.js",
     "keepOriginKey": true,
     "headers": {
-      "Authorization": "Bearer $site.authToken$"
+      "x-milkie-auth": "$site.authToken$"
     }
   },
   "searchEntry": [
@@ -48,7 +48,7 @@
       "dataType": "json",
       "requestMethod": "GET",
       "headers": {
-        "Authorization": "Bearer $site.authToken$"
+        "x-milkie-auth": "$site.authToken$"
       },
       "fields": {
         "name": {
