@@ -9,6 +9,7 @@
   "schema": "common",
   "host": "fsm.name",
   "tokenRequired": true,
+  "tokenTip": "在 https://fsm.name/API 获取",
   "formerHosts": [
     "nextpt.net"
   ],

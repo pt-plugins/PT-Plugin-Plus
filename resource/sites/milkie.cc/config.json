@@ -10,6 +10,7 @@
   "schema": "common",
   "host": "milkie.cc",
   "tokenRequired": true,
+  "tokenTip": "在 https://milkie.cc/settings/security  获取 API key",
   "collaborator": [
     "tomyangsh"
   ],
