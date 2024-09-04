@@ -129,5 +129,18 @@
         }
       }
     }
-  }
+  },
+  "searchEntryConfig": {
+    "page": "/api/v1/torrents?searchText=$key$",
+    "resultType": "json",
+    "requestMethod": "GET",
+    "parseScriptFile": "getSearchResult.js",
+    "keepOriginKey": true
+  },
+  "searchEntry": [
+    {
+      "name": "全部",
+      "enabled": true
+    }
+  ]
 }
