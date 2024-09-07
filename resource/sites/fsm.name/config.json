@@ -140,6 +140,14 @@
           "selector": [
             "data.torrent"
           ]
+        },
+        "joinTime": {
+          "selector": [
+            "data.createdTs"
+          ],
+          "filters": [
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
         }
       }
     },
