@@ -13,6 +13,9 @@
   "formerHosts": [
     "nextpt.net"
   ],
+  "apiCdn":[
+    "https://fsm.name/"
+  ],
   "collaborator": [
     "Ted423",
     "IITII",
