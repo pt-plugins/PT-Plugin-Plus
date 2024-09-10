@@ -29,6 +29,7 @@ import { User } from "./user";
 import { MovieInfoService } from "@/service/movieInfoService";
 import {remote as parseTorrentRemote} from "parse-torrent";
 import {PPF} from "@/service/public";
+import { AjaxRateLimiter } from "./rateLimiter";
 
 type Service = PTPlugin;
 export default class Controller {
@@ -46,6 +47,7 @@ export default class Controller {
   public searcher: Searcher = new Searcher(this.service);
   public userService: User = new User(this.service);
   public movieInfoService = new MovieInfoService();
+  public limiter = new AjaxRateLimiter(this.service, $.ajax);
 
   public clientController: ClientController = new ClientController();
   public isInitialized: boolean = false;
@@ -65,6 +67,13 @@ export default class Controller {
 
   public init(options: Options) {
     this.reset(options);
+    // Replace $.ajax with the rate-limited version
+    const originalAjax = $.ajax;
+    const self = this;
+    $.ajax = function(options: any) {
+      console.log('mocked $.ajax called', options)
+      return self.limiter.request(options);
+    };
     this.isInitialized = true;
   }
 

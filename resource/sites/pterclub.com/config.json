@@ -7,6 +7,10 @@
   "tags": ["影视", "综合"],
   "schema": "NexusPHP",
   "host": "pterclub.com",
+  "rateLimit": {
+    "interval": 1000,
+    "maxRequests": 3
+  },
   "levelRequirements": [{
     "level": "1",
     "name": "加菲猫 POWER USER",

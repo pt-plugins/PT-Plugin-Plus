@@ -52,7 +52,7 @@
     "@types/dom-to-image": "^2.6.4",
     "@types/extend": "^3.0.1",
     "@types/file-saver": "^2.0.5",
-    "@types/jquery": "^3.5.14",
+    "@types/jquery": "^3.5.30",
     "@types/node": "20",
     "@types/parse-torrent": "^5.8.7",
     "@types/ua-parser-js": "^0.7.36",
