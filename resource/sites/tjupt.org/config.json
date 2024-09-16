@@ -105,64 +105,69 @@
       "enabled": true
     },
     {
-      "queryString": "cat401=1",
+      "queryString": "cat=401",
       "name": "电影",
       "enabled": false
     },
     {
-      "queryString": "cat403=1",
+      "queryString": "cat=402",
+      "name": "剧集",
+      "enabled": false
+    },
+    {
+      "queryString": "cat=403",
       "name": "综艺",
       "enabled": false
     },
     {
-      "queryString": "cat404=1",
+      "queryString": "cat=404",
       "name": "资料",
       "enabled": false
     },
     {
-      "queryString": "cat405=1",
+      "queryString": "cat=405",
       "name": "动漫",
       "enabled": false
     },
     {
-      "queryString": "cat406=1",
+      "queryString": "cat=406",
       "name": "音乐",
       "enabled": false
     },
     {
-      "queryString": "cat407=1",
-      "name": "音乐",
+      "queryString": "cat=407",
+      "name": "体育",
       "enabled": false
     },
     {
-      "queryString": "cat408=1",
+      "queryString": "cat=408",
       "name": "软件",
       "enabled": false
     },
     {
-      "queryString": "cat409=1",
+      "queryString": "cat=409",
       "name": "游戏",
       "enabled": false
     },
     {
-      "queryString": "cat411=1",
+      "queryString": "cat=411",
       "name": "纪录片",
       "enabled": false
     },
     {
-      "queryString": "cat412=1",
+      "queryString": "cat=412",
       "name": "移动视频",
       "enabled": false
     },
     {
-      "queryString": "cat410=1",
+      "queryString": "cat=410",
       "name": "其他",
       "enabled": false
     }
   ],
   "categories": [{
     "entry": "*",
-    "result": "&cat$id$=1",
+    "result": "&cat[]=$id$",
     "category": [{
         "id": 401,
         "name": "电影"
