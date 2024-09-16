@@ -167,7 +167,7 @@
   ],
   "categories": [{
     "entry": "*",
-    "result": "&cat=$id$",
+    "result": "&cat[]=$id$",
     "category": [{
         "id": 401,
         "name": "电影"
