@@ -548,7 +548,7 @@ export default Vue.extend({
           // categories: categories,
           gridLineDashStyle: "ShortDash",
           gridLineWidth: 1,
-          gridLineColor: "#dddddd".
+          gridLineColor: "#dddddd",
           labels: {
             rotation: -45
           },
@@ -844,7 +844,7 @@ export default Vue.extend({
           },
           gridLineDashStyle: "ShortDash",
           gridLineWidth: 1,
-          gridLineColor: "#dddddd".
+          gridLineColor: "#dddddd",
           labels: {
             rotation: -45
           },
@@ -952,7 +952,7 @@ export default Vue.extend({
           },
           gridLineDashStyle: "ShortDash",
           gridLineWidth: 1,
-          gridLineColor: "#dddddd".
+          gridLineColor: "#dddddd",
           labels: {
             rotation: -45
           },
