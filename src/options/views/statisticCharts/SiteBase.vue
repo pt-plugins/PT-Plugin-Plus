@@ -540,15 +540,18 @@ export default Vue.extend({
         xAxis: {
           type: "datetime",
           dateTimeLabelFormats: {
-            day: "%m-%d",
-            week: "%m-%d",
-            month: "%m-%d",
-            year: "%m-%d"
+            day: "%Y-%m-%d",
+            week: "%Y-%m-%d",
+            month: "%Y-%m-%d",
+            year: "%Y-%m-%d"
           },
           // categories: categories,
           gridLineDashStyle: "ShortDash",
           gridLineWidth: 1,
-          gridLineColor: "#dddddd"
+          gridLineColor: "#dddddd".
+          labels: {
+            rotation: -45
+          },
         },
         yAxis: [
           {
@@ -710,14 +713,17 @@ export default Vue.extend({
           // categories: categories,
           type: "datetime",
           dateTimeLabelFormats: {
-            day: "%m-%d",
-            week: "%m-%d",
-            month: "%m-%d",
-            year: "%m-%d"
+            day: "%Y-%m-%d",
+            week: "%Y-%m-%d",
+            month: "%Y-%m-%d",
+            year: "%Y-%m-%d"
           },
           gridLineDashStyle: "ShortDash",
           gridLineWidth: 1,
-          gridLineColor: "#dddddd"
+          gridLineColor: "#dddddd",
+          labels: {
+            rotation: -45
+          },
         },
         yAxis: [
           {
@@ -831,14 +837,17 @@ export default Vue.extend({
         xAxis: {
           type: "datetime",
           dateTimeLabelFormats: {
-            day: "%m-%d",
-            week: "%m-%d",
-            month: "%m-%d",
-            year: "%m-%d"
+            day: "%Y-%m-%d",
+            week: "%Y-%m-%d",
+            month: "%Y-%m-%d",
+            year: "%Y-%m-%d"
           },
           gridLineDashStyle: "ShortDash",
           gridLineWidth: 1,
-          gridLineColor: "#dddddd"
+          gridLineColor: "#dddddd".
+          labels: {
+            rotation: -45
+          },
         },
         yAxis: {
           title: {
@@ -936,14 +945,17 @@ export default Vue.extend({
         xAxis: {
           type: "datetime",
           dateTimeLabelFormats: {
-            day: "%m-%d",
-            week: "%m-%d",
-            month: "%m-%d",
-            year: "%m-%d"
+            day: "%Y-%m-%d",
+            week: "%Y-%m-%d",
+            month: "%Y-%m-%d",
+            year: "%Y-%m-%d"
           },
           gridLineDashStyle: "ShortDash",
           gridLineWidth: 1,
-          gridLineColor: "#dddddd"
+          gridLineColor: "#dddddd".
+          labels: {
+            rotation: -45
+          },
         },
         yAxis: {
           title: {
