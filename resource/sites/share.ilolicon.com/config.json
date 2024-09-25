@@ -171,7 +171,7 @@
   ],
   "searchEntryConfig": {
     "merge": true,
-    "skipIMDbId": true,
+    "skipIMDbId": false,
     "fieldSelector": {
       "progress": {
         "selector": [
