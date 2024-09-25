@@ -995,13 +995,7 @@ export default class Controller {
    */
   public getSiteOptionsFromURL(url: string): Site | undefined {
     let host = new URLParse(url).host;
-    let site: Site =
-      this.options.system &&
-      this.options.system.sites &&
-      this.options.system.sites.find((item: Site) => {
-        return item.host == host;
-      });
-
+    let site: Site = this.getSiteFromHost(host);
     return site;
   }
 
