@@ -33,10 +33,7 @@
         {
             "enabled": true,
             "entry": "/search.php",
-            "isCustom": true,
-            "name": "全站搜索",
-            "resultType": "html",
-            "valid": true
+            "name": "全站搜索"
         }
     ],
     "levelRequirements": [{
