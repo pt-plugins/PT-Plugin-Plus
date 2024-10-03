@@ -3,7 +3,10 @@
     "description": "与你相逢，就是奇迹",
     "url": "https://raingfh.top/",
     "icon": "https://raingfh.top/favicon.ico",
-    "tags": [],
+    "tags": [ 
+      "综合",
+      "影视"
+    ],
     "schema": "NexusPHP",
     "host": "raingfh.top",
     "levelRequirements": [
