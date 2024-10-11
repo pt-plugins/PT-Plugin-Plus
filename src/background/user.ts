@@ -289,7 +289,15 @@ export class User {
           for (const key in requestData) {
             if (requestData.hasOwnProperty(key)) {
               const value = requestData[key];
-              requestData[key] = PPF.replaceKeys(value, userInfo, "user");
+              if (value && typeof value === 'object') {
+                for (const innerKey  in value){
+                  const value1 = value[innerKey];
+                  value[innerKey] = PPF.replaceKeys(value1, userInfo, "user");
+                }
+                requestData[key] = value;
+              }else{
+                requestData[key] = PPF.replaceKeys(value, userInfo, "user");
+              }
             }
           }
         } catch (error) {

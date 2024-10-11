@@ -914,7 +914,7 @@
       let total = 0;
 
       $.each(source, (index, item) => {
-        total += this.getSize($(item).text());
+        total += this.getSize($(item).text().trim());
       });
 
       return total;
