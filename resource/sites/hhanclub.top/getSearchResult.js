@@ -52,6 +52,7 @@
         // 遍历数据行
         for (let index = 0; index < rows.length; index++) {
           const row = rows.eq(index);
+          row.find(".torrent-info-text-name .new").remove();
           let title = row.find(".torrent-info-text-name");
           if (title.length == 0) {
             continue;
