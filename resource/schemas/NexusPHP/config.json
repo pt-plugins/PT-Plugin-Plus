@@ -81,6 +81,10 @@
         "messageCount": {
           "selector": ["td[style*='background: red'] a[href*='messages.php']", "div[style*='background: red'] a[href*='messages.php']"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "pendingCheckins": {
+          "selector": ["a[class*='faqlink']"],
+          "filters": ["query.text().match(/(签到得)/)", "(query && query.length>=1)?1:0"]
         }
       }
     },

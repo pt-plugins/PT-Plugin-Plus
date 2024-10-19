@@ -93,10 +93,10 @@
             <v-badge color="red messageCount" overlap>
               <template v-slot:badge v-if="
                 !props.item.disableMessageCount &&
-                props.item.user.messageCount > 0
+                (props.item.user.messageCount > 0 || props.item.user.pendingCheckins > 0)
               " :title="$t('home.newMessage')">
                 {{
-                    props.item.user.messageCount > 10
+                    (props.item.user.messageCount > 10 || props.item.user.messageCount == 0)
                       ? ""
                       : props.item.user.messageCount
                 }}
@@ -655,7 +655,7 @@ export default Vue.extend({
     },
     allUnReadMsgSites() {
       // @ts-ignore
-      return this.allSitesSorted.filter((site: Site) => !site.disableMessageCount && ((site.user?.messageCount || 0) > 0))
+      return this.allSitesSorted.filter((site: Site) => !site.disableMessageCount && ((site.user?.messageCount || 0) > 0 || (site.user?.pendingCheckins || 0) > 0))
     },
     allTaggedSites() {
       // @ts-ignore
