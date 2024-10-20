@@ -256,7 +256,7 @@ export default Vue.extend({
         let systemSite = this.options.system.sites.find((item: Site) => {
           return item.host == host;
         });
-        if (systemSite) {
+        if (systemSite && systemSite.categories) {
           this.site.categories = PPF.clone(systemSite.categories);
         }
         let searchEntry: any[] = [];
