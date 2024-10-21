@@ -81,6 +81,10 @@
         "messageCount": {
           "selector": ["td[style*='background: red'] a[href*='messages.php']", "div[style*='background: red'] a[href*='messages.php']"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "notAttended": {
+          "selector": ["a[href*='attendance.php']", "input#modalBtn", "a[class*='faqlink']", "a#showup", "a[href*='bakatest.php']"],
+          "filters": ["(query.text() || (query.length > 0 && query[0].outerHTML) || '').match(/(签到得|簽到得|立即签到|每日签到|每日打卡|\\[签到)/)", "(query && query.length>=1)?1:0"]
         }
       }
     },

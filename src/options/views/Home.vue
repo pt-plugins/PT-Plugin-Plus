@@ -51,6 +51,8 @@
                 @change="updateViewOptions"></v-switch>
               <v-switch color="success" v-model="showLastUpdateTimeAsRelativeTime" :label="$t('home.showLastUpdateTimeAsRelativeTime')"
                 @change="updateViewOptions"></v-switch>
+              <v-switch color="success" v-model="showNotAttended" :label="$t('home.showNotAttended')"
+                @change="updateViewOptions"></v-switch>
             </v-container>
           </v-card>
         </v-menu>
@@ -91,12 +93,13 @@
           <!-- 站点 -->
           <td v-if="showColumn('name')" class="center">
             <v-badge color="red messageCount" overlap>
+              <!-- 有未读消息或签到消息。未读消息可以在站点设置里关闭。签到消息可以在本页顶部设置里关闭。 -->
               <template v-slot:badge v-if="
-                !props.item.disableMessageCount &&
-                props.item.user.messageCount > 0
+                (!props.item.disableMessageCount && props.item.user.messageCount > 0 ) || 
+                (showNotAttended && props.item.user.notAttended > 0)
               " :title="$t('home.newMessage')">
                 {{
-                    props.item.user.messageCount > 10
+                    (props.item.user.messageCount > 10 || props.item.user.messageCount == 0)
                       ? ""
                       : props.item.user.messageCount
                 }}
@@ -605,6 +608,7 @@ export default Vue.extend({
       showHnR: true,
       showLastUpdateTimeAsRelativeTime:true,
       showWeek: false,
+      showNotAttended: false,
     };
   },
   created() {
@@ -655,7 +659,10 @@ export default Vue.extend({
     },
     allUnReadMsgSites() {
       // @ts-ignore
-      return this.allSitesSorted.filter((site: Site) => !site.disableMessageCount && ((site.user?.messageCount || 0) > 0))
+      return this.allSitesSorted.filter((site: Site) => 
+        (!site.disableMessageCount && (site.user?.messageCount || 0) > 0) || 
+        (this.showNotAttended && (site.user?.notAttended || 0) > 0)
+      )
     },
     allTaggedSites() {
       // @ts-ignore
@@ -786,6 +793,7 @@ export default Vue.extend({
         showHnR: true,
         showLastUpdateTimeAsRelativeTime:true,
         showWeek: false,
+        showNotAttended: false,
         selectedHeaders: this.selectedHeaders,
       });
       Object.assign(this, viewOptions);
@@ -1329,6 +1337,7 @@ export default Vue.extend({
           showHnR: this.showHnR,
           showLastUpdateTimeAsRelativeTime: this.showLastUpdateTimeAsRelativeTime,
           showWeek: this.showWeek,
+          showNotAttended: this.showNotAttended,
           selectedHeaders: this.selectedHeaders,
           selectedTags: this.selectedTags,
         },

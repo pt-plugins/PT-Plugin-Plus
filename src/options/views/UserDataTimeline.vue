@@ -331,7 +331,8 @@ export default Vue.extend({
         res = res.concat(allUnTaggedSites)
       }
       if (tags.includes(ETagType.unReadMsg)) {
-        let allUnReadMsgSites = sites.filter((site: Site) => (site.user?.messageCount || 0) > 0)
+        // 有未读消息或签到消息
+        let allUnReadMsgSites = sites.filter((site: Site) => (site.user?.messageCount || 0) > 0 || (site.user?.notAttended || 0) > 0)
         res = res.concat(allUnReadMsgSites)
       }
       if (tags.includes(ETagType.statusError)) {

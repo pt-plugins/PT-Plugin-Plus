@@ -175,6 +175,7 @@
       "selectColumns": "过滤列",
       "selectedTags": "标签分组过滤",
       "week": "时间显示为周数",
+      "showNotAttended": "未签到的站点",
       "timeline": "时间轴",
       "settings": "参数",
       "statistic": "数据图表",
