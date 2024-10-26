@@ -193,6 +193,15 @@
     }]
   }],
   "selectors": {
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "notAttended": {
+          "selector": ["a[href*='#']"],
+          "filters": ["['签到', 'ShowUP', '簽到'].includes(query.text())?1:0"]
+        }
+      }
+    },
     "userExtendInfo": {
       "merge": true,
       "fields": {

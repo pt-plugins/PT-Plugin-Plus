@@ -261,6 +261,10 @@
         "messageCount": {
           "selector": ["td[style*='background'] > b > a[href*='messages.php'], a[href='#notice']"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "notAttended": {
+          "selector": ["a#signed b"],
+          "filters": ["['签到', 'Check-in', '출석하기'].includes(query.text())?1:0"]
         }
       }
     },

@@ -81,6 +81,10 @@
         "messageCount": {
           "selector": ["td[style*='background: red'] a[href*='messages.php']", "div[style*='background: red'] a[href*='messages.php']"],
           "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
+        },
+        "notAttended": {
+          "selector": ["a.faqlink"],
+          "filters": ["query.text().match(/(签到得|簽到得|Attend today|今日签到|立即签到)/)", "(query && query.length>=1)?1:0"]
         }
       }
     },

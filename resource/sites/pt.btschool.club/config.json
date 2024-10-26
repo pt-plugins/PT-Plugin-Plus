@@ -75,6 +75,17 @@
     "seedingPoints": "1000000",
     "privilege": "十个邀请名额；发送邀请"
   }],
+  "selectors": {
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "notAttended": {
+          "selector": ["a[href*='index.php?action=addbonus'] font"],
+          "filters": ["['每日签到', 'Sign in every day'].includes(query.text())?1:0"]
+        }
+      }
+    }
+  },
   "searchEntryConfig": {
     "area": [
       {

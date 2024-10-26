@@ -90,7 +90,8 @@
                 "messageCount": {
                     "selector": ["div.w-full > a[href='messages.php']"],
                     "filters": ["query.text().match(/(\\d+)/)", "(query && query.length>=2)?parseInt(query[1]):0"]
-                }
+                },
+                "notAttended": { }
             }
         },
         "userExtendInfo": {

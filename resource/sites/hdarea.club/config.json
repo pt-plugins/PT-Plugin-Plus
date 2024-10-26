@@ -290,6 +290,15 @@
           "filters": [ "query[0].childNodes[0].textContent" ]
         }
       }
+    },
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "notAttended": {
+          "selector": ["a[href*='#'] font"],
+          "filters": ["['[签到]', '[Sign in]', '[簽到]'].includes(query.text())?1:0"]
+        }
+      }
     }
   }
 }

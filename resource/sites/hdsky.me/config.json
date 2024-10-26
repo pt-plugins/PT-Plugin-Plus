@@ -188,6 +188,15 @@
     }
   },
   "selectors": {
+    "userBaseInfo": {
+      "merge": true,
+      "fields": {
+        "notAttended": {
+          "selector": ["a#showup"],
+          "filters": ["['签到', 'Show Up', '簽到'].includes(query.text())?1:0"]
+        }
+      }
+    },
     "/torrents.php": {
       "merge": true,
       "fields": {
