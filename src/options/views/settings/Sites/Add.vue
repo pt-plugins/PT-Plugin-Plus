@@ -3,8 +3,8 @@
     <v-snackbar :value="haveError" top :timeout="3000" color="error">{{
       $t("settings.sites.add.validMsg")
     }}</v-snackbar>
-    <v-dialog v-model="show" max-width="800">
-      <v-card>
+    <v-dialog v-model="show" max-width="800" :persistent="ClickOutSide" >
+      <v-card  @mousedown="ClickOutSide = true" @mouseup="ClickOutSide = false" @mouseenter="ClickOutSide = false">
         <v-toolbar dark color="blue-grey darken-2">
           <v-toolbar-title>{{
             $t("settings.sites.add.title")
@@ -163,7 +163,8 @@ export default Vue.extend({
       valid: false,
       isCustom: false,
       newData: {} as Site,
-      haveError: false
+      haveError: false,
+      ClickOutSide: false
     };
   },
   props: {
