@@ -66,7 +66,7 @@
                   >{{ $t("keepUploadTask.size")
                   }}{{ item.data.size | formatSize }},
                   {{ $t("keepUploadTask.fileCount")
-                  }}{{ item.torrent ? item.torrent.files.length : "N/A" }},
+                  }}{{ item.torrent ? item.torrent.filesLength : "N/A" }},
                   {{ $t("keepUploadTask.status.label")
                   }}{{ item.status }}</v-list-tile-sub-title
                 >
@@ -425,7 +425,9 @@ export default Vue.extend({
           );
         }
 
-        result.torrent = torrent;
+        result.torrent = {
+          filesLength: torrent.files.length
+        };
         if (result.verified) {
           this.verifiedCount++;
         }
