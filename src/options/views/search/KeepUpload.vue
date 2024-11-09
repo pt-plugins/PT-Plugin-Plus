@@ -399,10 +399,7 @@ export default Vue.extend({
         }
 
         if (!item || !this.verifiedItems[0].verified) {
-          this.verifiedItems[index] = Object.assign(
-            this.verifiedItems[index],
-            result
-          );
+          this.$set(this.verifiedItems, index, { ...this.verifiedItems[index], ...result });
           return;
         }
 
@@ -455,10 +452,7 @@ export default Vue.extend({
           }
         }
 
-        this.verifiedItems[index] = Object.assign(
-          this.verifiedItems[index],
-          result
-        );
+        this.$set(this.verifiedItems, index, { ...this.verifiedItems[index], ...result });
       }
     },
     /**
