@@ -60,7 +60,7 @@
           "filters": ["query.text().match(/\\d+/)[0]"]
         },
         "joinTime": {
-          "selector": [".time:eq(0)"],
+          "selector": [".stats > li > .time"],
           "attribute": "title",
           "filters": ["dateTime(query).valueOf()"]
         }
