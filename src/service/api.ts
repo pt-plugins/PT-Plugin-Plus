@@ -9,6 +9,9 @@ import {
 import { PPF } from "./public";
 import "./favicon";
 
+// limit the number of concurrent connections to 8
+import pLimit from 'p-limit';
+const limit = pLimit(8);
 
 let rootPath = "";
 let isExtensionMode = false;
@@ -269,7 +272,8 @@ export const APP = {
     APP.debugMode && console.log("getScriptContent", url);
     return $.ajax({
       url,
-      dataType: "text"
+      dataType: "text",
+      timeout: 60000 // Set timeout to 60 seconds (60000 milliseconds)
     });
   },
   /**
