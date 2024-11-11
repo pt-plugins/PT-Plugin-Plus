@@ -482,7 +482,7 @@ export class Searcher {
           if (!entry.parseScript) {
             this.service.debug("searchTorrent: getScriptContent", scriptPath);
             APP.getScriptContent(scriptPath)
-              .done((script: string) => {
+              .then((script: string) => {
                 this.service.debug(
                   "searchTorrent: getScriptContent done",
                   scriptPath
@@ -526,7 +526,7 @@ export class Searcher {
                     }
                   });
               })
-              .fail(error => {
+              .catch(error => {
                 this.service.debug(
                   "searchTorrent: getScriptContent fail",
                   error

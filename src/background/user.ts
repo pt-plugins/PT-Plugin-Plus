@@ -439,9 +439,11 @@ export class User {
     if (script) {
       eval(script);
     } else {
-      APP.getScriptContent(path).done(script => {
+      APP.getScriptContent(path).then(script => {
         this.infoParserCache[path] = script;
         eval(script);
+      }).catch(error => {
+        console.error("Error loading script:", error);
       });
     }
   }
