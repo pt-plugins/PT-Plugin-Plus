@@ -1,0 +1,62 @@
+{
+  "name": "劳改所",
+  "timezoneOffset": "+0800",
+  "description": "劳改所",
+  "schema": "NexusPHP",
+  "host": "ptlgs.org",
+  "url": "https://ptlgs.org",
+  "icon": "https://ptlgs.org/favicon.ico",
+  "tags": ["综合"],
+  "collaborator": "haowenwu",
+  "levelRequirements": [{
+    "level": "1",
+    "name": "Power User",
+    "ratio": "1.2",
+    "downloaded": "500GB",
+    "seedingPoints": "160000"
+  }, {
+    "level": "2",
+    "name": "Elite User",
+    "ratio": "1.5",
+    "downloaded": "4096GB",
+    "seedingPoints": "1000000"
+  }, {
+    "level": "3",
+    "name": "Crazy User",
+    "ratio": "1.5",
+    "downloaded": "5120GB",
+    "seedingPoints": "2500000"
+  }],
+  "selectors": {
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": ["td.rowhead:contains('工分') + td"],
+          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+        }
+      }
+    },
+    "userSeedingTorrents": {
+      "merge": true,
+      "fields": {
+        "seedingSize": {
+          "selector": "div div",
+          "filters": ["query.text().match(/总大小：(.*)/i)", "query ? query[1].trim() : 0", "query != 0 ? query.sizeToNumber() : 0"]
+        }
+      }
+    }
+  },
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["div[title^='seeding'], div[title^='leeching'], div[title^='inactivity']"],
+        "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+      },
+      "status": {
+        "selector": ["div[title^='seeding'], div[title^='leeching'], div[title^='inactivity']"],
+        "filters": ["query ? query.attr('title') : ''", "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"]
+      }
+    }
+  }
+}
