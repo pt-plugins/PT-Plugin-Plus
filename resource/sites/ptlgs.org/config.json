@@ -15,7 +15,7 @@
   "levelRequirements": [
     {
       "level": 1,
-      "name": "Power User (无期徒刑)",
+      "name": "Power User",
       "interval": "0",
       "downloaded": "500GB",
       "seedingPoints": "160000",
@@ -24,7 +24,7 @@
     },
     {
       "level": 2,
-      "name": "Elite User (有期徒刑)",
+      "name": "Elite User",
       "interval": "0",
       "downloaded": "4096GB",
       "seedingPoints": "1000000",
@@ -33,7 +33,7 @@
     },
     {
       "level": 3,
-      "name": "Crazy User (取保候审)",
+      "name": "Crazy User",
       "interval": "0",
       "downloaded": "5120GB",
       "seedingPoints": "2500000",
@@ -42,7 +42,7 @@
     },
     {
       "level": 4,
-      "name": "Insane user (待岗考编)",
+      "name": "Insane user",
       "seedingPoints": "650000",
       "interval": "20",
       "downloaded": "1TB",
