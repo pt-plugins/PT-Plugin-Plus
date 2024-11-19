@@ -1,0 +1,187 @@
+{
+  "name": "PTLGS",
+  "timezoneOffset": "+0800",
+  "description": "ptlgs.org",
+  "url": "https://ptlgs.org/",
+  "icon": "https://ptlgs.org/favicon.ico",
+  "tags": [
+    "综合"
+  ],
+  "schema": "NexusPHP",
+  "host": "ptlgs.org",
+  "collaborator": [
+    "yxlimo"
+  ],
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "Power User (无期徒刑)",
+      "interval": "0",
+      "downloaded": "500GB",
+      "seedingPoints": "160000",
+      "ratio": "1.2",
+      "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")；可以删除自己上传的字幕。"
+    },
+    {
+      "level": 2,
+      "name": "Elite User (有期徒刑)",
+      "interval": "0",
+      "downloaded": "4096GB",
+      "seedingPoints": "1000000",
+      "ratio": "1.5",
+      "privilege": "Elite User及以上用户封存账号后不会被删除。"
+    },
+    {
+      "level": 3,
+      "name": "Crazy User (取保候审)",
+      "interval": "0",
+      "downloaded": "5120GB",
+      "seedingPoints": "2500000",
+      "ratio": "1.5",
+      "privilege": "得到1个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+    },
+    {
+      "level": 4,
+      "name": "Insane user (待岗考编)",
+      "seedingPoints": "650000",
+      "interval": "20",
+      "downloaded": "1TB",
+      "ratio": "5",
+      "privilege": "得到1个邀请名额；可以查看普通日志。"
+    }
+  ],
+  "categories": [
+    {
+      "entry": "torrents.php",
+      "result": "&cat$id$=1",
+      "category": [
+        {
+          "id": 409,
+          "name": "其它"
+        },
+        {
+          "id": 407,
+          "name": "体育"
+        },
+        {
+          "id": 406,
+          "name": "音乐"
+        },
+        {
+          "id": 403,
+          "name": "综艺"
+        },
+        {
+          "id": 402,
+          "name": "电视剧"
+        },
+        {
+          "id": 405,
+          "name": "动漫"
+        },
+        {
+          "id": 404,
+          "name": "纪录片"
+        },
+        {
+          "id": 401,
+          "name": "电影"
+        }
+      ]
+    }
+  ],
+  "searchEntry": [
+    {
+      "name": "全站",
+      "enabled": true
+    },
+    {
+      "name": "电影",
+      "enabled": false
+    },
+    {
+      "name": "电视剧",
+      "enabled": false
+    },
+    {
+      "name": "动漫",
+      "enabled": false
+    },
+    {
+      "name": "综艺",
+      "enabled": false
+    },
+    {
+      "name": "纪录片",
+      "enabled": false
+    },
+    {
+      "name": "音乐",
+      "enabled": false
+    },
+    {
+      "name": "体育",
+      "enabled": false
+    }
+  ],
+  "searchEntryConfig": {
+    "skipIMDbId": true,
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
+        ],
+        "filters": [
+          "query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"
+        ]
+      },
+      "status": {
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
+        ],
+        "filters": [
+          "query ? query.attr('title') : ''",
+          "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+        ]
+      }
+    }
+  },
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query.text()"
+          ]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)上一页/g)",
+            "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
+            "(query != 0) ? query.sizeToNumber() : 0"
+          ]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "merge": true,
+      "fields": {
+        "bonus": {
+          "selector": [
+            "td.rowhead:contains('工分') + td",
+            "td.rowhead:contains('Karma'):contains('Points') + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'')",
+            "parseFloat(query)"
+          ]
+        }
+      }
+    }
+  }
+}
