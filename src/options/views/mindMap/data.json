@@ -1,0 +1,52 @@
+{
+    "layout": "mindMap",
+    "root": {
+        "data": {
+            "text": "PTPP"
+        },
+        "children": [
+        ]
+    },
+    "theme": {
+        "template": "gold",
+        "config": {
+            "node": {
+                "marginX": 18
+            },
+            "imgMaxWidth": 21,
+            "imgMaxHeight": 21,
+            "paddingX": 14,
+            "lineWidth": 2,
+            "lineRadius": 7,
+            "lineStyle": "straight",
+            "second": {
+                "marginY": 39
+            }
+        }
+    },
+    "view": {
+        "transform": {
+            "scaleX": 0.8,
+            "scaleY": 0.8000000000000002,
+            "shear": 0,
+            "rotate": 0,
+            "translateX": 78.88571428571342,
+            "translateY": 67.17142857142973,
+            "originX": 0,
+            "originY": 0,
+            "a": 0.8,
+            "b": 0,
+            "c": 0,
+            "d": 0.8,
+            "e": 78.88571428571342,
+            "f": 67.17142857142973
+        },
+        "state": {
+            "scale": 0.8,
+            "x": 78.88571428571342,
+            "y": 67.17142857142973,
+            "sx": 733.9714285714283,
+            "sy": 589.0428571428574
+        }
+    }
+}

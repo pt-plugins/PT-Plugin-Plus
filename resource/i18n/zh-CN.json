@@ -37,6 +37,8 @@
       "export": "导出",
       "import": "导入",
       "share": "分享",
+      "fullScreen": "全屏",
+      "rePosition": "复位",
       "actionConfirm": "确认要进行此操作吗？",
       "importFailed": "导入失败",
       "importSuccess": "已成功导入",
@@ -807,7 +809,8 @@
           "importConfig": "从文件导入",
           "importConfirm": "确认要导入 【{name}】 吗？",
           "importDuplicateConfirm": "该站点 【{name}】 已存在，是否需要导入搜索入口和插件？",
-          "resetFavicons": "重置站点图标缓存"
+          "resetFavicons": "重置站点图标缓存",
+          "ptMindMap": "PT站点思维导图"
         }
       },
       "siteSearchEntry": {

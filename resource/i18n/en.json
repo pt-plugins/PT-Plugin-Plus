@@ -40,6 +40,8 @@
       "export": "Export",
       "import": "Import",
       "share": "Share",
+      "fullScreen": "FullScreen",
+      "rePosition": "RePosition",
       "actionConfirm": "Are you sure you want to do this?",
       "importFailed": "Import failed",
       "importSuccess": "Import success",
@@ -812,7 +814,8 @@
           "importConfig": "Import from config",
           "importConfirm": "Are you sure you want to import [{name}] ?",
           "importDuplicateConfirm": "The site {name} already exists. Do you need to import search entrys and plugins?",
-          "resetFavicons": "Reset site favicons"
+          "resetFavicons": "Reset site favicons",
+          "ptMindMap": "PT Site Mind Map"
         }
       },
       "siteSearchEntry": {

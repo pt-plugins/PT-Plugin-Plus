@@ -149,6 +149,14 @@ export default new Router({
       path: "/keep-upload-task",
       name: "keep-upload-task",
       component: () => import("./views/keepUpload/KeepUploadTasks.vue")
+    },  
+    {
+      path: "/mind",
+      name: "mind",
+      component: () => import("./views/mindMap/Index.vue"),
+      meta: {
+        keepAlive: false
+      }
     }
   ]
 });
