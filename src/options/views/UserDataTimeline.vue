@@ -147,14 +147,14 @@
               <div>
                 <v-divider v-if="i>0" class="mb-2"></v-divider>
                 <div class="headline font-weight-light mb-2" v-if="showSiteName">{{ site.name }}</div>
-                <div v-if="showUserUploads && site.user.uploads && site.user.uploads > 0">{{ $t('timeline.user.uploads') }}{{ site.user.uploads }}</div>
-                <div>{{ $t('timeline.user.uploaded') }}{{ site.user.uploaded | formatSize}}</div>
-                <div>{{ $t('timeline.user.downloaded') }}{{ site.user.downloaded | formatSize }}</div>
-                <div>{{ $t('timeline.user.ratio') }}{{ site.user.ratio | formatRatio }}</div>
-                <div>{{ $t('timeline.user.seedingSize') }}{{ site.user.seedingSize | formatSize }} ({{ site.user.seeding }})</div>
-                <div v-if="site.user.averageSeedtime && site.user.averageSeedtime > 0">{{ $t('timeline.user.averageSeedtime', {day: site.user.averageSeedtime | formatInteger}) }}</div>
-                <div>{{ $t('timeline.user.bonus') }}{{ site.user.bonus | formatNumber }}</div>
-                <div v-if="site.user.bonusPerHour && site.user.bonusPerHour != 'N/A'">{{ $t('timeline.user.bonusPerHour') }}{{ site.user.bonusPerHour | formatNumber }}</div>
+                <div v-if="showUserUploads && site.user.uploads && site.user.uploads > 0">{{ $t('timeline.user.uploads') }}{{$t('timeline.user.colonSeparator')}}{{ site.user.uploads }}</div>
+                <div>{{ $t('timeline.user.uploaded') }}{{$t('timeline.user.colonSeparator')}}{{ site.user.uploaded | formatSize}}</div>
+                <div>{{ $t('timeline.user.downloaded') }}{{$t('timeline.user.colonSeparator')}}{{ site.user.downloaded | formatSize }}</div>
+                <div>{{ $t('timeline.user.ratio') }}{{$t('timeline.user.colonSeparator')}}{{ site.user.ratio | formatRatio }}</div>
+                <div>{{ $t('timeline.user.seedingSize') }}{{$t('timeline.user.colonSeparator')}}{{ site.user.seedingSize | formatSize }} ({{ site.user.seeding }})</div>
+                <div v-if="site.user.averageSeedtime && site.user.averageSeedtime > 0">{{ $t('timeline.user.averageSeedtime') }}{{$t('timeline.user.colonSeparator')}}{{ site.user.averageSeedtime | formatInteger }}</div>
+                <div>{{ $t('timeline.user.bonus') }}{{$t('timeline.user.colonSeparator')}}{{ site.user.bonus | formatNumber }}</div>
+                <div v-if="site.user.bonusPerHour && site.user.bonusPerHour != 'N/A'">{{ $t('timeline.user.bonusPerHour') }}{{$t('timeline.user.colonSeparator')}}{{ site.user.bonusPerHour | formatNumber }}</div>
               </div>
             </v-timeline-item>
           </v-timeline>
@@ -220,12 +220,42 @@
           ></v-switch>
         </v-flex>
       </v-layout>
+      <v-divider />
+      <!-- 排序 -->
+      <h1 style="padding: 5px;">{{ $t('timeline.sortSites.name') }}</h1>
+<!--      SortBy-->
+      <h2 style="padding: 7px;">{{ $t('timeline.sortSites.key.label') }}</h2>
+      <v-radio-group v-model="siteSortBy" row class="ml-5">
+
+        <v-radio v-for="(key, i) in siteSortKeys" :key="i"
+            :label="$t('timeline.user.'+key)" color="success" :value="key"
+        ></v-radio>
+      </v-radio-group>
+<!--      sort order-->
+      <h2 style="padding: 7px;">{{ $t('timeline.sortSites.order.label') }}</h2>
+      <v-radio-group v-model="siteSortOrder" row class="ml-5">
+        <v-radio
+            :label="$t('timeline.sortSites.order.asc')" color="success" value="asc"
+        ></v-radio>
+        <v-radio
+            :label="$t('timeline.sortSites.order.dsc')" color="success" value="dsc"
+        ></v-radio>
+      </v-radio-group>
     </div>
   </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
-import {Site, Dictionary, EAction, Options, EViewKey, ETagType, EUserDataRequestStatus} from "@/interface/common";
+import {
+  Site,
+  Dictionary,
+  EAction,
+  Options,
+  EViewKey,
+  ETagType,
+  EUserDataRequestStatus,
+  UserInfo
+} from "@/interface/common";
 import FileSaver from "file-saver";
 import domtoimage from 'dom-to-image';
 import Extension from "@/service/extension";
@@ -297,6 +327,9 @@ export default Vue.extend({
       showUserLevel: true,
       showUserUploads: true,
       showUid: true,
+      siteSortKeys: ["joinTime", "uploaded", "seedingSize", "ratio"],
+      siteSortBy: "joinTime",
+      siteSortOrder: "asc",
       blurSiteIcon: true,
       iconCache: {} as Dictionary<any>
     };
@@ -318,6 +351,14 @@ export default Vue.extend({
       } else {
         return []
       }
+    }
+  },
+  watch: {
+    siteSortBy(newVal) {
+      this.datas = this.sortSitesByUserInfo(this.datas, newVal, this.siteSortOrder == "asc")
+    },
+    siteSortOrder(newVal) {
+      this.datas = this.sortSitesByUserInfo(this.datas, this.siteSortBy, newVal == "asc")
     }
   },
   methods: {
@@ -535,24 +576,40 @@ export default Vue.extend({
           .diff(result.joinTimeInfo.time, "year", true)
           .toFixed(2);
       }
-
       this.infos = result;
 
-      // 按加入时间排序
-      this.datas = sites.sort((a, b) => {
+      this.datas = this.sortSitesByUserInfo(sites, this.siteSortBy, this.siteSortOrder == "asc")
 
-        if (!a.user || !b.user) {
-          return 0;
-        }
-        const sortA = a.user.joinTime || 0;
-        const sortB = b.user.joinTime || 0;
-
-        if (sortA < sortB) return -1;
-        if (sortA > sortB) return 1;
-        return 0;
-      });
+      console.log(this.datas)
 
       this.infos.total.ratio = this.getRatio(this.infos.total);
+
+    },
+    sortSitesByUserInfo(sites: Site[], key: keyof UserInfo, ascending: boolean): Site[]{
+      return sites.sort((a, b) => {
+        if ((!a.user || !b.user) || (typeof a.user[key] != "number") ){
+          return 0;
+        }
+        let sortA = a.user[key] ? a.user[key] as number : 0
+        let sortB = b.user[key] ? b.user[key] as number : 0
+
+        // handle the condition of ratio is infinitely
+        if ((key == "ratio") && (this.ratioIsInfinitely(sortA) || this.ratioIsInfinitely(sortB))) {
+          if (this.ratioIsInfinitely(sortA) && this.ratioIsInfinitely(sortB)) {
+            return 0
+          }
+          if (this.ratioIsInfinitely(sortA)) {
+            return ascending ? 1: -1
+          }
+          if (this.ratioIsInfinitely(sortB)) {
+            return ascending ? -1: 1
+          }
+        }
+        return ascending ? sortA - sortB : sortB - sortA;
+      });
+    },
+    ratioIsInfinitely(v: number): boolean {
+      return v > 10000 || v == -1
     },
     getRatio(info: any): number {
       let downloaded = info.downloaded as number;

@@ -314,14 +314,27 @@
       },
       "updateat": "数据更新于：",
       "user": {
-        "uploads": "发布数：",
-        "uploaded": "上传量：",
-        "downloaded": "下载量：",
-        "seedingSize": "做种量：",
-        "averageSeedtime": "均保时：{day} 天",
-        "ratio": "分享率：",
-        "bonus": "积分值：",
-        "bonusPerHour": "时　魔："
+        "colonSeparator": "：",
+        "uploads": "发布数",
+        "uploaded": "上传量",
+        "downloaded": "下载量",
+        "seedingSize": "做种量",
+        "averageSeedtime": "均保时（天）",
+        "ratio": "分享率",
+        "bonus": "积分值",
+        "bonusPerHour": "时　魔",
+        "joinTime": "加入时间"
+      },
+      "sortSites": {
+        "name": "站点排序",
+        "key": {
+          "label": "排序依据"
+        },
+        "order": {
+          "label": "排序方式",
+          "asc": "正序",
+          "dsc": "倒序"
+        }
       },
       "inputDisplayName": "请输入需要显示的名称：",
       "inputShareMessage": "请输入需要显示的信息："

@@ -319,7 +319,6 @@ export interface Site {
   apiCdn?: string[];
   getInfoAjaxCache?: boolean;
 }
-
 /**
  * desc & href 都不为空才被认为是有效链接
  * href 必须是网址
