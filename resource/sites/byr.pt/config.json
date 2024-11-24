@@ -121,6 +121,11 @@
             }
         }
     },
+    "bonusExtendInfo": {
+      "merge": true,
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php?show=seed"
+    },
     "/details.php": {
       "merge": true,
       "fields": {
