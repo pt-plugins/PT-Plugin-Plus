@@ -2,11 +2,14 @@
   "name": "RED",
   "timezoneOffset": "+0000",
   "description": "music",
-  "url": "https://redacted.ch/",
-  "icon": "https://redacted.ch/favicon.ico",
+  "url": "https://redacted.sh/",
+  "icon": "https://redacted.sh/favicon.ico",
   "tags": ["音乐"],
   "schema": "GazelleJSONAPI",
-  "host": "redacted.ch",
+  "host": "redacted.sh",
+  "formerHosts": [
+    "redacted.ch"
+  ],
   "levelRequirements": [{
     "level": "1", 
     "name": "Member",
