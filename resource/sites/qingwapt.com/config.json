@@ -30,15 +30,15 @@
       "alternative":[
         {
           "downloaded" : "150GiB",
-          "ratio" : "1.1-10",
-          "seedingPoints": "60000"
+          "ratio" : "1.0-4.0之间",
+          "seedingPoints": "40000"
         },{
           "ratio": "1.1",
           "uploads": "50",
           "seedingPoints": "40000"
         }
       ],
-      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+      "privilege": "得到1个邀请名额，可以直接发布种子，可以查看NFO文档，可以查看用户列表，可以请求续种， 可以发送邀请，可以查看排行榜，可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
       "level": "2",
@@ -47,15 +47,15 @@
       "alternative":[
         {
           "downloaded" : "300GiB",
-          "ratio" : "1.2-10",
-          "seedingPoints": "90000"
+          "ratio" : "1.0-4.5之间",
+          "seedingPoints": "80000"
         },{
           "ratio": "1.2",
           "uploads": "120",
           "seedingPoints": "70000"
         }
       ],
-      "privilege": "成蛙及以上用户封存账号后不会被删除。"
+      "privilege": "得到2个邀请名额，封存账号后不会被删除"
     },
     {
       "level": "3",
@@ -63,16 +63,16 @@
       "interval": "25",
       "alternative":[
         {
-          "downloaded" : "500GiB",
-          "ratio" : "1.2-10",
-          "seedingPoints": "150000"
+          "downloaded" : "1024GiB",
+          "ratio" : "1.0-5.0之间",
+          "seedingPoints": "160000"
         },{
           "ratio": "1.2",
           "uploads": "200",
           "seedingPoints": "90000"
         }
       ],
-      "privilege": "得到两个邀请名额; 可以在做种/下载/发布的时候选择匿名模式。"
+      "privilege": "得到3个邀请名额，可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
       "level": "4",
@@ -80,16 +80,16 @@
       "interval": "36",
       "alternative":[
         {
-          "downloaded" : "1000GiB",
-          "ratio" : "1.5-10",
-          "seedingPoints": "220000"
+          "downloaded" : "2048GiB",
+          "ratio" : "1.0-5.5之间",
+          "seedingPoints": "320000"
         },{
           "ratio": "1.3",
           "uploads": "300",
           "seedingPoints": "150000"
         }
       ],
-      "privilege": "可以查看普通日志。"
+      "privilege": "得到3个邀请名额，可以查看普通日志。"
     },
     {
       "level": "5",
@@ -97,16 +97,16 @@
       "interval": "52",
       "alternative":[
         {
-          "downloaded" : "1300GiB",
-          "ratio" : "2-10",
-          "seedingPoints": "300000"
+          "downloaded" : "4096GiB",
+          "ratio" : "1.0-6.0之间",
+          "seedingPoints": "640000"
         },{
           "ratio": "1.8",
           "uploads": "500",
           "seedingPoints": "200000"
         }
       ],
-      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史；妙蛙花及以上用户会永远保留账号。"
+      "privilege": "得到4个邀请名额，可以查看其它用户的评论、帖子历史；永远保留账号。"
     },
     {
       "level": "6",
@@ -114,17 +114,16 @@
       "interval": "60",
       "alternative":[
         {
-          "downloaded" : "1800GiB",
-          "ratio" : "2.5-10",
-          "seedingPoints": "400000",
-          "uploads": "10"
+          "downloaded" : "8192GiB",
+          "ratio" : "1.0-6.5之间",
+          "seedingPoints": "1280000"
         },{
           "ratio": "2.2",
           "uploads": "650",
           "seedingPoints": "280000"
         }
       ],
-      "privilege": "可以更新过期的外部信息。"
+      "privilege": "得到4个邀请名额，可以更新过期的外部信息。"
     },
     {
       "level": "7",
@@ -132,17 +131,16 @@
       "interval": "100",
       "alternative":[
         {
-          "downloaded" : "1800GiB",
-          "ratio" : "3-20",
-          "seedingPoints": "600000",
-          "uploads": "20"
+          "downloaded" : "16384GiB",
+          "ratio" : "1.0-7.0之间",
+          "seedingPoints": "2560000"
         },{
           "ratio": "2.5",
           "uploads": "800",
           "seedingPoints": "400000"
         }
       ],
-      "privilege": "得到五个邀请名额。"
+      "privilege": "得到5个邀请名额。"
     }
   ],
   "securityKeyFields": [
