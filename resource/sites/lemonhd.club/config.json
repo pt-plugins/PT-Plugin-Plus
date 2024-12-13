@@ -8,7 +8,8 @@
 	"icon": "https://lemonhd.club/favicon.ico",
 	"tags": ["综合"],
 	"collaborator": "haowenwu",
-	"levelRequirements": [{
+	"levelRequirements": [
+		{
 			"level": "1",
 			"name": "Power User",
 			"interval": "5",
@@ -87,6 +88,40 @@
 					[2],
 					[255]
 				]
+			}
+		}
+	},
+	"selectors": {
+		"userSeedingTorrents": {
+			"page": "/userdetails.php?id=$user.id$",
+			"fields": {
+				"seeding": {
+					"selector": "font.color_active:contains('当前活动：')",
+					"filters": [
+						"query.parent().text().match(/当前活动：\\s*(\\d+)/)[1]",
+						"parseInt(query)"
+					]
+				},
+				"seedingSize": {
+					"selector": "td.rowfollow",
+					"filters": [
+						"query.text().match(/总体积：\\s*([\\d.]+\\s*[A-Z]+)\\s+/)[1]",
+						"(query) ? query.trim() : 0",
+						"(query != 0) ? query.sizeToNumber() : 0"
+					]
+				}
+			}
+		},
+		"bonusExtendInfo": {
+			"prerequisites": "!user.bonusPerHour",
+			"page": "/mybonus.php",
+			"fields": {
+				"bonusPerHour": {
+					"selector": ["div:contains('你当前每小时能获取')", "div:contains('从邀请者中获得加成')"],
+					"filters": [
+						"query.map(function() { return parseFloat($(this).text().match(/[\\d.]+/)[0]); }).get().reduce(function(sum, value) { return sum + value; }, 0)"
+					]
+				}
 			}
 		}
 	}
