@@ -46,7 +46,7 @@
       "downloaded": "750GB",
       "ratio": "6.0",
       "seedingPoints": "400000",
-      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史"
+      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史；Veteran User及以上用户会永远保留账号"
     },{
       "level": "6",
       "name": "Extreme User",
@@ -54,7 +54,7 @@
       "downloaded": "1TB",
       "ratio": "7.0",
       "seedingPoints": "600000",
-      "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛；Extreme User及以上用户会永远保留账号"
+      "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛"
     },{
       "level": "7",
       "name": "Ultimate User",
