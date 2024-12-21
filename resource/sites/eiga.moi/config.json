@@ -44,7 +44,7 @@
   "searchEntryConfig": {
     "page": "/torrents/filter",
     "resultType": "html",
-    "parseScriptFile": "/sites/asiancinema.me/getSearchResult.js",
+    "parseScriptFile": "/sites/eiga.moi/getSearchResult.js",
     "resultSelector": "div.table-responsive > table:first",
     "queryString": "search=$key$&qty=100",
     "area": [{
