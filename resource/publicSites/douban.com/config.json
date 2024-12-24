@@ -25,5 +25,5 @@
   "schema": "publicSite",
   "host": "movie.douban.com",
   "path": "douban.com",
-  "cdn": ["www.douban.com"]
+  "cdn": ["http://www.douban.com"]
 }

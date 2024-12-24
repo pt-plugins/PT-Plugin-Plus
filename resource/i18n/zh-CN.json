@@ -1107,7 +1107,8 @@
       "duration": "片长：",
       "ratings": {
         "douban": "豆瓣 {average} 共 {numRaters} 人参与评价",
-        "imdb": "IMDb {average} 共 {numRaters} 人参与评价"
+        "imdb": "IMDb {average} 共 {numRaters} 人参与评价",
+        "tmdb": "TMDB {average}% 共 {numRaters} 人参与评价"
       }
     }
   }

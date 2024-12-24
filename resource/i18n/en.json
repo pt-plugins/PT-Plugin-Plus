@@ -1111,7 +1111,8 @@
       "duration": "Duration: ",
       "ratings": {
         "douban": "Douban {average} ({numRaters})",
-        "imdb": "IMDb {average} ({numRaters})"
+        "imdb": "IMDb {average} ({numRaters})",
+        "tmdb": "TMDB {average}% ({numRaters})"
       }
     }
   }

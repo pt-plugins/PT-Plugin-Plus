@@ -304,6 +304,7 @@ export default Vue.extend({
       topSearches: [] as any[],
       topSearchesUpdateTime: "N/A" as any,
       topSearchesLoading: false,
+      timeout: 1500
     };
   },
 
@@ -324,8 +325,8 @@ export default Vue.extend({
         : EBeforeSearchingItemSearchMode.id;
       switch (searchMode) {
         case EBeforeSearchingItemSearchMode.id:
-          if (item && item.id) {
-            key = `douban${item.id}|${item.title}|${item.originalTitle || item.aka || item.original_title}|${key}`;
+          if (item) {
+            key = item.imdbId || `douban${item.id}|${item.title}|${item.originalTitle || item.aka || item.original_title}|${key}`;
           }
           break;
 
@@ -349,7 +350,7 @@ export default Vue.extend({
       } else if (this.searchKey) {
         this.timer = setTimeout(() => {
           this.getDoubanInfos(this.searchKey);
-        }, 750);
+        }, this.timeout);
       }
     },
     /**
@@ -491,7 +492,7 @@ export default Vue.extend({
 
       this.timer = setTimeout(() => {
         this.getDoubanInfos(this.searchKey);
-      }, 750);
+      }, this.timeout);
     },
     /**
      * 监控最后的搜索关键字，前显示当前搜索框
