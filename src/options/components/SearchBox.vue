@@ -1,83 +1,43 @@
 <template>
   <v-menu v-model="showMenu" offset-y nudge-right="32">
     <template v-slot:activator="{ on }">
-      <v-text-field
-        flat
-        solo-inverted
-        prepend-icon="search"
-        type="search"
-        @click:prepend="searchTorrent()"
-        :label="$t('searchBox.searchTip')"
-        class="mt-2 mb-0"
-        v-model.trim="searchKey"
-        clearable
-        @click.stop="showSelectBox"
-        @click:clear="clearSearchKey"
-        :loading="loadStatus"
-        enterkeyhint="search"
-        v-on:keyup.enter="searchTorrent()"
-      >
+      <v-text-field flat solo-inverted prepend-icon="search" type="search" @click:prepend="searchTorrent()"
+        :label="$t('searchBox.searchTip')" class="mt-2 mb-0" v-model.trim="searchKey" clearable
+        @click.stop="showSelectBox" @click:clear="clearSearchKey" :loading="loadStatus" enterkeyhint="search"
+        v-on:keyup.enter="searchTorrent()">
         <!-- 近期热门 -->
-        <v-menu
-          slot="prepend-inner"
-          offset-y
-          class="top-searches"
-          nudge-bottom="8"
-          nudge-left="12"
-        >
+        <v-menu slot="prepend-inner" offset-y class="top-searches" nudge-bottom="8" nudge-left="12">
           <v-btn slot="activator" flat small color="grey lighten-2">{{
             $t("common.hot")
           }}</v-btn>
 
-          <div
-            :style="
-              ($vuetify.breakpoint.smAndUp ? 'width: 550px' : 'width: 300px') +
-              ';background-color: #fff;'
-            "
-          >
+          <div :style="($vuetify.breakpoint.smAndUp ? 'width: 550px' : 'width: 300px') +
+            ';background-color: #fff;'
+            ">
             <v-container fluid grid-list-lg class="pa-3">
               <div v-if="topSearches.length == 0">
                 {{ $t("common.loading") }}
               </div>
               <v-layout v-else row wrap>
                 <v-flex v-for="(item, index) in topSearches" :key="index" xs4>
-                  <v-card
-                    @click="searchHotItem(item)"
-                    style="cursor: pointer"
-                    :title="$t('searchBox.searchThisKey', { key: item.title })"
-                  >
-                    <v-img
-                      :src="item.image"
-                      :height="$vuetify.breakpoint.smAndUp ? '230px' : '110px'"
-                    >
+                  <v-card @click="searchHotItem(item)" style="cursor: pointer"
+                    :title="$t('searchBox.searchThisKey', { key: item.title })">
+                    <v-img :src="item.image" :height="$vuetify.breakpoint.smAndUp ? '230px' : '110px'">
                       <div class="top-searches-item px-1">
                         <div>
                           <span class="caption">{{ item.title }}</span>
-                          <span
-                            v-if="$vuetify.breakpoint.smAndUp"
-                            class="caption ml-2 grey--text"
-                            >({{ item.year }})</span
-                          >
+                          <span v-if="$vuetify.breakpoint.smAndUp" class="caption ml-2 grey--text">({{ item.year
+                            }})</span>
 
                           <!-- 评分，点击可前往豆瓣页面 -->
-                          <a
-                            class="caption orange--text rating"
-                            :href="item.link"
-                            rel="noopener noreferrer nofollow"
-                            target="_blank"
-                            :title="$t('searchBox.toDouban')"
-                            @click.stop
-                            >{{
+                          <a class="caption orange--text rating" :href="item.link" rel="noopener noreferrer nofollow"
+                            target="_blank" :title="$t('searchBox.toDouban')" @click.stop>{{
                               item.doubanRating
                                 ? parseFloat(item.doubanRating).toFixed(1)
                                 : "--"
-                            }}</a
-                          >
+                            }}</a>
                         </div>
-                        <div
-                          v-if="$vuetify.breakpoint.smAndUp"
-                          class="caption grey--text alt-title"
-                        >
+                        <div v-if="$vuetify.breakpoint.smAndUp" class="caption grey--text alt-title">
                           {{ item.alt_title }}
                         </div>
                       </div>
@@ -89,14 +49,8 @@
             <v-divider></v-divider>
 
             <div class="pa-1 top-searches text-sm-right">
-              <v-btn
-                flat
-                small
-                class="caption grey--text"
-                :title="$t('common.refresh')"
-                @click.stop="getTopSearches"
-                :loading="topSearchesLoading"
-              >
+              <v-btn flat small class="caption grey--text" :title="$t('common.refresh')" @click.stop="getTopSearches"
+                :loading="topSearchesLoading">
                 <v-icon style="font-size: 20px">update</v-icon>
                 <span class="ml-2">{{
                   $t("common.lastUpdate", { time: topSearchesUpdateTime })
@@ -113,26 +67,18 @@
           }}</v-btn>
           <v-card class="scroll-card">
             <v-list dense>
-              <v-list-tile
-                @click="changeSearchSolution(null)"
-                :title="$t('searchBox.defaultTip')"
-              >
+              <v-list-tile @click="changeSearchSolution(null)" :title="$t('searchBox.defaultTip')">
                 <v-list-tile-title>{{
                   $t("searchBox.default")
                 }}</v-list-tile-title>
               </v-list-tile>
               <v-divider></v-divider>
-              <template
-                v-if="
-                  $store.state.options.searchSolutions &&
-                  $store.state.options.searchSolutions.length > 0
-                "
-              >
-                <v-list-tile
-                  @click="changeSearchSolution(item)"
-                  v-for="(item, index) in $store.state.options.searchSolutions"
-                  :key="index"
-                >
+              <template v-if="
+                $store.state.options.searchSolutions &&
+                $store.state.options.searchSolutions.length > 0
+              ">
+                <v-list-tile @click="changeSearchSolution(item)"
+                  v-for="(item, index) in $store.state.options.searchSolutions" :key="index">
                   <v-list-tile-title>{{ item.name }}</v-list-tile-title>
                 </v-list-tile>
               </template>
@@ -167,34 +113,23 @@
           </v-list-tile-action>
         </v-list-tile>
         <v-divider v-if="!isLoading"></v-divider>
-        <v-progress-linear
-          :indeterminate="true"
-          v-else
-          color="secondary"
-          height="2"
-        ></v-progress-linear>
+        <v-progress-linear :indeterminate="true" v-else color="secondary" height="2"></v-progress-linear>
       </v-list>
 
       <!-- 预选列表 -->
       <v-list three-line class="py-0">
         <template v-for="(item, index) in items">
-          <v-list-tile
-            :key="index"
-            @click.stop="itemClick(item)"
-            :title="$t('searchBox.searchThisKey', { key: item.title })"
-          >
+          <v-list-tile :key="index" @click.stop="itemClick(item)"
+            :title="$t('searchBox.searchThisKey', { key: item.title })">
             <v-list-tile-avatar class="album" :size="75">
-              <img
-                :src="
-                  item.image ||
-                  item.img ||
-                  (item.images
-                    ? item.images.small
-                    : item.pic
+              <img :src="item.image ||
+                item.img ||
+                (item.images
+                  ? item.images.small
+                  : item.pic
                     ? item.pic.normal
                     : '')
-                "
-              />
+                " />
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title class="mb-1">
@@ -214,44 +149,29 @@
             </v-list-tile-content>
 
             <v-list-tile-action style="align-items: center">
-              <a
-                class="grey--text text--darken-1 mt-3 title"
-                style="text-decoration: none"
-                :href="item.link || item.alt || item.url"
-                rel="noopener noreferrer nofollow"
-                target="_blank"
-                :title="$t('searchBox.toDouban')"
-                @click.stop
-              >
+              <a class="grey--text text--darken-1 mt-3 title" style="text-decoration: none"
+                :href="item.link || item.alt || item.url" rel="noopener noreferrer nofollow" target="_blank"
+                :title="$t('searchBox.toDouban')" @click.stop>
                 <img src="https://img3.doubanio.com/favicon.ico" width="16" />
                 {{
                   parseFloat(
                     item.average
                       ? item.average
                       : item.rating
-                      ? item.rating.average || item.rating.value
-                      : null
+                        ? item.rating.average || item.rating.value
+                        : null
                   ).toFixed(1)
                 }}
               </a>
-              <v-rating
-                :value="
-                  item.average
-                    ? parseFloat(item.average) / 2
-                    : item.rating
-                    ? item.rating.stars
-                      ? parseInt(item.rating.stars) / 10
-                      : item.rating.star_count
-                    : 0
-                "
-                background-color="grey lighten-2"
-                color="yellow accent-4"
-                dense
-                readonly
-                half-increments
-                size="13"
-                class="mb-3"
-              ></v-rating>
+              <v-rating :value="item.average
+                ? parseFloat(item.average) / 2
+                : item.rating
+                  ? item.rating.stars
+                    ? parseInt(item.rating.stars) / 10
+                    : item.rating.star_count
+                  : 0
+                " background-color="grey lighten-2" color="yellow accent-4" dense readonly half-increments size="13"
+                class="mb-3"></v-rating>
             </v-list-tile-action>
           </v-list-tile>
           <v-divider :key="'l' + index"></v-divider>
@@ -345,6 +265,10 @@ export default Vue.extend({
         !this.$store.state.options.beforeSearchingOptions.getMovieInformation
       )
         return;
+
+      // 已经在搜索时，不显示预选框
+      if (this.$store.state.searching) return;
+
       if (this.items.length > 0) {
         this.showMenu = true;
       } else if (this.searchKey) {
@@ -362,7 +286,7 @@ export default Vue.extend({
         !this.$store.state.options.beforeSearchingOptions.getMovieInformation
       )
         return;
-      if (this.isLoading || !key) return;
+      if (this.isLoading || !key || this.$store.state.searching) return;
 
       this.isLoading = true;
       this.items = [];
@@ -607,22 +531,27 @@ export default Vue.extend({
 
 .scroll-card {
   max-height: 70%;
-  overflow-y: auto; /* 启用垂直滚动 */
+  overflow-y: auto;
+  /* 启用垂直滚动 */
 }
 
 /* 隐藏滚动条 */
 .scroll-card::-webkit-scrollbar {
-  width: 0; /* 隐藏垂直滚动条的宽度 */
-  height: 0; /* 隐藏水平滚动条的高度 */
+  width: 0;
+  /* 隐藏垂直滚动条的宽度 */
+  height: 0;
+  /* 隐藏水平滚动条的高度 */
 }
 
 /* 可选：定义滚动条轨道的颜色 */
 .scroll-card::-webkit-scrollbar-track {
-  background: transparent; /* 使用透明背景 */
+  background: transparent;
+  /* 使用透明背景 */
 }
 
 /* 可选：定义滚动条滑块的颜色 */
 .scroll-card::-webkit-scrollbar-thumb {
-  background: transparent; /* 使用透明背景 */
+  background: transparent;
+  /* 使用透明背景 */
 }
 </style>

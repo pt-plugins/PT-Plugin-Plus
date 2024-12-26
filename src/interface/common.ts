@@ -82,6 +82,8 @@ export interface SearchOptions {
   tags?: string[];
   timeout?: number;
   saveKey?: boolean;
+  // 搜索线程数量，即同时可进行搜索的网站数量
+  threads?: number;
 }
 
 export interface IApiKey {

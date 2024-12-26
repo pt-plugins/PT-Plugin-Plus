@@ -338,6 +338,7 @@
       "saveTip": "下载种子文件到本地",
       "collection": "收藏",
       "searching": "正在搜索中，请稍候……",
+      "waiting": "等待中……",
       "cancelSearch": "取消搜索",
       "showCheckbox": "多选",
       "titleMiddleEllipsis": "标题中间省略",
@@ -520,6 +521,7 @@
         "showMovieInfoCardOnSearch": "当以 IMDb 编号搜索时显示电影及评分信息",
         "getMovieInformationBeforeSearching": "当输入搜索关键字时，从豆瓣加载相关信息以供预选",
         "autoSearchWhenSwitchSolution": "当搜索方案切换时，立即触发搜索",
+        "searchThreads": "搜索线程数量，当搜索方案的网站数量超出时会进行等待（默认不限制，数量越大，占用内存越多）：",
         "maxMovieInformationCount": "最多显示条目（1-20）：",
         "searchModeForItem": "当点击预选条目时：",
         "showToolbarOnContentPage": "启用站点页面助手图标和工具栏（如一键下载等）",
@@ -1105,6 +1107,7 @@
       "type": "类型：",
       "pubdate": "上映：",
       "duration": "片长：",
+      "rated": "分级",
       "ratings": {
         "douban": "豆瓣 {average} 共 {numRaters} 人参与评价",
         "imdb": "IMDb {average} 共 {numRaters} 人参与评价",

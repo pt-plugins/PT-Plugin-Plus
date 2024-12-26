@@ -37,7 +37,7 @@ import AddToCollectionGroup from "./AddToCollectionGroup.vue";
 import Actions from "./Actions.vue";
 import { PPF } from "@/service/public";
 import KeepUpload from "./KeepUpload.vue";
-import {eventBus} from "@/options/plugins/EventBus";
+import { eventBus } from "@/options/plugins/EventBus";
 
 type searchResult = {
   sites: Dictionary<any>;
@@ -86,6 +86,10 @@ export default Vue.extend({
       reloadCount: 0,
       searchQueue: [] as any[],
       searchTimer: 0,
+      // 正在等待的队列
+      waitingQueue: [] as any[],
+      // 当前正在进行的队列
+      currentQueues: 0,
       // 搜索结果
       searchResult: {
         sites: {},
@@ -178,7 +182,7 @@ export default Vue.extend({
     window.addEventListener("scroll", this.handleScroll);
 
     // 生成辅种任务后清除选择
-    this.$root.$on("KeepUploadTaskCreateSuccess",() => {
+    this.$root.$on("KeepUploadTaskCreateSuccess", () => {
       this.toggleAll();
     });
   },
@@ -631,10 +635,44 @@ export default Vue.extend({
     },
 
     /**
+     * 执行等待队列
+     */
+    searchWaitingQueue() {
+      if (this.waitingQueue.length > 0) {
+        let site = this.waitingQueue.pop();
+        if (site) {
+          let index = this.searchQueue.findIndex((item: any) => {
+            return item.site.host === site.host;
+          });
+          if (index !== -1) {
+            this.searchQueue[index].site.isWaiting = false;
+          }
+          this.sendSearchRequest(site);
+        }
+      }
+    },
+
+    /**
      * 发送搜索请求
      * @param site
      */
     sendSearchRequest(site: Site) {
+      let threads = this.options.search?.threads;
+      if (!threads || threads < 0) {
+        threads = 1000;
+      }
+      if (this.currentQueues >= threads) {
+        this.waitingQueue.push(site);
+        let index = this.searchQueue.findIndex((item: any) => {
+          return item.site.host === site.host;
+        });
+        if (index !== -1) {
+          this.searchQueue[index].site.isWaiting = true;
+        }
+        return;
+      }
+      this.currentQueues++;
+
       extension
         .sendRequest(EAction.getSearchResult, null, {
           key: this.latestTorrentsOnly ? "" : this.key,
@@ -738,6 +776,7 @@ export default Vue.extend({
           }
         })
         .finally(() => {
+          this.currentQueues--;
           this.removeQueue(site);
         });
     },
@@ -774,6 +813,7 @@ export default Vue.extend({
      * 移除搜索队列
      */
     removeQueue(site: Site) {
+      this.searchWaitingQueue();
       let index = this.searchQueue.findIndex((item: any) => {
         return item.site.host === site.host;
       });
@@ -971,7 +1011,7 @@ export default Vue.extend({
         this.addCategoryResult(item);
       });
 
-      this.searchResult.sites[allSites] = (this.datas as SearchResultItem[]).sort((a , b) => a.title.localeCompare(b.title, undefined, {sensitivity: 'base'}));
+      this.searchResult.sites[allSites] = (this.datas as SearchResultItem[]).sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }));
     },
 
     /**
@@ -1337,7 +1377,7 @@ export default Vue.extend({
       if (item.site) {
         requestMethod = item.site.downloadMethod || ERequestMethod.GET;
       }
-      let url = this.processURLWithPrefix("m-teamdetail", item.site,item.url + "");
+      let url = this.processURLWithPrefix("m-teamdetail", item.site, item.url + "");
       let file = new FileDownloader({
         url,
         timeout: this.options.connectClientTimeout,
@@ -1372,9 +1412,9 @@ export default Vue.extend({
       }
       let data: SearchResultItem = datas.shift() as SearchResultItem;
       console.log(data.imdbId)
-      let url = this.processURLWithPrefix("m-teamdetail", data.site , data.url);
+      let url = this.processURLWithPrefix("m-teamdetail", data.site, data.url);
       this.sendToClient(
-        url  as string,
+        url as string,
         data.title,
         downloadOptions,
         () => {
@@ -1403,7 +1443,7 @@ export default Vue.extend({
       this.errorMsg = "";
       var url = item.url;
 
-      url = this.processURLWithPrefix("m-teamdetail", item.site,url);
+      url = this.processURLWithPrefix("m-teamdetail", item.site, url);
       extension
         .sendRequest(EAction.copyTextToClipboard, null, url)
         .then((result) => {
@@ -1423,7 +1463,7 @@ export default Vue.extend({
       this.selected.forEach((item: SearchResultItem) => {
         var url = item.url;
 
-        url = this.processURLWithPrefix(prefix, item.site,url);
+        url = this.processURLWithPrefix(prefix, item.site, url);
 
         url && urls.push(url);
       });
@@ -1564,7 +1604,7 @@ export default Vue.extend({
             }).toString(),
             fn: () => {
               if (options.url) {
-                let url = this.processURLWithPrefix("m-teamdetail", options.site , options.url);
+                let url = this.processURLWithPrefix("m-teamdetail", options.site, options.url);
                 // console.log(options, item);
                 this.sendToClient(
                   url,
@@ -1982,7 +2022,7 @@ export default Vue.extend({
         options: {
           checkBox: this.checkBox,
           showCategory: this.showCategory,
-          titleMiddleEllipsis:this.titleMiddleEllipsis
+          titleMiddleEllipsis: this.titleMiddleEllipsis
         }
       });
     },

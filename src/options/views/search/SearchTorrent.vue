@@ -65,7 +65,7 @@
       <template v-for="(item, index) in searchQueue">
         <v-list-tile :key="item.site.host">
           <v-list-tile-action>
-            <v-progress-circular :size="18" :width="2" indeterminate color="primary"></v-progress-circular>
+            <v-progress-circular :size="18" :width="2" indeterminate :color="item.site.isWaiting?'amber':'primary'"></v-progress-circular>
           </v-list-tile-action>
 
           <v-list-tile-content>
@@ -73,7 +73,7 @@
               <v-avatar size="18" class="mr-2">
                 <img :src="item.site.icon" />
               </v-avatar>
-              {{ item.site.name }} {{ $t("searchTorrent.searching") }}
+              {{ item.site.name }} {{ item.site.isWaiting?$t("searchTorrent.waiting"):$t("searchTorrent.searching") }}
             </v-list-tile-title>
           </v-list-tile-content>
 

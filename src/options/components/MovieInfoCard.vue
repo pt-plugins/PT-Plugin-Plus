@@ -10,6 +10,9 @@
             'grey--text',
             $vuetify.breakpoint.mdAndUp ? 'title' : 'caption',
           ]">({{ info.year || info.attrs.year[0] }})</span>
+          <v-chip v-if="info.tmdb && info.tmdb.tmdbContentRating" label outline small class="pl-0 ml-3"
+            :title='$t("movieInfoCard.rated")'>{{
+              info.tmdb.tmdbContentRating }}</v-chip>
         </div>
       </v-card-title>
       <v-img :src="info.image || info.pic.normal" class="ml-3 mb-3" contain :max-height="maxHeight"
@@ -160,7 +163,7 @@
           rel="noopener noreferrer nofollow">IMDb {{ ratings.imdbRating }}</v-btn>
 
         <!-- TMDB评分 -->
-        <v-btn v-if="info.tmdb && info.tmdb.vote_average" color="cyan darken-1" :href="info.tmdbURL" target="_blank"
+        <v-btn v-if="info.tmdb && info.tmdb.vote_average" class="tmdbStyle" :href="info.tmdbURL" target="_blank"
           rel="noopener noreferrer nofollow">TMDB {{ info.tmdbAverage }}%</v-btn>
 
         <!-- 烂番茄新鲜度 -->
@@ -175,8 +178,8 @@
 
         <!-- Metacritic评分 -->
         <v-btn v-if="metascore > 0" :color="metascore > 60 ? 'success' : metascore > 40 ? 'warning' : 'error'
-          " :href="`https://www.metacritic.com/search/${info.originalTitle || info.title}`"
-          target="_blank" rel="noopener noreferrer nofollow" style="min-width: unset">
+          " :href="`https://www.metacritic.com/search/${info.originalTitle || info.title}`" target="_blank"
+          rel="noopener noreferrer nofollow" style="min-width: unset">
           <v-avatar size="20" class="mr-2">
             <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Metacritic_M.png" />
           </v-avatar>
@@ -416,5 +419,11 @@ export default Vue.extend({
   .caption {
     color: #ccc;
   }
+}
+
+// TMDB标准配色
+// @see https://www.themoviedb.org/about/logos-attribution
+.tmdbStyle {
+  background: linear-gradient(90deg, #90cea1, #01b4e4) !important;
 }
 </style>
