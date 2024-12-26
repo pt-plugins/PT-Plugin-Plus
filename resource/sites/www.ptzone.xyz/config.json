@@ -5,8 +5,13 @@
   "url": "https://www.ptzone.xyz/",
   "description": "PTzone",
   "icon": "https://www.ptzone.xyz/favicon.ico",
-  "tags": ["电影"],
+  "tags": ["综合","电影"],
   "host": "www.ptzone.xyz",
+  "cdn": [
+    "https://ptzone.xyz/",
+    "https://ptzone.site/",
+    "https://www.ptzone.site/"
+  ],
   "levelRequirements": [
         {
             "level": 1,
