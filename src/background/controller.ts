@@ -27,8 +27,8 @@ import { APP } from "@/service/api";
 import URLParse from "url-parse";
 import { User } from "./user";
 import { MovieInfoService } from "@/service/movieInfoService";
-import {remote as parseTorrentRemote} from "parse-torrent";
-import {PPF} from "@/service/public";
+import { remote as parseTorrentRemote } from "parse-torrent";
+import { PPF } from "@/service/public";
 
 type Service = PTPlugin;
 export default class Controller {
@@ -919,9 +919,9 @@ export default class Controller {
               }
             } else {
               reject(APP.createErrorMessage(
-                  this.service.i18n.t("service.controller.invalidTorrent", {
-                    link: EWikiLink.faq
-                  })
+                this.service.i18n.t("service.controller.invalidTorrent", {
+                  link: EWikiLink.faq
+                })
               ));
             }
             break
@@ -1132,6 +1132,14 @@ export default class Controller {
    */
   public getMovieRatings(IMDbId: string): Promise<any> {
     return this.movieInfoService.getRatings(IMDbId);
+  }
+
+  /**
+ * 根据指定的 TMDB ID 获取 IMDbId
+ * @param doubanId
+ */
+  public getIMDbIdFromTMDB(source: Dictionary<any>): Promise<any> {
+    return this.movieInfoService.getIMDbIdFromTMDB(source);
   }
 
   /**

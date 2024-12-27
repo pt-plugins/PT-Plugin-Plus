@@ -145,6 +145,8 @@ export enum EAction {
   getMovieRatings = "getMovieRatings",
   // 根据指定的 doubanId 获取 IMDbId
   getIMDbIdFromDouban = "getIMDbIdFromDouban",
+  // 根据指定的 TMDB ID 获取 IMDbId
+  getIMDbIdFromTMDB = "getIMDbIdFromTMDB",
   // 从豆瓣查询影片信息
   queryMovieInfoFromDouban = "queryMovieInfoFromDouban",
   // 添加浏览器原生下载
