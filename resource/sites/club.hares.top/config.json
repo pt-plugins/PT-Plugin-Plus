@@ -224,7 +224,7 @@
       "fields": {
         "joinTime": {
           "selector": [".layui-hares-user-basic-info > span:nth-last-of-type(2)"],
-          "filters": ["query.text().split(/：|:/)[1].split(' [')[0].trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+          "filters": ["query.text().split(/：|:/)[1].split('\\n[')[0].trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         },
         "seedingPoints": {
           "selector": [".layui-hares-user-transport-info > span:nth-last-of-type(1)"],
