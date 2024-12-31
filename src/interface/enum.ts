@@ -256,7 +256,12 @@ export enum EAction {
   pushDebugMsg = "pushDebugMsg",
   updateDebuggerTabId = "updateDebuggerTabId",
   // 获取热门搜索
-  getTopSearches = "getTopSearches"
+  getTopSearches = "getTopSearches",
+
+  // 测试媒体服务器是否可连接
+  testMediaServerConnectivity = "testMediaServerConnectivity",
+  // 从媒体服务器中获取信息
+  getMediaFromMediaServer = "getMediaFromMediaServer"
 }
 
 /**
@@ -386,6 +391,13 @@ export enum ETorrentStatus {
 export enum EBackupServerType {
   OWSS = "OWSS",
   WebDAV = "WebDAV"
+}
+
+/**
+ * 媒体服务器类型
+ */
+export enum EMediaServerType {
+  Emby = "Emby"
 }
 
 /**

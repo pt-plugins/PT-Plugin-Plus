@@ -222,6 +222,12 @@
           </v-flex>
         </v-layout>
       </v-card-actions>
+
+      <template v-if="$store.state.options.mediaServers?.length > 0">
+        <v-divider light></v-divider>
+        <!-- 媒体服务器信息 -->
+        <MediaServerInfoCard :IMDbId="IMDbId" class="pa-2"></MediaServerInfoCard>
+      </template>
     </v-card>
   </div>
 </template>
@@ -230,10 +236,14 @@ import Vue from "vue";
 
 import Extension from "@/service/extension";
 import { EAction } from "@/interface/enum";
+import MediaServerInfoCard from "./MediaServerInfoCard.vue";
 
 const extension = new Extension();
 
 export default Vue.extend({
+  components: {
+    MediaServerInfoCard
+  },
   props: {
     IMDbId: String,
     doubanId: String
@@ -360,6 +370,12 @@ export default Vue.extend({
         return result.join(splitChar);
       }
       return "";
+    },
+    /**
+     * 从已定义的媒体服务器获取信息
+     */
+    getMediaFromMediaServers() {
+
     }
   },
   computed: {

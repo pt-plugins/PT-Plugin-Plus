@@ -88,7 +88,8 @@
         "downloadPaths": "Download Paths",
         "searchSolution": "Search Solution",
         "backup": "Backup & Restore",
-        "permissions": "Permissions"
+        "permissions": "Permissions",
+        "mediaServers": "Media Servers"
       },
       "thanks": {
         "title": "Thanks",
@@ -848,6 +849,37 @@
             "enable": "Enable",
             "action": "Action"
           }
+        }
+      },
+      "mediaServers": {
+        "index": {
+          "title": "Media Servers",
+          "subTitle": "Media servers are currently only used to determine if the searched resource already exists.",
+          "add": "Add",
+          "remove": "Remove",
+          "clear": "Clear",
+          "itemDuplicate": "The name already exists.",
+          "removeConfirm": "Are you sure you want to remove this media server?",
+          "removeConfirmTitle": "Remove Confirmation",
+          "clearConfirm": "Are you sure you want to remove all media servers?",
+          "removeSelectedConfirm": "Are you sure you want to remove the selected media servers?",
+          "yes": "Yes",
+          "no": "No",
+          "headers": {
+            "name": "Name",
+            "enabled": "Enabled",
+            "type": "Type",
+            "address": "Server Address",
+            "action": "Action"
+          }
+        },
+        "editor": {
+          "type": "Server Type",
+          "name": "Service Name",
+          "address": "Server Address",
+          "addressTip": "Complete server address (including port), e.g.: http://192.168.1.1:5000/",
+          "apiKey": "API KEY",
+          "test": "Test if the server is connectable"
         }
       }
     },

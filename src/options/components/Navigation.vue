@@ -6,14 +6,8 @@
         $t(group.title)
       }}</v-subheader>
       <template v-for="(item, index) in group.items">
-        <v-list-tile
-          v-if="item.visible !== false"
-          :to="item.key"
-          :key="index"
-          :href="item.url"
-          :target="item.url ? '_blank' : ''"
-          rel="noopener noreferrer nofollow"
-        >
+        <v-list-tile v-if="item.visible !== false" :to="item.key" :key="index" :href="item.url"
+          :target="item.url ? '_blank' : ''" rel="noopener noreferrer nofollow">
           <v-list-tile-action style="min-width: 42px;margin-left: 13px;">
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -126,6 +120,11 @@ export default Vue.extend({
               title: "navigation.settings.permissions",
               icon: "verified_user",
               key: "/set-permissions"
+            },
+            {
+              title: "navigation.settings.mediaServers",
+              icon: "movie",
+              key: "/set-media-servers"
             }
           ]
         },

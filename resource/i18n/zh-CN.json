@@ -85,7 +85,8 @@
         "downloadPaths": "下载目录设置",
         "searchSolution": "搜索方案",
         "backup": "参数备份与恢复",
-        "permissions": "权限设置"
+        "permissions": "权限设置",
+        "mediaServers": "媒体服务器"
       },
       "thanks": {
         "title": "鸣谢",
@@ -843,6 +844,37 @@
             "enable": "启用",
             "action": "操作"
           }
+        }
+      },
+      "mediaServers": {
+        "index": {
+          "title": "媒体服务器",
+          "subTitle": "媒体服务器当前仅用于判断搜索资源是否已存在。",
+          "add": "新增",
+          "remove": "删除",
+          "clear": "清除",
+          "itemDuplicate": "该名称已存在",
+          "removeConfirm": "确认要删除这个媒体服务器吗？",
+          "removeConfirmTitle": "删除确认",
+          "clearConfirm": "确认要删除所有媒体服务器吗？",
+          "removeSelectedConfirm": "确认要删除已选中的媒体服务器吗？",
+          "yes": "是",
+          "no": "否",
+          "headers": {
+            "name": "名称",
+            "enabled": "是否启用",
+            "type": "类型",
+            "address": "服务器地址",
+            "action": "操作"
+          }
+        },
+        "editor": {
+          "type": "服务器类型",
+          "name": "服务名称",
+          "address": "服务器地址",
+          "addressTip": "完整的服务器地址（含端口），如：http://192.168.1.1:5000/",
+          "apiKey": "API KEY",
+          "test": "测试服务器是否可连接"
         }
       }
     },

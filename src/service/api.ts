@@ -1,5 +1,5 @@
 import localStorage from "./localStorage";
-import {MD5} from "crypto-js";
+import { MD5 } from "crypto-js";
 import {
   EConfigKey,
   DataResult,
@@ -36,7 +36,7 @@ try {
 }
 
 const RESOURCE_URL = !isExtensionMode
-  ? `http://${window.location.hostname}:8001`
+  ? `/resource`
   : (isExtensionMode ? rootPath : "") + "/resource";
 // 调试信息
 let RESOURCE_API = {

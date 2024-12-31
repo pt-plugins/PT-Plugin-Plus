@@ -13,7 +13,8 @@ import {
   EWorkingStatus,
   EEncryptMode,
   ETorrentStatus,
-  ERequestType
+  ERequestType,
+  EMediaServerType
 } from "./enum";
 
 /**
@@ -27,7 +28,7 @@ export interface ContextMenuRules {
 
 export interface DownloadClient {
   id?: string;
-  enabled?:boolean;
+  enabled?: boolean;
   name?: string;
   // oldName?: string;
   address?: string;
@@ -53,6 +54,16 @@ export interface QbCategory {
   name: string;
   // 不支持关键字
   path: string;
+}
+
+export interface IMediaServer {
+  id: string;
+  enabled: boolean;
+  name: string;
+  address: string;
+  type: EMediaServerType;
+  apiKey?: string;
+  desc?: string;
 }
 
 /**
@@ -119,6 +130,7 @@ export interface Options {
   exceedSizeUnit?: ESizeUnit;
   sites: any[];
   clients: any[];
+  mediaServers?: IMediaServer[];
   pluginIconShowPages?: string[];
   contextMenuRules?: ContextMenuRules;
   allowSelectionTextSearch?: boolean;
@@ -384,7 +396,7 @@ export interface Request {
   data?: any;
 }
 
-export interface IRequest extends Request {}
+export interface IRequest extends Request { }
 
 export interface NoticeOptions {
   msg?: string;

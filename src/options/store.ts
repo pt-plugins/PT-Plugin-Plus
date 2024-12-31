@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import {MD5} from "crypto-js";
+import { MD5 } from "crypto-js";
 import {
   Options,
   EAction,
@@ -10,7 +10,8 @@ import {
   SearchSolution,
   SearchEntry,
   ECommonKey,
-  IBackupServer
+  IBackupServer,
+  IMediaServer
 } from "@/interface/common";
 import Extension from "@/service/extension";
 
@@ -278,7 +279,57 @@ export default new Vuex.Store({
 
     updateSearchStatus(state, searching: boolean) {
       state.searching = searching;
-    }
+    },
+
+    /**
+     * 更新媒体服务器
+     * @param param0
+     * @param newData
+     */
+    updateMediaServer(state, newData: IMediaServer) {
+      let id = newData.id;
+      if (!id) {
+        if (!state.options.mediaServers) {
+          state.options.mediaServers = [];
+        }
+        newData.id = MD5(new Date().toString()).toString();
+        newData.enabled = true;
+        state.options.mediaServers?.push(newData);
+
+        extension.sendRequest(EAction.saveConfig, null, state.options);
+        return;
+      }
+
+      if (state.options.mediaServers) {
+        let index = state.options.mediaServers.findIndex((item: IMediaServer) => {
+          return item.id === newData.id;
+        });
+
+        if (index !== -1) {
+          state.options.mediaServers[index] = newData;
+
+          extension.sendRequest(EAction.saveConfig, null, state.options);
+        }
+      }
+    },
+    /**
+     * 删除指定的媒体服务器
+     * @param state
+     * @param source
+     */
+    removeMediaServer(state, source) {
+      if (!state.options.mediaServers) {
+        return;
+      }
+      let index = state.options.mediaServers?.findIndex(item => {
+        return item.id === source.id;
+      });
+
+      if (index !== -1) {
+        state.options.mediaServers.splice(index, 1);
+        extension.sendRequest(EAction.saveConfig, null, state.options);
+      }
+    },
   },
   actions: {
     /**
@@ -554,15 +605,15 @@ export default new Vuex.Store({
     addLanguage({ commit, state }, options) {
       extension
         .sendRequest(EAction.addLanguage, null, options)
-        .then(() => {})
-        .catch(error => {});
+        .then(() => { })
+        .catch(error => { });
     },
 
     replaceLanguage({ commit, state }, options) {
       extension
         .sendRequest(EAction.replaceLanguage, null, options)
-        .then(() => {})
-        .catch(error => {});
+        .then(() => { })
+        .catch(error => { });
     },
 
     /**
@@ -626,7 +677,9 @@ export default new Vuex.Store({
           extension.save(_options);
         }
       }
-    }
+    },
+
+
   },
   getters: {
     sites: state => {

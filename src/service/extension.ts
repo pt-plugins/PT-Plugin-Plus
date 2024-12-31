@@ -1,6 +1,8 @@
 import { EAction, EDataResultType } from "@/interface/common";
 import { APP } from "./api";
 
+const isDebugMode = import.meta.env.DEV;
+
 export default class Extension {
   public isExtensionMode: boolean = APP.isExtensionMode;
 
@@ -91,7 +93,7 @@ export default class Extension {
       /**
        * 仅对调试界面时使用
        */
-      if (process.env.NODE_ENV === "test") {
+      if (isDebugMode) {
         // 使用 import() 方法是为了在打包时减少不必要的代码依赖
         import("@/background/service")
           .then((result: any) => {

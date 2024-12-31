@@ -29,6 +29,7 @@ import { User } from "./user";
 import { MovieInfoService } from "@/service/movieInfoService";
 import { remote as parseTorrentRemote } from "parse-torrent";
 import { PPF } from "@/service/public";
+import { MediaServerManager } from "./mediaServerManager";
 
 type Service = PTPlugin;
 export default class Controller {
@@ -46,6 +47,7 @@ export default class Controller {
   public searcher: Searcher = new Searcher(this.service);
   public userService: User = new User(this.service);
   public movieInfoService = new MovieInfoService();
+  public mediaServerManager = new MediaServerManager();
 
   public clientController: ClientController = new ClientController();
   public isInitialized: boolean = false;
@@ -1365,6 +1367,14 @@ export default class Controller {
 
   public testBackupServerConnectivity(options: any): Promise<any> {
     return this.service.config.testBackupServerConnectivity(options);
+  }
+
+  public testMediaServerConnectivity(options: any): Promise<any> {
+    return this.mediaServerManager.ping(options);
+  }
+
+  public getMediaFromMediaServer(options: any): Promise<any> {
+    return this.mediaServerManager.getMediaFromMediaServer(options.server, options.imdbId);
   }
 
   public createSearchResultSnapshot(options: any): Promise<any> {
