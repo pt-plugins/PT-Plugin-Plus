@@ -7,6 +7,11 @@
     "tags": ["综合", "纪录片"],
     "schema": "NexusPHP",
     "host": "hhanclub.top",
+    "plugins": [{
+      "name": "保种区批量下载",
+      "pages": ["^/(torrents|rescue|special).php.*"],
+      "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+    }],
     "levelRequirements": [
         {
             "level": 1,
