@@ -9,13 +9,9 @@
     "host": "hhanclub.top",
     "plugins": [{
       "name": "保种区批量下载",
-      "pages": ["^/(rescue|special).php.*"],
+      "pages": ["^/(rescue|special|).php.*"],
       "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
     }],
-    "cdn": [
-        "hhanclub.top",
-        "hhan.club"
-    ],
     "levelRequirements": [
         {
             "level": 1,
