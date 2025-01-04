@@ -1209,13 +1209,13 @@
             if (item.client.paths) {
               // 添加适用于所有站点的目录
               let publicPaths = item.client.paths[PTService.allSiteKey];
-              if (publicPaths) {
-                publicPaths.forEach(path => {
+              // 全站点目录未设置时返回当前站点设置的目录
+              const paths = publicPaths ? publicPaths : item.client.paths[PTService.site.host]
+              paths.forEach(path => {
                   let _item = this.clone(item);
                   _item.path = path;
                   addMenu(_item);
-                });
-              }
+              });
             }
           } else {
             menus.push({});
