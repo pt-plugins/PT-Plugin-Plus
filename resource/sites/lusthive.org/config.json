@@ -1,0 +1,60 @@
+{
+  "name": "LustHive",
+  "timezoneOffset": "+0800",
+  "schema": "Common",
+  "url": "https://lusthive.org/",
+  "description": "你也喜欢LustHive 对吧？",
+  "icon": "https://lusthive.org/favicon.ico",
+  "tags": [
+    "综合",
+    "9KG"
+  ],
+  "host": "lusthive.org",
+  "collaborator": "manone",
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/",
+      "fields": {
+        "id": {
+          "selector": ["#nav_userinfo  a"],
+          "attribute": "href",
+          "filters": ["query ? query.getQueryString('id'):''"]
+        },
+        "name": {
+          "selector": [".username[href*='user.php']"]
+        },
+        "bonusPerHour": {
+          "value": "N/A"
+        },
+        "levelName": {
+          "selector": ["li:contains('Class:')"],
+          "filters": [
+            "query.text()"
+          ]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/user.php?id=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["span.stat:eq(1)"],
+          "attribute": "title",
+          "filters": ["parseInt(query)"]
+        },
+        "downloaded": {
+          "selector": ["span.stat:eq(3)"],
+          "attribute": "title",
+          "filters": ["parseInt(query)"]
+        },
+        "ratio": {
+          "selector": ["span.stat:eq(4)"]
+        },
+        "joinTime": {
+          "selector": ["ul.stats.nobullet li span"],
+          "filters": ["query.attr('title')||query.text()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
+        }
+      }
+    }
+  }
+}
