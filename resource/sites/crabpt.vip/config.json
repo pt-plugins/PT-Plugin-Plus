@@ -206,6 +206,7 @@
         "bonus": {
           "selector": [
             "td.rowhead:contains('蟹币') + td",
+            "td.rowhead:contains('魔力值') + td",
             "td.rowfollow:contains('蟹币值')",
             "td.rowhead:contains('bonus') + td"
           ],
