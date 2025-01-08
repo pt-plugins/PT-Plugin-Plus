@@ -318,7 +318,7 @@
         "seedingSize": {
           "selector": "div:first",
           "filters": [
-            "query.text().split('|')[1].slice(5).trim().sizeToNumber()"
+            "(query && query.text().length>0)?query.text().split('|')[1].slice(5).trim().sizeToNumber():0"
           ]
         }
       }
