@@ -351,6 +351,7 @@
       "reSearch": "重新再搜索",
       "showCategory": "分类",
       "filterSearchResults": "过滤搜索结果",
+      "filterSearchResultsExclude": "排除指定词的搜索结果",
       "noResultsSites": "无结果站点：",
       "failedSites": "失败站点：",
       "reSearchFailedSites": "重试失败的站点",

@@ -121,6 +121,7 @@ export default Vue.extend({
       siteContentMenus: {} as any,
       clientContentMenus: [] as any,
       filterKey: "",
+      filterKeyExclude: "",
       // 已过滤的数据
       filteredDatas: [] as any,
       showFailedSites: false,
@@ -1785,26 +1786,23 @@ export default Vue.extend({
      * @param items
      * @param search
      */
-    searchResultFilter(items: any[], search: string) {
-      search = search.toString().toLowerCase();
-      this.filteredDatas = [];
-      if (search.trim() === "") return items;
+    searchResultFilter(items:any[], search:string) {
+      // 将输入参数拆分为包含和排除关键字
+      const [include, exclude] = search.split("<@>");
+      const includes = include.toLowerCase().trim().split(" ").filter(key => key !== "");
+      const excludes = exclude.toLowerCase().trim().split(" ").filter(key => key !== "");
 
-      // 以空格分隔要过滤的关键字
-      let searchs = search.split(" ");
+      // 过滤数据项
+      const filteredItems = items.filter(item => {
+        // 将项目标题和副标题组合并转化为小写
+        const source = (item.title + (item.subTitle || "")).toLowerCase();
 
-      this.filteredDatas = items.filter((item: SearchResultItem) => {
-        // 过滤标题和副标题
-        let source = (item.title + (item.subTitle || "")).toLowerCase();
-        let result = true;
-        searchs.forEach((key) => {
-          if (key.trim() != "") {
-            result = result && source.indexOf(key) > -1;
-          }
-        });
-        return result;
+        const includeResult = includes.length === 0 || includes.some(key => source.includes(key));
+        const excludeResult = excludes.length === 0 || !excludes.some(key => source.includes(key));
+
+        return includeResult && excludeResult;
       });
-      return this.filteredDatas;
+      return filteredItems;
     },
 
     getIMDbIdFromDouban(doubanId: string) {

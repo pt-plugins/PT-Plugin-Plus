@@ -357,6 +357,7 @@
       "reSearch": "Re-search",
       "showCategory": "Category",
       "filterSearchResults": "Filter search results",
+      "filterSearchResultsExclude": "Exclude search results",
       "noResultsSites": "Site with 0 result:",
       "failedSites": "Failed site:",
       "reSearchFailedSites": "Re-search failed site",
