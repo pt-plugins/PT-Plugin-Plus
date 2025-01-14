@@ -302,6 +302,15 @@
               hide-details
               enterkeyhint="search"
             ></v-text-field>
+
+            <v-text-field
+                v-model="filterKeyExclude"
+                append-icon="block"
+                :label="$t('searchTorrent.filterSearchResultsExclude')"
+                single-line
+                hide-details
+                enterkeyhint="search"
+            ></v-text-field>
           </div>
         </v-flex>
       </v-card-title>
@@ -517,7 +526,7 @@
       <!-- 数据表格 -->
       <v-data-table
         v-model="selected"
-        :search="filterKey"
+        :search="filterKey+'<@>'+filterKeyExclude"
         :custom-filter="searchResultFilter"
         :headers="headers"
         :items="datas"
