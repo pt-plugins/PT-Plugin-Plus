@@ -27,8 +27,9 @@ import { APP } from "@/service/api";
 import URLParse from "url-parse";
 import { User } from "./user";
 import { MovieInfoService } from "@/service/movieInfoService";
-import {remote as parseTorrentRemote} from "parse-torrent";
-import {PPF} from "@/service/public";
+import { remote as parseTorrentRemote } from "parse-torrent";
+import { PPF } from "@/service/public";
+import { MediaServerManager } from "./mediaServerManager";
 
 type Service = PTPlugin;
 export default class Controller {
@@ -46,6 +47,7 @@ export default class Controller {
   public searcher: Searcher = new Searcher(this.service);
   public userService: User = new User(this.service);
   public movieInfoService = new MovieInfoService();
+  public mediaServerManager = new MediaServerManager();
 
   public clientController: ClientController = new ClientController();
   public isInitialized: boolean = false;
@@ -919,9 +921,9 @@ export default class Controller {
               }
             } else {
               reject(APP.createErrorMessage(
-                  this.service.i18n.t("service.controller.invalidTorrent", {
-                    link: EWikiLink.faq
-                  })
+                this.service.i18n.t("service.controller.invalidTorrent", {
+                  link: EWikiLink.faq
+                })
               ));
             }
             break
@@ -995,13 +997,7 @@ export default class Controller {
    */
   public getSiteOptionsFromURL(url: string): Site | undefined {
     let host = new URLParse(url).host;
-    let site: Site =
-      this.options.system &&
-      this.options.system.sites &&
-      this.options.system.sites.find((item: Site) => {
-        return item.host == host;
-      });
-
+    let site: Site = this.getSiteFromHost(host);
     return site;
   }
 
@@ -1138,6 +1134,14 @@ export default class Controller {
    */
   public getMovieRatings(IMDbId: string): Promise<any> {
     return this.movieInfoService.getRatings(IMDbId);
+  }
+
+  /**
+ * 根据指定的 TMDB ID 获取 IMDbId
+ * @param doubanId
+ */
+  public getIMDbIdFromTMDB(source: Dictionary<any>): Promise<any> {
+    return this.movieInfoService.getIMDbIdFromTMDB(source);
   }
 
   /**
@@ -1363,6 +1367,14 @@ export default class Controller {
 
   public testBackupServerConnectivity(options: any): Promise<any> {
     return this.service.config.testBackupServerConnectivity(options);
+  }
+
+  public testMediaServerConnectivity(options: any): Promise<any> {
+    return this.mediaServerManager.ping(options);
+  }
+
+  public getMediaFromMediaServer(options: any): Promise<any> {
+    return this.mediaServerManager.getMediaFromMediaServer(options.server, options.imdbId);
   }
 
   public createSearchResultSnapshot(options: any): Promise<any> {

@@ -1,0 +1,19 @@
+{
+  "name": "TMDB",
+  "ver": "0.0.1",
+  "plugins": [
+    {
+      "name": "影视详情页",
+      "pages": [
+        "\/movie\/\\d+(-.+)?",
+        "\/tv\/\\d+(-.+)?"
+      ],
+      "scripts": [
+        "media.js"
+      ]
+    }
+  ],
+  "schema": "publicSite",
+  "host": "www.themoviedb.org",
+  "path": "themoviedb.org"
+}

@@ -118,9 +118,12 @@ export class Searcher {
       if (siteService.options.torrentTagSelectors) {
         // 是否合并 Schema 的标签选择器
         if (siteService.options.mergeSchemaTagSelectors) {
-          searchConfig.torrentTagSelectors = siteService.options.torrentTagSelectors.concat(
-            searchConfig.torrentTagSelectors
-          );
+          searchConfig.torrentTagSelectors = [
+            ...new Map([
+              ...(searchConfig.torrentTagSelectors ?? []),
+              ...siteService.options.torrentTagSelectors
+            ].map(item => [item.name, item])).values()
+          ];
         } else {
           searchConfig.torrentTagSelectors =
             siteService.options.torrentTagSelectors;
@@ -479,7 +482,7 @@ export class Searcher {
           if (!entry.parseScript) {
             this.service.debug("searchTorrent: getScriptContent", scriptPath);
             APP.getScriptContent(scriptPath)
-              .done((script: string) => {
+              .then((script: string) => {
                 this.service.debug(
                   "searchTorrent: getScriptContent done",
                   scriptPath
@@ -523,7 +526,7 @@ export class Searcher {
                     }
                   });
               })
-              .fail(error => {
+              .catch(error => {
                 this.service.debug(
                   "searchTorrent: getScriptContent fail",
                   error

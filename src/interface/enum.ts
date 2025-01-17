@@ -145,6 +145,8 @@ export enum EAction {
   getMovieRatings = "getMovieRatings",
   // 根据指定的 doubanId 获取 IMDbId
   getIMDbIdFromDouban = "getIMDbIdFromDouban",
+  // 根据指定的 TMDB ID 获取 IMDbId
+  getIMDbIdFromTMDB = "getIMDbIdFromTMDB",
   // 从豆瓣查询影片信息
   queryMovieInfoFromDouban = "queryMovieInfoFromDouban",
   // 添加浏览器原生下载
@@ -254,7 +256,12 @@ export enum EAction {
   pushDebugMsg = "pushDebugMsg",
   updateDebuggerTabId = "updateDebuggerTabId",
   // 获取热门搜索
-  getTopSearches = "getTopSearches"
+  getTopSearches = "getTopSearches",
+
+  // 测试媒体服务器是否可连接
+  testMediaServerConnectivity = "testMediaServerConnectivity",
+  // 从媒体服务器中获取信息
+  getMediaFromMediaServer = "getMediaFromMediaServer"
 }
 
 /**
@@ -384,6 +391,13 @@ export enum ETorrentStatus {
 export enum EBackupServerType {
   OWSS = "OWSS",
   WebDAV = "WebDAV"
+}
+
+/**
+ * 媒体服务器类型
+ */
+export enum EMediaServerType {
+  Emby = "Emby"
 }
 
 /**

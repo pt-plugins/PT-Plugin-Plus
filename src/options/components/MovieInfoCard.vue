@@ -5,23 +5,18 @@
       <v-card-title class="pb-2">
         <div :class="$vuetify.breakpoint.mdAndUp ? 'headline' : 'title'">
           <span>{{ info.title }}</span>
-          <span
-            :class="[
-              'ml-1',
-              'grey--text',
-              $vuetify.breakpoint.mdAndUp ? 'title' : 'caption',
-            ]"
-            >({{ info.year || info.attrs.year[0] }})</span
-          >
+          <span :class="[
+            'ml-1',
+            'grey--text',
+            $vuetify.breakpoint.mdAndUp ? 'title' : 'caption',
+          ]">({{ info.year || info.attrs.year[0] }})</span>
+          <v-chip v-if="info.tmdb && info.tmdb.tmdbContentRating" label outline small class="pl-0 ml-3"
+            :title='$t("movieInfoCard.rated")'>{{
+              info.tmdb.tmdbContentRating }}</v-chip>
         </div>
       </v-card-title>
-      <v-img
-        :src="info.image || info.pic.normal"
-        class="ml-3 mb-3"
-        contain
-        :max-height="maxHeight"
-        position="left center"
-      >
+      <v-img :src="info.image || info.pic.normal" class="ml-3 mb-3" contain :max-height="maxHeight"
+        position="left center">
         <v-layout style="margin-left: 220px" v-if="$vuetify.breakpoint.mdAndUp">
           <!-- omit 格式 -->
           <v-card-title class="pt-0" v-if="info.updateTime">
@@ -56,10 +51,7 @@
             <v-flex xs12 class="my-2">
               <v-divider light></v-divider>
             </v-flex>
-            <div
-              class="caption"
-              v-html="`　　${info.summary.replace(/\n/g, '<br>')} @豆瓣`"
-            ></div>
+            <div class="caption" v-html="`　　${info.summary.replace(/\n/g, '<br>')} @豆瓣`"></div>
           </v-card-title>
 
           <v-card-title class="pt-0" v-else-if="info.attrs">
@@ -162,32 +154,21 @@
       <v-divider light></v-divider>
       <v-card-actions class="px-3">
         <!-- 豆瓣评分 -->
-        <v-btn
-          color="success"
-          :href="info.link || info.url || info.mobile_link"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-          >豆瓣
-          {{ info.average || info.rating.value || info.rating.average }}</v-btn
-        >
+        <v-btn color="success" :href="info.link || info.url || info.mobile_link" target="_blank"
+          rel="noopener noreferrer nofollow">豆瓣
+          {{ info.average || info.rating.value || info.rating.average }}</v-btn>
 
         <!-- IMDb评分 -->
-        <v-btn
-          color="amber"
-          :href="`https://www.imdb.com/title/${this.IMDbId}/`"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-          >IMDb {{ ratings.imdbRating }}</v-btn
-        >
+        <v-btn color="amber" :href="`https://www.imdb.com/title/${IMDbId}/`" target="_blank"
+          rel="noopener noreferrer nofollow">IMDb {{ ratings.imdbRating }}</v-btn>
+
+        <!-- TMDB评分 -->
+        <v-btn v-if="info.tmdb && info.tmdb.vote_average" class="tmdbStyle" :href="info.tmdbURL" target="_blank"
+          rel="noopener noreferrer nofollow">TMDB {{ info.tmdbAverage }}%</v-btn>
 
         <!-- 烂番茄新鲜度 -->
-        <v-btn
-          v-if="tomatoRating > 0"
-          color="red lighten-3"
-          :href="ratings.tomatoURL"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-        >
+        <v-btn v-if="tomatoRating > 0" color="red lighten-3" :href="ratings.tomatoURL" target="_blank"
+          rel="noopener noreferrer nofollow">
           <v-avatar size="20" class="mr-1">
             <img :src="rottenTomatoes.fresh" v-if="tomatoRating >= 60" />
             <img :src="rottenTomatoes.rotten" v-else />
@@ -196,36 +177,20 @@
         </v-btn>
 
         <!-- Metacritic评分 -->
-        <v-btn
-          v-if="metascore > 0"
-          :color="
-            metascore > 60 ? 'success' : metascore > 40 ? 'warning' : 'error'
-          "
-          :href="`https://www.metacritic.com/search/movie/${info.title}/results`"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-          style="min-width: unset"
-        >
+        <v-btn v-if="metascore > 0" :color="metascore > 60 ? 'success' : metascore > 40 ? 'warning' : 'error'
+          " :href="`https://www.metacritic.com/search/${info.originalTitle || info.title}`" target="_blank"
+          rel="noopener noreferrer nofollow" style="min-width: unset">
           <v-avatar size="20" class="mr-2">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Metacritic_M.png"
-            />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Metacritic_M.png" />
           </v-avatar>
           {{ metascore }}
         </v-btn>
 
         <v-spacer></v-spacer>
         <v-layout v-if="$vuetify.breakpoint.mdAndUp">
-          <v-flex xs6 v-if="rating > 0">
-            <v-rating
-              v-model="rating"
-              background-color="white"
-              color="yellow accent-4"
-              dense
-              readonly
-              half-increments
-              size="30"
-            ></v-rating>
+          <v-flex xs4 v-if="rating > 0">
+            <v-rating v-model="rating" background-color="white" color="yellow accent-4" dense readonly half-increments
+              size="30"></v-rating>
             <span class="ma-2">{{
               $t("movieInfoCard.ratings.douban", {
                 average:
@@ -235,16 +200,9 @@
               })
             }}</span>
           </v-flex>
-          <v-flex xs6 v-if="imdbRating > 0">
-            <v-rating
-              v-model="imdbRating"
-              background-color="white"
-              color="yellow accent-4"
-              dense
-              readonly
-              half-increments
-              size="30"
-            ></v-rating>
+          <v-flex xs4 v-if="imdbRating > 0">
+            <v-rating v-model="imdbRating" background-color="white" color="yellow accent-4" dense readonly
+              half-increments size="30"></v-rating>
             <span class="ma-2">{{
               $t("movieInfoCard.ratings.imdb", {
                 average: ratings.imdbRating,
@@ -252,8 +210,24 @@
               })
             }}</span>
           </v-flex>
+          <v-flex xs4 v-if="tmdbRating > 0">
+            <v-rating v-model="tmdbRating" background-color="white" color="yellow accent-4" dense readonly
+              half-increments size="30"></v-rating>
+            <span class="ma-2">{{
+              $t("movieInfoCard.ratings.tmdb", {
+                average: info.tmdbAverage,
+                numRaters: info.tmdb.vote_count,
+              })
+            }}</span>
+          </v-flex>
         </v-layout>
       </v-card-actions>
+
+      <template v-if="$store.state.options.mediaServers?.length > 0">
+        <v-divider light></v-divider>
+        <!-- 媒体服务器信息 -->
+        <MediaServerInfoCard :IMDbId="IMDbId" class="pa-2"></MediaServerInfoCard>
+      </template>
     </v-card>
   </div>
 </template>
@@ -262,10 +236,14 @@ import Vue from "vue";
 
 import Extension from "@/service/extension";
 import { EAction } from "@/interface/enum";
+import MediaServerInfoCard from "./MediaServerInfoCard.vue";
 
 const extension = new Extension();
 
 export default Vue.extend({
+  components: {
+    MediaServerInfoCard
+  },
   props: {
     IMDbId: String,
     doubanId: String
@@ -289,12 +267,14 @@ export default Vue.extend({
           movie_type: [],
           pubdate: [],
           movie_duration: []
-        }
+        },
+        tmdbAverage: 0,
+        tmdbURL: ""
       } as any,
       ratings: {
-        imdbRating: "",
         Ratings: [],
-        imdbVotes: ""
+        imdbRating: "",
+        imdbVotes: "",
       } as any,
 
       rottenTomatoes: {
@@ -318,9 +298,8 @@ export default Vue.extend({
     reset() {
       this.visible = false;
       this.ratings = {
-        imdbRating: "",
         Ratings: [],
-        imdbVotes: ""
+        imdbRating: "",
       };
       console.log(this.doubanId, this.IMDbId);
       if (this.IMDbId) {
@@ -342,6 +321,13 @@ export default Vue.extend({
                 numRaters: 0,
                 value: ""
               }
+            }
+
+            const tmdb = r.tmdb;
+            // 判断是否存在 TMDB 信息
+            if (tmdb) {
+              r.tmdbAverage = Math.round(tmdb.vote_average * 10);
+              r.tmdbURL = tmdb.tmdbURL;
             }
 
             this.info = r;
@@ -384,6 +370,12 @@ export default Vue.extend({
         return result.join(splitChar);
       }
       return "";
+    },
+    /**
+     * 从已定义的媒体服务器获取信息
+     */
+    getMediaFromMediaServers() {
+
     }
   },
   computed: {
@@ -396,6 +388,12 @@ export default Vue.extend({
     imdbRating(): number {
       if (this.ratings && this.ratings.imdbRating) {
         return parseFloat(this.ratings.imdbRating) / 2;
+      }
+      return 0;
+    },
+    tmdbRating(): number {
+      if (this.info && this.info.tmdb && this.info.tmdb.vote_average) {
+        return parseFloat(this.info.tmdb.vote_average) / 2;
       }
       return 0;
     },
@@ -437,5 +435,11 @@ export default Vue.extend({
   .caption {
     color: #ccc;
   }
+}
+
+// TMDB标准配色
+// @see https://www.themoviedb.org/about/logos-attribution
+.tmdbStyle {
+  background: linear-gradient(90deg, #90cea1, #01b4e4) !important;
 }
 </style>

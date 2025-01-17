@@ -66,7 +66,7 @@
                   >{{ $t("keepUploadTask.size")
                   }}{{ item.data.size | formatSize }},
                   {{ $t("keepUploadTask.fileCount")
-                  }}{{ item.torrent ? item.torrent.files.length : "N/A" }},
+                  }}{{ item.torrent ? item.torrent.filesLength : "N/A" }},
                   {{ $t("keepUploadTask.status.label")
                   }}{{ item.status }}</v-list-tile-sub-title
                 >
@@ -399,10 +399,7 @@ export default Vue.extend({
         }
 
         if (!item || !this.verifiedItems[0].verified) {
-          this.verifiedItems[index] = Object.assign(
-            this.verifiedItems[index],
-            result
-          );
+          this.$set(this.verifiedItems, index, { ...this.verifiedItems[index], ...result });
           return;
         }
 
@@ -425,7 +422,9 @@ export default Vue.extend({
           );
         }
 
-        result.torrent = torrent;
+        result.torrent = {
+          filesLength: torrent.files.length
+        };
         if (result.verified) {
           this.verifiedCount++;
         }
@@ -453,10 +452,7 @@ export default Vue.extend({
           }
         }
 
-        this.verifiedItems[index] = Object.assign(
-          this.verifiedItems[index],
-          result
-        );
+        this.$set(this.verifiedItems, index, { ...this.verifiedItems[index], ...result });
       }
     },
     /**

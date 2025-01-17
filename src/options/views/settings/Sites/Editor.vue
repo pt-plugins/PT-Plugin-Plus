@@ -165,7 +165,7 @@
                 v-model="site.authToken"
                 :disabled="!site.tokenRequired" :rules="site.tokenRequired ? rules.require : []"
                 :label="$t('settings.sites.editor.authToken')"
-                :placeholder="$t('settings.sites.editor.authTokenTip')"
+                :placeholder="site.tokenTip ? site.tokenTip : $t('settings.sites.editor.authTokenTip')"
         ></v-text-field>       
 
         <!-- 站点已离线（停机/关闭） -->

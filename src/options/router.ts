@@ -45,6 +45,11 @@ export default new Router({
       component: () => import("./views/settings/DownloadClients/Index.vue")
     },
     {
+      path: "/set-media-servers",
+      name: "set-media-servers",
+      component: () => import("./views/settings/MediaServers/Index.vue")
+    },
+    {
       path: "/set-base",
       name: "set-base",
       component: () => import("./views/settings/Base/Index.vue")
@@ -149,6 +154,14 @@ export default new Router({
       path: "/keep-upload-task",
       name: "keep-upload-task",
       component: () => import("./views/keepUpload/KeepUploadTasks.vue")
+    },
+    {
+      path: "/mind",
+      name: "mind",
+      component: () => import("./views/mindMap/Index.vue"),
+      meta: {
+        keepAlive: false
+      }
     }
   ]
 });

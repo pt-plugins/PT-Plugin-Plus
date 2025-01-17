@@ -40,6 +40,8 @@
       "export": "Export",
       "import": "Import",
       "share": "Share",
+      "fullScreen": "FullScreen",
+      "rePosition": "RePosition",
       "actionConfirm": "Are you sure you want to do this?",
       "importFailed": "Import failed",
       "importSuccess": "Import success",
@@ -86,7 +88,8 @@
         "downloadPaths": "Download Paths",
         "searchSolution": "Search Solution",
         "backup": "Backup & Restore",
-        "permissions": "Permissions"
+        "permissions": "Permissions",
+        "mediaServers": "Media Servers"
       },
       "thanks": {
         "title": "Thanks",
@@ -342,6 +345,7 @@
       "saveTip": "Save torrents",
       "collection": "Collection",
       "searching": "Searching, please wait...",
+      "waiting": "waiting...",
       "cancelSearch": "Cancel search",
       "showCheckbox": "Multiple selection",
       "titleMiddleEllipsis": "Title Middle Ellipsis",
@@ -353,6 +357,7 @@
       "reSearch": "Re-search",
       "showCategory": "Category",
       "filterSearchResults": "Filter search results",
+      "filterSearchResultsExclude": "Exclude search results",
       "noResultsSites": "Site with 0 result:",
       "failedSites": "Failed site:",
       "reSearchFailedSites": "Re-search failed site",
@@ -515,7 +520,7 @@
         "autoRefreshUserDataTip4": "times after failure,",
         "autoRefreshUserDataTip5": "minute apart",
         "autoRefreshByAlarmTip1": "Using the new version refresh method, more stable, requires corresponding authorization(Chromium Only) (Beta)",
-        "autoBackupDataTip1": "Automatically backup user data when the browser is open（Beta）",
+        "autoBackupDataTip1": "Automatically backup user data when the browser is open (Beta)",
         "autoBackupDataTip2": "Auto upload after ",
         "autoBackupDataTip3": "automatically refreshes",
         "autoBackupDataTip4": "Backup to",
@@ -524,6 +529,7 @@
         "showMovieInfoCardOnSearch": "Show movie and rating information when searching by IMDb number",
         "getMovieInformationBeforeSearching": "When entering a search keyword, load relevant information from Douban for pre-selection",
         "autoSearchWhenSwitchSolution": "When changing search solution, re-search immediately",
+        "searchThreads": "Number of search threads: When the number of websites in the search plan exceeds the limit, it will wait. (By default, there is no limit; the larger the number, the more memory it consumes.):",
         "maxMovieInformationCount": "Maximum display number of entries (1-20):",
         "searchModeForItem": "When clicking on a pre-selected item:",
         "showToolbarOnContentPage": "Enable site page plugin icons and toolbars (such as one-click downloads, etc.)",
@@ -812,7 +818,8 @@
           "importConfig": "Import from config",
           "importConfirm": "Are you sure you want to import [{name}] ?",
           "importDuplicateConfirm": "The site {name} already exists. Do you need to import search entrys and plugins?",
-          "resetFavicons": "Reset site favicons"
+          "resetFavicons": "Reset site favicons",
+          "ptMindMap": "PT Site Mind Map"
         }
       },
       "siteSearchEntry": {
@@ -843,6 +850,37 @@
             "enable": "Enable",
             "action": "Action"
           }
+        }
+      },
+      "mediaServers": {
+        "index": {
+          "title": "Media Servers",
+          "subTitle": "Media servers are currently only used to determine if the searched resource already exists.",
+          "add": "Add",
+          "remove": "Remove",
+          "clear": "Clear",
+          "itemDuplicate": "The name already exists.",
+          "removeConfirm": "Are you sure you want to remove this media server?",
+          "removeConfirmTitle": "Remove Confirmation",
+          "clearConfirm": "Are you sure you want to remove all media servers?",
+          "removeSelectedConfirm": "Are you sure you want to remove the selected media servers?",
+          "yes": "Yes",
+          "no": "No",
+          "headers": {
+            "name": "Name",
+            "enabled": "Enabled",
+            "type": "Type",
+            "address": "Server Address",
+            "action": "Action"
+          }
+        },
+        "editor": {
+          "type": "Server Type",
+          "name": "Service Name",
+          "address": "Server Address",
+          "addressTip": "Complete server address (including port), e.g.: http://192.168.1.1:5000/",
+          "apiKey": "API KEY",
+          "test": "Test if the server is connectable"
         }
       }
     },
@@ -1106,9 +1144,11 @@
       "type": "Type: ",
       "pubdate": "Pubdate: ",
       "duration": "Duration: ",
+      "rated": "Content Rating",
       "ratings": {
         "douban": "Douban {average} ({numRaters})",
-        "imdb": "IMDb {average} ({numRaters})"
+        "imdb": "IMDb {average} ({numRaters})",
+        "tmdb": "TMDB {average}% ({numRaters})"
       }
     }
   }

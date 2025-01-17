@@ -52,6 +52,7 @@
         // 遍历数据行
         for (let index = 0; index < rows.length; index++) {
           const row = rows.eq(index);
+          row.find(".torrent-info-text-name .new").remove();
           let title = row.find(".torrent-info-text-name");
           if (title.length == 0) {
             continue;
@@ -80,7 +81,7 @@
             link,
             url,
             size: row.find('.torrent-info-text-size').text() || 0,
-            time: row.find('.torrent-info-text-added > span').attr('title') || "",
+            time: row.find('.torrent-info-text-added > span').attr('title') || row.find('.torrent-info-text-added').text() || "",
             author: row.find('.torrent-info-text-author').text() || "",
             seeders: row.find('.torrent-info-text-seeders').text().trim() || 0,
             leechers: row.find('.torrent-info-text-leechers').text().trim() || 0,

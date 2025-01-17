@@ -111,6 +111,10 @@
           "selector": "div.button-holder h5:contains('Since: ')",
           "filters": ["query.text().trim().replace('Since: ', '').replace('Member ', '')", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         },
+        "uploads": {
+          "selector": "div.bhd-tidbit-icon.bhd-tidbit-icon:first",
+          "filters": ["query.clone().children().remove().end().text().trim()", "parseInt(query)"]
+        },
         "unsatisfiedsPage": {
           "selector": ["a[href$='/unsatisfieds']:first"],
           "attribute": "href",

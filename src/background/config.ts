@@ -75,7 +75,8 @@ class Config {
       rows: 50,
       // 搜索超时
       timeout: 30000,
-      saveKey: true
+      saveKey: true,
+      threads: 0
     },
     // 连接下载服务器超时时间（毫秒）
     connectClientTimeout: 30000,
@@ -115,6 +116,23 @@ class Config {
 
   public uiOptions: UIOptions = {};
 
+  // 参数类型定义，防止因类型错误导致的各种隐藏Bug
+  private optionsTypeRule = {
+    connectClientTimeout: 'number',
+    exceedSize: 'number',
+    search: {
+      rows: 'number',
+      timeout: 'number',
+      threads: 'number'
+    },
+    downloadFailedFailedRetryCount: 'number',
+    downloadFailedFailedRetryInterval: 'number',
+    batchDownloadInterval: 'number',
+    beforeSearchingOptions: {
+      maxMovieInformationCount: 'number'
+    },
+  }
+
   /**
    * 保存配置
    * @param options 配置信息
@@ -124,6 +142,61 @@ class Config {
       this.options = options;
     }
     this.localStorage.set(this.name, this.cleaningOptions(this.options));
+  }
+
+  /**
+   * 根据指定的规则转换对象的值
+   * @param obj 
+   * @param rules 
+   * @returns 
+   */
+  public transformObjectProperties(obj: any, rules: any) {
+    // 检查输入是否为对象
+    if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const value = obj[key];
+          const rule = rules[key];
+
+          if (rule) {
+            if (typeof rule === 'string') {
+              // 如果规则是简单类型名，转换当前属性
+              obj[key] = this.castValueToType(value, rule);
+            } else if (typeof rule === 'function') {
+              // 如果规则是函数，调用函数进行转换
+              obj[key] = rule(value);
+            } else if (typeof rule === 'object' && !Array.isArray(rule)) {
+              // 如果规则是对象，递归检查子对象
+              obj[key] = this.transformObjectProperties(value, rule);
+            }
+          }
+        }
+      }
+    }
+    return obj;
+  }
+
+  /**
+   * 根据类型名称进行类型转换
+   * @param value 
+   * @param type 
+   * @returns 
+   */
+  public castValueToType(value: any, type: string) {
+    switch (type.toLowerCase()) {
+      case 'string':
+        return String(value);
+      case 'number':
+        return Number(value);
+      case 'boolean':
+        return Boolean(value);
+      case 'object':
+        return value !== null && typeof value === 'object' ? value : {};
+      case 'array':
+        return Array.isArray(value) ? value : [value];
+      default:
+        return value; // 保持原值
+    }
   }
 
   /**
@@ -287,6 +360,9 @@ class Config {
         });
       });
     }
+
+    // 转换已定义类型的值
+    _options = this.transformObjectProperties(_options, this.optionsTypeRule);
 
     return _options;
   }
@@ -467,6 +543,9 @@ class Config {
     if (PPF.isExtensionMode) {
       this.getFavicons();
     }
+
+    // 转换已定义类型的值
+    this.options = this.transformObjectProperties(this.options, this.optionsTypeRule);
 
     console.log(this.options);
   }

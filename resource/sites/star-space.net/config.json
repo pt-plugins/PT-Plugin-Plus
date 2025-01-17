@@ -167,7 +167,7 @@
             "#tm_td_uploader"
           ],
           "filters": [
-            "query.contents().filter(function() {return this.nodeType === Node.TEXT_NODE || (this.nodeType === Node.ELEMENT_NODE && this.tagName !== 'SPAN');}).text().trim()"
+            "query.text().parseTime()"
           ]
         },
         "size": {

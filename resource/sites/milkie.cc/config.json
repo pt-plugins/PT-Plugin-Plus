@@ -1,0 +1,102 @@
+{
+  "name": "Milkie",
+  "description": "Milkie",
+  "url": "https://milkie.cc/",
+  "icon": "https://milkie.cc/favicon.png",
+  "tags": [
+    "综合",
+    "成人"
+  ],
+  "schema": "common",
+  "host": "milkie.cc",
+  "tokenRequired": true,
+  "tokenTip": "在 https://milkie.cc/settings/security  获取 API key",
+  "collaborator": [
+    "tomyangsh"
+  ],
+  "plugins": [
+    {
+      "name": "种子列表",
+      "pages": [
+        "/browse"
+      ],
+      "scripts": [
+        "/schemas/NexusPHP/common.js",
+        "/schemas/Common/torrents.js"
+      ]
+    }
+  ],
+  "searchEntryConfig": {
+    "skipIMDbId": true,
+    "page": "/api/v1/torrents?query=$key$&ps=10",
+    "resultType": "json",
+    "requestMethod": "GET",
+    "parseScriptFile": "getSearchResult.js",
+    "keepOriginKey": true,
+    "headers": {
+      "x-milkie-auth": "$site.authToken$"
+    }
+  },
+  "searchEntry": [
+    {
+      "name": "全部",
+      "enabled": true
+    }
+  ],
+  "selectors": {
+    "userBaseInfo": {
+      "page": "/api/v1/auth",
+      "dataType": "json",
+      "requestMethod": "GET",
+      "headers": {
+        "x-milkie-auth": "$site.authToken$"
+      },
+      "fields": {
+        "name": {
+          "selector": [
+            "user.displayName"
+          ]
+        },
+        "uploaded": {
+          "selector": [
+            "user.uploaded"
+          ]
+        },
+        "downloaded": {
+          "selector": [
+            "user.downloaded"
+          ]
+        },
+        "joinTime": {
+          "selector": [
+            "user.createdAt"
+          ],
+          "filters": [
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
+        }
+      }
+    },
+    "common": {
+      "page": "/browse",
+      "fields": {
+        "downloadURL": {
+          "selector": [
+            "a[href*='/api/v1/torrents']"
+          ],
+          "filters": [
+            "query.attr('href')"
+          ]
+        },
+        "downloadURLs": {
+          "selector": [
+            "a[href*='/api/v1/torrents']"
+          ],
+          "filters": [
+            "query.toArray()"
+          ]
+        }
+      }
+    }
+  }
+}

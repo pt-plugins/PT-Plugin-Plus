@@ -954,7 +954,7 @@
           this.downloadURLs(urls, urls.length, hanleDownloadURLsCB, downloadOptions);
         }
       }).then(() => {
-        success({msg: this.t('downloadURLsFinished', {count: ` ${count}/${totalCnt}`})});
+        success({msg: this.t('downloadURLsFinished', {count: ` ${successCnt}/${totalCnt}`})});
       })
         .catch(e => {
           console.error(e);

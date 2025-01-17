@@ -9,8 +9,12 @@
   "schema": "common",
   "host": "fsm.name",
   "tokenRequired": true,
+  "tokenTip": "在 https://fsm.name/API 获取",
   "formerHosts": [
     "nextpt.net"
+  ],
+  "apiCdn":[
+    "https://fsm.name/"
   ],
   "collaborator": [
     "Ted423",
@@ -21,19 +25,9 @@
   ],
   "plugins": [
     {
-      "name": "种子详情页面",
-      "pages": [
-        "/Torrents/details"
-      ],
-      "scripts": [
-        "/schemas/NexusPHP/common.js",
-        "/schemas/Common/details.js"
-      ]
-    },
-    {
       "name": "种子列表",
       "pages": [
-        "/Torrents$"
+        "/Torrents"
       ],
       "scripts": [
         "/schemas/NexusPHP/common.js",
@@ -149,6 +143,14 @@
           "selector": [
             "data.torrent"
           ]
+        },
+        "joinTime": {
+          "selector": [
+            "data.createdTs"
+          ],
+          "filters": [
+            "dateTime(query).isValid()?dateTime(query).valueOf():query"
+          ]
         }
       }
     },
@@ -165,16 +167,8 @@
       }
     },
     "common": {
-      "page": "/api/Torrents",
+      "page": "/Torrents",
       "fields": {
-        "downloadURL": {
-          "selector": [
-            "a[href*='/Torrents/download']"
-          ],
-          "filters": [
-            "query.attr('href')"
-          ]
-        },
         "size": {
           "selector": [
             "div.visible-xs:contains('种子大小') + div"

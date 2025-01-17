@@ -80,7 +80,7 @@
           "attribute": "href",
           "switchFilters": [
             ["new URL(query).pathname.split('/')", "(query && query.length>2)?(query[2]):''"],
-            ["query ? query.getQueryString('id'):''"]
+            ["query ? decodeURI(query.getQueryString('id')):''"]
           ]
         },
         "isLogged": {

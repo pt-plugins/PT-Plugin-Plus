@@ -15,8 +15,9 @@
     "Eason Wong"
   ],
   "cdn": [
-    "https://qingwapt.com",
-    "https://www.qingwapt.com"
+    "https://www.qingwapt.com",
+    "https://www.qingwapt.org",
+    "https://www.qingwa.pro"
   ],
   "formerHosts": [
     "new.qingwa.pro"
@@ -25,65 +26,121 @@
     {
       "level": "1",
       "name": "幼蛙",
-      "interval": "4",
-      "downloaded": "150GiB",
-      "seedingPoints": "40000",
-      "ratio": "1.0-1.5",
-      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+      "interval": "5",
+      "alternative":[
+        {
+          "downloaded" : "150GiB",
+          "ratio" : "1.0-4.0之间",
+          "seedingPoints": "40000"
+        },{
+          "ratio": "1.1",
+          "uploads": "50",
+          "seedingPoints": "40000"
+        }
+      ],
+      "privilege": "得到1个邀请名额，可以直接发布种子，可以查看NFO文档，可以查看用户列表，可以请求续种， 可以发送邀请，可以查看排行榜，可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
       "level": "2",
       "name": "成蛙",
-      "interval": "8",
-      "downloaded": "400GiB",
-      "seedingPoints": "80000",
-      "ratio": "1.0-1.5",
-      "privilege": "成蛙及以上用户封存账号后不会被删除。"
+      "interval": "16",
+      "alternative":[
+        {
+          "downloaded" : "300GiB",
+          "ratio" : "1.0-4.5之间",
+          "seedingPoints": "80000"
+        },{
+          "ratio": "1.0",
+          "uploads": "120",
+          "seedingPoints": "70000"
+        }
+      ],
+      "privilege": "得到2个邀请名额，封存账号后不会被删除"
     },
     {
       "level": "3",
       "name": "妙蛙种子",
-      "interval": "15",
-      "downloaded": "1024GiB",
-      "seedingPoints": "160000",
-      "ratio": "1.0-1.5",
-      "privilege": "得到两个邀请名额; 可以在做种/下载/发布的时候选择匿名模式。"
+      "interval": "25",
+      "alternative":[
+        {
+          "downloaded" : "1024GiB",
+          "ratio" : "1.0-5.0之间",
+          "seedingPoints": "160000"
+        },{
+          "ratio": "1.0",
+          "uploads": "200",
+          "seedingPoints": "90000"
+        }
+      ],
+      "privilege": "得到3个邀请名额，可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
       "level": "4",
       "name": "妙蛙草",
-      "interval": "25",
-      "downloaded": "2048GiB",
-      "seedingPoints": "320000",
-      "ratio": "1.0-1.5",
-      "privilege": "可以查看普通日志。"
+      "interval": "36",
+      "alternative":[
+        {
+          "downloaded" : "2048GiB",
+          "ratio" : "1.0-5.5之间",
+          "seedingPoints": "320000"
+        },{
+          "ratio": "1.0",
+          "uploads": "300",
+          "seedingPoints": "150000"
+        }
+      ],
+      "privilege": "得到3个邀请名额，可以查看普通日志。"
     },
     {
       "level": "5",
       "name": "妙蛙花",
-      "interval": "40",
-      "downloaded": "4096GiB",
-      "seedingPoints": "640000",
-      "ratio": "1.0-1.5",
-      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史；妙蛙花及以上用户会永远保留账号。"
+      "interval": "52",
+      "alternative":[
+        {
+          "downloaded" : "4096GiB",
+          "ratio" : "1.0-6.0之间",
+          "seedingPoints": "640000"
+        },{
+          "ratio": "1.0",
+          "uploads": "500",
+          "seedingPoints": "200000"
+        }
+      ],
+      "privilege": "得到4个邀请名额，可以查看其它用户的评论、帖子历史；永远保留账号。"
     },
     {
       "level": "6",
       "name": "蛙蛙大王",
       "interval": "60",
-      "downloaded": "8192GiB",
-      "seedingPoints": "1280000",
-      "ratio": "1.0-1.5",
-      "privilege": "可以更新过期的外部信息。"
+      "alternative":[
+        {
+          "downloaded" : "8192GiB",
+          "ratio" : "1.0-6.5之间",
+          "seedingPoints": "1280000"
+        },{
+          "ratio": "1.0",
+          "uploads": "650",
+          "seedingPoints": "280000"
+        }
+      ],
+      "privilege": "得到4个邀请名额，可以更新过期的外部信息。"
     },
     {
       "level": "7",
       "name": "蛙蛙皇",
-      "interval": "80",
-      "downloaded": "16384GiB",
-      "seedingPoints": "2560000",
-      "ratio": "1.0-1.5",
-      "privilege": "得到五个邀请名额。"
+      "interval": "100",
+      "alternative":[
+        {
+          "downloaded" : "16384GiB",
+          "ratio" : "1.0-7.0之间",
+          "seedingPoints": "2560000"
+        },{
+          "ratio": "1.0",
+          "uploads": "800",
+          "seedingPoints": "400000"
+        }
+      ],
+      "privilege": "得到5个邀请名额。"
     }
   ],
   "securityKeyFields": [
@@ -259,11 +316,9 @@
           ]
         },
         "seedingSize": {
-          "selector": "",
+          "selector": "div:first",
           "filters": [
-            "query.text().match(/总大小：(.*?)上一页/g)",
-            "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
-            "(query != 0) ? query.sizeToNumber() : 0"
+            "(query && query.text().length>0)?query.text().split('|')[1].slice(5).trim().sizeToNumber():0"
           ]
         }
       }

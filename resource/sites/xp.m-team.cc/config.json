@@ -23,6 +23,7 @@
     "https://mtapi.m-team.cc/"
   ],
   "tokenRequired": true,
+  "tokenTip": "在控制台-实验室获取存取令牌",
   "formerHosts": [
     "xp.m-team.io",
     "pt.m-team.cc",

@@ -235,5 +235,8 @@
     "name": "Neutral",
     "selector": "img.pro_nl",
     "color": "purple"
+  },{
+    "name": "2xUp",
+    "selector": "img.pro_2up"
   }]
 }

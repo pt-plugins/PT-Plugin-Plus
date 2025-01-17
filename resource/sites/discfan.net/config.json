@@ -7,6 +7,7 @@
   "tags": ["影视", "港片"],
   "schema": "NexusPHP",
   "host": "discfan.net",
+  "collaborator": "haowenwu",
   "levelRequirements": [{
     "level": "1",
     "name": "Power User",
@@ -127,6 +128,22 @@
             "(query != 0) ? query.sizeToNumber() : 0"
           ]
         }
+      }
+    }
+  },
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": ["div[title^='leeching'], div[title^='seeding'], div[title^='inactivity']"],
+        "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+      },
+      "status": {
+        "selector": ["div[title*='leeching']", "div[title*='seeding']", "div[title*='inactivity']"],
+        "switchFilters": [
+          ["1"],
+          ["2"],
+          ["255"]
+        ]
       }
     }
   }

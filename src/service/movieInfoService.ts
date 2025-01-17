@@ -6,12 +6,17 @@ export type MovieInfoCache = {
   ratings: Dictionary<any>;
   doubanToIMDb: Dictionary<any>;
   search: Dictionary<any>;
+  tmdbToIMDb: Dictionary<any>;
 };
 
 /**
  * 电影信息
  */
 export class MovieInfoService {
+  // 用于加载评分信息
+  public omdbApiURL = "https://www.omdbapi.com";
+  // 用于获取IMDbID
+  public omitApiURL = "https://omit.mkrobot.org";
   // 豆瓣标准接口
   public doubanApiURL = "https://api.douban.com/v2";
   // 豆瓣 frodo 接口
@@ -44,8 +49,8 @@ export class MovieInfoService {
               "id": "1294833"
             }]
           */
-          imdb: `https://omit.mkrobot.org/movie/infos/$imdbid$`,
-          subject: `https://omit.mkrobot.org/movie/infos/douban$id$`
+          imdb: `${this.omitApiURL}/movie/infos/$imdbid$`,
+          subject: `${this.omitApiURL}/movie/infos/douban$id$`
           // imdb: `https://movie.douban.com/j/subject_suggest?q=$imdbid$`,
           // subject: `${this.doubanFrodoApi}/movie/$id$?apiKey=$apikey$`
         },
@@ -72,10 +77,6 @@ export class MovieInfoService {
     }
   }
 
-  // 用于加载评分信息
-  public omdbApiURL = "https://www.omdbapi.com";
-  // 用于获取IMDbID
-  public omitApiURL = "https://omit.mkrobot.org";
   // omdbapi 申请的Key列表
   // 每个 key 一天有1000次请求限制
   public omdbApiKeys = [
@@ -133,7 +134,8 @@ export class MovieInfoService {
     base: {},
     ratings: {},
     doubanToIMDb: {},
-    search: {}
+    search: {},
+    tmdbToIMDb: {}
   };
 
   // 链接超时时间
@@ -324,6 +326,53 @@ export class MovieInfoService {
     return this.doubanApi.entApiKeys[
       Math.floor(Math.random() * this.doubanApi.entApiKeys.length)
     ];
+  }
+
+  /**
+   * 根据TMDB ID获取 IMDb ID
+   * @param source
+   * @returns 
+   */
+  public async getIMDbIdFromTMDB(source: Dictionary<any>) {
+    const options = Object.assign({
+      id: 0,
+      type: 'movie'
+    }, source);
+
+    if (!options.id) {
+      return '';
+    }
+
+    const cacheKey = `${options.type}.${options.id}`
+    let cache = this.cache.tmdbToIMDb[cacheKey];
+    if (cache) {
+      return cache;
+    }
+    let url = `${this.omitApiURL}/movie/${options.id}/tmdb.${options.type}/imdb`;
+
+    if (this.requsetQueue[url]) {
+      return;
+    }
+
+    this.requsetQueue[url] = true;
+
+    try {
+      const response = await fetch(url);
+      delete this.requsetQueue[url];
+      if (response.ok) {
+        const result = await response.json();
+        if (result && result.data) {
+          this.cache.tmdbToIMDb[cacheKey] = result.data;
+          return result.data;
+        }
+      } else {
+        throw new Error(`HTTP 错误！状态码：${response.status}`);
+      }
+    } catch (error) {
+
+    }
+    delete this.requsetQueue[url];
+    return false;
   }
 
   /**
