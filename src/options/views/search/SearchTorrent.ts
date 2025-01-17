@@ -1797,7 +1797,7 @@ export default Vue.extend({
         // 将项目标题和副标题组合并转化为小写
         const source = (item.title + (item.subTitle || "")).toLowerCase();
 
-        const includeResult = includes.length === 0 || includes.some(key => source.includes(key));
+        const includeResult = includes.length === 0 || includes.every(key => source.includes(key));
         const excludeResult = excludes.length === 0 || !excludes.some(key => source.includes(key));
 
         return includeResult && excludeResult;
