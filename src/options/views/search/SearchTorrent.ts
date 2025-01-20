@@ -1793,7 +1793,7 @@ export default Vue.extend({
       const excludes = exclude.toLowerCase().trim().split(" ").filter(key => key !== "");
 
       // 过滤数据项
-      const filteredItems = items.filter(item => {
+      this.filteredDatas = items.filter(item => {
         // 将项目标题和副标题组合并转化为小写
         const source = (item.title + (item.subTitle || "")).toLowerCase();
 
@@ -1802,7 +1802,7 @@ export default Vue.extend({
 
         return includeResult && excludeResult;
       });
-      return filteredItems;
+      return this.filteredDatas;
     },
 
     getIMDbIdFromDouban(doubanId: string) {
