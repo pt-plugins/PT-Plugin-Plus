@@ -1027,8 +1027,10 @@
           .then(result => {
             this.downloadURLs(urls, count, callback);
           })
-          .catch(result => {
-            this.downloadURLs(urls, count, callback);
+          .catch(error => {
+            console.log(error);
+            callback({status: 'failed', msg: error?.msg});
+            return;
           });
       } else {
         this.sendTorrentToClient(
