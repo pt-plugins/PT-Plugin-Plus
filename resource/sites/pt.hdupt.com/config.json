@@ -10,6 +10,9 @@
   ],
   "schema": "NexusPHP",
   "host": "pt.hdupt.com",
+  "cdn": [
+    "https://pt.upxin.net/"
+  ],
   "levelRequirements": [{
     "level": "1",
     "name": " Power User",
