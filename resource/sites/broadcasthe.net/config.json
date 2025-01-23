@@ -29,7 +29,7 @@
   "levelRequirements": [{
       "level": "1",
       "name": "Member",
-      "interval": "2",
+      "interval": "2W",
       "totalTraffic": "100GiB",
       "bonus":"100000",
       "snatches":"100",
@@ -37,7 +37,7 @@
     },{
       "level": "2",
       "name": "Power User",
-      "interval": "4",
+      "interval": "4W",
       "totalTraffic": "250GiB",
       "bonus":"250000",
       "snatches":"250",
@@ -45,7 +45,7 @@
     },{
       "level": "3",
       "name": "Extreme User",
-      "interval": "12",
+      "interval": "2M 3W",
       "totalTraffic": "500GiB",
       "bonus":"500000",
       "snatches":"500",
@@ -53,7 +53,7 @@
     },{
       "level": "4",
       "name": "Elite",
-      "interval": "24",
+      "interval": "5M 2W",
       "totalTraffic": "1TiB",
       "bonus":"850000",
       "snatches":"1000",
@@ -61,7 +61,7 @@
     },{
       "level": "5",
       "name": "Guru",
-      "interval": "36",
+      "interval": "8M 1W",
       "totalTraffic": "2.5TiB",
       "bonus":"1500000",
       "snatches":"1500",
@@ -69,7 +69,7 @@
     },{
       "level": "6",
       "name": "Master",
-      "interval": "52",
+      "interval": "11M 4W",
       "totalTraffic": "7.5TiB",
       "bonus":"3000000",
       "snatches":"3000",
@@ -77,7 +77,7 @@
     },{
       "level": "7",
       "name": "Overlord",
-      "interval": "1065D",
+      "interval": "2Y 11M",
       "totalTraffic": "100TiB",
       "bonus":"250000000",
       "snatches":"35000",

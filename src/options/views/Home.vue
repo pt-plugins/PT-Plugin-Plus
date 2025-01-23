@@ -1204,22 +1204,29 @@ export default Vue.extend({
     /**
      * @return {dayjs.Dayjs}
      */
-     getRequiredDate(interval: string, joinDateTime: string) : dayjs.Dayjs {
-      let unit = "week";
-      switch (interval.replace(/[^A-Za-z]/g, ""))
-      {
-        case "D":
-          unit = "day";
-          break;
-        case "M":
-          unit = "month";
-          break;
-        case "Y":
-          unit = "year";
-          break;
+    getRequiredDate(interval: string, joinDateTime: string): dayjs.Dayjs {
+      let intervals = interval.split(" ");
+      let result = dayjs(joinDateTime);
+      for (let match of intervals) {
+        let unit: dayjs.ManipulateType;
+        switch (match.replace(/[^A-Za-z]/g, "")) {
+          case "D":
+            unit = "day";
+            break;
+          case "M":
+            unit = "month";
+            break;
+          case "Y":
+            unit = "year";
+            break;
+          case "W":
+          default:
+            unit = "week";
+        }
+        let num = match.replace(/\D/g, "");
+        result = result.add(parseInt(num), unit);
       }
-      let num = interval.replace(/\D/g,'');
-      return dayjs(joinDateTime).add(parseInt(num), unit as dayjs.ManipulateType);
+      return result;
     },
     /**
      * 获取站点用户信息
