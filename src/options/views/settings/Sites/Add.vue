@@ -206,7 +206,7 @@ export default Vue.extend({
     },
     next(step: number) {
       if (this.selectedSite && this.selectedSite.name) {
-        this.valid = true;
+        this.valid = !this.selectedSite.tokenRequired;
         this.haveError = false;
         this.step++;
       } else {

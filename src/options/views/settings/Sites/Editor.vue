@@ -1,7 +1,7 @@
 <template>
   <v-card class="mb-5" :color="$vuetify.dark ? '' : 'grey lighten-4'">
     <v-card-text>
-      <v-form v-model="valid">
+      <v-form v-model="valid" ref="form">
         <!-- 站点名称 -->
         <v-text-field
           ref="name"
@@ -405,7 +405,7 @@ export default Vue.extend({
         }
         this.$emit("change", {
           data: this.site,
-          valid: this.valid
+          valid: (this.$refs.form as any).validate()
         });
       },
       deep: true
@@ -461,7 +461,7 @@ export default Vue.extend({
     initData() {
       if (this.initData) {
         this.site = Object.assign({}, this.initData);
-        this.valid = this.site.name && this.site.host ? true : false;
+        this.valid = (this.$refs.form as any).validate();
       }
     }
   },
