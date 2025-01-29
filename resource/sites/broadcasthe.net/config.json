@@ -211,6 +211,15 @@
           "filters": ["jQuery.map(query, item=>$(item).attr('href').match(/torrentid=(\\d+)/)[1])"]
         }
       }
+    },
+    "hnrExtendInfo": {
+      "page": "snatchlist.php?type=ajax&id=$user.id$&sort=seedtimeleft&page=1&pagesize=100",
+      "fields": {
+        "unsatisfieds": {
+          "selector": ["table td:nth-child(5):not(:contains('Complete'))"],
+          "filters": ["query ? query.length - 1 : 0"]
+        }
+      }
     }
   }
 }
