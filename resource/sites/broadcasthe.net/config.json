@@ -213,7 +213,7 @@
       }
     },
     "hnrExtendInfo": {
-      "page": "snatchlist.php?type=ajax&id=$user.id$&sort=seedtimeleft&page=1&pagesize=100",
+      "page": "snatchlist.php?type=ajax&id=$user.id$&sort=seedtimeleft&page=1",
       "fields": {
         "unsatisfieds": {
           "selector": ["table td:nth-child(5):not(:contains('Complete'))"],
