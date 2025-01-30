@@ -68,6 +68,7 @@
     "enabled": true
   }],
   "searchEntryConfig": {
+    "skipNonLatinCharacters": true,
     "page": "torrents/browse?searchtext=$key$",
     "name": "全部",
     "resultType": "html",
