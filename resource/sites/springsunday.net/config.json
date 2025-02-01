@@ -230,20 +230,21 @@
       }
     },
     "bonusExtendInfo": {
-      "prerequisites": "!user.bonusPerHour",
-      "page": "/mybonus.php",
+    },
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
       "fields": {
         "seeding": {
-          "selector": ["td:contains('我的数据'):last", "td:contains('我的數據'):last", "td:contains('My Data'):last"],
-          "filters": ["parseInt(query.parent().children().eq(1).text().replace(/,/g,''))"]
+          "selector": ["b:nth-child(1)"],
+          "filters": ["parseInt(query.text().replace(/,/g,''))"]
         },
         "seedingSize": {
-          "selector": ["td:contains('我的数据'):last", "td:contains('我的數據'):last", "td:contains('My Data'):last"],
-          "filters": ["parseFloat(query.parent().children().eq(2).text().replace(/,/g,''))*1024*1024*1024"]
+          "selector": ["b:nth-child(2)"],
+          "filters": ["query.text().replace(/,/g,'').sizeToNumber()"]
         },
         "bonusPerHour": {
-          "selector": ["td:contains('我的数据'):last", "td:contains('我的數據'):last", "td:contains('My Data'):last"],
-          "filters": ["parseFloat(query.parent().children().last().text().replace(/,/g,''))"]
+          "selector": ["b:nth-child(5)"],
+          "filters": ["parseFloat(query.text().replace(/,/g,''))"]
         }
       }
     }
