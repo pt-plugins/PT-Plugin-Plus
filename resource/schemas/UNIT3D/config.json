@@ -143,7 +143,7 @@
           "filters": ["query.text().trim().timeToDays()"]
         },
         "bonusPage": {
-          "selector": ["a[href$='bonus']:first","a[href$='earnings']:first", "a[href$='formula']:first"],
+          "selector": ["a[href$='bonus']:first","a[href$='earnings']:first"],
           "attribute": "href",
           "filters": ["query ? new URL(query).pathname : null"]
         }

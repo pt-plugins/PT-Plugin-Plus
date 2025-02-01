@@ -91,6 +91,11 @@
         "uploads": {
           "selector": ["i.fas.fa-upload + a[href$='/uploads']"],
           "filters": ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"]
+        },
+        "bonusPage": {
+          "selector": ["a[href$='bonus']:first","a[href$='earnings']:first", "a[href$='formula']:first"],
+          "attribute": "href",
+          "filters": ["query ? new URL(query).pathname : null"]
         }
       }
     }
