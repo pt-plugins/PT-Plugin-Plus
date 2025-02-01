@@ -102,11 +102,6 @@
         "seeding": {
           "selector": ["div.ratio-bar i.fa-upload, li[title='Seeding'] i.fa-upload, ul.top-nav__ratio-bar i.fa-upload, span[title='Seeding'], span[title='做种']"],
           "filters": ["query.parent().text().trim().replace(/,|\\s|\\n/g,'').match(/[\\d.]+/)", "(query && query.length>=1)?parseFloat(query[0]):0"]
-        },
-        "bonusPage": {
-          "selector": ["a[href$='bonus']:first","a[href$='earnings']:first"],
-          "attribute": "href",
-          "filters": ["query ? new URL(query).pathname : null"]
         }
       }
     },
@@ -146,6 +141,11 @@
           "selector": ["table.table-condensed.table-striped.table-bordered:first td:contains('Average Seedtime') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('平均做种时间') + td", "table.table-condensed.table-striped.table-bordered:first td:contains('平均做種時間') + td",
             "dt:contains('Average Seedtime') + dd", "dt:contains('Average seedtime') + dd", "dt:contains('平均做种时间') + dd", "dt:contains('平均做種時間') + dd"],
           "filters": ["query.text().trim().timeToDays()"]
+        },
+        "bonusPage": {
+          "selector": ["a[href$='bonus']:first","a[href$='earnings']:first", "a[href$='formula']:first"],
+          "attribute": "href",
+          "filters": ["query ? new URL(query).pathname : null"]
         }
       }
     },
