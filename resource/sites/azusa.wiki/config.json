@@ -109,7 +109,7 @@
       "page": "/mybonus.php",
       "fields": {
         "bonusPerHour": {
-          "selector": ["#outer table[cellpadding='4'] td[rowspan='4']"],
+          "selector": ["#outer table[cellpadding='5'] td[rowspan='3']"],
           "filters": ["parseFloat(query.text().replace(/,(\\s+)?/, '').match(/[\\d.]+/)[0])"]
         }
       }
