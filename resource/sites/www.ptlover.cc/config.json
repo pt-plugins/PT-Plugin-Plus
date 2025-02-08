@@ -1,0 +1,62 @@
+{
+  "name": "Afun",
+  "timezoneOffset": "+0800",
+  "description": "希望都能找到各自的兴趣、爱好、欢喜",
+  "url": "https://www.ptlover.cc",
+  "icon": "https://www.ptlover.cc/favicon.ico",
+  "tags": [
+    "综合",
+    "电影",
+    "电视剧",
+    "纪录片"
+  ],
+  "schema": "NexusPHP",
+  "host": "ptlover.cc",
+  "collaborator": [
+    "geni"
+  ],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query.text()"
+          ]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)</g)",
+            "(query && query.length>0 ) ? query[0].replace('总大小：', '').replace('<', '').trim() : 0",
+            "(query != 0) ? _self.getTotalSize([query]) : 0"
+          ]
+        }
+      }
+    }
+  },
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"
+        ],
+        "filters": [
+          "query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"
+        ]
+      },
+      "status": {
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"
+        ],
+        "filters": [
+          "query ? query.attr('title') : ''",
+          "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+        ]
+      }
+    }
+  }
+}
