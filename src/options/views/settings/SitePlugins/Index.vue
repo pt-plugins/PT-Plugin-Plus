@@ -1,31 +1,19 @@
 <template>
   <div class="site-plugins">
-    <v-alert :value="true" type="info"
-      >{{ $t("settings.sitePlugins.index.title") }} [{{ site.name }}]</v-alert
-    >
+    <v-alert :value="true" type="info">{{ $t("settings.sitePlugins.index.title") }} [{{ site.name }}]</v-alert>
     <v-card>
       <v-card-title>
         <v-btn color="success" @click="add">
           <v-icon class="mr-2">add</v-icon>
           {{ $t("common.add") }}
         </v-btn>
-        <v-btn
-          color="error"
-          :disabled="selected.length == 0"
-          @click="removeSelected"
-        >
+        <v-btn color="error" :disabled="selected.length == 0" @click="removeSelected">
           <v-icon class="mr-2">remove</v-icon>
           {{ $t("common.remove") }}
         </v-btn>
         <v-divider class="mx-3 mt-0" inset vertical></v-divider>
 
-        <input
-          type="file"
-          ref="fileImport"
-          style="display: none"
-          multiple
-          accept="application/json"
-        />
+        <input type="file" ref="fileImport" style="display: none" multiple accept="application/json" />
         <!-- 导入配置文件 -->
         <v-btn color="info" @click="importConfig">
           <v-icon class="mr-2">folder_open</v-icon>
@@ -34,41 +22,19 @@
 
         <v-divider class="mx-3 mt-0" inset vertical></v-divider>
 
-        <v-btn
-          color="info"
-          href="https://github.com/pt-plugins/PT-Plugin-Plus/wiki/config-custom-plugin"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-        >
+        <v-btn color="info" href="https://github.com/pt-plugins/PT-Plugin-Plus/wiki/config-custom-plugin"
+          target="_blank" rel="noopener noreferrer nofollow">
           <v-icon class="mr-2">help</v-icon>
           {{ $t("settings.siteSearchEntry.index.help") }}
         </v-btn>
         <v-spacer></v-spacer>
-        <v-text-field
-          class="search"
-          append-icon="search"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
+        <v-text-field class="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-card-title>
-      <v-data-table
-        v-model="selected"
-        :headers="headers"
-        :items="plugins"
-        :pagination.sync="pagination"
-        item-key="name"
-        select-all
-        class="elevation-1"
-      >
+      <v-data-table v-model="selected" :headers="headers" :items="plugins" :pagination.sync="pagination" item-key="name"
+        select-all class="elevation-1">
         <template slot="items" slot-scope="props">
           <td style="width: 20px">
-            <v-checkbox
-              v-model="props.selected"
-              primary
-              hide-details
-              v-if="props.item.isCustom"
-            ></v-checkbox>
+            <v-checkbox v-model="props.selected" primary hide-details v-if="props.item.isCustom"></v-checkbox>
           </td>
           <td>
             <a @click="edit(props.item)">
@@ -76,46 +42,21 @@
             </a>
           </td>
           <td>
-            <v-chip
-              label
-              color="light-blue"
-              text-color="white"
-              v-for="(page, index) in props.item.pages"
-              :key="index"
-              small
-            >
+            <v-chip label color="light-blue" text-color="white" v-for="(page, index) in props.item.pages" :key="index"
+              small>
               <!-- <v-icon left small>label</v-icon> -->
               {{ page }}
             </v-chip>
           </td>
           <td>{{ props.item.url }}</td>
           <td>
-            <v-icon
-              small
-              class="mr-2"
-              @click="edit(props.item)"
-              :title="$t('common.edit')"
-              v-if="props.item.isCustom"
-              >edit</v-icon
-            >
-            <v-icon
-              small
-              color="error"
-              @click="removeConfirm(props.item)"
-              :title="$t('common.remove')"
-              v-if="props.item.isCustom"
-              >delete</v-icon
-            >
+            <v-icon small class="mr-2" @click="edit(props.item)" :title="$t('common.edit')"
+              v-if="props.item.isCustom">edit</v-icon>
+            <v-icon small color="error" @click="removeConfirm(props.item)" :title="$t('common.remove')"
+              v-if="props.item.isCustom">delete</v-icon>
 
-            <v-icon
-              small
-              color="info"
-              class="ml-2"
-              @click="share(props.item)"
-              :title="$t('common.share')"
-              v-if="props.item.isCustom"
-              >share</v-icon
-            >
+            <v-icon small color="info" class="ml-2" @click="share(props.item)" :title="$t('common.share')"
+              v-if="props.item.isCustom">share</v-icon>
           </td>
         </template>
       </v-data-table>
@@ -124,21 +65,17 @@
     <!-- 新增插件 -->
     <AddItem v-model="showAddDialog" @save="addItem" />
     <!-- 编辑插件 -->
-    <EditItem
-      v-model="showEditDialog"
-      :initData="selectedItem"
-      @save="updateItem"
-    />
+    <EditItem v-model="showEditDialog" :initData="selectedItem" @save="updateItem" />
 
     <v-dialog v-model="dialogRemoveConfirm" width="300">
       <v-card>
         <v-card-title class="headline red lighten-2">{{
           $t("settings.sitePlugins.index.removeTitle")
-        }}</v-card-title>
+          }}</v-card-title>
 
         <v-card-text>{{
           $t("settings.sitePlugins.index.removeConfirm")
-        }}</v-card-text>
+          }}</v-card-text>
 
         <v-divider></v-divider>
 
@@ -158,10 +95,10 @@
 
     <v-snackbar v-model="haveError" top :timeout="3000" color="error">{{
       errorMsg
-    }}</v-snackbar>
+      }}</v-snackbar>
     <v-snackbar v-model="haveSuccess" bottom :timeout="3000" color="success">{{
       successMsg
-    }}</v-snackbar>
+      }}</v-snackbar>
   </div>
 </template>
 
@@ -283,7 +220,7 @@ export default Vue.extend({
               return item.name == schema;
             }
           );
-          if (_schema) {
+          if (_schema && _schema.plugins) {
             plugins.push(..._schema.plugins);
           }
         } else if (schema && schema.plugins) {
