@@ -12,45 +12,65 @@
   "levelRequirements": [{
     "level": "1", 
     "name": "Minnow",
-    "interval": "1",
-    "uploaded": "500GiB",
-    "privilege": "Unlimited download slots"
+    "interval": "7D",
+    "averageSeedtime": "7",
+    "uploaded": "512GiB",
+    "ratio": "1",
+    "privilege": "DL Slots: 8; Upload Torrents; Send Invite"
   },{
     "level": "2", 
     "name": "Goldfish",
-    "interval": "1",
+    "interval": "30D",
+    "averageSeedtime": "7",
+    "seedingSize": "102.4GiB",
     "uploaded": "1TiB",
-    "privilege": "Unlimited download slots"
+    "ratio": "1",
+    "privilege": "DL Slots: 13; Upload Torrents; Send Invite"
   },{
     "level": "3", 
     "name": "Swordfish",
-    "interval": "2",
+    "interval": "60D",
+    "averageSeedtime": "14",
+    "seedingSize": "512GiB",
     "uploaded": "5TiB",
-    "privilege": "Skip ModQ; Unlimited download slots"
+    "ratio": "1",
+    "privilege": "DL Slots: 15; Upload Torrents; Send Invite; Torrent Moderation bypass"
   },{
     "level": "4", 
     "name": "Dolphin",
-    "interval": "3",
+    "interval": "90D",
+    "averageSeedtime": "20",
+    "seedingSize": "2TiB",
     "uploaded": "10TiB",
-    "privilege": "Global Freeleech; Skip ModQ; Unlimited download slots"
+    "ratio": "1",
+    "privilege": "DL Slots: ∞; Upload Torrents; Send Invite; Freeleech; Torrent Moderation bypass"
   },{
     "level": "5", 
     "name": "Whale",
-    "interval": "4",
+    "interval": "120D",
+    "averageSeedtime": "30",
+    "seedingSize": "6TiB",
     "uploaded": "25TiB",
-    "privilege": "Global Freeleech; Immunity to automated HnR warnings; Skip ModQ; Invite forum; Sparkly name; Unlimited download slots"
+    "ratio": "1",
+    "privilege": "DL Slots: ∞; Upload Torrents; Send Invite; Freeleech; Immune to automated HnR warnings; Torrent Moderation bypass"
   },{
     "level": "6",
     "name": "Leviathan",
-    "interval": "8",
+    "interval": "240D",
+    "averageSeedtime": "90",
+    "seedingSize": "12TiB",
     "uploaded": "50TiB",
-    "privilege": "Global Freeleech; Immunity to automated HnR warnings; Skip ModQ; Invite forum; Sparkly name; Unlimited download slots"
+    "ratio": "1",
+    "privilege": "DL Slots: ∞; Upload Torrents; Send Invite; Freeleech; Immune to automated HnR warnings; Torrent Moderation bypass"
   },{
     "level": "7",
     "name": "Cthulhu",
-    "interval": "12",
-    "uploaded": "100TiB",
-    "privilege": "Global Freeleech; Immunity to automated HnR warnings; Double upload; Skip ModQ; Invite forum; Sparkly name; Unlimited download slots"
+    "interval": "365D",
+    "averageSeedtime": "180",
+    "seedingSize": "20TiB",
+    "uploaded": "200TiB",
+    "ratio": "1",
+    "privilege": "DL Slots: ∞; Upload Torrents; Send Invite; Freeleech; Double Upload; Immune to automated HnR warnings; Torrent Moderation bypass"
   }],
   "collaborator": ["bimzcy", "lengmianxia", "bright"],
   "selectors": {
