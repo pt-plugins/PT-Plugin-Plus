@@ -1,0 +1,38 @@
+{
+  "name": "回声PT",
+  "schema": "近来可好？",
+  "url": "https://hspt.club/",
+  "description": "Sunny",
+  "icon": "https://hspt.club/favicon.ico",
+  "tags": ["综合"],
+  "host": "hspt.club",
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "Power User",
+      "interval": "1",
+      "downloaded": "10GB",
+			"seedingPoints": "40000",
+      "ratio": "1.5",
+      "privilege": ""
+    },
+		{
+      "level": "2",
+      "name": "Elite User",
+      "interval": "1",
+      "downloaded": "120GB",
+			"seedingPoints": "80000",
+      "ratio": "1.55",
+      "privilege": ""
+    },
+		{
+      "level": "3",
+      "name": "Crazy User",
+      "interval": "4",
+      "downloaded": "300GB",
+			"seedingPoints": "150000",
+      "ratio": "2.05",
+      "privilege": ""
+    }
+  ]
+}
