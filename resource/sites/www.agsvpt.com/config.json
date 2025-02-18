@@ -9,6 +9,7 @@
     "综合"
   ],
   "host": "www.agsvpt.com",
+  "cdn": ["https://pt.agsvpt.cn/"],
   "plugins": [
     {
       "name": "种子列表",
@@ -25,11 +26,11 @@
     {
       "level": "1",
       "name": "Power User",
-      "interval": "4",
+      "interval": "0",
       "downloaded": "50GB",
       "ratio": "1.05",
       "seedingPoints": "40000",
-      "privilege": ""
+      "privilege": "可以在银行贷款"
     },
     {
       "level": "2",
@@ -73,7 +74,7 @@
       "interval": "40",
       "downloaded": "1TB",
       "ratio": "5.05",
-      "seedingPoints": "1400000",
+      "seedingPoints": "1200000",
       "privilege": ""
     },
     {
@@ -82,7 +83,7 @@
       "interval": "52",
       "downloaded": "1.5TB",
       "ratio": "6.05",
-      "seedingPoints": "2200000",
+      "seedingPoints": "2000000",
       "privilege": "首次升级至此等级的用户将获得2个邀请名额。"
     },
     {
@@ -91,7 +92,7 @@
       "interval": "70",
       "downloaded": "3TB",
       "ratio": "7.05",
-      "seedingPoints": "3200000",
+      "seedingPoints": "3000000",
       "privilege": "首次升级至此等级的用户将获得2个邀请名额。"
     }
   ],
