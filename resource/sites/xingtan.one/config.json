@@ -15,7 +15,8 @@
       "interval": "4",
       "downloaded": "50GB",
       "ratio": "1.05",
-      "privilege": "得到1个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+      "seedingPoints": "14888",
+      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
       "level": 2,
@@ -23,7 +24,8 @@
       "interval": "8",
       "downloaded": "120GB",
       "ratio": "1.55",
-      "privilege": "Elite User及以上用户封存账号后不会被删除。"
+      "seedingPoints": "29888",
+      "privilege": ""
     },
     {
       "level": 3,
@@ -31,7 +33,8 @@
       "interval": "15",
       "downloaded": "300GB",
       "ratio": "2.05",
-      "privilege": "得到2个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+      "seedingPoints": "59888",
+      "privilege": "CrazyUser及以上用户封存账号后不会被删除；得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
       "level": 4,
@@ -39,6 +42,7 @@
       "interval": "25",
       "downloaded": "500GB",
       "ratio": "2.55",
+      "seedingPoints": "118888",
       "privilege": "可以查看普通日志。"
     },
     {
@@ -47,7 +51,8 @@
       "interval": "40",
       "downloaded": "750GB",
       "ratio": "3.05",
-      "privilege": "得到3个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+      "seedingPoints": "236888",
+      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。"
     },
     {
       "level": 6,
@@ -55,7 +60,8 @@
       "interval": "60",
       "downloaded": "1TB",
       "ratio": "3.55",
-      "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
+      "seedingPoints": "468888",
+      "privilege": "Extreme User及以上等级用户会永远保留；可以更新过期的外部信息；可以查看Extreme User论坛。"
     },
     {
       "level": 7,
@@ -63,7 +69,8 @@
       "interval": "80",
       "downloaded": "1.5TB",
       "ratio": "4.05",
-      "privilege": "得到5个邀请名额。"
+      "seedingPoints": "988888",
+      "privilege": "得到四个邀请名额。"
     },
     {
       "level": 8,
@@ -71,20 +78,45 @@
       "interval": "100",
       "downloaded": "3TB",
       "ratio": "4.55",
-      "privilege": "得到10个邀请名额。"
+      "seedingPoints": "1888888",
+      "privilege": "得到五个邀请名额。"
     }
   ],
   "formerHosts": [
     "xinglin.one"
   ],
-  "collaborator": ["koal","yum"],
+  "collaborator": [
+    "koal",
+    "yum"
+  ],
   "selectors": {
     "userExtendInfo": {
       "merge": true,
       "fields": {
         "bonus": {
-          "selector": ["td.rowhead:contains('杏仁值') + td"],
-          "filters": ["query.text().replace(/,/g,'')", "parseFloat(query)"]
+          "selector": [
+            "td.rowhead:contains('杏仁值') + td"
+          ],
+          "filters": [
+            "query.text().replace(/,/g,'')",
+            "parseFloat(query)"
+          ]
+        }
+      }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": [
+            "div:contains('你当前每小时能获取'):last",
+            "div:contains('You are currently getting'):last",
+            "div:contains('你當前每小時能獲取'):last"
+          ],
+          "filters": [
+            "parseFloat(query.text().replace(/,/g,'').match(/[\\d.]+/)[0])"
+          ]
         }
       }
     },
@@ -92,8 +124,12 @@
       "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
       "fields": {
         "seeding": {
-          "selector": ["b:first"],
-          "filters": ["query.text()"]
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query.text()"
+          ]
         },
         "seedingSize": {
           "selector": "",
