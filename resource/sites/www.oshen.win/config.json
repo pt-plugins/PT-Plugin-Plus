@@ -12,80 +12,79 @@
   "collaborator": [
     "AllenPu"
   ],
-  "plugins": [
-  ],
+  "plugins": [],
   "levelRequirements": [
     {
       "level": 1,
-      "name": "Power User",
+      "name": "Power User(班长)",
       "interval": "4",
-      "seedingPoints": "40000",
       "downloaded": "50GB",
       "ratio": "1.05",
-      "privilege": "首次升级至此等级的用户将获得1个邀请名额。\n得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+      "seedingPoints": "40000",
+      "privilege": "得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
       "level": 2,
-      "name": "Elite User",
+      "name": "Elite User(排长)",
       "interval": "8",
-      "seedingPoints": "80000",
       "downloaded": "120GB",
       "ratio": "1.55",
-      "privilege": "首次升级至此等级的用户将获得2个邀请名额。\nElite User及以上用户封存账号后不会被删除。"
+      "seedingPoints": "80000",
+      "privilege": "Elite User及以上用户封存账号后不会被删除。"
     },
     {
       "level": 3,
-      "name": "Crazy User",
+      "name": "Crazy User(连长)",
       "interval": "15",
-      "seedingPoints": "150000",
       "downloaded": "300GB",
       "ratio": "2.05",
-      "privilege": "首次升级至此等级的用户将获得3个邀请名额。\n得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+      "seedingPoints": "150000",
+      "privilege": "得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
       "level": 4,
-      "name": "Insane User",
+      "name": "Insane User(营长)",
       "interval": "25",
-      "seedingPoints": "250000",
       "downloaded": "500GB",
       "ratio": "2.55",
-      "privilege": "首次升级至此等级的用户将获得4个邀请名额。\n可以查看普通日志。"
+      "seedingPoints": "250000",
+      "privilege": "可以查看普通日志。"
     },
     {
       "level": 5,
-      "name": "Veteran User",
+      "name": "Veteran User(团长)",
       "interval": "40",
-      "seedingPoints": "400000",
       "downloaded": "750GB",
       "ratio": "3.05",
-      "privilege": "首次升级至此等级的用户将获得5个邀请名额。\n得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
+      "seedingPoints": "400000",
+      "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
     },
     {
       "level": 6,
-      "name": "Extreme User",
+      "name": "Extreme User(旅长)",
       "interval": "60",
-      "seedingPoints": "600000",
-      "downloaded": "1TB",
+      "downloaded": "1024GB",
       "ratio": "3.55",
-      "privilege": "首次升级至此等级的用户将获得6个邀请名额。\n可以更新过期的外部信息；可以查看Extreme User论坛。"
+      "seedingPoints": "600000",
+      "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
     },
     {
       "level": 7,
-      "name": "Ultimate User",
+      "name": "Ultimate User(师长)",
       "interval": "80",
-      "seedingPoints": "800000",
-      "downloaded": "1.5TB",
+      "downloaded": "1536GB",
       "ratio": "4.05",
-      "privilege": "首次升级至此等级的用户将获得7个邀请名额。\n得到五个邀请名额。"
+      "seedingPoints": "800000",
+      "privilege": "得到五个邀请名额。"
     },
     {
       "level": 8,
-      "name": "Nexus Master",
+      "name": "Nexus Master(军长)",
       "interval": "100",
-      "seedingPoints": "1000000",
-      "downloaded": "3TB",
+      "downloaded": "3072GB",
       "ratio": "4.55",
-      "privilege": "首次升级至此等级的用户将获得8个邀请名额。\n得到十个邀请名额。"
+      "seedingPoints": "1000000",
+      "privilege": "得到十个邀请名额。"
     }
   ],
   "selectors": {
