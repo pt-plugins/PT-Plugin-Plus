@@ -14,7 +14,10 @@
   "formerHosts": [
     "pt.ghtt.net"
   ],
-  "collaborator": ["tongyifan", "zhuweitung"],
+  "collaborator": [
+    "tongyifan",
+    "zhuweitung"
+  ],
   "levelRequirements": [
     {
       "level": 1,
@@ -22,7 +25,8 @@
       "interval": "1",
       "downloaded": "10GB",
       "ratio": "1.5",
-      "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种；可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")；可以删除自己上传的字幕。"
+      "seedingPoints": "20000",
+      "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种；\n可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
     },
     {
       "level": 2,
@@ -30,7 +34,8 @@
       "interval": "1",
       "downloaded": "120GB",
       "ratio": "1.55",
-      "privilege": "Elite User及以上用户封存账号后不会被删除。"
+      "seedingPoints": "40000",
+      "privilege": "Elite User及以上用户封存账号后不会被删除，可以发送邀请。"
     },
     {
       "level": 3,
@@ -38,7 +43,8 @@
       "interval": "4",
       "downloaded": "300GB",
       "ratio": "2.05",
-      "privilege": "得到一个邀请名额；可以在做种/下载/发布的时候选择匿名模式。"
+      "seedingPoints": "120000",
+      "privilege": "得到一个邀请名额；可以用魔力值购买邀请；可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
       "level": 4,
@@ -46,6 +52,7 @@
       "interval": "6",
       "downloaded": "500GB",
       "ratio": "2.55",
+      "seedingPoints": "250000",
       "privilege": "可以查看普通日志。"
     },
     {
@@ -54,6 +61,7 @@
       "interval": "8",
       "downloaded": "750GB",
       "ratio": "3.05",
+      "seedingPoints": "400000",
       "privilege": "得到二个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
     },
     {
@@ -62,6 +70,7 @@
       "interval": "10",
       "downloaded": "1TB",
       "ratio": "3.55",
+      "seedingPoints": "600000",
       "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
     },
     {
@@ -70,6 +79,7 @@
       "interval": "20",
       "downloaded": "1.5TB",
       "ratio": "4.05",
+      "seedingPoints": "800000",
       "privilege": "得到三个邀请名额。"
     },
     {
@@ -77,11 +87,13 @@
       "name": "Nexus Master",
       "interval": "50",
       "downloaded": "2TB",
-      "ratio": "4.05",
-      "privilege": "和Nexus Master拥有相同权限并被认为是精英成员。免除自动降级。"
+      "ratio": "4.6",
+      "seedingPoints": "1000000",
+      "privilege": "得到五个邀请名额。"
     }
   ],
-  "searchEntry": [{
+  "searchEntry": [
+    {
       "entry": "/torrents.php?search=$key$&notnewword=1",
       "name": "影视",
       "enabled": true
@@ -162,10 +174,12 @@
       "enabled": false
     }
   ],
-  "categories": [{
+  "categories": [
+    {
       "entry": "torrents.php",
       "result": "&cat$id$=1",
-      "category": [{
+      "category": [
+        {
           "id": 401,
           "name": "高清电影"
         },
@@ -202,7 +216,8 @@
     {
       "entry": "music.php",
       "result": "&cat$id$=1",
-      "category": [{
+      "category": [
+        {
           "id": 411,
           "name": "电子文档"
         },
