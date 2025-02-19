@@ -5,90 +5,103 @@
   "url": "https://pt.eastgame.org/",
   "description": "水管虽小，坚持则大！宛如TLF，虽弱却奢华",
   "icon": "https://pt.eastgame.org/favicon.ico",
-  "tags": ["影视"],
+  "tags": [
+    "影视"
+  ],
   "host": "pt.eastgame.org",
   "collaborator": "waldens",
   "levelRequirements": [
     {
-        "level": 1,
-        "name": "Power User",
-        "interval": "4",
-        "downloaded": "50GB",
-        "ratio": "1.5",
-        "privilege": "可以查看NFO文档；可以请求续种； 查看种子结构; 可以删除自己上传的字幕。"
+      "level": 1,
+      "name": "Power User",
+      "interval": "4",
+      "downloaded": "50GB",
+      "ratio": "1.5",
+      "privilege": "可以查看NFO文档；可以请求续种；  查看种子结构; 可以删除自己上传的字幕。"
     },
     {
-        "level": 2,
-        "name": "Elite User",
-        "interval": "8",
-        "downloaded": "120GB",
-        "ratio": "2.55",
-        "privilege": "可以查看用户的种子历史记录，如下载种子的历史记录（只有用户的隐私等级没有设为’强‘时才生效）; 可以查看高级会员区。"
+      "level": 2,
+      "name": "Elite User",
+      "interval": "8",
+      "downloaded": "120GB",
+      "ratio": "2.55",
+      "privilege": "可以查看用户的种子历史记录，如下载种子的历史记录（只有用户的隐私等级没有设为’强‘时才生效）; 可以查看高级会员区 . Elite User +论坛。"
     },
     {
-        "level": 3,
-        "name": "Crazy User",
-        "interval": "15",
-        "downloaded": "300GB",
-        "ratio": "3.05",
-        "privilege": "可以查看排行榜；可以在做种/下载/发布的时候选择匿名模式。"
+      "level": 3,
+      "name": "Crazy User",
+      "interval": "15",
+      "downloaded": "300GB",
+      "ratio": "3.05",
+      "privilege": "可以查看排行榜；可以在做种/下载/发布的时候选择匿名模式。"
     },
     {
-        "level": 4,
-        "name": "Insane User",
-        "interval": "25",
-        "downloaded": "500GB",
-        "ratio": "4.55",
-        "privilege": "可以发送邀请；查看一般日志，不能查看机密日志; Insane User及以上等级的账号如果在封存后将永远保留。"
+      "level": 4,
+      "name": "Insane User",
+      "interval": "25",
+      "downloaded": "500GB",
+      "ratio": "4.55",
+      "privilege": "可以发送邀请；查看一般日志，不能查看机密日志; Insane User及以上等级的账号如果在封存后将永远保留。"
     },
     {
-        "level": 5,
-        "name": "Veteran User",
-        "interval": "40",
-        "downloaded": "750GB",
-        "ratio": "5.05",
-        "privilege": "得到一个邀请名额；可以查看其它用户的评论、帖子历史(如果用户隐私等级未设置为'强'); Veteran User及以上等级的账号将永远保留。"
+      "level": 5,
+      "name": "Veteran User",
+      "interval": "40",
+      "downloaded": "750GB",
+      "ratio": "5.05",
+      "privilege": "得到一个邀请名额；可以查看其它用户的评论、帖子历史(如果用户隐私等级未设置为\"强\"); Veteran User及以上等级的账号将永远保留。"
     },
     {
-        "level": 6,
-        "name": "Extreme User",
-        "interval": "60",
-        "downloaded": "1TB",
-        "ratio": "6.55",
-        "privilege": "得到三个邀请名额；可以更新过期的外部信息。"
+      "level": 6,
+      "name": "Extreme User",
+      "interval": "45",
+      "downloaded": "1TB",
+      "ratio": "6.55",
+      "privilege": "得到三个邀请名额；可以更新过期的外部信息。"
     },
     {
-        "level": 7,
-        "name": "Ultimate User",
-        "interval": "80",
-        "downloaded": "1.5TB",
-        "ratio": "7.05",
-        "privilege": "得到五个邀请名额。"
+      "level": 7,
+      "name": "Ultimate User",
+      "interval": "50",
+      "downloaded": "1.5TB",
+      "ratio": "7.05",
+      "privilege": "得到五个邀请名额。"
     },
     {
-        "level": 8,
-        "name": "Nexus Master",
-        "interval": "100",
-        "downloaded": "3TB",
-        "ratio": "8.55",
-        "privilege": "得到十个邀请名额。"
+      "level": 8,
+      "name": "Nexus Master",
+      "interval": "55",
+      "downloaded": "3TB",
+      "ratio": "8.55",
+      "privilege": "得到十个邀请名额。"
     }
   ],
   "searchEntryConfig": {
-      "fieldSelector": {
-          "progress": {
-              "selector": ["div[title*='正在做种']", ""],
-              "switchFilters": [
-                  ["100"],
-                  ["null"]
-              ]
-          },
-          "status": {
-              "selector": ["div[title*='正在做种']"],
-              "switchFilters": [
-                  ["2"]
-              ]
-          }
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "div[title*='正在做种']",
+          ""
+        ],
+        "switchFilters": [
+          [
+            "100"
+          ],
+          [
+            "null"
+          ]
+        ]
+      },
+      "status": {
+        "selector": [
+          "div[title*='正在做种']"
+        ],
+        "switchFilters": [
+          [
+            "2"
+          ]
+        ]
       }
+    }
   }
 }
