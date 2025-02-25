@@ -1,0 +1,134 @@
+{
+  "name": "Afun",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "url": "https://www.ptlover.cc",
+  "description": "希望都能找到各自的兴趣、爱好、欢喜",
+  "icon": "https://www.ptlover.cc/favicon.ico",
+  "tags": [
+    "综合",
+    "电影",
+    "电视剧",
+    "纪录片"
+  ],
+  "host": "ptlover.cc",
+  "collaborator": "geni",
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "Power User",
+      "interval": "4",
+      "downloaded": "50GB",
+      "ratio": "1.05",
+      "seedingPoints": "40000",
+      "privilege": "无"
+    },
+    {
+      "level": "2",
+      "name": "Elite User",
+      "interval": "8",
+      "downloaded": "120GB",
+      "ratio": "1.55",
+      "seedingPoints": "80000",
+      "privilege": "无"
+    },
+    {
+      "level": "3",
+      "name": "Crazy User",
+      "interval": "15",
+      "downloaded": "300GB",
+      "ratio": "2.05",
+      "seedingPoints": "150000",
+      "privilege": "无"
+    },
+    {
+      "level": "4",
+      "name": "Insane User",
+      "interval": "25",
+      "downloaded": "500GB",
+      "ratio": "2.55",
+      "seedingPoints": "250000",
+      "privilege": "无"
+    },
+    {
+      "level": "5",
+      "name": "Veteran User",
+      "interval": "40",
+      "downloaded": "750GB",
+      "ratio": "3.05",
+      "seedingPoints": "400000",
+      "privilege": "无"
+    },
+    {
+      "level": "6",
+      "name": "Extreme User",
+      "interval": "60",
+      "downloaded": "1024GB",
+      "ratio": "3.55",
+      "seedingPoints": "600000",
+      "privilege": "无"
+    },
+    {
+      "level": "7",
+      "name": "Ultimate User",
+      "interval": "80",
+      "downloaded": "1536GB",
+      "ratio": "4.05",
+      "seedingPoints": "1800000",
+      "privilege": "无"
+    },
+    {
+      "level": "8",
+      "name": "Nexus Master",
+      "interval": "100",
+      "downloaded": "3072GB",
+      "ratio": "4.55",
+      "seedingPoints": "1000000",
+      "privilege": "无"
+    }
+  ],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query.text()"
+          ]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)</g)",
+            "(query && query.length>0 ) ? query[0].replace('总大小：', '').replace('<', '').trim() : 0",
+            "(query != 0) ? _self.getTotalSize([query]) : 0"
+          ]
+        }
+      }
+    }
+  },
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"
+        ],
+        "filters": [
+          "query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"
+        ]
+      },
+      "status": {
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"
+        ],
+        "filters": [
+          "query ? query.attr('title') : ''",
+          "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+        ]
+      }
+    }
+  }
+}
