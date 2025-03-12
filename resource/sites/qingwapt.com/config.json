@@ -1,15 +1,18 @@
 {
-  "name": "青蛙",
-  "description": "青蛙",
+  "name": "QingWa",
+  "description": "青蛙PT",
   "timezoneOffset": "+0800",
   "schema": "NexusPHP",
   "host": "qingwapt.com",
-  "url": "https://qingwapt.com/",
-  "icon": "https://qingwapt.com/favicon.ico",
+  "url": "https://www.qingwapt.com/",
+  "icon": "https://www.qingwapt.com/favicon.ico",
   "ver": "1.0.0",
   "tags": [
     "综合",
-    "影视"
+    "影视",
+    "动漫",
+    "儿童区",
+    "纪录片"
   ],
   "collaborator": [
     "Eason Wong"
@@ -18,9 +21,6 @@
     "https://www.qingwapt.com",
     "https://www.qingwapt.org",
     "https://www.qingwa.pro"
-  ],
-  "formerHosts": [
-    "new.qingwa.pro"
   ],
   "levelRequirements": [
     {
@@ -143,163 +143,33 @@
       "privilege": "得到5个邀请名额。"
     }
   ],
-  "securityKeyFields": [
-    "passkey"
-  ],
-  "searchEntryConfig": {
-    "page": "/torrents.php",
-    "queryString": "search=$key$&notnewword=1",
-    "area": [
-      {
-        "name": "标题",
-        "appendQueryString": "&search_area=0"
-      },
-      {
-        "name": "简介",
-        "appendQueryString": "&search_area=1"
-      },
-      {
-        "name": "IMDB",
-        "keyAutoMatch": "^(tt\\d+)$",
-        "appendQueryString": "&search_area=4"
-      }
-    ],
-    "resultType": "html",
-    "parseScriptFile": "/schemas/NexusPHP/getSearchResult.js",
-    "resultSelector": "table.torrents:last"
-  },
-  "searchEntry": [
-    {
-      "name": "全部",
-      "enabled": true
-    }
-  ],
-  "checker": {
-    "isLogin": {
-      "page": "/usercp.php",
-      "contains": "logout.php"
-    }
-  },
   "selectors": {
-    "userBaseInfo": {
-      "page": "/index.php",
-      "fields": {
-        "id": {
-          "selector": [
-            "a[href*='userdetails.php'][class*='Name']:first",
-            "a[href*='userdetails.php']:first"
-          ],
-          "attribute": "href",
-          "filters": [
-            "query ? query.getQueryString('id'):''"
-          ]
-        },
-        "name": {
-          "selector": [
-            "a[href*='userdetails.php'][class*='Name']:first",
-            "a[href*='userdetails.php']:first"
-          ],
-          "filters": [
-            "query && query.attr('href').getQueryString('id') > 0 ? query.text(): ''"
-          ]
-        },
-        "isLogged": {
-          "selector": [
-            "a[href*='usercp.php']"
-          ],
-          "filters": [
-            "query.length>0"
-          ]
-        },
-        "messageCount": {
-          "selector": [
-            "td[style*='background: red'] a[href*='messages.php']"
-          ],
-          "filters": [
-            "query.text().match(/(\\d+)/)",
-            "(query && query.length>=2)?parseInt(query[1]):0"
-          ]
-        }
-      }
-    },
     "userExtendInfo": {
       "page": "/userdetails.php?id=$user.id$",
       "merge": true,
       "fields": {
-        "uploaded": {
-          "selector": [
-            "td.rowhead:contains('传输') + td",
-            "td.rowhead:contains('傳送') + td",
-            "td.rowhead:contains('Transfers') + td",
-            "td.rowfollow:contains('分享率')"
-          ],
-          "filters": [
-            "query.text().replace(/,/g,'').match(/(上[传傳]量|Uploaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
-            "(query && query.length==3)?(query[2]).sizeToNumber():0"
-          ]
-        },
-        "downloaded": {
-          "selector": [
-            "td.rowhead:contains('传输') + td",
-            "td.rowhead:contains('傳送') + td",
-            "td.rowhead:contains('Transfers') + td",
-            "td.rowfollow:contains('分享率')"
-          ],
-          "filters": [
-            "query.text().replace(/,/g,'').match(/(下[载載]量|Downloaded).+?([\\d.]+ ?[ZEPTGMK]?i?B)/)",
-            "(query && query.length==3)?(query[2]).sizeToNumber():0"
-          ]
-        },
-        "levelName": {
-          "selector": [
-            "td.rowhead:contains('等级')",
-            "td.rowhead:contains('等級')",
-            "td.rowhead:contains('Class')"
-          ],
-          "filters": [
-            "query.next().find('img').attr('title')"
-          ]
-        },
         "bonus": {
           "selector": [
             "td.rowhead:contains('蝌蚪') + td",
-            "td.rowhead:contains('Bonus') + td"
+            "td.rowhead:contains('bonus') + td"
           ],
           "filters": [
-            "query.text().replace(/,/g,'')",
+            "query.is(\":contains('蝌蚪')\")||query.is(\":contains('Bonus Points:')\")?query.text().replace(/,/g,'').match(/(?:蝌蚪|Bonus Points).+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')",
             "parseFloat(query)"
           ]
-        },
-        "seedingPoints": {
+        }
+      }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
           "selector": [
-            "td.rowhead:contains('做种积分') + td",
-            "td.rowhead:contains('Seeding Points') + td",
-            "td.rowhead:contains('做種積分') + td",
-            "td.rowhead:contains('保种积分') + td",
-            "td.rowfollow:contains('做种积分')",
-            "td.rowfollow:contains('Seeding Points')",
-            "td.rowfollow:contains('做種積分')"
+            "h1:contains('每小时获得的合计蝌蚪')"
           ],
           "filters": [
-            "query.text().replace(/,/g,'')",
-            "query.includes('做种积分') || query.includes('做種積分') || query.includes('Seeding Points') ? query.match(/(做种积分|做種積分|Seeding Points).+?[\\d.]+/g)[0] : query",
-            "query ? parseFloat(query.match(/[\\d.]+/)[0]) : null"
-          ]
-        },
-        "seeding": {
-          "selector": [
-            "a[href*='getusertorrentlist.php'][href*='seeding']"
-          ],
-          "filters": [
-            "query ? parseInt(query.text().replace(/,/g,'')) : 0"
-          ]
-        },
-        "seedingSize": {
-          "selector": [
-            "td.rowhead:contains('做种大小') + td, td.rowhead:contains('Seeding Size') + td, td.rowhead:contains('做種大小') + td"
-          ],
-          "filters": [
-            "query.text().trim().sizeToNumber()"
+            "query.next('div').find('table tr:last td:last').text().trim()"
           ]
         }
       }
