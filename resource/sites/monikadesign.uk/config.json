@@ -12,38 +12,38 @@
   ],
   "host": "monikadesign.uk",
   "levelRequirements": [{
-      "level": "1", 
+      "level": "1",
       "name": "PowerUser",
       "interval": "30D",
       "uploaded": "1TB",
       "privilege": "访问邀请区"
     },{
-      "level": "2", 
+      "level": "2",
       "name": "SuperUser",
       "interval": "60D",
       "uploaded": "2TB",
       "privilege": "访问邀请区"
     },{
-      "level": "3", 
+      "level": "3",
       "name": "ExtremeUser",
       "interval": "90D",
       "uploaded": "5TB",
       "privilege": "自动通过候选;访问邀请区"
     },{
-      "level": "4", 
+      "level": "4",
       "name": "InsaneUser",
       "interval": "180D",
       "uploaded": "10TB",
       "privilege": "自动通过候选;访问邀请区"
     },{
-      "level": "5", 
+      "level": "5",
       "name": "Veteran",
       "interval": "360D",
       "uploaded": "15TB",
       "privilege": "个人全局双倍上传;自动通过候选;访问邀请区"
     },
     {
-      "level": "6", 
+      "level": "6",
       "name": "Seeder",
       "interval": "30D",
       "seedingSize": "3TB",
@@ -51,7 +51,7 @@
       "privilege": "自动通过候选;访问邀请区"
     },
     {
-      "level": "7", 
+      "level": "7",
       "name": "Archivist",
       "interval": "90D",
       "seedingSize": "10TB",
@@ -96,6 +96,16 @@
           "selector": ["a[href$='bonus']:first","a[href$='earnings']:first", "a[href$='formula']:first"],
           "attribute": "href",
           "filters": ["query ? new URL(query).pathname : null"]
+        }
+      }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!(!user.bonusPage)",
+      "page": "$user.bonusPage$",
+      "fields": {
+        "bonusPerHour": {
+          "selector": [".panelV2 dl.key-value dd:nth(3)"],
+          "filters": ["parseFloat(query.text().replace(/,/g,'').match(/[\\d.]+/)[0])"]
         }
       }
     }
