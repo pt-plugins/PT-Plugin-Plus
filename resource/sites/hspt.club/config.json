@@ -1,0 +1,205 @@
+{
+    "name": "回声PT",
+    "timezoneOffset": "+0800",
+    "description": "近来可好？",
+    "url": "https://hspt.club/",
+    "icon": "https://hspt.club/favicon.ico",
+    "tags": ["综合", "影视"],
+    "schema": "NexusPHP",
+    "host": "hspt.club",
+    "collaborator": "liuyunfz",
+    "levelRequirements": [
+      {
+        "level": 1,
+        "name": "(回音者) 𝑷𝒐𝒘𝒆𝒓 𝑼𝒔𝒆𝒓",
+        "interval": "1",
+        "downloaded": "10GB",
+        "ratio": "1.1",
+        "seedingPoints": "40000",
+        "privilege": "得到一个邀请名额"
+      },
+      {
+        "level": 2,
+        "name": "(共鸣者) 𝑹𝒆𝒔𝒐𝒏𝒂𝒏𝒄𝒆",
+        "interval": "1",
+        "downloaded": "120GB",
+        "ratio": "1.55",
+        "seedingPoints": "80000",
+        "privilege": ""
+      },
+      {
+        "level": 3,
+        "name": "(和谐者) 𝑯𝒂𝒓𝒎𝒐𝒏𝒚",
+        "interval": "4",
+        "downloaded": "300GB",
+        "ratio": "2.05",
+        "seedingPoints": "150000",
+        "privilege": "得到两个邀请名额"
+      },
+      {
+        "level": 4,
+        "name": "(回荡者) ʀᴇᴠᴇʀʙᴇʀᴀᴛɪᴏɴ",
+        "interval": "25",
+        "downloaded": "500GB",
+        "ratio": "2.55",
+        "seedingPoints": "250000",
+        "privilege": ""
+      },
+      {
+        "level": 5,
+        "name": "(雷鸣者) ᴛʜᴜɴᴅᴇʀ",
+        "interval": "40",
+        "downloaded": "750GB",
+        "ratio": "3.05",
+        "seedingPoints": "400000",
+        "privilege": "得到三个邀请名额"
+      },
+      {
+        "level": 6,
+        "name": "(巅峰者) Ⱥᵽɇx",
+        "interval": "60",
+        "downloaded": "1024GB",
+        "ratio": "3.55",
+        "seedingPoints": "600000",
+        "privilege": ""
+      },
+      {
+        "level": 7,
+        "name": "(传承者) ʟᴇɢᴀᴄy",
+        "interval": "80",
+        "downloaded": "1536GB",
+        "ratio": "4.05",
+        "seedingPoints": "800000",
+        "privilege": "得到五个邀请名额"
+      },
+      {
+        "level": 8,
+        "name": "(永恒者) 𝕰𝖙𝖊𝖗𝖓𝖎𝖙𝖞",
+        "interval": "100",
+        "downloaded": "3072GB",
+        "ratio": "4.55",
+        "seedingPoints": "1000000",
+        "privilege": "得到十个邀请名额"
+      }
+    ],
+    "selectors": {
+      "userSeedingTorrents": {
+          "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+          "fields": {
+              "seeding": {
+                  "selector": [
+                      "b:first"
+                  ],
+                  "filters": [
+                      "query.text()"
+                  ]
+              },
+              "seedingSize": {
+                  "selector": "",
+                  "filters": [
+                      "query.text().match(/总大小：(.*?)上一页/g)",
+                      "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
+                      "(query != 0) ? query.sizeToNumber() : 0"
+                  ]
+              }
+          }
+      }
+    },
+    "searchEntry": [{
+        "name": "全站",
+        "enabled": true
+      },
+      {
+        "queryString": "cat401=1",
+        "name": "电影",
+        "enabled": false
+      },
+      {
+        "queryString": "cat404=1",
+        "name": "纪录片",
+        "enabled": false
+      },
+      {
+        "queryString": "cat405=1",
+        "name": "动漫",
+        "enabled": false
+      },
+      {
+        "queryString": "cat402=1",
+        "name": "电视剧",
+        "enabled": false
+      },
+      {
+        "queryString": "cat403=1",
+        "name": "综艺",
+        "enabled": false
+      },
+      {
+        "queryString": "cat407=1",
+        "name": "体育",
+        "enabled": false
+      },
+      {
+        "queryString": "cat420=1",
+        "name": "音轨",
+        "enabled": false
+      },
+      {
+        "queryString": "cat409=1",
+        "name": "其他",
+        "enabled": false
+      }
+    ],
+    "categories": [{
+      "entry": "torrents.php",
+      "result": "&cat$id$=1",
+      "category": [{
+          "id": 401,
+          "name": "电影"
+        },
+        {
+          "id": 404,
+          "name": "纪录片"
+        },
+        {
+          "id": 405,
+          "name": "动漫"
+        },
+        {
+          "id": 402,
+          "name": "电视剧"
+        },
+        {
+          "id": 403,
+          "name": "综艺"
+        },
+        {
+          "id": 407,
+          "name": "体育"
+        },
+        {
+          "id": 409,
+          "name": "其他"
+        },
+        {
+          "id": 420,
+          "name": "音轨"
+        }
+      ]
+    }],
+    "searchEntryConfig": {
+      "fieldSelector": {
+        "progress": {
+          "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+          "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+        },
+        "status": {
+          "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+          "filters": [
+            "query ? query.attr('title') : ''",
+            "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+          ]
+        }
+      }
+    }
+}
