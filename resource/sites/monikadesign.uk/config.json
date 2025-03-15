@@ -98,6 +98,16 @@
           "filters": ["query ? new URL(query).pathname : null"]
         }
       }
+    },
+    "bonusExtendInfo": {
+      "prerequisites": "!(!user.bonusPage)",
+      "page": "$user.bonusPage$",
+      "fields": {
+        "bonusPerHour": {
+          "selector": [".panelV2 dl.key-value dd:nth(3)"],
+          "filters": ["parseFloat(query.text().replace(/,/g,'').match(/[\\d.]+/)[0])"]
+        }
+      }
     }
   }
 }
