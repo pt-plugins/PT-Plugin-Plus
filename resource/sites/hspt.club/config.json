@@ -103,6 +103,20 @@
                   ]
               }
           }
+      },
+      "userExtendInfo": {
+        "merge": true,
+        "fields": {
+          "bonus": {
+            "selector": [
+              "td.rowhead:contains('音浪') + td"
+            ],
+            "filters": [
+              "query.text().replace(/,/g,'')",
+              "parseFloat(query)"
+            ]
+          }
+        }
       }
     },
     "searchEntry": [{
