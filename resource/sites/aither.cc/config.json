@@ -13,41 +13,111 @@
     {
       "level": "1",
       "name": "Harmonia",
-      "interval": "1",
-      "uploaded": "500Gib",
-      "privilege": "Unlimited DL slots"
+      "interval": "1M",
+      "alternative": [
+        {
+          "uploaded": "500Gib"
+        },
+        {
+          "seedingSize": "1TiB"
+        }
+      ],
+      "privilege": "10个下载连接数"
     },
     {
       "level": "2",
       "name": "Zeus",
-      "interval": "2",
-      "uploaded": "1TiB"
+      "interval": "3M",
+      "averageSeedtime": "10",
+      "alternative": [
+        {
+          "uploaded": "2TiB"
+        },
+        {
+          "seedingSize": "2TiB"
+        }
+      ],
+      "privilege": "25个下载连接数"
     },
     {
       "level": "3",
       "name": "Helios",
-      "interval": "3",
-      "uploaded": "5TiB"
+      "interval": "6M",
+      "averageSeedtime": "20",
+      "uploads": "1",
+      "alternative": [
+        {
+          "uploaded": "5TiB"
+        },
+        {
+          "seedingSize": "5TiB"
+        }
+      ],
+      "privilege": "无限下载连接数,发送邀请"
     },
     {
       "level": "4",
       "name": "Prometheus",
-      "interval": "4",
-      "uploaded": "10TiB"
+      "interval": "8M",
+      "averageSeedtime": "45",
+      "uploads": "5",
+      "alternative": [
+        {
+          "uploaded": "10TiB"
+        },
+        {
+          "seedingSize": "10TiB"
+        }
+      ],
+      "privilege": "访问邀请区"
     },
     {
       "level": "5",
       "name": "Oceanus",
-      "interval": "4",
-      "uploaded": "20TiB",
-      "privilege": "Mod Q skip, Special FL, Invite Forum, Sparkly name"
+      "interval": "1Y",
+      "averageSeedtime": "60",
+      "uploads": "10",
+      "alternative": [
+        {
+          "uploaded": "20TiB"
+        },
+        {
+          "seedingSize": "20TiB"
+        }
+      ],
+      "privilege": "直接发种"
     },
     {
       "level": "6",
       "name": "Gigantes",
-      "interval": "12",
-      "uploaded": "40TiB",
-      "privilege": "Mod Q skip, Special FL, Invite Forum, Sparkly name, HnR immunity"
+      "interval": "15M",
+      "averageSeedtime": "90",
+      "uploads": "15",
+      "alternative": [
+        {
+          "uploaded": "40TiB"
+        },
+        {
+          "seedingSize": "40TiB"
+        }
+      ],
+      "privilege": "个人全局免费"
+    },
+    {
+      "level": "7",
+      "name": "Titan",
+      "interval": "2Y",
+      "averageSeedtime": "180",
+      "uploads": "20",
+      "alternative": [
+        {
+          "uploaded": "100TiB"
+        },
+        {
+          "seedingSize": "65TiB"
+        }
+      ],
+      "privilege": "免疫HR"
     }
   ]
 }
