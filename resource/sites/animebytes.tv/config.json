@@ -13,7 +13,7 @@
     "interval": "1",
     "uploaded": "10.5GB",
     "ratio": "0.5",
-    "privilege": "Send invites"
+    "privilege": "发送邀请"
   },{
     "level": "2", 
     "name": "Power User",
@@ -21,7 +21,7 @@
     "uploads": "10",
     "uploaded": "25GB",
     "ratio": "0.7",
-    "privilege": "Invites forums; Exempt from inactivity pruning"
+    "privilege": "访问邀请区，每月固定邀请名额，免于非活动修剪"
   },{
     "level": "3", 
     "name": "Elite",
@@ -37,7 +37,7 @@
     "uploads": "100",
     "uploaded": "500GB",
     "ratio": "0.9",
-    "privilege": "Send invites even when we are above the user limit"
+    "privilege": "超出用户限制也可以发送邀请"
   },{
     "level": "5", 
     "name": "Legend",

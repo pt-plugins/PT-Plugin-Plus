@@ -14,6 +14,7 @@
       "level": "1",
       "name": "Harmonia",
       "interval": "1M",
+      "ratio": "0.6",
       "alternative": [
         {
           "uploaded": "500Gib"
@@ -28,6 +29,7 @@
       "level": "2",
       "name": "Zeus",
       "interval": "3M",
+      "ratio": "0.6",
       "averageSeedtime": "10",
       "alternative": [
         {
@@ -43,6 +45,7 @@
       "level": "3",
       "name": "Helios",
       "interval": "6M",
+      "ratio": "0.8",
       "averageSeedtime": "20",
       "uploads": "1",
       "alternative": [
@@ -59,6 +62,7 @@
       "level": "4",
       "name": "Prometheus",
       "interval": "8M",
+      "ratio": "1",
       "averageSeedtime": "45",
       "uploads": "5",
       "alternative": [
@@ -75,6 +79,7 @@
       "level": "5",
       "name": "Oceanus",
       "interval": "1Y",
+      "ratio": "1.5",
       "averageSeedtime": "60",
       "uploads": "10",
       "alternative": [
@@ -91,6 +96,7 @@
       "level": "6",
       "name": "Gigantes",
       "interval": "15M",
+      "ratio": "1.5",
       "averageSeedtime": "90",
       "uploads": "15",
       "alternative": [
@@ -107,6 +113,7 @@
       "level": "7",
       "name": "Titan",
       "interval": "2Y",
+      "ratio": "2",
       "averageSeedtime": "180",
       "uploads": "20",
       "alternative": [
