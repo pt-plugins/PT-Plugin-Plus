@@ -126,10 +126,10 @@
           "filters": ["query.text().replace(/(Registration date|注册日期|註冊日期)/g, '').trim()", "dateTime(query).isValid()?dateTime(query).valueOf():query"]
         },
         "uploads": {
-          "selector": [".badge-user .fa-upload + span", "dt a[href$='/uploads']"],
+          "selector": [".badge-user .fa-upload + span", "li:has(i.fas.fa-upload) a[href*='/uploads']"],
           "switchFilters": [
             ["query ? parseInt(query.text().trim().replace(/,/g,'')) : 0"],
-            ["query ? parseInt(query.parent().next().text().trim().replace(/,/g,'')) : 0"]
+            ["query ? parseInt(query.contents().filter((_, el) => el.nodeType === 3).text().trim().replace(/[^0-9]/g, '')) : 0"]
           ]
         },
         "unsatisfiedsPage": {
