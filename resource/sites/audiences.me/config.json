@@ -15,76 +15,85 @@
   "host": "audiences.me",
   "levelRequirements": [
     {
-      "level": "1",
-      "name": "Power User",
+      "level": 1,
+      "name": "年轻气盛(Power User)",
       "interval": "5",
       "downloaded": "120GB",
       "ratio": "2.0",
       "seedingPoints": "100000",
-      "privilege": "查看NFO文档；查看用户列表；请求续种；查看其它用户的种子历史；删除自己上传的字幕"
+      "privilege": "可以查看NFO文档；可以查看用户列表； 可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕；发布10种通过候选后可直接发布种子。"
     },
     {
-      "level": "2",
-      "name": "Elite User",
+      "level": 2,
+      "name": "江湖儿女(Elite User)",
       "interval": "15",
       "downloaded": "240GB",
       "ratio": "2.5",
       "seedingPoints": "200000",
-      "privilege": "无"
+      "privilege": "同年轻气盛(Power User)"
     },
     {
-      "level": "3",
-      "name": "Crazy User",
+      "level": 3,
+      "name": "街头霸王(Crazy User)",
       "interval": "24",
       "downloaded": "400GB",
       "ratio": "3.0",
       "seedingPoints": "400000",
-      "privilege": "查看排行榜"
+      "privilege": "可以查看排行榜。"
     },
     {
-      "level": "4",
-      "name": "Insane User",
+      "level": 4,
+      "name": "步履不停(Insane User)",
       "interval": "40",
       "downloaded": "600GB",
       "ratio": "3.5",
       "seedingPoints": "640000",
-      "privilege": "无"
+      "privilege": "同街头霸王(Crazy User)"
     },
     {
-      "level": "5",
-      "name": "Veteran User",
+      "level": 5,
+      "name": "杰出公民(Veteran User)",
       "interval": "60",
-      "downloaded": "900GB",
+      "downloaded": "1024GB",
       "ratio": "4.0",
       "seedingPoints": "880000",
-      "privilege": "查看其它用户的评论、帖子历史"
+      "privilege": "可以查看其它用户的评论、帖子历史。"
     },
     {
-      "level": "6",
-      "name": "Extreme User",
+      "level": 6,
+      "name": "头号玩家(Extreme User)",
       "interval": "80",
       "downloaded": "2048GB",
       "ratio": "4.5",
       "seedingPoints": "1200000",
-      "privilege": "永远保留账号；更新过期的外部信息"
+      "privilege": "可以更新过期的外部信息。头号玩家(Extreme User)及以上用户会永远保留账号。"
     },
     {
-      "level": "7",
-      "name": "Ultimate User",
+      "level": 7,
+      "name": "一代宗师(Ultimate User)",
       "interval": "100",
       "downloaded": "4096GB",
       "ratio": "5.0",
       "seedingPoints": "1500000",
-      "privilege": "无"
+      "privilege": "同头号玩家(Extreme User)"
     },
     {
-      "level": "8",
-      "name": "Nexus Master",
+      "level": 8,
+      "name": "教父(Nexus Master)",
       "interval": "112",
       "downloaded": "8192GB",
       "ratio": "6.0",
       "seedingPoints": "1800000",
-      "privilege": "无"
+      "privilege": "同一代宗师(Ultimate User)"
+    },
+    {
+      "level": 9,
+      "name": "彩虹照耀(Rainbow)",
+      "interval": "128",
+      "downloaded": "10240GB",
+      "ratio": "8",
+      "seedingPoints": "2400000",
+      "privilege": "保持等级期间会显示彩虹ID，做种积分要求逐年增加（具体数值以通知为准），彩虹照耀(Rainbow)用户未到更新后的要求会被降级"
     }
   ],
   "collaborator": "Audiences",
