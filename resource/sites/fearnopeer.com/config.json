@@ -1,0 +1,87 @@
+{
+  "name": "FNP",
+  "timezoneOffset": "+0000",
+  "schema": "UNIT3D",
+  "url": "https://fearnopeer.com/",
+  "icon": "https://fearnopeer.com/favicon.ico",
+  "tags": ["影视", "综合"],
+  "host": "fearnopeer.com",
+  "formerHosts": [
+    "fearnopeer.com"
+  ],
+  "levelRequirements": [{
+    "level": "1", 
+    "name": "PowerUser",
+    "interval": "30D",
+    "uploaded": "1TiB",
+    "ratio": "0.8",
+    "privilege": "DL Slots: 20; Upload Torrents"
+  },{
+    "level": "2", 
+    "name": "SuperUser",
+    "interval": "60D",
+    "uploaded": "5TiB",
+    "ratio": "0.8",
+    "privilege": "DL Slots: 30; Upload Torrents; Send Invite; Torrent Moderation bypass"
+  },{
+    "level": "3", 
+    "name": "ExtremeUser",
+    "interval": "90D",
+    "uploaded": "20TiB",
+    "ratio": "0.8",
+    "privilege": "DL Slots: 40; Upload Torrents; Send Invite; Torrent Moderation bypass"
+  },{
+    "level": "4", 
+    "name": "InsaneUser",
+    "interval": "180D",
+    "uploaded": "50TiB",
+    "ratio": "0.8",
+    "privilege": "DL Slots: 50; Upload Torrents; Send Invite; Torrent Moderation bypass"
+  },{
+    "level": "5",
+    "name": "Seeder",
+    "interval": "30D",
+    "seedingSize": "5TiB",
+    "averageSeedtime": "30",
+    "ratio": "0.8",
+    "privilege": "DL Slots: 60; Upload Torrents; Send Invite; Immune to automated HnR warnings; Torrent Moderation bypass"
+  },{
+    "level": "6",
+    "name": "Curator",
+    "interval": "60D",
+    "seedingSize": "10TiB",
+    "averageSeedtime": "60",
+    "ratio": "0.8",
+    "privilege": "DL Slots: 60; Upload Torrents; Send Invite; Immune to automated HnR warnings; Torrent Moderation bypass"
+  },{
+    "level": "7",
+    "name": "Veteran",
+    "interval": "365D",
+    "uploaded": "100TiB",
+    "seedingSize": "5TiB",
+    "averageSeedtime": "30",
+    "ratio": "0.8",
+    "privilege": "DL Slots: 60; Upload Torrents; Send Invite; Freeleech; Immune to automated HnR warnings; Torrent Moderation bypass"
+  },{
+    "level": "8",
+    "name": "Archivist",
+    "interval": "90D",
+    "seedingSize": "20TiB",
+    "averageSeedtime": "90",
+    "ratio": "0.8",
+    "privilege": "DL Slots: 60; Upload Torrents; Send Invite; Freeleech; Double Upload; Immune to automated HnR warnings; Torrent Moderation bypass"
+  }],
+  "collaborator": ["bimzcy", "lengmianxia", "bright"],
+  "selectors": {
+    "hnrExtendInfo": {
+      "page": "/users/$user.name$/torrents?unsatisfied=include&perPage=100&hitrun=exclude&immune=exclude",
+      "fields": {
+        "unsatisfieds": {
+          "selector": [".table-responsive tbody tr"],
+          "filters": ["query ? query.length : 0"]
+        }
+      }
+    }
+  },
+  "cdn": ["https://fearnopeer.com/"]
+}
