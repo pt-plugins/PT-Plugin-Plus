@@ -4,13 +4,17 @@
   "url": "https://www.haidan.video/",
   "description": "海胆之家",
   "icon": "https://www.haidan.video/public/pic/favicon.ico",
-  "tags": [ "影视", "综合" ],
+  "tags": [
+    "影视",
+    "综合"
+  ],
   "host": "www.haidan.video",
   "levelRequirements": [
     {
       "level": 1,
       "name": "Power User",
       "interval": "2",
+      "downloaded": "50GB",
       "ratio": "1",
       "classPoints": "100",
       "privilege": "允许购买邀请码，可以直接发布种子，可以删除自己上传的字幕。"
@@ -19,6 +23,7 @@
       "level": 2,
       "name": "Elite User",
       "interval": "4",
+      "downloaded": "50GB",
       "ratio": "1",
       "classPoints": "200",
       "privilege": "Elite User允许发送邀请码，并拥有低于该等级以下权限。"
@@ -27,6 +32,7 @@
       "level": 3,
       "name": "Crazy User",
       "interval": "8",
+      "downloaded": "50GB",
       "ratio": "1",
       "classPoints": "500",
       "privilege": "查看种子结构，并拥有低于该等级以下权限。"
@@ -35,6 +41,7 @@
       "level": 4,
       "name": "Insane User",
       "interval": "16",
+      "downloaded": "50GB",
       "ratio": "1",
       "classPoints": "1000",
       "privilege": "发布趣味盒，并拥有低于该等级以下权限。"
@@ -43,6 +50,7 @@
       "level": 5,
       "name": "Veteran User",
       "interval": "28",
+      "downloaded": "50GB",
       "ratio": "1",
       "classPoints": "2000",
       "privilege": "Veteran User永远保留账号，并拥有低于该等级以下权限。"
@@ -51,6 +59,7 @@
       "level": 6,
       "name": "Extreme User",
       "interval": "32",
+      "downloaded": "50GB",
       "ratio": "1",
       "classPoints": "5000",
       "privilege": "查看日志权限，并拥有低于该等级以下权限。"
@@ -59,6 +68,7 @@
       "level": 7,
       "name": "Ultimate User",
       "interval": "40",
+      "downloaded": "50GB",
       "ratio": "1",
       "classPoints": "8000",
       "privilege": "查看排行榜，并拥有低于该等级以下权限"
@@ -67,6 +77,7 @@
       "level": 8,
       "name": "Nexus Master",
       "interval": "52",
+      "downloaded": "50GB",
       "ratio": "1",
       "classPoints": "10000",
       "privilege": "允许匿名，拥有发布主题推荐权限，并拥有低于该等级以下权限"
@@ -74,124 +85,203 @@
   ],
   "collaborator": "rsj",
   "ver": "1.0",
-  "plugins": [{
-    "name": "种子详情页面",
-    "pages": ["/details.php"],
-    "scripts": ["common.js", "details.js"]
-  }, {
-    "name": "种子列表",
-    "pages": ["/torrents.php", "/videos.php"],
-    "scripts": ["common.js", "torrents.js"]
-  }],
-  "securityKeyFields": ["passkey"],
+  "plugins": [
+    {
+      "name": "种子详情页面",
+      "pages": [
+        "/details.php"
+      ],
+      "scripts": [
+        "common.js",
+        "details.js"
+      ]
+    },
+    {
+      "name": "种子列表",
+      "pages": [
+        "/torrents.php",
+        "/videos.php"
+      ],
+      "scripts": [
+        "common.js",
+        "torrents.js"
+      ]
+    }
+  ],
+  "securityKeyFields": [
+    "passkey"
+  ],
   "searchEntryConfig": {
     "fieldSelector": {
       "title": {
-        "selector": [".video_name_str"]
+        "selector": [
+          ".video_name_str"
+        ]
       },
       "subTitle": {
-        "selector": [".torrent_name_col a"]
+        "selector": [
+          ".torrent_name_col a"
+        ]
       },
       "seeders": {
-        "selector": [".seeder_col"]
+        "selector": [
+          ".seeder_col"
+        ]
       },
       "leechers": {
-        "selector": [".leecher_col"]
+        "selector": [
+          ".leecher_col"
+        ]
       },
       "completed": {
-        "selector": [".snatched_col"]
+        "selector": [
+          ".snatched_col"
+        ]
       },
       "size": {
-        "selector": [".video_size"]
+        "selector": [
+          ".video_size"
+        ]
       },
       "author": {
-        "selector": [".username-center a b"]
+        "selector": [
+          ".username-center a b"
+        ]
       },
       "time": {
-        "selector": [".time_col span[title]"],
-        "filters": ["query.attr('title')"]
+        "selector": [
+          ".time_col span[title]"
+        ],
+        "filters": [
+          "query.attr('title')"
+        ]
       },
       "link_path": {
-        "selector": [".torrent_name_col a"],
-        "filters": ["query.attr('href')"]
+        "selector": [
+          ".torrent_name_col a"
+        ],
+        "filters": [
+          "query.attr('href')"
+        ]
       },
       "url_path": {
-        "selector": [".fa-download"],
-        "filters": ["query.parent().attr('href')"]
+        "selector": [
+          ".fa-download"
+        ],
+        "filters": [
+          "query.parent().attr('href')"
+        ]
       },
       "category_link_parameters": {
-        "selector": [".img_blurry a"],
-        "filters": ["query.attr('href')"]
+        "selector": [
+          ".img_blurry a"
+        ],
+        "filters": [
+          "query.attr('href')"
+        ]
       },
       "category_name": {
-        "selector": [".img_blurry a img"],
-        "filters": ["query.attr('title')"]
+        "selector": [
+          ".img_blurry a img"
+        ],
+        "filters": [
+          "query.attr('title')"
+        ]
       },
       "progress": {
-        "selector": ["progress"],
-        "filters": ["query.attr('data-label')","query==null?null:query.replace('%','')"]
+        "selector": [
+          "progress"
+        ],
+        "filters": [
+          "query.attr('data-label')",
+          "query==null?null:query.replace('%','')"
+        ]
       },
       "status": {
-        "selector": ["progress"],
-        "filters": ["query.attr('data-label')","query==null?null:(query.replace('%','')==100?2:1)"]
+        "selector": [
+          "progress"
+        ],
+        "filters": [
+          "query.attr('data-label')",
+          "query==null?null:(query.replace('%','')==100?2:1)"
+        ]
       }
     },
     "page": "torrents.php",
     "queryString": "search=$key$",
-    "area": [{
-      "name": "标题",
-      "appendQueryString": "&search_area=0"
-    }, {
-      "name": "简介",
-      "appendQueryString": "&search_area=1"
-    }, {
-      "name": "IMDB",
-      "keyAutoMatch": "^(tt\\d+)$",
-      "appendQueryString": "&search_area=4"
-    }],
+    "area": [
+      {
+        "name": "标题",
+        "appendQueryString": "&search_area=0"
+      },
+      {
+        "name": "简介",
+        "appendQueryString": "&search_area=1"
+      },
+      {
+        "name": "IMDB",
+        "keyAutoMatch": "^(tt\\d+)$",
+        "appendQueryString": "&search_area=4"
+      }
+    ],
     "resultType": "html",
     "parseScriptFile": "getSearchResult.js"
   },
-  "searchEntry": [{
-    "name": "全站",
-    "enabled": true
-  }],
+  "searchEntry": [
+    {
+      "name": "全站",
+      "enabled": true
+    }
+  ],
   "checker": {
     "isLogin": {
       "page": "/usercp.php",
       "contains": "logout.php"
     }
   },
-  "torrentTagSelectors": [{
-    "name": "Free",
-    "selector": "img.pro_free"
-  }, {
-    "name": "2xFree",
-    "selector": "img.pro_free2up"
-  }, {
-    "name": "2xUp",
-    "selector": "img.pro_2up"
-  }, {
-    "name": "2x50%",
-    "selector": "img.pro_50pctdown2up"
-  }, {
-    "name": "30%",
-    "selector": "img.pro_30pctdown"
-  }, {
-    "name": "50%",
-    "selector": "img.pro_50pctdown"
-  }, {
-    "name": "H&R",
-    "color": "black",
-    "selector": "img[src='public/pic/hit_run.gif']"
-  }],
+  "torrentTagSelectors": [
+    {
+      "name": "Free",
+      "selector": "img.pro_free"
+    },
+    {
+      "name": "2xFree",
+      "selector": "img.pro_free2up"
+    },
+    {
+      "name": "2xUp",
+      "selector": "img.pro_2up"
+    },
+    {
+      "name": "2x50%",
+      "selector": "img.pro_50pctdown2up"
+    },
+    {
+      "name": "30%",
+      "selector": "img.pro_30pctdown"
+    },
+    {
+      "name": "50%",
+      "selector": "img.pro_50pctdown"
+    },
+    {
+      "name": "H&R",
+      "color": "black",
+      "selector": "img[src='public/pic/hit_run.gif']"
+    }
+  ],
   "selectors": {
     "userBaseInfo": {
       "merge": true,
       "fields": {
         "classPoints": {
-          "selector": ["a[href='classpoint.php']+span"],
-          "filters": ["query.text().replace(/\\D/g,'')", "query ? parseInt(query) : 0"]
+          "selector": [
+            "a[href='classpoint.php']+span"
+          ],
+          "filters": [
+            "query.text().replace(/\\D/g,'')",
+            "query ? parseInt(query) : 0"
+          ]
         }
       }
     }
