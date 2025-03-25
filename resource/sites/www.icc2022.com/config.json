@@ -59,7 +59,7 @@
     {
       "level": 6,
       "name": "Extreme User",
-      "interval": "50",
+      "interval": "60",
       "downloaded": "1TB",
       "ratio": "3.55",
       "seedingPoints": "600000",
@@ -124,7 +124,7 @@
         {
           "id": 401,
           "name": "电影"
-        } 
+        }
       ]
     }
   ],
@@ -133,8 +133,12 @@
       "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
       "fields": {
         "seeding": {
-          "selector": ["b:first"],
-          "filters": ["query.text()"]
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query.text()"
+          ]
         },
         "seedingSize": {
           "selector": "",
@@ -150,11 +154,17 @@
   "searchEntryConfig": {
     "fieldSelector": {
       "progress": {
-        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
-        "filters": ["query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"]
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
+        ],
+        "filters": [
+          "query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"
+        ]
       },
       "status": {
-        "selector": ["> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"],
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
+        ],
         "filters": [
           "query ? query.attr('title') : ''",
           "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
