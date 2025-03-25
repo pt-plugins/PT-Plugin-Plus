@@ -10,15 +10,15 @@
   "levelRequirements": [
     {
       "level": 1,
-      "name": "Power User",
+      "name": "小学Power User",
       "interval": "4",
       "downloaded": "50GB",
       "ratio": "1.05",
-      "privilege": "得到一个邀请名额；可以查看NFO文档；可以请求续种；可以发送邀请；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")；允许发布新的趣味盒内容及编辑自己发布的趣味盒内容;可以删除自己上传的字幕。"
+      "privilege": "得到一个邀请名额；可以查看NFO文档；可以请求续种； 可以发送邀请；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 允许发布新的趣味盒内容及编辑自己发布的趣味盒内容;可以删除自己上传的字幕。"
     },
     {
       "level": 2,
-      "name": "Elite User",
+      "name": "初中Elite User",
       "interval": "8",
       "downloaded": "120GB",
       "ratio": "1.55",
@@ -26,7 +26,7 @@
     },
     {
       "level": 3,
-      "name": "Crazy User",
+      "name": "高中Crazy User",
       "interval": "15",
       "downloaded": "300GB",
       "ratio": "2.05",
@@ -34,7 +34,7 @@
     },
     {
       "level": 4,
-      "name": "Insane User",
+      "name": "中专Insane User",
       "interval": "25",
       "downloaded": "1536GB",
       "ratio": "2.55",
@@ -42,7 +42,7 @@
     },
     {
       "level": 5,
-      "name": "Veteran User",
+      "name": "大专Veteran User",
       "interval": "40",
       "downloaded": "2560GB",
       "ratio": "3.05",
@@ -50,7 +50,7 @@
     },
     {
       "level": 6,
-      "name": "Extreme User",
+      "name": "本科Extreme User",
       "interval": "60",
       "downloaded": "3072GB",
       "ratio": "3.55",
@@ -58,7 +58,7 @@
     },
     {
       "level": 7,
-      "name": "Ultimate User",
+      "name": "研究生Ultimate User",
       "interval": "80",
       "downloaded": "4608GB",
       "ratio": "4.05",
@@ -66,7 +66,7 @@
     },
     {
       "level": 8,
-      "name": "Nexus Master",
+      "name": "博士Nexus Master",
       "interval": "100",
       "downloaded": "5632GB",
       "ratio": "4.55",
