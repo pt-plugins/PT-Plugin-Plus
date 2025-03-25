@@ -13,78 +13,95 @@
   "cdn": [
     "https://pt.upxin.net/"
   ],
-  "levelRequirements": [{
-    "level": "1",
-    "name": " Power User",
-    "interval": "4",
-    "downloaded": "50GB",
-    "ratio": "2",
-    "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
-  },{
-    "level": "2",
-    "name": "Elite User",
-    "interval": "8",
-    "downloaded": "120GB",
-    "ratio": "2.5",
-    "privilege": "略有小成(Elite User)及以上用户封存账号后不会被删除，可以进入论坛邀请区。"
-  },{
-    "level": "3",
-    "name": "Crazy User",
-    "interval": "15",
-    "downloaded": "300GB",
-    "ratio": "3",
-    "privilege": "得到一个邀请名额。"
-  },{
-    "level": "4",
-    "name": "Insane User",
-    "interval": "25",
-    "downloaded": "500GB",
-    "ratio": "3.85",
-    "privilege": "得到一个邀请名额。"
-  },{
-    "level": "5",
-    "name": "Veteran User",
-    "interval": "40",
-    "downloaded": "750GB",
-    "ratio": "5.95",
-    "privilege": "得到一个邀请名额；可以查看其它用户的评论、帖子历史。炉火纯青(Veteran User)及以上用户会永远保留账号。"
-  },{
-    "level": "6",
-    "name": "Extreme User",
-    "interval": "60",
-    "downloaded": "1TB",
-    "ratio": "6.55",
-    "privilege": "得到一个邀请名额；可以更新过期的外部信息；可以查看Extreme User论坛。"
-  },{
-    "level": "7",
-    "name": "Ultimate User",
-    "interval": "80",
-    "downloaded": "1.5TB",
-    "ratio": "7.05",
-    "seedingPoints": "840000",
-    "privilege": "得到两个邀请名额。"
-  },{
-    "level": "8",
-    "name": "Nexus Master",
-    "interval": "100",
-    "downloaded": "3TB",
-    "ratio": "8.85",
-    "privilege": "得到三个邀请名额。"
-  }],
+  "levelRequirements": [
+    {
+      "level": 1,
+      "name": "初窥门径(Power User)",
+      "interval": "4",
+      "downloaded": "50GB",
+      "ratio": "2",
+      "privilege": "可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请；可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")； 可以删除自己上传的字幕。"
+    },
+    {
+      "level": 2,
+      "name": "略有小成(Elite User)",
+      "interval": "8",
+      "downloaded": "120GB",
+      "ratio": "2.5",
+      "privilege": "略有小成(Elite User)及以上用户封存账号后不会被删除，可以进入论坛邀请区。"
+    },
+    {
+      "level": 3,
+      "name": "驾轻就熟(Crazy User)",
+      "interval": "15",
+      "downloaded": "300GB",
+      "ratio": "3",
+      "privilege": "得到一个邀请名额。"
+    },
+    {
+      "level": 4,
+      "name": "渐入佳境(Insane User)",
+      "interval": "25",
+      "downloaded": "500GB",
+      "ratio": "3.85",
+      "privilege": "得到一个邀请名额。"
+    },
+    {
+      "level": 5,
+      "name": "炉火纯青(Veteran User)",
+      "interval": "40",
+      "downloaded": "750GB",
+      "ratio": "5.95",
+      "privilege": "得到一个邀请名额；可以查看其它用户的评论、帖子历史。炉火纯青(Veteran User)及以上用户会永远保留账号。"
+    },
+    {
+      "level": 6,
+      "name": "登峰造极(Extreme User)",
+      "interval": "60",
+      "downloaded": "1TB",
+      "ratio": "6.55",
+      "privilege": "得到一个邀请名额；可以更新过期的外部信息；可以查看Extreme User论坛。"
+    },
+    {
+      "level": 7,
+      "name": "举世无双(Ultimate User)",
+      "interval": "80",
+      "downloaded": "1.5TB",
+      "ratio": "7.05",
+      "privilege": "得到两个邀请名额。"
+    },
+    {
+      "level": 8,
+      "name": "超凡入圣(Nexus Master)",
+      "interval": "100",
+      "downloaded": "3TB",
+      "ratio": "8.85",
+      "privilege": "得到三个邀请名额。"
+    }
+  ],
   "searchEntryConfig": {
     "merge": true,
     "fieldSelector": {
       "progress": {
-        "selector": ["td[class='embedded'][style*='color: blue;font-weight: bold'],td[class='embedded'] img[src*='zuozhong.gif']"],
-        "filters": ["query.attr('src')?100:(query.text()?query.text():null)"]
+        "selector": [
+          "td[class='embedded'][style*='color: blue;font-weight: bold'],td[class='embedded'] img[src*='zuozhong.gif']"
+        ],
+        "filters": [
+          "query.attr('src')?100:(query.text()?query.text():null)"
+        ]
       },
       "status": {
-        "selector": ["td[class='embedded'][style*='color: blue;font-weight: bold'],td[class='embedded'] img[src*='zuozhong.gif']"],
-        "filters": ["query.attr('src')?2:(query.text()=='100%'?255:3)"]
+        "selector": [
+          "td[class='embedded'][style*='color: blue;font-weight: bold'],td[class='embedded'] img[src*='zuozhong.gif']"
+        ],
+        "filters": [
+          "query.attr('src')?2:(query.text()=='100%'?255:3)"
+        ]
       }
     }
   },
-  "searchEntry": [{
+  "searchEntry": [
+    {
       "name": "全站",
       "enabled": true
     },
@@ -139,58 +156,66 @@
       "enabled": false
     }
   ],
-  "categories": [{
-    "entry": "*",
-    "result": "&cat$id$=1",
-    "category": [{
-        "id": 401,
-        "name": "Movies/电影"
-      },
-      {
-        "id": 402,
-        "name": "TV Series/电视剧"
-      },
-      {
-        "id": 403,
-        "name": "TV Shows/综艺"
-      },
-      {
-        "id": 404,
-        "name": "Documentaries/纪录片"
-      },
-      {
-        "id": 405,
-        "name": "Animations/动画"
-      },
-      {
-        "id": 406,
-        "name": "Music Videos/音乐 MV"
-      },
-      {
-        "id": 407,
-        "name": "Sports/体育"
-      },
-      {
-        "id": 408,
-        "name": "HQ Audio/无损音乐"
-      },
-      {
-        "id": 411,
-        "name": "Misc/其他"
-      },
-      {
-        "id": 410,
-        "name": "Games/游戏"
-      }
-    ]
-  }],
+  "categories": [
+    {
+      "entry": "*",
+      "result": "&cat$id$=1",
+      "category": [
+        {
+          "id": 401,
+          "name": "Movies/电影"
+        },
+        {
+          "id": 402,
+          "name": "TV Series/电视剧"
+        },
+        {
+          "id": 403,
+          "name": "TV Shows/综艺"
+        },
+        {
+          "id": 404,
+          "name": "Documentaries/纪录片"
+        },
+        {
+          "id": 405,
+          "name": "Animations/动画"
+        },
+        {
+          "id": 406,
+          "name": "Music Videos/音乐 MV"
+        },
+        {
+          "id": 407,
+          "name": "Sports/体育"
+        },
+        {
+          "id": 408,
+          "name": "HQ Audio/无损音乐"
+        },
+        {
+          "id": 411,
+          "name": "Misc/其他"
+        },
+        {
+          "id": 410,
+          "name": "Games/游戏"
+        }
+      ]
+    }
+  ],
   "selectors": {
     "userExtendInfo": {
       "merge": true,
       "fields": {
         "bonus": {
-          "selector": ["td.rowhead:contains('魔力值') + td"],
-          "filters": ["query.is(\":contains('魔力值:')\")?query.text().replace(/,/g,'').match(/魔力值.+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')", "parseFloat(query)"]
+          "selector": [
+            "td.rowhead:contains('魔力值') + td"
+          ],
+          "filters": [
+            "query.is(\":contains('魔力值:')\")?query.text().replace(/,/g,'').match(/魔力值.+?([\\d.]+)/)[1]:query.text().replace(/,/g,'')",
+            "parseFloat(query)"
+          ]
         }
       }
     }
