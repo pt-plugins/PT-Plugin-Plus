@@ -1,0 +1,134 @@
+{
+  "name": "下水道",
+  "timezoneOffset": "+0800",
+  "schema": "NexusPHP",
+  "url": "https://sewerpt.com",
+  "description": "再小众的热爱，也值得被世界看见",
+  "icon": "https://sewerpt.com/favicon.ico",
+  "tags": [
+    "冷门",
+    "低分",
+    "粤语",
+    "影视"
+  ],
+  "host": "sewerpt.com",
+  "collaborator": "sewerpt",
+  "levelRequirements": [
+    {
+      "level": "1",
+      "name": "大工",
+      "interval": "4",
+      "downloaded": "50GB",
+      "ratio": "1.05",
+      "seedingPoints": "40000",
+      "privilege": "无"
+    },
+    {
+      "level": "2",
+      "name": "技工",
+      "interval": "8",
+      "downloaded": "120GB",
+      "ratio": "1.55",
+      "seedingPoints": "80000",
+      "privilege": "无"
+    },
+    {
+      "level": "3",
+      "name": "安全员",
+      "interval": "16",
+      "downloaded": "300GB",
+      "ratio": "2.05",
+      "seedingPoints": "150000",
+      "privilege": "无"
+    },
+    {
+      "level": "4",
+      "name": "技术员",
+      "interval": "28",
+      "downloaded": "500GB",
+      "ratio": "2.55",
+      "seedingPoints": "250000",
+      "privilege": "无"
+    },
+    {
+      "level": "5",
+      "name": "工长",
+      "interval": "40",
+      "downloaded": "750GB",
+      "ratio": "2.95",
+      "seedingPoints": "400000",
+      "privilege": "无"
+    },
+    {
+      "level": "6",
+      "name": "包工头",
+      "interval": "60",
+      "downloaded": "1024GB",
+      "ratio": "3.55",
+      "seedingPoints": "600000",
+      "privilege": "无"
+    },
+    {
+      "level": "7",
+      "name": "工程师",
+      "interval": "80",
+      "downloaded": "1536GB",
+      "ratio": "4.05",
+      "seedingPoints": "900000",
+      "privilege": "无"
+    },
+    {
+      "level": "8",
+      "name": "老板",
+      "interval": "100",
+      "downloaded": "3072GB",
+      "ratio": "4.55",
+      "seedingPoints": "1500000",
+      "privilege": "无"
+    }
+  ],
+  "selectors": {
+    "userSeedingTorrents": {
+      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "fields": {
+        "seeding": {
+          "selector": [
+            "b:first"
+          ],
+          "filters": [
+            "query.text()"
+          ]
+        },
+        "seedingSize": {
+          "selector": "",
+          "filters": [
+            "query.text().match(/总大小：(.*?)</g)",
+            "(query && query.length>0 ) ? query[0].replace('总大小：', '').replace('<', '').trim() : 0",
+            "(query != 0) ? _self.getTotalSize([query]) : 0"
+          ]
+        }
+      }
+    }
+  },
+  "searchEntryConfig": {
+    "fieldSelector": {
+      "progress": {
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"
+        ],
+        "filters": [
+          "query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"
+        ]
+      },
+      "status": {
+        "selector": [
+          "> td.rowfollow:eq(1) td.embedded:eq(0) > div:last"
+        ],
+        "filters": [
+          "query ? query.attr('title') : ''",
+          "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+        ]
+      }
+    }
+  }
+}
