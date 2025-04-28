@@ -47,7 +47,7 @@
       "level": "5",
       "name": "Veteran User",
       "interval": "40",
-      "downloaded": "7500GB",
+      "downloaded": "750GB",
       "ratio": "3.05",
       "seedingPoints": "400000",
       "privilege": "得到三个邀请名额；可以查看其它用户的评论、帖子历史。Veteran User及以上用户会永远保留账号。"
@@ -56,7 +56,7 @@
       "level": "6",
       "name": "Extreme User",
       "interval": "60",
-      "downloaded": "2048GB",
+      "downloaded": "1T",
       "ratio": "3.55",
       "seedingPoints": "600000",
       "privilege": "可以更新过期的外部信息；可以查看Extreme User论坛。"
@@ -65,7 +65,7 @@
       "level": "7",
       "name": "Ultimate User",
       "interval": "80",
-      "downloaded": "1T",
+      "downloaded": "1.5T",
       "ratio": "4.05",
       "seedingPoints": "800000",
       "privilege": "得到五个邀请名额。"
@@ -74,7 +74,7 @@
       "level": "8",
       "name": "Nexus Master",
       "interval": "100",
-      "downloaded": "1.5T",
+      "downloaded": "3T",
       "ratio": "4.55",
       "seedingPoints": "1000000",
       "privilege": "得到十个邀请名额。"

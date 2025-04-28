@@ -444,7 +444,6 @@
       "page": "/api/tracker/mybonus",
       "dataType": "json",
       "requestMethod": "POST",
-      "requestContentType": "application/json",
       "headers": {
         "x-api-key": "$site.authToken$"
       },
