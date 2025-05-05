@@ -83,27 +83,40 @@
     ],
     "collaborator": ["tomyangsh"],
     "selectors": {
-        "userSeedingTorrents": {
-            "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
-            "fields": {
-                "seeding": {
-                    "selector": [
-                        "b:first"
-                    ],
-                    "filters": [
-                        "query.text()"
-                    ]
-                },
-                "seedingSize": {
-                    "selector": "",
-                    "filters": [
-                        "query.text().match(/Total size:(.*?)Prev/g)",
-                        "(query && query.length>0) ? query[0].replace('Total size:', '').replace('<< Prev', '').trim() : 0",
-                        "(query != 0) ? query.sizeToNumber() : 0"
-                    ]
-                }
-            }
+      "userBaseInfo": {
+        "page": "/index.php",
+        "fields": {
+          "id": {
+            "selector": "#userToggle a[href*='userdetails.php']",
+            "attribute": "href",
+            "filters": ["query ? query.getQueryString('id'):''"]
+          },
+          "name": {
+            "selector": "#userToggle a[href*='userdetails.php']"
+          },
+          "isLogged": {
+            "selector": ["a[href*='logout.php']"],
+            "filters": ["query.length>0"]
+          }
         }
+      },
+      "userSeedingTorrents": {
+        "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+        "fields": {
+          "seeding": {
+            "selector": ["b:first"],
+            "filters": ["query.text()"]
+          },
+          "seedingSize": {
+            "selector": "",
+            "filters": [
+              "query.text().match(/Total size:(.*?)Prev/g)",
+              "(query && query.length>0) ? query[0].replace('Total size:', '').replace('<< Prev', '').trim() : 0",
+              "(query != 0) ? query.sizeToNumber() : 0"
+            ]
+          }
+        }
+      }
     },
     "torrentTagSelectors": [{
       "name": "Free",
