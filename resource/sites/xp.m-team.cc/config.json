@@ -24,6 +24,9 @@
   ],
   "tokenRequired": true,
   "tokenTip": "在控制台-实验室获取存取令牌",
+  "collaborator": [
+    "manone2077"
+  ],
   "formerHosts": [
     "xp.m-team.io",
     "pt.m-team.cc",
@@ -454,6 +457,26 @@
           ],
           "filters": [
             "Number(query.finalBs)"
+          ]
+        }
+      }
+    },
+    "hnrExtendInfo": {
+      "page": "/api/msg/notify/statistic",
+      "dataType": "json",
+      "requestMethod": "POST",
+      "requestData": {
+        "box": -2,
+        "pageNumber": 1,
+        "pageSize": 100
+      },
+      "headers": {
+        "x-api-key": "$site.authToken$"
+      },
+      "fields": {
+        "messageCount": {
+          "selector": [
+            "data.unMake"
           ]
         }
       }
