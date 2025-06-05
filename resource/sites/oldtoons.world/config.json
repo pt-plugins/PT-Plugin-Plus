@@ -1,0 +1,12 @@
+{
+  "name": "OLDTOONS",
+  "timezoneOffset": "+0800",
+  "schema": "UNIT3D",
+  "url": "https://oldtoons.world/",
+  "icon": "https://oldtoons.world/favicon.ico",
+  "description": "",
+  "tags": [ ],
+  "host": "oldtoons.world",
+  "levelRequirements": [],
+  "collaborator": "koal"  
+}
