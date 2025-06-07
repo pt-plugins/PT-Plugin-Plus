@@ -141,13 +141,6 @@ if (!"".getQueryString) {
             case row.is(".torrent_redline"):
               albumRow = row;
               albumTitle = title;
-              // 当在 Profile 里关闭 torrent grouping 时，补全单元格以让索引位置生效
-              if (cells.eq(0).text().trim() !== "") {
-                let tmpRow = row.clone().get(0);
-                tmpRow.insertCell(0);
-                cells = $(tmpRow).find(">td");
-                fieldIndex.category = 0;
-              }
               break;
 
             default:
