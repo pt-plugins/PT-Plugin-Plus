@@ -85,7 +85,7 @@
           "filters": ["query.parent().text().trim().replace(/,|\\n|\\s+/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():null"]
         },
         "bonus": {
-          "selector": ["a[href*='bonus']:first"],
+          "selector": ["a[href*='bp']:first"],
           "filters": ["query.parent().text().trim().replace(/,|\\n|\\s+/g,'').replace(/BP:/g,'')"]
         },
         "seeding": {
