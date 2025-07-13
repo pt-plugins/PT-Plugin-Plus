@@ -65,7 +65,7 @@
           "filters": ["query.text().replace(/,/g,'').match(/([\\d.]+ ?[ZEPTGMK]?i?B)/)", "(query && query.length>=2)?(query[1]).sizeToNumber():0"]
         },
         "bonus": {
-          "selector": "li#BonusPoints a[href*='store.php']",
+          "selector": "li#BonusPoints a[href*='store.php?']",
           "filters": ["query.text().replace(/,|\\n|\\s+/g,'')"]
         }
       }
