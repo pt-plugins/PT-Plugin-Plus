@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<gupdate xmlns='http://www.google.com/update2/response' protocol='2.0'>
+  <app appid='dmmjlmbkigbgpnjfiimhlnbnmppjhpea'>
+    <updatecheck codebase='https://github.com/pt-plugins/PT-Plugin-Plus/releases/download/v1.6.1.2876/PT-Plugin-Plus-1.6.1.2876.crx' version='1.6.1.2876' prodversionmin='64.0.3242' />
+  </app>
+</gupdate>
