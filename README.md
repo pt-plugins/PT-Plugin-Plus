@@ -1,3 +1,10 @@
+> [!NOTE]
+> PT-Plugin-Plus 项目已经进入停止维护期（具体说明见： https://github.com/pt-plugins/PT-Plugin-Plus/issues/2235 ）
+> 
+> 我们推荐您使用全新的替代方案：  **[PT-depiler](https://github.com/pt-plugins/PT-depiler)** 。
+> PT-depiler 是 PT-Plugin-Plus 的继任者，保留了绝大多数核心功能并进行了全面优化，包括更好的兼容性、更稳定的性能和更丰富的功能支持。建议所有用户迁移至新项目以获得持续的更新和支持。
+
+
 <p align="center">
 <img src="https://github.com/pt-plugins/PT-Plugin-Plus/raw/master/public/assets/icon-128.png"><br/>
 <a href="https://github.com/pt-plugins/PT-Plugin-Plus/releases?include_prereleases/latest" title="GitHub Pre-releases"><img src="https://img.shields.io/github/release/pt-plugins/PT-Plugin-Plus.svg?include_prereleases&label=pre-release"></a>
