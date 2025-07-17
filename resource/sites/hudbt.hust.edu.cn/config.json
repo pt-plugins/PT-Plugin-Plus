@@ -84,6 +84,16 @@
         }
       }
     },
+    "userExtendInfo": {
+      "prerequisites": "!user.bonusPerHour",
+      "page": "/mybonus.php",
+      "fields": {
+        "bonusPerHour": {
+          "selector": ["table ul + div"],
+          "filters": ["query.text().replace(/魔力值.*/,'').match(/[\\d.]+/g)"]
+        }
+      }
+    },
     "userUploadedTorrents": {
       "prerequisites": "!user.uploads",
       "page": "/getusertorrentlistajax.php?userid=$user.id$&type=uploaded",
