@@ -1,0 +1,106 @@
+name: Build Action Release
+
+on:
+  push:
+    branches: [ mv3-export ]
+
+jobs:
+  build:
+    name: Build dist
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: mv3-export
+          fetch-depth: 0
+
+      - name: Upload Built to action
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-dist-folder
+          path: dist
+
+  zip:
+    name: Build Zip
+    runs-on: ubuntu-latest
+    needs: build
+    outputs:
+      version: ${{ steps.zip.outputs.extensionVersion }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-dist-folder
+          path: dist
+
+      - id: zip
+        name: Build Zip
+        uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
+        with:
+          extensionDir: 'dist'
+          zipFilePath: 'artifact/extension.zip'
+
+      - name: Upload Built Zip to action
+        uses: actions/upload-artifact@v4
+        with:
+          name: dev-build-${{ steps.zip.outputs.extensionVersion }}-zip
+          path: artifact/*
+
+  crx:
+    name: Build Crx (Chromium)
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Set name output
+        id: auto_update_file
+        env:
+          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+        if: ${{ env.CRX_PRIVATE_KEY != ''  }}
+        run: |
+          USER_INPUT=${{ inputs.auto_update_file }}
+          echo "value=${USER_INPUT:-"stable.xml"}" >> $GITHUB_OUTPUT
+
+      - uses: actions/download-artifact@v4
+        env:
+          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+        if: ${{ env.CRX_PRIVATE_KEY != ''  }}
+        with:
+          name: build-dist-folder
+          path: dist
+
+      - name: Add update_url
+        env:
+          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+        if: ${{ env.CRX_PRIVATE_KEY != ''  }}
+        run: echo $(jq '. |= .+ {"update_url":"https://pt-plugins.github.io/PT-Plugin-Plus/update/${{ steps.auto_update_file.outputs.value }}"}' dist/manifest.json) > dist/manifest.json
+
+      - id: zip
+        name: Build Zip With update_url
+        uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
+        env:
+          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+        if: ${{ env.CRX_PRIVATE_KEY != ''  }}
+        with:
+          extensionDir: 'dist'
+          zipFilePath: 'extension.zip'
+
+      - name: Build Crx
+        env:
+          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+        if: ${{ env.CRX_PRIVATE_KEY != ''  }}
+        uses: cardinalby/webext-buildtools-chrome-crx-action@v2
+        with:
+          zipFilePath: 'extension.zip'
+          crxFilePath: 'artifact/extension.crx'
+          privateKey: ${{ secrets.CRX_PRIVATE_KEY }}
+          updateXmlPath: artifact/${{ steps.auto_update_file.outputs.value }}
+          updateXmlCodebaseUrl: https://github.com/pt-plugins/PT-Plugin-Plus/releases/download/v${{ steps.zip.outputs.extensionVersion }}/PT-Plugin-Plus-${{ steps.zip.outputs.extensionVersion }}.crx
+
+      - name: Upload Built Crx to action
+        env:
+          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+        if: ${{ env.CRX_PRIVATE_KEY != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: dev-build-${{ steps.zip.outputs.extensionVersion }}-crx
+          path: artifact/*

@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>PTPP Exporter</title>
+</head>
+
+<body>
+<h1>PTPP Exporter</h1>
+
+<p class="message">用于导出 PTPP 的所有用户数据，方便导入 PT-Depiler。</p>
+
+<p class="message">
+  PT-Depiler安装方式：
+  <a href="https://chromewebstore.google.com/detail/pt-depiler/iloddidemhbedaopmipajgclofjocogb" target="_blank">Chrome Web Store</a>、
+    <a href="https://microsoftedge.microsoft.com/addons/detail/pt-depiler/kbijhmckhndmeckonoikakdfdlbnlkde" target="_blank">Microsoft Edge Add-ons</a>。
+</p>
+
+<p class="message">（<a href="https://github.com/pt-plugins/PT-depiler/discussions/316" target="_blank">PTPP 迁移至 PTD 后的常见问题</a>）</p>
+
+<hr>
+
+<p class="message">如果下方 Export 按钮可以点击，说明本临时工具可以导出原 PTPP 中的所有用户数据。否则说明 PTPP 中原始数据已经丢失。</p>
+<p class="message">在导出 userdatas.json 文件后，你可以在 PT-Depiler 的`常规设置-备份恢复`中导入（不要修改文件名！）。</p>
+
+
+<button id="export_btn" class="submit" disabled>Export</button>
+
+<script src="options.js"></script>
+</body>
+</html>

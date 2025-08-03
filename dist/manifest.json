@@ -1,0 +1,8 @@
+{
+  "name": "PTPP Exporter",
+  "description": "Export PTPP data to a file",
+  "version": "9.9.9.1",
+  "permissions": ["storage"],
+  "options_page": "options.html",
+  "manifest_version": 3
+}
