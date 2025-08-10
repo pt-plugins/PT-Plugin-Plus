@@ -1,5 +1,5 @@
 {
-  "name": "PTPP Exporter",
+  "name": "__MSG_extName__",
   "description": "Export PTPP data to a file",
   "version": "9.9.9.1",
   "permissions": ["storage"],
