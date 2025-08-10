@@ -1,34 +1,37 @@
 {
   "name": "ilolicon PT",
-  "description": "如果你也喜欢萝莉的话",
+  "description": "主打动漫，追番和萝莉资源，兼顾热门国漫和爆款剧集的连载，设有影视对比区和专业级画质对比bbcode的站点。",
   "url": "https://share.ilolicon.com/",
   "icon": "https://share.ilolicon.com/favicon.ico",
   "tags": [
     "成人",
+    "动漫",
     "萝莉"
   ],
   "schema": "NexusPHP",
   "host": "share.ilolicon.com",
-  "cdn": [
-    "https://share.ilolicon.com/"
-  ],
   "collaborator": [
-    "AllenPu"
+    "AllenPu",
+    "anonymous"
   ],
-  "plugins": [],
+  "plugins": [{
+    "name": "特别区",
+    "pages": ["/special.php"],
+    "scripts": ["/schemas/NexusPHP/common.js", "/schemas/NexusPHP/torrents.js"]
+  }],
   "levelRequirements": [
     {
       "level": 1,
-      "name": "Power User",
+      "name": "有点经验的魔法少女",
       "interval": "5",
       "downloaded": "50GB",
       "ratio": "1.05",
       "seedingPoints": "50000",
-      "privilege": "可以查看其它用户的种子历史(如果用户隐私等级未设置为\"强\")。可以发布趣味盒内容。"
+      "privilege": "可以发布趣味盒内容。"
     },
     {
       "level": 2,
-      "name": "Elite User",
+      "name": "高级魔法少女",
       "interval": "8",
       "downloaded": "120GB",
       "ratio": "1.55",
@@ -37,7 +40,7 @@
     },
     {
       "level": 3,
-      "name": "Crazy User",
+      "name": "疯狂魔法少女",
       "interval": "15",
       "downloaded": "300GB",
       "ratio": "2.05",
@@ -46,7 +49,7 @@
     },
     {
       "level": 4,
-      "name": "Insane User",
+      "name": "超级疯狂的魔法少女",
       "interval": "25",
       "downloaded": "500GB",
       "ratio": "2.55",
@@ -55,7 +58,7 @@
     },
     {
       "level": 5,
-      "name": "Veteran User",
+      "name": "经验丰富的魔法少女",
       "interval": "40",
       "downloaded": "750GB",
       "ratio": "3.05",
@@ -64,7 +67,7 @@
     },
     {
       "level": 6,
-      "name": "Extreme User",
+      "name": "极限魔法少女",
       "interval": "60",
       "downloaded": "1TB",
       "ratio": "3.55",
@@ -73,7 +76,7 @@
     },
     {
       "level": 7,
-      "name": "Ultimate User",
+      "name": "终极魔法少女",
       "interval": "80",
       "downloaded": "1.5TB",
       "ratio": "4.05",
@@ -82,93 +85,115 @@
     },
     {
       "level": 8,
-      "name": "Nexus Master",
+      "name": "尼克斯大师",
       "interval": "100",
       "downloaded": "3TB",
       "ratio": "4.55",
       "seedingPoints": "3000000",
       "privilege": "可以查看种子结构；得到两个邀请名额。"
+    },
+    {
+      "level": 100,
+      "name": "贵宾",
+      "privilege": "和Nexus Master拥有相同权限并被认为是精英成员。免除自动降级。VIP下载不计算下载量。"
     }
   ],
   "selectors": {
+    "userBaseInfo": {
+      "page": "/index.php",
+      "fields": {
+        "id": {
+          "selector": ["a[href*='userdetails.php'][class*='Name']:first", "a[href*='userdetails.php']:first"],
+          "attribute": "href",
+          "filters": ["(function(){ return query ? (query.getQueryString('uuid') || query.getQueryString('id')) : ''; })()"]
+        },
+        "name": {
+          "selector": ["a[href*='userdetails.php'][class*='Name']:first", "a[href*='userdetails.php']:first"],
+          "filters": ["(function(){ return query && (query.attr('href').getQueryString('uuid') || query.attr('href').getQueryString('id')) ? query.text() : ''; })()"]
+        },
+        "isLogged": {
+          "selector": ["a[href*='usercp.php']"],
+          "filters": ["(function(){ return query.length>0; })()"]
+        },
+        "messageCount": {
+          "selector": ["td[style*='background: red'] a[href*='messages.php']", "div[style*='background: red'] a[href*='messages.php']"],
+          "filters": ["(function(){ return query.text().match(/(\\d+)/); })()", "(function(){ return (query && query.length>=2)?parseInt(query[1]):0; })()"]
+        }
+      }
+    },
+    "userExtendInfo": {
+      "page": "/userdetails.php?uuid=$user.id$",
+      "fields": {
+        "uploaded": {
+          "selector": ["td.rowhead:contains('传输') + td"],
+          "filters": ["(function(){ return query.text().replace(/,/g,'').match(/上传量[：:]?\\s*([\\d.]+ ?[ZEPTGMK]?i?B)/); })()", "(function(){ return (query && query.length>=2)?(query[1]).sizeToNumber():0; })()"]
+        },
+        "downloaded": {
+          "selector": ["td.rowhead:contains('传输') + td"],
+          "filters": ["(function(){ return query.text().replace(/,/g,'').match(/下载量[：:]?\\s*([\\d.]+ ?[ZEPTGMK]?i?B)/); })()", "(function(){ return (query && query.length>=2)?(query[1]).sizeToNumber():0; })()"]
+        },
+        "ratio": {
+          "selector": ["td.rowhead:contains('传输') + td"],
+          "filters": ["(function(){ return query.text().match(/分享率[：:]?\\s*([\\d.]+)/); })()", "(function(){ return (query && query.length>=2)?parseFloat(query[1]):0; })()"]
+        },
+        "levelName": {
+          "selector": ["td.rowhead:contains('等级')", "td.rowhead:contains('等級')", "td.rowhead:contains('Class')"],
+          "filters": ["(function(){ return query.next().find('img').attr('title'); })()", "(function(){ return query.replace(/[^a-z0-9 ]/gi, '').trim().length > 0 ? query.replace(/[^a-z0-9 ]/gi, '').trim() : query; })()"]
+        },
+        "bonus": {
+          "selector": ["td.rowhead:contains('魔力') + td"],
+          "filters": ["(function(){ return query.text().replace(/,/g,'').match(/([\\d.]+)/); })()", "(function(){ return (query && query.length>=2)?parseFloat(query[1]):0; })()"]
+        },
+        "joinTime": {
+          "selector": ["td.rowhead:contains('加入日期')", "td.rowhead:contains('Join'):contains('date')"],
+          "filters": ["(function(){ return query.next().text().split(' (')[0].trim(); })()", "(function(){ return dateTime(query).isValid()?dateTime(query).valueOf():query; })()"]
+        },
+        "seedingTime": {
+          "selector": ["td.rowhead:contains('BT时间') + td"],
+          "filters": ["(function(){ return query.text().match(/做种时间[：:]?\\s*([\\d]+天[\\d:]+)/); })()", "(function(){ return (query && query.length>=2)?query[1]:''; })()"]
+        },
+        "seedingPoints": {
+          "selector": ["td.rowhead:contains('魔力') + td"],
+          "filters": ["(function(){ return query.text().replace(/,/g,'').match(/([\\d.]+)\\s*这是你的做种积分/); })()", "(function(){ return (query && query.length>=2)?parseFloat(query[1]):0; })()"]
+        }
+      }
+    },
     "userSeedingTorrents": {
-      "page": "/getusertorrentlistajax.php?userid=$user.id$&type=seeding",
+      "prerequisites": "!user.seeding",
+      "page": "/getusertorrentlistajax.php?useruuid=$user.id$&type=seeding",
       "fields": {
         "seeding": {
-          "selector": [
-            "b:first"
-          ],
-          "filters": [
-            "query.text()"
-          ]
+          "selector": ["body"],
+          "filters": ["(function(){ return query.text().match(/(\\d+).*?条记录/); })()", "(function(){ return (query && query.length>=2)?parseInt(query[1]):0; })()"]
         },
         "seedingSize": {
-          "selector": "",
-          "filters": [
-            "query.text().match(/总大小：(.*?)上一页/g)",
-            "(query && query.length>0) ? query[0].replace('总大小：', '').replace('<< 上一页', '').trim() : 0",
-            "(query != 0) ? query.sizeToNumber() : 0"
-          ]
+          "selector": ["body"],
+          "filters": ["(function(){ return query.text().match(/总大小[：:]?\\s*([\\d.]+ ?[ZEPTGMK]?i?B)/); })()", "(function(){ return (query && query.length>=2)?query[1].sizeToNumber():0; })()"]
+        }
+      }
+    },
+    "userUploadedTorrents": {
+      "prerequisites": "!user.uploads",
+      "page": "/getusertorrentlistajax.php?useruuid=$user.id$&type=uploaded",
+      "fields": {
+        "uploads": {
+          "selector": ["b:first"],
+          "filters": ["(function(){ return query ? parseInt(query.text().trim().replace(/,/g,'')) : 0; })()"]
         }
       }
     }
   },
   "searchEntry": [
     {
-      "name": "全站",
-      "enabled": true
+        "name": "种子区",
+        "enabled": true
     },
     {
-      "queryString": "tag_id=8",
-      "name": " 9KG",
-      "enabled": true
-    },
-    {
-      "queryString": "cat408=1",
-      "name": "无损音乐",
-      "enabled": false
-    },
-    {
-      "queryString": "cat402=1",
-      "name": "Live Action Raw",
-      "enabled": false
-    },
-    {
-      "queryString": "cat405=1",
-      "name": "动漫",
-      "enabled": false
-    },
-    {
-      "queryString": "cat404=1",
-      "name": "本",
-      "enabled": false
-    },
-    {
-      "queryString": "cat413=1",
-      "name": "软件",
-      "enabled": false
-    },
-    {
-      "queryString": "cat412=1",
-      "name": "游戏",
-      "enabled": false
-    },
-    {
-      "queryString": "cat411=1",
-      "name": "照片",
-      "enabled": false
-    },
-    {
-      "queryString": "cat410=1",
-      "name": "音频",
-      "enabled": false
-    },
-    {
-      "queryString": "cat401=1",
-      "name": "Live Action Sub",
-      "enabled": false
+        "entry": "special.php?search=$key$&notnewword=1",
+        "name": "特别区",
+        "enabled": false
     }
-  ],
+],
   "searchEntryConfig": {
     "merge": true,
     "skipIMDbId": false,
@@ -178,7 +203,7 @@
           "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
         ],
         "filters": [
-          "query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null"
+          "(function(){ return query ? parseFloat(query.attr('title').match(/[\\d.]+/)) : null; })()"
         ]
       },
       "status": {
@@ -186,68 +211,10 @@
           "> td.rowfollow:eq(1) td.embedded:eq(1) > div:last"
         ],
         "filters": [
-          "query ? query.attr('title') : ''",
-          "query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3"
+          "(function(){ return query ? query.attr('title') : ''; })()",
+          "(function(){ return query.indexOf('seeding') != -1 ? 2 : query.indexOf('leeching') != -1 ? 1 : query.indexOf('100%') != -1 ? 255 : 3; })()"
         ]
       }
-    },
-    "categories": [
-      {
-        "entry": "torrents.php",
-        "result": "&cat=$id$",
-        "category": [
-          {
-            "id": 408,
-            "name": "无损音乐"
-          },
-          {
-            "id": 402,
-            "name": "Live Action Raw"
-          },
-          {
-            "id": 405,
-            "name": "动漫"
-          },
-          {
-            "id": 404,
-            "name": "本"
-          },
-          {
-            "id": 413,
-            "name": "软件"
-          },
-          {
-            "id": 412,
-            "name": "游戏"
-          },
-          {
-            "id": 411,
-            "name": "照片"
-          },
-          {
-            "id": 410,
-            "name": "音频"
-          },
-          {
-            "id": 401,
-            "name": "Live Action Sub"
-          }
-        ]
-      },
-      {
-        "entry": "torrents.php",
-        "result": "&tag_id=$id$",
-        "category": [
-          {
-            "id": 8,
-            "name": "9kg"
-          },
-          {
-            "id": 11,
-            "name": "LOLI"
-          }
-        ]
-      }
-    ]
+    }
   }
 }
